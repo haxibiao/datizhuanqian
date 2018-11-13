@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
+import { Header } from "../../components/Header";
+import { DivisionLine } from "../../components/Universal";
+import { Colors, Config, Divice } from "../../constants";
 
 import Screen from "../Screen";
-import { Header } from "../../components/Header";
-import { Colors, Config, Divice } from "../../constants";
+import TopUserInfo from "./TopUserInfo";
 
 import { connect } from "react-redux";
 import actions from "../../store/actions";
@@ -15,14 +17,17 @@ class HomeScreen extends Component {
 	}
 	render() {
 		let { user, navigation } = this.props;
-		console.log("user", user);
 		return (
 			<Screen header>
 				<View style={styles.container}>
 					<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />
-					<TouchableOpacity onPress={() => navigation.navigate("登录")}>
-						<Text>我的</Text>
-					</TouchableOpacity>
+					<DivisionLine height={10} />
+					<ScrollView bounces={false}>
+						<TopUserInfo user={user} navigation={navigation} />
+						<TouchableOpacity onPress={() => navigation.navigate("登录")}>
+							<Text>我的</Text>
+						</TouchableOpacity>
+					</ScrollView>
 				</View>
 			</Screen>
 		);

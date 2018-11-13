@@ -8,7 +8,7 @@ import { Colors } from "../constants";
 import HomeScreen from "../screens/home/HomeScreen";
 import WithDrawalScreen from "../screens/withdrawal/HomeScreen";
 import TaskScreen from "../screens/task/HomeScreen";
-import MyScreen from "../screens/my/HomeScreen";
+import ProfileScreen from "../screens/profile/HomeScreen";
 
 import MainTabBar from "./MainTabBar";
 
@@ -23,7 +23,7 @@ let routerConfig = {
     screen: TaskScreen
   },
   我的: {
-    screen: MyScreen
+    screen: ProfileScreen
   }
 };
 

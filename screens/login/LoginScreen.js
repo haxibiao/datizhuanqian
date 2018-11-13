@@ -15,14 +15,18 @@ class HomeScreen extends Component {
 			login: false
 		};
 	}
-	SwitchView() {
+	switchView() {
 		this.setState(prevState => ({ login: !prevState.login }));
 	}
 	render() {
 		const { login } = this.state;
 		return (
 			<Screen header>
-				{login ? <SignUp handleSkip={this.handleSkip} /> : <SignIn handleSkip={this.handleSkip} />}
+				{login ? (
+					<SignUp switchView={this.switchView.bind(this)} />
+				) : (
+					<SignIn switchView={this.switchView.bind(this)} />
+				)}
 			</Screen>
 		);
 	}

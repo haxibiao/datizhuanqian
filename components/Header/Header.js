@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Platform } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Platform, StatusBar } from "react-native";
 import { withNavigation } from "react-navigation";
 
 import { Colors, Divice } from "../../constants";
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 		paddingTop: Divice.STATUSBAR_HEIGHT + 13,
 		paddingBottom: 15,
 		paddingHorizontal: 13,
-		height: Divice.STATUSBAR_HEIGHT + 46,
+		height: StatusBar.currentHeight + 46,
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",

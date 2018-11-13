@@ -3,6 +3,8 @@ import { Iconfont } from "../../utils/Fonts";
 import Colors from "../../constants/Colors";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 
+import { Button } from "../../components/Control";
+
 class LoginInput extends Component {
 	constructor(props) {
 		super(props);
@@ -27,6 +29,7 @@ class LoginInput extends Component {
 			focusItem,
 			focusKey,
 			changeValue,
+			code,
 			customStyle = {}
 		} = this.props;
 		let combineStyle = StyleSheet.flatten([styles.inputWrap, customStyle]);
@@ -82,6 +85,7 @@ class LoginInput extends Component {
 				) : (
 					<View style={styles.inputOperation} />
 				)}
+				{code ? <Button name={"获取验证码"} style={{ height: 32, marginLeft: 30 }} /> : null}
 			</View>
 		);
 	}

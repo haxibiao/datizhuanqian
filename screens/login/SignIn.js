@@ -28,7 +28,7 @@ class SignIn extends Component {
 	}
 	render() {
 		let { focusItem, modalVisible, disableSubmit } = this.state;
-		let { SwitchView } = this.props;
+		let { switchView } = this.props;
 		return (
 			<View style={styles.container}>
 				<View style={styles.top}>
@@ -38,11 +38,10 @@ class SignIn extends Component {
 					<LoginInput
 						name={"user"}
 						keys={"email"}
-						focusItem={focusItem}
 						value={this.accountState.email}
 						focusKey={this.focusKey.bind(this)}
 						// emptyValue={this.emptyValue}
-						placeholder={"手机号码"}
+						placeholder={"手机号码/邮箱"}
 						// changeValue={this.changeValue}
 						// customStyle={{
 						// 	borderTopLeftRadius: 3,
@@ -64,6 +63,66 @@ class SignIn extends Component {
 						// 	borderBottomRightRadius: 3
 						// }}
 					/>
+				</View>
+				<View style={{ marginTop: 10, alignItems: "flex-end" }}>
+					<TouchableOpacity onPress={this.handleModal}>
+						<Text
+							style={{
+								fontSize: 14,
+								color: Colors.tintFont
+							}}
+						>
+							忘记密码？
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<View style={{ marginTop: 20 }}>
+					<TouchableOpacity
+						disabled={disableSubmit}
+						onPress={() => {
+							if (!disableSubmit) {
+								this.props.handleSubmit(this.accountState);
+							}
+							this.setState({
+								disableSubmit: true
+							});
+						}}
+						style={[
+							styles.signInBtn,
+							!disableSubmit && {
+								backgroundColor: "rgba(240,145,145,1)"
+							}
+						]}
+					>
+						<Text style={styles.signInBtnText}>登录</Text>
+					</TouchableOpacity>
+				</View>
+				<View style={{ alignItems: "center" }}>
+					<View
+						style={{
+							marginVertical: 15,
+							flexDirection: "row"
+						}}
+					>
+						<Text
+							style={{
+								fontSize: 16,
+								color: Colors.tintFontColor
+							}}
+						>
+							还没有账号？
+						</Text>
+						<TouchableOpacity onPress={switchView}>
+							<Text
+								style={{
+									fontSize: 16,
+									color: Colors.themeColor
+								}}
+							>
+								注册
+							</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</View>
 		);
@@ -88,6 +147,18 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		marginTop: 60
+	},
+	signInBtn: {
+		height: 42,
+		borderRadius: 5,
+		backgroundColor: Colors.theme,
+		alignItems: "center",
+		justifyContent: "center"
+	},
+	signInBtnText: {
+		fontSize: 18,
+		fontWeight: "300",
+		color: "#fff"
 	}
 });
 

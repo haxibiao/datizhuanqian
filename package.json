@@ -16,6 +16,7 @@
     "redux-effex": "^1.1.2",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-modal": "^6.5.0",
+    "react-native-root-toast": "^3.0.1",
     "immutable": "^3.8.2"
   },
   "devDependencies": {

@@ -1,6 +1,8 @@
 const theme = "#FFB100";
 const white = "#fff";
 
+const tintFont = "#8a8a8a";
+
 const lightBorderColor = "#F8F8F8";
 
 const grey = "#969696";
@@ -12,5 +14,6 @@ export default {
 	white,
 	blue1,
 	blue2,
+	tintFont,
 	lightBorderColor
 };
