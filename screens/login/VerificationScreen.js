@@ -60,13 +60,13 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		paddingHorizontal: 20,
 		borderTopWidth: 1,
-		borderTopColor: Colors.lightBorderColor,
+		borderTopColor: Colors.lightBorder,
 		borderBottomWidth: 1,
-		borderBottomColor: Colors.lightBorderColor
+		borderBottomColor: Colors.lightBorder
 	},
 	textInput: {
 		fontSize: 16,
-		color: Colors.primaryFontColor,
+		color: Colors.primaryFont,
 		padding: 0,
 		height: 50
 	}

@@ -64,7 +64,7 @@ const styles = {
         justifyContent: "space-around",
         height: 50 + Divice.bottom_height,
         borderTopWidth: 1,
-        borderTopColor: Colors.lightBorderColor,
+        borderTopColor: Colors.tintGray,
         backgroundColor: Colors.white,
         paddingBottom: Divice.bottom_height
     },

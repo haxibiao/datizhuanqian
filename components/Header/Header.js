@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-between",
 		borderBottomWidth: 1,
-		borderBottomColor: Colors.lightBorderColor,
+		borderBottomColor: Colors.lightBorder,
 		backgroundColor: Colors.white
 	},
 	lightHeader: {

@@ -32,7 +32,7 @@ class RetrievePasswordScreen extends Component {
 							height: 20,
 							backgroundColor: Colors.skinColor,
 							borderBottomWidth: 1,
-							borderBottomColor: Colors.lightBorderColor
+							borderBottomColor: Colors.lightBorder
 						}}
 					/>
 					<View style={styles.textWrap}>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 	textWrap: {
 		paddingHorizontal: 20,
 		borderBottomWidth: 1,
-		borderBottomColor: Colors.lightBorderColor,
+		borderBottomColor: Colors.lightBorder,
 		position: "relative"
 	},
 	textInput: {

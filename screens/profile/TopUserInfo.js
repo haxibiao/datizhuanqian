@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, TouchableWithoutFeedback } from "react-native";
 import { Iconfont } from "../../utils/Fonts";
 import { Colors, Config } from "../../constants";
-// import Avatar from "../../components/Pure/Avatar";
+import Avatar from "../../components/Universal/Avatar";
 
 class UserTopInfo extends Component {
 	render() {
@@ -16,34 +16,40 @@ class UserTopInfo extends Component {
 			>
 				<View style={styles.userInfoContainer}>
 					<View style={styles.userInfo}>
-						<View style={{ flex: 1 }}>
-							<View style={styles.userInfo}>
-								{login ? (
-									<View
-										style={{
-											height: 50,
-											flex: 1,
-											justifyContent: "space-between"
-										}}
-									>
-										<Text style={styles.userName}>{user.name}</Text>
-									</View>
-								) : (
-									<Text style={[styles.userName, { paddingLeft: 50 }]}>
-										立即加入
-										{Config.AppDisplayName}~
-									</Text>
-								)}
-							</View>
-						</View>
 						<View style={{}}>
 							{login ? (
-								<Avatar uri={user.avatar} size={68} />
+								<Avatar
+									uri={user.avatar}
+									size={68}
+									borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
+								/>
 							) : (
 								<View style={styles.defaultAvatar}>
 									<Iconfont name={"my"} size={44} color={Colors.lightFontColor} />
 								</View>
 							)}
+						</View>
+						<View>
+							{login ? (
+								<View
+									style={{
+										paddingTop: 20
+									}}
+								>
+									<Text style={styles.userName}>{user.name}</Text>
+								</View>
+							) : (
+								<Text style={[styles.userName, { paddingLeft: 50 }]}>
+									立即加入
+									{Config.AppDisplayName}~
+								</Text>
+							)}
+						</View>
+						<View style={{ flexDirection: "row", justifyContent: "center", paddingVertical: 20 }}>
+							<View style={{ paddingRight: 20, borderRightWidth: 1, borderRightColor: "#CD6839" }}>
+								<Text style={{ color: "#CD6839" }}>精力点: 226</Text>
+							</View>
+							<Text style={{ paddingLeft: 20, color: "#CD6839" }}>智慧点: 162</Text>
 						</View>
 					</View>
 				</View>
@@ -54,12 +60,9 @@ class UserTopInfo extends Component {
 
 const styles = StyleSheet.create({
 	userInfoContainer: {
-		height: 90,
-		backgroundColor: Colors.skinColor,
-		flexDirection: "row",
-		alignItems: "center",
+		backgroundColor: Colors.theme,
 		paddingHorizontal: 15,
-		borderBottomColor: Colors.lightBorderColor,
+		borderBottomColor: Colors.lightBorder,
 		borderBottomWidth: 1
 	},
 	defaultAvatar: {
@@ -71,13 +74,13 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	userInfo: {
-		flexDirection: "row",
-		alignItems: "center"
+		alignItems: "center",
+		marginTop: 65
 	},
 	userName: {
-		fontSize: 18,
-		fontWeight: "300",
-		color: Colors.darkFontColor
+		fontSize: 16,
+		fontWeight: "400",
+		color: Colors.darkFont
 	}
 });
 
