@@ -85,7 +85,7 @@ class LoginInput extends Component {
 				) : (
 					<View style={styles.inputOperation} />
 				)}
-				{code ? <Button name={"获取验证码"} style={{ height: 32, marginLeft: 30 }} /> : null}
+				{code ? <Button name={"获取验证码"} style={{ height: 32, marginLeft: 30, fontSize: 13 }} /> : null}
 			</View>
 		);
 	}

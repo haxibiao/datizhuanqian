@@ -22,7 +22,7 @@ export default {
 	验证: {
 		screen: VerificationScreen
 	},
-	答题: {
+	回答: {
 		screen: AnswerScreen
 	},
 	设置: {

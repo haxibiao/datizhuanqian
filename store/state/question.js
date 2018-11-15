@@ -51,10 +51,10 @@ export const question = Record({
 			title: "英雄联盟S1的冠军是？",
 			answer: 3,
 			option: {
-				A: "SKT",
-				B: "WE",
-				C: "Fnatic",
-				D: "TPA"
+				a: "SKT",
+				b: "WE",
+				c: "Fnatic",
+				d: "TPA"
 			},
 			value: 1
 		},
@@ -63,10 +63,10 @@ export const question = Record({
 			title: "中国英雄联盟第一个世界冠军是？",
 			answer: 2,
 			option: {
-				A: "EDG",
-				B: "WE",
-				C: "IG",
-				D: "RNG"
+				a: "EDG",
+				b: "WE",
+				c: "IG",
+				d: "RNG"
 			},
 			value: 1
 		},
@@ -75,10 +75,10 @@ export const question = Record({
 			title: "绝地求生S1897的弹夹有少发子弹？",
 			answer: 2,
 			option: {
-				A: "5",
-				B: "7",
-				C: "9",
-				D: "15"
+				a: "5",
+				b: "7",
+				c: "9",
+				d: "15"
 			},
 			value: 1
 		}

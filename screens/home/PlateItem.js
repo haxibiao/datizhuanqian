@@ -10,9 +10,14 @@ class PlateItem extends Component {
 		this.state = {};
 	}
 	render() {
-		const { plate } = this.props;
+		const { plate, navigation } = this.props;
 		return (
-			<TouchableOpacity style={styles.container}>
+			<TouchableOpacity
+				style={styles.container}
+				onPress={() => {
+					navigation.navigate("回答");
+				}}
+			>
 				<View style={styles.leftContent}>
 					<Image source={plate.avatar} style={styles.img} />
 					<View style={{ paddingLeft: 20 }}>

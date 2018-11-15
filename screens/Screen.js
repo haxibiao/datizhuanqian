@@ -6,7 +6,7 @@ import { Header } from "../components/Header";
 
 class Screen extends Component {
 	render() {
-		let { customStyle = {}, lightBar, header = false, leftComponent = false } = this.props;
+		let { customStyle = {}, lightBar, header = false, leftComponent = false, routeName } = this.props;
 		return (
 			<View
 				style={[
@@ -22,7 +22,11 @@ class Screen extends Component {
 					backgroundColor={"transparent"}
 					barStyle={lightBar ? "light-content" : "dark-content"}
 				/>
-				{header ? header : <Header leftComponent={leftComponent} customStyle={customStyle} />}
+				{header ? (
+					header
+				) : (
+					<Header leftComponent={leftComponent} customStyle={customStyle} routeName={routeName} />
+				)}
 				{this.props.children}
 			</View>
 		);

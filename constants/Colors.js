@@ -11,17 +11,22 @@ const lightBorder = "#F4F4F4";
 const grey = "#969696";
 const lightGray = "#F6F6F6";
 const tintGray = "#f0f0f0";
-const blue1 = "#4B6CFC";
-const blue2 = "#4D8BFA";
+const blue = "#407FCF";
+const weixin = "#42c02e";
 
 export default {
 	theme,
 	white,
+	orange,
+
+	primaryFont,
+	tintFont,
+	darkFont,
 	grey,
 	lightGray,
 	tintGray,
-	blue1,
-	blue2,
-	tintFont,
+	blue,
+	weixin,
+
 	lightBorder
 };

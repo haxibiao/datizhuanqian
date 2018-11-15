@@ -30,7 +30,7 @@ class Button extends Component {
 				{icon
 					? icon
 					: iconName && <Iconfont name={iconName} size={iconSize} color={outline ? theme : "#fff"} />}
-				<Text style={[{ fontSize, color: theme }, !outline && { color: "#fff" }]}>{name}</Text>
+				<Text style={[{ fontSize: fontSize, color: theme }, !outline && { color: "#fff" }]}>{name}</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -38,11 +38,10 @@ class Button extends Component {
 
 const styles = StyleSheet.create({
 	button: {
-		flex: 1,
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-around",
-		borderRadius: 4,
+		borderRadius: 5,
 		borderWidth: 1
 	}
 });
