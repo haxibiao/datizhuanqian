@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions } from "react-native";
 
 import { Header } from "../../components/Header";
-import { DivisionLine } from "../../components/Universal";
+import { DivisionLine, TabTop } from "../../components/Universal";
 import { Button } from "../../components/Control";
 import Screen from "../Screen";
-import { Colors, Config, Divice } from "../../constants";
+import { Colors, Methods } from "../../constants";
+
+import { connect } from "react-redux";
+import actions from "../../store/actions";
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,29 +17,30 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			value: 0,
-			alipay: 1
+			alipay: 1,
+			counts: props.user
 		};
 	}
 	render() {
-		const { alipay } = this.state;
+		const { alipay, counts, value } = this.state;
 		return (
 			<Screen header>
 				<View style={styles.container}>
 					<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />
-					<DivisionLine height={10} />
+					<TabTop user={counts} />
 					<View style={styles.row}>
 						<View style={styles.rowLeft}>
 							<Text style={{ fontSize: 16 }}>剩余智慧点</Text>
 						</View>
 						<View style={styles.center}>
-							<Text style={{ fontSize: 16 }}>4396</Text>
+							<Text style={{ fontSize: 16 }}>{counts.count_wisdom}</Text>
 						</View>
 					</View>
 					<View style={{ alignItems: "center" }}>
 						<Slider
 							style={{ width: 320 }}
 							minimumValue={0}
-							maximumValue={100}
+							maximumValue={counts.count_wisdom}
 							value={this.state.value}
 							onValueChange={value => {
 								this.setState({
@@ -80,7 +84,7 @@ class HomeScreen extends Component {
 									<Text style={styles.withdrawal}>提现金额</Text>
 								</View>
 								<View style={styles.center}>
-									<Text style={styles.withdrawal}>￥8</Text>
+									<Text style={styles.withdrawal}>￥{(value / 600).toFixed(2)}</Text>
 								</View>
 							</View>
 							<View style={styles.bottom}>
@@ -95,6 +99,11 @@ class HomeScreen extends Component {
 								name={"兑换"}
 								style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
 								theme={Colors.blue}
+								handler={() => {
+									if (value > counts.count_wisdom) {
+										Methods.toast("超过智慧点余额");
+									}
+								}}
 							/>
 						</View>
 					) : (
@@ -165,8 +174,8 @@ const styles = StyleSheet.create({
 	input: {
 		width: 90,
 		height: 35,
-		lineHeight: 25,
 		paddingVertical: 0,
+		paddingTop: 5,
 		paddingHorizontal: 5,
 		borderRadius: 3,
 		borderColor: Colors.tintGray,
@@ -189,4 +198,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default HomeScreen;
+export default connect(store => {
+	return {
+		user: store.user.personal
+	};
+})(HomeScreen);

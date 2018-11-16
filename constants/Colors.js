@@ -13,6 +13,7 @@ const lightGray = "#F6F6F6";
 const tintGray = "#f0f0f0";
 const blue = "#407FCF";
 const weixin = "#42c02e";
+const nightColor = "#414141";
 
 export default {
 	theme,
@@ -28,5 +29,6 @@ export default {
 	blue,
 	weixin,
 
-	lightBorder
+	lightBorder,
+	nightColor
 };

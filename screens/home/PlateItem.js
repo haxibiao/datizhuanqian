@@ -15,7 +15,9 @@ class PlateItem extends Component {
 			<TouchableOpacity
 				style={styles.container}
 				onPress={() => {
-					navigation.navigate("回答");
+					navigation.navigate("回答", {
+						plate_id: plate.id
+					});
 				}}
 			>
 				<View style={styles.leftContent}>

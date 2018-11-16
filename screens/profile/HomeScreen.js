@@ -27,43 +27,40 @@ class HomeScreen extends Component {
 						<DivisionLine height={10} />
 						<TouchableOpacity style={styles.rowItem}>
 							<View style={styles.itemLeft}>
-								<Iconfont />
-								<Text>分享邀请</Text>
+								<Iconfont name={"invitation"} size={19} />
+								<Text style={{ paddingLeft: 10 }}>分享邀请</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.rowItem}>
 							<View style={styles.itemLeft}>
-								<Iconfont />
-								<Text>提现日志</Text>
+								<Iconfont name={"book"} size={18} />
+								<Text style={{ paddingLeft: 10 }}>提现日志</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
-						<TouchableOpacity style={styles.rowItem}>
+						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("登录")}>
 							<View style={styles.itemLeft}>
-								<Iconfont />
-								<Text>常见问题</Text>
+								<Iconfont name={"question"} size={18} />
+								<Text style={{ paddingLeft: 10 }}>常见问题</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("意见反馈")}>
 							<View style={styles.itemLeft}>
-								<Iconfont />
-								<Text>意见反馈</Text>
+								<Iconfont name={"feedback2"} size={18} />
+								<Text style={{ paddingLeft: 10 }}>意见反馈</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
 						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("设置")}>
 							<View style={styles.itemLeft}>
-								<Iconfont />
-								<Text>设置</Text>
+								<Iconfont name={"setting1"} size={18} />
+								<Text style={{ paddingLeft: 10 }}>设置</Text>
 							</View>
 							<Iconfont name={"right"} />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate("登录")}>
-							<Text>我的</Text>
 						</TouchableOpacity>
 					</ScrollView>
 				</View>
@@ -87,7 +84,8 @@ const styles = StyleSheet.create({
 		borderBottomColor: Colors.lightBorder
 	},
 	itemLeft: {
-		flexDirection: "row"
+		flexDirection: "row",
+		alignItems: "center"
 	}
 });
 
