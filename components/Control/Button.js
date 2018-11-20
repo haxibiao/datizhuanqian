@@ -23,7 +23,7 @@ class Button extends Component {
 			{ borderColor: theme },
 			!outline && { backgroundColor: theme },
 			style,
-			disabled && { opacity: 0.5 }
+			disabled && { opacity: 0.7 }
 		]);
 		return (
 			<TouchableOpacity onPress={handler} style={mergeButton} disabled={disabled}>

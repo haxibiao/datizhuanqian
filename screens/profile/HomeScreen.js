@@ -32,7 +32,7 @@ class HomeScreen extends Component {
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
-						<TouchableOpacity style={styles.rowItem}>
+						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("提现日志")}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"book"} size={18} />
 								<Text style={{ paddingLeft: 10 }}>提现日志</Text>

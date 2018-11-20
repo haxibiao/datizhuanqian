@@ -1,6 +1,7 @@
 const theme = "#FFB100";
 const white = "#fff";
 const orange = "#CD6839";
+const red = "#FF0000";
 
 const primaryFont = "#363636";
 const tintFont = "#8a8a8a";
@@ -19,6 +20,7 @@ export default {
 	theme,
 	white,
 	orange,
+	red,
 
 	primaryFont,
 	tintFont,

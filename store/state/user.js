@@ -9,5 +9,25 @@ export const user = Record({
 		aliplay: 13007465219,
 		count_energy: 120,
 		count_wisdom: 252
-	}
+	},
+	log: [
+		{
+			id: 1,
+			time_ago: "18/11/14  13:25",
+			money: "2.2",
+			status: 1
+		},
+		{
+			id: 2,
+			time_ago: "18/11/15  09:25",
+			money: "2.2",
+			status: 0
+		},
+		{
+			id: 1,
+			time_ago: "18/11/15  15:42",
+			money: "2.2",
+			status: 1
+		}
+	]
 });

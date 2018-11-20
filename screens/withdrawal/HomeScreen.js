@@ -17,7 +17,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			value: 0,
-			alipay: 1,
+			alipay: 0,
 			counts: props.user
 		};
 	}
@@ -102,6 +102,8 @@ class HomeScreen extends Component {
 								handler={() => {
 									if (value > counts.count_wisdom) {
 										Methods.toast("超过智慧点余额");
+									} else {
+										Methods.toast("提现成功");
 									}
 								}}
 							/>
@@ -139,6 +141,7 @@ class HomeScreen extends Component {
 								name={"提交"}
 								style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
 								theme={Colors.blue}
+								handler={() => {}}
 							/>
 						</View>
 					)}

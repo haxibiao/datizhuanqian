@@ -9,6 +9,8 @@ import AnswerScreen from "../screens/home/AnswerScreen";
 import SettingScreen from "../screens/profile/settings/HomeScreen";
 import FeedBackScreen from "../screens/profile/FeedBackScreen";
 
+import WithdrawalsLogScreen from "../screens/withdrawal/WithdrawalsLogScreen";
+
 export default {
 	主页: {
 		screen: MainTabNavigator
@@ -30,5 +32,8 @@ export default {
 	},
 	意见反馈: {
 		screen: FeedBackScreen
+	},
+	提现日志: {
+		screen: WithdrawalsLogScreen
 	}
 };

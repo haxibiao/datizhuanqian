@@ -16,15 +16,18 @@ class AnswerScreen extends Component {
 		super(props);
 		this.state = {
 			i: 0,
+			onfocus: null,
 			value: null,
-			counts: props.user
+			isShow: false,
+			counts: props.user,
+			showColor: Colors.theme,
+			name: "提交答案"
 		};
 	}
 	render() {
 		const { question, navigation, prop } = this.props;
-		const { i, value, counts } = this.state;
+		const { i, value, counts, onfocus, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
-		console.log("plate_id", plate_id);
 		return (
 			<Screen routeName={"答题"}>
 				<TabTop user={counts} />
@@ -42,7 +45,13 @@ class AnswerScreen extends Component {
 						<Text style={styles.title}>{question[i].title}</Text>
 						<View style={{ paddingTop: 30 }}>
 							<TouchableOpacity
-								style={styles.option}
+								disabled={isShow}
+								style={[
+									styles.option,
+									{
+										borderColor: value == 1 ? showColor : Colors.lightBorder
+									}
+								]}
 								onPress={() => {
 									this.setState({
 										value: 1
@@ -52,7 +61,13 @@ class AnswerScreen extends Component {
 								<Text>{question[i].option.a}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={styles.option}
+								disabled={isShow}
+								style={[
+									styles.option,
+									{
+										borderColor: value == 2 ? showColor : Colors.lightBorder
+									}
+								]}
 								onPress={() => {
 									this.setState({
 										value: 2
@@ -62,7 +77,13 @@ class AnswerScreen extends Component {
 								<Text>{question[i].option.b}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={styles.option}
+								disabled={isShow}
+								style={[
+									styles.option,
+									{
+										borderColor: value == 3 ? showColor : Colors.lightBorder
+									}
+								]}
 								onPress={() => {
 									this.setState({
 										value: 3
@@ -72,7 +93,13 @@ class AnswerScreen extends Component {
 								<Text>{question[i].option.c}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={styles.option}
+								disabled={isShow}
+								style={[
+									styles.option,
+									{
+										borderColor: value == 4 ? showColor : Colors.lightBorder
+									}
+								]}
 								onPress={() => {
 									this.setState({
 										value: 4
@@ -83,26 +110,65 @@ class AnswerScreen extends Component {
 							</TouchableOpacity>
 						</View>
 					</View>
-					{value && (
-						<View style={styles.tips}>
-							<Text
-								style={
-									question[i].answer == this.state.value
-										? { color: Colors.weixin }
-										: { color: "#ff0000" }
+					<View style={{ height: 82, justifyContent: "space-between" }}>
+						{isShow ? (
+							<View style={styles.tips}>
+								<Text
+									style={
+										question[i].answer == this.state.value
+											? { color: Colors.weixin }
+											: { color: "#ff0000" }
+									}
+								>
+									{question[i].answer == this.state.value ? "回答正确" : "回答错误"}
+								</Text>
+							</View>
+						) : (
+							<Text />
+						)}
+						<Button
+							name={name}
+							disabled={value ? false : true}
+							handler={() => {
+								if (!isShow) {
+									this.setState({
+										isShow: true
+									});
+									if (value == question[i].answer) {
+										this.setState({
+											showColor: Colors.weixin
+										});
+									} else {
+										this.setState({
+											showColor: Colors.red
+										});
+									}
+									this.setState({
+										name: "下一题"
+									});
+								} else {
+									this.setState({
+										i: i + 1,
+										onfocus: null,
+										value: null,
+										isShow: false,
+										showColor: Colors.theme,
+										name: "提交答案"
+									});
 								}
-							>
-								{question[i].answer == this.state.value ? "回答正确" : "回答错误"}
-							</Text>
-						</View>
-					)}
-					<Button
-						name={"搜一搜答案"}
-						style={{ height: 34, marginTop: 40 }}
-						theme={Colors.blue}
-						fontSize={14}
-					/>
+							}}
+							style={{ height: 38 }}
+							theme={Colors.blue}
+							fontSize={14}
+						/>
+					</View>
+					<TouchableOpacity style={{ alignItems: "flex-end", paddingTop: 15 }}>
+						<Text style={{ color: Colors.grey, fontSize: 13 }}>搜一搜答案</Text>
+					</TouchableOpacity>
 				</View>
+				<TouchableOpacity style={{ marginBottom: 35, alignItems: "center" }}>
+					<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
+				</TouchableOpacity>
 			</Screen>
 		);
 	}
@@ -135,7 +201,6 @@ const styles = StyleSheet.create({
 	option: {
 		marginTop: 10,
 		borderWidth: 1,
-		borderColor: Colors.lightBorder,
 		borderRadius: 5,
 		flexDirection: "row",
 		justifyContent: "center",
