@@ -1,9 +1,9 @@
 import QuestionReducer from "./QuestionReducer";
-import UserReducer from "./UserReducer";
+import UsersReducer from "./UsersReducer";
 import TaskReducer from "./TaskReducer";
 
 export default {
 	question: QuestionReducer,
-	user: UserReducer,
+	users: UsersReducer,
 	task: TaskReducer
 };

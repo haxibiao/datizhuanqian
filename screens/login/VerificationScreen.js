@@ -54,7 +54,7 @@ class VerificationEmailScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff"
+		backgroundColor: Colors.white
 	},
 	textWrap: {
 		marginTop: 20,

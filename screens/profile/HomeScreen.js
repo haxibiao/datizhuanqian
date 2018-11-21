@@ -28,29 +28,31 @@ class HomeScreen extends Component {
 						<TouchableOpacity style={styles.rowItem}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"invitation"} size={19} />
-								<Text style={{ paddingLeft: 10 }}>分享邀请</Text>
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
+									分享邀请
+								</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("提现日志")}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"book"} size={18} />
-								<Text style={{ paddingLeft: 10 }}>提现日志</Text>
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>提现日志</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
-						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("登录")}>
+						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("常见问题")}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"question"} size={18} />
-								<Text style={{ paddingLeft: 10 }}>常见问题</Text>
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>常见问题</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("意见反馈")}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"feedback2"} size={18} />
-								<Text style={{ paddingLeft: 10 }}>意见反馈</Text>
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>意见反馈</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
@@ -58,7 +60,7 @@ class HomeScreen extends Component {
 						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("设置")}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"setting1"} size={18} />
-								<Text style={{ paddingLeft: 10 }}>设置</Text>
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>设置</Text>
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
@@ -90,5 +92,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => {
-	return { user: store.user.personal, login: store.user.login };
+	return { user: store.users.user, login: store.users.login };
 })(HomeScreen);

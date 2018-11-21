@@ -135,7 +135,7 @@ class RetrievePasswordScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.skinColor
+		backgroundColor: Colors.white
 	},
 	textWrap: {
 		paddingHorizontal: 20,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		fontSize: 16,
-		color: Colors.primaryFontColor,
+		color: Colors.primaryFont,
 		padding: 0,
 		height: 50
 	},

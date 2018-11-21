@@ -132,7 +132,7 @@ class SignIn extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.skinColor,
+		backgroundColor: Colors.white,
 		paddingHorizontal: 25,
 		paddingVertical: 15
 		// justifyContent: "space-between"

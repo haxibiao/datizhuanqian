@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from "react-native";
 
 import { DivisionLine, TabTop } from "../../components/Universal";
 import { Button } from "../../components/Control";
+import { CorrectModal } from "../../components/Modal";
 import { Colors } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
@@ -16,7 +17,7 @@ class AnswerScreen extends Component {
 		super(props);
 		this.state = {
 			i: 0,
-			onfocus: null,
+			isMethod: false,
 			value: null,
 			isShow: false,
 			counts: props.user,
@@ -26,14 +27,17 @@ class AnswerScreen extends Component {
 	}
 	render() {
 		const { question, navigation, prop } = this.props;
-		const { i, value, counts, onfocus, isShow, showColor, name } = this.state;
+		const { i, value, counts, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
 		return (
 			<Screen routeName={"答题"}>
 				<TabTop user={counts} />
 				<View style={styles.container}>
 					<View style={styles.top}>
-						<Text style={{ color: Colors.orange }}>智慧点价值 {question[i].value}</Text>
+						<View style={{ flexDirection: "row", alignItems: "center" }}>
+							<Iconfont name={"zhuanshi"} size={18} color={Colors.theme} />
+							<Text style={{ color: Colors.theme }}>智慧点价值 {question[i].value}</Text>
+						</View>
 
 						<View style={styles.topRight}>
 							{prop.map((prop, index) => {
@@ -45,7 +49,7 @@ class AnswerScreen extends Component {
 						<Text style={styles.title}>{question[i].title}</Text>
 						<View style={{ paddingTop: 30 }}>
 							<TouchableOpacity
-								disabled={isShow}
+								disabled={isMethod}
 								style={[
 									styles.option,
 									{
@@ -61,7 +65,7 @@ class AnswerScreen extends Component {
 								<Text>{question[i].option.a}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								disabled={isShow}
+								disabled={isMethod}
 								style={[
 									styles.option,
 									{
@@ -77,7 +81,7 @@ class AnswerScreen extends Component {
 								<Text>{question[i].option.b}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								disabled={isShow}
+								disabled={isMethod}
 								style={[
 									styles.option,
 									{
@@ -93,7 +97,7 @@ class AnswerScreen extends Component {
 								<Text>{question[i].option.c}</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								disabled={isShow}
+								disabled={isMethod}
 								style={[
 									styles.option,
 									{
@@ -130,8 +134,10 @@ class AnswerScreen extends Component {
 							name={name}
 							disabled={value ? false : true}
 							handler={() => {
-								if (!isShow) {
+								if (!isMethod) {
 									this.setState({
+										isMethod: true,
+										name: "下一题",
 										isShow: true
 									});
 									if (value == question[i].answer) {
@@ -143,18 +149,8 @@ class AnswerScreen extends Component {
 											showColor: Colors.red
 										});
 									}
-									this.setState({
-										name: "下一题"
-									});
 								} else {
-									this.setState({
-										i: i + 1,
-										onfocus: null,
-										value: null,
-										isShow: false,
-										showColor: Colors.theme,
-										name: "提交答案"
-									});
+									this.nextQuestion();
 								}
 							}}
 							style={{ height: 38 }}
@@ -169,8 +165,33 @@ class AnswerScreen extends Component {
 				<TouchableOpacity style={{ marginBottom: 35, alignItems: "center" }}>
 					<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
 				</TouchableOpacity>
+				<CorrectModal
+					visible={isShow}
+					handleVisible={this.handleCorrectModal.bind(this)}
+					title={value == question[i].answer}
+					nextQuestion={this.nextQuestion.bind(this)}
+				/>
 			</Screen>
 		);
+	}
+
+	nextQuestion() {
+		const { i, isShow } = this.state;
+		this.setState({
+			i: i + 1,
+			isMethod: null,
+			value: null,
+			showColor: Colors.theme,
+			name: "提交答案"
+			// isShow: !isShow
+		});
+		this.handleCorrectModal();
+	}
+
+	handleCorrectModal() {
+		this.setState(prevState => ({
+			isShow: !prevState.isShow
+		}));
 	}
 }
 
@@ -218,6 +239,6 @@ export default connect(store => {
 	return {
 		question: store.question.question,
 		prop: store.question.prop,
-		user: store.user.personal
+		user: store.users.user
 	};
 })(AnswerScreen);

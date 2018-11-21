@@ -38,10 +38,10 @@ function numberFormat(number) {
 	}
 }
 
-function toast(message, timeout = 2000) {
+function toast(message, position, timeout = 2000) {
 	let toast = Toast.show(message, {
 		duration: Toast.durations.LONG,
-		position: 120,
+		position: position,
 		shadow: true,
 		animation: true,
 		hideOnPress: true,

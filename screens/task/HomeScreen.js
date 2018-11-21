@@ -35,12 +35,12 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.skinColor
+		backgroundColor: Colors.white
 	}
 });
 
 export default connect(store => {
 	return {
-		user: store.user.personal
+		user: store.users.user
 	};
 })(HomeScreen);

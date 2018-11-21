@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 	routeName: {
 		fontSize: 17,
 		fontWeight: "300",
-		color: Colors.primaryFontColor
+		color: Colors.black
 	}
 });
 

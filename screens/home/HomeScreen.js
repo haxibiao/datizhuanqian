@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
 export default connect(store => {
 	return {
 		plate: store.question.plate,
-		user: store.user.personal
+		user: store.users.user
 	};
 })(HomeScreen);

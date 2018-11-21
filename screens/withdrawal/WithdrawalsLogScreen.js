@@ -92,6 +92,6 @@ const styles = StyleSheet.create({});
 
 export default connect(store => {
 	return {
-		log: store.user.log
+		log: store.users.log
 	};
 })(WithdrawalsLogScreen);

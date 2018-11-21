@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions } from "react-native";
 
 import Screen from "../../Screen";
-import Config from "../../../constants/Config";
-import Colors from "../../../constants/Colors";
+import { Colors, Methods, Config } from "../../../constants";
 import { Iconfont } from "../../../utils/Fonts";
 
 import { Header } from "../../../components/Header";
@@ -20,7 +19,6 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.handlePromotModalVisible = this.handlePromotModalVisible.bind(this);
-		this.handleFontModalVisible = this.handleFontModalVisible.bind(this);
 		this.state = {
 			promotModalVisible: false,
 			fontModalVisible: false,
@@ -33,45 +31,75 @@ class HomeScreen extends Component {
 	render() {
 		let { promotModalVisible, fontModalVisible, dialog, storageSize, wordSize, checkedWordSize } = this.state;
 		const { navigation, users, client } = this.props;
-		const { login } = users;
+		const { login, user } = users;
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
-						<TouchableOpacity onPress={() => this.navigateMiddlewear("账号与安全")}>
-							<SettingItem itemName="账号与安全" endItem />
-						</TouchableOpacity>
+						{login ? (
+							<TouchableOpacity
+								style={{
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "space-between",
+									height: 80,
+									paddingHorizontal: 15
+								}}
+								onPress={() => navigation.navigate("修改个人资料")}
+							>
+								<View
+									style={{
+										flexDirection: "row",
+										alignItems: "center"
+									}}
+								>
+									<Avatar
+										uri={user.avatar}
+										size={52}
+										borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
+									/>
+									<View style={{ height: 34, justifyContent: "space-between", marginLeft: 15 }}>
+										<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
+										<Text style={{ fontSize: 12, color: Colors.grey, fontWeight: "300" }}>
+											LV.{user.level} {"  "}
+											{user.exp}/2000
+										</Text>
+									</View>
+								</View>
+								<Iconfont name={"right"} />
+							</TouchableOpacity>
+						) : null}
 						<DivisionLine height={10} />
-						<TouchableOpacity onPress={() => navigation.navigate("推送")}>
-							<SettingItem itemName="推送" />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate("常见问题")}>
-							<SettingItem itemName="常见问题" endItem />
-						</TouchableOpacity>
 						<TouchableOpacity onPress={() => navigation.navigate("关于答题赚钱")}>
-							<SettingItem itemName="关于答题赚钱" endItem />
+							<SettingItem itemName="关于答题赚钱" />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigation.navigate("分享给好友")}>
+							<SettingItem itemName="分享给好友" endItem />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
 						<TouchableOpacity
 							onPress={() => {
-								if (storageSize.length > 0) {
-									this.setState({ dialog: "确认清除缓存内容吗？" });
-									this.handlePromotModalVisible();
-								}
+								this.clearCache();
 							}}
 						>
 							<SettingItem rightSize={15} itemName="清除缓存" rightContent={storageSize} />
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
-								codePush.sync({
-									updateDialog: true,
-									installMode: codePush.InstallMode.IMMEDIATE
-								});
+								// codePush.sync({
+								// 	updateDialog: true,
+								// 	installMode: codePush.InstallMode.IMMEDIATE
+								// });
+								Methods.toast("已是最新版本", -200);
 							}}
 						>
-							<SettingItem itemName="版本更新" explain={"当前版本: " + Config.AppVersion} endItem />
+							<SettingItem
+								rightSize={15}
+								itemName="检查更新"
+								rightContent={"v" + Config.AppVersion}
+								endItem
+							/>
 						</TouchableOpacity>
 						<DivisionLine height={10} />
 						{login && (
@@ -105,12 +133,6 @@ class HomeScreen extends Component {
 		}));
 	}
 
-	handleFontModalVisible() {
-		this.setState(prevState => ({
-			fontModalVisible: !prevState.fontModalVisible
-		}));
-	}
-
 	navigateMiddlewear(routeName) {
 		let { navigation, users } = this.props;
 		if (users.login) {
@@ -121,8 +143,8 @@ class HomeScreen extends Component {
 	}
 
 	clearCache = () => {
-		this.setState({ dialog: "", storageSize: "" });
-		this.handlePromotModalVisible();
+		this.setState({ storageSize: "0MB" });
+		Methods.toast("清楚缓存成功", -200);
 	};
 }
 
@@ -172,5 +194,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => {
-	return { users: store.user };
+	return { users: store.users };
 })(HomeScreen);

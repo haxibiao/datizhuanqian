@@ -17,7 +17,13 @@
     "react-navigation": "^1.0.0-beta.27",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "redux-effex": "^1.1.2"
+    "redux-effex": "^1.1.2",
+    "apollo-boost": "^0.1.7",
+    "apollo-cache-inmemory": "^1.2.2",
+    "apollo-client": "^2.3.8",
+    "graphql": "^14.0.2",
+    "react-apollo": "2.3.2-beta.0",
+    "react-dom": "^16.6.3"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",

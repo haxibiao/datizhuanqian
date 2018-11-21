@@ -30,10 +30,10 @@ class HomeScreen extends Component {
 					<TabTop user={counts} />
 					<View style={styles.row}>
 						<View style={styles.rowLeft}>
-							<Text style={{ fontSize: 16 }}>剩余智慧点</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
 						</View>
 						<View style={styles.center}>
-							<Text style={{ fontSize: 16 }}>{counts.count_wisdom}</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>{counts.count_wisdom}</Text>
 						</View>
 					</View>
 					<View style={{ alignItems: "center" }}>
@@ -52,7 +52,7 @@ class HomeScreen extends Component {
 					</View>
 					<View style={styles.row}>
 						<View style={styles.rowLeft}>
-							<Text style={{ fontSize: 16 }}>兑换智慧点</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
 							<Text style={{ fontSize: 11, color: Colors.grey }}>大于300可提现</Text>
 						</View>
 						<View style={styles.center}>
@@ -73,7 +73,7 @@ class HomeScreen extends Component {
 									}}
 								/>
 							) : (
-								<Text style={{ fontSize: 16 }}>请绑定支付宝</Text>
+								<Text style={{ fontSize: 16, color: Colors.black }}>请绑定支付宝</Text>
 							)}
 						</View>
 					</View>
@@ -117,7 +117,7 @@ class HomeScreen extends Component {
 									borderBottomWidth: 1
 								}}
 							>
-								<Text style={{ fontSize: 18 }}>支付宝账号</Text>
+								<Text style={{ fontSize: 18, color: Colors.black }}>支付宝账号</Text>
 								<TextInput
 									style={{
 										width: width - 100,
@@ -130,7 +130,7 @@ class HomeScreen extends Component {
 								/>
 							</View>
 							<View style={{ paddingHorizontal: 30, marginTop: 30 }}>
-								<Text style={{ fontSize: 16 }}>
+								<Text style={{ fontSize: 16, color: Colors.black }}>
 									支付宝账号为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
 								</Text>
 								<Text style={{ fontSize: 16, color: Colors.orange, paddingTop: 25 }}>
@@ -154,7 +154,7 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.skinColor
+		backgroundColor: Colors.white
 	},
 	row: {
 		flexDirection: "row",
@@ -203,6 +203,6 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return {
-		user: store.user.personal
+		user: store.users.user
 	};
 })(HomeScreen);

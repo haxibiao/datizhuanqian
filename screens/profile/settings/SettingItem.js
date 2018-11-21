@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15
 	},
 	itemName: {
-		fontSize: 16,
-		color: Colors.primaryFont
+		fontSize: 15,
+		color: Colors.black
 	},
 	explain: {
 		fontSize: 12,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 		marginTop: 6
 	},
 	rightContent: {
-		fontSize: 15,
+		fontSize: 13,
 		color: Colors.tintFont,
 		textAlign: "right",
 		paddingLeft: 15
