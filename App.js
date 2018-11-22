@@ -18,6 +18,24 @@ class App extends Component {
     isLoadingComplete: false
   };
 
+  async componentWillMount() {
+    // YellowBox.ignoreWarnings(["Task orphaned"]);
+    // Orientation.lockToPortrait();
+    await this._loadResourcesAsync();
+  }
+
+  _loadResourcesAsync = async () => {
+    let user = await Storage.getItem(ItemKeys.user);
+    console.log("storageuser", user);
+    if (user) {
+      store.dispatch(actions.signIn(user));
+    }
+  };
+
+  _handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  };
+
   render() {
     let { isLoadingComplete } = this.state;
     return (
@@ -38,10 +56,6 @@ class App extends Component {
       </View>
     );
   }
-
-  _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
-  };
 }
 
 const styles = StyleSheet.create({

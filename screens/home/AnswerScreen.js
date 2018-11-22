@@ -30,7 +30,7 @@ class AnswerScreen extends Component {
 		const { i, value, counts, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
 		return (
-			<Screen routeName={"答题"}>
+			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.white, borderBottomColor: Colors.white }}>
 				<TabTop user={counts} />
 				<View style={styles.container}>
 					<View style={styles.top}>

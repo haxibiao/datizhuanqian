@@ -26,7 +26,10 @@ class HomeScreen extends Component {
 		return (
 			<Screen header>
 				<View style={styles.container}>
-					<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />
+					<Header
+						leftComponent={<Text />}
+						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
+					/>
 					<TabTop user={counts} />
 					<View style={styles.row}>
 						<View style={styles.rowLeft}>

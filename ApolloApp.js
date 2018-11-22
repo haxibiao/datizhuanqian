@@ -13,7 +13,7 @@ class ApolloApp extends Component {
 		let { token } = user;
 
 		this.client = new ApolloClient({
-			uri: "https://ainicheng.com/graphiql",
+			uri: "https://datizhuanqian.com/graphql",
 			request: async operation => {
 				operation.setContext({
 					headers: {

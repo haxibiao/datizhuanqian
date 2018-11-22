@@ -7,13 +7,21 @@ import { Iconfont } from "../../../utils/Fonts";
 
 import { Header } from "../../../components/Header";
 import { Avatar, DivisionLine } from "../../../components/Universal";
+import { SignOutModal } from "../../../components/Modal";
 import SettingItem from "./SettingItem";
+import { NavigationActions } from "react-navigation";
 
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
 import { Storage } from "../../../store/localStorage";
 
 const { width, height } = Dimensions.get("window");
+
+const navigateAction = NavigationActions.navigate({
+	routeName: "主页",
+	params: { resetStore: () => this.props.client.resetStore() },
+	action: NavigationActions.navigate({ routeName: "我的" })
+});
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -23,15 +31,15 @@ class HomeScreen extends Component {
 			promotModalVisible: false,
 			fontModalVisible: false,
 			checkedWordSize: 1,
-			dialog: "",
 			storageSize: "15MB"
 		};
 	}
 
 	render() {
-		let { promotModalVisible, fontModalVisible, dialog, storageSize, wordSize, checkedWordSize } = this.state;
+		let { promotModalVisible, fontModalVisible, storageSize, wordSize, checkedWordSize } = this.state;
 		const { navigation, users, client } = this.props;
 		const { login, user } = users;
+		console.log("settingUser", user);
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>
@@ -55,15 +63,15 @@ class HomeScreen extends Component {
 									}}
 								>
 									<Avatar
-										uri={user.avatar}
+										uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
 										size={52}
 										borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
 									/>
 									<View style={{ height: 34, justifyContent: "space-between", marginLeft: 15 }}>
 										<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
 										<Text style={{ fontSize: 12, color: Colors.grey, fontWeight: "300" }}>
-											LV.{user.level} {"  "}
-											{user.exp}/2000
+											LV.{user.level ? user.level.level : "1"} {"  "}
+											{user.ticket}/2000
 										</Text>
 									</View>
 								</View>
@@ -105,7 +113,6 @@ class HomeScreen extends Component {
 						{login && (
 							<TouchableOpacity
 								onPress={() => {
-									this.setState({ dialog: "确定退出当前账号？" });
 									this.handlePromotModalVisible();
 								}}
 								style={styles.loginOut}
@@ -123,6 +130,15 @@ class HomeScreen extends Component {
 						<DivisionLine height={15} />
 					</ScrollView>
 				</View>
+				<SignOutModal
+					visible={promotModalVisible}
+					handleVisible={this.handlePromotModalVisible}
+					confirm={() => {
+						this.props.dispatch(actions.signOut());
+						this.props.navigation.dispatch(navigateAction);
+						this.handlePromotModalVisible();
+					}}
+				/>
 			</Screen>
 		);
 	}
@@ -131,15 +147,6 @@ class HomeScreen extends Component {
 		this.setState(prevState => ({
 			promotModalVisible: !prevState.promotModalVisible
 		}));
-	}
-
-	navigateMiddlewear(routeName) {
-		let { navigation, users } = this.props;
-		if (users.login) {
-			navigation.navigate(routeName);
-		} else {
-			navigation.navigate("登录注册", { login: true });
-		}
 	}
 
 	clearCache = () => {

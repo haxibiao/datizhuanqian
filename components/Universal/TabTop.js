@@ -37,13 +37,15 @@ const styles = StyleSheet.create({
 	container: {
 		height: 55,
 		backgroundColor: Colors.white,
+		borderTopWidth: 5,
+		borderTopColor: "#FFF",
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
-		elevation: 3,
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: Colors.lightGray,
-		shadowOpacity: 0.1
+		elevation: 2,
+		shadowOffset: { width: 0, height: 2 },
+		shadowColor: "#F0F0F0",
+		shadowOpacity: 0
 	},
 	rowItem: {
 		flex: 1,

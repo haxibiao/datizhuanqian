@@ -1,4 +1,5 @@
 {
-  "name": "datizhuanqian",
-  "displayName": "datizhuanqian"
+	"name": "datizhuanqian",
+	"displayName": "答题赚钱",
+	"ServerRoot": "https://datizhuanqian.com"
 }

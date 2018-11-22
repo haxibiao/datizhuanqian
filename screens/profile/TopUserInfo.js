@@ -29,7 +29,7 @@ class UserTopInfo extends Component {
 							<View style={{}}>
 								{login ? (
 									<Avatar
-										uri={user.avatar}
+										uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
 										size={68}
 										borderStyle={{ borderWidth: 1, borderColor: Colors.white }}
 									/>

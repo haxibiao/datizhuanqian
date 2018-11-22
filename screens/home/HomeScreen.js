@@ -24,7 +24,10 @@ class HomeScreen extends Component {
 		const { counts } = this.state;
 		return (
 			<Screen header>
-				<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />
+				<Header
+					leftComponent={<Text />}
+					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
+				/>
 				<View style={styles.container}>
 					<FlatList
 						data={plate}

@@ -19,7 +19,7 @@ export default {
 	主页: {
 		screen: MainTabNavigator
 	},
-	登录: {
+	登录注册: {
 		screen: LoginScreen
 	},
 	找回密码: {

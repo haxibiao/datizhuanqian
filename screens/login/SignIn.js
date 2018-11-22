@@ -12,12 +12,15 @@ const { width, height } = Dimensions.get("window");
 class SignIn extends Component {
 	constructor(props) {
 		super(props);
+		this.focusKey = this.focusKey.bind(this);
+		this.changeValue = this.changeValue.bind(this);
+		this.emptyValue = this.emptyValue.bind(this);
 		this.accountState = {
-			email: "",
+			account: "",
 			password: ""
 		};
 		this.state = {
-			focusItem: "email",
+			focusItem: "account",
 			modalVisible: false,
 			disableSubmit: true
 		};
@@ -26,9 +29,24 @@ class SignIn extends Component {
 	focusKey(key) {
 		this.setState({ focusItem: key });
 	}
+
+	changeValue(key, value) {
+		this.accountState[key] = value;
+		if (this.accountState.account && this.accountState.password) {
+			this.setState({ disableSubmit: false });
+		} else if (!this.state.disableSubmit) {
+			this.setState({ disableSubmit: true });
+		}
+	}
+
+	emptyValue(key) {
+		this.accountState[key] = "";
+	}
+
 	render() {
 		let { focusItem, modalVisible, disableSubmit } = this.state;
-		let { switchView } = this.props;
+		let { switchView, handleSubmit } = this.props;
+		console.log("accout", this.accountState.account, this.accountState.password);
 		return (
 			<View style={styles.container}>
 				<View style={styles.top}>
@@ -37,16 +55,13 @@ class SignIn extends Component {
 				<View style={styles.input}>
 					<LoginInput
 						name={"user"}
-						keys={"email"}
-						value={this.accountState.email}
-						focusKey={this.focusKey.bind(this)}
-						// emptyValue={this.emptyValue}
+						keys={"account"}
+						focusItem={focusItem}
+						value={this.accountState.account}
+						focusKey={this.focusKey}
+						emptyValue={this.emptyValue}
 						placeholder={"手机号码/邮箱"}
-						// changeValue={this.changeValue}
-						// customStyle={{
-						// 	borderTopLeftRadius: 3,
-						// 	borderTopRightRadius: 3
-						// }}
+						changeValue={this.changeValue}
 					/>
 					<LoginInput
 						name={"lock"}
@@ -54,14 +69,9 @@ class SignIn extends Component {
 						focusItem={focusItem}
 						value={this.accountState.password}
 						secure={true}
-						focusKey={this.focusKey.bind(this)}
+						focusKey={this.focusKey}
 						placeholder={"密码"}
-						// changeValue={this.changeValue}
-						// customStyle={{
-						// 	borderTopWidth: 0,
-						// 	borderBottomLeftRadius: 3,
-						// 	borderBottomRightRadius: 3
-						// }}
+						changeValue={this.changeValue}
 					/>
 				</View>
 				<View style={{ marginTop: 10, alignItems: "flex-end" }}>
@@ -81,7 +91,7 @@ class SignIn extends Component {
 						disabled={disableSubmit}
 						onPress={() => {
 							if (!disableSubmit) {
-								this.props.handleSubmit(this.accountState);
+								handleSubmit(this.accountState);
 							}
 							this.setState({
 								disableSubmit: true
@@ -90,7 +100,7 @@ class SignIn extends Component {
 						style={[
 							styles.signInBtn,
 							!disableSubmit && {
-								backgroundColor: "rgba(240,145,145,1)"
+								backgroundColor: Colors.theme
 							}
 						]}
 					>
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
 	signInBtn: {
 		height: 42,
 		borderRadius: 5,
-		backgroundColor: Colors.theme,
+		backgroundColor: "rgba(255,177,0,0.7)",
 		alignItems: "center",
 		justifyContent: "center"
 	},

@@ -1,0 +1,74 @@
+#注册
+mutation signUpMutation($account: String!, $password: String!) {
+	signUp(account: $account, password: $password) {
+		id
+		account
+		name
+		real_name
+		gender
+		avatar
+		gold
+		ticket
+		level {
+			id
+			name
+			ticket_max
+			level
+		}
+		pay_account
+		status
+		is_old_user
+		is_admin
+		last_login_at
+	}
+}
+
+#登录
+mutation signInMutation($account: String!, $password: String!) {
+	signIn(account: $account, password: $password) {
+		id
+		account
+		name
+		real_name
+		gender
+		avatar
+		gold
+		ticket
+		level {
+			id
+			name
+			ticket_max
+			level
+		}
+		pay_account
+		status
+		is_old_user
+		is_admin
+		last_login_at
+	}
+}
+
+#用户个人资料
+query UserQuery($id: Int!) {
+	user(id: $id) {
+		id
+		account
+		name
+		real_name
+		gender
+		avatar
+		gold
+		ticket
+		level {
+			id
+			name
+			ticket_max
+			level
+		}
+		pay_account
+		status
+		is_old_user
+		is_admin
+		last_login_at
+	}
+}

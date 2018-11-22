@@ -1,16 +1,16 @@
 import { Record, List } from "immutable";
 
 export const users = Record({
-	login: true,
+	login: false,
 	user: {
-		avatar: "http://cos.qunyige.com/storage/avatar/13.jpg",
-		name: "风清歌",
-		id: 1,
-		aliplay: 13007465219,
-		count_energy: 5,
-		count_wisdom: 252,
-		level: 3,
-		exp: 1368
+		// avatar: "http://cos.qunyige.com/storage/avatar/13.jpg",
+		// name: "风清歌",
+		// id: 1,
+		// aliplay: 13007465219,
+		// count_energy: 5,
+		// count_wisdom: 252,
+		// level: 3,
+		// exp: 1368
 	},
 	log: [
 		{

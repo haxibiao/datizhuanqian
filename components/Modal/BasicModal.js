@@ -16,7 +16,7 @@ class BasicModal extends Component {
 					onResponderStart={handleVisible}
 					onStartShouldSetResponderCapture={evt => false}
 				>
-					<StatusBar backgroundColor={visible ? "rgba(105,105,105,0.7)" : "#fff"} barStyle={"dark-content"} />
+					<StatusBar backgroundColor={visible ? "rgba(48,48,48,0.8)" : "#fff"} barStyle={"dark-content"} />
 					<View style={mergeStyle} onStartShouldSetResponder={evt => true}>
 						{header ? <View style={styles.modalHeader}>{header}</View> : null}
 						{children}
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(105,105,105,0.7)"
+		backgroundColor: "rgba(48,48,48,0.8)"
 	},
 	modalInner: {
 		width: width - 40,
