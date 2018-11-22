@@ -72,3 +72,13 @@ query UserQuery($id: Int!) {
 		last_login_at
 	}
 }
+
+#更改昵称
+mutation updateUserNameMutation($name: String!) {
+	updateUserName(name: $name) {
+		id
+		account
+		name
+		real_name
+	}
+}

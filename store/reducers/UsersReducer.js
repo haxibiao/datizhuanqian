@@ -17,6 +17,25 @@ class UsersReducer {
 	static [types.SIGN_OUT](state, action) {
 		return state.set("user", {}).set("login", false);
 	}
+	static [types.UPDATE_NAME](state, action) {
+		let { user } = state;
+		let { name } = action;
+		user = {
+			...user,
+			name
+		};
+		return state.set("user", user);
+	}
+
+	static [types.UPDATE_AVATAR](state, action) {
+		let { user } = state;
+		let { avatar, timestamp } = action;
+		user = {
+			...user,
+			avatar: avatar + "?" + timestamp
+		};
+		return state.set("user", user);
+	}
 }
 
 export default UsersReducer.reduce;

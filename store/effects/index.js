@@ -15,5 +15,16 @@ export default [
 		action: types.SIGN_OUT,
 		effect: forgetUser,
 		error: genericErrorHandler
+	},
+	{
+		action: types.UPDATE_AVATAR,
+		effect: rememberUser,
+		error: genericErrorHandler
+	},
+
+	{
+		action: types.UPDATE_NAME,
+		effect: rememberUser,
+		error: genericErrorHandler
 	}
 ];

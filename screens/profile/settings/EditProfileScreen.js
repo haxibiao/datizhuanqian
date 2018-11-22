@@ -15,21 +15,24 @@ import Config from "../../../constants/Config";
 
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
+import { updateUserNameMutation } from "../../../graphql/user.graphql";
+import { Mutation } from "react-apollo";
 
 class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
-		this.nickname = "";
 		this.state = {
-			modalVisible: false
+			modalVisible: false,
+			nickname: ""
 		};
 	}
 
 	render() {
 		let { navigation } = this.props;
 		let { user } = this.props.users;
-		const { modalVisible } = this.state;
+		const { modalVisible, nickname } = this.state;
+		console.log("nickname", nickname);
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>
@@ -47,7 +50,10 @@ class EditProfileScreen extends Component {
 							}}
 						>
 							<Text>头像</Text>
-							<Avatar uri={user.avatar} size={42} />
+							<Avatar
+								uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
+								size={42}
+							/>
 						</TouchableOpacity>
 						<TouchableOpacity onPress={this.toggleModalVisible}>
 							<SettingItem itemName="设置昵称" rightSize={15} rightContent={user.name} />
@@ -56,29 +62,37 @@ class EditProfileScreen extends Component {
 							<SettingItem itemName="我的账户" rightSize={15} rightContent={user.aliplay} />
 						</TouchableOpacity>
 					</ScrollView>
-					<ModifyNameModal
-						modalName="修改昵称"
-						placeholder={user.name}
-						visible={modalVisible}
-						value={this.nickname}
-						handleVisible={this.toggleModalVisible}
-						changeVaule={val => {
-							this.nickname = val;
+					<Mutation mutation={updateUserNameMutation}>
+						{updateUserName => {
+							return (
+								<ModifyNameModal
+									modalName="修改昵称"
+									placeholder={user.name}
+									visible={modalVisible}
+									value={nickname}
+									handleVisible={this.toggleModalVisible}
+									changeVaule={val => {
+										this.setState({
+											nickname: val
+										});
+									}}
+									submit={() => {
+										if (nickname.length < 1) {
+											this.toggleModalVisible();
+											return;
+										}
+										this.toggleModalVisible();
+										updateUserName({
+											variables: {
+												name: nickname
+											}
+										});
+										this.props.dispatch(actions.updateName(nickname));
+									}}
+								/>
+							);
 						}}
-						submit={() => {
-							if (this.nickname.length < 1) {
-								this.toggleModalVisible();
-								return;
-							}
-							this.toggleModalVisible();
-							updateUserName({
-								variables: {
-									name: this.nickname
-								}
-							});
-							this.props.dispatch(actions.updateName(this.nickname));
-						}}
-					/>
+					</Mutation>
 				</View>
 			</Screen>
 		);

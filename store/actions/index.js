@@ -12,5 +12,19 @@ export default {
     return {
       type: types.SIGN_OUT
     };
+  },
+  updateAvatar(avatar, timestamp) {
+    return {
+      type: types.UPDATE_AVATAR,
+      avatar,
+      timestamp
+    };
+  },
+
+  updateName(name) {
+    return {
+      type: types.UPDATE_NAME,
+      name
+    };
   }
 };
