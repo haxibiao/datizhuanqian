@@ -39,7 +39,6 @@ class HomeScreen extends Component {
 		let { promotModalVisible, fontModalVisible, storageSize, wordSize, checkedWordSize } = this.state;
 		const { navigation, users, client } = this.props;
 		const { login, user } = users;
-		console.log("settingUser", user);
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>
