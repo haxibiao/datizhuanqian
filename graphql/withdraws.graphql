@@ -1,0 +1,38 @@
+#提现日志
+query TransactionsQuery($offset: Int, $limit: Int) {
+	transactions(offset: $offset, limit: $limit) {
+		id
+		user_id
+		amount
+		balance
+		submit
+		remake
+		status
+		created_at
+	}
+}
+
+#设置提现信息
+mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!) {
+	setUserPaymentInfo(pay_account: $pay_account, real_name: $real_name) {
+		id
+		account
+		name
+		real_name
+		gender
+		avatar
+		gold
+		ticket
+		level {
+			id
+			name
+			ticket_max
+			level
+		}
+		pay_account
+		status
+		is_old_user
+		is_admin
+		last_login_at
+	}
+}

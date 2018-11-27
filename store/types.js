@@ -8,9 +8,11 @@ export default defineActionConstants([
 	//用户
 	"UPDATE_AVATAR",
 	"UPDATE_NAME",
+	"UPDATE_COUNTS",
 	"UPDATE_INTRODUCTION",
 	"UPDATE_RESOURCE_COUNT",
 	"UPDATA_PASSWORD",
+	"UPDATE_ALIPAY",
 
 	// 本地缓存
 	"CLEAR_ALL"

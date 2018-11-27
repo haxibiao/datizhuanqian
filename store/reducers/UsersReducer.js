@@ -36,6 +36,17 @@ class UsersReducer {
 		};
 		return state.set("user", user);
 	}
+
+	static [types.UPDATE_ALIPAY](state, action) {
+		let { user } = state;
+		let { account } = action;
+		console.log("account", account);
+		user = {
+			...user,
+			...account
+		};
+		return state.set("user", user);
+	}
 }
 
 export default UsersReducer.reduce;

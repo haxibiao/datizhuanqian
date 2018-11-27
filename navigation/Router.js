@@ -7,13 +7,14 @@ import VerificationScreen from "../screens/login/VerificationScreen";
 import AnswerScreen from "../screens/home/AnswerScreen";
 
 import EditProfileScreen from "../screens/profile/settings/EditProfileScreen";
+import MyAccountScreen from "../screens/profile/settings/MyAccountScreen";
 import SettingScreen from "../screens/profile/settings/HomeScreen";
 import AboutScreen from "../screens/profile/settings/AboutScreen";
 import ShareScreen from "../screens/profile/settings/ShareScreen";
 import FeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 
-import WithdrawalsLogScreen from "../screens/withdrawal/WithdrawalsLogScreen";
+import WithdrawsLogScreen from "../screens/withdraws/WithdrawsLogScreen";
 
 export default {
 	主页: {
@@ -34,6 +35,9 @@ export default {
 	修改个人资料: {
 		screen: EditProfileScreen
 	},
+	我的账户: {
+		screen: MyAccountScreen
+	},
 	关于答题赚钱: {
 		screen: AboutScreen
 	},
@@ -50,6 +54,6 @@ export default {
 		screen: CommonProblemScreen
 	},
 	提现日志: {
-		screen: WithdrawalsLogScreen
+		screen: WithdrawsLogScreen
 	}
 };

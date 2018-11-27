@@ -9,17 +9,21 @@ import Colors from "../../constants/Colors";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
+import { ForgotPasswordMutation } from "../../graphql/user.graphql";
+import { Mutation, compose } from "react-apollo";
+
 class VerificationEmailScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: ""
+			account: ""
 		};
 	}
 
 	render() {
 		const { navigation } = this.props;
-		let { email } = this.state;
+		let { account } = this.state;
+		console.log("account ", account);
 
 		return (
 			<Screen>
@@ -32,19 +36,31 @@ class VerificationEmailScreen extends Component {
 							placeholderText={Colors.tintFont}
 							selectionColor={Colors.theme}
 							style={styles.textInput}
-							onChangeText={email => {
-								this.setState({ email });
+							onChangeText={account => {
+								this.setState({ account });
 							}}
 						/>
 					</View>
 					<View style={{ margin: 20, height: 48 }}>
-						<Button
-							name="发送验证码"
-							handler={() => {
-								navigation.navigate("找回密码");
+						<Mutation mutation={ForgotPasswordMutation}>
+							{ForgotPasswordMutation => {
+								return (
+									<Button
+										name="发送验证码"
+										handler={() => {
+											ForgotPasswordMutation({
+												variables: {
+													account: account
+												}
+											});
+											navigation.navigate("找回密码");
+										}}
+										style={{ height: 38, fontSize: 16 }}
+										disabled={account ? false : true}
+									/>
+								);
 							}}
-							disabled={email ? false : true}
-						/>
+						</Mutation>
 					</View>
 				</View>
 			</Screen>

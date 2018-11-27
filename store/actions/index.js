@@ -26,5 +26,11 @@ export default {
       type: types.UPDATE_NAME,
       name
     };
+  },
+  updateAlipay(account) {
+    return {
+      type: types.UPDATE_ALIPAY,
+      account
+    };
   }
 };

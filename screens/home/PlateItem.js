@@ -21,7 +21,10 @@ class PlateItem extends Component {
 				}}
 			>
 				<View style={styles.leftContent}>
-					<Image source={plate.avatar} style={styles.img} />
+					<Image
+						source={plate.icon ? plate.icon : require("../../assets/images/dongman.jpeg")}
+						style={styles.img}
+					/>
 					<View style={{ paddingLeft: 20 }}>
 						<Text style={styles.title}>{plate.name}</Text>
 						<Text style={styles.content}>{plate.description}</Text>

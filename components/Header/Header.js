@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		height: 40,
-		bottom: 1
+		bottom: 2
 	},
 	title: {
 		flex: 1,
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	routeName: {
-		fontSize: 17,
-		fontWeight: "300",
+		fontSize: 15,
+		fontWeight: "400",
 		color: Colors.black
 	}
 });

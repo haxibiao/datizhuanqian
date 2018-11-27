@@ -1,0 +1,66 @@
+#专题分类
+query CategoriesQuery($offset: Int, $limit: Int) {
+	categories(offset: $offset, limit: $limit) {
+		id
+		name
+		description
+		icon
+		count
+		parent_id
+		status
+		is_official
+		user_id
+		created_at
+	}
+}
+
+#题目列表
+query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int) {
+	questions(offset: $offset, limit: $limit, category_id: $category_id) {
+		id
+		description
+		selections
+		answer
+		status
+		gold
+		ticket
+		image
+		category {
+			id
+			name
+		}
+		type
+		correct_count
+		wrong_count
+		user {
+			id
+			name
+		}
+		submit
+	}
+}
+#题目查询
+query QuestionQuery($id: Int, $category_id: Int) {
+	question(id: $id, category_id: $category_id) {
+		id
+		description
+		selections
+		answer
+		status
+		gold
+		ticket
+		image
+		category {
+			id
+			name
+		}
+		type
+		correct_count
+		wrong_count
+		user {
+			id
+			name
+		}
+		submit
+	}
+}

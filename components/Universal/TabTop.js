@@ -3,32 +3,49 @@ import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
 import Colors from "../../constants/Colors";
 import { Iconfont } from "../../utils/Fonts";
 
+import { connect } from "react-redux";
+import actions from "../../store/actions";
+
+import { UserQuery } from "../../graphql/user.graphql";
+import { Query } from "react-apollo";
+
 class TabTop extends Component {
 	render() {
-		const { user } = this.props;
-
+		const { id } = this.props.user;
+		console.log("userid", id);
 		return (
-			<View style={styles.container}>
-				<View style={styles.rowItem}>
-					<Iconfont name={"like"} size={24} color={Colors.theme} />
-					<Text style={styles.text}> 精力点</Text>
-					<Text
-						style={{
-							fontSize: 15,
-							paddingLeft: 5,
-							color: user.count_energy > 10 ? Colors.black : Colors.red
-						}}
-					>
-						{user.count_energy}
-					</Text>
-					<Text style={styles.text}>/180</Text>
-				</View>
-				<View style={styles.rowItem}>
-					<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
-					<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
-					<Text style={styles.text}>{user.count_wisdom}/180</Text>
-				</View>
-			</View>
+			<Query query={UserQuery} variables={{ id: id }}>
+				{({ data, loading, error, refetch }) => {
+					if (error) return null;
+					if (!(data && data.user)) return null;
+					let user = data.user;
+					return (
+						<View style={styles.container}>
+							<View style={styles.rowItem}>
+								<Iconfont name={"like"} size={24} color={Colors.theme} />
+								<Text style={styles.text}> 精力点</Text>
+								<Text
+									style={{
+										fontSize: 15,
+										paddingLeft: 5,
+										color: user.ticket > 10 ? Colors.black : Colors.red
+									}}
+								>
+									{user.ticket ? user.ticket : "0"}
+								</Text>
+								<Text style={styles.text}>/{user.level ? user.level.ticket_max : "180"}</Text>
+							</View>
+							<View style={styles.rowItem}>
+								<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
+								<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
+								<Text style={styles.text}>{user.gold}</Text>
+							</View>
+						</View>
+					);
+				}}
+			</Query>
+
+			//考虑到精力点是实时更新的  所以不将精力点存到redux中.
 		);
 	}
 }
@@ -45,7 +62,7 @@ const styles = StyleSheet.create({
 		elevation: 2,
 		shadowOffset: { width: 0, height: 2 },
 		shadowColor: "#F0F0F0",
-		shadowOpacity: 0
+		shadowOpacity: 1
 	},
 	rowItem: {
 		flex: 1,
@@ -59,4 +76,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default TabTop;
+export default connect(store => store)(TabTop);

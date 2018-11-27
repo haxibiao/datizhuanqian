@@ -11,17 +11,16 @@ import PlateItem from "./PlateItem";
 
 import { connect } from "react-redux";
 import actions from "../../store/actions";
+import { CategoriesQuery } from "../../graphql/question.graphql";
+import { Query } from "react-apollo";
 
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			counts: props.user
-		};
 	}
 	render() {
-		const { plate, navigation } = this.props;
-		const { counts } = this.state;
+		const { plate, navigation, user } = this.props;
+		console.log("hone", user);
 		return (
 			<Screen header>
 				<Header
@@ -29,14 +28,22 @@ class HomeScreen extends Component {
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 				/>
 				<View style={styles.container}>
-					<FlatList
-						data={plate}
-						keyExtractor={(item, index) => index.toString()}
-						renderItem={({ item, index }) => <PlateItem plate={item} navigation={navigation} />}
-						ListHeaderComponent={() => {
-							return <TabTop user={counts} />;
+					<Query query={CategoriesQuery}>
+						{({ data, error, loading, fetch, fetchMore }) => {
+							if (error) return null;
+							if (!(data && data.categories)) return null;
+							return (
+								<FlatList
+									data={data.categories}
+									keyExtractor={(item, index) => index.toString()}
+									renderItem={({ item, index }) => <PlateItem plate={item} navigation={navigation} />}
+									ListHeaderComponent={() => {
+										return <TabTop user={user} />;
+									}}
+								/>
+							);
 						}}
-					/>
+					</Query>
 				</View>
 			</Screen>
 		);

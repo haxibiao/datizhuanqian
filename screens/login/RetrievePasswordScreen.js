@@ -10,11 +10,14 @@ import Colors from "../../constants/Colors";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
+import { ResetPasswordMutation } from "../../graphql/user.graphql";
+import { Mutation } from "react-apollo";
+
 class RetrievePasswordScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			verificationcode: "",
+			token: "",
 			password: "",
 			disabled: true,
 			againpassword: ""
@@ -22,7 +25,7 @@ class RetrievePasswordScreen extends Component {
 	}
 
 	render() {
-		let { verificationcode, password, disabled, againpassword } = this.state;
+		let { token, password, disabled, againpassword } = this.state;
 		let { navigation } = this.props;
 		return (
 			<Screen>
@@ -43,8 +46,8 @@ class RetrievePasswordScreen extends Component {
 							placeholderText={Colors.tintFontColor}
 							selectionColor={Colors.themeColor}
 							style={styles.textInput}
-							onChangeText={verificationcode => {
-								this.setState({ verificationcode });
+							onChangeText={token => {
+								this.setState({ token });
 							}}
 							maxLength={10}
 						/>
@@ -92,25 +95,33 @@ class RetrievePasswordScreen extends Component {
 						/>
 					</View>
 					<View style={{ margin: 20, height: 48 }}>
-						<Button
-							name="完成"
-							handler={() => {
-								if (password == againpassword) {
-									updateUserPassword({
-										variables: {
-											verificationcode,
-											password
-										}
-									});
-								} else {
-									this.toast("两次输入的密码不一致");
-									return null;
-								}
-								this.props.dispatch(actions.updatePassword(password));
-								navigation.goBack();
+						<Mutation mutation={ResetPasswordMutation}>
+							{ResetPasswordMutation => {
+								return (
+									<Button
+										name="完成"
+										handler={() => {
+											if (password == againpassword) {
+												ResetPasswordMutation({
+													variables: {
+														account: account,
+														password: passwords,
+														token: token
+													}
+												});
+											} else {
+												this.toast("两次输入的密码不一致");
+												return null;
+											}
+											this.props.dispatch(actions.updatePassword(password));
+											navigation.goBack();
+										}}
+										style={{ height: 38, fontSize: 16 }}
+										disabled={token && password && againpassword ? false : true}
+									/>
+								);
 							}}
-							disabled={verificationcode && password && againpassword ? false : true}
-						/>
+						</Mutation>
 					</View>
 				</View>
 			</Screen>
@@ -159,5 +170,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => ({
-	user: store.user.user
+	user: store.users.user
 }))(RetrievePasswordScreen);

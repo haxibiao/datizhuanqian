@@ -31,7 +31,10 @@ class UserTopInfo extends Component {
 									<Avatar
 										uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
 										size={68}
-										borderStyle={{ borderWidth: 1, borderColor: Colors.white }}
+										borderStyle={{
+											borderWidth: 1,
+											borderColor: Colors.white
+										}}
 									/>
 								) : (
 									<View style={styles.defaultAvatar}>
@@ -43,13 +46,18 @@ class UserTopInfo extends Component {
 								{login ? (
 									<View style={styles.headerInfo}>
 										<Text style={styles.userName}>{user.name}</Text>
-										<View style={{ flexDirection: "row", alignItems: "center" }}>
-											<Text style={styles.rank}>LV.{level}</Text>
+										<View
+											style={{
+												flexDirection: "row",
+												alignItems: "center"
+											}}
+										>
+											<Text style={styles.rank}>LV.{user.level.level}</Text>
 											<View style={styles.progress} />
 											<View
 												style={{
 													height: 10,
-													width: (exp * 150) / levelExp,
+													width: (user.level.exp * 150) / levelExp,
 													backgroundColor: Colors.orange,
 													borderRadius: 5,
 													marginLeft: 10,
@@ -66,11 +74,25 @@ class UserTopInfo extends Component {
 								)}
 							</View>
 						</View>
-						<View style={{ flexDirection: "row", justifyContent: "center", paddingVertical: 20 }}>
-							<View style={{ paddingRight: 20, borderRightWidth: 1, borderRightColor: "#CD6839" }}>
-								<Text style={{ color: "#CD6839" }}>精力点: 226</Text>
+						<View
+							style={{
+								flexDirection: "row",
+								justifyContent: "center",
+								paddingVertical: 20
+							}}
+						>
+							<View
+								style={{
+									paddingRight: 20,
+									borderRightWidth: 1,
+									borderRightColor: "#CD6839"
+								}}
+							>
+								<Text style={{ color: Colors.orange }}>精力点: {user.ticket ? user.ticket : "0"}</Text>
 							</View>
-							<Text style={{ paddingLeft: 20, color: "#CD6839" }}>智慧点: 162</Text>
+							<Text style={{ paddingLeft: 20, color: Colors.orange }}>
+								智慧点: {user.gold ? user.gold : "0"}
+							</Text>
 						</View>
 					</View>
 				</View>

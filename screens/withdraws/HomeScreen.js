@@ -16,13 +16,12 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: 0,
-			alipay: 0,
-			counts: props.user
+			value: 0
 		};
 	}
 	render() {
-		const { alipay, counts, value } = this.state;
+		const { value } = this.state;
+		const { user } = this.props;
 		return (
 			<Screen header>
 				<View style={styles.container}>
@@ -30,20 +29,20 @@ class HomeScreen extends Component {
 						leftComponent={<Text />}
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					/>
-					<TabTop user={counts} />
+					<TabTop user={user} />
 					<View style={styles.row}>
 						<View style={styles.rowLeft}>
 							<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
 						</View>
 						<View style={styles.center}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>{counts.count_wisdom}</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>{user.gold}</Text>
 						</View>
 					</View>
 					<View style={{ alignItems: "center" }}>
 						<Slider
 							style={{ width: 320 }}
 							minimumValue={0}
-							maximumValue={counts.count_wisdom}
+							maximumValue={user.gold}
 							value={this.state.value}
 							onValueChange={value => {
 								this.setState({
@@ -59,7 +58,7 @@ class HomeScreen extends Component {
 							<Text style={{ fontSize: 11, color: Colors.grey }}>大于300可提现</Text>
 						</View>
 						<View style={styles.center}>
-							{alipay ? (
+							{user.pay_account ? (
 								<TextInput
 									style={styles.input}
 									underlineColorAndroid="transparent"
@@ -80,7 +79,7 @@ class HomeScreen extends Component {
 							)}
 						</View>
 					</View>
-					{alipay ? (
+					{user.pay_account ? (
 						<View>
 							<View style={[styles.bottom, { backgroundColor: Colors.theme }]}>
 								<View style={styles.center}>
@@ -100,10 +99,11 @@ class HomeScreen extends Component {
 							</View>
 							<Button
 								name={"兑换"}
+								disabled={!value}
 								style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
 								theme={Colors.blue}
 								handler={() => {
-									if (value > counts.count_wisdom) {
+									if (value > user.gold) {
 										Methods.toast("超过智慧点余额");
 									} else {
 										Methods.toast("提现成功");
@@ -112,40 +112,12 @@ class HomeScreen extends Component {
 							/>
 						</View>
 					) : (
-						<View>
-							<View
-								style={{
-									alignItems: "center",
-									borderBottomColor: Colors.grey,
-									borderBottomWidth: 1
-								}}
-							>
-								<Text style={{ fontSize: 18, color: Colors.black }}>支付宝账号</Text>
-								<TextInput
-									style={{
-										width: width - 100,
-										marginTop: 20,
-										height: 30,
-										paddingBottom: 5
-									}}
-									underlineColorAndroid="transparent"
-									onChangeText={() => {}}
-								/>
-							</View>
-							<View style={{ paddingHorizontal: 30, marginTop: 30 }}>
-								<Text style={{ fontSize: 16, color: Colors.black }}>
-									支付宝账号为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
-								</Text>
-								<Text style={{ fontSize: 16, color: Colors.orange, paddingTop: 25 }}>
-									注意:支付宝账号一旦绑定将无法更改！
-								</Text>
-							</View>
-							<Button
-								name={"提交"}
-								style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
-								theme={Colors.blue}
-								handler={() => {}}
-							/>
+						<View
+							style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 15 }}
+						>
+							<Text style={{ color: Colors.grey, fontSize: 13 }}>
+								您还没绑定支付宝账号, 请完善个人资料信息~
+							</Text>
 						</View>
 					)}
 				</View>

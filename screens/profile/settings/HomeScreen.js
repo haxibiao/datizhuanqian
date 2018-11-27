@@ -45,39 +45,46 @@ class HomeScreen extends Component {
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
 						{login ? (
-							<TouchableOpacity
-								style={{
-									flexDirection: "row",
-									alignItems: "center",
-									justifyContent: "space-between",
-									height: 80,
-									paddingHorizontal: 15
-								}}
-								onPress={() => navigation.navigate("修改个人资料")}
-							>
-								<View
+							<View>
+								<TouchableOpacity
 									style={{
 										flexDirection: "row",
-										alignItems: "center"
+										alignItems: "center",
+										justifyContent: "space-between",
+										height: 80,
+										paddingHorizontal: 15
 									}}
+									onPress={() => navigation.navigate("修改个人资料")}
 								>
-									<Avatar
-										uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
-										size={52}
-										borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
-									/>
-									<View style={{ height: 34, justifyContent: "space-between", marginLeft: 15 }}>
-										<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
-										<Text style={{ fontSize: 12, color: Colors.grey, fontWeight: "300" }}>
-											LV.{user.level ? user.level.level : "1"} {"  "}
-											{user.ticket}/2000
-										</Text>
+									<View
+										style={{
+											flexDirection: "row",
+											alignItems: "center"
+										}}
+									>
+										<Avatar
+											uri={
+												user.avatar
+													? user.avatar
+													: "http://cos.qunyige.com/storage/avatar/13.jpg"
+											}
+											size={52}
+											borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
+										/>
+										<View style={{ height: 34, justifyContent: "space-between", marginLeft: 15 }}>
+											<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
+											<Text style={{ fontSize: 12, color: Colors.grey, fontWeight: "300" }}>
+												LV.{user.level ? user.level.level : "1"} {"  "}
+												{user.ticket}/2000
+											</Text>
+										</View>
 									</View>
-								</View>
-								<Iconfont name={"right"} />
-							</TouchableOpacity>
+									<Iconfont name={"right"} />
+								</TouchableOpacity>
+								<DivisionLine height={10} />
+							</View>
 						) : null}
-						<DivisionLine height={10} />
+
 						<TouchableOpacity onPress={() => navigation.navigate("关于答题赚钱")}>
 							<SettingItem itemName="关于答题赚钱" />
 						</TouchableOpacity>
@@ -110,23 +117,25 @@ class HomeScreen extends Component {
 						</TouchableOpacity>
 						<DivisionLine height={10} />
 						{login && (
-							<TouchableOpacity
-								onPress={() => {
-									this.handlePromotModalVisible();
-								}}
-								style={styles.loginOut}
-							>
-								<Text
-									style={{
-										fontSize: 17,
-										color: Colors.theme
+							<View>
+								<TouchableOpacity
+									onPress={() => {
+										this.handlePromotModalVisible();
 									}}
+									style={styles.loginOut}
 								>
-									退出登录
-								</Text>
-							</TouchableOpacity>
+									<Text
+										style={{
+											fontSize: 17,
+											color: Colors.theme
+										}}
+									>
+										退出登录
+									</Text>
+								</TouchableOpacity>
+								<DivisionLine height={15} />
+							</View>
 						)}
-						<DivisionLine height={15} />
 					</ScrollView>
 				</View>
 				<SignOutModal

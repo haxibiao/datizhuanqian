@@ -45,8 +45,7 @@ class SignIn extends Component {
 
 	render() {
 		let { focusItem, modalVisible, disableSubmit } = this.state;
-		let { switchView, handleSubmit } = this.props;
-		console.log("accout", this.accountState.account, this.accountState.password);
+		let { switchView, handleSubmit, navigation } = this.props;
 		return (
 			<View style={styles.container}>
 				<View style={styles.top}>
@@ -75,7 +74,11 @@ class SignIn extends Component {
 					/>
 				</View>
 				<View style={{ marginTop: 10, alignItems: "flex-end" }}>
-					<TouchableOpacity onPress={this.handleModal}>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate("验证");
+						}}
+					>
 						<Text
 							style={{
 								fontSize: 14,

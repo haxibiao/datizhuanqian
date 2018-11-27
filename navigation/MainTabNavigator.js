@@ -6,7 +6,7 @@ import { Iconfont } from "../utils/Fonts";
 import { Colors } from "../constants";
 
 import HomeScreen from "../screens/home/HomeScreen";
-import WithDrawalScreen from "../screens/withdrawal/HomeScreen";
+import WithDrawsScreen from "../screens/withdraws/HomeScreen";
 import TaskScreen from "../screens/task/HomeScreen";
 import ProfileScreen from "../screens/profile/HomeScreen";
 
@@ -17,7 +17,7 @@ let routerConfig = {
     screen: HomeScreen
   },
   提现: {
-    screen: WithDrawalScreen
+    screen: WithDrawsScreen
   },
   任务: {
     screen: TaskScreen

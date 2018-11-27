@@ -58,8 +58,12 @@ class EditProfileScreen extends Component {
 						<TouchableOpacity onPress={this.toggleModalVisible}>
 							<SettingItem itemName="设置昵称" rightSize={15} rightContent={user.name} />
 						</TouchableOpacity>
-						<TouchableOpacity>
-							<SettingItem itemName="我的账户" rightSize={15} rightContent={user.aliplay} />
+						<TouchableOpacity onPress={() => navigation.navigate("我的账户")}>
+							<SettingItem
+								itemName="我的账户"
+								rightSize={15}
+								rightContent={user.pay_account ? user.real_name + user.pay_account : "绑定支付宝"}
+							/>
 						</TouchableOpacity>
 					</ScrollView>
 					<Mutation mutation={updateUserNameMutation}>

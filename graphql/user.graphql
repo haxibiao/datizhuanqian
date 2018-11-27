@@ -39,6 +39,7 @@ mutation signInMutation($account: String!, $password: String!) {
 			name
 			ticket_max
 			level
+			exp
 		}
 		pay_account
 		status
@@ -48,9 +49,14 @@ mutation signInMutation($account: String!, $password: String!) {
 	}
 }
 
-#用户个人资料
-query UserQuery($id: Int!) {
-	user(id: $id) {
+#找回密码  （右键查找）
+mutation ForgotPasswordMutation($account: String!) {
+	forgotPassword(account: $account)
+}
+
+#重置密码
+mutation ResetPasswordMutation($account: String!, $password: String!, $token: String!) {
+	resetPassword(account: $account, password: $password, token: $token) {
 		id
 		account
 		name
@@ -73,6 +79,20 @@ query UserQuery($id: Int!) {
 	}
 }
 
+#用户个人资料
+query UserQuery($id: Int!) {
+	user(id: $id) {
+		gold
+		ticket
+		level {
+			id
+			name
+			ticket_max
+			level
+		}
+	}
+}
+
 #更改昵称
 mutation updateUserNameMutation($name: String!) {
 	updateUserName(name: $name) {
@@ -80,5 +100,16 @@ mutation updateUserNameMutation($name: String!) {
 		account
 		name
 		real_name
+	}
+}
+
+#意见反馈
+mutation CreateFeedbackMutation($content: String!, $contact: String, $contact_type: String) {
+	createFeedback(content: $content, contact: $contact, contact_type: $contact_type) {
+		id
+		user_id
+		content
+		contact
+		contact_type
 	}
 }
