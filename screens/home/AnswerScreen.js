@@ -12,12 +12,14 @@ import Screen from "../Screen";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { QuestionQuery } from "../../graphql/question.graphql";
+import { QuestionQuery, QuestionAnswerMutation } from "../../graphql/question.graphql";
+import { UserQuery } from "../../graphql/user.graphql";
 import { Query, Mutation } from "react-apollo";
 
 class AnswerScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.nextQuestion = this.nextQuestion.bind(this);
 		this.state = {
 			i: 0,
 			isMethod: false,
@@ -142,46 +144,58 @@ class AnswerScreen extends Component {
 									) : (
 										<Text />
 									)}
-									<Button
-										name={name}
-										disabled={value ? false : true}
-										handler={() => {
-											if (!isMethod) {
-												this.setState({
-													isMethod: true,
-													name: "下一题",
-													isShow: true
-												});
-												if (value == question.answer) {
-													this.setState({
-														showColor: Colors.weixin
-													});
+									<Mutation mutation={QuestionAnswerMutation}>
+										{answerQuestion => {
+											return (
+												<Button
+													name={name}
+													disabled={value ? false : true}
+													handler={() => {
+														if (!isMethod) {
+															this.setState({
+																isMethod: true,
+																name: "下一题",
+																isShow: true
+															});
+															if (value == question.answer) {
+																this.setState({
+																	showColor: Colors.weixin
+																});
+																answerQuestion({
+																	variables: {
+																		id: question.id,
+																		answer: question.answer
+																	},
+																	refetchQueries: {
+																		query: UserQuery,
+																		variables: { id: counts.id }
+																	}
+																});
 
-													/*refetchQueries: {
-															query: UserQuery,
-															variables: { id: counts.id }
-														}*/
-													// this.props.dispatch(actions.updateCounts(counts));
-												} else {
-													this.setState({
-														showColor: Colors.red
-													});
-												}
-											} else {
-												this.setState({
-													isMethod: null,
-													value: null,
-													showColor: Colors.theme,
-													name: "提交答案"
-													// isShow: !isShow
-												});
-												refetch();
-											}
+																// this.props.dispatch(actions.updateCounts(counts));
+															} else {
+																this.setState({
+																	showColor: Colors.red
+																});
+															}
+														} else {
+															this.setState({
+																isMethod: null,
+																value: null,
+																showColor: Colors.theme,
+																name: "提交答案"
+																// isShow: !isShow
+															});
+															refetch({ category_id: plate_id });
+														}
+													}}
+													style={{ height: 38 }}
+													theme={Colors.blue}
+													fontSize={14}
+												/>
+											);
 										}}
-										style={{ height: 38 }}
-										theme={Colors.blue}
-										fontSize={14}
-									/>
+									</Mutation>
 								</View>
 								<TouchableOpacity
 									style={{ alignItems: "flex-end", paddingTop: 15 }}
@@ -191,9 +205,13 @@ class AnswerScreen extends Component {
 								</TouchableOpacity>
 								<CorrectModal
 									visible={isShow}
+									gold={question.gold}
 									handleVisible={this.handleCorrectModal.bind(this)}
 									title={value == question.answer}
-									nextQuestion={this.nextQuestion.bind(this)}
+									nextQuestion={() => {
+										this.nextQuestion();
+										refetch();
+									}}
 								/>
 							</View>
 						);
