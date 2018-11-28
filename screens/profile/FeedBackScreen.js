@@ -51,7 +51,8 @@ class HomeScreen extends Component {
 								height: 44,
 								paddingHorizontal: 15,
 								padding: 0,
-								paddingTop: 15
+								paddingTop: 15,
+								fontSize: 13
 							}}
 							placeholder="(选填)请留下您的联系方式,以便我们向您反馈处理结果"
 							underlineColorAndroid="transparent"

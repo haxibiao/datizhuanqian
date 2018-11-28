@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image } from "react-native";
 
 import { Header } from "../../components/Header";
 import { DivisionLine, TabTop } from "../../components/Universal";
@@ -115,8 +115,15 @@ class HomeScreen extends Component {
 						<View
 							style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 15 }}
 						>
-							<Text style={{ color: Colors.grey, fontSize: 13 }}>
-								您还没绑定支付宝账号, 请完善个人资料信息~
+							<Image
+								source={require("../../assets/images/alipay.jpg")}
+								style={{ width: width / 3, height: width / 3 }}
+							/>
+							<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300" }}>
+								目前没有绑定支付宝账户哦
+							</Text>
+							<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300", paddingTop: 10 }}>
+								请前往我的-设置-我的账户页面进行绑定
 							</Text>
 						</View>
 					)}
@@ -129,7 +136,7 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.white
+		backgroundColor: "#FFFEFC"
 	},
 	row: {
 		flexDirection: "row",

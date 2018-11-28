@@ -63,12 +63,12 @@ class LoginScreen extends Component {
 			} catch (ex) {
 				result.errors = ex;
 			}
-			// if (result && result.errors) {
-			// 	Methods.toast("登录失败，请检查邮箱和密码是否正确");
-			// } else {
-			const user = result.data.signIn;
-			console.log("user", user);
-			this._saveUserData(user);
+			if (result && result.errors) {
+				Methods.toast("登录失败，请检查邮箱和密码是否正确");
+			} else {
+				const user = result.data.signIn;
+				this._saveUserData(user);
+			}
 		} else {
 			let result = {};
 			try {

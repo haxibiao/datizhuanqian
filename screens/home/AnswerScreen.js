@@ -166,10 +166,12 @@ class AnswerScreen extends Component {
 																		id: question.id,
 																		answer: question.answer
 																	},
-																	refetchQueries: {
-																		query: UserQuery,
-																		variables: { id: counts.id }
-																	}
+																	refetchQueries: answerQuestion => [
+																		{
+																			query: UserQuery,
+																			variables: { id: counts.id }
+																		}
+																	]
 																});
 
 																// this.props.dispatch(actions.updateCounts(counts));
@@ -210,7 +212,7 @@ class AnswerScreen extends Component {
 									title={value == question.answer}
 									nextQuestion={() => {
 										this.nextQuestion();
-										refetch();
+										refetch({ category_id: plate_id });
 									}}
 								/>
 							</View>

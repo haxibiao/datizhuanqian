@@ -8,8 +8,7 @@ import { DivisionLine, Avatar } from "../../../components/Universal";
 import { Button } from "../../../components/Control";
 import { Iconfont } from "../../../utils/Fonts";
 
-import Colors from "../../../constants/Colors";
-import Config from "../../../constants/Config";
+import { Colors, Methods } from "../../../constants";
 
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
@@ -84,6 +83,7 @@ class EditProfileScreen extends Component {
 								<Button
 									name={"提交"}
 									style={{ height: 40, marginHorizontal: 15, marginTop: 20 }}
+									disabled={!(real_name && pay_account)}
 									theme={real_name && pay_account ? Colors.blue : "rgba(64,127,207,0.7)"}
 									handler={() => {
 										SetUserPaymentInfoMutation({
@@ -92,9 +92,11 @@ class EditProfileScreen extends Component {
 												pay_account
 											}
 										});
+										Methods.toast("绑定成功", -200);
 										this.props.dispatch(
 											actions.updateAlipay({ real_name: real_name, pay_account: pay_account })
 										);
+										navigation.goBack();
 									}}
 								/>
 							);

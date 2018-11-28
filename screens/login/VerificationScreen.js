@@ -5,7 +5,7 @@ import Screen from "../Screen";
 
 import { Button } from "../../components/Control";
 
-import Colors from "../../constants/Colors";
+import { Colors, Methods } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
@@ -47,13 +47,25 @@ class VerificationEmailScreen extends Component {
 								return (
 									<Button
 										name="发送验证码"
-										handler={() => {
-											ForgotPasswordMutation({
-												variables: {
+										handler={async () => {
+											let result = {};
+											try {
+												result = await ForgotPasswordMutation({
+													variables: {
+														account: account
+													}
+												});
+											} catch (error) {
+												result.errors = error;
+											}
+											if (result && result.errors) {
+												Methods.toast("请输入正确的内容", -200);
+											} else {
+												navigation.navigate("找回密码", {
+													result: result.data.forgotPassword,
 													account: account
-												}
-											});
-											navigation.navigate("找回密码");
+												});
+											}
 										}}
 										style={{ height: 38, fontSize: 16 }}
 										disabled={account ? false : true}

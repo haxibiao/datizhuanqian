@@ -6,7 +6,7 @@ import Screen from "../Screen";
 
 import { Button } from "../../components/Control";
 
-import Colors from "../../constants/Colors";
+import { Colors, Methods } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
@@ -17,7 +17,7 @@ class RetrievePasswordScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			token: "",
+			verification: "",
 			password: "",
 			disabled: true,
 			againpassword: ""
@@ -25,8 +25,10 @@ class RetrievePasswordScreen extends Component {
 	}
 
 	render() {
-		let { token, password, disabled, againpassword } = this.state;
-		let { navigation } = this.props;
+		const { navigation } = this.props;
+		let { verification, password, disabled, againpassword } = this.state;
+		const { result, account } = navigation.state.params;
+		console.log("result ", result);
 		return (
 			<Screen>
 				<View style={styles.container}>
@@ -46,8 +48,8 @@ class RetrievePasswordScreen extends Component {
 							placeholderText={Colors.tintFontColor}
 							selectionColor={Colors.themeColor}
 							style={styles.textInput}
-							onChangeText={token => {
-								this.setState({ token });
+							onChangeText={verification => {
+								this.setState({ verification });
 							}}
 							maxLength={10}
 						/>
@@ -101,23 +103,26 @@ class RetrievePasswordScreen extends Component {
 									<Button
 										name="完成"
 										handler={() => {
-											if (password == againpassword) {
-												ResetPasswordMutation({
-													variables: {
-														account: account,
-														password: passwords,
-														token: token
-													}
-												});
+											if (result[0] == verification) {
+												if (password == againpassword) {
+													ResetPasswordMutation({
+														variables: {
+															account: account,
+															password: password,
+															token: result[1]
+														}
+													});
+													Methods.toast("新密码设置成功");
+													navigation.pop(2);
+												} else {
+													Methods.toast("两次输入的密码不一致");
+												}
 											} else {
-												this.toast("两次输入的密码不一致");
-												return null;
+												Methods.toast("验证码错误,请输入正确的验证码");
 											}
-											this.props.dispatch(actions.updatePassword(password));
-											navigation.goBack();
 										}}
 										style={{ height: 38, fontSize: 16 }}
-										disabled={token && password && againpassword ? false : true}
+										disabled={verification && password && againpassword ? false : true}
 									/>
 								);
 							}}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image, FlatList, Text } from "react-native";
+import { StyleSheet, View, Image, FlatList, Text, Dimensions } from "react-native";
 
 import { DivisionLine, TabTop } from "../../components/Universal";
 import Screen from "../Screen";
@@ -10,6 +10,8 @@ import actions from "../../store/actions";
 
 import { TransactionsQuery } from "../../graphql/withdraws.graphql";
 import { Query } from "react-apollo";
+
+const { width, height } = Dimensions.get("window");
 
 class WithdrawsLogScreen extends Component {
 	render() {
@@ -25,7 +27,7 @@ class WithdrawsLogScreen extends Component {
 					</View>
 					<View style={styles.topRight}>
 						<Text style={{ fontSize: 16 }}>累计提现</Text>
-						<Text style={{ fontSize: 16, fontWeight: "600" }}>￥326</Text>
+						<Text style={{ fontSize: 16, fontWeight: "600" }}>￥0</Text>
 					</View>
 				</View>
 				<DivisionLine height={10} />
@@ -33,6 +35,24 @@ class WithdrawsLogScreen extends Component {
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (!(data && data.transactions)) return null;
+						if (data.transactions.length < 1)
+							return (
+								<View
+									style={{
+										justifyContent: "center",
+										alignItems: "center",
+										flex: 1,
+										backgroundColor: "#fff"
+									}}
+								>
+									<Image
+										source={require("../../assets/images/record.jpg")}
+										style={{ width: width / 3, height: width / 3 }}
+									/>
+									<Text>暂无提现记录哦,快去赚取智慧点吧~</Text>
+								</View>
+							);
+
 						return (
 							<FlatList
 								data={data.transactions}

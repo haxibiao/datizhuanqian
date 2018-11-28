@@ -14,6 +14,7 @@ mutation signUpMutation($account: String!, $password: String!) {
 			name
 			ticket_max
 			level
+			exp
 		}
 		pay_account
 		status
@@ -49,7 +50,7 @@ mutation signInMutation($account: String!, $password: String!) {
 	}
 }
 
-#找回密码  （右键查找）
+#找回密码  （邮箱查找）
 mutation ForgotPasswordMutation($account: String!) {
 	forgotPassword(account: $account)
 }

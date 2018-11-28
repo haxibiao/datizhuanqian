@@ -75,7 +75,7 @@ class HomeScreen extends Component {
 											<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
 											<Text style={{ fontSize: 12, color: Colors.grey, fontWeight: "300" }}>
 												LV.{user.level ? user.level.level : "1"} {"  "}
-												{user.ticket}/2000
+												{user.level.exp}/2000
 											</Text>
 										</View>
 									</View>

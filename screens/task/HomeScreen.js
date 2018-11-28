@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
 
 import { Header } from "../../components/Header";
 import { TabTop } from "../../components/Universal";
@@ -8,6 +8,8 @@ import { Colors, Config, Divice } from "../../constants";
 
 import { connect } from "react-redux";
 import actions from "../../store/actions";
+
+const { width, height } = Dimensions.get("window");
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -27,6 +29,10 @@ class HomeScreen extends Component {
 					/>
 					<TabTop user={counts} />
 					<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+						<Image
+							source={require("../../assets/images/record.jpg")}
+							style={{ width: width / 3, height: width / 3 }}
+						/>
 						<Text>暂时没有任务哦~</Text>
 					</View>
 				</View>
@@ -38,7 +44,7 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.white
+		backgroundColor: "#FFFEFC"
 	}
 });
 

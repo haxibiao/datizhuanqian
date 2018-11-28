@@ -10,7 +10,6 @@ const { width, height } = Dimensions.get("window");
 class CorrectModal extends Component {
 	render() {
 		const { visible, handleVisible, title, nextQuestion, gold } = this.props;
-		console.log("nextQuestion", nextQuestion);
 		return (
 			<BasicModal
 				visible={visible}

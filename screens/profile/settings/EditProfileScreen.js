@@ -40,7 +40,7 @@ class EditProfileScreen extends Component {
 						<DivisionLine height={10} />
 						<TouchableOpacity
 							style={{
-								paddingHorizontal: 15,
+								marginHorizontal: 15,
 								flexDirection: "row",
 								alignItems: "center",
 								justifyContent: "space-between",
@@ -62,7 +62,9 @@ class EditProfileScreen extends Component {
 							<SettingItem
 								itemName="我的账户"
 								rightSize={15}
-								rightContent={user.pay_account ? user.real_name + user.pay_account : "绑定支付宝"}
+								rightContent={
+									user.pay_account ? user.pay_account + "(" + user.real_name + ")" : "绑定支付宝"
+								}
 							/>
 						</TouchableOpacity>
 					</ScrollView>
