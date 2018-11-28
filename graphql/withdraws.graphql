@@ -36,3 +36,17 @@ mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!) 
 		last_login_at
 	}
 }
+
+#提现订单
+mutation CreateTransactionMutation($amount: Float) {
+	createTransaction(amount: $amount) {
+		id
+		user_id
+		amount
+		balance
+		submit
+		remake
+		status
+		created_at
+	}
+}

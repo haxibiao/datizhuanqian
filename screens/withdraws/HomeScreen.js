@@ -10,6 +10,9 @@ import { Colors, Methods } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
+import { CreateTransactionMutation } from "../../graphql/withdraws.graphql";
+import { Mutation } from "react-apollo";
+
 const { width, height } = Dimensions.get("window");
 
 class HomeScreen extends Component {
@@ -97,19 +100,31 @@ class HomeScreen extends Component {
 									<Text style={styles.tips}>600智慧点=1元</Text>
 								</View>
 							</View>
-							<Button
-								name={"兑换"}
-								disabled={!value}
-								style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
-								theme={Colors.blue}
-								handler={() => {
-									if (value > user.gold) {
-										Methods.toast("超过智慧点余额");
-									} else {
-										Methods.toast("提现成功");
-									}
+							<Mutation mutation={CreateTransactionMutation}>
+								{createTransaction => {
+									return (
+										<Button
+											name={"兑换"}
+											disabled={!value}
+											style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
+											theme={Colors.blue}
+											handler={() => {
+												if (value > user.gold) {
+													Methods.toast("兑换失败,智慧点不足");
+												} else {
+													createTransaction({
+														variables: {
+															amount: value
+														}
+													});
+
+													Methods.toast("发起提现成功,客服人员会尽快处理您的提现请求。");
+												}
+											}}
+										/>
+									);
 								}}
-							/>
+							</Mutation>
 						</View>
 					) : (
 						<View
