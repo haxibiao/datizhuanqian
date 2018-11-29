@@ -3,16 +3,28 @@ import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
 import Colors from "../../constants/Colors";
 import { Iconfont } from "../../utils/Fonts";
 
+import { NoTicketTipsModal } from "../Modal";
+
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 
+let user_ticket = null;
+
 class TabTop extends Component {
+	constructor(props) {
+		super(props);
+		let { noTicketTips } = this.props.users;
+		this.state = {
+			show: noTicketTips
+		};
+	}
 	render() {
 		const { id } = this.props.user;
-		console.log("userid", id);
+		const { isShow, isAnswer } = this.props;
+		const { show } = this.state;
 		return (
 			<Query query={UserQuery} variables={{ id: id }}>
 				{({ data, loading, error, refetch }) => {
@@ -40,6 +52,9 @@ class TabTop extends Component {
 								<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
 								<Text style={styles.text}>{user.gold}</Text>
 							</View>
+							{isAnswer && !(isShow || user.ticket) ? (
+								<NoTicketTipsModal visible={show} handleVisible={this.handleCorrectModal.bind(this)} />
+							) : null}
 						</View>
 					);
 				}}
@@ -47,6 +62,12 @@ class TabTop extends Component {
 
 			//考虑到精力点是实时更新的  所以不将精力点存到redux中.
 		);
+	}
+	handleCorrectModal() {
+		this.setState(prevState => ({
+			show: !prevState.show
+		}));
+		this.props.dispatch(actions.recordOperation(false));
 	}
 }
 

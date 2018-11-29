@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput } from "react-native";
 
-import Colors from "../../constants/Colors";
+import { Methods, Colors } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 import { DivisionLine } from "../../components/Universal";
 import { Button } from "../../components/Control";
@@ -71,14 +71,16 @@ class HomeScreen extends Component {
 									name={"提交"}
 									style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
 									theme={content ? Colors.blue : Colors.grey}
-									handler={() =>
+									handler={() => {
 										CreateFeedbackMutation({
 											variables: {
 												content: content,
 												contact: contact
 											}
-										})
-									}
+										});
+										navigation.goBack();
+										Methods.toast("反馈成功");
+									}}
 								/>
 							);
 						}}

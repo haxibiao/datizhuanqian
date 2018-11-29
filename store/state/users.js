@@ -2,6 +2,7 @@ import { Record, List } from "immutable";
 
 export const users = Record({
 	login: false,
+	noTicketTips: true,
 	user: {
 		// avatar: "http://cos.qunyige.com/storage/avatar/13.jpg",
 		// name: "风清歌",

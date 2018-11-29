@@ -58,9 +58,8 @@ class EditProfileScreen extends Component {
 
 	render() {
 		let { navigation } = this.props;
-		let { user } = this.props;
+		let { user, noTicketTips } = this.props;
 		const { modalVisible, nickname, avatar } = this.state;
-		console.log("user", user);
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>

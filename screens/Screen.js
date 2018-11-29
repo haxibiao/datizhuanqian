@@ -13,8 +13,7 @@ class Screen extends Component {
 					{
 						flex: 1,
 						backgroundColor: "#ffffff"
-					},
-					customStyle
+					}
 				]}
 			>
 				<StatusBar

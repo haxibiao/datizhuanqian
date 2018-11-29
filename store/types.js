@@ -13,6 +13,7 @@ export default defineActionConstants([
 	"UPDATE_RESOURCE_COUNT",
 	"UPDATA_PASSWORD",
 	"UPDATE_ALIPAY",
+	"RECORD_OPERATION",
 
 	// 本地缓存
 	"CLEAR_ALL"

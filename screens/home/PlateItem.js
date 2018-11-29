@@ -11,7 +11,6 @@ class PlateItem extends Component {
 	}
 	render() {
 		const { plate, navigation } = this.props;
-		console.log("plate", plate);
 		return (
 			<TouchableOpacity
 				style={styles.container}

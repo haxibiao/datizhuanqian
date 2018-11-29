@@ -47,6 +47,11 @@ class UsersReducer {
 		};
 		return state.set("user", user);
 	}
+	static [types.RECORD_OPERATION](state, action) {
+		let { noTicketTips } = action;
+		console.log("noTicketTips", noTicketTips);
+		return state.set("noTicketTips", noTicketTips);
+	}
 }
 
 export default UsersReducer.reduce;

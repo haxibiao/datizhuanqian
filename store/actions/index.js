@@ -31,5 +31,11 @@ export default {
       type: types.UPDATE_ALIPAY,
       account
     };
+  },
+  recordOperation(noTicketTips) {
+    return {
+      type: types.RECORD_OPERATION,
+      noTicketTips
+    };
   }
 };

@@ -25,6 +25,7 @@ class HomeScreen extends Component {
 	render() {
 		const { value } = this.state;
 		const { user } = this.props;
+		console.log("value", value);
 		return (
 			<Screen header>
 				<View style={styles.container}>
@@ -73,7 +74,9 @@ class HomeScreen extends Component {
 												value: parseInt(value)
 											});
 										} else {
-											null;
+											this.setState({
+												value: 0
+											});
 										}
 									}}
 								/>
