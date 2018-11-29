@@ -16,6 +16,7 @@
     "react-apollo": "2.3.2-beta.0",
     "react-dom": "^16.6.3",
     "react-native": "0.57.4",
+    "react-native-image-crop-picker": "^0.21.3",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-modal": "^6.5.0",
     "react-native-root-toast": "^3.0.1",

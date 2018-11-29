@@ -104,6 +104,14 @@ mutation updateUserNameMutation($name: String!) {
 	}
 }
 
+#修改头像
+mutation updateUserAvatarMutation($avatar: String!) {
+	updateUserAvatar(avatar: $avatar) {
+		id
+		avatar
+	}
+}
+
 #意见反馈
 mutation CreateFeedbackMutation($content: String!, $contact: String, $contact_type: String) {
 	createFeedback(content: $content, contact: $contact, contact_type: $contact_type) {

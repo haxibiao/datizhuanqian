@@ -11,6 +11,7 @@ class PlateItem extends Component {
 	}
 	render() {
 		const { plate, navigation } = this.props;
+		console.log("plate", plate);
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -22,7 +23,7 @@ class PlateItem extends Component {
 			>
 				<View style={styles.leftContent}>
 					<Image
-						source={plate.icon ? plate.icon : require("../../assets/images/dongman.jpeg")}
+						source={{ uri: plate.icon ? plate.icon : "http://cos.qunyige.com/storage/avatar/13.jpg" }}
 						style={styles.img}
 					/>
 					<View style={{ paddingLeft: 20 }}>

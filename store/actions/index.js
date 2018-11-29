@@ -13,11 +13,10 @@ export default {
       type: types.SIGN_OUT
     };
   },
-  updateAvatar(avatar, timestamp) {
+  updateAvatar(avatar) {
     return {
       type: types.UPDATE_AVATAR,
-      avatar,
-      timestamp
+      avatar
     };
   },
 

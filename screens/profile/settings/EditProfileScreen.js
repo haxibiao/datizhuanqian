@@ -15,8 +15,10 @@ import Config from "../../../constants/Config";
 
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
-import { updateUserNameMutation } from "../../../graphql/user.graphql";
-import { Mutation } from "react-apollo";
+import { updateUserNameMutation, updateUserAvatarMutation } from "../../../graphql/user.graphql";
+import { Mutation, compose, graphql } from "react-apollo";
+
+import ImagePicker from "react-native-image-crop-picker";
 
 class EditProfileScreen extends Component {
 	constructor(props) {
@@ -24,15 +26,41 @@ class EditProfileScreen extends Component {
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
 		this.state = {
 			modalVisible: false,
-			nickname: ""
+			nickname: "",
+			avatar: ""
 		};
+	}
+
+	_changeAvatar() {
+		ImagePicker.openPicker({
+			width: 400,
+			height: 400,
+			cropping: true,
+			includeBase64: true
+		})
+			.then(async image => {
+				// this.setState({
+				// 	avatar: `data:${image.mime};base64,${image.data}`
+				// });
+				this.props.dispatch(actions.updateAvatar(`data:${image.mime};base64,${image.data}`));
+				console.log(`data:${image.mime};base64,${image.data}`);
+				let result = {};
+
+				result = await this.props.updateUserAvatarMutation({
+					variables: {
+						avatar: `data:${image.mime};base64,${image.data}`
+					}
+				});
+				console.log("result ", result);
+			})
+			.catch(error => {});
 	}
 
 	render() {
 		let { navigation } = this.props;
-		let { user } = this.props.users;
-		const { modalVisible, nickname } = this.state;
-		console.log("nickname", nickname);
+		let { user } = this.props;
+		const { modalVisible, nickname, avatar } = this.state;
+		console.log("user", user);
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>
@@ -48,13 +76,12 @@ class EditProfileScreen extends Component {
 								borderBottomWidth: 1,
 								borderBottomColor: Colors.lightBorder
 							}}
+							onPress={this._changeAvatar.bind(this)}
 						>
 							<Text>头像</Text>
-							<Avatar
-								uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
-								size={42}
-							/>
+							<Avatar uri={user.avatar ? user.avatar : avatar} size={42} />
 						</TouchableOpacity>
+
 						<TouchableOpacity onPress={this.toggleModalVisible}>
 							<SettingItem itemName="设置昵称" rightSize={15} rightContent={user.name} />
 						</TouchableOpacity>
@@ -117,4 +144,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => ({ users: store.users }))(EditProfileScreen);
+export default connect(store => ({ user: store.users.user }))(
+	compose(graphql(updateUserAvatarMutation, { name: "updateUserAvatarMutation" }))(EditProfileScreen)
+);

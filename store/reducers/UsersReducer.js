@@ -29,10 +29,10 @@ class UsersReducer {
 
 	static [types.UPDATE_AVATAR](state, action) {
 		let { user } = state;
-		let { avatar, timestamp } = action;
+		let { avatar } = action;
 		user = {
 			...user,
-			avatar: avatar + "?" + timestamp
+			avatar: avatar
 		};
 		return state.set("user", user);
 	}
