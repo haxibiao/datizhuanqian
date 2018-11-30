@@ -14,6 +14,7 @@ export default defineActionConstants([
 	"UPDATA_PASSWORD",
 	"UPDATE_ALIPAY",
 	"RECORD_OPERATION",
+	"WIDTH_DRAWS",
 
 	// 本地缓存
 	"CLEAR_ALL"

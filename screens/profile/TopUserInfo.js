@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity, Dimensions } from "react-native";
 import { Iconfont } from "../../utils/Fonts";
 import { Colors, Config } from "../../constants";
 import { Avatar } from "../../components/Universal";
@@ -7,6 +7,8 @@ import { Avatar } from "../../components/Universal";
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
+
+const { width, height } = Dimensions.get("window");
 
 class UserTopInfo extends Component {
 	constructor(props) {
@@ -80,7 +82,7 @@ class UserTopInfo extends Component {
 										>
 											<View
 												style={{
-													paddingRight: 20,
+													paddingHorizontal: 20,
 													borderRightWidth: 1,
 													borderRightColor: "#CD6839"
 												}}

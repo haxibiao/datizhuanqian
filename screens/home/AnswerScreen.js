@@ -34,7 +34,7 @@ class AnswerScreen extends Component {
 		const { i, value, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
 		return (
-			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomColor: Colors.white }}>
+			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return null;
@@ -48,13 +48,13 @@ class AnswerScreen extends Component {
 									<TabTop user={user} isShow={isShow} isAnswer={true} />
 									<View style={{ marginTop: 30, paddingHorizontal: 30 }}>
 										<Text style={styles.title}>{question.description}</Text>
-										<View style={{ paddingTop: 30 }}>
+										<View style={{ paddingTop: 30, paddingHorizontal: 10 }}>
 											<TouchableOpacity
 												disabled={isMethod}
 												style={[
 													styles.option,
 													{
-														borderColor: value == "A" ? showColor : Colors.lightBorder
+														borderColor: value == "A" ? showColor : Colors.tintGray
 													}
 												]}
 												onPress={() => {
@@ -70,7 +70,7 @@ class AnswerScreen extends Component {
 												style={[
 													styles.option,
 													{
-														borderColor: value == "B" ? showColor : Colors.lightBorder
+														borderColor: value == "B" ? showColor : Colors.tintGray
 													}
 												]}
 												onPress={() => {
@@ -86,7 +86,7 @@ class AnswerScreen extends Component {
 												style={[
 													styles.option,
 													{
-														borderColor: value == "C" ? showColor : Colors.lightBorder
+														borderColor: value == "C" ? showColor : Colors.tintGray
 													}
 												]}
 												onPress={() => {
@@ -102,7 +102,7 @@ class AnswerScreen extends Component {
 												style={[
 													styles.option,
 													{
-														borderColor: value == "D" ? showColor : Colors.lightBorder
+														borderColor: value == "D" ? showColor : Colors.tintGray
 													}
 												]}
 												onPress={() => {
@@ -189,7 +189,11 @@ class AnswerScreen extends Component {
 												style={{ alignItems: "flex-end", marginTop: 15 }}
 												onPress={() => refetch({ category_id: plate_id })}
 											>
-												<Text style={{ color: Colors.grey, fontSize: 13 }}>搜一搜答案</Text>
+												<Text
+													style={{ color: Colors.tintFont, fontSize: 12, fontWeight: "200" }}
+												>
+													搜一搜答案
+												</Text>
 											</TouchableOpacity>
 										</View>
 									</View>
@@ -264,7 +268,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
-		paddingVertical: 10
+		paddingVertical: 12
 	},
 	tips: {
 		flexDirection: "row",

@@ -28,6 +28,11 @@ export default [
 		error: genericErrorHandler
 	},
 	{
+		action: types.WIDTH_DRAWS,
+		effect: rememberUser,
+		error: genericErrorHandler
+	},
+	{
 		action: types.SIGN_OUT,
 		effect: forgetUser,
 		error: genericErrorHandler

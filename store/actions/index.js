@@ -37,5 +37,11 @@ export default {
       type: types.RECORD_OPERATION,
       noTicketTips
     };
+  },
+  widthdraws(gold) {
+    return {
+      type: types.WIDTH_DRAWS,
+      gold
+    };
   }
 };

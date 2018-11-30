@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from "react-native";
 
 import { Header } from "../../components/Header";
-import { DivisionLine, TabTop } from "../../components/Universal";
+import { DivisionLine, TabTop, LoadingMore, ContentEnd } from "../../components/Universal";
 import { Colors, Config, Divice } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
@@ -41,7 +41,6 @@ class HomeScreen extends Component {
 										<RefreshControl
 											refreshing={loading}
 											onRefresh={refetch}
-											tintColor={Colors.theme}
 											colors={[Colors.theme]}
 										/>
 									}
@@ -82,7 +81,11 @@ class HomeScreen extends Component {
 										}
 									}}
 									ListFooterComponent={() => {
-										return this.state.fetchingMore ? null : <Text>没有更多分类了~</Text>;
+										return this.state.fetchingMore ? (
+											<LoadingMore />
+										) : (
+											<ContentEnd content={"暂时没有更多分类~"} />
+										);
 									}}
 								/>
 							);

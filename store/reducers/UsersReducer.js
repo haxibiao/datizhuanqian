@@ -52,6 +52,16 @@ class UsersReducer {
 		console.log("noTicketTips", noTicketTips);
 		return state.set("noTicketTips", noTicketTips);
 	}
+	static [types.WIDTH_DRAWS](state, action) {
+		let { gold } = action;
+		let { user } = state;
+		user = {
+			...user,
+			gold: gold
+		};
+		console.log("gold", gold);
+		return state.set("user", user);
+	}
 }
 
 export default UsersReducer.reduce;
