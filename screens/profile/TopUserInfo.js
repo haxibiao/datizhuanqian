@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image, Text, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { Iconfont } from "../../utils/Fonts";
 import { Colors, Config } from "../../constants";
 import { Avatar } from "../../components/Universal";
+
+import { UserQuery } from "../../graphql/user.graphql";
+import { Query } from "react-apollo";
+import { connect } from "react-redux";
 
 class UserTopInfo extends Component {
 	constructor(props) {
@@ -14,50 +18,113 @@ class UserTopInfo extends Component {
 		};
 	}
 	render() {
-		let { user, login } = this.props;
+		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
 		return (
-			<TouchableWithoutFeedback
-				onPress={() => {
-					let { navigation, login, user } = this.props;
-					login ? navigation.navigate("个人信息") : navigation.navigate("登录注册", { login: true });
-				}}
-			>
-				<View style={styles.userInfoContainer}>
-					<View style={styles.userInfo}>
-						<View style={{ flexDirection: "row", marginLeft: 30 }}>
-							<View style={{}}>
-								{login ? (
-									<Avatar
-										uri={user.avatar ? user.avatar : "http://cos.qunyige.com/storage/avatar/13.jpg"}
-										size={68}
-										borderStyle={{
-											borderWidth: 1,
-											borderColor: Colors.white
-										}}
-									/>
-								) : (
-									<View style={styles.defaultAvatar}>
-										<Iconfont name={"my"} size={44} color={Colors.lightFontColor} />
+			<View>
+				{login ? (
+					<Query query={UserQuery} variables={{ id: userInfo.id }}>
+						{({ data, loading, error }) => {
+							if (error) return null;
+							if (!(data && data.user)) return null;
+							let user = data.user;
+							return (
+								<View style={styles.userInfoContainer}>
+									<View style={styles.userInfo}>
+										<View style={{ flexDirection: "row", marginLeft: 30 }}>
+											<View style={{}}>
+												<Avatar
+													uri={
+														user.avatar
+															? user.avatar
+															: "http://cos.qunyige.com/storage/avatar/13.jpg"
+													}
+													size={68}
+													borderStyle={{
+														borderWidth: 1,
+														borderColor: Colors.white
+													}}
+												/>
+											</View>
+											<View style={{ marginLeft: 20 }}>
+												<View style={styles.headerInfo}>
+													<Text style={styles.userName}>{user.name}</Text>
+													<View
+														style={{
+															flexDirection: "row",
+															alignItems: "center"
+														}}
+													>
+														<Text style={styles.level}>LV.{user.level.level}</Text>
+														<View style={styles.progress} />
+														<View
+															style={{
+																height: 10,
+																width: (user.level.exp * 150) / levelExp,
+																backgroundColor: Colors.orange,
+																borderRadius: 5,
+																marginLeft: 10,
+																marginLeft: -150
+															}}
+														/>
+													</View>
+												</View>
+											</View>
+										</View>
+										<View
+											style={{
+												flexDirection: "row",
+												justifyContent: "center",
+												paddingVertical: 20
+											}}
+										>
+											<View
+												style={{
+													paddingRight: 20,
+													borderRightWidth: 1,
+													borderRightColor: "#CD6839"
+												}}
+											>
+												<Text style={{ color: Colors.orange }}>
+													精力点: {user.ticket ? user.ticket : "0"}
+												</Text>
+											</View>
+											<Text style={{ paddingLeft: 20, color: Colors.orange }}>
+												智慧点: {user.gold ? user.gold : "0"}
+											</Text>
+										</View>
 									</View>
-								)}
-							</View>
-							<View style={{ marginLeft: 20 }}>
-								{login ? (
+								</View>
+							);
+						}}
+					</Query>
+				) : (
+					<TouchableOpacity
+						style={styles.userInfoContainer}
+						onPress={() => navigation.navigate("登录注册")}
+						activeOpacity={1}
+					>
+						<View style={styles.userInfo}>
+							<View style={{ flexDirection: "row", marginLeft: 30 }}>
+								<View style={styles.defaultAvatar}>
+									<Iconfont name={"my"} size={44} color={Colors.lightFontColor} />
+								</View>
+
+								<View style={{ marginLeft: 20 }}>
 									<View style={styles.headerInfo}>
-										<Text style={styles.userName}>{user.name}</Text>
+										<Text style={styles.userName}>登录/注册</Text>
 										<View
 											style={{
 												flexDirection: "row",
 												alignItems: "center"
 											}}
 										>
-											<Text style={styles.rank}>LV.{user.level.level}</Text>
+											<Text style={styles.level}>LV.0</Text>
 											<View style={styles.progress} />
 											<View
 												style={{
 													height: 10,
-													width: (user.level.exp * 150) / levelExp,
+													width: 0,
 													backgroundColor: Colors.orange,
 													borderRadius: 5,
 													marginLeft: 10,
@@ -66,37 +133,30 @@ class UserTopInfo extends Component {
 											/>
 										</View>
 									</View>
-								) : (
-									<Text style={[styles.userName, { paddingLeft: 50 }]}>
-										立即加入
-										{Config.AppDisplayName}~
-									</Text>
-								)}
+								</View>
 							</View>
-						</View>
-						<View
-							style={{
-								flexDirection: "row",
-								justifyContent: "center",
-								paddingVertical: 20
-							}}
-						>
 							<View
 								style={{
-									paddingRight: 20,
-									borderRightWidth: 1,
-									borderRightColor: "#CD6839"
+									flexDirection: "row",
+									justifyContent: "center",
+									paddingVertical: 20
 								}}
 							>
-								<Text style={{ color: Colors.orange }}>精力点: {user.ticket ? user.ticket : "0"}</Text>
+								<View
+									style={{
+										paddingRight: 20,
+										borderRightWidth: 1,
+										borderRightColor: "#CD6839"
+									}}
+								>
+									<Text style={{ color: Colors.orange }}>精力点: 0</Text>
+								</View>
+								<Text style={{ paddingLeft: 20, color: Colors.orange }}>智慧点: 0</Text>
 							</View>
-							<Text style={{ paddingLeft: 20, color: Colors.orange }}>
-								智慧点: {user.gold ? user.gold : "0"}
-							</Text>
 						</View>
-					</View>
-				</View>
-			</TouchableWithoutFeedback>
+					</TouchableOpacity>
+				)}
+			</View>
 		);
 	}
 }
@@ -129,7 +189,7 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 		color: Colors.darkFont
 	},
-	rank: {
+	level: {
 		color: Colors.white,
 		fontSize: 12
 	},
@@ -144,4 +204,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default UserTopInfo;
+export default connect(store => {
+	return { userInfo: store.users.user };
+})(UserTopInfo);

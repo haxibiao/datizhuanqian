@@ -43,6 +43,50 @@ export const question = Record({
 			name: "动漫知识",
 			description: "幻想,二次元快来成为热血的英雄吧",
 			avatar: require("../../assets/images/dongman.jpeg")
+		},
+		{
+			id: 8,
+			name: "动漫知识",
+			description: "幻想,二次元快来成为热血的英雄吧",
+			avatar: require("../../assets/images/dongman.jpeg")
+		},
+		{
+			id: 9,
+			name: "英语学习",
+			description: "学习全球通用语言的板块",
+			avatar: require("../../assets/images/yingyu.png")
+		}
+	],
+	nextPlate: [
+		{
+			id: 10,
+			name: "动漫知识",
+			description: "幻想,二次元快来成为热血的英雄吧",
+			avatar: require("../../assets/images/dongman.jpeg")
+		},
+		{
+			id: 11,
+			name: "游戏问答",
+			description: "同学们,游戏富裕你生命快来作战吧",
+			avatar: require("../../assets/images/youxi2.jpeg")
+		},
+		{
+			id: 12,
+			name: "英语学习",
+			description: "学习全球通用语言的板块",
+			avatar: require("../../assets/images/yingyu.png")
+		},
+		{
+			id: 13,
+			name: "动漫知识",
+			description: "幻想,二次元快来成为热血的英雄吧",
+			avatar: require("../../assets/images/dongman.jpeg")
+		},
+		{
+			id: 14,
+			name: "游戏问答",
+			description: "同学们,游戏富裕你生命快来作战吧",
+			avatar: require("../../assets/images/youxi2.jpeg")
 		}
 	],
 	question: [

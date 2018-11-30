@@ -12,7 +12,7 @@ import KeyboardSpacer from "react-native-keyboard-spacer";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { signUpMutation, signInMutation } from "../../graphql/user.graphql";
+import { signUpMutation, signInMutation, UserQuery } from "../../graphql/user.graphql";
 import { graphql, compose } from "react-apollo";
 import { NavigationActions } from "react-navigation";
 

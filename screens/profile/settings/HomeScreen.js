@@ -73,8 +73,16 @@ class HomeScreen extends Component {
 										/>
 										<View style={{ height: 34, justifyContent: "space-between", marginLeft: 15 }}>
 											<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
-											<Text style={{ fontSize: 12, color: Colors.grey, fontWeight: "300" }}>
+											<Text
+												style={{
+													fontSize: 12,
+													color: Colors.grey,
+													fontWeight: "300",
+													paddingTop: 3
+												}}
+											>
 												LV.{user.level ? user.level.level : "1"} {"  "}
+												{user.level.name} {"  "}
 												{user.level.exp}/2000
 											</Text>
 										</View>
@@ -87,6 +95,9 @@ class HomeScreen extends Component {
 
 						<TouchableOpacity onPress={() => navigation.navigate("关于答题赚钱")}>
 							<SettingItem itemName="关于答题赚钱" />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigation.navigate("等级说明")}>
+							<SettingItem itemName="等级说明" />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => navigation.navigate("分享给好友")}>
 							<SettingItem itemName="分享给好友" endItem />

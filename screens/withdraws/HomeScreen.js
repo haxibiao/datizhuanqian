@@ -39,7 +39,7 @@ class HomeScreen extends Component {
 							<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
 						</View>
 						<View style={styles.center}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>{user.gold}</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>{user.gold ? user.gold : 0}</Text>
 						</View>
 					</View>
 					<View style={{ alignItems: "center" }}>

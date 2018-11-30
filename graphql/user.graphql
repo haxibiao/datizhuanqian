@@ -83,8 +83,10 @@ mutation ResetPasswordMutation($account: String!, $password: String!, $token: St
 #用户个人资料
 query UserQuery($id: Int!) {
 	user(id: $id) {
+		name
 		gold
 		ticket
+		avatar
 		level {
 			id
 			name

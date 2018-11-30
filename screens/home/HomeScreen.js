@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from "react-native";
 
 import { Header } from "../../components/Header";
 import { DivisionLine, TabTop } from "../../components/Universal";
@@ -17,10 +17,12 @@ import { Query } from "react-apollo";
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			fetchingMore: true
+		};
 	}
 	render() {
-		const { plate, navigation, user } = this.props;
-		console.log("hone", user);
+		const { plate, navigation, user, nextPlate } = this.props;
 		return (
 			<Screen header>
 				<Header
@@ -29,16 +31,58 @@ class HomeScreen extends Component {
 				/>
 				<View style={styles.container}>
 					<Query query={CategoriesQuery}>
-						{({ data, error, loading, fetch, fetchMore }) => {
+						{({ data, error, loading, refetch, fetchMore }) => {
 							if (error) return null;
 							if (!(data && data.categories)) return null;
 							return (
 								<FlatList
 									data={data.categories}
+									refreshControl={
+										<RefreshControl
+											refreshing={loading}
+											onRefresh={refetch}
+											tintColor={Colors.theme}
+											colors={[Colors.theme]}
+										/>
+									}
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => <PlateItem plate={item} navigation={navigation} />}
 									ListHeaderComponent={() => {
 										return <TabTop user={user} />;
+									}}
+									onEndReachedThreshold={0.3}
+									onEndReached={() => {
+										if (data.categories) {
+											fetchMore({
+												variables: {
+													offset: data.categories.length
+												},
+												updateQuery: (prev, { fetchMoreResult }) => {
+													if (
+														!(
+															fetchMoreResult &&
+															fetchMoreResult.categories &&
+															fetchMoreResult.categories.length > 0
+														)
+													) {
+														this.setState({
+															fetchingMore: false
+														});
+														return prev;
+													}
+													return Object.assign({}, prev, {
+														categories: [...prev.categories, ...fetchMoreResult.categories]
+													});
+												}
+											});
+										} else {
+											this.setState({
+												fetchingMore: false
+											});
+										}
+									}}
+									ListFooterComponent={() => {
+										return this.state.fetchingMore ? null : <Text>没有更多分类了~</Text>;
 									}}
 								/>
 							);

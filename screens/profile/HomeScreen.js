@@ -23,7 +23,7 @@ class HomeScreen extends Component {
 				<View style={styles.container}>
 					{/*<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />*/}
 					<ScrollView bounces={false}>
-						<TopUserInfo user={user} navigation={navigation} login={login} />
+						<TopUserInfo navigation={navigation} login={login} />
 						<DivisionLine height={10} />
 						<TouchableOpacity style={styles.rowItem}>
 							<View style={styles.itemLeft}>
@@ -58,7 +58,10 @@ class HomeScreen extends Component {
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
-						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("意见反馈")}>
+						<TouchableOpacity
+							style={styles.rowItem}
+							onPress={() => (login ? navigation.navigate("意见反馈") : navigation.navigate("登录注册"))}
+						>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"feedback2"} size={18} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>意见反馈</Text>

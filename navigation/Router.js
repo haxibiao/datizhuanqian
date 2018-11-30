@@ -11,6 +11,7 @@ import MyAccountScreen from "../screens/profile/settings/MyAccountScreen";
 import SettingScreen from "../screens/profile/settings/HomeScreen";
 import AboutScreen from "../screens/profile/settings/AboutScreen";
 import ShareScreen from "../screens/profile/settings/ShareScreen";
+import LevelDescriptionScreen from "../screens/profile/settings/LevelDescriptionScreen";
 import FeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 
@@ -43,6 +44,9 @@ export default {
 	},
 	分享给好友: {
 		screen: ShareScreen
+	},
+	等级说明: {
+		screen: LevelDescriptionScreen
 	},
 	设置: {
 		screen: SettingScreen
