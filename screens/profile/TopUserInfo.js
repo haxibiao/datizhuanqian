@@ -22,11 +22,13 @@ class UserTopInfo extends Component {
 	render() {
 		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
+		console.log("login", login);
 		return (
 			<View>
 				{login ? (
 					<Query query={UserQuery} variables={{ id: userInfo.id }}>
 						{({ data, loading, error }) => {
+							console.log("data", data);
 							if (error) return null;
 							if (!(data && data.user)) return null;
 							let user = data.user;

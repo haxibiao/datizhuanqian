@@ -15,7 +15,7 @@ import Config from "../../../constants/Config";
 
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
-import { updateUserNameMutation, updateUserAvatarMutation } from "../../../graphql/user.graphql";
+import { updateUserNameMutation, updateUserAvatarMutation, UserQuery } from "../../../graphql/user.graphql";
 import { Mutation, compose, graphql } from "react-apollo";
 
 import ImagePicker from "react-native-image-crop-picker";
@@ -32,6 +32,7 @@ class EditProfileScreen extends Component {
 	}
 
 	_changeAvatar() {
+		let { user } = this.props;
 		ImagePicker.openPicker({
 			width: 400,
 			height: 400,
@@ -49,6 +50,10 @@ class EditProfileScreen extends Component {
 				result = await this.props.updateUserAvatarMutation({
 					variables: {
 						avatar: `data:${image.mime};base64,${image.data}`
+					},
+					refetchQueries: {
+						query: UserQuery,
+						variables: { id: user.id }
 					}
 				});
 				console.log("result ", result);
@@ -117,7 +122,13 @@ class EditProfileScreen extends Component {
 										updateUserName({
 											variables: {
 												name: nickname
-											}
+											},
+											refetchQueries: updateUserName => [
+												{
+													query: UserQuery,
+													variables: { id: user.id }
+												}
+											]
 										});
 										this.props.dispatch(actions.updateName(nickname));
 									}}
