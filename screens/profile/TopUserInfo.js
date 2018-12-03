@@ -22,27 +22,22 @@ class UserTopInfo extends Component {
 	render() {
 		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
-		console.log("login", login);
 		return (
 			<View>
 				{login ? (
 					<Query query={UserQuery} variables={{ id: userInfo.id }}>
 						{({ data, loading, error }) => {
-							console.log("data", data);
 							if (error) return null;
 							if (!(data && data.user)) return null;
 							let user = data.user;
+							let avatar = user.avatar + "?t=" + Date.now();
 							return (
 								<View style={styles.userInfoContainer}>
 									<View style={styles.userInfo}>
 										<View style={{ flexDirection: "row", marginLeft: 30 }}>
 											<View style={{}}>
 												<Avatar
-													uri={
-														user.avatar
-															? user.avatar
-															: "http://cos.qunyige.com/storage/avatar/13.jpg"
-													}
+													uri={avatar}
 													size={68}
 													borderStyle={{
 														borderWidth: 1,

@@ -33,6 +33,7 @@ class AnswerScreen extends Component {
 		const { navigation, prop, user } = this.props;
 		const { i, value, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
+		console.log("plate", plate_id);
 		return (
 			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
@@ -40,8 +41,9 @@ class AnswerScreen extends Component {
 						if (error) return null;
 						if (!(data && data.question)) return null;
 						let question = data.question;
-						let selections = data.question.selections.replace(/'/g, '"');
+						let selections = data.question.selections.replace(/\\/g, "");
 						let option = JSON.parse(selections);
+						console.log("option", option);
 						return (
 							<View style={styles.container}>
 								<View>

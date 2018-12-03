@@ -40,7 +40,6 @@ class UsersReducer {
 	static [types.UPDATE_ALIPAY](state, action) {
 		let { user } = state;
 		let { account } = action;
-		console.log("account", account);
 		user = {
 			...user,
 			...account
@@ -49,7 +48,6 @@ class UsersReducer {
 	}
 	static [types.RECORD_OPERATION](state, action) {
 		let { noTicketTips } = action;
-		console.log("noTicketTips", noTicketTips);
 		return state.set("noTicketTips", noTicketTips);
 	}
 	static [types.WIDTH_DRAWS](state, action) {
@@ -59,7 +57,6 @@ class UsersReducer {
 			...user,
 			gold: gold
 		};
-		console.log("gold", gold);
 		return state.set("user", user);
 	}
 }

@@ -40,23 +40,28 @@ class EditProfileScreen extends Component {
 			includeBase64: true
 		})
 			.then(async image => {
-				// this.setState({
-				// 	avatar: `data:${image.mime};base64,${image.data}`
-				// });
-				this.props.dispatch(actions.updateAvatar(`data:${image.mime};base64,${image.data}`));
-				console.log(`data:${image.mime};base64,${image.data}`);
 				let result = {};
-
-				result = await this.props.updateUserAvatarMutation({
-					variables: {
-						avatar: `data:${image.mime};base64,${image.data}`
-					},
-					refetchQueries: {
-						query: UserQuery,
-						variables: { id: user.id }
-					}
-				});
-				console.log("result ", result);
+				try {
+					result = await this.props.updateUserAvatarMutation({
+						variables: {
+							avatar: `data:${image.mime};base64,${image.data}`
+						},
+						refetchQueries: updateUserAvatarMutation => [
+							{
+								query: UserQuery,
+								variables: { id: user.id }
+							}
+						]
+					});
+				} catch (ex) {
+					result.errors = ex;
+				}
+				if (result && result.errors) {
+					Methods.toast("上传头像失败，请检查您的网络");
+				} else {
+					const { avatar } = result.data.updateUserAvatar;
+					this.props.dispatch(actions.updateAvatar(avatar + "?t=" + Date.now()));
+				}
 			})
 			.catch(error => {});
 	}
@@ -122,13 +127,7 @@ class EditProfileScreen extends Component {
 										updateUserName({
 											variables: {
 												name: nickname
-											},
-											refetchQueries: updateUserName => [
-												{
-													query: UserQuery,
-													variables: { id: user.id }
-												}
-											]
+											}
 										});
 										this.props.dispatch(actions.updateName(nickname));
 									}}
