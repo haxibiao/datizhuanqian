@@ -28,7 +28,7 @@ export default [
 		error: genericErrorHandler
 	},
 	{
-		action: types.WIDTH_DRAWS,
+		action: types.UPDATE_GOLD,
 		effect: rememberUser,
 		error: genericErrorHandler
 	},

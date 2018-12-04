@@ -13,6 +13,7 @@ export default defineActionConstants([
 	"UPDATE_RESOURCE_COUNT",
 	"UPDATA_PASSWORD",
 	"UPDATE_ALIPAY",
+	"UPDATE_GOLD",
 	"RECORD_OPERATION",
 	"WIDTH_DRAWS",
 

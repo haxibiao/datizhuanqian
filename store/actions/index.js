@@ -32,16 +32,17 @@ export default {
       account
     };
   },
+  updateGold(gold) {
+    return {
+      type: types.UPDATE_GOLD,
+      gold
+    };
+  },
+
   recordOperation(noTicketTips) {
     return {
       type: types.RECORD_OPERATION,
       noTicketTips
-    };
-  },
-  widthdraws(gold) {
-    return {
-      type: types.WIDTH_DRAWS,
-      gold
     };
   }
 };

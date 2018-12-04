@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, FlatList, Text, Dimensions } from "react-native";
 
-import { DivisionLine, TabTop } from "../../components/Universal";
+import { DivisionLine, TabTop, BlankContent } from "../../components/Universal";
 import Screen from "../Screen";
 import { Colors } from "../../constants";
 
@@ -17,6 +17,7 @@ class WithdrawsLogScreen extends Component {
 	render() {
 		const { log, navigation } = this.props;
 		const { user } = navigation.state.params;
+		console.log("user", user);
 		return (
 			<Screen>
 				<DivisionLine height={10} />
@@ -27,7 +28,7 @@ class WithdrawsLogScreen extends Component {
 					</View>
 					<View style={styles.topRight}>
 						<Text style={{ fontSize: 16 }}>累计提现</Text>
-						<Text style={{ fontSize: 16, fontWeight: "600" }}>￥0</Text>
+						<Text style={{ fontSize: 16, fontWeight: "600" }}>￥{user.accumulative}</Text>
 					</View>
 				</View>
 				<DivisionLine height={10} />
@@ -36,22 +37,7 @@ class WithdrawsLogScreen extends Component {
 						if (error) return null;
 						if (!(data && data.transactions)) return null;
 						if (data.transactions.length < 1)
-							return (
-								<View
-									style={{
-										justifyContent: "center",
-										alignItems: "center",
-										flex: 1,
-										backgroundColor: "#fff"
-									}}
-								>
-									<Image
-										source={require("../../assets/images/record.jpg")}
-										style={{ width: width / 3, height: width / 3 }}
-									/>
-									<Text>暂无提现记录哦,快去赚取智慧点吧~</Text>
-								</View>
-							);
+							return <BlankContent text={"暂无提现记录哦,快去赚取智慧点吧~"} fontSize={14} />;
 
 						return (
 							<FlatList
@@ -62,7 +48,7 @@ class WithdrawsLogScreen extends Component {
 										<View style={styles.item}>
 											<Text style={{ fontSize: 15 }}>{item.created_at}</Text>
 											<Text style={{ fontSize: 15 }}>￥{item.amount}</Text>
-											{item.status == -1 && (
+											{item.submit == -1 && (
 												<Text
 													style={{
 														color: Colors.red,
@@ -72,7 +58,7 @@ class WithdrawsLogScreen extends Component {
 													提现失败
 												</Text>
 											)}
-											{item.status == 1 && (
+											{item.submit == 1 && (
 												<Text
 													style={{
 														color: Colors.weixin,
@@ -82,10 +68,10 @@ class WithdrawsLogScreen extends Component {
 													提现成功
 												</Text>
 											)}
-											{item.status == 0 && (
+											{item.submit == 0 && (
 												<Text
 													style={{
-														color: Colors.them,
+														color: Colors.theme,
 														fontSize: 15
 													}}
 												>

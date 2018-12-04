@@ -46,18 +46,20 @@ class UsersReducer {
 		};
 		return state.set("user", user);
 	}
-	static [types.RECORD_OPERATION](state, action) {
-		let { noTicketTips } = action;
-		return state.set("noTicketTips", noTicketTips);
-	}
-	static [types.WIDTH_DRAWS](state, action) {
-		let { gold } = action;
+
+	static [types.UPDATE_GOLD](state, action) {
 		let { user } = state;
+		let { gold } = action;
 		user = {
 			...user,
 			gold: gold
 		};
 		return state.set("user", user);
+	}
+
+	static [types.RECORD_OPERATION](state, action) {
+		let { noTicketTips } = action;
+		return state.set("noTicketTips", noTicketTips);
 	}
 }
 

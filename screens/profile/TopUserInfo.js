@@ -22,6 +22,7 @@ class UserTopInfo extends Component {
 	render() {
 		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
+		console.log("topuserinfo", userInfo);
 		return (
 			<View>
 				{login ? (
@@ -59,7 +60,9 @@ class UserTopInfo extends Component {
 														<View
 															style={{
 																height: 10,
-																width: (user.level.exp * 150) / levelExp,
+																width:
+																	((user.next_level_exp - user.level.exp) * 150) /
+																	user.next_level_exp,
 																backgroundColor: Colors.orange,
 																borderRadius: 5,
 																marginLeft: 10,
@@ -204,5 +207,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => {
-	return { userInfo: store.users.user };
+	return { userInfo: store.users.user, login: store.users.login };
 })(UserTopInfo);

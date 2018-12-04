@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from "react-native";
 
-import { DivisionLine, TabTop } from "../../components/Universal";
+import { DivisionLine, TabTop, LoadingError, BlankContent, Loading } from "../../components/Universal";
 import { Button } from "../../components/Control";
 import { CorrectModal } from "../../components/Modal";
 import { Colors } from "../../constants";
@@ -33,16 +33,18 @@ class AnswerScreen extends Component {
 		const { navigation, prop, user } = this.props;
 		const { i, value, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
-		console.log("plate", plate_id);
+		console.log("value", value);
 		return (
 			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return null;
-						if (!(data && data.question)) return null;
+						if (error) return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
+						if (loading) return <Loading />;
+						if (!(data && data.question)) return <BlankContent />;
 						let question = data.question;
 						let selections = data.question.selections.replace(/\\/g, "");
 						let option = JSON.parse(selections);
+						console.log("data.question", question);
 						console.log("option", option);
 						return (
 							<View style={styles.container}>
@@ -51,70 +53,28 @@ class AnswerScreen extends Component {
 									<View style={{ marginTop: 30, paddingHorizontal: 30 }}>
 										<Text style={styles.title}>{question.description}</Text>
 										<View style={{ paddingTop: 30, paddingHorizontal: 10 }}>
-											<TouchableOpacity
-												disabled={isMethod}
-												style={[
-													styles.option,
-													{
-														borderColor: value == "A" ? showColor : Colors.tintGray
-													}
-												]}
-												onPress={() => {
-													this.setState({
-														value: "A"
-													});
-												}}
-											>
-												<Text>{option.Selection[0].Text}</Text>
-											</TouchableOpacity>
-											<TouchableOpacity
-												disabled={isMethod}
-												style={[
-													styles.option,
-													{
-														borderColor: value == "B" ? showColor : Colors.tintGray
-													}
-												]}
-												onPress={() => {
-													this.setState({
-														value: "B"
-													});
-												}}
-											>
-												<Text>{option.Selection[1].Text}</Text>
-											</TouchableOpacity>
-											<TouchableOpacity
-												disabled={isMethod}
-												style={[
-													styles.option,
-													{
-														borderColor: value == "C" ? showColor : Colors.tintGray
-													}
-												]}
-												onPress={() => {
-													this.setState({
-														value: "C"
-													});
-												}}
-											>
-												<Text>{option.Selection[2].Text}</Text>
-											</TouchableOpacity>
-											<TouchableOpacity
-												disabled={isMethod}
-												style={[
-													styles.option,
-													{
-														borderColor: value == "D" ? showColor : Colors.tintGray
-													}
-												]}
-												onPress={() => {
-													this.setState({
-														value: "D"
-													});
-												}}
-											>
-												<Text>{option.Selection[3].Text}</Text>
-											</TouchableOpacity>
+											{option.Selection.map((option, index) => {
+												return (
+													<TouchableOpacity
+														disabled={isMethod}
+														key={index}
+														style={[
+															styles.option,
+															{
+																borderColor:
+																	value == option.Value ? showColor : Colors.tintGray
+															}
+														]}
+														onPress={() => {
+															this.setState({
+																value: option.Value
+															});
+														}}
+													>
+														<Text>{option.Text}</Text>
+													</TouchableOpacity>
+												);
+											})}
 										</View>
 										<View style={{ height: 82, marginTop: 50 }}>
 											{isShow ? (
@@ -138,18 +98,17 @@ class AnswerScreen extends Component {
 														<Button
 															name={name}
 															disabled={value ? false : true}
-															handler={async () => {
+															handler={() => {
 																if (!isMethod) {
 																	this.setState({
 																		isMethod: true,
 																		name: "下一题",
 																		isShow: true
 																	});
-																	let result = {};
-																	result = await answerQuestion({
+																	answerQuestion({
 																		variables: {
 																			id: question.id,
-																			answer: question.answer
+																			answer: value
 																		},
 																		refetchQueries: answerQuestion => [
 																			{
@@ -158,12 +117,15 @@ class AnswerScreen extends Component {
 																			}
 																		]
 																	});
-																	console.log("result", result);
 																	if (value == question.answer) {
 																		this.setState({
 																			showColor: Colors.weixin
 																		});
-																		// this.props.dispatch(actions.updateCounts(counts));
+																		this.props.dispatch(
+																			actions.updateGold(
+																				user.gold + question.gold
+																			)
+																		);
 																	} else {
 																		this.setState({
 																			showColor: Colors.red
@@ -261,7 +223,8 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		color: Colors.primaryFont,
-		fontSize: 16
+		fontSize: 16,
+		lineHeight: 22
 	},
 	option: {
 		marginTop: 10,

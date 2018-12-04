@@ -8,7 +8,8 @@ mutation signUpMutation($account: String!, $password: String!) {
 		gender
 		avatar
 		gold
-		ticket
+		accumulative
+		next_level_exp
 		level {
 			id
 			name
@@ -34,7 +35,8 @@ mutation signInMutation($account: String!, $password: String!) {
 		gender
 		avatar
 		gold
-		ticket
+		accumulative
+		next_level_exp
 		level {
 			id
 			name
@@ -87,6 +89,8 @@ query UserQuery($id: Int!) {
 		gold
 		ticket
 		avatar
+		accumulative
+		next_level_exp
 		level {
 			id
 			name

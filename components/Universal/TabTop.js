@@ -16,50 +16,56 @@ let user_ticket = null;
 class TabTop extends Component {
 	constructor(props) {
 		super(props);
-		let { noTicketTips } = this.props.users;
+		let { noTicketTips } = this.props.user;
 		this.state = {
 			show: noTicketTips
 		};
 	}
 	render() {
-		const { id } = this.props.user;
-		const { isShow, isAnswer } = this.props;
+		const { isShow, isAnswer, userInfo, login } = this.props;
 		const { show } = this.state;
+		console.log("tabTop", userInfo);
 		return (
-			<Query query={UserQuery} variables={{ id: id }}>
-				{({ data, loading, error, refetch }) => {
-					if (error) return null;
-					if (!(data && data.user)) return null;
-					let user = data.user;
-					return (
-						<View style={styles.container}>
-							<View style={styles.rowItem}>
-								<Iconfont name={"like"} size={24} color={Colors.theme} />
-								<Text style={styles.text}> 精力点</Text>
-								<Text
-									style={{
-										fontSize: 15,
-										paddingLeft: 5,
-										color: user.ticket > 10 ? Colors.black : Colors.red
-									}}
-								>
-									{user.ticket ? user.ticket : "0"}
-								</Text>
-								<Text style={styles.text}>/{user.level ? user.level.ticket_max : "180"}</Text>
-							</View>
-							<View style={styles.rowItem}>
-								<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
-								<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
-								<Text style={styles.text}>{user.gold}</Text>
-							</View>
-							{isAnswer && !(isShow || user.ticket) ? (
-								<NoTicketTipsModal visible={show} handleVisible={this.handleCorrectModal.bind(this)} />
-							) : null}
-						</View>
-					);
-				}}
-			</Query>
-
+			<View>
+				{login ? (
+					<Query query={UserQuery} variables={{ id: userInfo.id }}>
+						{({ data, loading, error, refetch }) => {
+							if (error) return null;
+							if (!(data && data.user)) return null;
+							let user = data.user;
+							return (
+								<View style={styles.container}>
+									<View style={styles.rowItem}>
+										<Iconfont name={"like"} size={24} color={Colors.theme} />
+										<Text style={styles.text}> 精力点</Text>
+										<Text
+											style={{
+												fontSize: 15,
+												paddingLeft: 5,
+												color: user.ticket > 10 ? Colors.black : Colors.red
+											}}
+										>
+											{user.ticket ? user.ticket : "0"}
+										</Text>
+										<Text style={styles.text}>/{user.level ? user.level.ticket_max : "180"}</Text>
+									</View>
+									<View style={styles.rowItem}>
+										<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
+										<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
+										<Text style={styles.text}>{user.gold}</Text>
+									</View>
+									{isAnswer && !(isShow || user.ticket) ? (
+										<NoTicketTipsModal
+											visible={show}
+											handleVisible={this.handleCorrectModal.bind(this)}
+										/>
+									) : null}
+								</View>
+							);
+						}}
+					</Query>
+				) : null}
+			</View>
 			//考虑到精力点是实时更新的  所以不将精力点存到redux中.
 		);
 	}
@@ -97,4 +103,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => store)(TabTop);
+export default connect(store => {
+	return { userInfo: store.users.user, login: store.users.login };
+})(TabTop);

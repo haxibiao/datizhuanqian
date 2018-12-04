@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
 import { Header } from "../../components/Header";
-import { DivisionLine } from "../../components/Universal";
+import { DivisionLine, ErrorBoundary } from "../../components/Universal";
 import { Colors, Config, Divice } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
@@ -23,7 +23,9 @@ class HomeScreen extends Component {
 				<View style={styles.container}>
 					{/*<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />*/}
 					<ScrollView bounces={false}>
-						<TopUserInfo navigation={navigation} login={login} />
+						<ErrorBoundary>
+							<TopUserInfo navigation={navigation} />
+						</ErrorBoundary>
 						<DivisionLine height={10} />
 						<TouchableOpacity style={styles.rowItem}>
 							<View style={styles.itemLeft}>

@@ -25,7 +25,6 @@ class HomeScreen extends Component {
 	render() {
 		const { value } = this.state;
 		const { user } = this.props;
-		console.log("value", value);
 		return (
 			<Screen header>
 				<View style={styles.container}>
@@ -119,7 +118,7 @@ class HomeScreen extends Component {
 													try {
 														result = await createTransaction({
 															variables: {
-																amount: value
+																amount: value / 600
 															}
 														});
 													} catch (ex) {
@@ -128,7 +127,7 @@ class HomeScreen extends Component {
 													if (result && result.errors) {
 														Methods.toast("提现失败,请检查你的网络和智慧点余额");
 													} else {
-														this.props.dispatch(actions.widthdraws(user.gold - value)); //根据接口调整
+														this.props.dispatch(actions.updateGold(user.gold - value)); //根据接口调整
 														Methods.toast("发起提现成功,客服人员会尽快处理您的提现请求。");
 													}
 												}
