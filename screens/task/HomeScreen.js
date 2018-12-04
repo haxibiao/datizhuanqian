@@ -28,7 +28,9 @@ class HomeScreen extends Component {
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					/>
 					<TabTop user={counts} />
-					<Banner />
+					<View style={{ height: 74 }}>
+						<Banner />
+					</View>
 					<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
 						<Image
 							source={require("../../assets/images/record.jpg")}

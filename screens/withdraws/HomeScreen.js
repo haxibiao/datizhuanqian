@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import actions from "../../store/actions";
 
 import { CreateTransactionMutation } from "../../graphql/withdraws.graphql";
+import { UserQuery } from "../../graphql/User.graphql";
 import { Mutation } from "react-apollo";
 
 const { width, height } = Dimensions.get("window");
@@ -119,7 +120,13 @@ class HomeScreen extends Component {
 														result = await createTransaction({
 															variables: {
 																amount: value / 600
-															}
+															},
+															refetchQueries: createTransaction => [
+																{
+																	query: UserQuery,
+																	variables: { id: user.id }
+																}
+															]
 														});
 													} catch (ex) {
 														result.errors = ex;

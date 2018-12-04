@@ -13,11 +13,7 @@ const { width, height } = Dimensions.get("window");
 class UserTopInfo extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			level: 3,
-			levelExp: 2000,
-			exp: 1368
-		};
+		this.state = {};
 	}
 	render() {
 		let { login, userInfo, navigation } = this.props;
@@ -60,9 +56,7 @@ class UserTopInfo extends Component {
 														<View
 															style={{
 																height: 10,
-																width:
-																	((user.next_level_exp - user.level.exp) * 150) /
-																	user.next_level_exp,
+																width: (user.exp * 150) / user.next_level_exp,
 																backgroundColor: Colors.orange,
 																borderRadius: 5,
 																marginLeft: 10,

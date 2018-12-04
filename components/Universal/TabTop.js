@@ -16,7 +16,7 @@ let user_ticket = null;
 class TabTop extends Component {
 	constructor(props) {
 		super(props);
-		let { noTicketTips } = this.props.user;
+		let { noTicketTips } = this.props.users;
 		this.state = {
 			show: noTicketTips
 		};
@@ -24,15 +24,16 @@ class TabTop extends Component {
 	render() {
 		const { isShow, isAnswer, userInfo, login } = this.props;
 		const { show } = this.state;
-		console.log("tabTop", userInfo);
+		const { id } = this.props.users.user;
 		return (
 			<View>
 				{login ? (
-					<Query query={UserQuery} variables={{ id: userInfo.id }}>
+					<Query query={UserQuery} variables={{ id: id }}>
 						{({ data, loading, error, refetch }) => {
 							if (error) return null;
 							if (!(data && data.user)) return null;
 							let user = data.user;
+							console.log("usertic", user.ticket);
 							return (
 								<View style={styles.container}>
 									<View style={styles.rowItem}>
@@ -54,7 +55,7 @@ class TabTop extends Component {
 										<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
 										<Text style={styles.text}>{user.gold}</Text>
 									</View>
-									{isAnswer && !(isShow || user.ticket) ? (
+									{isAnswer && !(isShow || user.ticket > 0) ? (
 										<NoTicketTipsModal
 											visible={show}
 											handleVisible={this.handleCorrectModal.bind(this)}
@@ -104,5 +105,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => {
-	return { userInfo: store.users.user, login: store.users.login };
+	return { users: store.users, login: store.users.login };
 })(TabTop);

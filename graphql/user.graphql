@@ -9,6 +9,7 @@ mutation signUpMutation($account: String!, $password: String!) {
 		avatar
 		gold
 		accumulative
+		exp
 		next_level_exp
 		level {
 			id
@@ -36,6 +37,7 @@ mutation signInMutation($account: String!, $password: String!) {
 		avatar
 		gold
 		accumulative
+		exp
 		next_level_exp
 		level {
 			id
@@ -62,23 +64,6 @@ mutation ResetPasswordMutation($account: String!, $password: String!, $token: St
 	resetPassword(account: $account, password: $password, token: $token) {
 		id
 		account
-		name
-		real_name
-		gender
-		avatar
-		gold
-		ticket
-		level {
-			id
-			name
-			ticket_max
-			level
-		}
-		pay_account
-		status
-		is_old_user
-		is_admin
-		last_login_at
 	}
 }
 
@@ -90,6 +75,7 @@ query UserQuery($id: Int!) {
 		ticket
 		avatar
 		accumulative
+		exp
 		next_level_exp
 		level {
 			id

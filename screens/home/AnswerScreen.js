@@ -38,8 +38,6 @@ class AnswerScreen extends Component {
 		console.log("value", value);
 		return (
 			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
-				<TabTop user={user} isShow={isShow} isAnswer={true} />
-				<Banner />
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
@@ -49,9 +47,15 @@ class AnswerScreen extends Component {
 						let selections = data.question.selections.replace(/\\/g, "");
 						let option = JSON.parse(selections);
 						console.log("option", option);
+						if (!option.Selection.length)
+							return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
 						return (
 							<View style={styles.container}>
 								<View>
+									<TabTop user={user} isShow={isShow} isAnswer={true} />
+									<View style={{ height: 74 }}>
+										<Banner />
+									</View>
 									<View style={{ marginTop: 30, paddingHorizontal: 30 }}>
 										<Text style={styles.title}>{question.description}</Text>
 										{question.image && (
@@ -152,7 +156,11 @@ class AnswerScreen extends Component {
 												onPress={() => refetch({ category_id: plate_id })}
 											>
 												<Text
-													style={{ color: Colors.tintFont, fontSize: 12, fontWeight: "200" }}
+													style={{
+														color: Colors.tintFont,
+														fontSize: 12,
+														fontWeight: "200"
+													}}
 												>
 													搜一搜答案
 												</Text>

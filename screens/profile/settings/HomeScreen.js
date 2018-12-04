@@ -98,7 +98,7 @@ class HomeScreen extends Component {
 														>
 															LV.{user.level ? user.level.level : "1"} {"  "}
 															{user.level.name} {"  "}
-															{user.next_level_exp - user.level.exp}/{user.next_level_exp}
+															{user.exp}/{user.next_level_exp}
 														</Text>
 													</View>
 												</View>

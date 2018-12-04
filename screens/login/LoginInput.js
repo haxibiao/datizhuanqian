@@ -63,11 +63,7 @@ class LoginInput extends Component {
 								}))
 							}
 						>
-							<Iconfont
-								name={"like"}
-								size={19}
-								color={visibility ? Colors.themeColor : Colors.lightFontColor}
-							/>
+							<Iconfont name={visibility ? "eye" : "hide"} size={19} color={Colors.lightFont} />
 						</TouchableOpacity>
 					) : (
 						<View style={styles.inputOperation} />
@@ -80,7 +76,7 @@ class LoginInput extends Component {
 							emptyValue(keys);
 						}}
 					>
-						<Iconfont name={"like"} size={18} color={Colors.lightFontColor} />
+						<Iconfont name={"close"} size={16} color={Colors.lightFont} />
 					</TouchableOpacity>
 				) : (
 					<View style={styles.inputOperation} />
@@ -104,7 +100,7 @@ const styles = StyleSheet.create({
 		height: 22,
 		lineHeight: 22,
 		padding: 0,
-		color: Colors.primaryFontColor
+		color: Colors.primaryFont
 	},
 	inputOperation: {
 		width: 46,
