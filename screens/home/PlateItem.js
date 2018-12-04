@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
 		borderRadius: 2
 	},
 	title: {
-		fontSize: 15,
-		fontWeight: "500",
+		fontSize: 16,
+		fontWeight: "400",
 		color: Colors.black
 	},
 	content: {
-		fontSize: 13,
-		color: Colors.tintFont,
-		paddingTop: 10
+		fontSize: 14,
+		color: Colors.grey,
+		paddingTop: 6
 	}
 });
 

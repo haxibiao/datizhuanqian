@@ -94,7 +94,10 @@ class EditProfileScreen extends Component {
 						<TouchableOpacity onPress={this.toggleModalVisible}>
 							<SettingItem itemName="设置昵称" rightSize={15} rightContent={user.name} />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate("我的账户")}>
+						<TouchableOpacity
+							onPress={() => navigation.navigate("我的账户")}
+							disabled={user.pay_account ? true : false}
+						>
 							<SettingItem
 								itemName="我的账户"
 								rightSize={15}
@@ -127,7 +130,13 @@ class EditProfileScreen extends Component {
 										updateUserName({
 											variables: {
 												name: nickname
-											}
+											},
+											refetchQueries: updateUserName => [
+												{
+													query: UserQuery,
+													variables: { id: user.id }
+												}
+											]
 										});
 										this.props.dispatch(actions.updateName(nickname));
 									}}

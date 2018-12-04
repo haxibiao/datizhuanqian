@@ -7,5 +7,17 @@ import LoadingError from "./LoadingError";
 import BlankContent from "./BlankContent";
 import Loading from "./Loading";
 import ErrorBoundary from "./ErrorBoundary";
+import Banner from "./Banner";
 
-export { Avatar, DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, BlankContent, Loading, ErrorBoundary };
+export {
+	Avatar,
+	DivisionLine,
+	TabTop,
+	LoadingMore,
+	ContentEnd,
+	LoadingError,
+	BlankContent,
+	Loading,
+	ErrorBoundary,
+	Banner
+};

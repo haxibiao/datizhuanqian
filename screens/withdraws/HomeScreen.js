@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image } from "react-native";
 
 import { Header } from "../../components/Header";
-import { DivisionLine, TabTop } from "../../components/Universal";
+import { DivisionLine, TabTop, Banner } from "../../components/Universal";
 import { Button } from "../../components/Control";
 import Screen from "../Screen";
 import { Colors, Methods } from "../../constants";
@@ -128,6 +128,9 @@ class HomeScreen extends Component {
 														Methods.toast("提现失败,请检查你的网络和智慧点余额");
 													} else {
 														this.props.dispatch(actions.updateGold(user.gold - value)); //根据接口调整
+														this.setState({
+															value: 0
+														});
 														Methods.toast("发起提现成功,客服人员会尽快处理您的提现请求。");
 													}
 												}

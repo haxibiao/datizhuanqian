@@ -30,7 +30,15 @@ class AboutScreen extends Component {
 					<View style={{ marginTop: 30 }}>
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>关于答题</Text>
-							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 20 }}>
+							<Text
+								style={{
+									fontSize: 13,
+									color: Colors.grey,
+									marginTop: 15,
+									lineHeight: 18,
+									fontWeight: "300"
+								}}
+							>
 								答题赚钱是一款手机休闲益智答题软件，我们搜集了世界上各国趣味知识，让您遨游在有趣的知识的海洋中。有地理，英文，历史，科学，世界趣闻等知识分类。
 								答题题目将不断更新，让您随时学到新知识。成功答题的您还能获得收益哦！在等朋友,等公交,等吃饭或其他碎片时间。
 								玩答题赚钱学知识拿金钱，知识就是金钱，《答题赚钱》来提现！答题赚钱是您killtime的最佳搭档。
@@ -45,13 +53,13 @@ class AboutScreen extends Component {
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15 }}>QQ交流群: 4337413</Text>
 
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
-								商务合作: lixueqing@haxibiao.com
+								商务合作: gaoxuan@haxibiao.com
 							</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>客服QQ: 597455096</Text>
 						</View>
 					</View>
 				</View>
-				<View style={{ backgroundColor: Colors.tintGray, paddingVertical: 15, alignItems: "center" }}>
+				<View style={{ backgroundColor: Colors.lightGray, paddingVertical: 15, alignItems: "center" }}>
 					<Text>哈希表网络科技(深圳)有限公司</Text>
 					<Text>www.datizhuanqian.com</Text>
 				</View>

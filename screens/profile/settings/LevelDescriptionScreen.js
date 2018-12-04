@@ -18,7 +18,7 @@ class LevelDescriptionScreen extends Component {
 		return (
 			<Screen>
 				<View style={styles.container}>
-					<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
+					<View style={{ paddingVertical: 15 }}>
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：头衔是什么？有什么作用？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>

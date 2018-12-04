@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, Dimensions } from "react-native";
 
-import { DivisionLine, TabTop, LoadingError, BlankContent, Loading } from "../../components/Universal";
+import { DivisionLine, TabTop, LoadingError, BlankContent, Loading, Banner } from "../../components/Universal";
 import { Button } from "../../components/Control";
 import { CorrectModal } from "../../components/Modal";
 import { Colors } from "../../constants";
@@ -15,6 +15,8 @@ import actions from "../../store/actions";
 import { QuestionQuery, QuestionAnswerMutation } from "../../graphql/question.graphql";
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query, Mutation } from "react-apollo";
+
+const { width, height } = Dimensions.get("window");
 
 class AnswerScreen extends Component {
 	constructor(props) {
@@ -36,6 +38,8 @@ class AnswerScreen extends Component {
 		console.log("value", value);
 		return (
 			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
+				<TabTop user={user} isShow={isShow} isAnswer={true} />
+				<Banner />
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
@@ -44,14 +48,23 @@ class AnswerScreen extends Component {
 						let question = data.question;
 						let selections = data.question.selections.replace(/\\/g, "");
 						let option = JSON.parse(selections);
-						console.log("data.question", question);
 						console.log("option", option);
 						return (
 							<View style={styles.container}>
 								<View>
-									<TabTop user={user} isShow={isShow} isAnswer={true} />
 									<View style={{ marginTop: 30, paddingHorizontal: 30 }}>
 										<Text style={styles.title}>{question.description}</Text>
+										{question.image && (
+											<Image
+												source={{
+													uri:
+														"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543911882126&di=ca5f066d93d61441c606ecd368a2ec4e&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmw690%2Fc329e16ftd7a1472b885e%26690"
+												}}
+												style={{ width: width - 60, height: 60, marginTop: 10 }}
+											/>
+										)
+										//需要返回图片的宽高
+										}
 										<View style={{ paddingTop: 30, paddingHorizontal: 10 }}>
 											{option.Selection.map((option, index) => {
 												return (
@@ -77,21 +90,6 @@ class AnswerScreen extends Component {
 											})}
 										</View>
 										<View style={{ height: 82, marginTop: 50 }}>
-											{isShow ? (
-												<View style={styles.tips}>
-													<Text
-														style={
-															question.answer == this.state.value
-																? { color: Colors.weixin }
-																: { color: "#ff0000" }
-														}
-													>
-														{question.answer == this.state.value ? "回答正确" : "回答错误"}
-													</Text>
-												</View>
-											) : (
-												<Text />
-											)}
 											<Mutation mutation={QuestionAnswerMutation}>
 												{answerQuestion => {
 													return (

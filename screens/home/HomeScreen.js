@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from "react-native";
 
 import { Header } from "../../components/Header";
-import { DivisionLine, TabTop, LoadingMore, ContentEnd } from "../../components/Universal";
+import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from "../../components/Universal";
 import { Colors, Config, Divice } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
@@ -29,10 +29,11 @@ class HomeScreen extends Component {
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 				/>
+				<TabTop user={user} />
 				<View style={styles.container}>
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
-							if (error) return null;
+							if (error) return <LoadingError reload={() => refetch()} text={"题目分类列表加载失败"} />;
 							if (!(data && data.categories)) return null;
 							return (
 								<FlatList
@@ -47,7 +48,7 @@ class HomeScreen extends Component {
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => <PlateItem plate={item} navigation={navigation} />}
 									ListHeaderComponent={() => {
-										return <TabTop user={user} />;
+										return <Banner />;
 									}}
 									onEndReachedThreshold={0.3}
 									onEndReached={() => {

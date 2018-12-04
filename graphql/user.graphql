@@ -96,6 +96,7 @@ query UserQuery($id: Int!) {
 			name
 			ticket_max
 			level
+			exp
 		}
 	}
 }

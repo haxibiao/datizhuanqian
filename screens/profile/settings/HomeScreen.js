@@ -11,6 +11,9 @@ import { SignOutModal } from "../../../components/Modal";
 import SettingItem from "./SettingItem";
 import { NavigationActions } from "react-navigation";
 
+import { UserQuery } from "../../../graphql/user.graphql";
+import { Query } from "react-apollo";
+
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
 import { Storage } from "../../../store/localStorage";
@@ -38,59 +41,74 @@ class HomeScreen extends Component {
 	render() {
 		let { promotModalVisible, fontModalVisible, storageSize, wordSize, checkedWordSize } = this.state;
 		const { navigation, users, client } = this.props;
-		const { login, user } = users;
+		const { login } = users;
+		const { id } = users.user;
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
 				<View style={styles.container}>
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
 						{login ? (
-							<View>
-								<TouchableOpacity
-									style={{
-										flexDirection: "row",
-										alignItems: "center",
-										justifyContent: "space-between",
-										height: 80,
-										paddingHorizontal: 15
-									}}
-									onPress={() => navigation.navigate("修改个人资料")}
-								>
-									<View
-										style={{
-											flexDirection: "row",
-											alignItems: "center"
-										}}
-									>
-										<Avatar
-											uri={
-												user.avatar
-													? user.avatar
-													: "http://cos.qunyige.com/storage/avatar/13.jpg"
-											}
-											size={52}
-											borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
-										/>
-										<View style={{ height: 34, justifyContent: "space-between", marginLeft: 15 }}>
-											<Text style={{ color: Colors.black, fontSize: 15 }}>{user.name}</Text>
-											<Text
+							<Query query={UserQuery} variables={{ id: id }}>
+								{({ data, loading, error }) => {
+									if (error) return null;
+									if (!(data && data.user)) return null;
+									let user = data.user;
+									let avatar = user.avatar + "?t=" + Date.now();
+									return (
+										<View>
+											<TouchableOpacity
 												style={{
-													fontSize: 12,
-													color: Colors.grey,
-													fontWeight: "300",
-													paddingTop: 3
+													flexDirection: "row",
+													alignItems: "center",
+													justifyContent: "space-between",
+													height: 80,
+													paddingHorizontal: 15
 												}}
+												onPress={() => navigation.navigate("修改个人资料")}
 											>
-												LV.{user.level ? user.level.level : "1"} {"  "}
-												{user.level.name} {"  "}
-												{user.level.exp}/2000
-											</Text>
+												<View
+													style={{
+														flexDirection: "row",
+														alignItems: "center"
+													}}
+												>
+													<Avatar
+														uri={avatar}
+														size={52}
+														borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
+													/>
+													<View
+														style={{
+															height: 34,
+															justifyContent: "space-between",
+															marginLeft: 15
+														}}
+													>
+														<Text style={{ color: Colors.black, fontSize: 15 }}>
+															{user.name}
+														</Text>
+														<Text
+															style={{
+																fontSize: 12,
+																color: Colors.grey,
+																fontWeight: "300",
+																paddingTop: 3
+															}}
+														>
+															LV.{user.level ? user.level.level : "1"} {"  "}
+															{user.level.name} {"  "}
+															{user.next_level_exp - user.level.exp}/{user.next_level_exp}
+														</Text>
+													</View>
+												</View>
+												<Iconfont name={"right"} />
+											</TouchableOpacity>
+											<DivisionLine height={10} />
 										</View>
-									</View>
-									<Iconfont name={"right"} />
-								</TouchableOpacity>
-								<DivisionLine height={10} />
-							</View>
+									);
+								}}
+							</Query>
 						) : null}
 
 						<TouchableOpacity onPress={() => navigation.navigate("关于答题赚钱")}>

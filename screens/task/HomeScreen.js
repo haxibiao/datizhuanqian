@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
 
 import { Header } from "../../components/Header";
-import { TabTop } from "../../components/Universal";
+import { TabTop, Banner } from "../../components/Universal";
 import Screen from "../Screen";
 import { Colors, Config, Divice } from "../../constants";
 
@@ -28,6 +28,7 @@ class HomeScreen extends Component {
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					/>
 					<TabTop user={counts} />
+					<Banner />
 					<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
 						<Image
 							source={require("../../assets/images/record.jpg")}
