@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from "react-native";
 
 import { Header } from "../../components/Header";
 import { TabTop, Banner } from "../../components/Universal";
@@ -45,6 +45,24 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#FFFEFC"
+	},
+	row: {
+		flexDirection: "row",
+		justifyContent: "center",
+		height: 60,
+		marginVertical: 18
+	},
+	rowLeft: {
+		flex: 1,
+		borderRightColor: Colors.tintGray,
+		borderRightWidth: 1,
+		justifyContent: "center",
+		alignItems: "center"
+	},
+	center: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center"
 	}
 });
 

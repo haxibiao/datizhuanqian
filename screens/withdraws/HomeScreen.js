@@ -5,6 +5,7 @@ import { Header } from "../../components/Header";
 import { DivisionLine, TabTop, Banner } from "../../components/Universal";
 import { Button } from "../../components/Control";
 import Screen from "../Screen";
+import NotLogin from "./NotLogin";
 import { Colors, Methods } from "../../constants";
 
 import { connect } from "react-redux";
