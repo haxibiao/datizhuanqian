@@ -101,28 +101,7 @@ class HomeScreen extends Component {
 							}}
 						</Query>
 					) : (
-						<View>
-							<View style={styles.row}>
-								<View style={styles.rowLeft}>
-									<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
-								</View>
-								<View style={styles.center}>
-									<Text style={{ fontSize: 16, color: Colors.black }}>0</Text>
-								</View>
-							</View>
-							<View style={{ alignItems: "center" }}>
-								<Slider style={{ width: 320 }} minimumValue={0} maximumValue={0} step={1} />
-							</View>
-							<View style={styles.row}>
-								<View style={styles.rowLeft}>
-									<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
-									<Text style={{ fontSize: 11, color: Colors.grey }}>大于600可提现</Text>
-								</View>
-								<View style={styles.center}>
-									<Text style={{ fontSize: 16, color: Colors.black }}>请登录查看智慧点</Text>
-								</View>
-							</View>
-						</View>
+						<NotLogin />
 					)}
 					{user.pay_account ? (
 						<View>

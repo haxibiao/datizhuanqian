@@ -53,10 +53,8 @@ class AnswerScreen extends Component {
 							<View style={styles.container}>
 								<View>
 									<TabTop user={user} isShow={isShow} isAnswer={true} />
-									<View style={{ height: 74 }}>
-										<Banner />
-									</View>
-									<View style={{ marginTop: 30, paddingHorizontal: 30 }}>
+									<Banner />
+									<View style={styles.content}>
 										<Text style={styles.title}>{question.description}</Text>
 										{question.image && (
 											<Image
@@ -71,10 +69,8 @@ class AnswerScreen extends Component {
 													borderRadius: 5
 												}}
 											/>
-										)
-										//需要返回图片的宽高
-										}
-										<View style={{ paddingTop: 30, paddingHorizontal: 10 }}>
+										)}
+										<View style={styles.options}>
 											{option.Selection.map((option, index) => {
 												return (
 													<TouchableOpacity
@@ -98,7 +94,7 @@ class AnswerScreen extends Component {
 												);
 											})}
 										</View>
-										<View style={{ height: 82, marginTop: 50 }}>
+										<View style={styles.submit}>
 											<Mutation mutation={QuestionAnswerMutation}>
 												{answerQuestion => {
 													return (
@@ -128,11 +124,11 @@ class AnswerScreen extends Component {
 																		this.setState({
 																			showColor: Colors.weixin
 																		});
-																		this.props.dispatch(
-																			actions.updateGold(
-																				user.gold + question.gold
-																			)
-																		);
+																		// this.props.dispatch(
+																		// 	actions.updateGold(
+																		// 		user.gold + question.gold
+																		// 	)
+																		// );
 																	} else {
 																		this.setState({
 																			showColor: Colors.red
@@ -218,19 +214,17 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 		justifyContent: "space-between"
 	},
-	top: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		paddingVertical: 15
+	content: {
+		marginTop: 30,
+		paddingHorizontal: 30
 	},
-	topRight: {
-		flexDirection: "row",
-		alignItems: "center"
+	options: {
+		paddingTop: 30,
+		paddingHorizontal: 10
 	},
-	img: {
-		height: 40,
-		width: 40
+	submit: {
+		height: 82,
+		marginTop: 50
 	},
 	title: {
 		color: Colors.primaryFont,
@@ -245,11 +239,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		paddingVertical: 12
-	},
-	tips: {
-		flexDirection: "row",
-		justifyContent: "center",
-		marginTop: 15
 	}
 });
 
