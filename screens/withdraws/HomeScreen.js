@@ -12,7 +12,7 @@ import actions from "../../store/actions";
 
 import { CreateTransactionMutation } from "../../graphql/withdraws.graphql";
 import { UserQuery } from "../../graphql/User.graphql";
-import { Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,7 +25,7 @@ class HomeScreen extends Component {
 	}
 	render() {
 		const { value } = this.state;
-		const { user } = this.props;
+		const { user, login } = this.props;
 		return (
 			<Screen header>
 				<View style={styles.container}>
@@ -34,57 +34,96 @@ class HomeScreen extends Component {
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					/>
 					<TabTop user={user} />
-					<View style={styles.row}>
-						<View style={styles.rowLeft}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
-						</View>
-						<View style={styles.center}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>{user.gold ? user.gold : 0}</Text>
-						</View>
-					</View>
-					<View style={{ alignItems: "center" }}>
-						<Slider
-							style={{ width: 320 }}
-							minimumValue={0}
-							maximumValue={user.gold}
-							value={this.state.value}
-							onValueChange={value => {
-								this.setState({
-									value: value
-								});
+					{login ? (
+						<Query query={UserQuery} variables={{ id: user.id }}>
+							{({ data, loading, error }) => {
+								if (error) return null;
+								if (!(data && data.user)) return null;
+								return (
+									<View>
+										<View style={styles.row}>
+											<View style={styles.rowLeft}>
+												<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
+											</View>
+											<View style={styles.center}>
+												<Text style={{ fontSize: 16, color: Colors.black }}>
+													{data.user.gold}
+												</Text>
+											</View>
+										</View>
+										<View style={{ alignItems: "center" }}>
+											<Slider
+												style={{ width: 320 }}
+												minimumValue={0}
+												maximumValue={data.user.gold}
+												value={this.state.value}
+												onValueChange={value => {
+													this.setState({
+														value: value
+													});
+												}}
+												step={1}
+											/>
+										</View>
+										<View style={styles.row}>
+											<View style={styles.rowLeft}>
+												<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
+												<Text style={{ fontSize: 11, color: Colors.grey }}>大于300可提现</Text>
+											</View>
+											<View style={styles.center}>
+												{user.pay_account ? (
+													<TextInput
+														style={styles.input}
+														underlineColorAndroid="transparent"
+														keyboardType="numeric"
+														defaultValue={this.state.value.toString()}
+														onChangeText={value => {
+															if (value) {
+																this.setState({
+																	value: parseInt(value)
+																});
+															} else {
+																this.setState({
+																	value: 0
+																});
+															}
+														}}
+													/>
+												) : (
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														请绑定支付宝
+													</Text>
+												)}
+											</View>
+										</View>
+									</View>
+								);
 							}}
-							step={1}
-						/>
-					</View>
-					<View style={styles.row}>
-						<View style={styles.rowLeft}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
-							<Text style={{ fontSize: 11, color: Colors.grey }}>大于300可提现</Text>
+						</Query>
+					) : (
+						<View>
+							<View style={styles.row}>
+								<View style={styles.rowLeft}>
+									<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
+								</View>
+								<View style={styles.center}>
+									<Text style={{ fontSize: 16, color: Colors.black }}>0</Text>
+								</View>
+							</View>
+							<View style={{ alignItems: "center" }}>
+								<Slider style={{ width: 320 }} minimumValue={0} maximumValue={0} step={1} />
+							</View>
+							<View style={styles.row}>
+								<View style={styles.rowLeft}>
+									<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
+									<Text style={{ fontSize: 11, color: Colors.grey }}>大于600可提现</Text>
+								</View>
+								<View style={styles.center}>
+									<Text style={{ fontSize: 16, color: Colors.black }}>请登录查看智慧点</Text>
+								</View>
+							</View>
 						</View>
-						<View style={styles.center}>
-							{user.pay_account ? (
-								<TextInput
-									style={styles.input}
-									underlineColorAndroid="transparent"
-									keyboardType="numeric"
-									defaultValue={this.state.value.toString()}
-									onChangeText={value => {
-										if (value) {
-											this.setState({
-												value: parseInt(value)
-											});
-										} else {
-											this.setState({
-												value: 0
-											});
-										}
-									}}
-								/>
-							) : (
-								<Text style={{ fontSize: 16, color: Colors.black }}>请绑定支付宝</Text>
-							)}
-						</View>
-					</View>
+					)}
 					{user.pay_account ? (
 						<View>
 							<View style={[styles.bottom, { backgroundColor: Colors.theme }]}>
@@ -112,9 +151,12 @@ class HomeScreen extends Component {
 											style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
 											theme={Colors.blue}
 											handler={async () => {
-												if (value > user.gold) {
-													Methods.toast("兑换失败,智慧点不足");
+												if (value < 600) {
+													Methods.toast("提现智慧点小于600");
 												} else {
+													this.setState({
+														value: 0
+													});
 													let result = {};
 													try {
 														result = await createTransaction({
@@ -132,12 +174,8 @@ class HomeScreen extends Component {
 														result.errors = ex;
 													}
 													if (result && result.errors) {
-														Methods.toast("提现失败,请检查你的网络和智慧点余额");
+														Methods.toast("提现失败,智慧点余额不足");
 													} else {
-														this.props.dispatch(actions.updateGold(user.gold - value)); //根据接口调整
-														this.setState({
-															value: 0
-														});
 														Methods.toast("发起提现成功,客服人员会尽快处理您的提现请求。");
 													}
 												}
@@ -221,6 +259,7 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return {
-		user: store.users.user
+		user: store.users.user,
+		login: store.users.login
 	};
 })(HomeScreen);

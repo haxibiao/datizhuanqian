@@ -48,11 +48,7 @@ class HomeScreen extends Component {
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => <PlateItem plate={item} navigation={navigation} />}
 									ListHeaderComponent={() => {
-										return (
-											<View style={{ height: 74 }}>
-												<Banner />
-											</View>
-										);
+										return <Banner />;
 									}}
 									onEndReachedThreshold={0.3}
 									onEndReached={() => {

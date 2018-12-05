@@ -61,10 +61,15 @@ class AnswerScreen extends Component {
 										{question.image && (
 											<Image
 												source={{
-													uri:
-														"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543911882126&di=ca5f066d93d61441c606ecd368a2ec4e&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmw690%2Fc329e16ftd7a1472b885e%26690"
+													uri: question.image.path
 												}}
-												style={{ width: width - 60, height: 60, marginTop: 10 }}
+												style={{
+													width: width - 60,
+													height:
+														(question.image.height / question.image.width) * (width - 60),
+													marginTop: 10,
+													borderRadius: 5
+												}}
 											/>
 										)
 										//需要返回图片的宽高

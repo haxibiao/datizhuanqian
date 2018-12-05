@@ -29,6 +29,9 @@ class HomeScreen extends Component {
 			<Screen customStyle={{ borderBottomColor: "transparent", backgroundColor: Colors.theme }}>
 				<View style={styles.container}>
 					{/*<Text style={{ paddingHorizontal: 15, paddingVertical: 10, color: Colors.gery }}>反馈内容</Text>*/}
+					<View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+						<Text style={{ color: Colors.grey }}>问题和意见</Text>
+					</View>
 					<View style={{ backgroundColor: Colors.white }}>
 						<TextInput
 							ref="textInput"
@@ -43,7 +46,9 @@ class HomeScreen extends Component {
 							}}
 						/>
 					</View>
-					<DivisionLine height={10} />
+					<View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+						<Text style={{ color: Colors.grey }}>联系方式(选填)</Text>
+					</View>
 					<View style={{ backgroundColor: Colors.white, marginBottom: 200 }}>
 						<TextInput
 							ref="textInput"
@@ -54,7 +59,7 @@ class HomeScreen extends Component {
 								paddingTop: 15,
 								fontSize: 13
 							}}
-							placeholder="(选填)请留下您的联系方式,以便我们向您反馈处理结果"
+							placeholder="微信/QQ/邮箱"
 							underlineColorAndroid="transparent"
 							selectionColor="#000"
 							multiline={true}
@@ -79,7 +84,7 @@ class HomeScreen extends Component {
 											}
 										});
 										navigation.goBack();
-										Methods.toast("反馈成功");
+										Methods.toast("反馈成功", -180);
 									}}
 								/>
 							);
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "transparent",
 		fontSize: 14,
 		padding: 0,
-		paddingLeft: 20,
+		paddingLeft: 15,
 		paddingTop: 20,
 		height: 260,
 		justifyContent: "flex-start"

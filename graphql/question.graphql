@@ -49,7 +49,11 @@ query QuestionQuery($id: Int, $category_id: Int) {
 		status
 		gold
 		ticket
-		image
+		image {
+			path
+			width
+			height
+		}
 		category {
 			id
 			name
@@ -67,4 +71,14 @@ query QuestionQuery($id: Int, $category_id: Int) {
 #答题
 mutation QuestionAnswerMutation($id: Int!, $answer: String!) {
 	answerQuestion(id: $id, answer: $answer)
+}
+
+#问题页的Banner广告
+query BannersQuery {
+	banners {
+		id
+		description
+		image
+		url
+	}
 }

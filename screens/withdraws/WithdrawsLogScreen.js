@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, FlatList, Text, Dimensions } from "react-native";
 
-import { DivisionLine, TabTop, BlankContent } from "../../components/Universal";
+import { DivisionLine, TabTop, BlankContent, Loading } from "../../components/Universal";
 import Screen from "../Screen";
 import { Colors } from "../../constants";
 
@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import actions from "../../store/actions";
 
 import { TransactionsQuery } from "../../graphql/withdraws.graphql";
+import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 
 const { width, height } = Dimensions.get("window");
@@ -20,21 +21,30 @@ class WithdrawsLogScreen extends Component {
 		console.log("user", user);
 		return (
 			<Screen>
-				<DivisionLine height={10} />
-				<View style={styles.top}>
-					<View style={styles.topLeft}>
-						<Text style={{ fontSize: 16 }}>剩余智慧点</Text>
-						<Text style={{ fontSize: 16, fontWeight: "600" }}>{user.gold}</Text>
-					</View>
-					<View style={styles.topRight}>
-						<Text style={{ fontSize: 16 }}>累计提现</Text>
-						<Text style={{ fontSize: 16, fontWeight: "600" }}>￥{user.accumulative}</Text>
-					</View>
-				</View>
+				<Query query={UserQuery} variables={{ id: user.id }}>
+					{({ data, error, loading, fetch, fetchMore }) => {
+						if (error) return null;
+						if (!(data && data.user)) return null;
+						return (
+							<View style={styles.top}>
+								<DivisionLine height={10} />
+								<View style={styles.topLeft}>
+									<Text style={{ fontSize: 16 }}>剩余智慧点</Text>
+									<Text style={{ fontSize: 16, fontWeight: "600" }}>{data.user.gold}</Text>
+								</View>
+								<View style={styles.topRight}>
+									<Text style={{ fontSize: 16 }}>累计成功提现</Text>
+									<Text style={{ fontSize: 16, fontWeight: "600" }}>￥{data.user.accumulative}</Text>
+								</View>
+							</View>
+						);
+					}}
+				</Query>
 				<DivisionLine height={10} />
 				<Query query={TransactionsQuery}>
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
+						if (loading) return <Loading />;
 						if (!(data && data.transactions)) return null;
 						if (data.transactions.length < 1)
 							return <BlankContent text={"暂无提现记录哦,快去赚取智慧点吧~"} fontSize={14} />;
@@ -46,38 +56,56 @@ class WithdrawsLogScreen extends Component {
 								renderItem={({ item, index }) => {
 									return (
 										<View style={styles.item}>
-											<Text style={{ fontSize: 15 }}>{item.created_at}</Text>
-											<Text style={{ fontSize: 15 }}>￥{item.amount}</Text>
-											{item.submit == -1 && (
-												<Text
-													style={{
-														color: Colors.red,
-														fontSize: 15
-													}}
-												>
-													提现失败
-												</Text>
-											)}
-											{item.submit == 1 && (
-												<Text
-													style={{
-														color: Colors.weixin,
-														fontSize: 15
-													}}
-												>
-													提现成功
-												</Text>
-											)}
-											{item.submit == 0 && (
-												<Text
-													style={{
-														color: Colors.theme,
-														fontSize: 15
-													}}
-												>
-													待处理
-												</Text>
-											)}
+											<View
+												style={{
+													width: (width - 30) / 2
+												}}
+											>
+												<Text style={{ fontSize: 15 }}>{item.created_at}</Text>
+											</View>
+											<View
+												style={{
+													width: (width - 30) / 6,
+													marginLeft: (width - 30) / 12
+												}}
+											>
+												<Text style={{ fontSize: 15 }}>￥{item.amount}</Text>
+											</View>
+											<View style={{ alignItems: "flex-end", width: (width - 30) / 4 }}>
+												{item.submit == -1 && (
+													<Text
+														style={{
+															color: Colors.red,
+															fontSize: 15,
+															textAlign: "right"
+														}}
+													>
+														提现失败
+													</Text>
+												)}
+												{item.submit == 1 && (
+													<Text
+														style={{
+															color: Colors.weixin,
+															fontSize: 15,
+															textAlign: "right"
+														}}
+													>
+														提现成功
+													</Text>
+												)}
+												{item.submit == 0 && (
+													<Text
+														style={{
+															color: Colors.theme,
+															fontSize: 15,
+															textAlign: "right"
+														}}
+													>
+														待处理
+													</Text>
+												)}
+											</View>
 										</View>
 									);
 								}}
@@ -114,7 +142,7 @@ const styles = StyleSheet.create({
 	item: {
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-between",
+
 		paddingVertical: 15,
 		borderTopColor: Colors.lightBorder,
 		borderTopWidth: 1,
