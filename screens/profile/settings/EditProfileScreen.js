@@ -99,13 +99,16 @@ class EditProfileScreen extends Component {
 							disabled={user.pay_account ? true : false}
 						>
 							<SettingItem
-								itemName="我的账户"
+								itemName="账户信息"
 								rightSize={15}
 								rightContent={
 									user.pay_account ? user.pay_account + "(" + user.real_name + ")" : "绑定支付宝"
 								}
 							/>
 						</TouchableOpacity>
+						{/*<TouchableOpacity onPress={this.toggleModalVisible}>
+							<SettingItem itemName="重置密码" rightSize={15} />
+						</TouchableOpacity>*/}
 					</ScrollView>
 					<Mutation mutation={updateUserNameMutation}>
 						{updateUserName => {

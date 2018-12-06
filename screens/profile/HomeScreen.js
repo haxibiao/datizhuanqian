@@ -27,6 +27,20 @@ class HomeScreen extends Component {
 							<TopUserInfo navigation={navigation} />
 						</ErrorBoundary>
 						<DivisionLine height={10} />
+						<TouchableOpacity
+							style={styles.rowItem}
+							onPress={() => {
+								navigation.navigate("道具库");
+							}}
+						>
+							<View style={styles.itemLeft}>
+								<Iconfont name={"invitation"} size={19} />
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
+									道具库
+								</Text>
+							</View>
+							<Iconfont name={"right"} />
+						</TouchableOpacity>
 						<TouchableOpacity style={styles.rowItem}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"invitation"} size={19} />
