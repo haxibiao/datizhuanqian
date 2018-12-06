@@ -11,6 +11,8 @@ import store from "./store";
 import actions from "./store/actions";
 import { Storage, ItemKeys } from "./store/localStorage";
 
+import codePush from "react-native-code-push";
+
 const { width, height } = Dimensions.get("window");
 
 class App extends Component {
@@ -79,4 +81,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+let codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.ON_NEXT_RESUME
+};
+export default codePush(codePushOptions)(App);
