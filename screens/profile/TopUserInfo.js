@@ -18,7 +18,6 @@ class UserTopInfo extends Component {
 	render() {
 		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
-		console.log("topuserinfo", userInfo);
 		return (
 			<View>
 				{login ? (
@@ -29,7 +28,11 @@ class UserTopInfo extends Component {
 							let user = data.user;
 							let avatar = user.avatar + "?t=" + Date.now();
 							return (
-								<View style={styles.userInfoContainer}>
+								<TouchableOpacity
+									style={styles.userInfoContainer}
+									onPress={() => navigation.navigate("修改个人资料")}
+									activeOpacity={1}
+								>
 									<View style={styles.userInfo}>
 										<View style={{ flexDirection: "row", marginLeft: 30 }}>
 											<View style={{}}>
@@ -90,7 +93,7 @@ class UserTopInfo extends Component {
 											</Text>
 										</View>
 									</View>
-								</View>
+								</TouchableOpacity>
 							);
 						}}
 					</Query>

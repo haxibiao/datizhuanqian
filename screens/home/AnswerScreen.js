@@ -1,14 +1,22 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, Dimensions } from "react-native";
 
-import { DivisionLine, TabTop, LoadingError, BlankContent, Loading, Banner } from "../../components/Universal";
+import {
+	DivisionLine,
+	TabTop,
+	LoadingError,
+	BlankContent,
+	Loading,
+	Banner,
+	ErrorBoundary
+} from "../../components/Universal";
 import { Button } from "../../components/Control";
 import { CorrectModal } from "../../components/Modal";
 import { Colors } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
 import Screen from "../Screen";
-
+import Question from "./Question";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
@@ -22,6 +30,7 @@ class AnswerScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.nextQuestion = this.nextQuestion.bind(this);
+		this.changeValue = this.changeValue.bind(this);
 		this.state = {
 			i: 0,
 			isMethod: false,
@@ -50,140 +59,116 @@ class AnswerScreen extends Component {
 						if (!option.Selection.length)
 							return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
 						return (
-							<View style={styles.container}>
-								<View>
-									<TabTop user={user} isShow={isShow} isAnswer={true} />
-									<Banner />
-									<View style={styles.content}>
-										<Text style={styles.title}>{question.description}</Text>
-										{question.image && (
-											<Image
-												source={{
-													uri: question.image.path
-												}}
-												style={{
-													width: width - 60,
-													height:
-														(question.image.height / question.image.width) * (width - 60),
-													marginTop: 10,
-													borderRadius: 5
-												}}
-											/>
-										)}
-										<View style={styles.options}>
-											{option.Selection.map((option, index) => {
-												return (
-													<TouchableOpacity
-														disabled={isMethod}
-														key={index}
-														style={[
-															styles.option,
-															{
-																borderColor:
-																	value == option.Value ? showColor : Colors.tintGray
-															}
-														]}
-														onPress={() => {
-															this.setState({
-																value: option.Value
-															});
-														}}
-													>
-														<Text>{option.Text}</Text>
-													</TouchableOpacity>
-												);
-											})}
-										</View>
-										<View style={styles.submit}>
-											<Mutation mutation={QuestionAnswerMutation}>
-												{answerQuestion => {
-													return (
-														<Button
-															name={name}
-															disabled={value ? false : true}
-															handler={() => {
-																if (!isMethod) {
-																	this.setState({
-																		isMethod: true,
-																		name: "下一题",
-																		isShow: true
-																	});
-																	answerQuestion({
-																		variables: {
-																			id: question.id,
-																			answer: value
-																		},
-																		refetchQueries: answerQuestion => [
-																			{
-																				query: UserQuery,
-																				variables: { id: user.id }
-																			}
-																		]
-																	});
-																	if (value == question.answer) {
+							<ErrorBoundary>
+								<View style={styles.container}>
+									<View>
+										<TabTop user={user} isShow={isShow} isAnswer={true} />
+										<Banner />
+										<View style={styles.content}>
+											<ErrorBoundary reload={() => refetch()}>
+												<Question
+													question={question}
+													option={option}
+													changeValue={this.changeValue}
+													value={value}
+													isMethod={isMethod}
+													showColor={showColor}
+												/>
+											</ErrorBoundary>
+											{
+												//因为题目库 选择项中产生了很多脏数据,所以对渲染做异常处理,防止release版本不会crash
+											}
+											<View style={styles.submit}>
+												<Mutation mutation={QuestionAnswerMutation}>
+													{answerQuestion => {
+														return (
+															<Button
+																name={name}
+																disabled={value ? false : true}
+																handler={() => {
+																	if (!isMethod) {
 																		this.setState({
-																			showColor: Colors.weixin
+																			isMethod: true,
+																			name: "下一题",
+																			isShow: true
 																		});
-																		// this.props.dispatch(
-																		// 	actions.updateGold(
-																		// 		user.gold + question.gold
-																		// 	)
-																		// );
+																		answerQuestion({
+																			variables: {
+																				id: question.id,
+																				answer: value
+																			},
+																			refetchQueries: answerQuestion => [
+																				{
+																					query: UserQuery,
+																					variables: { id: user.id }
+																				}
+																			]
+																		});
+																		if (value == question.answer) {
+																			this.setState({
+																				showColor: Colors.weixin
+																			});
+																			// this.props.dispatch(
+																			// 	actions.updateGold(
+																			// 		user.gold + question.gold
+																			// 	)
+																			// );
+																		} else {
+																			this.setState({
+																				showColor: Colors.red
+																			});
+																		}
 																	} else {
 																		this.setState({
-																			showColor: Colors.red
+																			isMethod: null,
+																			value: null,
+																			showColor: Colors.theme,
+																			name: "提交答案"
+																			// isShow: !isShow
 																		});
+																		refetch({ category_id: plate_id });
 																	}
-																} else {
-																	this.setState({
-																		isMethod: null,
-																		value: null,
-																		showColor: Colors.theme,
-																		name: "提交答案"
-																		// isShow: !isShow
-																	});
-																	refetch({ category_id: plate_id });
-																}
-															}}
-															style={{ height: 38 }}
-															theme={Colors.blue}
-															fontSize={14}
-														/>
-													);
-												}}
-											</Mutation>
-											<TouchableOpacity
-												style={{ alignItems: "flex-end", marginTop: 15 }}
-												onPress={() => refetch({ category_id: plate_id })}
-											>
-												<Text
-													style={{
-														color: Colors.tintFont,
-														fontSize: 12,
-														fontWeight: "200"
+																}}
+																style={{ height: 38 }}
+																theme={Colors.blue}
+																fontSize={14}
+															/>
+														);
 													}}
+												</Mutation>
+												<TouchableOpacity
+													style={{ alignItems: "flex-end", marginTop: 15 }}
+													onPress={() => refetch({ category_id: plate_id })}
 												>
-													搜一搜答案
-												</Text>
-											</TouchableOpacity>
+													<Text
+														style={{
+															color: Colors.tintFont,
+															fontSize: 12,
+															fontWeight: "200"
+														}}
+													>
+														搜一搜答案
+													</Text>
+												</TouchableOpacity>
+											</View>
 										</View>
 									</View>
-								</View>
 
-								<CorrectModal
-									visible={isShow}
-									gold={question.gold}
-									handleVisible={this.handleCorrectModal.bind(this)}
-									title={value == question.answer}
-									nextQuestion={() => {
-										this.nextQuestion();
-										refetch({ category_id: plate_id });
-									}}
-								/>
-								<TouchableOpacity style={{ marginBottom: 35, alignItems: "center" }}>
-									<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
-								</TouchableOpacity>
-							</View>
+									<CorrectModal
+										visible={isShow}
+										gold={question.gold}
+										handleVisible={this.handleCorrectModal.bind(this)}
+										title={value == question.answer}
+										nextQuestion={() => {
+											this.nextQuestion();
+											refetch({ category_id: plate_id });
+										}}
+									/>
+									<TouchableOpacity style={{ marginBottom: 35, alignItems: "center" }}>
+										<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
+									</TouchableOpacity>
+								</View>
+							</ErrorBoundary>
 						);
 					}}
 				</Query>
@@ -205,6 +190,12 @@ class AnswerScreen extends Component {
 		this.setState(prevState => ({
 			isShow: !prevState.isShow
 		}));
+	}
+
+	changeValue(Value) {
+		this.setState({
+			value: Value
+		});
 	}
 }
 

@@ -2,7 +2,6 @@
 mutation signUpMutation($account: String!, $password: String!) {
 	signUp(account: $account, password: $password) {
 		id
-		account
 		name
 		real_name
 		gender
@@ -11,18 +10,9 @@ mutation signUpMutation($account: String!, $password: String!) {
 		accumulative
 		exp
 		next_level_exp
-		level {
-			id
-			name
-			ticket_max
-			level
-			exp
-		}
 		pay_account
 		status
-		is_old_user
-		is_admin
-		last_login_at
+		token
 	}
 }
 
@@ -39,18 +29,9 @@ mutation signInMutation($account: String!, $password: String!) {
 		accumulative
 		exp
 		next_level_exp
-		level {
-			id
-			name
-			ticket_max
-			level
-			exp
-		}
 		pay_account
 		status
-		is_old_user
-		is_admin
-		last_login_at
+		token
 	}
 }
 
