@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 import Colors from "../../constants/Colors";
 import { Iconfont } from "../../utils/Fonts";
 
 import { NoTicketTipsModal } from "../Modal";
+
+import { BoxShadow } from "react-native-shadow";
 
 import { connect } from "react-redux";
 import actions from "../../store/actions";
@@ -11,7 +13,20 @@ import actions from "../../store/actions";
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 
-let user_ticket = null;
+const { width, height } = Dimensions.get("window");
+
+const shadowOpt = {
+	width: width,
+	color: "#E8E8E8",
+	border: 3,
+	radius: 10,
+	opacity: 0.5,
+	x: 0,
+	y: 1,
+	style: {
+		marginTop: 0
+	}
+};
 
 class TabTop extends Component {
 	constructor(props) {
@@ -35,33 +50,41 @@ class TabTop extends Component {
 							let user = data.user;
 							console.log("usertic", user.ticket);
 							return (
-								<View style={styles.container}>
-									<View style={styles.rowItem}>
-										<Iconfont name={"like"} size={24} color={Colors.theme} />
-										<Text style={styles.text}> 精力点</Text>
-										<Text
-											style={{
-												fontSize: 15,
-												paddingLeft: 5,
-												color: user.ticket > 10 ? Colors.black : Colors.red
-											}}
-										>
-											{user.ticket ? user.ticket : "0"}
-										</Text>
-										<Text style={styles.text}>/{user.level ? user.level.ticket_max : "180"}</Text>
+								<BoxShadow
+									setting={Object.assign({}, shadowOpt, {
+										height: 44
+									})}
+								>
+									<View style={styles.container}>
+										<View style={styles.rowItem}>
+											<Iconfont name={"like"} size={24} color={Colors.theme} />
+											<Text style={styles.text}> 精力点</Text>
+											<Text
+												style={{
+													fontSize: 15,
+													paddingLeft: 5,
+													color: user.ticket > 10 ? Colors.black : Colors.red
+												}}
+											>
+												{user.ticket ? user.ticket : "0"}
+											</Text>
+											<Text style={styles.text}>
+												/{user.level ? user.level.ticket_max : "180"}
+											</Text>
+										</View>
+										<View style={styles.rowItem}>
+											<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
+											<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
+											<Text style={styles.text}>{user.gold}</Text>
+										</View>
+										{isAnswer && !(isShow || user.ticket > 0) ? (
+											<NoTicketTipsModal
+												visible={show}
+												handleVisible={this.handleCorrectModal.bind(this)}
+											/>
+										) : null}
 									</View>
-									<View style={styles.rowItem}>
-										<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
-										<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
-										<Text style={styles.text}>{user.gold}</Text>
-									</View>
-									{isAnswer && !(isShow || user.ticket > 0) ? (
-										<NoTicketTipsModal
-											visible={show}
-											handleVisible={this.handleCorrectModal.bind(this)}
-										/>
-									) : null}
-								</View>
+								</BoxShadow>
 							);
 						}}
 					</Query>
@@ -85,7 +108,6 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
-		elevation: 2,
 		shadowOffset: { width: 0, height: 2 },
 		shadowColor: "#F0F0F0",
 		shadowOpacity: 1

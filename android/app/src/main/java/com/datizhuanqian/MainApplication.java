@@ -3,6 +3,7 @@ package com.datizhuanqian;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
             new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
             new RNSpinkitPackage(),
             new PickerPackage(),

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Linking } from "react-native";
 import Swiper from "react-native-swiper";
 
+import DivisionLine from "./DivisionLine";
+
 import Colors from "../../constants/Colors";
 import { BannersQuery } from "../../graphql/question.graphql";
 import { Query } from "react-apollo";

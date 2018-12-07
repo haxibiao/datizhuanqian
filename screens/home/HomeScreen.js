@@ -29,8 +29,9 @@ class HomeScreen extends Component {
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 				/>
-				<TabTop user={user} />
+
 				<View style={styles.container}>
+					<TabTop user={user} />
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
 							if (error) return <LoadingError reload={() => refetch()} text={"题目分类列表加载失败"} />;
