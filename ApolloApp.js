@@ -29,20 +29,19 @@ class ApolloApp extends Component {
 		let { user = {} } = this.props;
 		this.timer = setTimeout(() => {
 			this.props.onReady();
-		}, 3000);
+		}, 6000);
 		this._makeClient(user);
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.user !== this.props.user) {
-			this._makeClient(nextProps.user);
-		}
-	}
+	// componentWillUpdate(nextProps, nextState) {
+	// 	if (nextProps.user !== this.props.user) {
+	// 		this._makeClient(nextProps.user);
+	// 	}
+	// }
 
-	componentWillUnmount() {
-		this.timer && clearTimeout(this.timer);
-		this.promiseTimer && clearTimeout(this.promiseTimer);
-	}
+	// componentWillUnmount() {
+	// 	this.timer && clearTimeout(this.timer);
+	// }
 
 	render() {
 		return (

@@ -18,6 +18,7 @@ class UserTopInfo extends Component {
 	render() {
 		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
+		console.log("infoid", userInfo.id);
 		return (
 			<View>
 				{login ? (
@@ -25,6 +26,7 @@ class UserTopInfo extends Component {
 						{({ data, loading, error }) => {
 							if (error) return null;
 							if (!(data && data.user)) return null;
+							console.log("topuser", data.user.ticket);
 							let user = data.user;
 							let avatar = user.avatar + "?t=" + Date.now();
 							return (
