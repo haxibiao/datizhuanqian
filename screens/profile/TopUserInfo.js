@@ -30,7 +30,7 @@ class UserTopInfo extends Component {
 							return (
 								<TouchableOpacity
 									style={styles.userInfoContainer}
-									onPress={() => navigation.navigate("修改个人资料")}
+									onPress={() => navigation.navigate("编辑个人资料")}
 									activeOpacity={1}
 								>
 									<View style={styles.userInfo}>
@@ -111,7 +111,7 @@ class UserTopInfo extends Component {
 
 								<View style={{ marginLeft: 20 }}>
 									<View style={styles.headerInfo}>
-										<Text style={styles.userName}>登录/注册</Text>
+										<Text style={styles.userName}>登录 / 注册</Text>
 										<View
 											style={{
 												flexDirection: "row",

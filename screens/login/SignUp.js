@@ -47,31 +47,32 @@ class SignUp extends Component {
 		let { switchView, handleSubmit } = this.props;
 		return (
 			<View style={styles.container}>
-				<View style={styles.top}>
-					<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
-				</View>
-				<View style={styles.input}>
-					<LoginInput
-						name={"user"}
-						keys={"account"}
-						focusItem={focusItem}
-						value={this.accountState.account}
-						focusKey={this.focusKey.bind(this)}
-						emptyValue={this.emptyValue}
-						placeholder={"手机号码/邮箱"}
-						changeValue={this.changeValue}
-					/>
-					<LoginInput
-						name={"lock"}
-						keys={"password"}
-						focusItem={focusItem}
-						value={this.accountState.password}
-						secure={true}
-						focusKey={this.focusKey.bind(this)}
-						placeholder={"设置密码"}
-						changeValue={this.changeValue}
-					/>
-					{/*<LoginInput
+				<View style={{ flex: 1, justifyContent: "space-between" }}>
+					<View style={styles.input}>
+						<View style={styles.top}>
+							<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+						</View>
+						<LoginInput
+							name={"user"}
+							keys={"account"}
+							focusItem={focusItem}
+							value={this.accountState.account}
+							focusKey={this.focusKey.bind(this)}
+							emptyValue={this.emptyValue}
+							placeholder={"手机号码/邮箱"}
+							changeValue={this.changeValue}
+						/>
+						<LoginInput
+							name={"lock"}
+							keys={"password"}
+							focusItem={focusItem}
+							value={this.accountState.password}
+							secure={true}
+							focusKey={this.focusKey.bind(this)}
+							placeholder={"设置密码"}
+							changeValue={this.changeValue}
+						/>
+						{/*<LoginInput
 						name={"lock"}
 						keys={"verificationCode"}
 						value={this.accountState.verificationCode}
@@ -85,35 +86,37 @@ class SignUp extends Component {
 						// 	borderBottomRightRadius: 3
 						// }}
 					/>*/}
+						<View style={{ marginTop: 20 }}>
+							<TouchableOpacity
+								disabled={disableSubmit}
+								onPress={() => {
+									if (!disableSubmit) {
+										handleSubmit(this.accountState);
+									}
+									this.setState({
+										disableSubmit: true
+									});
+								}}
+								style={[
+									styles.signInBtn,
+									!disableSubmit && {
+										backgroundColor: Colors.theme
+									}
+								]}
+							>
+								<Text style={styles.signInBtnText}>同意协议并注册</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
 				</View>
-				<View style={{ marginTop: 20 }}>
-					<TouchableOpacity
-						disabled={disableSubmit}
-						onPress={() => {
-							if (!disableSubmit) {
-								handleSubmit(this.accountState);
-							}
-							this.setState({
-								disableSubmit: true
-							});
-						}}
-						style={[
-							styles.signInBtn,
-							!disableSubmit && {
-								backgroundColor: Colors.theme
-							}
-						]}
-					>
-						<Text style={styles.signInBtnText}>同意协议并注册</Text>
-					</TouchableOpacity>
-				</View>
+
 				<View style={{ alignItems: "center" }}>
 					<View style={{ marginVertical: 15 }}>
 						<TouchableOpacity onPress={switchView}>
 							<Text
 								style={{
 									fontSize: 16,
-									color: Colors.themeColor
+									color: Colors.theme
 								}}
 							>
 								已有账号登录
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
 		// justifyContent: "space-between"
 	},
 	top: {
-		marginTop: 150,
+		marginVertical: 100,
 		alignItems: "center"
 	},
 	logo: {
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
 		height: width / 4
 	},
 	input: {
-		marginTop: 60
+		marginTop: 0
 	},
 	signInBtn: {
 		height: 42,
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
 		height: 46,
 		lineHeight: 22,
 		padding: 0,
-		color: Colors.primaryFontColor
+		color: Colors.primaryFont
 	}
 });
 

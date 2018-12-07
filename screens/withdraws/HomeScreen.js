@@ -54,9 +54,11 @@ class HomeScreen extends Component {
 										</View>
 										<View style={{ alignItems: "center" }}>
 											<Slider
-												style={{ width: 320 }}
+												style={{ width: width - 20 }}
 												minimumValue={0}
 												maximumValue={data.user.gold}
+												thumbTintColor={Colors.theme}
+												minimumTrackTintColor={"#1E90FF"}
 												value={this.state.value}
 												onValueChange={value => {
 													this.setState({
@@ -93,6 +95,11 @@ class HomeScreen extends Component {
 												) : (
 													<Text style={{ fontSize: 16, color: Colors.black }}>
 														请绑定支付宝
+													</Text>
+												)}
+												{value > data.user.gold && (
+													<Text style={{ fontSize: 11, color: Colors.red, marginTop: 2 }}>
+														超过智慧点余额
 													</Text>
 												)}
 											</View>

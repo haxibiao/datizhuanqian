@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 
 import { Colors } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
+
+const { width, height } = Dimensions.get("window");
 
 class Question extends Component {
 	constructor(props) {

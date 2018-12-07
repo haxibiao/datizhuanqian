@@ -40,7 +40,7 @@ class Banner extends Component {
 						>
 							{data.banners.map((banner, index) => {
 								return (
-									<TouchableOpacity onPress={() => this.openUrl(banner.url)}>
+									<TouchableOpacity onPress={() => this.openUrl(banner.url)} key={index}>
 										<Image
 											source={{
 												uri: banner.image
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 	},
 	img: {
 		width,
-		height: 74,
+		height: 70,
 		resizeMode: "cover"
 	}
 });

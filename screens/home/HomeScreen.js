@@ -23,6 +23,7 @@ class HomeScreen extends Component {
 	}
 	render() {
 		const { plate, navigation, user, nextPlate } = this.props;
+		console.log("userhome", user);
 		return (
 			<Screen header>
 				<Header

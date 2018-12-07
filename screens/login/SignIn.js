@@ -48,93 +48,96 @@ class SignIn extends Component {
 		let { switchView, handleSubmit, navigation } = this.props;
 		return (
 			<View style={styles.container}>
-				<View style={styles.top}>
-					<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
-				</View>
-				<View style={styles.input}>
-					<LoginInput
-						name={"user"}
-						keys={"account"}
-						focusItem={focusItem}
-						value={this.accountState.account}
-						focusKey={this.focusKey}
-						emptyValue={this.emptyValue}
-						placeholder={"手机号码/邮箱"}
-						changeValue={this.changeValue}
-					/>
-					<LoginInput
-						name={"lock"}
-						keys={"password"}
-						focusItem={focusItem}
-						value={this.accountState.password}
-						secure={true}
-						focusKey={this.focusKey}
-						placeholder={"密码"}
-						changeValue={this.changeValue}
-					/>
-				</View>
-				<View style={{ marginTop: 10, alignItems: "flex-end" }}>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.navigate("验证");
-						}}
-					>
-						<Text
+				<View style={{ justifyContent: "space-between", flex: 1 }}>
+					<View style={styles.input}>
+						<View style={styles.top}>
+							<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+						</View>
+						<LoginInput
+							name={"user"}
+							keys={"account"}
+							focusItem={focusItem}
+							value={this.accountState.account}
+							focusKey={this.focusKey}
+							emptyValue={this.emptyValue}
+							placeholder={"手机号码/邮箱"}
+							changeValue={this.changeValue}
+						/>
+						<LoginInput
+							name={"lock"}
+							keys={"password"}
+							focusItem={focusItem}
+							value={this.accountState.password}
+							secure={true}
+							focusKey={this.focusKey}
+							placeholder={"密码"}
+							changeValue={this.changeValue}
+						/>
+						<View style={{ marginTop: 10, alignItems: "flex-end" }}>
+							<TouchableOpacity
+								onPress={() => {
+									navigation.navigate("验证");
+								}}
+							>
+								<Text
+									style={{
+										fontSize: 14,
+										color: Colors.tintFont
+									}}
+								>
+									忘记密码？
+								</Text>
+							</TouchableOpacity>
+						</View>
+						<View style={{ marginTop: 20 }}>
+							<TouchableOpacity
+								disabled={disableSubmit}
+								onPress={() => {
+									if (!disableSubmit) {
+										handleSubmit(this.accountState);
+									}
+									this.setState({
+										disableSubmit: true
+									});
+								}}
+								style={[
+									styles.signInBtn,
+									!disableSubmit && {
+										backgroundColor: Colors.theme
+									}
+								]}
+							>
+								<Text style={styles.signInBtnText}>登录</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+
+					<View style={{ alignItems: "center" }}>
+						<View
 							style={{
-								fontSize: 14,
-								color: Colors.tintFont
+								marginVertical: 15,
+								flexDirection: "row"
 							}}
 						>
-							忘记密码？
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={{ marginTop: 20 }}>
-					<TouchableOpacity
-						disabled={disableSubmit}
-						onPress={() => {
-							if (!disableSubmit) {
-								handleSubmit(this.accountState);
-							}
-							this.setState({
-								disableSubmit: true
-							});
-						}}
-						style={[
-							styles.signInBtn,
-							!disableSubmit && {
-								backgroundColor: Colors.theme
-							}
-						]}
-					>
-						<Text style={styles.signInBtnText}>登录</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={{ alignItems: "center" }}>
-					<View
-						style={{
-							marginVertical: 15,
-							flexDirection: "row"
-						}}
-					>
-						<Text
-							style={{
-								fontSize: 16,
-								color: Colors.tintFontColor
-							}}
-						>
-							还没有账号？
-						</Text>
-						<TouchableOpacity onPress={switchView}>
 							<Text
 								style={{
 									fontSize: 16,
-									color: Colors.themeColor
+									color: Colors.tintFontColor
 								}}
 							>
-								注册
+								还没有账号？
 							</Text>
-						</TouchableOpacity>
+							<TouchableOpacity onPress={switchView}>
+								<Text
+									style={{
+										fontSize: 16,
+										color: Colors.theme
+									}}
+								>
+									注册
+								</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				</View>
 			</View>
@@ -151,7 +154,8 @@ const styles = StyleSheet.create({
 		// justifyContent: "space-between"
 	},
 	top: {
-		marginTop: 150,
+		marginTop: 100,
+		marginBottom: 100,
 		alignItems: "center"
 	},
 	logo: {
@@ -159,7 +163,7 @@ const styles = StyleSheet.create({
 		height: width / 4
 	},
 	input: {
-		marginTop: 60
+		marginTop: 0
 	},
 	signInBtn: {
 		height: 42,

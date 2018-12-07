@@ -15,7 +15,10 @@ class UsersReducer {
 		return state.set("user", user).set("login", true);
 	}
 	static [types.SIGN_OUT](state, action) {
-		return state.set("user", {}).set("login", false);
+		return state
+			.set("user", {})
+			.set("login", false)
+			.set("noTicketTips", true);
 	}
 	static [types.UPDATE_NAME](state, action) {
 		let { user } = state;

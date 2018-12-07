@@ -48,6 +48,32 @@ mutation ResetPasswordMutation($account: String!, $password: String!, $token: St
 	}
 }
 
+#修改密码
+
+mutation UpdateUserPasswordMutation($old_password: String!, $new_password: String!) {
+	updateUserPassword(old_password: $old_password, new_password: $new_password) {
+		id
+		account
+		name
+		real_name
+		gender
+		avatar
+		gold
+		ticket
+		level {
+			id
+			name
+			ticket_max
+			level
+		}
+		pay_account
+		accumulative
+		exp
+		next_level_exp
+		token
+	}
+}
+
 #用户个人资料
 query UserQuery($id: Int!) {
 	user(id: $id) {

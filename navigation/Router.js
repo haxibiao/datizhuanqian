@@ -14,6 +14,7 @@ import ShareScreen from "../screens/profile/settings/ShareScreen";
 import LevelDescriptionScreen from "../screens/profile/settings/LevelDescriptionScreen";
 import FeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
+import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
 
 import WithdrawsLogScreen from "../screens/withdraws/WithdrawsLogScreen";
 
@@ -33,7 +34,7 @@ export default {
 	回答: {
 		screen: AnswerScreen
 	},
-	修改个人资料: {
+	编辑个人资料: {
 		screen: EditProfileScreen
 	},
 	我的账户: {
@@ -56,6 +57,9 @@ export default {
 	},
 	常见问题: {
 		screen: CommonProblemScreen
+	},
+	重置密码: {
+		screen: ChangePasswordScreen
 	},
 	提现日志: {
 		screen: WithdrawsLogScreen

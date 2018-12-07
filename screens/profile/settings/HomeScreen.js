@@ -65,7 +65,7 @@ class HomeScreen extends Component {
 													height: 80,
 													paddingHorizontal: 15
 												}}
-												onPress={() => navigation.navigate("修改个人资料")}
+												onPress={() => navigation.navigate("编辑个人资料")}
 											>
 												<View
 													style={{

@@ -35,7 +35,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: true
+			login: false
 		};
 	}
 	render() {
@@ -49,7 +49,7 @@ class HomeScreen extends Component {
 						borderBottomWidth: 0
 					}}
 				/>
-				<ScrollView style={styles.container}>
+				<View style={styles.container}>
 					<TabTop user={counts} />
 					{/*<Banner />*/}
 					{login ? (
@@ -108,7 +108,7 @@ class HomeScreen extends Component {
 									>
 										<Text style={{ fontSize: 16, color: Colors.black }}>每日任务</Text>
 									</View>
-									<TaskItem title={"参与10道答题"} reword={"+20精力点"} />
+									<TaskItem title={"参与10道答题"} reword={"+20精力点"} status={1} />
 									<TaskItem title={"完成5道题目纠错"} reword={"+20精力点"} />
 									<TaskItem title={"分享朋友圈"} reword={"+10精力点"} />
 									<TaskItem title={"邀请新用户"} reword={"+15精力点"} />
@@ -116,9 +116,9 @@ class HomeScreen extends Component {
 							</BoxShadow>
 						</View>
 					) : (
-						<BlankContent />
+						<BlankContent text={"暂时还没有任务哦~"} fontSize={14} />
 					)}
-				</ScrollView>
+				</View>
 			</Screen>
 		);
 	}

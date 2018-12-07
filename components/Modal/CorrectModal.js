@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get("window");
 
 class CorrectModal extends Component {
 	render() {
-		const { visible, handleVisible, title, nextQuestion, gold } = this.props;
+		const { visible, handleVisible, title, nextQuestion, gold, noTicketTips } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -33,8 +33,8 @@ class CorrectModal extends Component {
 				/>
 				{title && (
 					<View style={styles.content}>
-						<Iconfont name={"zhuanshi"} size={18} color={Colors.theme} />
-						<Text style={styles.text}>智慧点+{gold}</Text>
+						{noTicketTips && <Iconfont name={"zhuanshi"} size={18} color={Colors.theme} />}
+						<Text style={styles.text}>{noTicketTips ? "智慧点" + "+" + gold : " 经验值+1"}</Text>
 					</View>
 				)}
 				<Button

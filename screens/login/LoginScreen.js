@@ -9,6 +9,7 @@ import SignUp from "./SignUp";
 
 import KeyboardSpacer from "react-native-keyboard-spacer";
 
+import { Iconfont } from "../../utils/Fonts";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
@@ -32,6 +33,11 @@ class LoginScreen extends Component {
 		const { navigation } = this.props;
 		return (
 			<Screen header>
+				<View style={{ marginTop: 40, alignItems: "flex-start", paddingLeft: 20 }}>
+					<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+						<Iconfont name={"close"} size={24} color={Colors.tintFontColor} style={{ fontWeight: "300" }} />
+					</TouchableOpacity>
+				</View>
 				{login ? (
 					<SignUp
 						switchView={this.switchView.bind(this)}

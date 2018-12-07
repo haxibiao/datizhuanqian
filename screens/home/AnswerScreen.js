@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, Dimensions } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, Dimensions, ScrollView } from "react-native";
 
 import {
 	DivisionLine,
@@ -41,10 +41,10 @@ class AnswerScreen extends Component {
 		};
 	}
 	render() {
-		const { navigation, prop, user } = this.props;
+		const { navigation, prop, user, noTicketTips } = this.props;
 		const { i, value, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
-		console.log("value", value);
+		console.log("noTicketTips", noTicketTips);
 		return (
 			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
@@ -60,7 +60,7 @@ class AnswerScreen extends Component {
 							return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
 						return (
 							<ErrorBoundary>
-								<View style={styles.container}>
+								<ScrollView style={styles.container}>
 									<View>
 										<TabTop user={user} isShow={isShow} isAnswer={true} />
 										<Banner />
@@ -136,27 +136,40 @@ class AnswerScreen extends Component {
 														);
 													}}
 												</Mutation>
-												<TouchableOpacity
-													style={{ alignItems: "flex-end", marginTop: 15 }}
-													onPress={() => refetch({ category_id: plate_id })}
-												>
-													<Text
-														style={{
-															color: Colors.tintFont,
-															fontSize: 12,
-															fontWeight: "200"
-														}}
-													>
-														搜一搜答案
-													</Text>
-												</TouchableOpacity>
+												{
+													// <TouchableOpacity
+													// 	style={{ alignItems: "flex-end", paddingTop: 15 }}
+													// 	onPress={() => refetch({ category_id: plate_id })}
+													// >
+													// 	<Text
+													// 		style={{
+													// 			color: Colors.tintFont,
+													// 			fontSize: 12,
+													// 			fontWeight: "200"
+													// 		}}
+													// 	>
+													// 		搜一搜答案
+													// 	</Text>
+													// </TouchableOpacity>
+												}
 											</View>
 										</View>
 									</View>
+									{
+										// <TouchableOpacity
+										// 	style={{
+										// 		alignItems: "center",
+										// 		flex: 1
+										// 	}}
+										// >
+										// 	<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
+										// </TouchableOpacity>
+									}
 
 									<CorrectModal
 										visible={isShow}
 										gold={question.gold}
+										noTicketTips={noTicketTips}
 										handleVisible={this.handleCorrectModal.bind(this)}
 										title={value == question.answer}
 										nextQuestion={() => {
@@ -164,10 +177,7 @@ class AnswerScreen extends Component {
 											refetch({ category_id: plate_id });
 										}}
 									/>
-									<TouchableOpacity style={{ marginBottom: 35, alignItems: "center" }}>
-										<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
-									</TouchableOpacity>
-								</View>
+								</ScrollView>
 							</ErrorBoundary>
 						);
 					}}
@@ -202,11 +212,12 @@ class AnswerScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.white,
-		justifyContent: "space-between"
+		backgroundColor: Colors.white
+		// justifyContent: "space-between"
 	},
 	content: {
-		marginTop: 30,
+		paddingTop: 30,
+
 		paddingHorizontal: 30
 	},
 	options: {
@@ -214,7 +225,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10
 	},
 	submit: {
-		height: 82,
 		marginTop: 50
 	},
 	title: {
@@ -237,6 +247,7 @@ export default connect(store => {
 	return {
 		question: store.question.question,
 		prop: store.question.prop,
-		user: store.users.user
+		user: store.users.user,
+		noTicketTips: store.users.noTicketTips
 	};
 })(AnswerScreen);

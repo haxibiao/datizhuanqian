@@ -14,7 +14,7 @@ class TaskItem extends Component {
 		this.state = {};
 	}
 	render() {
-		let { title, navigation, reword } = this.props;
+		let { title, navigation, reword, status } = this.props;
 		return (
 			<View style={styles.container}>
 				<View>
@@ -23,16 +23,30 @@ class TaskItem extends Component {
 						奖励 <Text style={{ color: Colors.theme }}>{reword}</Text>
 					</Text>
 				</View>
-				<Button
-					name={"做任务"}
-					outline
-					style={{
-						borderRadius: 45,
-						paddingHorizontal: 15,
-						height: 32
-					}}
-					fontSize={13}
-				/>
+				{status ? (
+					<Button
+						name={"已完成"}
+						outline
+						style={{
+							borderRadius: 45,
+							paddingHorizontal: 15,
+							height: 32
+						}}
+						theme={Colors.tintFont}
+						fontSize={13}
+					/>
+				) : (
+					<Button
+						name={"做任务"}
+						outline
+						style={{
+							borderRadius: 45,
+							paddingHorizontal: 15,
+							height: 32
+						}}
+						fontSize={13}
+					/>
+				)}
 			</View>
 		);
 	}

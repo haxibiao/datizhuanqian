@@ -106,9 +106,13 @@ class EditProfileScreen extends Component {
 								}
 							/>
 						</TouchableOpacity>
-						{/*<TouchableOpacity onPress={this.toggleModalVisible}>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate("重置密码");
+							}}
+						>
 							<SettingItem itemName="重置密码" rightSize={15} />
-						</TouchableOpacity>*/}
+						</TouchableOpacity>
 					</ScrollView>
 					<Mutation mutation={updateUserNameMutation}>
 						{updateUserName => {
