@@ -44,7 +44,6 @@ class AnswerScreen extends Component {
 		const { navigation, prop, user, noTicketTips } = this.props;
 		const { i, value, isMethod, isShow, showColor, name } = this.state;
 		const { plate_id } = navigation.state.params;
-		console.log("noTicketTips", noTicketTips);
 		return (
 			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
@@ -97,7 +96,7 @@ class AnswerScreen extends Component {
 																				id: question.id,
 																				answer: value
 																			},
-																			refetchQueries: answerQuestion => [
+																			refetchQueries: () => [
 																				{
 																					query: UserQuery,
 																					variables: { id: user.id }

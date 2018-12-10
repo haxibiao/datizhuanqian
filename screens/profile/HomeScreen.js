@@ -23,9 +23,8 @@ class HomeScreen extends Component {
 				<View style={styles.container}>
 					{/*<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />*/}
 					<ScrollView bounces={false}>
-						<ErrorBoundary>
-							<TopUserInfo navigation={navigation} />
-						</ErrorBoundary>
+						<TopUserInfo navigation={navigation} />
+
 						<DivisionLine height={10} />
 						<TouchableOpacity
 							style={styles.rowItem}

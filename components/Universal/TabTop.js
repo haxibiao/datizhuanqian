@@ -48,7 +48,6 @@ class TabTop extends Component {
 							if (error) return null;
 							if (!(data && data.user)) return null;
 							let user = data.user;
-							console.log("usertic", user.ticket);
 							return (
 								<BoxShadow
 									setting={Object.assign({}, shadowOpt, {
