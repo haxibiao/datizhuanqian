@@ -30,12 +30,10 @@ class ApolloApp extends Component {
 		this.timer = setTimeout(() => {
 			this.props.onReady();
 		}, 6000);
-		console.log("user1", user);
 		this._makeClient(user);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		console.log("user2", nextProps.user);
 		if (nextProps.user !== this.props.user) {
 			this._makeClient(nextProps.user);
 		}

@@ -48,10 +48,10 @@ class SignUp extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={{ flex: 1, justifyContent: "space-between" }}>
-					<View style={styles.input}>
-						<View style={styles.top}>
-							<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
-						</View>
+					<View style={styles.top}>
+						<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+					</View>
+					<View>
 						<LoginInput
 							name={"user"}
 							keys={"account"}
@@ -108,20 +108,19 @@ class SignUp extends Component {
 							</TouchableOpacity>
 						</View>
 					</View>
-				</View>
-
-				<View style={{ alignItems: "center" }}>
-					<View style={{ marginVertical: 15 }}>
-						<TouchableOpacity onPress={switchView}>
-							<Text
-								style={{
-									fontSize: 16,
-									color: Colors.theme
-								}}
-							>
-								已有账号登录
-							</Text>
-						</TouchableOpacity>
+					<View style={{ alignItems: "center" }}>
+						<View style={{ marginVertical: 15 }}>
+							<TouchableOpacity onPress={switchView}>
+								<Text
+									style={{
+										fontSize: 16,
+										color: Colors.theme
+									}}
+								>
+									已有账号登录
+								</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				</View>
 			</View>
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
 		// justifyContent: "space-between"
 	},
 	top: {
-		marginVertical: 100,
+		marginVertical: 20,
 		alignItems: "center"
 	},
 	logo: {

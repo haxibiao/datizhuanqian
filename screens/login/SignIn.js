@@ -49,30 +49,32 @@ class SignIn extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={{ justifyContent: "space-between", flex: 1 }}>
-					<View style={styles.input}>
-						<View style={styles.top}>
-							<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+					<View style={styles.top}>
+						<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+					</View>
+					<View>
+						<View>
+							<LoginInput
+								name={"user"}
+								keys={"account"}
+								focusItem={focusItem}
+								value={this.accountState.account}
+								focusKey={this.focusKey}
+								emptyValue={this.emptyValue}
+								placeholder={"手机号码/邮箱"}
+								changeValue={this.changeValue}
+							/>
+							<LoginInput
+								name={"lock"}
+								keys={"password"}
+								focusItem={focusItem}
+								value={this.accountState.password}
+								secure={true}
+								focusKey={this.focusKey}
+								placeholder={"密码"}
+								changeValue={this.changeValue}
+							/>
 						</View>
-						<LoginInput
-							name={"user"}
-							keys={"account"}
-							focusItem={focusItem}
-							value={this.accountState.account}
-							focusKey={this.focusKey}
-							emptyValue={this.emptyValue}
-							placeholder={"手机号码/邮箱"}
-							changeValue={this.changeValue}
-						/>
-						<LoginInput
-							name={"lock"}
-							keys={"password"}
-							focusItem={focusItem}
-							value={this.accountState.password}
-							secure={true}
-							focusKey={this.focusKey}
-							placeholder={"密码"}
-							changeValue={this.changeValue}
-						/>
 						<View style={{ marginTop: 10, alignItems: "flex-end" }}>
 							<TouchableOpacity
 								onPress={() => {
@@ -111,7 +113,6 @@ class SignIn extends Component {
 							</TouchableOpacity>
 						</View>
 					</View>
-
 					<View style={{ alignItems: "center" }}>
 						<View
 							style={{
@@ -150,12 +151,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.white,
 		paddingHorizontal: 25,
-		paddingVertical: 15
-		// justifyContent: "space-between"
+		paddingVertical: 15,
+		justifyContent: "space-between"
 	},
 	top: {
-		marginTop: 100,
-		marginBottom: 100,
+		marginTop: 20,
+		marginBottom: 20,
 		alignItems: "center"
 	},
 	logo: {

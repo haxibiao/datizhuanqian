@@ -50,7 +50,8 @@ class ChangePasswordScreen extends Component {
 							onChangeText={oldPassword => {
 								this.setState({ oldPassword });
 							}}
-							maxLength={10}
+							// maxLength={10}
+							secureTextEntry={true}
 						/>
 					</View>
 					<View style={styles.textWrap}>
@@ -101,6 +102,7 @@ class ChangePasswordScreen extends Component {
 										}}
 										style={{ height: 38, fontSize: 16 }}
 										disabled={oldPassword && password && againpassword ? false : true}
+										disabledColor={"rgba(255,177,0,0.7)"}
 									/>
 								);
 							}}

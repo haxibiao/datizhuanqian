@@ -131,6 +131,7 @@ class AnswerScreen extends Component {
 																style={{ height: 38 }}
 																theme={Colors.blue}
 																fontSize={14}
+																disabledColor={"rgba(64,127,207,0.7)"}
 															/>
 														);
 													}}
@@ -170,7 +171,9 @@ class AnswerScreen extends Component {
 										gold={question.gold}
 										noTicketTips={noTicketTips}
 										handleVisible={this.handleCorrectModal.bind(this)}
+										CloseModal={this.CloseModal.bind(this)}
 										title={value == question.answer}
+										answer={question.answer}
 										nextQuestion={() => {
 											this.nextQuestion();
 											refetch({ category_id: plate_id });
@@ -199,6 +202,19 @@ class AnswerScreen extends Component {
 		this.setState(prevState => ({
 			isShow: !prevState.isShow
 		}));
+	}
+
+	CloseModal() {
+		let { isShow } = this.state;
+
+		this.timer = setTimeout(() => {
+			this.setState(prevState => ({
+				isShow: false
+			}));
+		}, 800);
+		if (!isShow) {
+			clearTimeout(this.timer);
+		}
 	}
 
 	changeValue(Value) {

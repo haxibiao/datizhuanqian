@@ -1,4 +1,5 @@
 const theme = "#FFB100";
+const disabledColor = "rgba(255,177,0,0.7)";
 const white = "#fff";
 const orange = "#CD6839";
 const red = "#FF0000";
@@ -19,6 +20,7 @@ const nightColor = "#414141";
 
 export default {
 	theme,
+	disabledColor,
 	white,
 	orange,
 	red,

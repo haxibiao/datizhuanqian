@@ -10,6 +10,7 @@ class Button extends Component {
 			style = {},
 			outline, //镂空按钮
 			theme = Colors.theme, //边框/背景/文字颜色
+			disabledColor = Colors.disabledColor,
 			name,
 			fontSize = 16,
 			icon, //自定义icon
@@ -23,7 +24,7 @@ class Button extends Component {
 			{ borderColor: theme },
 			!outline && { backgroundColor: theme },
 			style,
-			disabled && { opacity: 0.7 }
+			disabled && { backgroundColor: disabledColor }
 		]);
 		return (
 			<TouchableOpacity onPress={handler} style={mergeButton} disabled={disabled}>
