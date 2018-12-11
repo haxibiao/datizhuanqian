@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 
 import { Colors } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
+
+const { width, height } = Dimensions.get("window");
 
 class PlateItem extends Component {
 	constructor(props) {
@@ -27,7 +29,7 @@ class PlateItem extends Component {
 						source={{ uri: plate.icon ? plate.icon : "http://cos.qunyige.com/storage/avatar/13.jpg" }}
 						style={styles.img}
 					/>
-					<View style={{ paddingLeft: 20, paddingRight: 40 }}>
+					<View style={{ paddingHorizontal: 20, width: (width * 3) / 4 }}>
 						<Text style={styles.title}>{plate.name}</Text>
 						<Text style={styles.content}>{plate.description}</Text>
 					</View>
