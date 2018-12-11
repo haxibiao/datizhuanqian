@@ -4771,6 +4771,10 @@ react-native-code-push@^5.4.2:
     plist "3.0.1"
     xcode "1.0.0"
 
+react-native-device-info@^0.24.3:
+  version "0.24.3"
+  resolved "http://registry.npm.taobao.org/react-native-device-info/download/react-native-device-info-0.24.3.tgz#f15eff8d09fe418eaf5e7c89ddaabbc5ed718fd7"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -4851,12 +4855,12 @@ react-native-swiper@^1.5.14:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-vector-icons@^4.5.0:
-  version "4.6.0"
-  resolved "http://registry.npm.taobao.org/react-native-vector-icons/download/react-native-vector-icons-4.6.0.tgz#e4014311ffa6de397d914ffc31b7097a874cc8d5"
+react-native-vector-icons@^6.1.0:
+  version "6.1.0"
+  resolved "http://registry.npm.taobao.org/react-native-vector-icons/download/react-native-vector-icons-6.1.0.tgz#770a3f8ced692d75deb3afbb9829195ceed1eedd"
   dependencies:
     lodash "^4.0.0"
-    prop-types "^15.5.10"
+    prop-types "^15.6.2"
     yargs "^8.0.2"
 
 react-native@0.57.4:

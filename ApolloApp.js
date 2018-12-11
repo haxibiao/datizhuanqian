@@ -8,16 +8,34 @@ import { ApolloProvider } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
+import DeviceInfo from "react-native-device-info";
+
 class ApolloApp extends Component {
 	_makeClient(user) {
 		let { token } = user;
 		console.log("user", user);
+		let deviceHeaders = {};
+
+		const isEmulator = DeviceInfo.isEmulator();
+		console.log("DeviceInfo.getBrand();", DeviceInfo.getBrand());
+		if (!isEmulator) {
+			deviceHeaders.os = Platform.OS;
+			deviceHeaders.brand = DeviceInfo.getBrand();
+			deviceHeaders.build = DeviceInfo.getBuildNumber();
+			deviceHeaders.deviceCountry = DeviceInfo.getDeviceCountry(); // "US"
+			deviceHeaders.referrer = DeviceInfo.getInstallReferrer(); //能分析出来哪个商店安装的
+			deviceHeaders.version = DeviceInfo.getReadableVersion();
+			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion();
+			deviceHeaders.uniqueId = DeviceInfo.getUniqueID();
+		}
+
 		this.client = new ApolloClient({
 			uri: "https://datizhuanqian.com/graphql",
 			request: async operation => {
 				operation.setContext({
 					headers: {
-						token
+						token,
+						...deviceHeaders
 					}
 				});
 			},
