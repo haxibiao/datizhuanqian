@@ -21,7 +21,6 @@ class Button extends Component {
 		} = this.props;
 		let mergeButton = StyleSheet.flatten([
 			styles.button,
-			{ borderColor: theme },
 			!outline && { backgroundColor: theme },
 			style,
 			disabled && { backgroundColor: disabledColor }
@@ -42,8 +41,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-around",
-		borderRadius: 5,
-		borderWidth: 1
+		borderRadius: 5
 	}
 });
 

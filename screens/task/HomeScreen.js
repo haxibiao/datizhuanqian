@@ -12,6 +12,7 @@ import actions from "../../store/actions";
 import { BoxShadow } from "react-native-shadow";
 
 import TaskItem from "./TaskItem";
+import NotLogin from "../withdraws/NotLogin";
 
 const { width, height } = Dimensions.get("window");
 
@@ -127,7 +128,7 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#ffffff"
+		backgroundColor: "#FFFEFC"
 	}
 });
 

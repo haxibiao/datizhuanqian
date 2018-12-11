@@ -84,7 +84,7 @@ class EditProfileScreen extends Component {
 									name={"提交"}
 									style={{ height: 40, marginHorizontal: 15, marginTop: 20 }}
 									disabled={!(real_name && pay_account)}
-									theme={real_name && pay_account ? Colors.blue : "rgba(64,127,207,0.7)"}
+									theme={real_name && pay_account ? Colors.theme : "rgba(64,127,207,0.7)"}
 									handler={() => {
 										SetUserPaymentInfoMutation({
 											variables: {

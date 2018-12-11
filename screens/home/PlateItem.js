@@ -10,22 +10,24 @@ class PlateItem extends Component {
 		this.state = {};
 	}
 	render() {
-		const { plate, navigation } = this.props;
+		const { plate, navigation, login } = this.props;
 		return (
 			<TouchableOpacity
 				style={styles.container}
-				onPress={() => {
-					navigation.navigate("回答", {
-						plate_id: plate.id
-					});
-				}}
+				onPress={() =>
+					login
+						? navigation.navigate("回答", {
+								plate_id: plate.id
+						  })
+						: navigation.navigate("登录注册")
+				}
 			>
 				<View style={styles.leftContent}>
 					<Image
 						source={{ uri: plate.icon ? plate.icon : "http://cos.qunyige.com/storage/avatar/13.jpg" }}
 						style={styles.img}
 					/>
-					<View style={{ paddingLeft: 20 }}>
+					<View style={{ paddingLeft: 20, paddingRight: 40 }}>
 						<Text style={styles.title}>{plate.name}</Text>
 						<Text style={styles.content}>{plate.description}</Text>
 					</View>

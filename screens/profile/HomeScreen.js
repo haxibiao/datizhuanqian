@@ -26,7 +26,7 @@ class HomeScreen extends Component {
 						<TopUserInfo navigation={navigation} />
 
 						<DivisionLine height={10} />
-						<TouchableOpacity
+						{/*		<TouchableOpacity
 							style={styles.rowItem}
 							onPress={() => {
 								navigation.navigate("道具库");
@@ -48,7 +48,7 @@ class HomeScreen extends Component {
 								</Text>
 							</View>
 							<Iconfont name={"right"} />
-						</TouchableOpacity>
+						</TouchableOpacity>*/}
 						<TouchableOpacity
 							style={styles.rowItem}
 							onPress={() =>

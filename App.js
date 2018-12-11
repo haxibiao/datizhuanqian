@@ -63,7 +63,7 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FF0000"
+    backgroundColor: "#FFFFFF"
   },
   appLaunch: {
     width,

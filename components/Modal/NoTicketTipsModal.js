@@ -28,7 +28,7 @@ class NoTicketTipsModal extends Component {
 					<Text style={styles.text}>继续答题将不再增加智慧点</Text>
 				</View>
 				<Button
-					name={"关闭"}
+					name={"我知道了"}
 					disabled={false}
 					handler={handleVisible}
 					style={{ height: 34, paddingHorizontal: 42 }}

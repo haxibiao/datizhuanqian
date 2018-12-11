@@ -22,13 +22,14 @@ class HomeScreen extends Component {
 		};
 	}
 	render() {
-		const { plate, navigation, user, nextPlate } = this.props;
+		const { plate, navigation, user, nextPlate, login } = this.props;
 		console.log("userhome", user);
 		return (
 			<Screen header>
 				<Header
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
+					routeName={"答题赚钱"}
 				/>
 
 				<View style={styles.container}>
@@ -48,7 +49,9 @@ class HomeScreen extends Component {
 										/>
 									}
 									keyExtractor={(item, index) => index.toString()}
-									renderItem={({ item, index }) => <PlateItem plate={item} navigation={navigation} />}
+									renderItem={({ item, index }) => (
+										<PlateItem plate={item} navigation={navigation} login={login} />
+									)}
 									ListHeaderComponent={() => {
 										return <Banner />;
 									}}
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
 export default connect(store => {
 	return {
 		plate: store.question.plate,
-		user: store.users.user
+		user: store.users.user,
+		login: store.users.login
 	};
 })(HomeScreen);

@@ -137,6 +137,7 @@ class HomeScreen extends Component {
 											disabled={!value}
 											style={{ height: 40, marginHorizontal: 20, marginTop: 20 }}
 											theme={Colors.blue}
+											disabledColor={"rgba(64,127,207,0.7)"}
 											handler={async () => {
 												if (value < 600) {
 													Methods.toast("提现智慧点小于600");

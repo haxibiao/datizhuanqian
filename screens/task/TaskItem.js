@@ -30,7 +30,9 @@ class TaskItem extends Component {
 						style={{
 							borderRadius: 45,
 							paddingHorizontal: 15,
-							height: 32
+							height: 32,
+							borderWidth: 1,
+							borderColor: Colors.grey
 						}}
 						theme={Colors.tintFont}
 						fontSize={13}
@@ -42,7 +44,9 @@ class TaskItem extends Component {
 						style={{
 							borderRadius: 45,
 							paddingHorizontal: 15,
-							height: 32
+							height: 32,
+							borderWidth: 1,
+							borderColor: Colors.theme
 						}}
 						fontSize={13}
 					/>
