@@ -10,6 +10,7 @@ class Button extends Component {
 			style = {},
 			outline, //镂空按钮
 			theme = Colors.theme, //边框/背景/文字颜色
+			textColor,
 			disabledColor = Colors.disabledColor,
 			name,
 			fontSize = 16,
@@ -30,7 +31,7 @@ class Button extends Component {
 				{icon
 					? icon
 					: iconName && <Iconfont name={iconName} size={iconSize} color={outline ? theme : "#fff"} />}
-				<Text style={[{ fontSize: fontSize, color: theme }, !outline && { color: "#fff" }]}>{name}</Text>
+				<Text style={[{ fontSize: fontSize, color: textColor }]}>{name}</Text>
 			</TouchableOpacity>
 		);
 	}

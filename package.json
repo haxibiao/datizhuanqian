@@ -22,6 +22,7 @@
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-modal": "^6.5.0",
     "react-native-root-toast": "^3.0.1",
+    "react-native-scrollable-tab-view": "^0.10.0",
     "react-native-shadow": "^1.2.2",
     "react-native-spinkit": "^1.1.1",
     "react-native-svg": "^8.0.8",
