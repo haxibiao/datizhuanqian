@@ -70,7 +70,7 @@ class LoginScreen extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				Methods.toast("登录失败，请检查邮箱和密码是否正确");
+				Methods.toast("登录失败，请检查邮箱和密码是否正确", 50);
 			} else {
 				const user = result.data.signIn;
 				this._saveUserData(user);
@@ -88,7 +88,7 @@ class LoginScreen extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				Methods.toast("注册失败，请检查邮箱地址是否已注册");
+				Methods.toast("注册失败，请检查邮箱地址是否已注册", 50);
 			} else {
 				const user = result.data.signUp;
 				this._saveUserData(user);
@@ -99,7 +99,6 @@ class LoginScreen extends Component {
 	_saveUserData = user => {
 		this.props.dispatch(actions.signIn(user));
 		this.props.navigation.goBack();
-		console.log("user", this.props.users.user);
 	};
 }
 

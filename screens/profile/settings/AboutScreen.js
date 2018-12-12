@@ -50,12 +50,12 @@ class AboutScreen extends Component {
 					<View style={{ marginTop: 30 }}>
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>联系我们</Text>
-							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15 }}>QQ交流群: 4337413</Text>
+							{/*<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15 }}>QQ交流群: 4337413</Text>*/}
 
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
 								商务合作: gaoxuan@haxibiao.com
 							</Text>
-							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>客服QQ: 597455096</Text>
+							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>客服QQ: 979109641</Text>
 						</View>
 					</View>
 				</View>

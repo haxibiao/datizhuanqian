@@ -69,7 +69,7 @@ class WithdrawsLogScreen extends Component {
 													marginLeft: (width - 30) / 12
 												}}
 											>
-												<Text style={{ fontSize: 15 }}>￥{item.amount}</Text>
+												<Text style={{ fontSize: 15 }}>￥{item.amount.toFixed(0)}</Text>
 											</View>
 											<View style={{ alignItems: "flex-end", width: (width - 30) / 4 }}>
 												{item.submit == -1 && (

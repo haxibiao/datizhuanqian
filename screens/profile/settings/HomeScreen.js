@@ -34,7 +34,7 @@ class HomeScreen extends Component {
 			promotModalVisible: false,
 			fontModalVisible: false,
 			checkedWordSize: 1,
-			storageSize: "15MB"
+			storageSize: "1MB"
 		};
 	}
 
@@ -137,12 +137,7 @@ class HomeScreen extends Component {
 								Methods.toast("已是最新版本", -200);
 							}}
 						>
-							<SettingItem
-								rightSize={15}
-								itemName="检查更新"
-								rightContent={"v" + Config.AppVersion}
-								endItem
-							/>
+							<SettingItem rightSize={15} itemName="检查更新" rightContent={Config.AppVersion} endItem />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
 						{login && (

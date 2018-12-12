@@ -19,10 +19,10 @@ class ShareScreen extends Component {
 			<Screen>
 				<View style={styles.container}>
 					<Image
-						source={{ uri: "https://ainicheng.com/qrcode/ainicheng.com.png" }}
+						source={{ uri: "https://datizhuanqian.com/picture/qrcode.png" }}
 						style={{ width: width / 3, height: width / 3 }}
 					/>
-					<Text style={{ color: Colors.black, fontSize: 15, marginTop: 10 }}>扫描下载答题赚钱app</Text>
+					<Text style={{ color: Colors.black, fontSize: 15, marginTop: 10 }}>扫描下载答题赚钱APP</Text>
 				</View>
 			</Screen>
 		);

@@ -13,11 +13,10 @@ import DeviceInfo from "react-native-device-info";
 class ApolloApp extends Component {
 	_makeClient(user) {
 		let { token } = user;
-		console.log("user", user);
+		console.log("user", user.token);
 		let deviceHeaders = {};
 
 		const isEmulator = DeviceInfo.isEmulator();
-		console.log("DeviceInfo.getBrand();", DeviceInfo.getBrand());
 		if (!isEmulator) {
 			deviceHeaders.os = Platform.OS;
 			deviceHeaders.brand = DeviceInfo.getBrand();

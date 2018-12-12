@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Dimensions } from "react-native";
 import { Iconfont } from "../../utils/Fonts";
 import { Colors, Config } from "../../constants";
-import { Avatar } from "../../components/Universal";
+import { Avatar, LoadingError, BlankContent } from "../../components/Universal";
 
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 import { connect } from "react-redux";
 
+import NotLogin from "./NotLogin";
 const { width, height } = Dimensions.get("window");
 
 class UserTopInfo extends Component {
@@ -18,15 +19,14 @@ class UserTopInfo extends Component {
 	render() {
 		let { login, userInfo, navigation } = this.props;
 		const { exp, level, levelExp } = this.state;
-		console.log("infoid", userInfo.id);
+
 		return (
 			<View>
 				{login ? (
 					<Query query={UserQuery} variables={{ id: userInfo.id }}>
 						{({ data, loading, error }) => {
-							if (error) return null;
-							if (!(data && data.user)) return null;
-							console.log("topuser", data.user.ticket);
+							if (error) return <NotLogin name={"加载失败"} navigation={navigation} />;
+							if (!(data && data.user)) return <NotLogin navigation={navigation} />;
 							let user = data.user;
 							let avatar = user.avatar + "?t=" + Date.now();
 							return (
@@ -100,62 +100,7 @@ class UserTopInfo extends Component {
 						}}
 					</Query>
 				) : (
-					<TouchableOpacity
-						style={styles.userInfoContainer}
-						onPress={() => navigation.navigate("登录注册")}
-						activeOpacity={1}
-					>
-						<View style={styles.userInfo}>
-							<View style={{ flexDirection: "row", marginLeft: 30 }}>
-								<View style={styles.defaultAvatar}>
-									<Iconfont name={"my"} size={44} color={Colors.lightFontColor} />
-								</View>
-
-								<View style={{ marginLeft: 20 }}>
-									<View style={styles.headerInfo}>
-										<Text style={styles.userName}>登录 / 注册</Text>
-										<View
-											style={{
-												flexDirection: "row",
-												alignItems: "center"
-											}}
-										>
-											<Text style={styles.level}>LV.0</Text>
-											<View style={styles.progress} />
-											<View
-												style={{
-													height: 10,
-													width: 0,
-													backgroundColor: Colors.orange,
-													borderRadius: 5,
-													marginLeft: 10,
-													marginLeft: -150
-												}}
-											/>
-										</View>
-									</View>
-								</View>
-							</View>
-							<View
-								style={{
-									flexDirection: "row",
-									justifyContent: "center",
-									paddingVertical: 20
-								}}
-							>
-								<View
-									style={{
-										paddingRight: 20,
-										borderRightWidth: 1,
-										borderRightColor: "#CD6839"
-									}}
-								>
-									<Text style={{ color: Colors.orange }}>精力点: 0</Text>
-								</View>
-								<Text style={{ paddingLeft: 20, color: Colors.orange }}>智慧点: 0</Text>
-							</View>
-						</View>
-					</TouchableOpacity>
+					<NotLogin navigation={navigation} />
 				)}
 			</View>
 		);

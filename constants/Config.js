@@ -1,11 +1,9 @@
-const ServerRoot = "https://datizhuanqian.com";
-const AppName = "答题赚钱";
-const AppVersion = "1.0.0";
-const AppSlogan = "答题赚钱";
+import { ServerRoot, AppName, AppVersion, AppDisplayName, AppSlogan } from "../app.json";
 
 export default {
 	ServerRoot,
 	AppName,
+	AppDisplayName,
 	AppVersion,
 	AppSlogan
 };

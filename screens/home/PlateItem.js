@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		fontSize: 14,
-		color: Colors.grey,
-		paddingTop: 6
+		color: Colors.tintFont,
+		paddingTop: 6,
+		lineHeight: 20
 	}
 });
 

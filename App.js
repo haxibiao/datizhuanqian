@@ -47,12 +47,24 @@ class App extends Component {
         </Provider>
         {!isLoadingComplete && (
           <View style={styles.appLaunch}>
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 1, marginBottom: 150 }}>
+            <View style={{ alignItems: "center", justifyContent: "center", flex: 1, marginBottom: 200 }}>
               <Image style={styles.loadingImage} source={require("./assets/images/logo.png")} />
-              <Text style={{ color: Colors.black, fontSize: 20, marginTop: 20 }}>答题赚钱</Text>
+              <Image
+                style={{ width: width - 40, height: (width - 40) / 4, marginTop: 30 }}
+                source={require("./assets/images/name.jpeg")}
+              />
+              {
+                // <Text style={{ color: Colors.black, fontSize: 20, marginTop: 20 }}>答题赚钱</Text>
+              }
             </View>
 
-            <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>datizhuanqian.com</Text>
+            <Text style={{ color: Colors.tintFont, fontSize: 15, lineHeight: 20, marginBottom: 5, fontWeight: "300" }}>
+              {Config.AppSlogan}
+            </Text>
+            <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>{Config.AppVersion}</Text>
+            {
+              // <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>datizhuanqian.com</Text>
+            }
           </View>
         )}
       </View>
@@ -63,7 +75,7 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFF"
   },
   appLaunch: {
     width,
@@ -73,11 +85,14 @@ const styles = StyleSheet.create({
     left: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff"
+    backgroundColor: "#FEFEFE"
   },
   loadingImage: {
-    width: (width * 2) / 7,
-    height: (width * 2) / 7
+    width: (width * 3) / 8,
+    height: (width * 3) / 8,
+    borderRadius: (width * 3) / 16,
+    borderWidth: 2,
+    borderColor: Colors.tintGray
   }
 });
 

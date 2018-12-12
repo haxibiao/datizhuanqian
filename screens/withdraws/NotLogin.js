@@ -36,6 +36,32 @@ class NotLogin extends Component {
 						<Text style={{ fontSize: 16, color: Colors.black }}>请登录查看智慧点</Text>
 					</View>
 				</View>
+				<View
+					style={{
+						justifyContent: "center",
+						alignItems: "center",
+						paddingHorizontal: 15,
+						marginTop: 80
+					}}
+				>
+					<Image
+						source={require("../../assets/images/alipay.jpg")}
+						style={{ width: width / 3, height: width / 3 }}
+					/>
+					<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300" }}>
+						目前没有绑定支付宝账户哦
+					</Text>
+					<Text
+						style={{
+							color: Colors.grey,
+							fontSize: 13,
+							fontWeight: "300",
+							paddingTop: 10
+						}}
+					>
+						请前往我的-设置-我的账户页面进行绑定
+					</Text>
+				</View>
 			</View>
 		);
 	}
