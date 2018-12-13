@@ -32,5 +32,31 @@ export const users = Record({
 			money: "2.2",
 			status: 1
 		}
+	],
+	feedback: [
+		{
+			id: 1,
+			description:
+				"希望精力点能有更多一点,现在的精力点一下子就刷完了，建议多出一些任务可以回复精力点,或者可以买道具",
+			images: ["http://cos.qunyige.com/storage/image/14434.jpg", "http://cos.qunyige.com/storage/avatar/13.jpg"],
+			user: {
+				id: 1,
+				name: "风清歌",
+				avatar: "http://cos.qunyige.com/storage/avatar/13.jpg"
+			},
+			time_ago: "9天前"
+		},
+		{
+			id: 2,
+			description:
+				"希望精力点能有更多一点,现在的精力点一下子就刷完了，建议多出一些任务可以回复精力点,或者可以买道具",
+			images: ["http://cos.qunyige.com/storage/image/14434.jpg", "http://cos.qunyige.com/storage/avatar/13.jpg"],
+			user: {
+				id: 1,
+				name: "风清歌",
+				avatar: "http://cos.qunyige.com/storage/avatar/13.jpg"
+			},
+			time_ago: "9天前"
+		}
 	]
 });

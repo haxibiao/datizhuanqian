@@ -35,6 +35,7 @@ class TaskItem extends Component {
 							borderColor: Colors.grey
 						}}
 						theme={Colors.tintFont}
+						textColor={Colors.tintFont}
 						fontSize={13}
 					/>
 				) : (
@@ -48,6 +49,7 @@ class TaskItem extends Component {
 							borderWidth: 1,
 							borderColor: Colors.theme
 						}}
+						textColor={Colors.theme}
 						fontSize={13}
 					/>
 				)}

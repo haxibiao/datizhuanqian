@@ -10,10 +10,11 @@ import EditProfileScreen from "../screens/profile/settings/EditProfileScreen";
 import MyAccountScreen from "../screens/profile/settings/MyAccountScreen";
 import SettingScreen from "../screens/profile/settings/HomeScreen";
 import AboutScreen from "../screens/profile/settings/AboutScreen";
+import FeedBackScreen from "../screens/profile/feedBack/HomeScreen";
 
 import ShareScreen from "../screens/profile/settings/ShareScreen";
 import LevelDescriptionScreen from "../screens/profile/settings/LevelDescriptionScreen";
-import FeedBackScreen from "../screens/profile/FeedBackScreen";
+// import FeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
 import PropsLibaryScreen from "../screens/profile/PropsLibraryScreen";

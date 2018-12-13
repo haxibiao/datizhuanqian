@@ -23,7 +23,6 @@ class HomeScreen extends Component {
 	}
 	render() {
 		const { plate, navigation, user, nextPlate, login } = this.props;
-		console.log("userhome", user);
 		return (
 			<Screen header>
 				<Header
@@ -33,7 +32,7 @@ class HomeScreen extends Component {
 				/>
 
 				<View style={styles.container}>
-					<TabTop user={user} />
+					<TabTop />
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
 							if (error) return <LoadingError reload={() => refetch()} text={"题目分类列表加载失败"} />;

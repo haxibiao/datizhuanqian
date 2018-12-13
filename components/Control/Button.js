@@ -10,7 +10,7 @@ class Button extends Component {
 			style = {},
 			outline, //镂空按钮
 			theme = Colors.theme, //边框/背景/文字颜色
-			textColor,
+			textColor = Colors.white,
 			disabledColor = Colors.disabledColor,
 			name,
 			fontSize = 16,

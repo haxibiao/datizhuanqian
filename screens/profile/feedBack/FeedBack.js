@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from "react-native";
 
-import { Methods, Colors } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
-import { DivisionLine } from "../../components/Universal";
-import { Button } from "../../components/Control";
-import Screen from "../Screen";
+import { Methods, Colors } from "../../../constants";
+import { Iconfont } from "../../../utils/Fonts";
+import { DivisionLine } from "../../../components/Universal";
+import { Button } from "../../../components/Control";
+import Screen from "../../Screen";
 
-import { CreateFeedbackMutation } from "../../graphql/user.graphql";
+import { CreateFeedbackMutation } from "../../../graphql/user.graphql";
 import { Mutation } from "react-apollo";
 
 import ImagePicker from "react-native-image-crop-picker";
 
 const { width, height } = Dimensions.get("window");
-class HomeScreen extends Component {
+class FeedBack extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -47,10 +47,10 @@ class HomeScreen extends Component {
 		const { navigation } = this.props;
 		console.log("pict", pictures);
 		return (
-			<Screen customStyle={{ borderBottomColor: "transparent", backgroundColor: Colors.theme }}>
+			<Screen header>
 				<View style={styles.container}>
 					{/*<Text style={{ paddingHorizontal: 15, paddingVertical: 10, color: Colors.gery }}>反馈内容</Text>*/}
-
+					<DivisionLine height={5} />
 					<View style={styles.main}>
 						<TextInput
 							ref="textInput"
@@ -171,4 +171,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default HomeScreen;
+export default FeedBack;

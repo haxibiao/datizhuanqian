@@ -65,6 +65,11 @@ class EditProfileScreen extends Component {
 			})
 			.catch(error => {});
 	}
+	toggleModalVisible() {
+		this.setState(prevState => ({
+			modalVisible: !prevState.modalVisible
+		}));
+	}
 
 	render() {
 		let { navigation } = this.props;
@@ -154,11 +159,6 @@ class EditProfileScreen extends Component {
 				</View>
 			</Screen>
 		);
-	}
-	toggleModalVisible() {
-		this.setState(prevState => ({
-			modalVisible: !prevState.modalVisible
-		}));
 	}
 }
 

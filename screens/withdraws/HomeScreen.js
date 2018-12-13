@@ -37,7 +37,7 @@ class HomeScreen extends Component {
 					<TabTop user={user} />
 					{login ? (
 						<Query query={UserQuery} variables={{ id: user.id }}>
-							{({ data, loading, error }) => {
+							{({ data, loading, error, refetch }) => {
 								if (error) return <LoadingError reload={() => refetch()} />;
 								if (!(data && data.user)) return <BlankContent />;
 								return (
