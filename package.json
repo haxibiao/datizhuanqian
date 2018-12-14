@@ -10,6 +10,9 @@
     "apollo-boost": "^0.1.7",
     "apollo-cache-inmemory": "^1.2.2",
     "apollo-client": "^2.3.8",
+    "appcenter": "1.10.0",
+    "appcenter-analytics": "1.10.0",
+    "appcenter-crashes": "1.10.0",
     "graphql": "^14.0.2",
     "immutable": "^3.8.2",
     "react": "16.6.0-alpha.8af6728",
@@ -41,11 +44,14 @@
     "react-test-renderer": "16.6.0-alpha.8af6728"
   },
   "rnpm": {
-    "assets": [
-      "./assets/fonts/"
-    ]
+    "assets": ["./assets/fonts/"]
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
+      "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
+      "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js"
+    ]
   }
 }
