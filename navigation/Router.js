@@ -14,7 +14,7 @@ import FeedBackScreen from "../screens/profile/feedBack/HomeScreen";
 
 import ShareScreen from "../screens/profile/settings/ShareScreen";
 import LevelDescriptionScreen from "../screens/profile/settings/LevelDescriptionScreen";
-// import FeedBackScreen from "../screens/profile/FeedBackScreen";
+import GoFeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
 import PropsLibaryScreen from "../screens/profile/PropsLibraryScreen";
@@ -57,6 +57,9 @@ export default {
 	},
 	意见反馈: {
 		screen: FeedBackScreen
+	},
+	问题反馈: {
+		screen: GoFeedBackScreen
 	},
 	道具库: {
 		screen: PropsLibaryScreen

@@ -84,9 +84,9 @@ class HomeScreen extends Component {
 								);
 							})}
 
-							<TouchableOpacity style={styles.add} onPress={this.pickerPictures.bind(this)}>
+							{/*<TouchableOpacity style={styles.add} onPress={this.pickerPictures.bind(this)}>
 								<Iconfont name={"add"} size={26} color={Colors.tintGray} />
-							</TouchableOpacity>
+							</TouchableOpacity>*/}
 						</View>
 						<View style={styles.mainBottom} />
 					</View>
@@ -106,8 +106,8 @@ class HomeScreen extends Component {
 												contact: contact
 											}
 										});
-										navigation.goBack();
 										Methods.toast("反馈成功", -180);
+										navigation.goBack();
 									}}
 								/>
 							);

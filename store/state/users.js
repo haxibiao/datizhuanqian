@@ -1,7 +1,7 @@
 import { Record, List } from "immutable";
 
 export const users = Record({
-	login: true,
+	login: false,
 	noTicketTips: true,
 	user: {
 		// avatar: "http://cos.qunyige.com/storage/avatar/13.jpg",

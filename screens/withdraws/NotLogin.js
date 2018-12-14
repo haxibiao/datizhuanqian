@@ -38,10 +38,11 @@ class NotLogin extends Component {
 				</View>
 				<View
 					style={{
+						// flex: 1,
 						justifyContent: "center",
 						alignItems: "center",
 						paddingHorizontal: 15,
-						marginTop: 80
+						marginTop: 60
 					}}
 				>
 					<Image

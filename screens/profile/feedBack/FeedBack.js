@@ -106,8 +106,8 @@ class FeedBack extends Component {
 												contact: contact
 											}
 										});
-										navigation.goBack();
 										Methods.toast("反馈成功", -180);
+										navigation.goBack();
 									}}
 								/>
 							);

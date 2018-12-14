@@ -36,7 +36,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: true
+			login: false
 		};
 	}
 	render() {
