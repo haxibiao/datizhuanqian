@@ -15,43 +15,43 @@ class NotLogin extends Component {
 	}
 	render() {
 		return (
-			<View>
-				<View style={styles.row}>
-					<View style={styles.rowLeft}>
-						<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
+			<View style={styles.container}>
+				<View>
+					<View style={styles.row}>
+						<View style={styles.rowLeft}>
+							<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
+						</View>
+						<View style={styles.center}>
+							<Text style={{ fontSize: 16, color: Colors.black }}>0</Text>
+						</View>
 					</View>
-					<View style={styles.center}>
-						<Text style={{ fontSize: 16, color: Colors.black }}>0</Text>
+					<View style={{ alignItems: "center" }}>
+						<Slider style={{ width: 320 }} minimumValue={0} maximumValue={0} step={1} />
 					</View>
-				</View>
-				<View style={{ alignItems: "center" }}>
-					<Slider style={{ width: 320 }} minimumValue={0} maximumValue={0} step={1} />
-				</View>
-				<View style={styles.row}>
-					<View style={styles.rowLeft}>
-						<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
-						<Text style={{ fontSize: 11, color: Colors.grey }}>大于600可提现</Text>
-					</View>
-					<View style={styles.center}>
-						<Text style={{ fontSize: 16, color: Colors.black }}>请登录查看智慧点</Text>
+					<View style={styles.row}>
+						<View style={styles.rowLeft}>
+							<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
+							<Text style={{ fontSize: 11, color: Colors.grey }}>大于600可提现</Text>
+						</View>
+						<View style={styles.center}>
+							<Text style={{ fontSize: 16, color: Colors.black }}>请登录查看智慧点</Text>
+						</View>
 					</View>
 				</View>
 				<View
 					style={{
-						// flex: 1,
+						flex: 1,
 						justifyContent: "center",
 						alignItems: "center",
-						paddingHorizontal: 15,
-						marginTop: 60
+						paddingHorizontal: 15
+						// marginTop: (height - 222) / 2
 					}}
 				>
 					<Image
 						source={require("../../assets/images/alipay.jpg")}
 						style={{ width: width / 3, height: width / 3 }}
 					/>
-					<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300" }}>
-						目前没有绑定支付宝账户哦
-					</Text>
+					<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300" }}>还没有登录账号哦</Text>
 					<Text
 						style={{
 							color: Colors.grey,
@@ -60,7 +60,7 @@ class NotLogin extends Component {
 							paddingTop: 10
 						}}
 					>
-						请前往我的-设置-我的账户页面进行绑定
+						登录后绑定支付宝账户即可进行提现
 					</Text>
 				</View>
 			</View>

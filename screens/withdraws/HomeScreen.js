@@ -41,73 +41,81 @@ class HomeScreen extends Component {
 								if (error) return <LoadingError reload={() => refetch()} />;
 								if (!(data && data.user)) return <BlankContent />;
 								return (
-									<View>
-										<View style={styles.row}>
-											<View style={styles.rowLeft}>
-												<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
-											</View>
-											<View style={styles.center}>
-												<Text style={{ fontSize: 16, color: Colors.black }}>
-													{data.user.gold}
-												</Text>
-											</View>
-										</View>
-										<View style={{ alignItems: "center" }}>
-											<Slider
-												style={{ width: width - 20 }}
-												minimumValue={0}
-												maximumValue={data.user.gold}
-												thumbTintColor={Colors.theme}
-												minimumTrackTintColor={"#1E90FF"}
-												value={this.state.value}
-												onValueChange={value => {
-													this.setState({
-														value: value
-													});
-												}}
-												step={600}
-											/>
-										</View>
-										<View style={styles.row}>
-											<View style={styles.rowLeft}>
-												<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
-												<Text style={{ fontSize: 11, color: Colors.grey }}>600倍数可提现</Text>
-											</View>
-											<View style={styles.center}>
-												{user.pay_account ? (
-													<TextInput
-														style={styles.input}
-														underlineColorAndroid="transparent"
-														keyboardType="numeric"
-														defaultValue={this.state.value.toString()}
-														onChangeText={value => {
-															if (value) {
-																this.setState({
-																	value: parseInt(value)
-																});
-															} else {
-																this.setState({
-																	value: 0
-																});
-															}
-														}}
-													/>
-												) : (
-													<TouchableOpacity
-														onPress={() => {
-															navigation.navigate("我的账户");
-														}}
-													>
-														<Text style={{ fontSize: 16, color: Colors.black }}>
-															请绑定支付宝
-														</Text>
-													</TouchableOpacity>
-												)}
-												{value > data.user.gold && (
-													<Text style={{ fontSize: 11, color: Colors.red, marginTop: 2 }}>
-														超过智慧点余额
+									<View style={styles.container}>
+										<View>
+											<View style={styles.row}>
+												<View style={styles.rowLeft}>
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														剩余智慧点
 													</Text>
-												)}
+												</View>
+												<View style={styles.center}>
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														{data.user.gold}
+													</Text>
+												</View>
+											</View>
+											<View style={{ alignItems: "center" }}>
+												<Slider
+													style={{ width: width - 20 }}
+													minimumValue={0}
+													maximumValue={data.user.gold}
+													thumbTintColor={Colors.theme}
+													minimumTrackTintColor={"#1E90FF"}
+													value={this.state.value}
+													onValueChange={value => {
+														this.setState({
+															value: value
+														});
+													}}
+													step={600}
+												/>
+											</View>
+											<View style={styles.row}>
+												<View style={styles.rowLeft}>
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														兑换智慧点
+													</Text>
+													<Text style={{ fontSize: 11, color: Colors.grey }}>
+														600倍数可提现
+													</Text>
+												</View>
+												<View style={styles.center}>
+													{user.pay_account ? (
+														<TextInput
+															style={styles.input}
+															underlineColorAndroid="transparent"
+															keyboardType="numeric"
+															defaultValue={this.state.value.toString()}
+															onChangeText={value => {
+																if (value) {
+																	this.setState({
+																		value: parseInt(value)
+																	});
+																} else {
+																	this.setState({
+																		value: 0
+																	});
+																}
+															}}
+														/>
+													) : (
+														<TouchableOpacity
+															onPress={() => {
+																navigation.navigate("我的账户");
+															}}
+														>
+															<Text style={{ fontSize: 16, color: Colors.black }}>
+																请绑定支付宝
+															</Text>
+														</TouchableOpacity>
+													)}
+													{value > data.user.gold && (
+														<Text style={{ fontSize: 11, color: Colors.red, marginTop: 2 }}>
+															超过智慧点余额
+														</Text>
+													)}
+												</View>
 											</View>
 										</View>
 										{user.pay_account ? (
@@ -180,10 +188,10 @@ class HomeScreen extends Component {
 										) : (
 											<View
 												style={{
+													flex: 1,
 													justifyContent: "center",
 													alignItems: "center",
-													paddingHorizontal: 15,
-													marginTop: 80
+													paddingHorizontal: 15
 												}}
 											>
 												<Image

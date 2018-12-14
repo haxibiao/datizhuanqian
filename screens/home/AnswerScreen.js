@@ -240,7 +240,8 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10
 	},
 	submit: {
-		marginTop: 50
+		marginTop: 50,
+		marginBottom: 30
 	},
 	title: {
 		color: Colors.primaryFont,

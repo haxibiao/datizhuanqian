@@ -1,5 +1,5 @@
 <resources>
-    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">oMniPk6e1DCDjMEXE3rw5bR8NR7PSyNuibrk4</string>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">nz2pKDfcbAo3yBgVcxlGN7fIgAoyBkN_o-HyE</string>
     <string name="app_name">答题赚钱</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true">ALWAYS_SEND</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true">ALWAYS_SEND</string>
