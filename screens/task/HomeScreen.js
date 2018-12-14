@@ -14,6 +14,9 @@ import { BoxShadow } from "react-native-shadow";
 import TaskItem from "./TaskItem";
 import NotLogin from "../withdraws/NotLogin";
 
+import { TasksQuery, ReceiveTaskMutation, CompleteTaskMutation } from "../../graphql/task.graphql";
+import { Query, Mutation } from "react-apollo";
+
 const { width, height } = Dimensions.get("window");
 
 const shadowOpt = {
@@ -36,11 +39,12 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: false
+			login: true
 		};
 	}
 	render() {
 		const { counts, login } = this.state;
+		const { navigation } = this.props;
 		return (
 			<Screen header>
 				<Header
@@ -55,66 +59,96 @@ class HomeScreen extends Component {
 					{/*<Banner />*/}
 					{login ? (
 						<View>
-							<BoxShadow
-								setting={Object.assign({}, shadowOpt, {
-									height: 46 + 72 * 3
-								})}
-							>
-								<View
-									style={{
-										backgroundColor: Colors.white,
-										borderRadius: 10,
-										height: 46 + 72 * 3,
-										shadowOffset: { width: 5, height: 5 },
-										shadowColor: "#E8E8E8",
-										shadowOpacity: 0.8,
-										shadowRadius: 10
-									}}
-								>
-									<View
-										style={{
-											marginHorizontal: 15,
-											paddingVertical: 15
-										}}
-									>
-										<Text style={{ fontSize: 16, color: Colors.black }}>成长任务</Text>
-									</View>
-									<TaskItem title={"上传头像"} reword={"+10智慧点"} />
-									<TaskItem title={"修改昵称"} reword={"+5智慧点"} />
-									<TaskItem title={"完善账户信息"} reword={"+20智慧点"} />
-								</View>
-							</BoxShadow>
+							<Query query={TasksQuery} variables={{ type: 0 }}>
+								{({ data, error, loading, refetch }) => {
+									if (error) return null;
+									if (!(data && data.tasks)) return null;
+									return (
+										<BoxShadow
+											setting={Object.assign({}, shadowOpt, {
+												height: 46 + 72 * data.tasks.length
+											})}
+										>
+											<View
+												style={{
+													backgroundColor: Colors.white,
+													borderRadius: 10,
+													height: 46 + 72 * data.tasks.length,
+													shadowOffset: { width: 5, height: 5 },
+													shadowColor: "#E8E8E8",
+													shadowOpacity: 0.8,
+													shadowRadius: 10
+												}}
+											>
+												<View
+													style={{
+														marginHorizontal: 15,
+														paddingVertical: 15
+													}}
+												>
+													<Text style={{ fontSize: 16, color: Colors.black }}>新人任务</Text>
+												</View>
 
-							<BoxShadow
-								setting={Object.assign({}, shadowOpt, {
-									height: 46 + 72 * 4
-								})}
-							>
-								<View
-									style={{
-										backgroundColor: Colors.white,
-										borderRadius: 10,
-										height: 46 + 72 * 4,
-										shadowOffset: { width: 5, height: 5 },
-										shadowColor: "#E8E8E8",
-										shadowOpacity: 0.8,
-										shadowRadius: 10
-									}}
-								>
-									<View
-										style={{
-											marginHorizontal: 15,
-											paddingVertical: 15
-										}}
-									>
-										<Text style={{ fontSize: 16, color: Colors.black }}>每日任务</Text>
-									</View>
-									<TaskItem title={"参与10道答题"} reword={"+20精力点"} status={1} />
-									<TaskItem title={"完成5道题目纠错"} reword={"+20精力点"} />
-									<TaskItem title={"分享朋友圈"} reword={"+10精力点"} />
-									<TaskItem title={"邀请新用户"} reword={"+15精力点"} />
-								</View>
-							</BoxShadow>
+												{data.tasks.map((task, index) => {
+													return (
+														<TaskItem
+															title={task.description}
+															reword={`+${task.gold}智慧点`}
+															key={index}
+															handler={() => {
+																navigation.navigate("编辑个人资料");
+															}}
+															task_id={task.id}
+															status={task.taskStatus}
+															type={0}
+														/>
+													);
+												})}
+											</View>
+										</BoxShadow>
+									);
+								}}
+							</Query>
+
+							<Query query={TasksQuery} variables={{ type: 1 }}>
+								{({ data, error, loading, refetch }) => {
+									if (error) return null;
+									if (!(data && data.tasks)) return null;
+									return (
+										<BoxShadow
+											setting={Object.assign({}, shadowOpt, {
+												height: 46 + 72 * 4
+											})}
+										>
+											<View
+												style={{
+													backgroundColor: Colors.white,
+													borderRadius: 10,
+													height: 46 + 72 * 4,
+													shadowOffset: { width: 5, height: 5 },
+													shadowColor: "#E8E8E8",
+													shadowOpacity: 0.8,
+													shadowRadius: 10
+												}}
+											>
+												<View
+													style={{
+														marginHorizontal: 15,
+														paddingVertical: 15
+													}}
+												>
+													<Text style={{ fontSize: 16, color: Colors.black }}>每日任务</Text>
+												</View>
+												<TaskItem title={"参与10道答题"} reword={"+20精力点"} status={1} />
+												<TaskItem title={"完成5道题目纠错"} reword={"+20精力点"} status={0} />
+												<TaskItem title={"分享朋友圈"} reword={"+10精力点"} status={-1} />
+												<TaskItem title={"邀请新用户"} reword={"+15精力点"} status={2} />
+											</View>
+										</BoxShadow>
+									);
+									//先静态UI用来测试
+								}}
+							</Query>
 						</View>
 					) : (
 						<BlankContent text={"暂时还没有任务哦~"} fontSize={14} />

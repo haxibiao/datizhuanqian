@@ -1,0 +1,26 @@
+#任务列表查询
+
+query TasksQuery($type: Int!, $offset: Int, $limit: Int) {
+	tasks(type: $type, offset: $offset, limit: $limit) {
+		id
+		description
+		type
+		gold
+		ticket
+		count
+		check_functions
+		merchant_id
+		status
+		taskStatus
+	}
+}
+
+#任务领取
+mutation ReceiveTaskMutation($task_id: Int!) {
+	receiveTask(task_id: $task_id)
+}
+
+#完成任务
+mutation CompleteTaskMutation($task_id: Int!) {
+	completeTask(task_id: $task_id)
+}

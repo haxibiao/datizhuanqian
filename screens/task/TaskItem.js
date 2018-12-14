@@ -3,10 +3,13 @@ import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-nati
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Control";
 import { DivisionLine, ErrorBoundary } from "../../components/Universal";
-import { Colors, Config, Divice } from "../../constants";
+import { Colors, Config, Divice, Methods } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
 import Screen from "../Screen";
+
+import { ReceiveTaskMutation, CompleteTaskMutation, TasksQuery } from "../../graphql/task.graphql";
+import { Mutation } from "react-apollo";
 
 class TaskItem extends Component {
 	constructor(props) {
@@ -14,7 +17,7 @@ class TaskItem extends Component {
 		this.state = {};
 	}
 	render() {
-		let { title, navigation, reword, status } = this.props;
+		let { title, navigation, reword, status, handler, task_id, type } = this.props;
 		return (
 			<View style={styles.container}>
 				<View>
@@ -23,14 +26,15 @@ class TaskItem extends Component {
 						奖励 <Text style={{ color: Colors.theme }}>{reword}</Text>
 					</Text>
 				</View>
-				{status ? (
+				{status == 2 && (
 					<Button
 						name={"已完成"}
 						outline
 						style={{
 							borderRadius: 45,
-							paddingHorizontal: 15,
+							// paddingHorizontal: 15,
 							height: 32,
+							width: 84,
 							borderWidth: 1,
 							borderColor: Colors.grey
 						}}
@@ -38,20 +42,121 @@ class TaskItem extends Component {
 						textColor={Colors.tintFont}
 						fontSize={13}
 					/>
-				) : (
+				)}
+				{status == 1 && (
+					<Mutation mutation={CompleteTaskMutation}>
+						{completeTask => {
+							return (
+								<Button
+									name={"领取奖励"}
+									outline
+									style={{
+										borderRadius: 45,
+										// paddingHorizontal: 15,
+										height: 32,
+										width: 84,
+										borderWidth: 1,
+										borderColor: Colors.theme
+									}}
+									textColor={Colors.theme}
+									fontSize={13}
+									handler={async () => {
+										let result = {};
+										try {
+											result = await completeTask({
+												variables: {
+													task_id: task_id
+												},
+												refetchQueries: () => [
+													{
+														query: TasksQuery,
+														variables: { type: type }
+													}
+												]
+											});
+										} catch (error) {
+											result.errors = error;
+										}
+										if (result && result.errors) {
+											Methods.toast("领取失败,请检查你的网络哦~", -80);
+										} else {
+											if (result.data.completeTask == 1) {
+												Methods.toast("领取成功", -80);
+											} else {
+												Methods.toast("已经领取奖励了哦~", -80);
+											}
+										}
+									}}
+								/>
+							);
+						}}
+					</Mutation>
+				)}
+				{status == 0 && (
 					<Button
 						name={"做任务"}
 						outline
 						style={{
 							borderRadius: 45,
-							paddingHorizontal: 15,
+							// paddingHorizontal: 15,
 							height: 32,
+							width: 84,
 							borderWidth: 1,
 							borderColor: Colors.theme
 						}}
 						textColor={Colors.theme}
 						fontSize={13}
+						handler={handler}
 					/>
+				)}
+				{status == -1 && (
+					<Mutation mutation={ReceiveTaskMutation}>
+						{receiveTask => {
+							return (
+								<Button
+									name={"领取"}
+									outline
+									style={{
+										borderRadius: 45,
+										// paddingHorizontal: 15,
+										height: 32,
+										width: 84,
+										borderWidth: 1,
+										borderColor: Colors.theme
+									}}
+									textColor={Colors.theme}
+									fontSize={13}
+									handler={async () => {
+										let result = {};
+										try {
+											result = await receiveTask({
+												variables: {
+													task_id: task_id
+												},
+												refetchQueries: () => [
+													{
+														query: TasksQuery,
+														variables: { type: type }
+													}
+												]
+											});
+										} catch (error) {
+											result.errors = error;
+										}
+										if (result && result.errors) {
+											Methods.toast("领取失败,请检查你的网络哦~", -80);
+										} else {
+											if (result.data.receiveTask == 1) {
+												Methods.toast("领取成功", -80);
+											} else {
+												Methods.toast("已经领取该任务了哦~", -80);
+											}
+										}
+									}}
+								/>
+							);
+						}}
+					</Mutation>
 				)}
 			</View>
 		);

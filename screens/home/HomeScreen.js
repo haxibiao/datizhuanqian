@@ -35,7 +35,7 @@ class HomeScreen extends Component {
 					<TabTop />
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
-							if (error) return <LoadingError reload={() => refetch()} text={"题目分类列表加载失败"} />;
+							if (error) return <LoadingError reload={() => refetch()} />;
 							if (!(data && data.categories)) return null;
 							return (
 								<FlatList

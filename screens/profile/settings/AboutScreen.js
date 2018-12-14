@@ -25,7 +25,9 @@ class AboutScreen extends Component {
 							source={require("../../../assets/images/logo.png")}
 							style={{ width: width / 4, height: width / 4 }}
 						/>
-						<Text style={{ color: Colors.black, fontSize: 15, margin: 20 }}>答题赚钱 V1.0.0</Text>
+						<Text style={{ color: Colors.black, fontSize: 15, margin: 20 }}>
+							答题赚钱 {Config.AppVersion}
+						</Text>
 					</View>
 					<View style={{ marginTop: 30 }}>
 						<View style={{ paddingHorizontal: 20 }}>
