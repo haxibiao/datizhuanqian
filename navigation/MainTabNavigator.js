@@ -9,6 +9,7 @@ import HomeScreen from "../screens/home/HomeScreen";
 import WithDrawsScreen from "../screens/withdraws/HomeScreen";
 import TaskScreen from "../screens/task/HomeScreen";
 import ProfileScreen from "../screens/profile/HomeScreen";
+import PropsLibraryScreen from "../screens/prop/HomeScreen";
 
 import MainTabBar from "./MainTabBar";
 
@@ -16,8 +17,8 @@ let routerConfig = {
   答题: {
     screen: HomeScreen
   },
-  提现: {
-    screen: WithDrawsScreen
+  道具: {
+    screen: PropsLibraryScreen
   },
   任务: {
     screen: TaskScreen
@@ -36,7 +37,7 @@ export default TabNavigator(routerConfig, {
         case "答题":
           iconName = "home";
           break;
-        case "提现":
+        case "道具":
           iconName = "tixian";
           break;
         case "任务":

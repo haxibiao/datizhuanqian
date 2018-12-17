@@ -22,7 +22,7 @@ class Banner extends Component {
 	}
 
 	render() {
-		let { size = 50, color = Colors.theme, type = "ThreeBounce", isVisible = true } = this.props;
+		let { navigation } = this.props;
 		return (
 			<Query query={BannersQuery}>
 				{({ data, loading, error }) => {

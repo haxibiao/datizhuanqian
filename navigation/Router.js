@@ -17,7 +17,7 @@ import LevelDescriptionScreen from "../screens/profile/settings/LevelDescription
 import GoFeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
-import PropsLibaryScreen from "../screens/profile/PropsLibraryScreen";
+import MyPropScreen from "../screens/profile/MyPropScreen";
 
 import WithdrawsLogScreen from "../screens/withdraws/WithdrawsLogScreen";
 
@@ -61,8 +61,8 @@ export default {
 	问题反馈: {
 		screen: GoFeedBackScreen
 	},
-	道具库: {
-		screen: PropsLibaryScreen
+	我的道具: {
+		screen: MyPropScreen
 	},
 	常见问题: {
 		screen: CommonProblemScreen

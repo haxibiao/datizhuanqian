@@ -29,13 +29,13 @@ class HomeScreen extends Component {
 						<TouchableOpacity
 							style={styles.rowItem}
 							onPress={() => {
-								navigation.navigate("道具库");
+								navigation.navigate("我的道具");
 							}}
 						>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"invitation"} size={19} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
-									道具库
+									我的道具
 								</Text>
 							</View>
 							<Iconfont name={"right"} />

@@ -8,7 +8,7 @@ import { Iconfont } from "../../utils/Fonts";
 
 import Screen from "../Screen";
 
-import { ReceiveTaskMutation, CompleteTaskMutation, TasksQuery } from "../../graphql/task.graphql";
+import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from "../../graphql/task.graphql";
 import { Mutation } from "react-apollo";
 
 class TaskItem extends Component {
@@ -30,6 +30,8 @@ class TaskItem extends Component {
 					<Button
 						name={"已完成"}
 						outline
+						disabled
+						disabledColor={Colors.white}
 						style={{
 							borderRadius: 45,
 							// paddingHorizontal: 15,
@@ -44,8 +46,8 @@ class TaskItem extends Component {
 					/>
 				)}
 				{status == 1 && (
-					<Mutation mutation={CompleteTaskMutation}>
-						{completeTask => {
+					<Mutation mutation={TaskRewardMutation}>
+						{taskReward => {
 							return (
 								<Button
 									name={"领取奖励"}
@@ -63,7 +65,7 @@ class TaskItem extends Component {
 									handler={async () => {
 										let result = {};
 										try {
-											result = await completeTask({
+											result = await taskReward({
 												variables: {
 													task_id: task_id
 												},
@@ -80,7 +82,7 @@ class TaskItem extends Component {
 										if (result && result.errors) {
 											Methods.toast("领取失败,请检查你的网络哦~", -80);
 										} else {
-											if (result.data.completeTask == 1) {
+											if (result.data.taskReward == 1) {
 												Methods.toast("领取成功", -80);
 											} else {
 												Methods.toast("已经领取奖励了哦~", -80);

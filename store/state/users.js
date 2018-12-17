@@ -58,5 +58,25 @@ export const users = Record({
 			},
 			time_ago: "9天前"
 		}
+	],
+	prop: [
+		{
+			id: 1,
+			logo:
+				"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545019358036&di=a658ef0ff0e65adf97cdce2712f288f6&imgtype=0&src=http%3A%2F%2Fp0.so.qhimgs1.com%2Ft0119ab6c82fbe06810.jpg",
+			name: "金",
+			description: "增加20精力点",
+			time_ago: "2018-12-16  09:35:00",
+			status: 1
+		},
+		{
+			id: 2,
+			logo:
+				"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545019358036&di=a658ef0ff0e65adf97cdce2712f288f6&imgtype=0&src=http%3A%2F%2Fp0.so.qhimgs1.com%2Ft0119ab6c82fbe06810.jpg",
+			name: "木",
+			description: "增加20精力点",
+			time_ago: "2018-12-16  09:35:00",
+			status: 0
+		}
 	]
 });

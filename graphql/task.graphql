@@ -20,7 +20,7 @@ mutation ReceiveTaskMutation($task_id: Int!) {
 	receiveTask(task_id: $task_id)
 }
 
-#完成任务
-mutation CompleteTaskMutation($task_id: Int!) {
-	completeTask(task_id: $task_id)
+#领取奖励
+mutation TaskRewardMutation($task_id: Int!) {
+	taskReward(task_id: $task_id)
 }
