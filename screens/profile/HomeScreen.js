@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from "react-native";
 import { Header } from "../../components/Header";
 import { DivisionLine, ErrorBoundary } from "../../components/Universal";
 import { Colors, Config, Divice } from "../../constants";
@@ -16,6 +16,12 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {};
 	}
+
+	openUrl(url) {
+		console.log("uri", url);
+		Linking.openURL("https://www.baidu.com/");
+	}
+
 	render() {
 		let { user, navigation, login } = this.props;
 		return (
@@ -40,7 +46,7 @@ class HomeScreen extends Component {
 							</View>
 							<Iconfont name={"right"} />
 						</TouchableOpacity>
-						<TouchableOpacity style={styles.rowItem}>
+						<TouchableOpacity style={styles.rowItem} onPress={() => this.openUrl()}>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"invitation"} size={19} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>

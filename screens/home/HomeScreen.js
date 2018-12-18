@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl, Linking } from "react-native";
 
 import { Header } from "../../components/Header";
 import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from "../../components/Universal";
@@ -21,6 +21,18 @@ class HomeScreen extends Component {
 			fetchingMore: true
 		};
 	}
+
+	/*	componentDidMount() {
+		const { navigation } = this.props;
+		Linking.getInitialURL()
+			.then(url => {
+				if (url) {
+					navigation.navigate("回答"); //question id
+				}
+			})
+			.catch(err => console.error("An error occurred", err));
+	}*/
+
 	render() {
 		const { plate, navigation, user, nextPlate, login } = this.props;
 		return (

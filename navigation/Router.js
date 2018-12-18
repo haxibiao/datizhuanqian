@@ -65,7 +65,8 @@ export default {
 		screen: MyPropScreen
 	},
 	常见问题: {
-		screen: CommonProblemScreen
+		screen: CommonProblemScreen,
+		path: "demo/problem"
 	},
 	重置密码: {
 		screen: ChangePasswordScreen
