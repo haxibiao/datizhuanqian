@@ -12,7 +12,7 @@ class Question extends Component {
 		this.state = {};
 	}
 	render() {
-		const { question, option, navigation, isMethod, value, changeValue, showColor } = this.props;
+		const { question, option, navigation, isMethod, value, changeValue, showColor, rightColor } = this.props;
 		return (
 			<View>
 				<Text style={styles.title}>{question.description}</Text>
@@ -38,7 +38,12 @@ class Question extends Component {
 								style={[
 									styles.option,
 									{
-										borderColor: value == option.Value ? showColor : Colors.tintGray
+										borderColor:
+											value == option.Value
+												? showColor
+												: option.Value == question.answer
+													? rightColor
+													: Colors.tintGray
 									}
 								]}
 								onPress={() => changeValue(option.Value)}
@@ -64,13 +69,14 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10
 	},
 	option: {
-		marginTop: 10,
+		marginTop: 13,
 		borderWidth: 1,
 		borderRadius: 5,
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
-		paddingVertical: 12
+		paddingVertical: 12,
+		paddingHorizontal: 15
 	}
 });
 

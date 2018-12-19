@@ -32,7 +32,7 @@ class CommonProblemScreen extends Component {
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：精力点怎么获取？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
-								A：您好，系统默认初始值会有180点精力点，并且分钟都会恢复1精力点哦，若您答题时精力点不够，还可以到任务中心领取相关任务，更快的恢复您的精力点。
+								A：您好，系统默认初始值会有180点精力点，每天0点会重置精力点哦，若您答题时精力点不够，还可以到任务中心领取相关任务，更快的恢复您的精力点。
 							</Text>
 						</View>
 					</View>

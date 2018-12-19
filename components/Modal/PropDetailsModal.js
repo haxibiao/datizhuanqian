@@ -14,71 +14,33 @@ class PropDetailsModal extends Component {
 	}
 
 	render() {
-		const { visible, handleVisible } = this.props;
+		const { visible, handleVisible, prop } = this.props;
+
 		return (
 			<BasicModal
 				visible={visible}
 				handleVisible={handleVisible}
-				customStyle={{
-					width: (width * 2) / 3,
-					height: (width * 4) / 7,
-					borderRadius: 5,
-					alignItems: "center",
-					justifyContent: "space-between",
-					padding: 0
-				}}
+				customStyle={styles.custom}
 				header={
-					<View
-						style={{
-							backgroundColor: Colors.theme,
-							width: (width * 2) / 3,
-							height: 80,
-							borderTopLeftRadius: 5,
-							borderTopRightRadius: 5,
-							alignItems: "center"
-						}}
-					>
+					<View style={styles.header}>
 						<Image
 							source={{
 								uri:
 									"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545019358036&di=a658ef0ff0e65adf97cdce2712f288f6&imgtype=0&src=http%3A%2F%2Fp0.so.qhimgs1.com%2Ft0119ab6c82fbe06810.jpg"
 							}}
-							style={{ width: 80, height: 80, borderRadius: 8, marginTop: -40 }}
+							style={styles.img}
 						/>
-						<Text style={{ paddingTop: 15 }}>这是一个道具名字</Text>
+						<Text style={styles.name}>{prop.name}</Text>
 					</View>
 				}
 			>
-				<Text>精力点增加20点</Text>
+				<View style={{ marginTop: -20 }}>
+					<Text>{prop.description}</Text>
+				</View>
 				<View style={{ paddingBottom: 15 }}>
-					<View
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							justifyContent: "space-between"
-						}}
-					>
-						<Button
-							name={"取消"}
-							style={{
-								borderRadius: 5,
-								height: 32,
-								paddingHorizontal: 25,
-								marginHorizontal: 10
-							}}
-							fontSize={14}
-							handler={handleVisible}
-						/>
-						<Button
-							name={"购买"}
-							style={{
-								borderRadius: 5,
-								height: 32,
-								paddingHorizontal: 25,
-								marginHorizontal: 10
-							}}
-							fontSize={14}
-						/>
+					<View style={styles.bottom}>
+						<Button name={"取消"} style={styles.cancel} fontSize={14} handler={handleVisible} />
+						<Button name={"购买"} style={styles.buy} fontSize={14} />
 					</View>
 				</View>
 			</BasicModal>
@@ -86,6 +48,50 @@ class PropDetailsModal extends Component {
 	}
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	custom: {
+		width: (width * 2) / 3,
+		height: (width * 4) / 7,
+		borderRadius: 5,
+		alignItems: "center",
+		justifyContent: "space-between",
+		padding: 0
+	},
+	header: {
+		backgroundColor: Colors.theme,
+		width: (width * 2) / 3,
+		height: 80,
+		borderTopLeftRadius: 5,
+		borderTopRightRadius: 5,
+		alignItems: "center"
+	},
+	img: {
+		width: 72,
+		height: 72,
+		borderRadius: 8,
+		marginTop: -36
+	},
+	name: {
+		paddingTop: 15,
+		fontSize: 16
+	},
+	bottom: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between"
+	},
+	cancel: {
+		borderRadius: 5,
+		height: 32,
+		paddingHorizontal: 25,
+		marginHorizontal: 10
+	},
+	buy: {
+		borderRadius: 5,
+		height: 32,
+		paddingHorizontal: 25,
+		marginHorizontal: 10
+	}
+});
 
 export default PropDetailsModal;

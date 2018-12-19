@@ -34,19 +34,21 @@ class MyPropScreen extends Component {
 		let { navigation } = this.props;
 		return (
 			<View style={styles.item}>
-				<Image source={{ uri: item.logo }} style={styles.img} />
-				<View style={styles.center}>
-					<Text style={{ fontSize: 16, fontWeight: "500", lineHeight: 22 }}>{item.name}</Text>
-					<Text>{item.time_ago}</Text>
+				<View style={{ alignItems: "center", flexDirection: "row" }}>
+					<Image source={{ uri: item.logo }} style={styles.img} />
+					<View style={styles.center}>
+						<Text style={{ fontSize: 16, lineHeight: 22, color: Colors.Black }}>{item.name} </Text>
+						<Text style={{ color: Colors.theme }}>{item.description}</Text>
+					</View>
 				</View>
 				<Button
-					name={item.status ? "未使用" : "已使用"}
+					name={item.status ? "使用" : "已使用"}
 					style={{
 						borderRadius: 5,
 						height: 32,
 						width: 84
 					}}
-					theme={item.status ? Colors.weixin : Colors.red}
+					theme={item.status ? Colors.theme : Colors.grey}
 					fontSize={14}
 				/>
 			</View>
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5
 	},
 	center: {
+		marginLeft: 15,
 		height: 50,
 		justifyContent: "space-between"
 	}

@@ -5,6 +5,7 @@ import RetrievePasswordScreen from "../screens/login/RetrievePasswordScreen";
 import VerificationScreen from "../screens/login/VerificationScreen";
 
 import AnswerScreen from "../screens/home/AnswerScreen";
+import ErrorCorrectionScreen from "../screens/home/ErrorCorrectionScreen";
 
 import EditProfileScreen from "../screens/profile/settings/EditProfileScreen";
 import MyAccountScreen from "../screens/profile/settings/MyAccountScreen";
@@ -36,6 +37,9 @@ export default {
 	},
 	回答: {
 		screen: AnswerScreen
+	},
+	题目纠错: {
+		screen: ErrorCorrectionScreen
 	},
 	编辑个人资料: {
 		screen: EditProfileScreen

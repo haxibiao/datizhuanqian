@@ -6,7 +6,14 @@ import { Header } from "../components/Header";
 
 class Screen extends Component {
 	render() {
-		let { customStyle = {}, lightBar, header = false, leftComponent = false, routeName } = this.props;
+		let {
+			customStyle = {},
+			lightBar,
+			header = false,
+			leftComponent = false,
+			routeName,
+			rightComponent
+		} = this.props;
 		return (
 			<View
 				style={[
@@ -24,7 +31,12 @@ class Screen extends Component {
 				{header ? (
 					header
 				) : (
-					<Header leftComponent={leftComponent} customStyle={customStyle} routeName={routeName} />
+					<Header
+						leftComponent={leftComponent}
+						customStyle={customStyle}
+						routeName={routeName}
+						rightComponent={rightComponent}
+					/>
 				)}
 				{this.props.children}
 			</View>

@@ -37,15 +37,21 @@ class AnswerScreen extends Component {
 			value: null,
 			isShow: false,
 			showColor: Colors.theme,
-			name: "提交答案"
+			name: "提交答案",
+			buttonColor: Colors.blue,
+			rightColor: Colors.tintGray
 		};
 	}
 	render() {
 		const { navigation, prop, user, noTicketTips } = this.props;
-		const { i, value, isMethod, isShow, showColor, name } = this.state;
+		const { i, value, isMethod, isShow, showColor, name, buttonColor, rightColor } = this.state;
 		const { plate_id } = navigation.state.params;
 		return (
-			<Screen routeName={"答题"} customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}>
+			<Screen
+				routeName={"答题"}
+				customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
+				rightComponent={<Iconfont name={"question"} size={18} color={Colors.primaryFont} />}
+			>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
@@ -72,6 +78,7 @@ class AnswerScreen extends Component {
 													value={value}
 													isMethod={isMethod}
 													showColor={showColor}
+													rightColor={rightColor}
 												/>
 											</ErrorBoundary>
 											{
@@ -89,7 +96,9 @@ class AnswerScreen extends Component {
 																		this.setState({
 																			isMethod: true,
 																			name: "下一题",
-																			isShow: true
+																			isShow: true,
+																			buttonColor: Colors.weixin,
+																			rightColor: Colors.weixin
 																		});
 																		answerQuestion({
 																			variables: {
@@ -122,36 +131,37 @@ class AnswerScreen extends Component {
 																			isMethod: null,
 																			value: null,
 																			showColor: Colors.theme,
-																			name: "提交答案"
+																			name: "提交答案",
+																			buttonColor: Colors.blue,
+																			rightColor: Colors.tintGray
 																			// isShow: !isShow
 																		});
 																		refetch({ category_id: plate_id });
 																	}
 																}}
 																style={{ height: 38 }}
-																theme={Colors.blue}
+																theme={buttonColor}
 																fontSize={14}
 																disabledColor={"rgba(64,127,207,0.7)"}
 															/>
 														);
 													}}
 												</Mutation>
-												{
-													// <TouchableOpacity
-													// 	style={{ alignItems: "flex-end", paddingTop: 15 }}
-													// 	onPress={() => refetch({ category_id: plate_id })}
-													// >
-													// 	<Text
-													// 		style={{
-													// 			color: Colors.tintFont,
-													// 			fontSize: 12,
-													// 			fontWeight: "200"
-													// 		}}
-													// 	>
-													// 		搜一搜答案
-													// 	</Text>
-													// </TouchableOpacity>
-												}
+
+												<TouchableOpacity
+													style={{ alignItems: "flex-end", paddingTop: 15 }}
+													onPress={() => navigation.navigate("题目纠错", { id: question.id })}
+												>
+													<Text
+														style={{
+															color: Colors.orange,
+															fontSize: 12,
+															fontWeight: "200"
+														}}
+													>
+														题目纠错
+													</Text>
+												</TouchableOpacity>
 											</View>
 										</View>
 									</View>
