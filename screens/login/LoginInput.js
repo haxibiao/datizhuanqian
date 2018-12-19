@@ -30,6 +30,7 @@ class LoginInput extends Component {
 			focusKey,
 			changeValue,
 			code,
+			maxLength,
 			customStyle = {}
 		} = this.props;
 		let combineStyle = StyleSheet.flatten([styles.inputWrap, customStyle]);
@@ -48,6 +49,8 @@ class LoginInput extends Component {
 						changeValue(keys, value);
 					}}
 					value={value}
+					autoCapitalize={"none"}
+					maxLength={maxLength}
 					defaultValue={this.value}
 					onFocus={() => focusKey(keys)}
 					secureTextEntry={!visibility}

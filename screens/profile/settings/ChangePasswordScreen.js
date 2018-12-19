@@ -52,13 +52,14 @@ class ChangePasswordScreen extends Component {
 							}}
 							// maxLength={10}
 							secureTextEntry={true}
+							maxLength={16}
 						/>
 					</View>
 					<View style={styles.textWrap}>
 						<TextInput
 							textAlignVertical="center"
 							underlineColorAndroid="transparent"
-							placeholder="请输入新密码"
+							placeholder="请输入新密码,不少于6位"
 							placeholderText={Colors.tintFontColor}
 							selectionColor={Colors.themeColor}
 							style={styles.textInput}
@@ -66,6 +67,7 @@ class ChangePasswordScreen extends Component {
 								this.setState({ password });
 							}}
 							secureTextEntry={true}
+							maxLength={16}
 						/>
 					</View>
 					<View style={styles.textWrap}>
@@ -78,6 +80,7 @@ class ChangePasswordScreen extends Component {
 							style={styles.textInput}
 							onChangeText={againpassword => this.setState({ againpassword })}
 							secureTextEntry={true}
+							maxLength={16}
 						/>
 					</View>
 					<View style={{ margin: 20, height: 48 }}>
@@ -87,21 +90,29 @@ class ChangePasswordScreen extends Component {
 									<Button
 										name="完成"
 										handler={() => {
-											if (password == againpassword) {
-												updateUserPassword({
-													variables: {
-														old_password: oldPassword,
-														new_password: password
-													}
-												});
-												Methods.toast("新密码设置成功");
-												navigation.goBack();
+											if (password.indexOf(" ") >= 0) {
+												Methods.toast("密码格式错误", 70);
 											} else {
-												Methods.toast("两次输入的密码不一致");
+												if (password == againpassword) {
+													updateUserPassword({
+														variables: {
+															old_password: oldPassword,
+															new_password: password
+														}
+													});
+													Methods.toast("新密码设置成功");
+													navigation.goBack();
+												} else {
+													Methods.toast("两次输入的密码不一致");
+												}
 											}
 										}}
 										style={{ height: 38, fontSize: 16 }}
-										disabled={oldPassword && password && againpassword ? false : true}
+										disabled={
+											oldPassword && password.length > 5 && againpassword.length > 5
+												? false
+												: true
+										}
 										disabledColor={"rgba(255,177,0,0.7)"}
 									/>
 								);

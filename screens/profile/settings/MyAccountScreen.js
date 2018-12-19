@@ -53,7 +53,7 @@ class EditProfileScreen extends Component {
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
 						multiline={true}
-						textAlignVertical={"top"}
+						autoCapitalize={"none"}
 						onChangeText={real_name => {
 							this.setState({ real_name: real_name });
 						}}
@@ -72,7 +72,7 @@ class EditProfileScreen extends Component {
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
 						multiline={true}
-						textAlignVertical={"top"}
+						autoCapitalize={"none"}
 						onChangeText={pay_account => {
 							this.setState({ pay_account: pay_account });
 						}}

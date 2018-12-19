@@ -29,6 +29,7 @@ class ModifyNameModal extends Component {
 						placeholderText={Colors.tintFontColor}
 						onChangeText={changeVaule}
 						defaultValue={value + ""}
+						maxLength={8}
 					/>
 					<View style={styles.modalFooter}>
 						<Text style={styles.modalFooterText} onPress={handleVisible}>

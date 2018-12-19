@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, TextInput 
 
 import { Header } from "../../components/Header";
 import Screen from "../Screen";
-import { Colors, Config, Divice } from "../../constants";
+import { Colors, Config, Divice, Methods } from "../../constants";
 
 import LoginInput from "./LoginInput";
 
@@ -32,7 +32,7 @@ class SignUp extends Component {
 
 	changeValue(key, value) {
 		this.accountState[key] = value;
-		if (this.accountState.account && this.accountState.password) {
+		if (this.accountState.account && this.accountState.password.length > 5) {
 			this.setState({ disableSubmit: false });
 		} else if (!this.state.disableSubmit) {
 			this.setState({ disableSubmit: true });
@@ -69,8 +69,9 @@ class SignUp extends Component {
 							value={this.accountState.password}
 							secure={true}
 							focusKey={this.focusKey.bind(this)}
-							placeholder={"设置密码"}
+							placeholder={"设置密码,不少于6位"}
 							changeValue={this.changeValue}
+							maxLength={16}
 						/>
 						{/*<LoginInput
 						name={"lock"}
@@ -90,12 +91,11 @@ class SignUp extends Component {
 							<TouchableOpacity
 								disabled={disableSubmit}
 								onPress={() => {
-									if (!disableSubmit) {
+									if (this.accountState.password.indexOf(" ") >= 0) {
+										Methods.toast("密码格式错误", 50);
+									} else {
 										handleSubmit(this.accountState);
 									}
-									this.setState({
-										disableSubmit: true
-									});
 								}}
 								style={[
 									styles.signInBtn,

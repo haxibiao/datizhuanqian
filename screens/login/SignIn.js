@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 
-import { Colors, Config, Divice } from "../../constants";
+import { Colors, Config, Divice, Methods } from "../../constants";
 import { Header } from "../../components/Header";
 
 import Screen from "../Screen";
@@ -46,6 +46,7 @@ class SignIn extends Component {
 	render() {
 		let { focusItem, modalVisible, disableSubmit } = this.state;
 		let { switchView, handleSubmit, navigation } = this.props;
+		console.log("charCodeAt", this.accountState.password.indexOf(" "));
 		return (
 			<View style={styles.container}>
 				<View style={{ justifyContent: "space-between", flex: 1 }}>
@@ -73,6 +74,7 @@ class SignIn extends Component {
 								focusKey={this.focusKey}
 								placeholder={"密码"}
 								changeValue={this.changeValue}
+								maxLength={16}
 							/>
 						</View>
 						<View style={{ marginTop: 10, alignItems: "flex-end" }}>
@@ -95,12 +97,7 @@ class SignIn extends Component {
 							<TouchableOpacity
 								disabled={disableSubmit}
 								onPress={() => {
-									if (!disableSubmit) {
-										handleSubmit(this.accountState);
-									}
-									this.setState({
-										disableSubmit: true
-									});
+									handleSubmit(this.accountState);
 								}}
 								style={[
 									styles.signInBtn,

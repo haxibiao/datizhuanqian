@@ -63,6 +63,7 @@ class FeedBack extends Component {
 							onChangeText={content => {
 								this.setState({ content: content });
 							}}
+							maxLength={200}
 						/>
 						<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
 							{pictures.map((image, index) => {

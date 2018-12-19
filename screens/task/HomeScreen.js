@@ -43,8 +43,8 @@ class HomeScreen extends Component {
 		};
 	}
 	render() {
-		const { counts, login } = this.state;
-		const { navigation } = this.props;
+		const { counts } = this.state;
+		const { navigation, login } = this.props;
 		return (
 			<Screen header>
 				<Header
@@ -58,7 +58,7 @@ class HomeScreen extends Component {
 					<TabTop user={counts} />
 					{/*<Banner />*/}
 					{login ? (
-						<View>
+						<ScrollView>
 							<Query query={TasksQuery} variables={{ type: 0 }}>
 								{({ data, error, loading, refetch }) => {
 									if (error) return null;
@@ -97,6 +97,7 @@ class HomeScreen extends Component {
 															key={index}
 															handler={() => {
 																navigation.navigate("编辑个人资料");
+																refetch();
 															}}
 															task_id={task.id}
 															status={task.taskStatus}
@@ -149,7 +150,7 @@ class HomeScreen extends Component {
 									//先静态UI用来测试
 								}}
 							</Query>
-						</View>
+						</ScrollView>
 					) : (
 						<BlankContent text={"暂时还没有任务哦~"} fontSize={14} />
 					)}
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return {
-		user: store.users.user
+		user: store.users.user,
+		login: store.users.login
 	};
 })(HomeScreen);

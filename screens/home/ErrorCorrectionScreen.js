@@ -64,6 +64,7 @@ class ErrorCorrectionScreen extends Component {
 							onChangeText={content => {
 								this.setState({ content: content });
 							}}
+							maxLength={200}
 						/>
 					</View>
 					<View style={{ marginTop: 40, marginBottom: 20 }}>
