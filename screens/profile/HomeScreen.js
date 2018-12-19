@@ -39,7 +39,7 @@ class HomeScreen extends Component {
 							}}
 						>
 							<View style={styles.itemLeft}>
-								<Iconfont name={"invitation"} size={19} />
+								<Iconfont name={"box"} size={19} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
 									我的道具
 								</Text>
@@ -51,6 +51,15 @@ class HomeScreen extends Component {
 								<Iconfont name={"invitation"} size={19} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
 									分享邀请
+								</Text>
+							</View>
+							<Iconfont name={"right"} />
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("出题")}>
+							<View style={styles.itemLeft}>
+								<Iconfont name={"invitation"} size={19} />
+								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
+									我要出题
 								</Text>
 							</View>
 							<Iconfont name={"right"} />

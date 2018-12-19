@@ -50,7 +50,7 @@ class AnswerScreen extends Component {
 			<Screen
 				routeName={"答题"}
 				customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-				rightComponent={<Iconfont name={"question"} size={18} color={Colors.primaryFont} />}
+				rightComponent={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}
 			>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
