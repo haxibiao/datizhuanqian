@@ -78,5 +78,73 @@ export const users = Record({
 			time_ago: "2018-12-16  09:35:00",
 			status: 0
 		}
+	],
+	notification: [
+		{
+			id: 1,
+			type: 1,
+			time_ago: "2天前",
+			user: {
+				id: 1,
+				alipay: "13007465219",
+				next_level_exp: 50,
+				ticket: 180,
+				level: {
+					id: 1,
+					name: "初来乍到",
+					ticket_max: 180,
+					level: 1
+				}
+			},
+			transaction: {
+				id: 1,
+				amount: 10,
+				created_at: "2018年12月20日 16:10:01"
+			}
+		},
+		{
+			id: 2,
+			type: 2,
+			time_ago: "10小时前",
+			user: {
+				id: 2,
+				alipay: "13007465219",
+				next_level_exp: 50,
+				ticket: 180,
+				level: {
+					id: 1,
+					name: "初来乍到",
+					ticket_max: 180,
+					level: 1
+				}
+			},
+			transaction: {
+				id: 1,
+				amount: 10,
+				created_at: "2018年12月20日 16:10:01"
+			}
+		},
+		{
+			id: 3,
+			type: 3,
+			time_ago: "15分钟前",
+			user: {
+				id: 1,
+				alipay: "13007465219",
+				next_level_exp: 50,
+				ticket: 180,
+				level: {
+					id: 1,
+					name: "初来乍到",
+					ticket_max: 180,
+					level: 1
+				}
+			},
+			transaction: {
+				id: 1,
+				amount: 10,
+				created_at: "2018年12月20日 16:10:01"
+			}
+		}
 	]
 });

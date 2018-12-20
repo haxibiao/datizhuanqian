@@ -17,8 +17,8 @@ let routerConfig = {
   答题: {
     screen: HomeScreen
   },
-  道具: {
-    screen: PropsLibraryScreen
+  提现: {
+    screen: WithDrawsScreen
   },
   任务: {
     screen: TaskScreen
@@ -37,7 +37,7 @@ export default TabNavigator(routerConfig, {
         case "答题":
           iconName = "home";
           break;
-        case "道具":
+        case "提现":
           iconName = "tixian";
           break;
         case "任务":

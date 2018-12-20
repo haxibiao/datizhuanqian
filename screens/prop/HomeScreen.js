@@ -7,7 +7,7 @@ import { DivisionLine, ErrorBoundary, ContentEnd } from "../../components/Univer
 import { Colors, Config, Divice } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
-import PropItem from "./PropItem.js";
+import PropItem from "./PropItem";
 
 import { connect } from "react-redux";
 

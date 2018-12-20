@@ -20,6 +20,8 @@ import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
 import MyPropScreen from "../screens/profile/MyPropScreen";
 
+import Notification from "../screens/notification/HomeScreen";
+
 import WithdrawsLogScreen from "../screens/withdraws/WithdrawsLogScreen";
 
 export default {
@@ -74,6 +76,9 @@ export default {
 	},
 	重置密码: {
 		screen: ChangePasswordScreen
+	},
+	通知: {
+		screen: Notification
 	},
 	提现日志: {
 		screen: WithdrawsLogScreen

@@ -34,7 +34,6 @@ class HomeScreen extends Component {
 						leftComponent={<Text />}
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					/>
-					<TabTop user={user} />
 					{login ? (
 						<Query query={UserQuery} variables={{ id: user.id }}>
 							{({ data, loading, error, refetch }) => {
@@ -42,6 +41,7 @@ class HomeScreen extends Component {
 								if (!(data && data.user)) return <BlankContent />;
 								return (
 									<View style={styles.container}>
+										<TabTop user={user} />
 										<View>
 											<View style={styles.row}>
 												<View style={styles.rowLeft}>

@@ -41,6 +41,15 @@ class HomeScreen extends Component {
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					routeName={"答题赚钱"}
+					rightComponent={
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate("通知");
+							}}
+						>
+							<Iconfont name={"more-horizontal"} size={18} />
+						</TouchableOpacity>
+					}
 				/>
 
 				<View style={styles.container}>

@@ -57,7 +57,7 @@ class HomeScreen extends Component {
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("出题")}>
 							<View style={styles.itemLeft}>
-								<Iconfont name={"invitation"} size={19} />
+								<Iconfont name={"book2"} size={19} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black, fontSize: 15 }}>
 									我要出题
 								</Text>
