@@ -97,7 +97,19 @@ class SignIn extends Component {
 							<TouchableOpacity
 								disabled={disableSubmit}
 								onPress={() => {
-									handleSubmit(this.accountState);
+									const phoneReg = /^1[3-9]\d{9}$/;
+									const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+									// 因为给了手机号直接登录的功能  所以也做表单验证
+
+									if (
+										(phoneReg.test(this.accountState.account) ||
+											mailReg.test(this.accountState.account)) &&
+										this.accountState.password.indexOf(" ") < 0
+									) {
+										handleSubmit(this.accountState);
+									} else {
+										Methods.toast("账号或密码错误", 80);
+									}
 								}}
 								style={[
 									styles.signInBtn,

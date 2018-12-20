@@ -91,10 +91,19 @@ class SignUp extends Component {
 							<TouchableOpacity
 								disabled={disableSubmit}
 								onPress={() => {
-									if (this.accountState.password.indexOf(" ") >= 0) {
-										Methods.toast("密码格式错误", 50);
-									} else {
+									const phoneReg = /^1[3-9]\d{9}$/;
+									const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+									//表单验证
+									//手机号限制11位   第一位为1  第二位不为2  后9位随机
+									//密码不能有空格
+									if (
+										(phoneReg.test(this.accountState.account) ||
+											mailReg.test(this.accountState.account)) &&
+										this.accountState.password.indexOf(" ") < 0
+									) {
 										handleSubmit(this.accountState);
+									} else {
+										Methods.toast("账号或密码格式错误", 80);
 									}
 								}}
 								style={[

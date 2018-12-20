@@ -12,7 +12,7 @@ import SettingItem from "./SettingItem";
 import { NavigationActions } from "react-navigation";
 
 import { UserQuery } from "../../../graphql/user.graphql";
-import { Query } from "react-apollo";
+import { Query, ApolloClient, withApollo } from "react-apollo";
 
 import { connect } from "react-redux";
 import actions from "../../../store/actions";

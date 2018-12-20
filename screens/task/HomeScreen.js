@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity, Image, Text, Dimensions } from "react-native";
+import {
+	StyleSheet,
+	View,
+	ScrollView,
+	TouchableOpacity,
+	Image,
+	Text,
+	Dimensions,
+	DeviceEventEmitter
+} from "react-native";
 
 import { Button } from "../../components/Control";
 import { Header } from "../../components/Header";
@@ -39,12 +48,15 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: true
+			login: true,
+			data: 0
 		};
 	}
+
 	render() {
-		const { counts } = this.state;
-		const { navigation, login } = this.props;
+		const { data } = this.state;
+		const { navigation, login, user } = this.props;
+
 		return (
 			<Screen header>
 				<Header
@@ -55,12 +67,15 @@ class HomeScreen extends Component {
 					}}
 				/>
 				<View style={styles.container}>
-					<TabTop user={counts} />
+					<TabTop user={user} />
 					{/*<Banner />*/}
 					{login ? (
 						<ScrollView>
-							<Query query={TasksQuery} variables={{ type: 0 }}>
+							<Query query={TasksQuery} variables={{ type: 0 }} fetchPolicy="network-only">
 								{({ data, error, loading, refetch }) => {
+									navigation.addListener("didFocus", payload => {
+										refetch();
+									});
 									if (error) return null;
 									if (!(data && data.tasks)) return null;
 									return (
@@ -97,7 +112,6 @@ class HomeScreen extends Component {
 															key={index}
 															handler={() => {
 																navigation.navigate("编辑个人资料");
-																refetch();
 															}}
 															task_id={task.id}
 															status={task.taskStatus}
@@ -113,6 +127,9 @@ class HomeScreen extends Component {
 
 							<Query query={TasksQuery} variables={{ type: 1 }}>
 								{({ data, error, loading, refetch }) => {
+									navigation.addListener("didFocus", payload => {
+										refetch();
+									});
 									if (error) return null;
 									if (!(data && data.tasks)) return null;
 									return (

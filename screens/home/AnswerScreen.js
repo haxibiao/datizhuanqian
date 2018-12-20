@@ -61,8 +61,8 @@ class AnswerScreen extends Component {
 						let selections = data.question.selections.replace(/\\/g, "");
 						let option = JSON.parse(selections);
 						console.log("option", option);
-						if (!option.Selection.length)
-							return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
+						// if (!option.Selection.length)
+						// 	return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
 						return (
 							<ErrorBoundary>
 								<ScrollView style={styles.container}>
