@@ -46,6 +46,15 @@ class CommonProblemScreen extends Component {
 					</View>
 					<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
 						<View style={{ paddingHorizontal: 20 }}>
+							<Text style={{ fontSize: 15, color: Colors.black }}>Q：无法答题或查看信息,怎么办?</Text>
+							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
+								A：请先检查您的网络是否正常或者重新登录。
+							</Text>
+						</View>
+					</View>
+
+					{/*<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
+						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：怎么获得道具？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
 								A：您可以在道具商城用智慧点去购买您想要的道具，也可以在任务中心做任务来获取道具哦
@@ -59,7 +68,7 @@ class CommonProblemScreen extends Component {
 								A：我们的道具有很多种呢，您可以在道具商城看到所有道具的介绍哦。
 							</Text>
 						</View>
-					</View>
+					</View>*/}
 					<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：绑定支付宝账户是否会有风险？ </Text>

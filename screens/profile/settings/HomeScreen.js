@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, Linking } from "react-native";
 
 import Screen from "../../Screen";
 import { Colors, Methods, Config } from "../../../constants";
@@ -7,7 +7,7 @@ import { Iconfont } from "../../../utils/Fonts";
 
 import { Header } from "../../../components/Header";
 import { Avatar, DivisionLine } from "../../../components/Universal";
-import { SignOutModal } from "../../../components/Modal";
+import { SignOutModal, CheckUpdateModal } from "../../../components/Modal";
 import SettingItem from "./SettingItem";
 import { NavigationActions } from "react-navigation";
 
@@ -29,8 +29,10 @@ const navigateAction = NavigationActions.navigate({
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.handleSignOutVisible = this.handleSignOutVisible.bind(this);
 		this.handlePromotModalVisible = this.handlePromotModalVisible.bind(this);
 		this.state = {
+			signOutModalVisible: false,
 			promotModalVisible: false,
 			fontModalVisible: false,
 			checkedWordSize: 1,
@@ -39,7 +41,14 @@ class HomeScreen extends Component {
 	}
 
 	render() {
-		let { promotModalVisible, fontModalVisible, storageSize, wordSize, checkedWordSize } = this.state;
+		let {
+			promotModalVisible,
+			signOutModalVisible,
+			fontModalVisible,
+			storageSize,
+			wordSize,
+			checkedWordSize
+		} = this.state;
 		const { navigation, users, client } = this.props;
 		const { login } = users;
 		const { id } = users.user;
@@ -134,9 +143,28 @@ class HomeScreen extends Component {
 								// 	updateDialog: true,
 								// 	installMode: codePush.InstallMode.IMMEDIATE
 								// });
-								Methods.toast("已是最新版本", -200);
+
+								let localVersion = Config.localVersion.split("");
+								localVersion.splice(3, 1);
+								let local = parseFloat(localVersion.join(""));
+
+								let Version = "1.1.1";
+								let onlineVersion = Version.split("");
+								onlineVersion.splice(3, 1);
+								let online = parseFloat(onlineVersion.join(""));
+
+								if (local < online) {
+									this.handlePromotModalVisible();
+								} else {
+									Methods.toast("已是最新版本", -200);
+								}
 							}}
 						>
+							{
+								//初步先用js判断版本 外链到官网的下载地址，手动下载更新
+								//TODO:后期需要整合原生模块,在APP内部下载自动安装。
+							}
+
 							<SettingItem rightSize={15} itemName="检查更新" rightContent={Config.AppVersion} endItem />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
@@ -144,7 +172,7 @@ class HomeScreen extends Component {
 							<View>
 								<TouchableOpacity
 									onPress={() => {
-										this.handlePromotModalVisible();
+										this.handleSignOutVisible();
 									}}
 									style={styles.loginOut}
 								>
@@ -163,22 +191,40 @@ class HomeScreen extends Component {
 					</ScrollView>
 				</View>
 				<SignOutModal
-					visible={promotModalVisible}
-					handleVisible={this.handlePromotModalVisible}
+					visible={signOutModalVisible}
+					handleVisible={this.handleSignOutVisible}
 					confirm={() => {
 						this.props.dispatch(actions.signOut());
 						this.props.navigation.dispatch(navigateAction);
+						this.handleSignOutVisible();
+					}}
+				/>
+				<CheckUpdateModal
+					visible={promotModalVisible}
+					handleVisible={this.handlePromotModalVisible}
+					confirm={() => {
 						this.handlePromotModalVisible();
+						this.openUrl("https://datizhuanqian.com/storage/apks/datizhuanqian.apk");
 					}}
 				/>
 			</Screen>
 		);
 	}
 
+	handleSignOutVisible() {
+		this.setState(prevState => ({
+			signOutModalVisible: !prevState.signOutModalVisible
+		}));
+	}
 	handlePromotModalVisible() {
 		this.setState(prevState => ({
 			promotModalVisible: !prevState.promotModalVisible
 		}));
+	}
+
+	openUrl(url) {
+		console.log("uri", url);
+		Linking.openURL(url);
 	}
 
 	clearCache = () => {

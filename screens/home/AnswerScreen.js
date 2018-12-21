@@ -54,15 +54,18 @@ class AnswerScreen extends Component {
 			>
 				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
+						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
 						if (!(data && data.question)) return <BlankContent />;
 						let question = data.question;
 						let selections = data.question.selections.replace(/\\/g, "");
-						let option = JSON.parse(selections);
-						console.log("option", option);
-						// if (!option.Selection.length)
-						// 	return <LoadingError reload={() => refetch()} text={"题目列表加载失败"} />;
+						let option = null;
+						try {
+							option = JSON.parse(selections);
+						} catch (error) {
+							<LoadingError reload={() => refetch()} />;
+						}
+
 						return (
 							<ErrorBoundary>
 								<ScrollView style={styles.container}>

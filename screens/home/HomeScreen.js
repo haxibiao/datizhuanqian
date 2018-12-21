@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshContr
 
 import { Header } from "../../components/Header";
 import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from "../../components/Universal";
-import { Colors, Config, Divice } from "../../constants";
+import { Colors, Config, Divice, Methods } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
 
 import Screen from "../Screen";
@@ -11,8 +11,8 @@ import PlateItem from "./PlateItem";
 
 import { connect } from "react-redux";
 import actions from "../../store/actions";
-import { CategoriesQuery } from "../../graphql/question.graphql";
-import { Query } from "react-apollo";
+import { CategoriesQuery, QuestionQuery } from "../../graphql/question.graphql";
+import { Query, withApollo } from "react-apollo";
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -20,6 +20,36 @@ class HomeScreen extends Component {
 		this.state = {
 			fetchingMore: true
 		};
+	}
+
+	componentDidMount() {
+		const { navigation } = this.props;
+		this.didFocusSubscription = navigation.addListener("didFocus", payload => {
+			let { users, client, dispatch, login } = this.props;
+			if (login) {
+				client
+					.query({
+						query: QuestionQuery,
+						variables: {
+							category_id: 1
+						}
+					})
+					.then(({ data }) => {
+						console.log(data);
+					})
+					.catch(error => {
+						let info = error.toString().indexOf("登录");
+						if (info > -1) {
+							this.props.dispatch(actions.signOut());
+							Methods.toast("您的身份信息已过期,请重新登录", -90);
+						}
+					});
+			}
+		});
+	}
+
+	componentWillUnmount() {
+		this.didFocusSubscription.remove();
 	}
 
 	/*	componentDidMount() {
@@ -136,4 +166,4 @@ export default connect(store => {
 		user: store.users.user,
 		login: store.users.login
 	};
-})(HomeScreen);
+})(withApollo(HomeScreen));
