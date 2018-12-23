@@ -148,7 +148,7 @@ class HomeScreen extends Component {
 								localVersion.splice(3, 1);
 								let local = parseFloat(localVersion.join(""));
 
-								let Version = "1.1.1";
+								let Version = "1.1.0";
 								let onlineVersion = Version.split("");
 								onlineVersion.splice(3, 1);
 								let online = parseFloat(onlineVersion.join(""));
@@ -161,7 +161,7 @@ class HomeScreen extends Component {
 							}}
 						>
 							{
-								//初步先用js判断版本 外链到官网的下载地址，手动下载更新
+								//初步先用简单的判断版本号大小  外链到官网的下载地址，手动下载更新
 								//TODO:后期需要整合原生模块,在APP内部下载自动安装。
 							}
 

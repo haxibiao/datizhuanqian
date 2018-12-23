@@ -50,9 +50,9 @@ class AnswerScreen extends Component {
 			<Screen
 				routeName={"答题"}
 				customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-				rightComponent={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}
+				// rightComponent={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}  隐藏功能
 			>
-				<Query query={QuestionQuery} variables={{ category_id: plate_id }}>
+				<Query query={QuestionQuery} variables={{ category_id: plate_id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
@@ -100,7 +100,7 @@ class AnswerScreen extends Component {
 																			isMethod: true,
 																			name: "下一题",
 																			isShow: true,
-																			buttonColor: Colors.weixin,
+																			// buttonColor: Colors.weixin,
 																			rightColor: Colors.weixin
 																		});
 																		answerQuestion({
@@ -135,7 +135,7 @@ class AnswerScreen extends Component {
 																			value: null,
 																			showColor: Colors.theme,
 																			name: "提交答案",
-																			buttonColor: Colors.blue,
+																			// buttonColor: Colors.blue,
 																			rightColor: Colors.tintGray
 																			// isShow: !isShow
 																		});
@@ -143,7 +143,7 @@ class AnswerScreen extends Component {
 																	}
 																}}
 																style={{ height: 38 }}
-																theme={buttonColor}
+																theme={Colors.blue}
 																fontSize={14}
 																disabledColor={"rgba(64,127,207,0.7)"}
 															/>
@@ -151,20 +151,25 @@ class AnswerScreen extends Component {
 													}}
 												</Mutation>
 
-												<TouchableOpacity
-													style={{ alignItems: "flex-end", paddingTop: 15 }}
-													onPress={() => navigation.navigate("题目纠错", { id: question.id })}
-												>
-													<Text
-														style={{
-															color: Colors.orange,
-															fontSize: 12,
-															fontWeight: "200"
-														}}
-													>
-														题目纠错
-													</Text>
-												</TouchableOpacity>
+												{
+													// <TouchableOpacity
+													// 	style={{ alignItems: "flex-end", paddingTop: 15 }}
+													// 	onPress={() =>
+													// 		navigation.navigate("题目纠错", { id: question.id })
+													// 	}
+													// >
+													// 	<Text
+													// 		style={{
+													// 			color: Colors.orange,
+													// 			fontSize: 12,
+													// 			fontWeight: "200"
+													// 		}}
+													// 	>
+													// 		题目纠错
+													// 	</Text>
+													// </TouchableOpacity>
+													//隐藏功能
+												}
 											</View>
 										</View>
 									</View>

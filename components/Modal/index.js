@@ -5,6 +5,7 @@ import SignOutModal from "./SignOutModal";
 import NoTicketTipsModal from "./NoTicketTipsModal";
 import PropDetailsModal from "./PropDetailsModal";
 import CheckUpdateModal from "./CheckUpdateModal";
+import TaskRewardModal from "./TaskRewardModal";
 
 export {
 	CorrectModal,
@@ -13,5 +14,6 @@ export {
 	SignOutModal,
 	NoTicketTipsModal,
 	PropDetailsModal,
-	CheckUpdateModal
+	CheckUpdateModal,
+	TaskRewardModal
 };

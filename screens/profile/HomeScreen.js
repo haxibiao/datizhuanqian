@@ -32,7 +32,7 @@ class HomeScreen extends Component {
 						<TopUserInfo navigation={navigation} />
 
 						<DivisionLine height={10} />
-						<TouchableOpacity
+						{/*<TouchableOpacity
 							style={styles.rowItem}
 							onPress={() => {
 								navigation.navigate("我的道具");
@@ -63,7 +63,7 @@ class HomeScreen extends Component {
 								</Text>
 							</View>
 							<Iconfont name={"right"} />
-						</TouchableOpacity>
+						</TouchableOpacity>*/}
 						<TouchableOpacity
 							style={styles.rowItem}
 							onPress={() =>
@@ -90,7 +90,7 @@ class HomeScreen extends Component {
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.rowItem}
-							onPress={() => (login ? navigation.navigate("意见反馈") : navigation.navigate("登录注册"))}
+							onPress={() => (login ? navigation.navigate("问题反馈") : navigation.navigate("登录注册"))}
 						>
 							<View style={styles.itemLeft}>
 								<Iconfont name={"feedback2"} size={18} />

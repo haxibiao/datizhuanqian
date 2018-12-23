@@ -48,14 +48,14 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: true,
+			login: false,
 			data: 0
 		};
 	}
 
 	render() {
-		const { data } = this.state;
-		const { navigation, login, user } = this.props;
+		const { data, login } = this.state;
+		const { navigation, user } = this.props;
 
 		return (
 			<Screen header>

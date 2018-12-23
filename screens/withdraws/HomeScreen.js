@@ -11,7 +11,7 @@ import { Colors, Methods } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { CreateTransactionMutation } from "../../graphql/withdraws.graphql";
+import { CreateTransactionMutation, TransactionsQuery } from "../../graphql/withdraws.graphql";
 import { UserQuery } from "../../graphql/User.graphql";
 import { Mutation, Query } from "react-apollo";
 
@@ -161,10 +161,13 @@ class HomeScreen extends Component {
 																			variables: {
 																				amount: (value / 600).toFixed(0)
 																			},
-																			refetchQueries: createTransaction => [
+																			refetchQueries: () => [
 																				{
 																					query: UserQuery,
 																					variables: { id: user.id }
+																				},
+																				{
+																					query: TransactionsQuery
 																				}
 																			]
 																		});

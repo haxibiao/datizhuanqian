@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
-import { Header } from "../../components/Header";
+import { TaskRewardModal } from "../../components/Modal";
 import { Button } from "../../components/Control";
 import { DivisionLine, ErrorBoundary } from "../../components/Universal";
 import { Colors, Config, Divice, Methods } from "../../constants";
@@ -14,10 +14,14 @@ import { Mutation } from "react-apollo";
 class TaskItem extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.handleRewardModalVisible = this.handleRewardModalVisible.bind(this);
+		this.state = {
+			RewarVisible: false
+		};
 	}
 	render() {
 		let { title, navigation, reword, status, handler, task_id, type } = this.props;
+		let { RewarVisible } = this.state;
 		return (
 			<View style={styles.container}>
 				<View>
@@ -84,6 +88,7 @@ class TaskItem extends Component {
 										} else {
 											if (result.data.taskReward == 1) {
 												Methods.toast("领取成功", -80);
+												// this.handleRewardModalVisible();
 											} else {
 												Methods.toast("已经领取奖励了哦~", -80);
 											}
@@ -160,8 +165,14 @@ class TaskItem extends Component {
 						}}
 					</Mutation>
 				)}
+				<TaskRewardModal visible={RewarVisible} handleVisible={this.handleRewardModalVisible} />
 			</View>
 		);
+	}
+	handleRewardModalVisible() {
+		this.setState(prevState => ({
+			RewarVisible: !prevState.RewarVisible
+		}));
 	}
 }
 
