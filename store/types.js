@@ -16,6 +16,7 @@ export default defineActionConstants([
 	"UPDATE_GOLD",
 	"RECORD_OPERATION",
 	"WIDTH_DRAWS",
+	"CANCEL_UPDATE",
 
 	// 本地缓存
 	"CLEAR_ALL"

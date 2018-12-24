@@ -44,5 +44,11 @@ export default {
       type: types.RECORD_OPERATION,
       noTicketTips
     };
+  },
+  cancelUpdate(isUpdate) {
+    return {
+      type: types.CANCEL_UPDATE,
+      isUpdate
+    };
   }
 };

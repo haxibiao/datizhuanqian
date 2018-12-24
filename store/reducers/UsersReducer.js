@@ -64,6 +64,10 @@ class UsersReducer {
 		let { noTicketTips } = action;
 		return state.set("noTicketTips", noTicketTips);
 	}
+	static [types.CANCEL_UPDATE](state, action) {
+		let { isUpdate } = action;
+		return state.set("isUpdate", isUpdate);
+	}
 }
 
 export default UsersReducer.reduce;

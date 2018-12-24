@@ -36,5 +36,10 @@ export default [
 		action: types.SIGN_OUT,
 		effect: forgetUser,
 		error: genericErrorHandler
+	},
+	{
+		action: types.CANCEL_UPDATE,
+		effect: rememberUser,
+		error: genericErrorHandler
 	}
 ];

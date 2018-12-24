@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native";
 
 export const ItemKeys = {
   user: "user",
-  categories: "categories"
+  isUpdate: "isUpdate"
 };
 
 async function removeItem(key) {

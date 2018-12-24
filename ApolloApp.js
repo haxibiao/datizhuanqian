@@ -29,7 +29,7 @@ class ApolloApp extends Component {
 		}
 
 		this.client = new ApolloClient({
-			uri: "http://staging.datizhuanqian.com/graphql",
+			uri: "https://datizhuanqian.com/graphql",
 			request: async operation => {
 				operation.setContext({
 					headers: {
@@ -46,7 +46,7 @@ class ApolloApp extends Component {
 		let { user = {} } = this.props;
 		this.timer = setTimeout(() => {
 			this.props.onReady();
-		}, 6000);
+		}, 5000);
 		this._makeClient(user);
 	}
 

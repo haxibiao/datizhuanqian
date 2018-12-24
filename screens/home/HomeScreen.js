@@ -1,7 +1,19 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl, Linking } from "react-native";
+
+import {
+	StyleSheet,
+	View,
+	TouchableOpacity,
+	Text,
+	FlatList,
+	Image,
+	RefreshControl,
+	Linking,
+	BackHandler
+} from "react-native";
 
 import { Header } from "../../components/Header";
+import { CheckUpdateModal, UpdateTipsModal } from "../../components/Modal";
 import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from "../../components/Universal";
 import { Colors, Config, Divice, Methods } from "../../constants";
 import { Iconfont } from "../../utils/Fonts";
@@ -14,16 +26,50 @@ import actions from "../../store/actions";
 import { CategoriesQuery, QuestionQuery } from "../../graphql/question.graphql";
 import { Query, withApollo } from "react-apollo";
 
+import { Storage, ItemKeys } from "../../store/localStorage";
+
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.handleUpdateModalVisible = this.handleUpdateModalVisible.bind(this);
 		this.state = {
-			fetchingMore: true
+			fetchingMore: true,
+			updateVisible: false,
+			mustUpdateVisible: false,
+			isMust: false
 		};
 	}
 
-	componentDidMount() {
-		const { navigation } = this.props;
+	async componentDidMount() {
+		let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
+		const { navigation, login } = this.props;
+		let { isMust } = this.state;
+
+		this.timer = setTimeout(() => {
+			if (this.state.isMust) {
+				this.setState(prevState => ({
+					mustUpdateVisible: !prevState.mustUpdateVisible
+				}));
+			} else {
+				if (this.props.login) {
+					if (isUpdate) {
+						this.setState(prevState => ({
+							updateVisible: !prevState.updateVisible
+						}));
+					}
+				} else {
+					if (this.props.isUpdate) {
+						this.setState(prevState => ({
+							updateVisible: !prevState.updateVisible
+						}));
+					}
+				}
+			}
+		}, 5000);
+
+		//首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。
+		//暂时方案， redux跟storage的关系没处理好..
+
 		this.didFocusSubscription = navigation.addListener("didFocus", payload => {
 			let { users, client, dispatch, login } = this.props;
 			if (login) {
@@ -46,10 +92,25 @@ class HomeScreen extends Component {
 					});
 			}
 		});
+		//当有用户seesion 过期时 ,清空redux 强制登录。
+
+		if (this.state.updateVisible) {
+			this.timer && clearTimeout(this.timer);
+		}
 	}
 
 	componentWillUnmount() {
 		this.didFocusSubscription.remove();
+	}
+	handleUpdateModalVisible() {
+		this.setState(prevState => ({
+			updateVisible: !prevState.updateVisible
+		}));
+	}
+
+	openUrl(url) {
+		console.log("uri", url);
+		Linking.openURL(url);
 	}
 
 	/*	componentDidMount() {
@@ -65,6 +126,7 @@ class HomeScreen extends Component {
 
 	render() {
 		const { plate, navigation, user, nextPlate, login } = this.props;
+		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
 		return (
 			<Screen header>
 				<Header
@@ -148,6 +210,26 @@ class HomeScreen extends Component {
 						}}
 					</Query>
 				</View>
+				<CheckUpdateModal
+					visible={updateVisible}
+					cancel={() => {
+						this.handleUpdateModalVisible();
+						this.props.dispatch(actions.cancelUpdate(false));
+					}}
+					handleVisible={this.handleUpdateModalVisible}
+					tips={"发现新版本"}
+					confirm={() => {
+						this.handleUpdateModalVisible();
+						this.openUrl("https://datizhuanqian.com/");
+					}}
+				/>
+				<UpdateTipsModal
+					visible={mustUpdateVisible}
+					openUrl={() => {
+						this.openUrl("https://datizhuanqian.com/");
+					}}
+					tips={"发现新版本"}
+				/>
 			</Screen>
 		);
 	}
@@ -164,6 +246,7 @@ export default connect(store => {
 	return {
 		plate: store.question.plate,
 		user: store.users.user,
-		login: store.users.login
+		login: store.users.login,
+		isUpdate: store.users.isUpdate
 	};
 })(withApollo(HomeScreen));

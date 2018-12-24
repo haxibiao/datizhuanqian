@@ -21,15 +21,13 @@ class App extends Component {
   };
 
   async componentWillMount() {
-    // YellowBox.ignoreWarnings(["Task orphaned"]);
-    // Orientation.lockToPortrait();
     await this._loadResourcesAsync();
   }
 
   _loadResourcesAsync = async () => {
     let user = await Storage.getItem(ItemKeys.user);
-    console.log("storageuser", user);
-    if (user) {
+    let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
+    if (user.account) {
       store.dispatch(actions.signIn(user));
     }
   };

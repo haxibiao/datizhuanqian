@@ -51,6 +51,7 @@ class HomeScreen extends Component {
 		} = this.state;
 		const { navigation, users, client } = this.props;
 		const { login } = users;
+		console.log("login", login);
 		const { id } = users.user;
 		return (
 			<Screen customStyle={{ borderBottomColor: "transparent" }}>
@@ -201,11 +202,12 @@ class HomeScreen extends Component {
 				/>
 				<CheckUpdateModal
 					visible={promotModalVisible}
-					handleVisible={this.handlePromotModalVisible}
+					cancel={this.handlePromotModalVisible}
 					confirm={() => {
 						this.handlePromotModalVisible();
 						this.openUrl("https://datizhuanqian.com/storage/apks/datizhuanqian.apk");
 					}}
+					tips={"发现新版本"}
 				/>
 			</Screen>
 		);

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image } from "react-native";
-
+import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from "react-native";
 import { Header } from "../../components/Header";
 import { DivisionLine, TabTop, Banner, LoadingError, BlankContent } from "../../components/Universal";
+import { CheckUpdateModal } from "../../components/Modal";
 import { Button } from "../../components/Control";
 import Screen from "../Screen";
 import NotLogin from "./NotLogin";
@@ -20,12 +20,14 @@ const { width, height } = Dimensions.get("window");
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.handlePromotModalVisible = this.handlePromotModalVisible.bind(this);
 		this.state = {
-			value: 0
+			value: 0,
+			promotModalVisible: false
 		};
 	}
 	render() {
-		const { value } = this.state;
+		const { value, promotModalVisible } = this.state;
 		const { user, login, navigation } = this.props;
 		return (
 			<Screen header>
@@ -68,7 +70,7 @@ class HomeScreen extends Component {
 															value: value
 														});
 													}}
-													step={600}
+													step={100}
 												/>
 											</View>
 											<View style={styles.row}>
@@ -174,8 +176,22 @@ class HomeScreen extends Component {
 																	} catch (ex) {
 																		result.errors = ex;
 																	}
+
 																	if (result && result.errors) {
-																		Methods.toast("提现失败,智慧点余额不足", -100);
+																		let info = result.errors
+																			.toString()
+																			.indexOf("Cannot");
+																		let str = result.errors
+																			.toString()
+																			.replace(/Error: GraphQL error: /, "");
+
+																		if (info < 0) {
+																			console.log("result", result.errors);
+																			Methods.toast(str, -100); //打印错误信息
+																		} else {
+																			this.handlePromotModalVisible();
+																			//接口变更引起的错误需要提示更新
+																		}
 																	} else {
 																		Methods.toast(
 																			"发起提现成功,客服人员会尽快处理您的提现请求。",
@@ -187,6 +203,15 @@ class HomeScreen extends Component {
 														);
 													}}
 												</Mutation>
+												<CheckUpdateModal
+													visible={promotModalVisible}
+													cancel={this.handlePromotModalVisible}
+													tips={"更新到最新版本才能正常提现哦"}
+													confirm={() => {
+														this.handlePromotModalVisible();
+														this.openUrl("https://datizhuanqian.com/");
+													}}
+												/>
 											</View>
 										) : (
 											<View
@@ -226,6 +251,16 @@ class HomeScreen extends Component {
 				</View>
 			</Screen>
 		);
+	}
+	handlePromotModalVisible() {
+		this.setState(prevState => ({
+			promotModalVisible: !prevState.promotModalVisible
+		}));
+	}
+
+	openUrl(url) {
+		console.log("uri", url);
+		Linking.openURL(url);
 	}
 }
 

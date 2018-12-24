@@ -39,7 +39,7 @@ mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!) 
 
 #提现订单
 mutation CreateTransactionMutation($amount: Float) {
-	createTransaction(amount: $amount) {
+	createTansaction(amount: $amount) {
 		id
 		user_id
 		amount

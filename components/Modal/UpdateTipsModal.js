@@ -6,14 +6,12 @@ import Colors from "../../constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
-class CheckUpdateModal extends Component {
+class UpdateTipsModal extends Component {
 	render() {
-		const { visible, handleVisible, confirm, title = "提示", tips, openUrl, cancel } = this.props;
+		const { visible, handleVisible, confirm, title = "提示", tips, openUrl } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
-				handleVisible={cancel}
-				// header={<Text style={styles.modalHeader}>{title}</Text>}
 				customStyle={{
 					width: width - 100,
 					borderRadius: 10,
@@ -27,12 +25,9 @@ class CheckUpdateModal extends Component {
 					</View>
 
 					<View style={styles.modalFooter}>
-						<TouchableOpacity style={styles.operation} onPress={cancel}>
-							<Text style={styles.operationText}>取消</Text>
-						</TouchableOpacity>
 						<TouchableOpacity
 							style={[styles.operation, { borderLeftWidth: 1, borderLeftColor: Colors.tintGray }]}
-							onPress={confirm}
+							onPress={openUrl}
 						>
 							<Text style={[styles.operationText, { color: Colors.theme }]}>立即更新</Text>
 						</TouchableOpacity>
@@ -75,4 +70,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default CheckUpdateModal;
+export default UpdateTipsModal;
