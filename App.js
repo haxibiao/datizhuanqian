@@ -59,7 +59,7 @@ class App extends Component {
             <Text style={{ color: Colors.tintFont, fontSize: 15, lineHeight: 20, marginBottom: 5, fontWeight: "300" }}>
               {Config.AppSlogan}
             </Text>
-            <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>{Config.AppVersion}</Text>
+            <Text style={{ color: Colors.grey, fontSize: 12, paddingBottom: 30 }}>{Config.AppVersion}</Text>
             {
               // <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>datizhuanqian.com</Text>
             }
