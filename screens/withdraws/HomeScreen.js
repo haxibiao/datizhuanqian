@@ -11,7 +11,7 @@ import { Colors, Methods } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { CreateTransactionMutation, TransactionsQuery } from "../../graphql/withdraws.graphql";
+import { CreateTransactionMutation, TransactionsQuery,CreateWithdrawMutation,WithdrawsQuery } from "../../graphql/withdraws.graphql";
 import { UserQuery } from "../../graphql/User.graphql";
 import { Mutation, Query } from "react-apollo";
 
@@ -140,8 +140,8 @@ class HomeScreen extends Component {
 														<Text style={styles.tips}>600智慧点=1元</Text>
 													</View>
 												</View>
-												<Mutation mutation={CreateTransactionMutation}>
-													{createTransaction => {
+												<Mutation mutation={CreateWithdrawMutation}>
+													{createWithdrawal => {
 														return (
 															<Button
 																name={"兑换"}
@@ -157,47 +157,51 @@ class HomeScreen extends Component {
 																	this.setState({
 																		value: 0
 																	});
-																	let result = {};
-																	try {
-																		result = await createTransaction({
-																			variables: {
-																				amount: (value / 600).toFixed(0)
-																			},
-																			refetchQueries: () => [
-																				{
-																					query: UserQuery,
-																					variables: { id: user.id }
+																	if(value > user.gold){
+																		Methods.toast("智慧点余额不足")
+																	}else{
+																		let result = {};	
+																		try {
+																			result = await createWithdrawal({
+																				variables: {
+																					amount: (value / 600).toFixed(0)
 																				},
-																				{
-																					query: TransactionsQuery
-																				}
-																			]
-																		});
-																	} catch (ex) {
-																		result.errors = ex;
-																	}
-
-																	if (result && result.errors) {
-																		let info = result.errors
-																			.toString()
-																			.indexOf("Cannot");
-																		let str = result.errors
-																			.toString()
-																			.replace(/Error: GraphQL error: /, "");
-
-																		if (info < 0) {
-																			console.log("result", result.errors);
-																			Methods.toast(str, -100); //打印错误信息
-																		} else {
-																			this.handlePromotModalVisible();
-																			//接口变更引起的错误需要提示更新
+																				refetchQueries: () => [
+																					{
+																						query: UserQuery,
+																						variables: { id: user.id }
+																					},
+																					{
+																						query: WithdrawsQuery
+																					}
+																				]
+																			});
+																		} catch (ex) {
+																			result.errors = ex;
 																		}
-																	} else {
-																		Methods.toast(
-																			"发起提现成功,客服人员会尽快处理您的提现请求。",
-																			-100
-																		);
-																	}
+
+																		if (result && result.errors) {
+																			let info = result.errors
+																				.toString()
+																				.indexOf("Cannot");
+																			let str = result.errors
+																				.toString()
+																				.replace(/Error: GraphQL error: /, "");
+																		   console.log("a",result.errors)
+																			if (info < 0) {
+																				console.log("result", result.errors);
+																				Methods.toast(str, -100); //打印错误信息
+																			} else {
+																				this.handlePromotModalVisible();
+																				//接口变更引起的错误需要提示更新
+																			}
+																		} else {
+																			Methods.toast(
+																				"发起提现成功,客服人员会尽快处理您的提现请求。",
+																				-100
+																			);
+																		}
+															    	}
 																}}
 															/>
 														);

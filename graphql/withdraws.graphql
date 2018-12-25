@@ -50,3 +50,31 @@ mutation CreateTransactionMutation($amount: Float) {
 		created_at
 	}
 }
+
+
+#智慧点兑换到钱包
+mutation ExchangeCash($gold:Int!){
+	exchangeCash(gold:$gold)
+}
+
+
+
+#提交提现  兼容版本
+mutation CreateWithdrawMutation($amount:Float!){
+ createWithdrawal(amount:$amount,version:"1.1.1")
+}
+
+#新提现日志
+query WithdrawsQuery($limit:Int,$offset:Int){
+  withdraws(limit:$limit,offset:$offset){
+    id,
+    status,
+    wallet_id,
+    transaction_id,
+    amount,
+    remark,
+    trade_no,
+    to_account,
+    to_platform
+  }
+}

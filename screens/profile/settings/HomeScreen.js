@@ -127,6 +127,9 @@ class HomeScreen extends Component {
 						<TouchableOpacity onPress={() => navigation.navigate("等级说明")}>
 							<SettingItem itemName="等级说明" />
 						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigation.navigate("用户协议")}>
+							<SettingItem itemName="用户协议"/>
+						</TouchableOpacity>
 						<TouchableOpacity onPress={() => navigation.navigate("分享给好友")}>
 							<SettingItem itemName="分享给好友" endItem />
 						</TouchableOpacity>

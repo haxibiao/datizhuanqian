@@ -15,6 +15,8 @@ import FeedBackScreen from "../screens/profile/feedBack/HomeScreen";
 
 import ShareScreen from "../screens/profile/settings/ShareScreen";
 import LevelDescriptionScreen from "../screens/profile/settings/LevelDescriptionScreen";
+import UserAgreenmentScreen from "../screens/profile/settings/UserAgreenmentScreen";
+
 import GoFeedBackScreen from "../screens/profile/FeedBackScreen";
 import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
 import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
@@ -39,6 +41,9 @@ export default {
 	},
 	回答: {
 		screen: AnswerScreen
+	},	
+	用户协议:{
+		screen:UserAgreenmentScreen
 	},
 	题目纠错: {
 		screen: ErrorCorrectionScreen

@@ -8,7 +8,7 @@ import { Colors } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { TransactionsQuery } from "../../graphql/withdraws.graphql";
+import { TransactionsQuery,WithdrawsQuery } from "../../graphql/withdraws.graphql";
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 
@@ -41,17 +41,17 @@ class WithdrawsLogScreen extends Component {
 					}}
 				</Query>
 				<DivisionLine height={10} />
-				<Query query={TransactionsQuery}>
+				<Query query={WithdrawsQuery}>
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (loading) return <Loading />;
-						if (!(data && data.transactions)) return null;
-						if (data.transactions.length < 1)
+						if (!(data && data.withdraws)) return null;
+						if (data.withdraws.length < 1)
 							return <BlankContent text={"暂无提现记录哦,快去赚取智慧点吧~"} fontSize={14} />;
 
 						return (
 							<FlatList
-								data={data.transactions}
+								data={data.withdraws}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => {
 									return (
@@ -72,7 +72,7 @@ class WithdrawsLogScreen extends Component {
 												<Text style={{ fontSize: 15 }}>￥{item.amount.toFixed(0)}</Text>
 											</View>
 											<View style={{ alignItems: "flex-end", width: (width - 30) / 4 }}>
-												{item.submit == -1 && (
+												{item.status == -1 && (
 													<Text
 														style={{
 															color: Colors.red,
@@ -83,7 +83,7 @@ class WithdrawsLogScreen extends Component {
 														提现失败
 													</Text>
 												)}
-												{item.submit == 1 && (
+												{item.status == 1 && (
 													<Text
 														style={{
 															color: Colors.weixin,
@@ -94,7 +94,7 @@ class WithdrawsLogScreen extends Component {
 														提现成功
 													</Text>
 												)}
-												{item.submit == 0 && (
+												{item.status == 0 && (
 													<Text
 														style={{
 															color: Colors.theme,

@@ -18,6 +18,7 @@ class UpdateTipsModal extends Component {
 					backgroundColor: Colors.white,
 					padding: 0
 				}}
+				handleVisible={()=>{}}
 			>
 				<View style={{ alignItems: "center" }}>
 					<View style={{ height: 80, justifyContent: "center" }}>
