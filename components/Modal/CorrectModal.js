@@ -22,7 +22,7 @@ class CorrectModal extends Component {
 	}
 
 	render() {
-		const { visible, handleVisible, title, nextQuestion, gold, noTicketTips, answer } = this.props;
+		const { visible, handleVisible, title, nextQuestion, gold, noTicketTips, answer, user } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -62,8 +62,8 @@ class CorrectModal extends Component {
 				/>
 				{title ? (
 					<View style={styles.content}>
-						{noTicketTips && <Iconfont name={"zhuanshi"} size={18} color={Colors.theme} />}
-						<Text style={styles.text}>{noTicketTips ? "智慧点" + "+" + gold : " 经验值+1"}</Text>
+						{user.ticket > 0 && <Iconfont name={"zhuanshi"} size={18} color={Colors.theme} />}
+						<Text style={styles.text}>{user.ticket > 0 ? "智慧点" + "+" + gold : " 经验值+1"}</Text>
 					</View>
 				) : (
 					<View style={styles.content}>

@@ -28,10 +28,13 @@ import { Query, withApollo } from "react-apollo";
 
 import { Storage, ItemKeys } from "../../store/localStorage";
 
+import codePush from "react-native-code-push";
+
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.handleUpdateModalVisible = this.handleUpdateModalVisible.bind(this);
+		this.handForceUpdateModal = this.handForceUpdateModal.bind(this);
 		this.state = {
 			fetchingMore: true,
 			updateVisible: false,
@@ -42,19 +45,19 @@ class HomeScreen extends Component {
 	}
 
 	componentDidMount() {
-		const { navigation, login } = this.props;
-		let _this = this;
-		fetch("http://staging.datizhuanqian.com/version.json")
-			.then(response => response.json())
-			.then(data => {
-				_this.checkUpdate(data[1]);
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		const { navigation, login, isUpdate } = this.props;
 
-		//首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。
-		//暂时方案， redux跟storage的关系没处理好..
+		let auto = true;
+		this.timer = setTimeout(() => {
+			Methods.achieveUpdate(
+				this.handleUpdateModalVisible,
+				this.handForceUpdateModal,
+				isUpdate,
+				this.props.login,
+				auto
+			);
+		}, 5000);
+		//等待APP 启动页加载完再开始执行更新提示
 
 		this.didFocusSubscription = navigation.addListener("didFocus", payload => {
 			let { users, client, dispatch, login } = this.props;
@@ -79,54 +82,21 @@ class HomeScreen extends Component {
 			}
 		});
 		//当有用户seesion 过期时 ,清空redux 强制登录。
-
-		if (this.state.updateVisible) {
-			this.timer && clearTimeout(this.timer);
-		}
 	}
 
 	componentWillUnmount() {
 		this.didFocusSubscription.remove();
 	}
 
-	checkUpdate = async (versionInfo, handlePromotModalVisible) => {
-		let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
-
-		this.timer = setTimeout(() => {
-			let localVersion = Config.localVersion.split("");
-			localVersion.splice(3, 1);
-			let local = parseFloat(localVersion.join(""));
-			let Version = versionInfo.version;
-			let onlineVersion = Version.split("");
-			onlineVersion.splice(3, 1);
-			let online = parseFloat(onlineVersion.join(""));
-
-			if (local < online && versionInfo.is_force) {
-				this.setState(prevState => ({
-					mustUpdateVisible: !prevState.mustUpdateVisible
-				}));
-				// 如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
-			} else {
-				if (this.props.login) {
-					if (isUpdate) {
-						this.setState(prevState => ({
-							updateVisible: !prevState.updateVisible
-						}));
-					}
-				} else {
-					if (this.props.isUpdate) {
-						this.setState(prevState => ({
-							updateVisible: !prevState.updateVisible
-						}));
-					}
-				}
-			}
-		}, 5000);
-	};
-
 	handleUpdateModalVisible() {
 		this.setState(prevState => ({
 			updateVisible: !prevState.updateVisible
+		}));
+	}
+
+	handForceUpdateModal() {
+		this.setState(prevState => ({
+			mustUpdateVisible: !prevState.mustUpdateVisible
 		}));
 	}
 

@@ -46,6 +46,7 @@ class AnswerScreen extends Component {
 		const { navigation, prop, user, noTicketTips } = this.props;
 		const { i, value, isMethod, isShow, showColor, name, buttonColor, rightColor } = this.state;
 		const { plate_id } = navigation.state.params;
+		console.log("userrend", user);
 		return (
 			<Screen
 				routeName={"答题"}
@@ -115,7 +116,12 @@ class AnswerScreen extends Component {
 																				}
 																			]
 																		});
-																		if (value == question.answer) {
+																		console.log("question.answer", question.answer);
+																		console.log(
+																			"question.answer.indexOf(value)",
+																			question.answer.indexOf(value)
+																		);
+																		if (question.answer.indexOf(value) > -1) {
 																			this.setState({
 																				showColor: Colors.weixin
 																			});
@@ -183,20 +189,29 @@ class AnswerScreen extends Component {
 										// 	<Text style={{ color: Colors.grey }}>点击生成二维码分享</Text>
 										// </TouchableOpacity>
 									}
-
-									<CorrectModal
-										visible={isShow}
-										gold={question.gold}
-										noTicketTips={noTicketTips}
-										handleVisible={this.handleCorrectModal.bind(this)}
-										CloseModal={this.CloseModal.bind(this)}
-										title={value == question.answer}
-										answer={question.answer}
-										nextQuestion={() => {
-											this.nextQuestion();
-											refetch({ category_id: plate_id });
+									<Query query={UserQuery} variables={{ id: user.id }}>
+										{({ data, loading, error, refetch }) => {
+											if (error) return null;
+											if (!(data && data.user)) return null;
+											let user = data.user;
+											return (
+												<CorrectModal
+													visible={isShow}
+													gold={question.gold}
+													user={data.user}
+													noTicketTips={noTicketTips}
+													handleVisible={this.handleCorrectModal.bind(this)}
+													CloseModal={this.CloseModal.bind(this)}
+													title={question.answer.indexOf(value) > -1}
+													answer={question.answer}
+													nextQuestion={() => {
+														this.nextQuestion();
+														refetch({ category_id: plate_id });
+													}}
+												/>
+											);
 										}}
-									/>
+									</Query>
 								</ScrollView>
 							</ErrorBoundary>
 						);

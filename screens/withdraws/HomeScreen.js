@@ -17,6 +17,7 @@ import {
 	CreateWithdrawMutation,
 	WithdrawsQuery
 } from "../../graphql/withdraws.graphql";
+
 import { UserQuery } from "../../graphql/User.graphql";
 import { Mutation, Query } from "react-apollo";
 

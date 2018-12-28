@@ -3,6 +3,8 @@ import Toast from "react-native-root-toast";
 import Colors from "./Colors";
 import codePush from "react-native-code-push";
 import Config from "./Config";
+import { Storage, ItemKeys } from "../store/localStorage";
+
 /*防止页面重复跳转
 使用方法：navigation.dispatch(navigationAction({...}))
 routeName  路由注册的routeName
@@ -56,20 +58,24 @@ function toast(message, position, timeout = 2000) {
 	}, timeout);
 }
 
-export const achieveUpdate = handlePromotModalVisible => {
+//获取线上apk版本信息
+export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsUpdate, login, auto) => {
 	let _this = this;
 	fetch("http://staging.datizhuanqian.com/version.json")
 		.then(response => response.json())
 		.then(data => {
-			checkUpdate(data[1], handlePromotModalVisible);
-			console.log(data[1]);
+			if (auto) {
+				autoCheckUpdate(data[1], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
+			} else {
+				checkUpdate(data[1], handleModalVisible);
+			}
 		})
 		.catch(err => {
 			console.log(err);
 		});
 };
 
-//检查更新
+//设置页检查更新
 const checkUpdate = (versionInfo, handlePromotModalVisible) => {
 	let localVersion = Config.localVersion.split("");
 	localVersion.splice(3, 1);
@@ -105,5 +111,49 @@ const checkUpdate = (versionInfo, handlePromotModalVisible) => {
 		});
 	}
 };
+
+//首页自动检查更新
+const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceUpdateModal, propsIsUpdate, login) => {
+	let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
+	console.log("login", login);
+
+	let localVersion = Config.localVersion.split("");
+	localVersion.splice(3, 1);
+	let local = parseFloat(localVersion.join(""));
+	let Version = versionInfo.version;
+	let onlineVersion = Version.split("");
+	onlineVersion.splice(3, 1);
+	let online = parseFloat(onlineVersion.join(""));
+
+	if (local < online && versionInfo.is_force) {
+		handForceUpdateModal();
+		// 如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
+	} else if (local < online && !versionInfo.is_force) {
+		// 线上版本小于本地版本但不需要强制更新则
+		if (login) {
+			if (isUpdate) {
+				handleUpdateModalVisible();
+			}
+		} else {
+			if (propsIsUpdate) {
+				handleUpdateModalVisible();
+			}
+		}
+	} else {
+		codePush.sync({
+			updateDialog: {
+				// mandatoryContinueButtonLabel: "更新",
+				// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+				optionalIgnoreButtonLabel: "取消",
+				optionalInstallButtonLabel: "后台更新",
+				optionalUpdateMessage: "发现新版本",
+				title: "更新提示"
+			},
+			installMode: codePush.InstallMode.IMMEDIATE
+		});
+	}
+};
+//首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。
+//暂时方案， redux跟storage的关系没处理好..
 
 export { navigationAction, operationMiddleware, numberFormat, toast };
