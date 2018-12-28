@@ -11,7 +11,12 @@ import { Colors, Methods } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { CreateTransactionMutation, TransactionsQuery,CreateWithdrawMutation,WithdrawsQuery } from "../../graphql/withdraws.graphql";
+import {
+	CreateTransactionMutation,
+	TransactionsQuery,
+	CreateWithdrawMutation,
+	WithdrawsQuery
+} from "../../graphql/withdraws.graphql";
 import { UserQuery } from "../../graphql/User.graphql";
 import { Mutation, Query } from "react-apollo";
 
@@ -157,10 +162,10 @@ class HomeScreen extends Component {
 																	this.setState({
 																		value: 0
 																	});
-																	if(value > user.gold){
-																		Methods.toast("智慧点余额不足")
-																	}else{
-																		let result = {};	
+																	if (value > user.gold) {
+																		Methods.toast("智慧点余额不足");
+																	} else {
+																		let result = {};
 																		try {
 																			result = await createWithdrawal({
 																				variables: {
@@ -181,41 +186,37 @@ class HomeScreen extends Component {
 																		}
 
 																		if (result && result.errors) {
-																			let info = result.errors
-																				.toString()
-																				.indexOf("Cannot");
+																			// let info = result.errors
+																			// 	.toString()
+																			// 	.indexOf("Cannot");
 																			let str = result.errors
 																				.toString()
 																				.replace(/Error: GraphQL error: /, "");
-																		   console.log("a",result.errors)
-																			if (info < 0) {
-																				console.log("result", result.errors);
-																				Methods.toast(str, -100); //打印错误信息
-																			} else {
-																				this.handlePromotModalVisible();
-																				//接口变更引起的错误需要提示更新
-																			}
+
+																			Methods.toast(str, -100); //打印错误信息
 																		} else {
 																			Methods.toast(
 																				"发起提现成功,客服人员会尽快处理您的提现请求。",
 																				-100
 																			);
 																		}
-															    	}
+																	}
 																}}
 															/>
 														);
 													}}
 												</Mutation>
-												<CheckUpdateModal
-													visible={promotModalVisible}
-													cancel={this.handlePromotModalVisible}
-													tips={"更新到最新版本才能正常提现哦"}
-													confirm={() => {
-														this.handlePromotModalVisible();
-														this.openUrl("https://datizhuanqian.com/");
-													}}
-												/>
+												{
+													// <CheckUpdateModal
+													// 	visible={promotModalVisible}
+													// 	cancel={this.handlePromotModalVisible}
+													// 	tips={"更新到最新版本才能正常提现哦"}
+													// 	confirm={() => {
+													// 		this.handlePromotModalVisible();
+													// 		this.openUrl("https://datizhuanqian.com/");
+													// 	}}
+													// />
+												}
 											</View>
 										) : (
 											<View

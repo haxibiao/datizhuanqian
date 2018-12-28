@@ -18,6 +18,8 @@ import { connect } from "react-redux";
 import actions from "../../../store/actions";
 import { Storage } from "../../../store/localStorage";
 
+import codePush from "react-native-code-push";
+
 const { width, height } = Dimensions.get("window");
 
 const navigateAction = NavigationActions.navigate({
@@ -127,9 +129,9 @@ class HomeScreen extends Component {
 						<TouchableOpacity onPress={() => navigation.navigate("等级说明")}>
 							<SettingItem itemName="等级说明" />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate("用户协议")}>
-							<SettingItem itemName="用户协议"/>
-						</TouchableOpacity>
+						{/*<TouchableOpacity onPress={() => navigation.navigate("用户协议")}>
+							<SettingItem itemName="用户协议" />
+						</TouchableOpacity>*/}
 						<TouchableOpacity onPress={() => navigation.navigate("分享给好友")}>
 							<SettingItem itemName="分享给好友" endItem />
 						</TouchableOpacity>
@@ -143,25 +145,7 @@ class HomeScreen extends Component {
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
-								// codePush.sync({
-								// 	updateDialog: true,
-								// 	installMode: codePush.InstallMode.IMMEDIATE
-								// });
-
-								let localVersion = Config.localVersion.split("");
-								localVersion.splice(3, 1);
-								let local = parseFloat(localVersion.join(""));
-
-								let Version = "1.1.0";
-								let onlineVersion = Version.split("");
-								onlineVersion.splice(3, 1);
-								let online = parseFloat(onlineVersion.join(""));
-
-								if (local < online) {
-									this.handlePromotModalVisible();
-								} else {
-									Methods.toast("已是最新版本", -200);
-								}
+								Methods.achieveUpdate(this.handlePromotModalVisible);
 							}}
 						>
 							{
@@ -235,6 +219,54 @@ class HomeScreen extends Component {
 	clearCache = () => {
 		this.setState({ storageSize: "0MB" });
 		Methods.toast("清楚缓存成功", -200);
+	};
+	//获取APK版本
+	achieveUpdate = () => {
+		let _this = this;
+		fetch("http://staging.datizhuanqian.com/version.json")
+			.then(response => response.json())
+			.then(data => {
+				_this.checkUpdate(data[1]);
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	};
+	//检查更新
+	checkUpdate = versionInfo => {
+		let localVersion = Config.localVersion.split("");
+		localVersion.splice(3, 1);
+		let local = parseFloat(localVersion.join(""));
+
+		let Version = versionInfo.version;
+		let onlineVersion = Version.split("");
+		onlineVersion.splice(3, 1);
+		let online = parseFloat(onlineVersion.join(""));
+		//转换成浮点数  判断版本大小
+
+		if (local < online) {
+			this.handlePromotModalVisible();
+			//首先判断APK是否有更新
+		} else {
+			//再判断codepush是否有更新
+			codePush.checkForUpdate().then(update => {
+				if (!update) {
+					Methods.toast("已经是最新版本了", -100);
+				} else {
+					codePush.sync({
+						updateDialog: {
+							// mandatoryContinueButtonLabel: "更新",
+							// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+							optionalIgnoreButtonLabel: "取消",
+							optionalInstallButtonLabel: "后台更新",
+							optionalUpdateMessage: "发现新版本",
+							title: "更新提示"
+						},
+						installMode: codePush.InstallMode.IMMEDIATE
+					});
+				}
+			});
+		}
 	};
 }
 

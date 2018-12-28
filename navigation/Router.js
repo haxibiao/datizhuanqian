@@ -18,7 +18,7 @@ import LevelDescriptionScreen from "../screens/profile/settings/LevelDescription
 import UserAgreenmentScreen from "../screens/profile/settings/UserAgreenmentScreen";
 
 import GoFeedBackScreen from "../screens/profile/FeedBackScreen";
-import CommonProblemScreen from "../screens/profile/CommonProblemScreen";
+import CommonIssueScreen from "../screens/profile/CommonIssueScreen";
 import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
 import MyPropScreen from "../screens/profile/MyPropScreen";
 
@@ -41,9 +41,9 @@ export default {
 	},
 	回答: {
 		screen: AnswerScreen
-	},	
-	用户协议:{
-		screen:UserAgreenmentScreen
+	},
+	用户协议: {
+		screen: UserAgreenmentScreen
 	},
 	题目纠错: {
 		screen: ErrorCorrectionScreen
@@ -76,7 +76,7 @@ export default {
 		screen: MyPropScreen
 	},
 	常见问题: {
-		screen: CommonProblemScreen,
+		screen: CommonIssueScreen,
 		path: "demo/problem"
 	},
 	重置密码: {

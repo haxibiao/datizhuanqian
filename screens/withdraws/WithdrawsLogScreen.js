@@ -8,7 +8,7 @@ import { Colors } from "../../constants";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 
-import { TransactionsQuery,WithdrawsQuery } from "../../graphql/withdraws.graphql";
+import { TransactionsQuery, WithdrawsQuery } from "../../graphql/withdraws.graphql";
 import { UserQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 
@@ -18,13 +18,13 @@ class WithdrawsLogScreen extends Component {
 	render() {
 		const { log, navigation } = this.props;
 		const { user } = navigation.state.params;
-		console.log("user", user);
 		return (
 			<Screen>
 				<Query query={UserQuery} variables={{ id: user.id }}>
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (!(data && data.user)) return null;
+						console.log("data,", data.user);
 						return (
 							<View style={styles.top}>
 								<DivisionLine height={10} />
@@ -34,7 +34,9 @@ class WithdrawsLogScreen extends Component {
 								</View>
 								<View style={styles.topRight}>
 									<Text style={{ fontSize: 16 }}>累计成功提现</Text>
-									<Text style={{ fontSize: 16, fontWeight: "600" }}>￥{data.user.accumulative}</Text>
+									<Text style={{ fontSize: 16, fontWeight: "600" }}>
+										￥{data.user.transaction_sum_amount}
+									</Text>
 								</View>
 							</View>
 						);

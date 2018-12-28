@@ -7,7 +7,7 @@ import { DivisionLine, TabTop, ErrorBoundary } from "../../components/Universal"
 
 const { width, height } = Dimensions.get("window");
 
-class CommonProblemScreen extends Component {
+class CommonIssueScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -25,6 +25,14 @@ class CommonProblemScreen extends Component {
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：提现不了，怎么办？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
 								A：请先检查一下是否绑定支付宝账号，并检查您账户的智慧点是否满足当日汇率的最低提现金额1元，若还不能提现，请联系我们的官方微信或在意见反馈里提交，我们会在第一时间为您解决。
+							</Text>
+						</View>
+					</View>
+					<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
+						<View style={{ paddingHorizontal: 20 }}>
+							<Text style={{ fontSize: 15, color: Colors.black }}>Q：提现多久到账？</Text>
+							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
+								A：提现会在3个工作日内到账,请及时留意您的支付宝到账信息哦。
 							</Text>
 						</View>
 					</View>
@@ -98,4 +106,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default CommonProblemScreen;
+export default CommonIssueScreen;
