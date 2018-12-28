@@ -99,18 +99,22 @@ class EditProfileScreen extends Component {
 						<TouchableOpacity onPress={this.toggleModalVisible}>
 							<SettingItem itemName="设置昵称" rightSize={15} rightContent={user.name} />
 						</TouchableOpacity>
+						<TouchableOpacity>
+							<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
+						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => navigation.navigate("我的账户")}
 							disabled={user.pay_account ? true : false}
 						>
 							<SettingItem
-								itemName="账户信息"
+								itemName="支付宝账号"
 								rightSize={15}
 								rightContent={
 									user.pay_account ? user.pay_account + "(" + user.real_name + ")" : "绑定支付宝"
 								}
 							/>
 						</TouchableOpacity>
+
 						<TouchableOpacity
 							onPress={() => {
 								navigation.navigate("重置密码");
