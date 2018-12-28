@@ -36,29 +36,48 @@ class HomeScreen extends Component {
 			fetchingMore: true,
 			updateVisible: false,
 			mustUpdateVisible: false,
-			isMust: false
+			isMust: false,
+			versionInfo:null
 		};
 	}
 
 	async componentDidMount() {
 		let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
-		const { navigation, login } = this.props;
-		let { isMust } = this.state;
+		const { navigation, login } = this.props;	
+		let versionInfo = null;
+		
+		fetch("http://staging.datizhuanqian.com/version.json")
+			.then(response => response.json())
+			.then(data => {
+				 versionInfo=data[0];
+			})
+			.catch(err => {
+				console.log(err);
+			});
 
 		this.timer = setTimeout(() => {
-			if (this.state.isMust) {
+			let localVersion = Config.localVersion.split("");
+				localVersion.splice(3, 1);
+				let local = parseFloat(localVersion.join(""));
+				let Version = versionInfo.version
+				let onlineVersion = Version.split("");
+				onlineVersion.splice(3, 1);
+				let online = parseFloat(onlineVersion.join(""));
+			
+			if (local<online && versionInfo.is_force) {
 				this.setState(prevState => ({
 					mustUpdateVisible: !prevState.mustUpdateVisible
 				}));
+				//如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
 			} else {
 				if (this.props.login) {
-					if (isUpdate) {
+					if (local<online) {
 						this.setState(prevState => ({
 							updateVisible: !prevState.updateVisible
 						}));
 					}
 				} else {
-					if (this.props.isUpdate) {
+					if (local<online) {
 						this.setState(prevState => ({
 							updateVisible: !prevState.updateVisible
 						}));
