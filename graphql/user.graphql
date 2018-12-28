@@ -7,7 +7,6 @@ mutation signUpMutation($account: String!, $password: String!) {
 		gender
 		avatar
 		gold
-		accumulative
 		exp
 		next_level_exp
 		pay_account
@@ -26,7 +25,6 @@ mutation signInMutation($account: String!, $password: String!) {
 		gender
 		avatar
 		gold
-		accumulative
 		exp
 		next_level_exp
 		pay_account
@@ -67,7 +65,6 @@ mutation UpdateUserPasswordMutation($old_password: String!, $new_password: Strin
 			level
 		}
 		pay_account
-		accumulative
 		exp
 		next_level_exp
 		token
