@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image, FlatList, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Image, FlatList, Text, Dimensions, TouchableOpacity } from "react-native";
 
 import { DivisionLine, TabTop, BlankContent, Loading } from "../../components/Universal";
 import Screen from "../Screen";
@@ -34,27 +34,37 @@ class WithdrawsLogScreen extends Component {
 								</View>
 								<View style={styles.topRight}>
 									<Text style={{ fontSize: 16 }}>累计成功提现</Text>
-									<Text style={{ fontSize: 16, fontWeight: "600" }}>￥{data.user.accumulative}</Text>
+									<Text style={{ fontSize: 16, fontWeight: "600" }}>
+										￥{data.user.transaction_sum_amount}
+									</Text>
 								</View>
 							</View>
 						);
 					}}
 				</Query>
 				<DivisionLine height={10} />
-				<Query query={TransactionsQuery}>
+				<Query query={WithdrawsQuery}>
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (loading) return <Loading />;
-						if (!(data && data.transactions)) return null;
-						if (data.transactions.length < 1)
+						if (!(data && data.withdraws)) return null;
+						if (data.withdraws.length < 1)
 							return <BlankContent text={"暂无提现记录哦,快去赚取智慧点吧~"} fontSize={14} />;
 						return (
 							<FlatList
-								data={data.transactions}
+								data={data.withdraws}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => {
 									return (
-										<View style={styles.item}>
+										<TouchableOpacity
+											style={styles.item}
+											disabled={item.remark}
+											onPress={() => {
+												navigation.navigate("提现详情", {
+													withdraws: item
+												});
+											}}
+										>
 											<View
 												style={{
 													width: (width - 30) / 2
@@ -71,7 +81,7 @@ class WithdrawsLogScreen extends Component {
 												<Text style={{ fontSize: 15 }}>￥{item.amount.toFixed(0)}</Text>
 											</View>
 											<View style={{ alignItems: "flex-end", width: (width - 30) / 4 }}>
-												{item.submit == -1 && (
+												{item.status == -1 && (
 													<Text
 														style={{
 															color: Colors.red,
@@ -82,7 +92,7 @@ class WithdrawsLogScreen extends Component {
 														提现失败
 													</Text>
 												)}
-												{item.submit == 1 && (
+												{item.status == 1 && (
 													<Text
 														style={{
 															color: Colors.weixin,
@@ -93,7 +103,7 @@ class WithdrawsLogScreen extends Component {
 														提现成功
 													</Text>
 												)}
-												{item.submit == 0 && (
+												{item.status == 0 && (
 													<Text
 														style={{
 															color: Colors.theme,
@@ -105,7 +115,7 @@ class WithdrawsLogScreen extends Component {
 													</Text>
 												)}
 											</View>
-										</View>
+										</TouchableOpacity>
 									);
 								}}
 							/>

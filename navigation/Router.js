@@ -25,6 +25,7 @@ import MyPropScreen from "../screens/profile/MyPropScreen";
 import Notification from "../screens/notification/HomeScreen";
 
 import WithdrawsLogScreen from "../screens/withdraws/WithdrawsLogScreen";
+import WithdrawDetailsScreen from "../screens/withdraws/WithdrawDetailsScreen";
 
 export default {
 	主页: {
@@ -87,5 +88,8 @@ export default {
 	},
 	提现日志: {
 		screen: WithdrawsLogScreen
+	},
+	提现详情: {
+		screen: WithdrawDetailsScreen
 	}
 };

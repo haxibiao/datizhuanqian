@@ -78,7 +78,7 @@ query UserQuery($id: Int!) {
 		gold
 		ticket
 		avatar
-		#transaction_sum_amount
+		transaction_sum_amount
 		accumulative
 		exp
 		next_level_exp

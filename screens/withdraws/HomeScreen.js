@@ -148,8 +148,8 @@ class HomeScreen extends Component {
 														<Text style={styles.tips}>600智慧点=1元</Text>
 													</View>
 												</View>
-												<Mutation mutation={CreateTransactionMutation}>
-													{createTransaction => {
+												<Mutation mutation={CreateWithdrawMutation}>
+													{createWithdrawl => {
 														return (
 															<Button
 																name={"兑换"}
@@ -170,7 +170,7 @@ class HomeScreen extends Component {
 																	} else {
 																		let result = {};
 																		try {
-																			result = await createTransaction({
+																			result = await createWithdrawl({
 																				variables: {
 																					amount: (value / 600).toFixed(0)
 																				},
@@ -180,7 +180,7 @@ class HomeScreen extends Component {
 																						variables: { id: user.id }
 																					},
 																					{
-																						query: TransactionsQuery
+																						query: WithdrawsQuery
 																					}
 																				]
 																			});
