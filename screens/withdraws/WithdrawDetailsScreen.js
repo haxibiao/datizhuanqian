@@ -17,9 +17,11 @@ class WithdrawDetailsScreen extends Component {
 	}
 	render() {
 		const { navigation, user } = this.props;
-		const withdraws = navigation.state.params;
+		const { withdraws } = navigation.state.params;
+		console.log("user", user);
 		return (
 			<View style={styles.container}>
+				<Header />
 				<View style={styles.content}>
 					<View style={styles.titleInfo}>
 						<Iconfont name={"tixian"} size={20} color={Colors.theme} />
@@ -27,10 +29,9 @@ class WithdrawDetailsScreen extends Component {
 					</View>
 					<View style={styles.bottomInfo}>
 						<Text style={{ fontSize: 22, paddingBottom: 15 }}>￥{withdraws.amount}.00</Text>
-						<Text style={styles.infoItem}>提现方式:支付宝({user.alipay})</Text>
+						<Text style={styles.infoItem}>回执信息:{withdraws.remark}</Text>
+						<Text style={styles.infoItem}>提现方式:支付宝({user.pay_account})</Text>
 						<Text style={styles.infoItem}>提现时间:{withdraws.created_at}</Text>
-						<Text style={styles.infoItem}>订单号:{withdraws.remark}</Text>
-						<Text style={styles.infoItem}>预计到账时间:1-3个工作日</Text>
 					</View>
 				</View>
 			</View>
@@ -41,7 +42,7 @@ class WithdrawDetailsScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#FFFEFC"
+		backgroundColor: Colors.lightBorder
 	},
 	content: {
 		marginTop: 20,

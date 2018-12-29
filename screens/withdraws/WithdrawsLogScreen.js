@@ -58,7 +58,7 @@ class WithdrawsLogScreen extends Component {
 									return (
 										<TouchableOpacity
 											style={styles.item}
-											disabled={item.remark}
+											disabled={!item.remark}
 											onPress={() => {
 												navigation.navigate("提现详情", {
 													withdraws: item

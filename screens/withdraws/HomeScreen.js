@@ -193,21 +193,34 @@ class HomeScreen extends Component {
 																				.toString()
 																				.indexOf("Cannot");
 																			if (info > -1) {
-																				codePush.sync({
-																					updateDialog: {
-																						// mandatoryContinueButtonLabel: "更新",
-																						// mandatoryUpdateMessage: "有新版本了，请您及时更新",
-																						optionalIgnoreButtonLabel:
-																							"取消",
-																						optionalInstallButtonLabel:
-																							"立即更新",
-																						optionalUpdateMessage:
-																							"更新到最新版本才能正常提现哦",
-																						title: "更新提示"
-																					},
-																					installMode:
-																						codePush.InstallMode.IMMEDIATE
-																				});
+																				codePush
+																					.checkForUpdate()
+																					.then(update => {
+																						if (!update) {
+																							Methods.toast(
+																								"请重启APP完成更新",
+																								-100
+																							);
+																						} else {
+																							codePush.sync({
+																								updateDialog: {
+																									// mandatoryContinueButtonLabel: "更新",
+																									// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+																									optionalIgnoreButtonLabel:
+																										"取消",
+																									optionalInstallButtonLabel:
+																										"后台更新",
+																									optionalUpdateMessage:
+																										"发现新版本",
+																									title: "更新提示"
+																								},
+																								installMode:
+																									codePush.InstallMode
+																										.IMMEDIATE
+																							});
+																						}
+																					});
+
 																				//过渡办法
 																			} else {
 																				let str = result.errors

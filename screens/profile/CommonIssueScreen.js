@@ -48,7 +48,7 @@ class CommonIssueScreen extends Component {
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：题目或者答案出现错误，怎么办?</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
-								A：您可以点击题目下方的“我要纠错”，我们收到您的纠错会在最快的时间内对题目进行纠正哦
+								A：可以到意见反馈中提供错误信息，我们收到您的错误信息会在最快的时间内对题目进行纠正哦
 							</Text>
 						</View>
 					</View>
