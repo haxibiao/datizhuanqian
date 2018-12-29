@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import actions from "../../store/actions";
 
 import { TransactionsQuery, WithdrawsQuery } from "../../graphql/withdraws.graphql";
-import { UserQuery } from "../../graphql/user.graphql";
+import { UserWithdrawQuery } from "../../graphql/user.graphql";
 import { Query } from "react-apollo";
 
 const { width, height } = Dimensions.get("window");
@@ -20,7 +20,7 @@ class WithdrawsLogScreen extends Component {
 		const { user } = navigation.state.params;
 		return (
 			<Screen>
-				<Query query={UserQuery} variables={{ id: user.id }}>
+				<Query query={UserWithdrawQuery} variables={{ id: user.id }}>
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (!(data && data.user)) return null;
@@ -43,7 +43,7 @@ class WithdrawsLogScreen extends Component {
 					}}
 				</Query>
 				<DivisionLine height={10} />
-				<Query query={WithdrawsQuery}>
+				<Query query={WithdrawsQuery} fetchPolicy="network-only">
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (loading) return <Loading />;
@@ -67,20 +67,19 @@ class WithdrawsLogScreen extends Component {
 										>
 											<View
 												style={{
-													width: (width - 30) / 2
+													width: ((width - 30) * 4) / 9
 												}}
 											>
 												<Text style={{ fontSize: 15 }}>{item.created_at}</Text>
 											</View>
 											<View
 												style={{
-													width: (width - 30) / 6,
-													marginLeft: (width - 30) / 12
+													width: (width - 30) / 9
 												}}
 											>
 												<Text style={{ fontSize: 15 }}>￥{item.amount.toFixed(0)}</Text>
 											</View>
-											<View style={{ alignItems: "flex-end", width: (width - 30) / 4 }}>
+											<View style={{ alignItems: "flex-end", width: ((width - 30) * 4) / 9 }}>
 												{item.status == -1 && (
 													<Text
 														style={{
@@ -89,7 +88,7 @@ class WithdrawsLogScreen extends Component {
 															textAlign: "right"
 														}}
 													>
-														提现失败
+														提现失败(查看详情)
 													</Text>
 												)}
 												{item.status == 1 && (
