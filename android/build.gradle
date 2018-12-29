@@ -7,6 +7,8 @@ buildscript {
         compileSdkVersion = 27
         targetSdkVersion = 26
         supportLibVersion = "27.1.1"
+        code_push_key_production = "nz2pKDfcbAo3yBgVcxlGN7fIgAoyBkN_o-HyE"
+        code_push_key_staging = "oMniPk6e1DCDjMEXE3rw5bR8NR7PSyNuibrk4"
     }
     repositories {
         google()
