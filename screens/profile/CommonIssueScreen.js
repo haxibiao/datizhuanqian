@@ -24,7 +24,7 @@ class CommonIssueScreen extends Component {
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：提现不了，怎么办？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
-								A：请先检查一下是否绑定支付宝账号，并检查您账户的智慧点是否满足当日汇率的最低提现金额1元，若还不能提现，请联系我们的官方微信或在意见反馈里提交，我们会在第一时间为您解决。
+								A：请先检查您的网络是否正常以及APP是否是最新版本，若还不能提现，请联系我们的官方微信或在意见反馈里提交，我们会在第一时间为您解决。
 							</Text>
 						</View>
 					</View>

@@ -34,26 +34,23 @@ class WithdrawsLogScreen extends Component {
 								</View>
 								<View style={styles.topRight}>
 									<Text style={{ fontSize: 16 }}>累计成功提现</Text>
-									<Text style={{ fontSize: 16, fontWeight: "600" }}>
-										￥{data.user.transaction_sum_amount}
-									</Text>
+									<Text style={{ fontSize: 16, fontWeight: "600" }}>￥{data.user.accumulative}</Text>
 								</View>
 							</View>
 						);
 					}}
 				</Query>
 				<DivisionLine height={10} />
-				<Query query={WithdrawsQuery}>
+				<Query query={TransactionsQuery}>
 					{({ data, error, loading, fetch, fetchMore }) => {
 						if (error) return null;
 						if (loading) return <Loading />;
-						if (!(data && data.withdraws)) return null;
-						if (data.withdraws.length < 1)
+						if (!(data && data.transactions)) return null;
+						if (data.transactions.length < 1)
 							return <BlankContent text={"暂无提现记录哦,快去赚取智慧点吧~"} fontSize={14} />;
-
 						return (
 							<FlatList
-								data={data.withdraws}
+								data={data.transactions}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => {
 									return (
@@ -74,7 +71,7 @@ class WithdrawsLogScreen extends Component {
 												<Text style={{ fontSize: 15 }}>￥{item.amount.toFixed(0)}</Text>
 											</View>
 											<View style={{ alignItems: "flex-end", width: (width - 30) / 4 }}>
-												{item.status == -1 && (
+												{item.submit == -1 && (
 													<Text
 														style={{
 															color: Colors.red,
@@ -85,7 +82,7 @@ class WithdrawsLogScreen extends Component {
 														提现失败
 													</Text>
 												)}
-												{item.status == 1 && (
+												{item.submit == 1 && (
 													<Text
 														style={{
 															color: Colors.weixin,
@@ -96,7 +93,7 @@ class WithdrawsLogScreen extends Component {
 														提现成功
 													</Text>
 												)}
-												{item.status == 0 && (
+												{item.submit == 0 && (
 													<Text
 														style={{
 															color: Colors.theme,

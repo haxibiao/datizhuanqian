@@ -21,6 +21,8 @@ import {
 import { UserQuery } from "../../graphql/User.graphql";
 import { Mutation, Query } from "react-apollo";
 
+import codePush from "react-native-code-push";
+
 const { width, height } = Dimensions.get("window");
 
 class HomeScreen extends Component {
@@ -146,8 +148,8 @@ class HomeScreen extends Component {
 														<Text style={styles.tips}>600智慧点=1元</Text>
 													</View>
 												</View>
-												<Mutation mutation={CreateWithdrawMutation}>
-													{createWithdrawal => {
+												<Mutation mutation={CreateTransactionMutation}>
+													{createTransaction => {
 														return (
 															<Button
 																name={"兑换"}
@@ -164,11 +166,11 @@ class HomeScreen extends Component {
 																		value: 0
 																	});
 																	if (value > user.gold) {
-																		Methods.toast("智慧点余额不足");
+																		Methods.toast("智慧点余额不足", -100);
 																	} else {
 																		let result = {};
 																		try {
-																			result = await createWithdrawal({
+																			result = await createTransaction({
 																				variables: {
 																					amount: (value / 600).toFixed(0)
 																				},
@@ -178,7 +180,7 @@ class HomeScreen extends Component {
 																						variables: { id: user.id }
 																					},
 																					{
-																						query: WithdrawsQuery
+																						query: TransactionsQuery
 																					}
 																				]
 																			});
@@ -187,14 +189,36 @@ class HomeScreen extends Component {
 																		}
 
 																		if (result && result.errors) {
-																			// let info = result.errors
-																			// 	.toString()
-																			// 	.indexOf("Cannot");
-																			let str = result.errors
+																			let info = result.errors
 																				.toString()
-																				.replace(/Error: GraphQL error: /, "");
+																				.indexOf("Cannot");
+																			if (info > -1) {
+																				codePush.sync({
+																					updateDialog: {
+																						// mandatoryContinueButtonLabel: "更新",
+																						// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+																						optionalIgnoreButtonLabel:
+																							"取消",
+																						optionalInstallButtonLabel:
+																							"立即更新",
+																						optionalUpdateMessage:
+																							"更新到最新版本才能正常提现哦",
+																						title: "更新提示"
+																					},
+																					installMode:
+																						codePush.InstallMode.IMMEDIATE
+																				});
+																				//过渡办法
+																			} else {
+																				let str = result.errors
+																					.toString()
+																					.replace(
+																						/Error: GraphQL error: /,
+																						""
+																					);
 
-																			Methods.toast(str, -100); //打印错误信息
+																				Methods.toast(str, -100); //打印错误信息
+																			}
 																		} else {
 																			Methods.toast(
 																				"发起提现成功,客服人员会尽快处理您的提现请求。",
