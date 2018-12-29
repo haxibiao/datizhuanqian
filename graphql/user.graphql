@@ -78,7 +78,6 @@ query UserQuery($id: Int!) {
 		gold
 		ticket
 		avatar
-		transaction_sum_amount
 		accumulative
 		exp
 		next_level_exp
@@ -89,6 +88,14 @@ query UserQuery($id: Int!) {
 			level
 			exp
 		}
+	}
+}
+
+#用户提现信息
+query UserWithdrawQuery($id: Int!) {
+	user(id: $id) {
+		gold
+		transaction_sum_amount
 	}
 }
 
