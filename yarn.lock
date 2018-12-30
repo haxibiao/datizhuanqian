@@ -4507,6 +4507,10 @@ react-native-code-push@^5.4.2:
     plist "3.0.1"
     xcode "1.0.0"
 
+react-native-config@^0.11.7:
+  version "0.11.7"
+  resolved "http://registry.npm.taobao.org/react-native-config/download/react-native-config-0.11.7.tgz#a2b323f2ecd76a4df88cbb6bc86eaa2ef9febee7"
+
 react-native-device-info@^0.24.3:
   version "0.24.3"
   resolved "http://registry.npm.taobao.org/react-native-device-info/download/react-native-device-info-0.24.3.tgz#f15eff8d09fe418eaf5e7c89ddaabbc5ed718fd7"
