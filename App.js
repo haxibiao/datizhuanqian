@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 });
 
 let codePushOptions = {
-  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-  installMode: codePush.InstallMode.ON_NEXT_RESUME
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME
+  // installMode: codePush.InstallMode.ON_NEXT_RESUME
 };
 export default codePush(codePushOptions)(App);

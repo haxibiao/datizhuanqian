@@ -29,9 +29,12 @@ class WithdrawDetailsScreen extends Component {
 					</View>
 					<View style={styles.bottomInfo}>
 						<Text style={{ fontSize: 22, paddingBottom: 15 }}>￥{withdraws.amount}.00</Text>
-						<Text style={styles.infoItem}>回执信息:{withdraws.remark}</Text>
-						<Text style={styles.infoItem}>提现方式:支付宝({user.pay_account})</Text>
-						<Text style={styles.infoItem}>提现时间:{withdraws.created_at}</Text>
+						<Text style={styles.infoItem}>
+							回执信息：{withdraws.remark}
+							{/* <Text style={{ color: Colors.red, fontSize: 15 }}>修改</Text>*/}
+						</Text>
+						<Text style={styles.infoItem}>提现方式：支付宝({user.pay_account})</Text>
+						<Text style={styles.infoItem}>提现时间：{withdraws.created_at}</Text>
 					</View>
 				</View>
 			</View>

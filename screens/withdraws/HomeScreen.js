@@ -45,7 +45,7 @@ class HomeScreen extends Component {
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					/>
 					{login ? (
-						<Query query={UserQuery} variables={{ id: user.id }}>
+						<Query query={UserQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 							{({ data, loading, error, refetch }) => {
 								if (error) return <LoadingError reload={() => refetch()} />;
 								if (!(data && data.user)) return <BlankContent />;
@@ -162,10 +162,7 @@ class HomeScreen extends Component {
 																theme={Colors.blue}
 																disabledColor={"rgba(64,127,207,0.7)"}
 																handler={async () => {
-																	this.setState({
-																		value: 0
-																	});
-																	if (value > user.gold) {
+																	if (value > data.user.gold) {
 																		Methods.toast("智慧点余额不足", -100);
 																	} else {
 																		let result = {};
@@ -239,6 +236,9 @@ class HomeScreen extends Component {
 																			);
 																		}
 																	}
+																	this.setState({
+																		value: 0
+																	});
 																}}
 															/>
 														);
