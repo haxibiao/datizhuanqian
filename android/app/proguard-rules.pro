@@ -16,4 +16,4 @@
 #   public *;
 #}
 
--keep class com.mypackage.BuildConfig { *; }
+-keep class com.datizhuanqian.BuildConfig { *; }

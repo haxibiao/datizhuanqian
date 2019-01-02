@@ -13,6 +13,8 @@ project.ext.envConfigFiles = [
     debug: ".env",
     release: ".env.prod",
     staging: ".env.staging",
+    xiaomi: ".env.xiaomi",
+    baidu: ".env.baidu",
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -75,10 +77,24 @@ android {
             initWith release
             applicationIdSuffix '.staging'
             matchingFallbacks = ['release']
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+        }
+        xiaomi {
+            initWith release
+            matchingFallbacks = ['release']
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release 
-            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+        baidu {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
