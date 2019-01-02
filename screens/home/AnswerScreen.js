@@ -116,11 +116,7 @@ class AnswerScreen extends Component {
 																				}
 																			]
 																		});
-																		console.log("question.answer", question.answer);
-																		console.log(
-																			"question.answer.indexOf(value)",
-																			question.answer.indexOf(value)
-																		);
+
 																		if (question.answer.indexOf(value) > -1) {
 																			this.setState({
 																				showColor: Colors.weixin

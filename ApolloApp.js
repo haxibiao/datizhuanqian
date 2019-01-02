@@ -29,7 +29,7 @@ class ApolloApp extends Component {
 		}
 
 		this.client = new ApolloClient({
-			uri: Config.ServerRoot + "/graphql",
+			uri: "https://datizhuanqian.com/graphql",
 			request: async operation => {
 				operation.setContext({
 					headers: {
