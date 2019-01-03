@@ -128,7 +128,7 @@ class AnswerScreen extends Component {
 																			// );
 																		} else {
 																			this.setState({
-																				showColor: Colors.red
+																				showColor: Colors.themeRed
 																			});
 																		}
 																	} else {

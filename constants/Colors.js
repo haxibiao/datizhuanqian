@@ -1,4 +1,5 @@
 const theme = "#FFB100";
+const themeRed = "#EF514A";
 const disabledColor = "rgba(255,177,0,0.7)";
 const white = "#fff";
 const orange = "#CD6839";
@@ -25,6 +26,7 @@ export default {
 	orange,
 	red,
 	black,
+	themeRed,
 
 	primaryFont,
 	tintFont,

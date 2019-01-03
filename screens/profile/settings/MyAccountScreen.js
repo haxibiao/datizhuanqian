@@ -106,7 +106,7 @@ class EditProfileScreen extends Component {
 						}}
 					</Mutation>
 					<View style={{ paddingHorizontal: 15 }}>
-						<Text style={{ fontSize: 14, color: Colors.red, paddingTop: 15 }}>
+						<Text style={{ fontSize: 14, color: Colors.themeRed, paddingTop: 15 }}>
 							注意:支付宝账号一旦绑定将无法更改！
 						</Text>
 					</View>

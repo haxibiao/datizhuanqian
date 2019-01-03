@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from "react-native";
 import { Header } from "../../components/Header";
-import { DivisionLine, TabTop, Banner, LoadingError, BlankContent } from "../../components/Universal";
+import { DivisionLine, TabTop, Banner, LoadingError, BlankContent, WithdrawsTips } from "../../components/Universal";
 import { CheckUpdateModal } from "../../components/Modal";
 import { Button } from "../../components/Control";
 import { Iconfont } from "../../utils/Fonts";
@@ -132,7 +132,7 @@ class HomeScreen extends Component {
 													}}
 												>
 													<Text style={styles.content}>
-														提现<Text style={{ color: "#EF514A" }}>1元</Text>
+														提现<Text style={{ color: Colors.themeRed }}>1元</Text>
 													</Text>
 												</TouchableOpacity>
 												<TouchableOpacity
@@ -142,7 +142,7 @@ class HomeScreen extends Component {
 													}}
 												>
 													<Text style={styles.content}>
-														提现<Text style={{ color: "#EF514A" }}>2元</Text>
+														提现<Text style={{ color: Colors.themeRed }}>2元</Text>
 													</Text>
 												</TouchableOpacity>
 												<TouchableOpacity
@@ -152,7 +152,7 @@ class HomeScreen extends Component {
 													}}
 												>
 													<Text style={styles.content}>
-														提现<Text style={{ color: "#EF514A" }}>5元</Text>
+														提现<Text style={{ color: Colors.themeRed }}>5元</Text>
 													</Text>
 												</TouchableOpacity>
 												<TouchableOpacity
@@ -162,7 +162,7 @@ class HomeScreen extends Component {
 													}}
 												>
 													<Text style={styles.content}>
-														提现<Text style={{ color: "#EF514A" }}>10元</Text>
+														提现<Text style={{ color: Colors.themeRed }}>10元</Text>
 													</Text>
 												</TouchableOpacity>
 											</View>
@@ -185,34 +185,7 @@ class HomeScreen extends Component {
 											// />
 										}
 
-										{user.pay_account ? null : (
-											<View
-												style={{
-													flex: 1,
-													justifyContent: "center",
-													alignItems: "center",
-													paddingHorizontal: 15
-												}}
-											>
-												<Image
-													source={require("../../assets/images/alipay.jpg")}
-													style={{ width: width / 3, height: width / 3 }}
-												/>
-												<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300" }}>
-													目前没有绑定支付宝账户哦
-												</Text>
-												<Text
-													style={{
-														color: Colors.grey,
-														fontSize: 13,
-														fontWeight: "300",
-														paddingTop: 10
-													}}
-												>
-													请前往我的-设置-我的账户页面进行绑定
-												</Text>
-											</View>
-										)}
+										{user.pay_account ? null : <WithdrawsTips />}
 									</View>
 								);
 							}}
@@ -221,6 +194,7 @@ class HomeScreen extends Component {
 						<NotLogin navigation={navigation} />
 					)}
 				</View>
+				<RuleDescriptionModal />
 			</Screen>
 		);
 	}

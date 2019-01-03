@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from "react-native";
 
 import { Header } from "../../components/Header";
-import { TabTop, Banner, DivisionLine } from "../../components/Universal";
+import { TabTop, Banner, DivisionLine, WithdrawsTips } from "../../components/Universal";
 import Screen from "../Screen";
 import { Colors, Config, Divice } from "../../constants";
 
@@ -31,7 +31,7 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: "#EF514A" }}>1元</Text>
+								提现<Text style={{ color: Colors.themeRed }}>1元</Text>
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -41,7 +41,7 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: "#EF514A" }}>2元</Text>
+								提现<Text style={{ color: Colors.themeRed }}>2元</Text>
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -51,7 +51,7 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: "#EF514A" }}>5元</Text>
+								提现<Text style={{ color: Colors.themeRed }}>5元</Text>
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -61,36 +61,12 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: "#EF514A" }}>10元</Text>
+								提现<Text style={{ color: Colors.themeRed }}>10元</Text>
 							</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
-				<View
-					style={{
-						flex: 1,
-						justifyContent: "center",
-						alignItems: "center",
-						paddingHorizontal: 15
-						// marginTop: (height - 222) / 2
-					}}
-				>
-					<Image
-						source={require("../../assets/images/alipay.jpg")}
-						style={{ width: width / 3, height: width / 3 }}
-					/>
-					<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: "300" }}>还没有登录账号哦</Text>
-					<Text
-						style={{
-							color: Colors.grey,
-							fontSize: 13,
-							fontWeight: "300",
-							paddingTop: 10
-						}}
-					>
-						登录后绑定支付宝账户即可进行提现
-					</Text>
-				</View>
+				<WithdrawsTips tips={"还没有登录账号哦"} method={"登录后绑定支付宝账户即可进行提现"} />
 			</View>
 		);
 	}

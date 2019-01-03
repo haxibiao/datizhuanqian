@@ -8,6 +8,7 @@ import BlankContent from "./BlankContent";
 import Loading from "./Loading";
 import ErrorBoundary from "./ErrorBoundary";
 import Banner from "./Banner";
+import WithdrawsTips from "./WithdrawsTips";
 
 export {
 	Avatar,
@@ -19,5 +20,6 @@ export {
 	BlankContent,
 	Loading,
 	ErrorBoundary,
-	Banner
+	Banner,
+	WithdrawsTips
 };

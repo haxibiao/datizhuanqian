@@ -36,7 +36,7 @@ class WithdrawDetailsScreen extends Component {
 									navigation.navigate("我的账户", { user: user });
 								}}
 							>
-								<Text style={{ color: Colors.red, fontSize: 15 }}>修改</Text>
+								<Text style={{ color: Colors.themeRed, fontSize: 15 }}>修改</Text>
 							</TouchableOpacity>
 							<Text style={styles.infoItem}>提现方式：支付宝({user.pay_account})</Text>
 							<Text style={styles.infoItem}>提现时间：{withdraws.created_at}</Text>
@@ -61,7 +61,7 @@ class WithdrawDetailsScreen extends Component {
 								{withdraws.amount}.00
 							</Text>
 							{withdraws.status == -1 ? (
-								<Text style={{ fontSize: 16, color: Colors.red }}>交易失败</Text>
+								<Text style={{ fontSize: 16, color: Colors.themeRed }}>交易失败</Text>
 							) : (
 								<Text style={{ fontSize: 16, color: Colors.weixin }}>交易成功</Text>
 							)}
