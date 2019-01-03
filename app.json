@@ -4,5 +4,6 @@
 	"AppVersion": "v1.1.0(build7)",
 	"localVersion": "1.1.0",
 	"ServerRoot": "https://datizhuanqian.com",
-	"AppSlogan": "全新1.1版回归,老用户精力更多"
+	"AppSlogan": "全新1.1版回归,老用户精力更多",
+	"Build": "7"
 }

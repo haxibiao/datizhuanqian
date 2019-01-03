@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Platform } from 'react-native';
-import RootNavigation from './navigation/RootNavigation';
-import Config from './constants/Config';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Platform } from "react-native";
+import RootNavigation from "./navigation/RootNavigation";
+import Config from "./constants/Config";
+import { connect } from "react-redux";
 
-import { ApolloProvider } from 'react-apollo';
-import ApolloClient from 'apollo-boost';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloProvider } from "react-apollo";
+import ApolloClient from "apollo-boost";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo from "react-native-device-info";
 
 class ApolloApp extends Component {
 	_makeClient(user) {
@@ -18,24 +18,24 @@ class ApolloApp extends Component {
 
 		const isEmulator = DeviceInfo.isEmulator();
 		if (!isEmulator) {
-			deviceHeaders.os = Platform.OS;
-			deviceHeaders.brand = DeviceInfo.getBrand();
-			deviceHeaders.build = DeviceInfo.getBuildNumber();
-			deviceHeaders.deviceCountry = DeviceInfo.getDeviceCountry(); // "US"
+			deviceHeaders.os = Platform.OS; //操作系统
+			deviceHeaders.brand = DeviceInfo.getBrand(); //设备品牌
+			deviceHeaders.build = Config.Build; //手动修改的build版本号
+			deviceHeaders.deviceCountry = DeviceInfo.getDeviceCountry(); //国家
 
 			//不能分析出来哪个中国商店安装的，只适合google play的referer获取
-			deviceHeaders.referrer = DeviceInfo.getInstallReferrer();
+			// deviceHeaders.referrer = DeviceInfo.getInstallReferrer();
 
 			//根据不同的.env文件打包不同的apk，方便追踪商店流量
 			deviceHeaders.referrer = Config.AppStore;
 
-			deviceHeaders.version = DeviceInfo.getReadableVersion();
-			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion();
-			deviceHeaders.uniqueId = DeviceInfo.getUniqueID();
+			deviceHeaders.version = DeviceInfo.getVersion(); //版本号
+			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion(); //系统版本
+			deviceHeaders.uniqueId = DeviceInfo.getUniqueID(); //uniqueId
 		}
 
 		this.client = new ApolloClient({
-			uri: Config.ServerRoot + '/graphql',
+			uri: Config.ServerRoot + "/graphql",
 			request: async operation => {
 				operation.setContext({
 					headers: {

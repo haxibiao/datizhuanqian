@@ -19,14 +19,16 @@ class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			real_name: null,
+			real_name: this.props.user.name,
 			pay_account: null
 		};
 	}
 
 	render() {
-		let { navigation } = this.props;
+		let { navigation, user } = this.props;
 		const { real_name, pay_account } = this.state;
+		// const { user } = navigation.state.params;
+		console.log("user", user);
 		return (
 			<Screen header>
 				<Header customStyle={{ borderBottomColor: "transparent" }} />
@@ -49,7 +51,8 @@ class EditProfileScreen extends Component {
 							borderBottomWidth: 1,
 							borderBottomColor: Colors.lightBorder
 						}}
-						placeholder="请输入支付宝姓名"
+						editable={user.name}
+						placeholder={user.name ? user.name : "请输入支付宝姓名"}
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
 						multiline={true}
@@ -103,7 +106,7 @@ class EditProfileScreen extends Component {
 						}}
 					</Mutation>
 					<View style={{ paddingHorizontal: 15 }}>
-						<Text style={{ fontSize: 14, color: Colors.red, paddingTop: 15 }}>
+						<Text style={{ fontSize: 14, color: Colors.themeRed, paddingTop: 15 }}>
 							注意:支付宝账号一旦绑定将无法更改！
 						</Text>
 					</View>

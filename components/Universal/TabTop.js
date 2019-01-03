@@ -62,7 +62,7 @@ class TabTop extends Component {
 												style={{
 													fontSize: 15,
 													paddingLeft: 5,
-													color: user.ticket > 10 ? Colors.black : Colors.red
+													color: user.ticket > 10 ? Colors.black : Colors.themeRed
 												}}
 											>
 												{user.ticket ? user.ticket : "0"}
