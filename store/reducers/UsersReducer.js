@@ -1,6 +1,6 @@
-import types from "../types";
-import { List } from "immutable";
-import { users } from "../state/users";
+import types from '../types';
+import { List } from 'immutable';
+import { users } from '../state/users';
 
 class UsersReducer {
 	static reduce(state = users(), action) {
@@ -10,15 +10,19 @@ class UsersReducer {
 			return state;
 		}
 	}
+	static [types.SET_USER](state, action) {
+		let { user } = action;
+		return state.set('user', user);
+	}
 	static [types.SIGN_IN](state, action) {
 		let { user } = action;
-		return state.set("user", user).set("login", true);
+		return state.set('user', user).set('login', true);
 	}
 	static [types.SIGN_OUT](state, action) {
 		return state
-			.set("user", {})
-			.set("login", false)
-			.set("noTicketTips", true);
+			.set('user', {})
+			.set('login', false)
+			.set('noTicketTips', true);
 	}
 	static [types.UPDATE_NAME](state, action) {
 		let { user } = state;
@@ -27,7 +31,7 @@ class UsersReducer {
 			...user,
 			name
 		};
-		return state.set("user", user);
+		return state.set('user', user);
 	}
 
 	static [types.UPDATE_AVATAR](state, action) {
@@ -37,7 +41,7 @@ class UsersReducer {
 			...user,
 			avatar: avatar
 		};
-		return state.set("user", user);
+		return state.set('user', user);
 	}
 
 	static [types.UPDATE_ALIPAY](state, action) {
@@ -47,7 +51,7 @@ class UsersReducer {
 			...user,
 			...account
 		};
-		return state.set("user", user);
+		return state.set('user', user);
 	}
 
 	static [types.UPDATE_GOLD](state, action) {
@@ -57,16 +61,16 @@ class UsersReducer {
 			...user,
 			gold: gold
 		};
-		return state.set("user", user);
+		return state.set('user', user);
 	}
 
 	static [types.RECORD_OPERATION](state, action) {
 		let { noTicketTips } = action;
-		return state.set("noTicketTips", noTicketTips);
+		return state.set('noTicketTips', noTicketTips);
 	}
 	static [types.CANCEL_UPDATE](state, action) {
 		let { isUpdate } = action;
-		return state.set("isUpdate", isUpdate);
+		return state.set('isUpdate', isUpdate);
 	}
 }
 

@@ -1,10 +1,18 @@
-import types from "../types";
+import types from '../types';
 
 export default {
   signIn(user) {
     return {
       type: types.SIGN_IN,
       user
+    };
+  },
+
+  setUser(user) {
+    let newUser = user ? user : {};
+    return {
+      type: types.SET_USER,
+      user: newUser
     };
   },
 
