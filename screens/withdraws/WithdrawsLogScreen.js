@@ -56,15 +56,7 @@ class WithdrawsLogScreen extends Component {
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => {
 									return (
-										<TouchableOpacity
-											style={styles.item}
-											disabled={!item.remark}
-											onPress={() => {
-												navigation.navigate("提现详情", {
-													withdraws: item
-												});
-											}}
-										>
+										<View style={styles.item}>
 											<View
 												style={{
 													width: ((width - 30) * 4) / 9
@@ -81,26 +73,42 @@ class WithdrawsLogScreen extends Component {
 											</View>
 											<View style={{ alignItems: "flex-end", width: ((width - 30) * 4) / 9 }}>
 												{item.status == -1 && (
-													<Text
-														style={{
-															color: Colors.red,
-															fontSize: 15,
-															textAlign: "right"
+													<TouchableOpacity
+														onPress={() => {
+															navigation.navigate("提现详情", {
+																withdraws: item
+															});
 														}}
 													>
-														提现失败(查看详情)
-													</Text>
+														<Text
+															style={{
+																color: Colors.red,
+																fontSize: 15,
+																textAlign: "right"
+															}}
+														>
+															提现失败(查看详情)
+														</Text>
+													</TouchableOpacity>
 												)}
 												{item.status == 1 && (
-													<Text
-														style={{
-															color: Colors.weixin,
-															fontSize: 15,
-															textAlign: "right"
+													<TouchableOpacity
+														onPress={() => {
+															navigation.navigate("提现详情", {
+																withdraws: item
+															});
 														}}
 													>
-														提现成功
-													</Text>
+														<Text
+															style={{
+																color: Colors.weixin,
+																fontSize: 15,
+																textAlign: "right"
+															}}
+														>
+															提现成功(查看详情)
+														</Text>
+													</TouchableOpacity>
 												)}
 												{item.status == 0 && (
 													<Text
@@ -114,7 +122,7 @@ class WithdrawsLogScreen extends Component {
 													</Text>
 												)}
 											</View>
-										</TouchableOpacity>
+										</View>
 									);
 								}}
 							/>

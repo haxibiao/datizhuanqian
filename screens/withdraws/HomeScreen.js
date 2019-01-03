@@ -4,6 +4,8 @@ import { Header } from "../../components/Header";
 import { DivisionLine, TabTop, Banner, LoadingError, BlankContent } from "../../components/Universal";
 import { CheckUpdateModal } from "../../components/Modal";
 import { Button } from "../../components/Control";
+import { Iconfont } from "../../utils/Fonts";
+
 import Screen from "../Screen";
 import NotLogin from "./NotLogin";
 import { Colors, Methods } from "../../constants";
@@ -43,6 +45,11 @@ class HomeScreen extends Component {
 					<Header
 						leftComponent={<Text />}
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
+						rightComponent={
+							<TouchableOpacity>
+								<Iconfont name={"question"} size={18} />
+							</TouchableOpacity>
+						}
 					/>
 					{login ? (
 						<Query query={UserQuery} variables={{ id: user.id }} fetchPolicy="network-only">
@@ -51,17 +58,101 @@ class HomeScreen extends Component {
 								if (!(data && data.user)) return <BlankContent />;
 								return (
 									<View style={styles.container}>
-										<TabTop user={user} />
 										<View>
-											<View style={styles.row}>
-												<View style={styles.rowLeft}>
-													<Text style={{ fontSize: 16, color: Colors.black }}>
-														剩余智慧点
+											{
+												// <View style={styles.row}>
+												// 	<View style={styles.rowLeft}>
+												// 		<Text style={{ fontSize: 16, color: Colors.black }}>
+												// 			剩余智慧点
+												// 		</Text>
+												// 	</View>
+												// 	<View style={styles.center}>
+												// 		<Text style={{ fontSize: 16, color: Colors.black }}>
+												// 			{data.user.gold}
+												// 		</Text>
+												// 	</View>
+												// </View>
+											}
+											<View style={{ paddingVertical: 20, alignItems: "center" }}>
+												<Text style={{ color: Colors.grey, fontSize: 15 }}>智慧点</Text>
+												<View
+													style={{
+														flexDirection: "row",
+														alignItems: "center",
+														paddingTop: 10
+													}}
+												>
+													<Iconfont name={"zhuanshi"} size={30} color={Colors.theme} />
+													<Text
+														style={{ color: Colors.theme, fontSize: 30, paddingBottom: 2 }}
+													>
+														{data.user.gold}
 													</Text>
 												</View>
-												<View style={styles.center}>
+											</View>
+											<DivisionLine height={10} />
+											<View
+												style={{
+													flexDirection: "row",
+													flexWrap: "wrap",
+													paddingHorizontal: 15,
+													justifyContent: "space-between"
+												}}
+											>
+												<View
+													style={{
+														paddingVertical: 25,
+														width: (width - 44) / 2,
+														borderColor: Colors.lightBorder,
+														borderWidth: 1,
+														alignItems: "center",
+														marginTop: 20
+													}}
+												>
 													<Text style={{ fontSize: 16, color: Colors.black }}>
-														{data.user.gold}
+														提现<Text style={{ color: Colors.red }}>1元</Text>
+													</Text>
+												</View>
+												<View
+													style={{
+														paddingVertical: 25,
+														width: (width - 44) / 2,
+														borderColor: Colors.lightBorder,
+														borderWidth: 1,
+														alignItems: "center",
+														marginTop: 20
+													}}
+												>
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														提现<Text style={{ color: Colors.red }}>2元</Text>
+													</Text>
+												</View>
+												<View
+													style={{
+														paddingVertical: 25,
+														width: (width - 44) / 2,
+														borderColor: Colors.lightBorder,
+														borderWidth: 1,
+														alignItems: "center",
+														marginTop: 20
+													}}
+												>
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														提现<Text style={{ color: Colors.red }}>5元</Text>
+													</Text>
+												</View>
+												<View
+													style={{
+														paddingVertical: 25,
+														width: (width - 44) / 2,
+														borderColor: Colors.lightBorder,
+														borderWidth: 1,
+														alignItems: "center",
+														marginTop: 20
+													}}
+												>
+													<Text style={{ fontSize: 16, color: Colors.black }}>
+														提现<Text style={{ color: Colors.red }}>10元</Text>
 													</Text>
 												</View>
 											</View>
