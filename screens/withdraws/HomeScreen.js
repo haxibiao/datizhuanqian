@@ -21,7 +21,7 @@ import {
 } from "../../graphql/withdraws.graphql";
 
 import { UserQuery } from "../../graphql/User.graphql";
-import { Mutation, Query } from "react-apollo";
+import { Mutation, Query, compose, graphql } from "react-apollo";
 
 import codePush from "react-native-code-push";
 
@@ -31,13 +31,73 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.handlePromotModalVisible = this.handlePromotModalVisible.bind(this);
+		this._withdraws = this._withdraws.bind(this);
 		this.state = {
 			value: 0,
-			promotModalVisible: false
+			promotModalVisible: false,
+			exchangeRate: 600 //汇率
 		};
 	}
+
+	//提现
+	async _withdraws(user_gold, user_id, amount) {
+		let { exchangeRate } = this.state;
+		let result = {};
+		if (user_gold / exchangeRate < amount) {
+			Methods.toast("智慧点不足", -100);
+		} else {
+			try {
+				result = await this.props.CreateWithdrawMutation({
+					variables: {
+						amount: amount
+					},
+					refetchQueries: () => [
+						{
+							query: UserQuery,
+							variables: { id: user_id }
+						},
+						{
+							query: WithdrawsQuery
+						}
+					]
+				});
+			} catch (ex) {
+				result.errors = ex;
+			}
+
+			if (result && result.errors) {
+				let info = result.errors.toString().indexOf("Cannot");
+				if (info > -1) {
+					codePush.checkForUpdate().then(update => {
+						if (!update) {
+							Methods.toast("请重启APP完成更新", -100);
+						} else {
+							codePush.sync({
+								updateDialog: {
+									// mandatoryContinueButtonLabel: "更新",
+									// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+									optionalIgnoreButtonLabel: "取消",
+									optionalInstallButtonLabel: "后台更新",
+									optionalUpdateMessage: "发现新版本",
+									title: "更新提示"
+								},
+								installMode: codePush.InstallMode.IMMEDIATE
+							});
+						}
+					});
+					//过渡办法
+				} else {
+					let str = result.errors.toString().replace(/Error: GraphQL error: /, "");
+					Methods.toast(str, -100); //打印错误信息
+				}
+			} else {
+				Methods.toast("发起提现成功,客服人员会尽快处理您的提现请求。", -100);
+			}
+		}
+	}
+
 	render() {
-		const { value, promotModalVisible } = this.state;
+		const { value, promotModalVisible, exchangeRate } = this.state;
 		const { user, login, navigation } = this.props;
 		return (
 			<Screen header>
@@ -59,295 +119,73 @@ class HomeScreen extends Component {
 								return (
 									<View style={styles.container}>
 										<View>
-											{
-												// <View style={styles.row}>
-												// 	<View style={styles.rowLeft}>
-												// 		<Text style={{ fontSize: 16, color: Colors.black }}>
-												// 			剩余智慧点
-												// 		</Text>
-												// 	</View>
-												// 	<View style={styles.center}>
-												// 		<Text style={{ fontSize: 16, color: Colors.black }}>
-												// 			{data.user.gold}
-												// 		</Text>
-												// 	</View>
-												// </View>
-											}
-											<View style={{ paddingVertical: 20, alignItems: "center" }}>
-												<Text style={{ color: Colors.grey, fontSize: 15 }}>智慧点</Text>
-												<View
-													style={{
-														flexDirection: "row",
-														alignItems: "center",
-														paddingTop: 10
-													}}
-												>
-													<Iconfont name={"zhuanshi"} size={30} color={Colors.theme} />
-													<Text
-														style={{ color: Colors.theme, fontSize: 30, paddingBottom: 2 }}
-													>
-														{data.user.gold}
-													</Text>
-												</View>
+											<View style={styles.header}>
+												<Text style={styles.gold}>{data.user.gold}</Text>
+												<Text style={styles.type}>智慧点</Text>
 											</View>
 											<DivisionLine height={10} />
-											<View
-												style={{
-													flexDirection: "row",
-													flexWrap: "wrap",
-													paddingHorizontal: 15,
-													justifyContent: "space-between"
-												}}
-											>
-												<View
-													style={{
-														paddingVertical: 25,
-														width: (width - 44) / 2,
-														borderColor: Colors.lightBorder,
-														borderWidth: 1,
-														alignItems: "center",
-														marginTop: 20
+											<View style={styles.center}>
+												<TouchableOpacity
+													style={styles.item}
+													onPress={() => {
+														this._withdraws(data.user.gold, user.id, 1);
 													}}
 												>
-													<Text style={{ fontSize: 16, color: Colors.black }}>
-														提现<Text style={{ color: Colors.red }}>1元</Text>
+													<Text style={styles.content}>
+														提现<Text style={{ color: "#EF514A" }}>1元</Text>
 													</Text>
-												</View>
-												<View
-													style={{
-														paddingVertical: 25,
-														width: (width - 44) / 2,
-														borderColor: Colors.lightBorder,
-														borderWidth: 1,
-														alignItems: "center",
-														marginTop: 20
+												</TouchableOpacity>
+												<TouchableOpacity
+													style={styles.item}
+													onPress={() => {
+														this._withdraws(data.user.gold, user.id, 2);
 													}}
 												>
-													<Text style={{ fontSize: 16, color: Colors.black }}>
-														提现<Text style={{ color: Colors.red }}>2元</Text>
+													<Text style={styles.content}>
+														提现<Text style={{ color: "#EF514A" }}>2元</Text>
 													</Text>
-												</View>
-												<View
-													style={{
-														paddingVertical: 25,
-														width: (width - 44) / 2,
-														borderColor: Colors.lightBorder,
-														borderWidth: 1,
-														alignItems: "center",
-														marginTop: 20
+												</TouchableOpacity>
+												<TouchableOpacity
+													style={styles.item}
+													onPress={() => {
+														this._withdraws(data.user.gold, user.id, 5);
 													}}
 												>
-													<Text style={{ fontSize: 16, color: Colors.black }}>
-														提现<Text style={{ color: Colors.red }}>5元</Text>
+													<Text style={styles.content}>
+														提现<Text style={{ color: "#EF514A" }}>5元</Text>
 													</Text>
-												</View>
-												<View
-													style={{
-														paddingVertical: 25,
-														width: (width - 44) / 2,
-														borderColor: Colors.lightBorder,
-														borderWidth: 1,
-														alignItems: "center",
-														marginTop: 20
+												</TouchableOpacity>
+												<TouchableOpacity
+													style={styles.item}
+													onPress={() => {
+														this._withdraws(data.user.gold, user.id, 10);
 													}}
 												>
-													<Text style={{ fontSize: 16, color: Colors.black }}>
-														提现<Text style={{ color: Colors.red }}>10元</Text>
+													<Text style={styles.content}>
+														提现<Text style={{ color: "#EF514A" }}>10元</Text>
 													</Text>
-												</View>
+												</TouchableOpacity>
 											</View>
-											<View style={{ alignItems: "center" }}>
-												<Slider
-													style={{ width: width - 20 }}
-													minimumValue={0}
-													maximumValue={data.user.gold}
-													thumbTintColor={Colors.theme}
-													minimumTrackTintColor={"#1E90FF"}
-													value={this.state.value}
-													onValueChange={value => {
-														this.setState({
-															value: value
-														});
-													}}
-													step={100}
-												/>
-											</View>
-											<View style={styles.row}>
-												<View style={styles.rowLeft}>
-													<Text style={{ fontSize: 16, color: Colors.black }}>
-														兑换智慧点
-													</Text>
-													<Text style={{ fontSize: 11, color: Colors.grey }}>
-														600倍数可提现
-													</Text>
+											{user.pay_account && (
+												<View style={styles.footer}>
+													<Text style={styles.tips}>当前汇率：600智慧点=1元</Text>
 												</View>
-												<View style={styles.center}>
-													{user.pay_account ? (
-														<TextInput
-															style={styles.input}
-															underlineColorAndroid="transparent"
-															keyboardType="numeric"
-															defaultValue={this.state.value.toString()}
-															onChangeText={value => {
-																if (value) {
-																	this.setState({
-																		value: parseInt(value)
-																	});
-																} else {
-																	this.setState({
-																		value: 0
-																	});
-																}
-															}}
-														/>
-													) : (
-														<TouchableOpacity
-															onPress={() => {
-																navigation.navigate("我的账户");
-															}}
-														>
-															<Text style={{ fontSize: 16, color: Colors.black }}>
-																请绑定支付宝
-															</Text>
-														</TouchableOpacity>
-													)}
-													{value > data.user.gold && (
-														<Text style={{ fontSize: 11, color: Colors.red, marginTop: 2 }}>
-															超过智慧点余额
-														</Text>
-													)}
-												</View>
-											</View>
+											)}
 										</View>
-										{user.pay_account ? (
-											<View>
-												<View style={[styles.bottom, { backgroundColor: Colors.theme }]}>
-													<View style={styles.center}>
-														<Text style={styles.withdrawal}>提现金额</Text>
-													</View>
-													<View style={styles.center}>
-														<Text style={styles.withdrawal}>
-															￥{(value / 600).toFixed(0)}
-														</Text>
-													</View>
-												</View>
-												<View style={styles.bottom}>
-													<View style={styles.center}>
-														<Text style={styles.tips}>当前汇率</Text>
-													</View>
-													<View style={styles.center}>
-														<Text style={styles.tips}>600智慧点=1元</Text>
-													</View>
-												</View>
-												<Mutation mutation={CreateWithdrawMutation}>
-													{createWithdrawl => {
-														return (
-															<Button
-																name={"兑换"}
-																disabled={!value || !Number.isInteger(value / 600)}
-																style={{
-																	height: 40,
-																	marginHorizontal: 20,
-																	marginTop: 20
-																}}
-																theme={Colors.blue}
-																disabledColor={"rgba(64,127,207,0.7)"}
-																handler={async () => {
-																	if (value > data.user.gold) {
-																		Methods.toast("智慧点余额不足", -100);
-																	} else {
-																		let result = {};
-																		try {
-																			result = await createWithdrawl({
-																				variables: {
-																					amount: (value / 600).toFixed(0)
-																				},
-																				refetchQueries: () => [
-																					{
-																						query: UserQuery,
-																						variables: { id: user.id }
-																					},
-																					{
-																						query: WithdrawsQuery
-																					}
-																				]
-																			});
-																		} catch (ex) {
-																			result.errors = ex;
-																		}
 
-																		if (result && result.errors) {
-																			let info = result.errors
-																				.toString()
-																				.indexOf("Cannot");
-																			if (info > -1) {
-																				codePush
-																					.checkForUpdate()
-																					.then(update => {
-																						if (!update) {
-																							Methods.toast(
-																								"请重启APP完成更新",
-																								-100
-																							);
-																						} else {
-																							codePush.sync({
-																								updateDialog: {
-																									// mandatoryContinueButtonLabel: "更新",
-																									// mandatoryUpdateMessage: "有新版本了，请您及时更新",
-																									optionalIgnoreButtonLabel:
-																										"取消",
-																									optionalInstallButtonLabel:
-																										"后台更新",
-																									optionalUpdateMessage:
-																										"发现新版本",
-																									title: "更新提示"
-																								},
-																								installMode:
-																									codePush.InstallMode
-																										.IMMEDIATE
-																							});
-																						}
-																					});
+										{
+											// <CheckUpdateModal
+											// 	visible={promotModalVisible}
+											// 	cancel={this.handlePromotModalVisible}
+											// 	tips={"更新到最新版本才能正常提现哦"}
+											// 	confirm={() => {
+											// 		this.handlePromotModalVisible();
+											// 		this.openUrl("https://datizhuanqian.com/");
+											// 	}}
+											// />
+										}
 
-																				//过渡办法
-																			} else {
-																				let str = result.errors
-																					.toString()
-																					.replace(
-																						/Error: GraphQL error: /,
-																						""
-																					);
-
-																				Methods.toast(str, -100); //打印错误信息
-																			}
-																		} else {
-																			Methods.toast(
-																				"发起提现成功,客服人员会尽快处理您的提现请求。",
-																				-100
-																			);
-																		}
-																	}
-																	this.setState({
-																		value: 0
-																	});
-																}}
-															/>
-														);
-													}}
-												</Mutation>
-												{
-													// <CheckUpdateModal
-													// 	visible={promotModalVisible}
-													// 	cancel={this.handlePromotModalVisible}
-													// 	tips={"更新到最新版本才能正常提现哦"}
-													// 	confirm={() => {
-													// 		this.handlePromotModalVisible();
-													// 		this.openUrl("https://datizhuanqian.com/");
-													// 	}}
-													// />
-												}
-											</View>
-										) : (
+										{user.pay_account ? null : (
 											<View
 												style={{
 													flex: 1,
@@ -380,7 +218,7 @@ class HomeScreen extends Component {
 							}}
 						</Query>
 					) : (
-						<NotLogin />
+						<NotLogin navigation={navigation} />
 					)}
 				</View>
 			</Screen>
@@ -403,48 +241,47 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#FFFEFC"
 	},
-	row: {
-		flexDirection: "row",
-		justifyContent: "center",
-		height: 60,
-		marginVertical: 18
-	},
-	rowLeft: {
-		flex: 1,
-		borderRightColor: Colors.tintGray,
-		borderRightWidth: 1,
-		justifyContent: "center",
+	header: {
+		paddingVertical: 25,
 		alignItems: "center"
+	},
+	gold: {
+		color: "#EF514A",
+		fontSize: 30,
+		paddingBottom: 2
+	},
+	type: {
+		color: Colors.grey,
+		fontSize: 13,
+		textAlign: "center"
 	},
 	center: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center"
-	},
-	input: {
-		width: 90,
-		height: 35,
-		paddingVertical: 0,
-		paddingTop: 5,
-		paddingHorizontal: 5,
-		borderRadius: 3,
-		borderColor: Colors.tintGray,
-		borderWidth: 1,
-		fontSize: 16
-	},
-	bottom: {
 		flexDirection: "row",
-		justifyContent: "center",
-		height: 55
+		flexWrap: "wrap",
+		paddingHorizontal: 15,
+		justifyContent: "space-between"
 	},
-	withdrawal: {
+	item: {
+		paddingVertical: 25,
+		width: (width - 44) / 2,
+		borderColor: "#E0E0E0",
+		borderWidth: 0.5,
+		alignItems: "center",
+		marginTop: 20,
+		borderRadius: 5
+	},
+	content: {
 		fontSize: 16,
-		fontWeight: "500",
-		color: Colors.white
+		color: Colors.black
+	},
+	footer: {
+		justifyContent: "center",
+		alignItems: "center",
+		paddingTop: 20
 	},
 	tips: {
-		fontSize: 13,
-		color: Colors.grey
+		fontSize: 15,
+		color: "#363636"
 	}
 });
 
@@ -453,4 +290,4 @@ export default connect(store => {
 		user: store.users.user,
 		login: store.users.login
 	};
-})(HomeScreen);
+})(compose(graphql(CreateWithdrawMutation, { name: "CreateWithdrawMutation" }))(HomeScreen));

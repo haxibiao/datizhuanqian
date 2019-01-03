@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from "react-native";
 
 import { Header } from "../../components/Header";
-import { TabTop, Banner } from "../../components/Universal";
+import { TabTop, Banner, DivisionLine } from "../../components/Universal";
 import Screen from "../Screen";
 import { Colors, Config, Divice } from "../../constants";
 
@@ -14,28 +14,56 @@ class NotLogin extends Component {
 		this.state = {};
 	}
 	render() {
+		const { navigation } = this.props;
 		return (
 			<View style={styles.container}>
 				<View>
-					<View style={styles.row}>
-						<View style={styles.rowLeft}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>剩余智慧点</Text>
-						</View>
-						<View style={styles.center}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>0</Text>
-						</View>
+					<View style={styles.header}>
+						<Text style={styles.gold}>0</Text>
+						<Text style={styles.type}>智慧点</Text>
 					</View>
-					<View style={{ alignItems: "center" }}>
-						<Slider style={{ width: 320 }} minimumValue={0} maximumValue={0} step={1} />
-					</View>
-					<View style={styles.row}>
-						<View style={styles.rowLeft}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>兑换智慧点</Text>
-							<Text style={{ fontSize: 11, color: Colors.grey }}>大于600可提现</Text>
-						</View>
-						<View style={styles.center}>
-							<Text style={{ fontSize: 16, color: Colors.black }}>请登录查看智慧点</Text>
-						</View>
+					<DivisionLine height={10} />
+					<View style={styles.center}>
+						<TouchableOpacity
+							style={styles.item}
+							onPress={() => {
+								navigation.navigate("登录注册");
+							}}
+						>
+							<Text style={styles.content}>
+								提现<Text style={{ color: "#EF514A" }}>1元</Text>
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.item}
+							onPress={() => {
+								navigation.navigate("登录注册");
+							}}
+						>
+							<Text style={styles.content}>
+								提现<Text style={{ color: "#EF514A" }}>2元</Text>
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.item}
+							onPress={() => {
+								navigation.navigate("登录注册");
+							}}
+						>
+							<Text style={styles.content}>
+								提现<Text style={{ color: "#EF514A" }}>5元</Text>
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.item}
+							onPress={() => {
+								navigation.navigate("登录注册");
+							}}
+						>
+							<Text style={styles.content}>
+								提现<Text style={{ color: "#EF514A" }}>10元</Text>
+							</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 				<View
@@ -73,23 +101,47 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#FFFEFC"
 	},
-	row: {
-		flexDirection: "row",
-		justifyContent: "center",
-		height: 60,
-		marginVertical: 18
-	},
-	rowLeft: {
-		flex: 1,
-		borderRightColor: Colors.tintGray,
-		borderRightWidth: 1,
-		justifyContent: "center",
+	header: {
+		paddingVertical: 25,
 		alignItems: "center"
+	},
+	gold: {
+		color: "#EF514A",
+		fontSize: 30,
+		paddingBottom: 2
+	},
+	type: {
+		color: Colors.grey,
+		fontSize: 13,
+		textAlign: "center"
 	},
 	center: {
-		flex: 1,
+		flexDirection: "row",
+		flexWrap: "wrap",
+		paddingHorizontal: 15,
+		justifyContent: "space-between"
+	},
+	item: {
+		paddingVertical: 25,
+		width: (width - 44) / 2,
+		borderColor: "#E0E0E0",
+		borderWidth: 0.5,
+		alignItems: "center",
+		marginTop: 20,
+		borderRadius: 5
+	},
+	content: {
+		fontSize: 16,
+		color: Colors.black
+	},
+	footer: {
 		justifyContent: "center",
-		alignItems: "center"
+		alignItems: "center",
+		paddingTop: 20
+	},
+	tips: {
+		fontSize: 15,
+		color: "#363636"
 	}
 });
 
