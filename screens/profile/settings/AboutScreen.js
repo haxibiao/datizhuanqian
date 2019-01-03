@@ -55,7 +55,7 @@ class AboutScreen extends Component {
 							{/*<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15 }}>QQ交流群: 4337413</Text>*/}
 
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
-								商务合作: gaoxuan@haxibiao.com
+								官方邮箱: dtzq@haxibiao.com
 							</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>客服QQ: 979109641</Text>
 						</View>

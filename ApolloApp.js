@@ -29,7 +29,7 @@ class ApolloApp extends Component {
 		}
 
 		this.client = new ApolloClient({
-			uri: "https://datizhuanqian.com/graphql",
+			uri: Config.ServerRoot + "/graphql",
 			request: async operation => {
 				operation.setContext({
 					headers: {
@@ -47,14 +47,13 @@ class ApolloApp extends Component {
 		this.timer = setTimeout(() => {
 			this.props.onReady();
 		}, 5000);
-		this._makeClient(user);
+		// this._makeClient(user);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.user !== this.props.user) {
 			this._makeClient(nextProps.user);
 		}
-		return false;
 	}
 
 	componentWillUnmount() {
@@ -62,6 +61,7 @@ class ApolloApp extends Component {
 	}
 
 	render() {
+		if (!this.client) return null;
 		return (
 			<ApolloProvider client={this.client}>
 				<RootNavigation />

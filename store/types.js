@@ -4,7 +4,7 @@ export default defineActionConstants([
 	//登录
 	"SIGN_IN",
 	"SIGN_OUT",
-
+	"SET_USER",
 	//用户
 	"UPDATE_AVATAR",
 	"UPDATE_NAME",

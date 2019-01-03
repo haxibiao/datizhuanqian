@@ -8,6 +8,14 @@ export default {
     };
   },
 
+  setUser(user) {
+    let newUser = user ? user : {};
+    return {
+      type: types.SET_USER,
+      user: newUser
+    };
+  },
+
   signOut() {
     return {
       type: types.SIGN_OUT

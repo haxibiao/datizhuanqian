@@ -165,7 +165,7 @@ class HomeScreen extends Component {
 																	this.setState({
 																		value: 0
 																	});
-																	if (value > user.gold) {
+																	if (value > data.user.gold) {
 																		Methods.toast("智慧点余额不足", -100);
 																	} else {
 																		let result = {};
