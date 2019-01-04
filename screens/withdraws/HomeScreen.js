@@ -1,40 +1,42 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from "react-native";
-import { Header } from "../../components/Header";
-import { DivisionLine, TabTop, Banner, LoadingError, BlankContent, WithdrawsTips } from "../../components/Universal";
-import { CheckUpdateModal, RuleDescriptionModal } from "../../components/Modal";
-import { Button } from "../../components/Control";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from 'react-native';
+import { Header } from '../../components/Header';
+import { DivisionLine, TabTop, Banner, LoadingError, BlankContent, WithdrawsTips } from '../../components/Universal';
+import { CheckUpdateModal, RuleDescriptionModal } from '../../components/Modal';
+import { Button } from '../../components/Control';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
-import NotLogin from "./NotLogin";
-import { Colors, Methods } from "../../constants";
+import Screen from '../Screen';
+import NotLogin from './NotLogin';
+import { Colors, Methods } from '../../constants';
 
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
 import {
 	CreateTransactionMutation,
 	TransactionsQuery,
 	CreateWithdrawMutation,
 	WithdrawsQuery
-} from "../../graphql/withdraws.graphql";
+} from '../../graphql/withdraws.graphql';
 
-import { UserQuery } from "../../graphql/User.graphql";
-import { Mutation, Query, compose, graphql } from "react-apollo";
+import { UserQuery } from '../../graphql/User.graphql';
+import { Mutation, Query, compose, graphql } from 'react-apollo';
 
-import codePush from "react-native-code-push";
+import codePush from 'react-native-code-push';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.handlePromotModalVisible = this.handlePromotModalVisible.bind(this);
+		this.RuleDescriptionModalVisible = this.RuleDescriptionModalVisible.bind(this);
 		this._withdraws = this._withdraws.bind(this);
 		this.state = {
 			value: 0,
 			promotModalVisible: false,
+			RuleDescriptioVisible: false,
 			exchangeRate: 600 //汇率
 		};
 	}
@@ -43,8 +45,9 @@ class HomeScreen extends Component {
 	async _withdraws(user_gold, user_id, amount) {
 		let { exchangeRate } = this.state;
 		let result = {};
+
 		if (user_gold / exchangeRate < amount) {
-			Methods.toast("智慧点不足", -100);
+			Methods.toast('智慧点不足', -100);
 		} else {
 			try {
 				result = await this.props.CreateWithdrawMutation({
@@ -66,20 +69,20 @@ class HomeScreen extends Component {
 			}
 
 			if (result && result.errors) {
-				let info = result.errors.toString().indexOf("Cannot");
+				let info = result.errors.toString().indexOf('Cannot');
 				if (info > -1) {
 					codePush.checkForUpdate().then(update => {
 						if (!update) {
-							Methods.toast("请重启APP完成更新", -100);
+							Methods.toast('请重启APP完成更新', -100);
 						} else {
 							codePush.sync({
 								updateDialog: {
 									// mandatoryContinueButtonLabel: "更新",
 									// mandatoryUpdateMessage: "有新版本了，请您及时更新",
-									optionalIgnoreButtonLabel: "取消",
-									optionalInstallButtonLabel: "后台更新",
-									optionalUpdateMessage: "发现新版本",
-									title: "更新提示"
+									optionalIgnoreButtonLabel: '取消',
+									optionalInstallButtonLabel: '后台更新',
+									optionalUpdateMessage: '发现新版本',
+									title: '更新提示'
 								},
 								installMode: codePush.InstallMode.IMMEDIATE
 							});
@@ -87,17 +90,18 @@ class HomeScreen extends Component {
 					});
 					//过渡办法
 				} else {
-					let str = result.errors.toString().replace(/Error: GraphQL error: /, "");
+					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 					Methods.toast(str, -100); //打印错误信息
 				}
 			} else {
-				Methods.toast("发起提现成功,客服人员会尽快处理您的提现请求。", -100);
+				Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
+				this.props.navigation.navigate('提现申请');
 			}
 		}
 	}
 
 	render() {
-		const { value, promotModalVisible, exchangeRate } = this.state;
+		const { value, promotModalVisible, exchangeRate, RuleDescriptioVisible } = this.state;
 		const { user, login, navigation } = this.props;
 		return (
 			<Screen header>
@@ -106,8 +110,13 @@ class HomeScreen extends Component {
 						leftComponent={<Text />}
 						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 						rightComponent={
-							<TouchableOpacity>
-								<Iconfont name={"question"} size={18} />
+							<TouchableOpacity
+								onPress={() => {
+									this.RuleDescriptionModalVisible();
+								}}
+								style={{ padding: 5 }}
+							>
+								<Iconfont name={'question'} size={18} />
 							</TouchableOpacity>
 						}
 					/>
@@ -193,7 +202,10 @@ class HomeScreen extends Component {
 					) : (
 						<NotLogin navigation={navigation} />
 					)}
-					<RuleDescriptionModal visible={false} />
+					<RuleDescriptionModal
+						visible={RuleDescriptioVisible}
+						handleVisible={this.RuleDescriptionModalVisible}
+					/>
 				</View>
 			</Screen>
 		);
@@ -204,8 +216,14 @@ class HomeScreen extends Component {
 		}));
 	}
 
+	RuleDescriptionModalVisible() {
+		this.setState(prevState => ({
+			RuleDescriptioVisible: !prevState.RuleDescriptioVisible
+		}));
+	}
+
 	openUrl(url) {
-		console.log("uri", url);
+		console.log('uri', url);
 		Linking.openURL(url);
 	}
 }
@@ -213,34 +231,34 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#FFFEFC"
+		backgroundColor: '#FFFEFC'
 	},
 	header: {
 		paddingVertical: 25,
-		alignItems: "center"
+		alignItems: 'center'
 	},
 	gold: {
-		color: "#EF514A",
+		color: Colors.themeRed,
 		fontSize: 30,
 		paddingBottom: 2
 	},
 	type: {
 		color: Colors.grey,
 		fontSize: 13,
-		textAlign: "center"
+		textAlign: 'center'
 	},
 	center: {
-		flexDirection: "row",
-		flexWrap: "wrap",
+		flexDirection: 'row',
+		flexWrap: 'wrap',
 		paddingHorizontal: 15,
-		justifyContent: "space-between"
+		justifyContent: 'space-between'
 	},
 	item: {
 		paddingVertical: 25,
 		width: (width - 44) / 2,
-		borderColor: "#E0E0E0",
+		borderColor: '#E0E0E0',
 		borderWidth: 0.5,
-		alignItems: "center",
+		alignItems: 'center',
 		marginTop: 20,
 		borderRadius: 5
 	},
@@ -249,13 +267,13 @@ const styles = StyleSheet.create({
 		color: Colors.black
 	},
 	footer: {
-		justifyContent: "center",
-		alignItems: "center",
+		justifyContent: 'center',
+		alignItems: 'center',
 		paddingTop: 20
 	},
 	tips: {
 		fontSize: 15,
-		color: "#363636"
+		color: '#363636'
 	}
 });
 
@@ -264,4 +282,4 @@ export default connect(store => {
 		user: store.users.user,
 		login: store.users.login
 	};
-})(compose(graphql(CreateWithdrawMutation, { name: "CreateWithdrawMutation" }))(HomeScreen));
+})(compose(graphql(CreateWithdrawMutation, { name: 'CreateWithdrawMutation' }))(HomeScreen));

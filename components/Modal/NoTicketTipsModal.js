@@ -29,7 +29,7 @@ class NoTicketTipsModal extends Component {
 					<Text style={styles.text}>精力点将在每日凌晨0点自动恢复</Text>
 				</View>
 				<Button
-					name={"我知道了"}
+					name={"知道了"}
 					disabled={false}
 					handler={handleVisible}
 					style={{ height: 34, paddingHorizontal: 42 }}

@@ -15,13 +15,35 @@ class RuleDescriptionModal extends Component {
 				visible={visible}
 				handleVisible={handleVisible}
 				customStyle={{
-					width: width - 80,
-					height: width + 10,
-					borderRadius: 5,
-					alignItems: "center"
+					width: width - 70,
+					height: width,
+					borderRadius: 20,
+					alignItems: "center",
+					paddingHorizontal: 40
 				}}
-				header={<Text style={{ color: Colors.black, fontSize: 18 }}>规则说明</Text>}
-			/>
+				header={<Text style={{ color: Colors.black, fontSize: 22 }}>规则说明</Text>}
+			>
+				<View style={{ justifyContent: "space-between", flex: 1 }}>
+					<View>
+						<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
+							1.只有当您绑定支付宝账号之后，才能开始提现。
+						</Text>
+						<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
+							2.提现金额分为1元(600)、2元(1200)、5元(3000)、10元(6000)四档，每次提现时您可以选择所需的一档进行提现，剩余智慧点可以在下次满足最低提现额度时申请提现。
+						</Text>
+						<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
+							3.提现一般3~5天内到账(如遇提现高峰，提现到账时间会延长)。
+						</Text>
+					</View>
+					<Button
+						name={"知道了"}
+						style={{ height: 38, borderRadius: 19 }}
+						handler={handleVisible}
+						theme={Colors.theme}
+						fontSize={14}
+					/>
+				</View>
+			</BasicModal>
 		);
 	}
 }

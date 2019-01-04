@@ -1,31 +1,32 @@
-import MainTabNavigator from "./MainTabNavigator";
+import MainTabNavigator from './MainTabNavigator';
 
-import LoginScreen from "../screens/login/LoginScreen";
-import RetrievePasswordScreen from "../screens/login/RetrievePasswordScreen";
-import VerificationScreen from "../screens/login/VerificationScreen";
+import LoginScreen from '../screens/login/LoginScreen';
+import RetrievePasswordScreen from '../screens/login/RetrievePasswordScreen';
+import VerificationScreen from '../screens/login/VerificationScreen';
 
-import AnswerScreen from "../screens/home/AnswerScreen";
-import ErrorCorrectionScreen from "../screens/home/ErrorCorrectionScreen";
+import AnswerScreen from '../screens/home/AnswerScreen';
+import ErrorCorrectionScreen from '../screens/home/ErrorCorrectionScreen';
 
-import EditProfileScreen from "../screens/profile/settings/EditProfileScreen";
-import MyAccountScreen from "../screens/profile/settings/MyAccountScreen";
-import SettingScreen from "../screens/profile/settings/HomeScreen";
-import AboutScreen from "../screens/profile/settings/AboutScreen";
-import FeedBackScreen from "../screens/profile/feedBack/HomeScreen";
+import EditProfileScreen from '../screens/profile/settings/EditProfileScreen';
+import MyAccountScreen from '../screens/profile/settings/MyAccountScreen';
+import SettingScreen from '../screens/profile/settings/HomeScreen';
+import AboutScreen from '../screens/profile/settings/AboutScreen';
+import FeedBackScreen from '../screens/profile/feedBack/HomeScreen';
 
-import ShareScreen from "../screens/profile/settings/ShareScreen";
-import LevelDescriptionScreen from "../screens/profile/settings/LevelDescriptionScreen";
-import UserAgreenmentScreen from "../screens/profile/settings/UserAgreenmentScreen";
+import ShareScreen from '../screens/profile/settings/ShareScreen';
+import LevelDescriptionScreen from '../screens/profile/settings/LevelDescriptionScreen';
+import UserAgreenmentScreen from '../screens/profile/settings/UserAgreenmentScreen';
 
-import GoFeedBackScreen from "../screens/profile/FeedBackScreen";
-import CommonIssueScreen from "../screens/profile/CommonIssueScreen";
-import ChangePasswordScreen from "../screens/profile/settings/ChangePasswordScreen";
-import MyPropScreen from "../screens/profile/MyPropScreen";
+import GoFeedBackScreen from '../screens/profile/FeedBackScreen';
+import CommonIssueScreen from '../screens/profile/CommonIssueScreen';
+import ChangePasswordScreen from '../screens/profile/settings/ChangePasswordScreen';
+import MyPropScreen from '../screens/profile/MyPropScreen';
 
-import Notification from "../screens/notification/HomeScreen";
+import Notification from '../screens/notification/HomeScreen';
 
-import WithdrawsLogScreen from "../screens/withdraws/WithdrawsLogScreen";
-import WithdrawDetailsScreen from "../screens/withdraws/WithdrawDetailsScreen";
+import WithdrawsLogScreen from '../screens/withdraws/WithdrawsLogScreen';
+import WithdrawDetailsScreen from '../screens/withdraws/WithdrawDetailsScreen';
+import WithdrawApplyScreen from '../screens/withdraws/WithdrawApplyScreen';
 
 export default {
 	主页: {
@@ -78,7 +79,7 @@ export default {
 	},
 	常见问题: {
 		screen: CommonIssueScreen,
-		path: "demo/problem"
+		path: 'demo/problem'
 	},
 	重置密码: {
 		screen: ChangePasswordScreen
@@ -91,5 +92,8 @@ export default {
 	},
 	提现详情: {
 		screen: WithdrawDetailsScreen
+	},
+	提现申请: {
+		screen: WithdrawApplyScreen
 	}
 };

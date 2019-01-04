@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Platform } from "react-native";
-import RootNavigation from "./navigation/RootNavigation";
-import Config from "./constants/Config";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Platform } from 'react-native';
+import RootNavigation from './navigation/RootNavigation';
+import Config from './constants/Config';
+import { connect } from 'react-redux';
 
-import { ApolloProvider } from "react-apollo";
-import ApolloClient from "apollo-boost";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloProvider } from 'react-apollo';
+import ApolloClient from 'apollo-boost';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import DeviceInfo from "react-native-device-info";
+import DeviceInfo from 'react-native-device-info';
 
 class ApolloApp extends Component {
 	_makeClient(user) {
@@ -35,7 +35,7 @@ class ApolloApp extends Component {
 		}
 
 		this.client = new ApolloClient({
-			uri: Config.ServerRoot + "/graphql",
+			uri: Config.ServerRoot + '/graphql',
 			request: async operation => {
 				operation.setContext({
 					headers: {
