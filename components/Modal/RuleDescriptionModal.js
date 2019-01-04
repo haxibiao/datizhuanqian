@@ -7,7 +7,7 @@ import { Button } from "../Control";
 
 const { width, height } = Dimensions.get("window");
 
-class NoTicketTipsModal extends Component {
+class RuleDescriptionModal extends Component {
 	render() {
 		const { visible, handleVisible, nextQuestion, gold } = this.props;
 		return (
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default NoTicketTipsModal;
+export default RuleDescriptionModal;

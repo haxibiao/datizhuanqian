@@ -7,6 +7,7 @@ import PropDetailsModal from "./PropDetailsModal";
 import CheckUpdateModal from "./CheckUpdateModal";
 import TaskRewardModal from "./TaskRewardModal";
 import UpdateTipsModal from "./UpdateTipsModal";
+import RuleDescriptionModal from "./RuleDescriptionModal";
 
 export {
 	CorrectModal,
@@ -17,5 +18,6 @@ export {
 	PropDetailsModal,
 	CheckUpdateModal,
 	TaskRewardModal,
-	UpdateTipsModal
+	UpdateTipsModal,
+	RuleDescriptionModal
 };

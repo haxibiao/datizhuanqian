@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from "react-native";
 import { Header } from "../../components/Header";
 import { DivisionLine, TabTop, Banner, LoadingError, BlankContent, WithdrawsTips } from "../../components/Universal";
-import { CheckUpdateModal } from "../../components/Modal";
+import { CheckUpdateModal, RuleDescriptionModal } from "../../components/Modal";
 import { Button } from "../../components/Control";
 import { Iconfont } from "../../utils/Fonts";
 
@@ -193,8 +193,8 @@ class HomeScreen extends Component {
 					) : (
 						<NotLogin navigation={navigation} />
 					)}
+					<RuleDescriptionModal visible={false} />
 				</View>
-				<RuleDescriptionModal />
 			</Screen>
 		);
 	}
