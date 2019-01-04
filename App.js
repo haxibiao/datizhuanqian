@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, StatusBar, Dimensions, Image } from "react-native";
-import RootNavigation from "./navigation/RootNavigation";
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, StatusBar, Dimensions, Image } from 'react-native';
+import RootNavigation from './navigation/RootNavigation';
 
-import ApolloApp from "./ApolloApp";
-import { Config, Colors, Divice } from "./constants";
+import ApolloApp from './ApolloApp';
+import { Config, Colors, Divice } from './constants';
 
 //redux
-import { Provider, connect } from "react-redux";
-import store from "./store";
-import actions from "./store/actions";
-import { Storage, ItemKeys } from "./store/localStorage";
+import { Provider, connect } from 'react-redux';
+import store from './store';
+import actions from './store/actions';
+import { Storage, ItemKeys } from './store/localStorage';
 
-import codePush from "react-native-code-push";
+import codePush from 'react-native-code-push';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class App extends Component {
   state = {
@@ -27,7 +27,9 @@ class App extends Component {
   _loadResourcesAsync = async () => {
     let user = await Storage.getItem(ItemKeys.user);
     let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
-    if (user.account) {
+    store.dispatch(actions.setUser(user));
+    if (user && user.token) {
+      //缓存里找到已登录用户记录
       store.dispatch(actions.signIn(user));
     }
   };
@@ -45,20 +47,15 @@ class App extends Component {
         </Provider>
         {!isLoadingComplete && (
           <View style={styles.appLaunch}>
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 1, marginBottom: 200 }}>
-              <Image style={styles.loadingImage} source={require("./assets/images/logo.png")} />
-              <Image
-                style={{ width: width - 40, height: (width - 40) / 4, marginTop: 30 }}
-                source={require("./assets/images/name.jpeg")}
-              />
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginBottom: 200 }}>
+              <Image style={styles.loadingImage} source={require('./assets/images/logo.png')} />
+              <Image style={{ width: width - 40, height: (width - 40) / 4, marginTop: 30 }} source={require('./assets/images/name.jpeg')} />
               {
                 // <Text style={{ color: Colors.black, fontSize: 20, marginTop: 20 }}>答题赚钱</Text>
               }
             </View>
 
-            <Text style={{ color: Colors.tintFont, fontSize: 15, lineHeight: 20, marginBottom: 5, fontWeight: "300" }}>
-              {Config.AppSlogan}
-            </Text>
+            <Text style={{ color: Colors.tintFont, fontSize: 15, lineHeight: 20, marginBottom: 5, fontWeight: '300' }}>{Config.AppSlogan}</Text>
             <Text style={{ color: Colors.grey, fontSize: 12, paddingBottom: 30 }}>{Config.AppVersion}</Text>
             {
               // <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>datizhuanqian.com</Text>
@@ -73,17 +70,17 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: '#FFF'
   },
   appLaunch: {
     width,
     height,
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FEFEFE"
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FEFEFE'
   },
   loadingImage: {
     width: (width * 3) / 8,

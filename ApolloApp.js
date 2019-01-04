@@ -13,7 +13,7 @@ import DeviceInfo from "react-native-device-info";
 class ApolloApp extends Component {
 	_makeClient(user) {
 		let { token } = user;
-		console.log("user", user.token);
+		console.log('user token:', token);
 		let deviceHeaders = {};
 
 		const isEmulator = DeviceInfo.isEmulator();
@@ -53,14 +53,14 @@ class ApolloApp extends Component {
 		this.timer = setTimeout(() => {
 			this.props.onReady();
 		}, 5000);
-		this._makeClient(user);
+		// this._makeClient(user);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.user !== this.props.user) {
+			console.log('make client user:', nextProps.user);
 			this._makeClient(nextProps.user);
 		}
-		return false;
 	}
 
 	componentWillUnmount() {
@@ -68,6 +68,7 @@ class ApolloApp extends Component {
 	}
 
 	render() {
+		if (!this.client) return null;
 		return (
 			<ApolloProvider client={this.client}>
 				<RootNavigation />
