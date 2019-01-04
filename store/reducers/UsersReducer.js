@@ -12,8 +12,9 @@ class UsersReducer {
 	}
 	static [types.SET_USER](state, action) {
 		let { user } = action;
-		return state.set('user', user);
+		return state.set("user", user);
 	}
+
 	static [types.SIGN_IN](state, action) {
 		let { user } = action;
 		return state.set('user', user).set('login', true);

@@ -2,10 +2,9 @@ export default defineActionConstants([
 	//首页
 
 	//登录
-	'SET_USER',
-	'SIGN_IN',
-	'SIGN_OUT',
-
+	"SIGN_IN",
+	"SIGN_OUT",
+	"SET_USER",
 	//用户
 	'UPDATE_AVATAR',
 	'UPDATE_NAME',

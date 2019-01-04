@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
-import { Iconfont } from "../../utils/Fonts";
-import Colors from "../../constants/Colors";
+import { Iconfont } from '../../utils/Fonts';
+import Colors from '../../constants/Colors';
 
 class Button extends Component {
 	render() {
@@ -27,10 +27,10 @@ class Button extends Component {
 			disabled && { backgroundColor: disabledColor }
 		]);
 		return (
-			<TouchableOpacity onPress={handler} style={mergeButton} disabled={disabled}>
+			<TouchableOpacity onPress={handler} style={mergeButton} disabled={disabled} activeOpacity={0.8}>
 				{icon
 					? icon
-					: iconName && <Iconfont name={iconName} size={iconSize} color={outline ? theme : "#fff"} />}
+					: iconName && <Iconfont name={iconName} size={iconSize} color={outline ? theme : '#fff'} />}
 				<Text style={[{ fontSize: fontSize, color: textColor }]}>{name}</Text>
 			</TouchableOpacity>
 		);
@@ -39,9 +39,9 @@ class Button extends Component {
 
 const styles = StyleSheet.create({
 	button: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-around",
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-around',
 		borderRadius: 5
 	}
 });

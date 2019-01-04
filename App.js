@@ -27,6 +27,7 @@ class App extends Component {
   _loadResourcesAsync = async () => {
     let user = await Storage.getItem(ItemKeys.user);
     let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
+
     store.dispatch(actions.setUser(user));
     if (user && user.token) {
       //缓存里找到已登录用户记录

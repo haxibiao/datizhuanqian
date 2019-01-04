@@ -37,17 +37,25 @@ class HomeScreen extends Component {
 			value: 0,
 			promotModalVisible: false,
 			RuleDescriptioVisible: false,
-			exchangeRate: 600 //汇率
+			exchangeRate: 600, //汇率
+			clickControl: false
 		};
+		this.jump = false;
 	}
 
 	//提现
 	async _withdraws(user_gold, user_id, amount) {
-		let { exchangeRate } = this.state;
+		let { exchangeRate, clickControl } = this.state;
 		let result = {};
+		this.setState({
+			clickControl: true
+		});
 
 		if (user_gold / exchangeRate < amount) {
 			Methods.toast('智慧点不足', -100);
+			this.setState({
+				clickControl: false
+			});
 		} else {
 			try {
 				result = await this.props.CreateWithdrawMutation({
@@ -93,16 +101,26 @@ class HomeScreen extends Component {
 					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 					Methods.toast(str, -100); //打印错误信息
 				}
+				this.setState({
+					clickControl: false
+				});
 			} else {
-				Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
-				this.props.navigation.navigate('提现申请');
+				this.props.navigation.navigate('提现申请', {
+					amount: amount
+				});
+				this.setState({
+					clickControl: false
+				});
+
+				// Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
 			}
 		}
 	}
 
 	render() {
-		const { value, promotModalVisible, exchangeRate, RuleDescriptioVisible } = this.state;
+		const { value, promotModalVisible, exchangeRate, RuleDescriptioVisible, clickControl } = this.state;
 		const { user, login, navigation } = this.props;
+
 		return (
 			<Screen header>
 				<View style={styles.container}>
@@ -139,6 +157,7 @@ class HomeScreen extends Component {
 													onPress={() => {
 														this._withdraws(data.user.gold, user.id, 1);
 													}}
+													disabled={clickControl}
 												>
 													<Text style={styles.content}>
 														提现<Text style={{ color: Colors.themeRed }}>1元</Text>
@@ -149,6 +168,7 @@ class HomeScreen extends Component {
 													onPress={() => {
 														this._withdraws(data.user.gold, user.id, 2);
 													}}
+													disabled={clickControl}
 												>
 													<Text style={styles.content}>
 														提现<Text style={{ color: Colors.themeRed }}>2元</Text>
@@ -159,6 +179,7 @@ class HomeScreen extends Component {
 													onPress={() => {
 														this._withdraws(data.user.gold, user.id, 5);
 													}}
+													disabled={clickControl}
 												>
 													<Text style={styles.content}>
 														提现<Text style={{ color: Colors.themeRed }}>5元</Text>
@@ -169,6 +190,7 @@ class HomeScreen extends Component {
 													onPress={() => {
 														this._withdraws(data.user.gold, user.id, 10);
 													}}
+													disabled={clickControl}
 												>
 													<Text style={styles.content}>
 														提现<Text style={{ color: Colors.themeRed }}>10元</Text>

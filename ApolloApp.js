@@ -34,6 +34,11 @@ class ApolloApp extends Component {
 			deviceHeaders.uniqueId = DeviceInfo.getUniqueID(); //uniqueId
 		}
 
+		if (!this.cache) {
+			console.log('第一次创建cache!!!');
+			this.cache = new InMemoryCache();
+		}
+
 		this.client = new ApolloClient({
 			uri: Config.ServerRoot + '/graphql',
 			request: async operation => {
@@ -44,7 +49,7 @@ class ApolloApp extends Component {
 					}
 				});
 			},
-			cache: new InMemoryCache()
+			cache: this.cache
 		});
 	}
 
