@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from 'react-native';
 import { Header } from '../../components/Header';
 import { DivisionLine, TabTop, Banner, LoadingError, BlankContent, WithdrawsTips } from '../../components/Universal';
-import { CheckUpdateModal, RuleDescriptionModal } from '../../components/Modal';
+import { CheckUpdateModal, RuleDescriptionModal, WithdrawsTipsModal } from '../../components/Modal';
 import { Button } from '../../components/Control';
 import { Iconfont } from '../../utils/Fonts';
 
@@ -32,11 +32,13 @@ class HomeScreen extends Component {
 		super(props);
 		this.handlePromotModalVisible = this.handlePromotModalVisible.bind(this);
 		this.RuleDescriptionModalVisible = this.RuleDescriptionModalVisible.bind(this);
+		this.WithdrawsTipsModalVisible = this.WithdrawsTipsModalVisible.bind(this);
 		this._withdraws = this._withdraws.bind(this);
 		this.state = {
 			value: 0,
 			promotModalVisible: false,
 			RuleDescriptioVisible: false,
+			WithdrawsTipsVisible: false,
 			exchangeRate: 600, //汇率
 			clickControl: false
 		};
@@ -52,7 +54,8 @@ class HomeScreen extends Component {
 		});
 
 		if (user_gold / exchangeRate < amount) {
-			Methods.toast('智慧点不足', -100);
+			// Methods.toast('智慧点不足', -100);
+			this.WithdrawsTipsModalVisible();
 			this.setState({
 				clickControl: false
 			});
@@ -118,7 +121,14 @@ class HomeScreen extends Component {
 	}
 
 	render() {
-		const { value, promotModalVisible, exchangeRate, RuleDescriptioVisible, clickControl } = this.state;
+		const {
+			value,
+			promotModalVisible,
+			exchangeRate,
+			RuleDescriptioVisible,
+			WithdrawsTipsVisible,
+			clickControl
+		} = this.state;
 		const { user, login, navigation } = this.props;
 
 		return (
@@ -145,12 +155,30 @@ class HomeScreen extends Component {
 								if (!(data && data.user)) return <BlankContent />;
 								return (
 									<View style={styles.container}>
-										<View>
-											<View style={styles.header}>
+										<View
+											style={{
+												flexDirection: 'row',
+												alignItems: 'center',
+												justifyContent: 'space-between',
+												paddingTop: 20,
+												paddingBottom: 30
+											}}
+										>
+											<View style={{ width: width / 2 }}>
 												<Text style={styles.gold}>{data.user.gold}</Text>
 												<Text style={styles.type}>智慧点</Text>
 											</View>
-											<DivisionLine height={10} />
+											<View style={{ width: width / 2 }}>
+												<Text style={styles.gold}>0.00</Text>
+												{
+													//需要wallet 余额
+												}
+												<Text style={styles.type}>余额（元）</Text>
+											</View>
+										</View>
+
+										<DivisionLine height={10} />
+										<View style={{ justifyContent: 'space-between', flex: 1 }}>
 											<View style={styles.center}>
 												<TouchableOpacity
 													style={styles.item}
@@ -166,12 +194,12 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 2);
+														this._withdraws(data.user.gold, user.id, 3);
 													}}
 													disabled={clickControl}
 												>
 													<Text style={styles.content}>
-														提现<Text style={{ color: Colors.themeRed }}>2元</Text>
+														提现<Text style={{ color: Colors.themeRed }}>3元</Text>
 													</Text>
 												</TouchableOpacity>
 												<TouchableOpacity
@@ -200,6 +228,21 @@ class HomeScreen extends Component {
 											{user.pay_account && (
 												<View style={styles.footer}>
 													<Text style={styles.tips}>当前汇率：600智慧点=1元</Text>
+													<Button
+														name={'查看提现日志'}
+														style={{
+															height: 38,
+															borderRadius: 19,
+															width: width - 80
+														}}
+														handler={() =>
+															navigation.navigate('提现日志', {
+																user: user
+															})
+														}
+														theme={Colors.theme}
+														fontSize={14}
+													/>
 												</View>
 											)}
 										</View>
@@ -228,6 +271,7 @@ class HomeScreen extends Component {
 						visible={RuleDescriptioVisible}
 						handleVisible={this.RuleDescriptionModalVisible}
 					/>
+					<WithdrawsTipsModal visible={WithdrawsTipsVisible} handleVisible={this.WithdrawsTipsModalVisible} />
 				</View>
 			</Screen>
 		);
@@ -241,6 +285,12 @@ class HomeScreen extends Component {
 	RuleDescriptionModalVisible() {
 		this.setState(prevState => ({
 			RuleDescriptioVisible: !prevState.RuleDescriptioVisible
+		}));
+	}
+
+	WithdrawsTipsModalVisible() {
+		this.setState(prevState => ({
+			WithdrawsTipsVisible: !prevState.WithdrawsTipsVisible
 		}));
 	}
 
@@ -261,8 +311,9 @@ const styles = StyleSheet.create({
 	},
 	gold: {
 		color: Colors.themeRed,
-		fontSize: 30,
-		paddingBottom: 2
+		fontSize: 44,
+		paddingBottom: 2,
+		textAlign: 'center'
 	},
 	type: {
 		color: Colors.grey,
@@ -289,13 +340,14 @@ const styles = StyleSheet.create({
 		color: Colors.black
 	},
 	footer: {
-		justifyContent: 'center',
 		alignItems: 'center',
-		paddingTop: 20
+		paddingBottom: 30
 	},
 	tips: {
 		fontSize: 15,
-		color: '#363636'
+		color: '#363636',
+		paddingVertical: 10,
+		lineHeight: 18
 	}
 });
 
