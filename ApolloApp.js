@@ -8,6 +8,9 @@ import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+import { CategoriesQuery, QuestionQuery } from './graphql/question.graphql';
+import { UserQuery } from './graphql/User.graphql';
+
 import DeviceInfo from 'react-native-device-info';
 
 class ApolloApp extends Component {
@@ -55,21 +58,39 @@ class ApolloApp extends Component {
 
 	componentWillMount() {
 		let { user = {} } = this.props;
-		this.timer = setTimeout(() => {
-			this.props.onReady();
-		}, 5000);
-		// this._makeClient(user);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.user !== this.props.user) {
 			console.log('make client user:', nextProps.user);
 			this._makeClient(nextProps.user);
+
+			this.timer = setTimeout(() => {
+				this.props.onReady();
+			}, 6000);
+			//不管网络再差  5秒之后都关闭加载页
+
+			let { query } = this.client;
+			let promises = [query({ query: CategoriesQuery })];
+			if (nextProps.user.token) {
+				promises.concat([query({ query: UserQuery, variables: { id: nextProps.user.id } })]);
+			}
+			Promise.all(promises)
+				.then(loaded => {
+					this.promiseTimer = setTimeout(() => {
+						this.props.onReady();
+					}, 1000);
+					//等待数据返回之后关闭加载页
+				})
+				.catch(rejected => {
+					return null;
+				});
 		}
 	}
 
 	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
+		this.promiseTimer && clearTimeout(this.promiseTimer);
 	}
 
 	render() {
