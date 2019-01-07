@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, Dimensions, ScrollView } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, Dimensions, ScrollView } from 'react-native';
 
 import {
 	DivisionLine,
@@ -9,27 +9,27 @@ import {
 	Loading,
 	Banner,
 	ErrorBoundary
-} from "../../components/Universal";
-import { Button } from "../../components/Control";
-import { CorrectModal } from "../../components/Modal";
-import { Colors } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+} from '../../components/Universal';
+import { Button } from '../../components/Control';
+import { CorrectModal } from '../../components/Modal';
+import { Colors } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
-import Question from "./Question";
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import Screen from '../Screen';
+import Question from './Question';
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
-import { QuestionQuery, QuestionAnswerMutation } from "../../graphql/question.graphql";
-import { UserQuery } from "../../graphql/user.graphql";
-import { Query, Mutation } from "react-apollo";
+import { QuestionQuery, QuestionAnswerMutation } from '../../graphql/question.graphql';
+import { UserQuery } from '../../graphql/user.graphql';
+import { Query, Mutation } from 'react-apollo';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class AnswerScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.nextQuestion = this.nextQuestion.bind(this);
+		// this.nextQuestion = this.nextQuestion.bind(this);
 		this.changeValue = this.changeValue.bind(this);
 		this.state = {
 			i: 0,
@@ -37,7 +37,7 @@ class AnswerScreen extends Component {
 			value: null,
 			isShow: false,
 			showColor: Colors.theme,
-			name: "提交答案",
+			name: '提交答案',
 			buttonColor: Colors.blue,
 			rightColor: Colors.tintGray
 		};
@@ -45,21 +45,42 @@ class AnswerScreen extends Component {
 	render() {
 		const { navigation, prop, user, noTicketTips } = this.props;
 		const { i, value, isMethod, isShow, showColor, name, buttonColor, rightColor } = this.state;
-		const { plate_id } = navigation.state.params;
-		console.log("userrend", user);
+		const { category } = navigation.state.params;
+		console.log('userrend', user);
 		return (
 			<Screen
-				routeName={"答题"}
+				routeName={'答题'}
 				customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 				// rightComponent={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}  隐藏功能
 			>
-				<Query query={QuestionQuery} variables={{ category_id: plate_id }} fetchPolicy="network-only">
+				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
-						if (!(data && data.question)) return <BlankContent />;
+						if (!(data && data.question))
+							return (
+								<BlankContent
+									children={
+										<View>
+											<Text style={{ fontSize: 15, color: Colors.tintFont, marginTop: 12 }}>
+												{category.name}的题目已经答完了哦
+											</Text>
+											<Text
+												style={{
+													fontSize: 15,
+													color: Colors.tintFont,
+													marginTop: 12,
+													textAlign: 'center'
+												}}
+											>
+												快去其他分类继续答题赚钱吧~
+											</Text>
+										</View>
+									}
+								/>
+							);
 						let question = data.question;
-						let selections = data.question.selections.replace(/\\/g, "");
+						let selections = data.question.selections.replace(/\\/g, '');
 						let option = null;
 						try {
 							option = JSON.parse(selections);
@@ -99,7 +120,7 @@ class AnswerScreen extends Component {
 																	if (!isMethod) {
 																		this.setState({
 																			isMethod: true,
-																			name: "下一题",
+																			name: '下一题',
 																			isShow: true,
 																			// buttonColor: Colors.weixin,
 																			rightColor: Colors.weixin
@@ -136,18 +157,18 @@ class AnswerScreen extends Component {
 																			isMethod: null,
 																			value: null,
 																			showColor: Colors.theme,
-																			name: "提交答案",
+																			name: '提交答案',
 																			// buttonColor: Colors.blue,
 																			rightColor: Colors.tintGray
 																			// isShow: !isShow
 																		});
-																		refetch({ category_id: plate_id });
+																		refetch({ category_id: category.id });
 																	}
 																}}
 																style={{ height: 38 }}
 																theme={Colors.blue}
 																fontSize={14}
-																disabledColor={"rgba(64,127,207,0.7)"}
+																disabledColor={'rgba(64,127,207,0.7)'}
 															/>
 														);
 													}}
@@ -200,10 +221,10 @@ class AnswerScreen extends Component {
 													CloseModal={this.CloseModal.bind(this)}
 													title={question.answer.indexOf(value) > -1}
 													answer={question.answer}
-													nextQuestion={() => {
-														this.nextQuestion();
-														refetch({ category_id: plate_id });
-													}}
+													// nextQuestion={() => {
+													// 	this.nextQuestion();
+													// 	refetch({ category_id: category.id });
+													// }}
 												/>
 											);
 										}}
@@ -217,15 +238,15 @@ class AnswerScreen extends Component {
 		);
 	}
 
-	nextQuestion() {
-		this.setState({
-			isMethod: null,
-			value: null,
-			showColor: Colors.theme,
-			name: "提交答案"
-		});
-		this.handleCorrectModal();
-	}
+	// nextQuestion() {
+	// 	this.setState({
+	// 		isMethod: null,
+	// 		value: null,
+	// 		showColor: Colors.theme,
+	// 		name: '提交答案'
+	// 	});
+	// 	this.handleCorrectModal();
+	// }
 
 	handleCorrectModal() {
 		this.setState(prevState => ({
@@ -281,17 +302,15 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		borderWidth: 1,
 		borderRadius: 5,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center",
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		paddingVertical: 12
 	}
 });
 
 export default connect(store => {
 	return {
-		question: store.question.question,
-		prop: store.question.prop,
 		user: store.users.user,
 		noTicketTips: store.users.noTicketTips
 	};

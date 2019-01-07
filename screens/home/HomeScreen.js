@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
 	StyleSheet,
@@ -10,25 +10,25 @@ import {
 	RefreshControl,
 	Linking,
 	BackHandler
-} from "react-native";
+} from 'react-native';
 
-import { Header } from "../../components/Header";
-import { CheckUpdateModal, UpdateTipsModal } from "../../components/Modal";
-import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from "../../components/Universal";
-import { Colors, Config, Divice, Methods } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import { Header } from '../../components/Header';
+import { CheckUpdateModal, UpdateTipsModal } from '../../components/Modal';
+import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from '../../components/Universal';
+import { Colors, Config, Divice, Methods } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
-import PlateItem from "./PlateItem";
+import Screen from '../Screen';
+import PlateItem from './PlateItem';
 
-import { connect } from "react-redux";
-import actions from "../../store/actions";
-import { CategoriesQuery, QuestionQuery } from "../../graphql/question.graphql";
-import { Query, withApollo } from "react-apollo";
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
+import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
+import { Query, withApollo } from 'react-apollo';
 
-import { Storage, ItemKeys } from "../../store/localStorage";
+import { Storage, ItemKeys } from '../../store/localStorage';
 
-import codePush from "react-native-code-push";
+import codePush from 'react-native-code-push';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -59,7 +59,7 @@ class HomeScreen extends Component {
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
 
-		this.didFocusSubscription = navigation.addListener("didFocus", payload => {
+		this.didFocusSubscription = navigation.addListener('didFocus', payload => {
 			let { users, client, dispatch, login } = this.props;
 			if (login) {
 				client
@@ -73,10 +73,10 @@ class HomeScreen extends Component {
 						console.log(data);
 					})
 					.catch(error => {
-						let info = error.toString().indexOf("登录");
+						let info = error.toString().indexOf('登录');
 						if (info > -1) {
 							this.props.dispatch(actions.signOut());
-							Methods.toast("您的身份信息已过期,请重新登录", -90);
+							Methods.toast('您的身份信息已过期,请重新登录', -90);
 						}
 					});
 			}
@@ -101,7 +101,7 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log("uri", url);
+		console.log('uri', url);
 		Linking.openURL(url);
 	}
 
@@ -117,14 +117,14 @@ class HomeScreen extends Component {
 	}*/
 
 	render() {
-		const { plate, navigation, user, nextPlate, login } = this.props;
+		const { navigation, user, nextPlate, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
 		return (
 			<Screen header>
 				<Header
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-					routeName={"答题赚钱"}
+					routeName={'答题赚钱'}
 					// rightComponent={
 					// 	<TouchableOpacity
 					// 		onPress={() => {
@@ -154,7 +154,7 @@ class HomeScreen extends Component {
 									}
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => (
-										<PlateItem plate={item} navigation={navigation} login={login} />
+										<PlateItem category={item} navigation={navigation} login={login} />
 									)}
 									ListHeaderComponent={() => {
 										return <Banner />;
@@ -194,7 +194,7 @@ class HomeScreen extends Component {
 										return this.state.fetchingMore ? (
 											<LoadingMore />
 										) : (
-											<ContentEnd content={"暂时没有更多分类~"} />
+											<ContentEnd content={'暂时没有更多分类~'} />
 										);
 									}}
 								/>
@@ -209,18 +209,18 @@ class HomeScreen extends Component {
 						this.props.dispatch(actions.cancelUpdate(false));
 					}}
 					handleVisible={this.handleUpdateModalVisible}
-					tips={"发现新版本"}
+					tips={'发现新版本'}
 					confirm={() => {
 						this.handleUpdateModalVisible();
-						this.openUrl("https://datizhuanqian.com/");
+						this.openUrl('https://datizhuanqian.com/');
 					}}
 				/>
 				<UpdateTipsModal
 					visible={mustUpdateVisible}
 					openUrl={() => {
-						this.openUrl("https://datizhuanqian.com/");
+						this.openUrl('https://datizhuanqian.com/');
 					}}
-					tips={"发现新版本"}
+					tips={'发现新版本'}
 				/>
 			</Screen>
 		);
@@ -236,7 +236,6 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return {
-		plate: store.question.plate,
 		user: store.users.user,
 		login: store.users.login,
 		isUpdate: store.users.isUpdate
