@@ -59,33 +59,12 @@ class HomeScreen extends Component {
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
 
-		this.didFocusSubscription = navigation.addListener('didFocus', payload => {
-			let { users, client, dispatch, login } = this.props;
-			if (login) {
-				client
-					.query({
-						query: QuestionQuery,
-						variables: {
-							category_id: 1
-						}
-					})
-					.then(({ data }) => {
-						console.log(data);
-					})
-					.catch(error => {
-						let info = error.toString().indexOf('登录');
-						if (info > -1) {
-							this.props.dispatch(actions.signOut());
-							Methods.toast('您的身份信息已过期,请重新登录', -90);
-						}
-					});
-			}
-		});
 		//当有用户seesion 过期时 ,清空redux 强制登录。
 	}
 
 	componentWillUnmount() {
 		this.didFocusSubscription.remove();
+		this.timer && clearTimeout(this.timer);
 	}
 
 	handleUpdateModalVisible() {
@@ -206,7 +185,7 @@ class HomeScreen extends Component {
 					visible={updateVisible}
 					cancel={() => {
 						this.handleUpdateModalVisible();
-						this.props.dispatch(actions.cancelUpdate(false));
+						this.props.dispatch(actions.cancelUpdate(true));
 					}}
 					handleVisible={this.handleUpdateModalVisible}
 					tips={'发现新版本'}
