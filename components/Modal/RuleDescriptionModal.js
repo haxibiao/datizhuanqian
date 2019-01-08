@@ -26,7 +26,7 @@ class RuleDescriptionModal extends Component {
 				<View style={{ justifyContent: 'space-between', flex: 1 }}>
 					<View>
 						<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
-							1.只有当您绑定支付宝账号之后，才能开始提现。
+							1.只有当您绑定支付宝账号之后，才能开始提现，每天最多进行3次提现。
 						</Text>
 						<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
 							2.提现金额分为1元(600)、3元(1800)、5元(3000)、10元(6000)四档，每次提现时会优先扣除钱包内的余额再扣除智慧点，剩余智慧点可以在下次满足最低提现额度时申请提现。

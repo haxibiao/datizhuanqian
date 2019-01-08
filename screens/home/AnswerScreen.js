@@ -122,7 +122,7 @@ class AnswerScreen extends Component {
 																			isMethod: true,
 																			name: '下一题',
 																			isShow: true,
-																			// buttonColor: Colors.weixin,
+																			buttonColor: Colors.weixin,
 																			rightColor: Colors.weixin
 																		});
 																		answerQuestion({
@@ -158,7 +158,7 @@ class AnswerScreen extends Component {
 																			value: null,
 																			showColor: Colors.theme,
 																			name: '提交答案',
-																			// buttonColor: Colors.blue,
+																			buttonColor: Colors.blue,
 																			rightColor: Colors.tintGray
 																			// isShow: !isShow
 																		});
@@ -166,7 +166,7 @@ class AnswerScreen extends Component {
 																	}
 																}}
 																style={{ height: 38 }}
-																theme={Colors.blue}
+																theme={buttonColor}
 																fontSize={14}
 																disabledColor={'rgba(64,127,207,0.7)'}
 															/>

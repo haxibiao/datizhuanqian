@@ -46,15 +46,14 @@ class HomeScreen extends Component {
 	}
 
 	//提现
-	async _withdraws(user_gold, user_id, amount) {
+	async _withdraws(user_gold, user_id, amount, wallet) {
 		let { exchangeRate, clickControl } = this.state;
 		let result = {};
 		this.setState({
 			clickControl: true
 		});
-
-		if (user_gold / exchangeRate < amount) {
-			// Methods.toast('智慧点不足', -100);
+		//还需增加提现次数限制
+		if (!(user_gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
 			this.WithdrawsTipsModalVisible();
 			this.setState({
 				clickControl: false
@@ -169,10 +168,12 @@ class HomeScreen extends Component {
 												<Text style={styles.type}>智慧点</Text>
 											</View>
 											<View style={{ width: width / 2 }}>
-												<Text style={styles.gold}>0.00</Text>
-												{
-													//需要wallet 余额
-												}
+												<Text style={styles.gold}>
+													{data.user.wallet && data.user.wallet.available_balance
+														? `${data.user.wallet.available_balance}.00`
+														: '0.00'}
+												</Text>
+
 												<Text style={styles.type}>余额（元）</Text>
 											</View>
 										</View>
@@ -183,7 +184,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 1);
+														this._withdraws(data.user.gold, user.id, 1, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -194,7 +195,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 3);
+														this._withdraws(data.user.gold, user.id, 3, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -205,7 +206,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 5);
+														this._withdraws(data.user.gold, user.id, 5, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -216,7 +217,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 10);
+														this._withdraws(data.user.gold, user.id, 10, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>

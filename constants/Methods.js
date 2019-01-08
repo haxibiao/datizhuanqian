@@ -129,7 +129,7 @@ const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceU
 		handForceUpdateModal();
 		// 如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
 	} else if (local < online && !versionInfo.is_force && !isUpdate) {
-		// 线上版本小于本地版本但不需要强制更新则
+		// 线上版本大于本地版本但不需要强制更新则弹出非强制更新MODAL
 		handleUpdateModalVisible();
 	} else {
 		codePush.sync({
@@ -143,6 +143,7 @@ const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceU
 			},
 			installMode: codePush.InstallMode.IMMEDIATE
 		});
+		//再检查codepush
 	}
 };
 //首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。

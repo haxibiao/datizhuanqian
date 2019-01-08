@@ -88,6 +88,11 @@ query UserQuery($id: Int!) {
 			level
 			exp
 		}
+		wallet {
+			id
+			available_balance
+			balance
+		}
 	}
 }
 
