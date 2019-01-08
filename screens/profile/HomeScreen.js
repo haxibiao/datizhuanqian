@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from "react-native";
-import { Header } from "../../components/Header";
-import { DivisionLine, ErrorBoundary } from "../../components/Universal";
-import { Colors, Config, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
+import { Header } from '../../components/Header';
+import { DivisionLine, ErrorBoundary } from '../../components/Universal';
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
-import TopUserInfo from "./TopUserInfo";
+import Screen from '../Screen';
+import TopUserInfo from './TopUserInfo';
 
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -18,8 +18,8 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log("uri", url);
-		Linking.openURL("https://www.baidu.com/");
+		console.log('uri', url);
+		Linking.openURL('https://www.baidu.com/');
 	}
 
 	render() {
@@ -68,43 +68,43 @@ class HomeScreen extends Component {
 							style={styles.rowItem}
 							onPress={() =>
 								login
-									? navigation.navigate("提现日志", {
+									? navigation.navigate('测试', {
 											user: user
 									  })
-									: navigation.navigate("登录注册")
+									: navigation.navigate('登录注册')
 							}
 						>
 							<View style={styles.itemLeft}>
-								<Iconfont name={"book"} size={18} />
+								<Iconfont name={'book'} size={18} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>提现日志</Text>
 							</View>
-							<Iconfont name={"right"} />
+							<Iconfont name={'right'} />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
-						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("常见问题")}>
+						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate('常见问题')}>
 							<View style={styles.itemLeft}>
-								<Iconfont name={"question"} size={18} />
+								<Iconfont name={'question'} size={18} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>常见问题</Text>
 							</View>
-							<Iconfont name={"right"} />
+							<Iconfont name={'right'} />
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.rowItem}
-							onPress={() => (login ? navigation.navigate("问题反馈") : navigation.navigate("登录注册"))}
+							onPress={() => (login ? navigation.navigate('问题反馈') : navigation.navigate('登录注册'))}
 						>
 							<View style={styles.itemLeft}>
-								<Iconfont name={"feedback2"} size={18} />
+								<Iconfont name={'feedback2'} size={18} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>意见反馈</Text>
 							</View>
-							<Iconfont name={"right"} />
+							<Iconfont name={'right'} />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
-						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate("设置")}>
+						<TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate('设置')}>
 							<View style={styles.itemLeft}>
-								<Iconfont name={"setting1"} size={18} />
+								<Iconfont name={'setting1'} size={18} />
 								<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>设置</Text>
 							</View>
-							<Iconfont name={"right"} />
+							<Iconfont name={'right'} />
 						</TouchableOpacity>
 					</ScrollView>
 				</View>
@@ -120,16 +120,16 @@ const styles = StyleSheet.create({
 	},
 	rowItem: {
 		height: 58,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 		paddingHorizontal: 15,
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder
 	},
 	itemLeft: {
-		flexDirection: "row",
-		alignItems: "center"
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });
 

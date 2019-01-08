@@ -21,6 +21,7 @@ import GoFeedBackScreen from '../screens/profile/FeedBackScreen';
 import CommonIssueScreen from '../screens/profile/CommonIssueScreen';
 import ChangePasswordScreen from '../screens/profile/settings/ChangePasswordScreen';
 import MyPropScreen from '../screens/profile/MyPropScreen';
+import TestScreen from '../screens/profile/TestScreen';
 
 import Notification from '../screens/notification/HomeScreen';
 
@@ -95,5 +96,8 @@ export default {
 	},
 	提现申请: {
 		screen: WithdrawApplyScreen
+	},
+	测试: {
+		screen: TestScreen
 	}
 };
