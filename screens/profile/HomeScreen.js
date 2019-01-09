@@ -68,7 +68,7 @@ class HomeScreen extends Component {
 							style={styles.rowItem}
 							onPress={() =>
 								login
-									? navigation.navigate('测试', {
+									? navigation.navigate('提现日志', {
 											user: user
 									  })
 									: navigation.navigate('登录注册')

@@ -46,14 +46,13 @@ class HomeScreen extends Component {
 		this.jump = false;
 	}
 
-	//提现
-	async _withdraws(user, user_id, amount, wallet) {
-		let { exchangeRate, clickControl } = this.state;
-		let result = {};
+	//点击提现
+	_withdraws(user, amount, wallet) {
+		console.log('with amount ', amount);
 		this.setState({
 			clickControl: true
 		});
-
+		//判断提现次数
 		if (user.available_withdraw_count < 1) {
 			this.WithdrawsTipsModalVisible();
 			this.setState({
@@ -61,73 +60,84 @@ class HomeScreen extends Component {
 				withdrawTips: '每天最多提现三次哦~'
 			});
 		} else {
-			if (!(user.gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
-				this.WithdrawsTipsModalVisible();
-				this.setState({
-					clickControl: false
-				});
-			} else {
-				try {
-					result = await this.props.CreateWithdrawMutation({
-						variables: {
-							amount: amount
-						},
-						refetchQueries: () => [
-							{
-								query: UserQuery,
-								variables: { id: user_id }
-							},
-							{
-								query: WithdrawsQuery
-							}
-						]
-					});
-				} catch (ex) {
-					result.errors = ex;
-				}
-
-				if (result && result.errors) {
-					let info = result.errors.toString().indexOf('Cannot');
-					if (info > -1) {
-						codePush.checkForUpdate().then(update => {
-							if (!update) {
-								Methods.toast('请重启APP完成更新', -100);
-							} else {
-								codePush.sync({
-									updateDialog: {
-										// mandatoryContinueButtonLabel: "更新",
-										// mandatoryUpdateMessage: "有新版本了，请您及时更新",
-										optionalIgnoreButtonLabel: '取消',
-										optionalInstallButtonLabel: '后台更新',
-										optionalUpdateMessage: '发现新版本',
-										title: '更新提示'
-									},
-									installMode: codePush.InstallMode.IMMEDIATE
-								});
-							}
-						});
-						//过渡办法
-					} else {
-						let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-						Methods.toast(str, -100); //打印错误信息
-					}
-					this.setState({
-						clickControl: false
-					});
-				} else {
-					this.props.navigation.navigate('提现申请', {
-						amount: amount
-					});
-					this.setState({
-						clickControl: false
-					});
-
-					// Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
-				}
-			}
+			this._judgeBalance(user, amount, wallet);
 		}
+	}
 
-		//还需增加提现次数限制
+	//判断余额
+	_judgeBalance(user, amount, wallet) {
+		let { exchangeRate, clickControl } = this.state;
+		if (!(user.gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
+			this.WithdrawsTipsModalVisible();
+			this.setState({
+				clickControl: false
+			});
+		} else {
+			this._withdrawsRequest(amount);
+		}
+	}
+
+	//提现请求
+	async _withdrawsRequest(amount) {
+		const user_id = this.props.user.id;
+		console.log('amount', amount);
+		let result = {};
+		try {
+			result = await this.props.CreateWithdrawMutation({
+				variables: {
+					amount: amount
+				},
+				refetchQueries: () => [
+					{
+						query: UserQuery,
+						variables: { id: user_id }
+					},
+					{
+						query: WithdrawsQuery
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let info = result.errors.toString().indexOf('Cannot');
+			if (info > -1) {
+				codePush.checkForUpdate().then(update => {
+					if (!update) {
+						Methods.toast('请重启APP完成更新', -100);
+					} else {
+						codePush.sync({
+							updateDialog: {
+								// mandatoryContinueButtonLabel: "更新",
+								// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+								optionalIgnoreButtonLabel: '取消',
+								optionalInstallButtonLabel: '后台更新',
+								optionalUpdateMessage: '发现新版本',
+								title: '更新提示'
+							},
+							installMode: codePush.InstallMode.IMMEDIATE
+						});
+					}
+				});
+				//过渡办法
+			} else {
+				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, -100); //打印错误信息
+			}
+			this.setState({
+				clickControl: false
+			});
+		} else {
+			this.props.navigation.navigate('提现申请', {
+				amount: amount
+			});
+			this.setState({
+				clickControl: false
+			});
+
+			// Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
+		}
 	}
 
 	render() {
@@ -195,7 +205,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user, user.id, 1, data.user.wallet);
+														this._withdraws(data.user, 1, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -206,7 +216,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user, user.id, 3, data.user.wallet);
+														this._withdraws(data.user, 3, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -217,7 +227,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user, user.id, 5, data.user.wallet);
+														this._withdraws(data.user, 5, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -228,7 +238,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user, user.id, 10, data.user.wallet);
+														this._withdraws(data.user, 10, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
