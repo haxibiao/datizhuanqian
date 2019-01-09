@@ -81,6 +81,7 @@ query UserQuery($id: Int!) {
 		accumulative
 		exp
 		next_level_exp
+		available_withdraw_count
 		level {
 			id
 			name

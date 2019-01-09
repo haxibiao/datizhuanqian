@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get('window');
 
 class WithdrawsTipsModal extends Component {
 	render() {
-		const { visible, handleVisible, nextQuestion, gold } = this.props;
+		const { visible, handleVisible, nextQuestion, gold, text } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -33,7 +33,7 @@ class WithdrawsTipsModal extends Component {
 				>
 					<View style={{ alignItems: 'center' }}>
 						<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 15, color: Colors.grey }}>
-							智慧点不足，快去答题赚钱吧~
+							{text}
 						</Text>
 					</View>
 					<Button

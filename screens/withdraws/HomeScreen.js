@@ -40,83 +40,94 @@ class HomeScreen extends Component {
 			RuleDescriptioVisible: false,
 			WithdrawsTipsVisible: false,
 			exchangeRate: 600, //汇率
-			clickControl: false
+			clickControl: false,
+			withdrawTips: '智慧点不足，快去答题赚钱吧~'
 		};
 		this.jump = false;
 	}
 
 	//提现
-	async _withdraws(user_gold, user_id, amount, wallet) {
+	async _withdraws(user, user_id, amount, wallet) {
 		let { exchangeRate, clickControl } = this.state;
 		let result = {};
 		this.setState({
 			clickControl: true
 		});
-		//还需增加提现次数限制
-		if (!(user_gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
+
+		if (user.available_withdraw_count < 1) {
 			this.WithdrawsTipsModalVisible();
 			this.setState({
-				clickControl: false
+				clickControl: false,
+				withdrawTips: '每天最多提现三次哦~'
 			});
 		} else {
-			try {
-				result = await this.props.CreateWithdrawMutation({
-					variables: {
-						amount: amount
-					},
-					refetchQueries: () => [
-						{
-							query: UserQuery,
-							variables: { id: user_id }
-						},
-						{
-							query: WithdrawsQuery
-						}
-					]
-				});
-			} catch (ex) {
-				result.errors = ex;
-			}
-
-			if (result && result.errors) {
-				let info = result.errors.toString().indexOf('Cannot');
-				if (info > -1) {
-					codePush.checkForUpdate().then(update => {
-						if (!update) {
-							Methods.toast('请重启APP完成更新', -100);
-						} else {
-							codePush.sync({
-								updateDialog: {
-									// mandatoryContinueButtonLabel: "更新",
-									// mandatoryUpdateMessage: "有新版本了，请您及时更新",
-									optionalIgnoreButtonLabel: '取消',
-									optionalInstallButtonLabel: '后台更新',
-									optionalUpdateMessage: '发现新版本',
-									title: '更新提示'
-								},
-								installMode: codePush.InstallMode.IMMEDIATE
-							});
-						}
-					});
-					//过渡办法
-				} else {
-					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-					Methods.toast(str, -100); //打印错误信息
-				}
+			if (!(user.gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
+				this.WithdrawsTipsModalVisible();
 				this.setState({
 					clickControl: false
 				});
 			} else {
-				this.props.navigation.navigate('提现申请', {
-					amount: amount
-				});
-				this.setState({
-					clickControl: false
-				});
+				try {
+					result = await this.props.CreateWithdrawMutation({
+						variables: {
+							amount: amount
+						},
+						refetchQueries: () => [
+							{
+								query: UserQuery,
+								variables: { id: user_id }
+							},
+							{
+								query: WithdrawsQuery
+							}
+						]
+					});
+				} catch (ex) {
+					result.errors = ex;
+				}
 
-				// Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
+				if (result && result.errors) {
+					let info = result.errors.toString().indexOf('Cannot');
+					if (info > -1) {
+						codePush.checkForUpdate().then(update => {
+							if (!update) {
+								Methods.toast('请重启APP完成更新', -100);
+							} else {
+								codePush.sync({
+									updateDialog: {
+										// mandatoryContinueButtonLabel: "更新",
+										// mandatoryUpdateMessage: "有新版本了，请您及时更新",
+										optionalIgnoreButtonLabel: '取消',
+										optionalInstallButtonLabel: '后台更新',
+										optionalUpdateMessage: '发现新版本',
+										title: '更新提示'
+									},
+									installMode: codePush.InstallMode.IMMEDIATE
+								});
+							}
+						});
+						//过渡办法
+					} else {
+						let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+						Methods.toast(str, -100); //打印错误信息
+					}
+					this.setState({
+						clickControl: false
+					});
+				} else {
+					this.props.navigation.navigate('提现申请', {
+						amount: amount
+					});
+					this.setState({
+						clickControl: false
+					});
+
+					// Methods.toast('发起提现成功,客服人员会尽快处理您的提现请求。', -100);
+				}
 			}
 		}
+
+		//还需增加提现次数限制
 	}
 
 	render() {
@@ -184,7 +195,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 1, data.user.wallet);
+														this._withdraws(data.user, user.id, 1, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -195,7 +206,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 3, data.user.wallet);
+														this._withdraws(data.user, user.id, 3, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -206,7 +217,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 5, data.user.wallet);
+														this._withdraws(data.user, user.id, 5, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -217,7 +228,7 @@ class HomeScreen extends Component {
 												<TouchableOpacity
 													style={styles.item}
 													onPress={() => {
-														this._withdraws(data.user.gold, user.id, 10, data.user.wallet);
+														this._withdraws(data.user, user.id, 10, data.user.wallet);
 													}}
 													disabled={clickControl}
 												>
@@ -272,7 +283,11 @@ class HomeScreen extends Component {
 						visible={RuleDescriptioVisible}
 						handleVisible={this.RuleDescriptionModalVisible}
 					/>
-					<WithdrawsTipsModal visible={WithdrawsTipsVisible} handleVisible={this.WithdrawsTipsModalVisible} />
+					<WithdrawsTipsModal
+						visible={WithdrawsTipsVisible}
+						handleVisible={this.WithdrawsTipsModalVisible}
+						text={this.state.withdrawTips}
+					/>
 				</View>
 			</Screen>
 		);
