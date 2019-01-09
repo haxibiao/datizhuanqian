@@ -58,5 +58,11 @@ export default {
       type: types.CANCEL_UPDATE,
       isUpdate
     };
+  },
+  updateVersion(version) {
+    return {
+      type: types.UPDATE_VERSION,
+      version
+    };
   }
 };

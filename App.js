@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, StatusBar, Dimensions, Image } from 'react-native';
+import { Platform, StyleSheet, Text, View, StatusBar, Dimensions, Image, NetInfo } from 'react-native';
 import RootNavigation from './navigation/RootNavigation';
 
 import ApolloApp from './ApolloApp';
-import { Config, Colors, Divice } from './constants';
+import { Config, Colors, Divice, Methods } from './constants';
+import { AppIntro } from './components/Universal';
 
 //redux
 import { Provider, connect } from 'react-redux';
@@ -11,23 +12,51 @@ import store from './store';
 import actions from './store/actions';
 import { Storage, ItemKeys } from './store/localStorage';
 
+import { Query, withApollo, client } from 'react-apollo';
+
 import codePush from 'react-native-code-push';
 
 const { width, height } = Dimensions.get('window');
 
 class App extends Component {
-  state = {
-    isLoadingComplete: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingComplete: false,
+      showHome: false,
+      storageVersionNumber: '',
+      introImage: [
+        {
+          img:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546945875290&di=ea535118b22a64f5f5d1952cfd792ff1&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01167d5631e35232f8755701118d28.jpg'
+        },
+        {
+          img:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546945875290&di=ea535118b22a64f5f5d1952cfd792ff1&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01167d5631e35232f8755701118d28.jpg'
+        }
+      ]
+    };
+  }
 
-  async componentWillMount() {
-    await this._loadResourcesAsync();
+  componentWillMount() {
+    //用户状态加载
+    this._loadResourcesAsync();
+
+    //首先检查手机网络状态  online 按照正常流程   offline强制使用原始启动页
+    NetInfo.isConnected.fetch().done(isConnected => {
+      if (isConnected) {
+        this.loadIntro();
+      } else {
+        this.setState({
+          storageVersionNumber: 100
+        });
+        //暂时方法
+      }
+    });
   }
 
   _loadResourcesAsync = async () => {
     let user = await Storage.getItem(ItemKeys.user);
-    let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
-
     store.dispatch(actions.setUser(user));
     if (user && user.token) {
       //缓存里找到已登录用户记录
@@ -35,33 +64,55 @@ class App extends Component {
     }
   };
 
+  loadIntro = async () => {
+    this.setState({
+      storageVersionNumber: (await Storage.getItem(ItemKeys.version)) ? await Storage.getItem(ItemKeys.version) : 1
+    });
+
+    //获取localstorage version 第一次启动APP设置初始值1
+  };
+
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
 
+  handleIntro = () => {
+    this.setState({ showHome: true });
+  };
+
   render() {
-    let { isLoadingComplete } = this.state;
+    let { isLoadingComplete, showHome, introImage, storageVersionNumber } = this.state;
+
     return (
       <View style={styles.container}>
         <Provider store={store}>
           <ApolloApp onReady={this._handleFinishLoading} />
         </Provider>
-        {!isLoadingComplete && (
-          <View style={styles.appLaunch}>
-            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginBottom: 200 }}>
-              <Image style={styles.loadingImage} source={require('./assets/images/logo.png')} />
-              <Image style={{ width: width - 40, height: (width - 40) / 4, marginTop: 30 }} source={require('./assets/images/name.jpeg')} />
-              {
-                // <Text style={{ color: Colors.black, fontSize: 20, marginTop: 20 }}>答题赚钱</Text>
-              }
-            </View>
+        {
+          //因为是异步获取storageVersionNumber 为了防止出现闪屏首先判断storageVersionNumber是否存在
+          //再判断介绍图是否有两张以上 并且localstorage version 小于 app version显示启动介绍页
+          //反之显示APP加载页
+          //无网状态下只渲染原始启动页  并且启动介绍页对每个版本只渲染一次
+        }
 
-            <Text style={{ color: Colors.tintFont, fontSize: 15, lineHeight: 20, marginBottom: 5, fontWeight: '300' }}>{Config.AppSlogan}</Text>
-            <Text style={{ color: Colors.grey, fontSize: 12, paddingBottom: 30 }}>{Config.AppVersion}</Text>
-            {
-              // <Text style={{ color: Colors.grey, fontSize: 12, marginBottom: 30 }}>datizhuanqian.com</Text>
-            }
-          </View>
+        {storageVersionNumber ? (
+          introImage.length > 1 && storageVersionNumber < Config.AppVersionNumber ? (
+            !showHome && (
+              <AppIntro
+                showHome={showHome}
+                method={this.handleIntro}
+                introImage={introImage}
+                actions={() => {
+                  store.dispatch(actions.updateVersion(Config.AppVersionNumber));
+                }}
+              />
+              //介绍页
+            )
+          ) : (
+            !isLoadingComplete && <AppIntro loading={true} /> //加载页
+          )
+        ) : (
+          <View style={styles.appLaunch} /> //预留底色
         )}
       </View>
     );
@@ -82,13 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FEFEFE'
-  },
-  loadingImage: {
-    width: (width * 3) / 8,
-    height: (width * 3) / 8,
-    borderRadius: (width * 3) / 16,
-    borderWidth: 2,
-    borderColor: Colors.tintGray
   }
 });
 

@@ -58,6 +58,14 @@ function toast(message, position, timeout = 2000) {
 	}, timeout);
 }
 
+//版本号转数值
+function numberVersion(version) {
+	version = version.split('');
+	version.splice(3, 1);
+	version = parseFloat(version.join(''));
+	return version;
+}
+
 //获取线上apk版本信息
 export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsUpdate, login, auto) => {
 	let _this = this;
@@ -148,4 +156,4 @@ const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceU
 };
 //首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。
 
-export { navigationAction, operationMiddleware, numberFormat, toast };
+export { navigationAction, operationMiddleware, numberFormat, toast, numberVersion };

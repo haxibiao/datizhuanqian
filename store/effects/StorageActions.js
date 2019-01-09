@@ -12,6 +12,11 @@ export async function rememberUser({ action, getState, dispatch }) {
 	}
 }
 
+export async function rememberVersion({ action, getState, dispatch }) {
+	let { version } = action;
+	await Storage.setItem(ItemKeys.version, version);
+}
+
 export async function forgetUser({ action, getState, dispatch }) {
 	await Storage.removeItem(ItemKeys.user);
 	// await Storage.removeItem(ItemKeys.isUpdate);
