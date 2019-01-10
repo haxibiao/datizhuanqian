@@ -68,7 +68,7 @@ class ApolloApp extends Component {
 			this.timer = setTimeout(() => {
 				this.props.onReady();
 			}, 6000);
-			//不管网络再差  5秒之后都关闭加载页
+			//最多6秒之后都关闭加载页
 
 			let { query } = this.client;
 			let promises = [query({ query: CategoriesQuery })];

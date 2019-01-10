@@ -69,7 +69,7 @@ function numberVersion(version) {
 //获取线上apk版本信息
 export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsUpdate, login, auto) => {
 	let _this = this;
-	fetch('http://staging.datizhuanqian.com/version.json')
+	fetch(Config.ServerRoot + '/version.json')
 		.then(response => response.json())
 		.then(data => {
 			if (auto) {
