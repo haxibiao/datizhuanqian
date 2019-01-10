@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import {
 	StyleSheet,
@@ -10,10 +10,10 @@ import {
 	RefreshControl,
 	Linking,
 	BackHandler
-} from 'react-native';
+} from "react-native";
 
-import { Header } from '../../components/Header';
-import { CheckUpdateModal, UpdateTipsModal } from '../../components/Modal';
+import { Header } from "../../components/Header";
+import { CheckUpdateModal, UpdateTipsModal } from "../../components/Modal";
 import {
 	DivisionLine,
 	TabTop,
@@ -22,20 +22,20 @@ import {
 	LoadingError,
 	Banner,
 	Loading
-} from '../../components/Universal';
-import { Colors, Config, Divice, Methods } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
+} from "../../components/Universal";
+import { Colors, Config, Divice, Methods } from "../../constants";
+import { Iconfont } from "../../utils/Fonts";
 
-import Screen from '../Screen';
-import PlateItem from './PlateItem';
-import CategoryCache from './CategoryCache';
+import Screen from "../Screen";
+import PlateItem from "./PlateItem";
+import CategoryCache from "./CategoryCache";
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
-import { Query, withApollo } from 'react-apollo';
+import { connect } from "react-redux";
+import actions from "../../store/actions";
+import { CategoriesQuery, QuestionQuery } from "../../graphql/question.graphql";
+import { Query, withApollo } from "react-apollo";
 
-import codePush from 'react-native-code-push';
+import codePush from "react-native-code-push";
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -48,7 +48,7 @@ class HomeScreen extends Component {
 			mustUpdateVisible: false,
 			isMust: false,
 			versionInfo: null,
-			categoryCache: ''
+			categoryCache: ""
 		};
 	}
 
@@ -66,6 +66,30 @@ class HomeScreen extends Component {
 			);
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
+		this.didFocusSubscription = navigation.addListener("didFocus", payload => {
+			let { users, client, dispatch, login } = this.props;
+			if (login) {
+				client
+					.query({
+						query: QuestionQuery,
+						variables: {
+							category_id: 1
+						}
+					})
+					.then(({ data }) => {
+						console.log(data);
+					})
+					.catch(error => {
+						let info = error.toString().indexOf("登录");
+						if (info > -1) {
+							this.props.dispatch(actions.signOut());
+							Methods.toast("您的身份信息已过期,请重新登录", -90);
+						}
+					});
+			}
+		});
+
+		//当有用户seesion 过期时 ,清空redux 强制登录。
 	}
 
 	componentWillUnmount() {
@@ -86,7 +110,7 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log('uri', url);
+		console.log("uri", url);
 		Linking.openURL(url);
 	}
 
@@ -110,7 +134,7 @@ class HomeScreen extends Component {
 				<Header
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-					routeName={'答题赚钱'}
+					routeName={"答题赚钱"}
 					// rightComponent={
 					// 	<TouchableOpacity
 					// 		onPress={() => {
@@ -196,7 +220,7 @@ class HomeScreen extends Component {
 											return this.state.fetchingMore ? (
 												<LoadingMore />
 											) : (
-												<ContentEnd content={'暂时没有更多分类~'} />
+												<ContentEnd content={"暂时没有更多分类~"} />
 											);
 										}}
 									/>
@@ -212,18 +236,18 @@ class HomeScreen extends Component {
 						this.props.dispatch(actions.cancelUpdate(true));
 					}}
 					handleVisible={this.handleUpdateModalVisible}
-					tips={'发现新版本'}
+					tips={"发现新版本"}
 					confirm={() => {
 						this.handleUpdateModalVisible();
-						this.openUrl('https://datizhuanqian.com/');
+						this.openUrl("https://datizhuanqian.com/");
 					}}
 				/>
 				<UpdateTipsModal
 					visible={mustUpdateVisible}
 					openUrl={() => {
-						this.openUrl('https://datizhuanqian.com/');
+						this.openUrl("https://datizhuanqian.com/");
 					}}
-					tips={'发现新版本'}
+					tips={"发现新版本"}
 				/>
 			</Screen>
 		);
