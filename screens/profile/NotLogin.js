@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from "react-native";
-import { Header } from "../../components/Header";
-import { DivisionLine, ErrorBoundary } from "../../components/Universal";
-import { Colors, Config, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
+import { Header } from '../../components/Header';
+import { DivisionLine, ErrorBoundary } from '../../components/Universal';
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
+import Screen from '../Screen';
 
 class NotLogin extends Component {
 	constructor(props) {
@@ -13,36 +13,41 @@ class NotLogin extends Component {
 		this.state = {};
 	}
 	render() {
-		let { user, navigation, login, name = "登录 / 注册" } = this.props;
+		let { user, navigation, login, name = '登录 / 注册', refetch, error, userInfo } = this.props;
 		return (
 			<TouchableOpacity
 				style={styles.userInfoContainer}
-				onPress={() => navigation.navigate("登录注册")}
+				onPress={() => (error ? refetch() : navigation.navigate('登录注册'))}
 				activeOpacity={1}
 			>
 				<View style={styles.userInfo}>
-					<View style={{ flexDirection: "row", marginLeft: 30 }}>
+					<View style={{ flexDirection: 'row', marginLeft: 30 }}>
 						<View style={styles.defaultAvatar}>
-							<Iconfont name={"my"} size={44} color={Colors.lightFontColor} />
-							{/*<Image
-								style={{
-									width: 68,
-									height: 68,
-									borderRadius: 34,
-									borderWidth: 1,
-									borderColor: Colors.white
-								}}
-								source={require("../../assets/images/logo.png")}
-							/>*/}
+							{userInfo && userInfo.avatar ? (
+								<Image
+									style={{
+										width: 68,
+										height: 68,
+										borderRadius: 34,
+										borderWidth: 1,
+										borderColor: Colors.white
+									}}
+									source={{ uri: userInfo.avatar }}
+								/>
+							) : (
+								<Iconfont name={'my'} size={44} color={Colors.lightFontColor} />
+							)}
 						</View>
 
 						<View style={{ marginLeft: 20 }}>
 							<View style={styles.headerInfo}>
-								<Text style={styles.userName}>{name}</Text>
+								<Text style={styles.userName}>
+									{userInfo && userInfo.name ? userInfo.name : '登录 / 注册'}
+								</Text>
 								<View
 									style={{
-										flexDirection: "row",
-										alignItems: "center"
+										flexDirection: 'row',
+										alignItems: 'center'
 									}}
 								>
 									<Text style={styles.level}>LV.0</Text>
@@ -63,8 +68,8 @@ class NotLogin extends Component {
 					</View>
 					<View
 						style={{
-							flexDirection: "row",
-							justifyContent: "center",
+							flexDirection: 'row',
+							justifyContent: 'center',
 							paddingVertical: 20
 						}}
 					>
@@ -72,7 +77,7 @@ class NotLogin extends Component {
 							style={{
 								paddingRight: 20,
 								borderRightWidth: 1,
-								borderRightColor: "#CD6839"
+								borderRightColor: '#CD6839'
 							}}
 						>
 							<Text style={{ color: Colors.orange }}>精力点: 0</Text>
@@ -101,8 +106,8 @@ const styles = StyleSheet.create({
 		height: 68,
 		borderRadius: 34,
 		backgroundColor: Colors.tintGray,
-		justifyContent: "center",
-		alignItems: "center"
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	userInfo: {
 		marginTop: 65
@@ -110,11 +115,11 @@ const styles = StyleSheet.create({
 	headerInfo: {
 		marginTop: 10,
 		height: 50,
-		justifyContent: "space-between"
+		justifyContent: 'space-between'
 	},
 	userName: {
 		fontSize: 18,
-		fontWeight: "500",
+		fontWeight: '500',
 		color: Colors.darkFont
 	},
 	level: {
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
 	progress: {
 		height: 10,
 		width: 150,
-		backgroundColor: "#ffffff",
+		backgroundColor: '#ffffff',
 		borderRadius: 5,
 		marginLeft: 10
 		// borderWidth: 1,

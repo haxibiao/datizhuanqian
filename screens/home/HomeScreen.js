@@ -14,7 +14,15 @@ import {
 
 import { Header } from '../../components/Header';
 import { CheckUpdateModal, UpdateTipsModal } from '../../components/Modal';
-import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from '../../components/Universal';
+import {
+	DivisionLine,
+	TabTop,
+	LoadingMore,
+	ContentEnd,
+	LoadingError,
+	Banner,
+	Loading
+} from '../../components/Universal';
 import { Colors, Config, Divice, Methods } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
@@ -116,67 +124,73 @@ class HomeScreen extends Component {
 				/>
 
 				<View style={styles.container}>
-					<TabTop />
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
-							if (error) return <LoadingError reload={() => refetch()} />;
+							if (error) return <LoadingError reload={() => refetch()} loading={loading} />;
+							if (loading) return <Loading />;
 							if (!(data && data.categories)) return null;
 							return (
-								<FlatList
-									data={data.categories}
-									refreshControl={
-										<RefreshControl
-											refreshing={loading}
-											onRefresh={refetch}
-											colors={[Colors.theme]}
-										/>
-									}
-									keyExtractor={(item, index) => index.toString()}
-									renderItem={({ item, index }) => (
-										<PlateItem category={item} navigation={navigation} login={login} />
-									)}
-									ListHeaderComponent={() => {
-										return <Banner />;
-									}}
-									onEndReachedThreshold={0.3}
-									onEndReached={() => {
-										if (data.categories) {
-											fetchMore({
-												variables: {
-													offset: data.categories.length
-												},
-												updateQuery: (prev, { fetchMoreResult }) => {
-													if (
-														!(
-															fetchMoreResult &&
-															fetchMoreResult.categories &&
-															fetchMoreResult.categories.length > 0
-														)
-													) {
-														this.setState({
-															fetchingMore: false
-														});
-														return prev;
-													}
-													return Object.assign({}, prev, {
-														categories: [...prev.categories, ...fetchMoreResult.categories]
-													});
-												}
-											});
-										} else {
-											this.setState({
-												fetchingMore: false
-											});
+								<View>
+									<TabTop />
+									<FlatList
+										data={data.categories}
+										refreshControl={
+											<RefreshControl
+												refreshing={loading}
+												onRefresh={refetch}
+												colors={[Colors.theme]}
+											/>
 										}
-									}}
-									ListFooterComponent={() => {
-										return this.state.fetchingMore ? (
-											<LoadingMore />
-										) : (
-											<ContentEnd content={'暂时没有更多分类~'} />
-										);
-									}}
-								/>
+										keyExtractor={(item, index) => index.toString()}
+										renderItem={({ item, index }) => (
+											<PlateItem category={item} navigation={navigation} login={login} />
+										)}
+										ListHeaderComponent={() => {
+											return <Banner />;
+										}}
+										onEndReachedThreshold={0.3}
+										onEndReached={() => {
+											if (data.categories) {
+												fetchMore({
+													variables: {
+														offset: data.categories.length
+													},
+													updateQuery: (prev, { fetchMoreResult }) => {
+														if (
+															!(
+																fetchMoreResult &&
+																fetchMoreResult.categories &&
+																fetchMoreResult.categories.length > 0
+															)
+														) {
+															this.setState({
+																fetchingMore: false
+															});
+															return prev;
+														}
+														return Object.assign({}, prev, {
+															categories: [
+																...prev.categories,
+																...fetchMoreResult.categories
+															]
+														});
+													}
+												});
+											} else {
+												this.setState({
+													fetchingMore: false
+												});
+											}
+										}}
+										ListFooterComponent={() => {
+											return this.state.fetchingMore ? (
+												<LoadingMore />
+											) : (
+												<ContentEnd content={'暂时没有更多分类~'} />
+											);
+										}}
+									/>
+								</View>
 							);
 						}}
 					</Query>

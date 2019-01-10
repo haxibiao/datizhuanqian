@@ -25,10 +25,7 @@ class PlateItem extends Component {
 				}
 			>
 				<View style={styles.leftContent}>
-					<Image
-						source={{ uri: category.icon ? category.icon : 'http://cos.qunyige.com/storage/avatar/13.jpg' }}
-						style={styles.img}
-					/>
+					<Image source={{ uri: category.icon }} style={styles.img} />
 					<View style={{ paddingHorizontal: 20, width: (width * 3) / 4 }}>
 						<Text style={styles.title}>{category.name}</Text>
 						<Text style={styles.content}>{category.description}</Text>
