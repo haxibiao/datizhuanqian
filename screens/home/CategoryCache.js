@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, RefreshControl, FlatList } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, RefreshControl, FlatList } from "react-native";
 
 import {
 	DivisionLine,
@@ -9,22 +9,22 @@ import {
 	LoadingError,
 	Banner,
 	Loading
-} from '../../components/Universal';
+} from "../../components/Universal";
 
-import { Colors } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
+import { Colors } from "../../constants";
+import { Iconfont } from "../../utils/Fonts";
 
-import PlateItem from './PlateItem';
-import { Storage, ItemKeys } from '../../store/localStorage';
+import PlateItem from "./PlateItem";
+import { Storage, ItemKeys } from "../../store/localStorage";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 class CategoryCache extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			fetchingMore: true,
-			categoryCache: ''
+			categoryCache: ""
 		};
 	}
 
@@ -37,6 +37,7 @@ class CategoryCache extends Component {
 	render() {
 		const { navigation, refetch, login } = this.props;
 		let { categoryCache } = this.state;
+		console.log("categoryCache", categoryCache);
 		if (!categoryCache) return null;
 		return (
 			<View>
@@ -53,7 +54,7 @@ class CategoryCache extends Component {
 					}}
 					onEndReachedThreshold={0.3}
 					ListFooterComponent={() => {
-						return this.state.fetchingMore ? <LoadingMore /> : <ContentEnd content={'暂时没有更多分类~'} />;
+						return this.state.fetchingMore ? <LoadingMore /> : <ContentEnd content={"暂时没有更多分类~"} />;
 					}}
 				/>
 			</View>

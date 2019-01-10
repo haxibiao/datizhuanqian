@@ -53,7 +53,7 @@ class HomeScreen extends Component {
 	}
 
 	componentDidMount() {
-		const { navigation, login, isUpdate } = this.props;
+		const { navigation, login, isUpdate, client, dispatch } = this.props;
 
 		let auto = true;
 		this.timer = setTimeout(() => {
@@ -88,6 +88,16 @@ class HomeScreen extends Component {
 					});
 			}
 		});
+
+		client
+			.query({
+				query: CategoriesQuery
+			})
+			.then(({ data }) => {
+				console.log("data CategoriesQuery", data);
+				this.props.dispatch(actions.categoryCache(data.categories));
+			})
+			.catch(error => {});
 
 		//当有用户seesion 过期时 ,清空redux 强制登录。
 	}
@@ -161,7 +171,7 @@ class HomeScreen extends Component {
 								);
 							if (loading) return <Loading />;
 							if (!(data && data.categories)) return null;
-							this.props.dispatch(actions.categoryCache(data.categories));
+
 							return (
 								<View>
 									<TabTop />
