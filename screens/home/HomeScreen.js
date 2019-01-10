@@ -142,6 +142,7 @@ class HomeScreen extends Component {
 								<View>
 									<TabTop />
 									<FlatList
+										style={{ marginBottom: 40 }}
 										data={data.categories}
 										refreshControl={
 											<RefreshControl
