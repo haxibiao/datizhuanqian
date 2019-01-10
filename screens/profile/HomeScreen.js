@@ -6,30 +6,38 @@ import { Colors, Config, Divice } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
 import Screen from '../Screen';
-import TopUserInfo from './TopUserInfo';
+import TopUserInfo from './user/TopUserInfo';
 
+import { Storage, ItemKeys } from '../../store/localStorage';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			userCache: ''
+		};
 	}
 
 	openUrl(url) {
 		console.log('uri', url);
 		Linking.openURL('https://www.baidu.com/');
 	}
-
+	async componentWillMount() {
+		this.setState({
+			userCache: await Storage.getItem(ItemKeys.userCache)
+		});
+	}
 	render() {
 		let { user, navigation, login } = this.props;
+
 		return (
 			<Screen header>
 				<View style={styles.container}>
 					{/*<Header leftComponent={<Text />} customStyle={{ backgroundColor: Colors.theme }} />*/}
 					<ScrollView bounces={false}>
-						<TopUserInfo navigation={navigation} />
+						<TopUserInfo navigation={navigation} userCache={this.state.userCache} />
 
 						<DivisionLine height={10} />
 						{/*<TouchableOpacity

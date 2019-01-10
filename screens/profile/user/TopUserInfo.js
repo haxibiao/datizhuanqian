@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
-import { Iconfont } from '../../utils/Fonts';
-import { Colors, Config } from '../../constants';
-import { Avatar, LoadingError, BlankContent } from '../../components/Universal';
+import { Iconfont } from '../../../utils/Fonts';
+import { Colors, Config } from '../../../constants';
+import { Avatar, LoadingError, BlankContent } from '../../../components/Universal';
 
-import { UserQuery } from '../../graphql/user.graphql';
+import { UserQuery } from '../../../graphql/user.graphql';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
+import actions from '../../../store/actions';
 
 import NotLogin from './NotLogin';
+import UserCache from './UserCache';
 const { width, height } = Dimensions.get('window');
 
 class UserTopInfo extends Component {
@@ -17,7 +19,7 @@ class UserTopInfo extends Component {
 		this.state = {};
 	}
 	render() {
-		let { login, userInfo, navigation } = this.props;
+		let { login, userInfo, navigation, userCache } = this.props;
 		const { exp, level, levelExp } = this.state;
 
 		return (
@@ -27,19 +29,19 @@ class UserTopInfo extends Component {
 						{({ data, loading, error, refetch }) => {
 							if (error)
 								return (
-									<NotLogin
-										name={'加载失败'}
+									<UserCache
 										navigation={navigation}
-										error={error}
-										userInfo={userInfo}
 										refetch={() => {
 											refetch();
 										}}
+										userCache={userCache}
 									/>
 								);
 							if (!(data && data.user)) return <NotLogin navigation={navigation} />;
 							let user = data.user;
 							let avatar = user.avatar + '?t=' + Date.now();
+							this.props.dispatch(actions.userCache(user));
+
 							return (
 								<TouchableOpacity
 									style={styles.userInfoContainer}

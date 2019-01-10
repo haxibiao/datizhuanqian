@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 
-import { Header } from "../../components/Header";
-import { TabTop, Banner, DivisionLine, WithdrawsTips } from "../../components/Universal";
-import Screen from "../Screen";
-import { Colors, Config, Divice } from "../../constants";
+import { Header } from '../../components/Header';
+import { TabTop, Banner, DivisionLine, WithdrawsTips } from '../../components/Universal';
+import Screen from '../Screen';
+import { Colors, Config, Divice } from '../../constants';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class NotLogin extends Component {
 	constructor(props) {
@@ -18,16 +18,31 @@ class NotLogin extends Component {
 		return (
 			<View style={styles.container}>
 				<View>
-					<View style={styles.header}>
-						<Text style={styles.gold}>0</Text>
-						<Text style={styles.type}>智慧点</Text>
+					<View
+						style={{
+							flexDirection: 'row',
+							alignItems: 'center',
+							justifyContent: 'space-between',
+							paddingTop: 20,
+							paddingBottom: 30
+						}}
+					>
+						<View style={{ width: width / 2 }}>
+							<Text style={styles.gold}>0</Text>
+							<Text style={styles.type}>智慧点</Text>
+						</View>
+						<View style={{ width: width / 2 }}>
+							<Text style={styles.gold}>0.00</Text>
+							<Text style={styles.type}>余额（元）</Text>
+						</View>
 					</View>
+
 					<DivisionLine height={10} />
 					<View style={styles.center}>
 						<TouchableOpacity
 							style={styles.item}
 							onPress={() => {
-								navigation.navigate("登录注册");
+								navigation.navigate('登录注册');
 							}}
 						>
 							<Text style={styles.content}>
@@ -37,7 +52,7 @@ class NotLogin extends Component {
 						<TouchableOpacity
 							style={styles.item}
 							onPress={() => {
-								navigation.navigate("登录注册");
+								navigation.navigate('登录注册');
 							}}
 						>
 							<Text style={styles.content}>
@@ -47,7 +62,7 @@ class NotLogin extends Component {
 						<TouchableOpacity
 							style={styles.item}
 							onPress={() => {
-								navigation.navigate("登录注册");
+								navigation.navigate('登录注册');
 							}}
 						>
 							<Text style={styles.content}>
@@ -57,7 +72,7 @@ class NotLogin extends Component {
 						<TouchableOpacity
 							style={styles.item}
 							onPress={() => {
-								navigation.navigate("登录注册");
+								navigation.navigate('登录注册');
 							}}
 						>
 							<Text style={styles.content}>
@@ -66,7 +81,7 @@ class NotLogin extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-				<WithdrawsTips tips={"还没有登录账号哦"} method={"登录后绑定支付宝账户即可进行提现"} />
+				<WithdrawsTips tips={'还没有登录账号哦'} method={'登录后绑定支付宝账户即可进行提现'} />
 			</View>
 		);
 	}
@@ -75,34 +90,35 @@ class NotLogin extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#FFFEFC"
+		backgroundColor: '#FFFEFC'
 	},
 	header: {
 		paddingVertical: 25,
-		alignItems: "center"
+		alignItems: 'center'
 	},
 	gold: {
-		color: "#EF514A",
-		fontSize: 30,
-		paddingBottom: 2
+		color: Colors.themeRed,
+		fontSize: 44,
+		paddingBottom: 2,
+		textAlign: 'center'
 	},
 	type: {
 		color: Colors.grey,
 		fontSize: 13,
-		textAlign: "center"
+		textAlign: 'center'
 	},
 	center: {
-		flexDirection: "row",
-		flexWrap: "wrap",
+		flexDirection: 'row',
+		flexWrap: 'wrap',
 		paddingHorizontal: 15,
-		justifyContent: "space-between"
+		justifyContent: 'space-between'
 	},
 	item: {
 		paddingVertical: 25,
 		width: (width - 44) / 2,
-		borderColor: "#E0E0E0",
+		borderColor: '#E0E0E0',
 		borderWidth: 0.5,
-		alignItems: "center",
+		alignItems: 'center',
 		marginTop: 20,
 		borderRadius: 5
 	},
@@ -111,13 +127,13 @@ const styles = StyleSheet.create({
 		color: Colors.black
 	},
 	footer: {
-		justifyContent: "center",
-		alignItems: "center",
+		justifyContent: 'center',
+		alignItems: 'center',
 		paddingTop: 20
 	},
 	tips: {
 		fontSize: 15,
-		color: "#363636"
+		color: '#363636'
 	}
 });
 

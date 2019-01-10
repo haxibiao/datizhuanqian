@@ -28,13 +28,12 @@ import { Iconfont } from '../../utils/Fonts';
 
 import Screen from '../Screen';
 import PlateItem from './PlateItem';
+import CategoryCache from './CategoryCache';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { Query, withApollo } from 'react-apollo';
-
-import { Storage, ItemKeys } from '../../store/localStorage';
 
 import codePush from 'react-native-code-push';
 
@@ -48,7 +47,8 @@ class HomeScreen extends Component {
 			updateVisible: false,
 			mustUpdateVisible: false,
 			isMust: false,
-			versionInfo: null
+			versionInfo: null,
+			categoryCache: ''
 		};
 	}
 
@@ -66,8 +66,6 @@ class HomeScreen extends Component {
 			);
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
-
-		//当有用户seesion 过期时 ,清空redux 强制登录。
 	}
 
 	componentWillUnmount() {
@@ -106,6 +104,7 @@ class HomeScreen extends Component {
 	render() {
 		const { navigation, user, nextPlate, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
+
 		return (
 			<Screen header>
 				<Header
@@ -126,9 +125,19 @@ class HomeScreen extends Component {
 				<View style={styles.container}>
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
-							if (error) return <LoadingError reload={() => refetch()} loading={loading} />;
+							if (error)
+								return (
+									<CategoryCache
+										navigation={navigation}
+										login={login}
+										refetch={() => {
+											refetch();
+										}}
+									/>
+								);
 							if (loading) return <Loading />;
 							if (!(data && data.categories)) return null;
+							this.props.dispatch(actions.categoryCache(data.categories));
 							return (
 								<View>
 									<TabTop />

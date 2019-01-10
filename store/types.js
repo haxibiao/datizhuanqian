@@ -20,6 +20,8 @@ export default defineActionConstants([
 	'UPDATE_VERSION',
 
 	// 本地缓存
+	'USER_CACHE',
+	'CATEGORY_CACHE',
 	'CLEAR_ALL'
 ]);
 

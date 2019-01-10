@@ -17,7 +17,19 @@ export async function rememberVersion({ action, getState, dispatch }) {
 	await Storage.setItem(ItemKeys.version, version);
 }
 
+export async function rememberUserCache({ action, getState, dispatch }) {
+	let { user } = action;
+	await Storage.setItem(ItemKeys.userCache, user);
+}
+
+export async function rememberCategoryCache({ action, getState, dispatch }) {
+	let { categories } = action;
+	await Storage.setItem(ItemKeys.categoryCache, categories);
+}
+
 export async function forgetUser({ action, getState, dispatch }) {
 	await Storage.removeItem(ItemKeys.user);
+	await Storage.removeItem(ItemKeys.userCache);
+
 	// await Storage.removeItem(ItemKeys.isUpdate);
 }
