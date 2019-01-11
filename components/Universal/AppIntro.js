@@ -20,7 +20,7 @@ class AppIntro extends Component {
 
 	render() {
 		let { fadeAnim, bgc } = this.state;
-		let { navigation, showHome, introImage, actions, loading } = this.props;
+		let { navigation, showHome, introImages, actions, loading } = this.props;
 		return (
 			<View style={[styles.appLaunch, { backgroundColor: bgc }]}>
 				{loading ? (
@@ -65,17 +65,17 @@ class AppIntro extends Component {
 						}}
 					>
 						<Swiper autoplay={false} activeDotColor="#fff" showsPagination={true} loop={false}>
-							{introImage.map((intro, index) => {
+							{introImages.map((intro, index) => {
 								return (
 									<View key={index}>
 										<Image
 											source={{
-												uri: intro.img
+												uri: intro.image_url
 											}}
 											style={styles.img}
 											key={index}
 										/>
-										{index == introImage.length - 1 && (
+										{index == introImages.length - 1 && (
 											<TouchableOpacity
 												style={styles.button}
 												onPress={() => {

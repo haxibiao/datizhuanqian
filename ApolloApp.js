@@ -54,6 +54,7 @@ class ApolloApp extends Component {
 			},
 			cache: this.cache
 		});
+		console.log('client', this.client);
 	}
 
 	componentWillMount() {

@@ -25,16 +25,7 @@ class App extends Component {
       isLoadingComplete: false,
       showHome: false,
       storageVersionNumber: '',
-      introImage: [
-        {
-          img:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546945875290&di=ea535118b22a64f5f5d1952cfd792ff1&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01167d5631e35232f8755701118d28.jpg'
-        },
-        {
-          img:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1546945875290&di=ea535118b22a64f5f5d1952cfd792ff1&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01167d5631e35232f8755701118d28.jpg'
-        }
-      ]
+      introImages: ''
     };
   }
 
@@ -68,6 +59,16 @@ class App extends Component {
     this.setState({
       storageVersionNumber: (await Storage.getItem(ItemKeys.version)) ? await Storage.getItem(ItemKeys.version) : 1
     });
+    fetch(Config.ServerRoot + '/api/app-loading-image')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          introImages: data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
     //获取localstorage version 第一次启动APP设置初始值1
   };
@@ -81,7 +82,7 @@ class App extends Component {
   };
 
   render() {
-    let { isLoadingComplete, showHome, introImage, storageVersionNumber } = this.state;
+    let { isLoadingComplete, showHome, introImages, storageVersionNumber } = this.state;
 
     return (
       <View style={styles.container}>
@@ -89,19 +90,19 @@ class App extends Component {
           <ApolloApp onReady={this._handleFinishLoading} />
         </Provider>
         {
-          //因为是异步获取storageVersionNumber 为了防止出现闪屏首先判断storageVersionNumber是否存在
+          //为了防止出现闪屏首先判断storageVersionNumber和introImages是否有数据
           //再判断介绍图是否有两张以上 并且localstorage version 小于 app version显示启动介绍页
           //反之显示APP加载页
           //无网状态下只渲染原始启动页  并且启动介绍页对每个版本只渲染一次
         }
 
-        {storageVersionNumber ? (
-          introImage.length > 1 && storageVersionNumber < Config.AppVersionNumber ? (
+        {storageVersionNumber && introImages ? (
+          introImages.length > 1 && storageVersionNumber < Config.AppVersionNumber ? (
             !showHome && (
               <AppIntro
                 showHome={showHome}
                 method={this.handleIntro}
-                introImage={introImage}
+                introImages={introImages}
                 actions={() => {
                   store.dispatch(actions.updateVersion(Config.AppVersionNumber));
                 }}
