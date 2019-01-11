@@ -114,12 +114,12 @@ class WithdrawDetailsScreen extends Component {
 						>
 							<Text style={{ fontSize: 16, color: Colors.grey }}>回执信息</Text>
 							<Text style={{ fontSize: 16, color: Colors.black }}>
-								{remark.msg ? remark.msg : remark}
+								{remark && remark.msg ? remark.msg : remark}
 							</Text>
 						</View>
 
 						{//需要提供字段用来判断修改支付宝账号
-						remark.code == 10001 && (
+						remark && remark.code == 10001 && (
 							<TouchableOpacity
 								style={{
 									paddingVertical: 15,
