@@ -52,7 +52,7 @@ class HomeScreen extends Component {
 			this.WithdrawsTipsModalVisible();
 			this.setState({
 				clickControl: false,
-				withdrawTips: '每天最多提现三次哦~'
+				withdrawTips: '今日提现次数已达上限~'
 			});
 		} else {
 			this._judgeBalance(user, amount, wallet);
@@ -75,7 +75,7 @@ class HomeScreen extends Component {
 	//提现请求
 	async _withdrawsRequest(amount) {
 		const user_id = this.props.user.id;
-		console.log('amount', amount);
+
 		let result = {};
 		try {
 			result = await this.props.CreateWithdrawMutation({

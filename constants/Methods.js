@@ -74,9 +74,9 @@ export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsU
 		.then(data => {
 			console.log('data', data);
 			if (auto) {
-				autoCheckUpdate(data[1], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
+				autoCheckUpdate(data[0], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
 			} else {
-				checkUpdate(data[1], handleModalVisible);
+				checkUpdate(data[0], handleModalVisible);
 			}
 		})
 		.catch(err => {
