@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 
-import { Header } from "../../components/Header";
-import { TabTop, Banner, Avatar, DivisionLine } from "../../components/Universal";
-import Screen from "../Screen";
-import { Colors, Config, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
-import { connect } from "react-redux";
+import { Header } from '../../components/Header';
+import { TabTop, Banner, Avatar, DivisionLine } from '../../components/Universal';
+import Screen from '../Screen';
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
+import { connect } from 'react-redux';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class WithdrawDetailsScreen extends Component {
 	constructor(props) {
@@ -18,7 +18,8 @@ class WithdrawDetailsScreen extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		const { withdraws } = navigation.state.params;
-		console.log("user", user);
+		let remark = JSON.parse(withdraws.remark);
+
 		return (
 			<View style={styles.container}>
 				<Header />
@@ -47,16 +48,16 @@ class WithdrawDetailsScreen extends Component {
 					<View style={{ paddingHorizontal: 15 }}>
 						<View
 							style={{
-								flexDirection: "row",
-								justifyContent: "center",
-								alignItems: "center",
+								flexDirection: 'row',
+								justifyContent: 'center',
+								alignItems: 'center',
 								marginTop: 15
 							}}
 						>
 							<Avatar size={38} uri={user.avatar} />
 							<Text style={{ paddingLeft: 10, fontSize: 18, color: Colors.black }}>{user.name}</Text>
 						</View>
-						<View style={{ alignItems: "center", marginVertical: 20 }}>
+						<View style={{ alignItems: 'center', marginVertical: 20 }}>
 							<Text style={{ fontSize: 36, paddingBottom: 15, color: Colors.black }}>
 								{withdraws.amount}.00
 							</Text>
@@ -66,32 +67,32 @@ class WithdrawDetailsScreen extends Component {
 								<Text style={{ fontSize: 16, color: Colors.weixin }}>交易成功</Text>
 							)}
 						</View>
-						<View style={{ paddingBottom: 20, flexDirection: "row", justifyContent: "space-between" }}>
+						<View style={{ paddingBottom: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
 							<Text style={{ fontSize: 15, color: Colors.grey }}>提现单号</Text>
 							<Text style={{ fontSize: 15, color: Colors.black }}>{withdraws.biz_no}</Text>
 						</View>
-						<View style={{ paddingBottom: 20, flexDirection: "row", justifyContent: "space-between" }}>
+						<View style={{ paddingBottom: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
 							<Text style={{ fontSize: 15, color: Colors.grey }}>转账备注</Text>
 							<Text style={{ fontSize: 15, color: Colors.black }}>智慧点提现</Text>
 						</View>
-						<View style={{ paddingBottom: 15, flexDirection: "row", justifyContent: "space-between" }}>
+						<View style={{ paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between' }}>
 							<Text style={{ fontSize: 15, color: Colors.grey }}>收款账户</Text>
 							<Text style={{ fontSize: 15, color: Colors.black }}>
-								{user.pay_account + "(" + user.real_name + ")"}
+								{user.pay_account + '(' + user.real_name + ')'}
 							</Text>
 						</View>
 						<View
 							style={{
 								paddingBottom: 20,
 								paddingTop: 15,
-								flexDirection: "row",
-								justifyContent: "space-between",
+								flexDirection: 'row',
+								justifyContent: 'space-between',
 								borderTopWidth: 1,
 								borderTopColor: Colors.lightBorder
 							}}
 						>
 							<Text style={{ fontSize: 15, color: Colors.grey }}>
-								{withdraws.status == -1 ? "提现时间" : "到账时间"}
+								{withdraws.status == -1 ? '提现时间' : '到账时间'}
 							</Text>
 							<Text style={{ fontSize: 15, color: Colors.black }}>
 								{withdraws.status == -1 ? withdraws.created_at : withdraws.updated_at}
@@ -100,8 +101,8 @@ class WithdrawDetailsScreen extends Component {
 						<View
 							style={{
 								paddingBottom: 15,
-								flexDirection: "row",
-								justifyContent: "space-between"
+								flexDirection: 'row',
+								justifyContent: 'space-between'
 							}}
 						>
 							<Text style={{ fontSize: 15, color: Colors.grey }}>支付宝订单号</Text>
@@ -110,7 +111,7 @@ class WithdrawDetailsScreen extends Component {
 									fontSize: 15,
 									color: Colors.black,
 									width: (width * 5) / 9,
-									textAlign: "right"
+									textAlign: 'right'
 								}}
 							>
 								{withdraws.trade_no}
@@ -122,32 +123,32 @@ class WithdrawDetailsScreen extends Component {
 						<View
 							style={{
 								paddingVertical: 15,
-								flexDirection: "row",
-								justifyContent: "space-between",
-								alignItems: "center"
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+								alignItems: 'center'
 							}}
 						>
 							<Text style={{ fontSize: 16, color: Colors.grey }}>回执信息</Text>
-							<Text style={{ fontSize: 16, color: Colors.black }}>{withdraws.remark}</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>{remark.msg}</Text>
 						</View>
 
 						{//需要提供字段用来判断修改支付宝账号
-						withdraws.remark && (
+						remark.code == 10001 && (
 							<TouchableOpacity
 								style={{
 									paddingVertical: 15,
-									flexDirection: "row",
-									justifyContent: "space-between",
-									alignItems: "center",
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
 									borderTopWidth: 1,
 									borderTopColor: Colors.lightBorder
 								}}
 								onPress={() => {
-									navigation.navigate("我的账户", { user: user });
+									navigation.navigate('我的账户', { user: user });
 								}}
 							>
 								<Text style={{ fontSize: 16, color: Colors.grey }}>修改支付账号</Text>
-								<Iconfont name={"right"} size={16} />
+								<Iconfont name={'right'} size={16} />
 							</TouchableOpacity>
 						)}
 					</View>
@@ -169,8 +170,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white
 	},
 	titleInfo: {
-		flexDirection: "row",
-		alignItems: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
 		paddingVertical: 15,
 		marginHorizontal: 15,
 		borderBottomWidth: 1,
