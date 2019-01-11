@@ -1,17 +1,3 @@
-#提现日志
-query TransactionsQuery($offset: Int, $limit: Int) {
-	transactions(offset: $offset, limit: $limit) {
-		id
-		user_id
-		amount
-		balance
-		submit
-		remake
-		status
-		created_at
-	}
-}
-
 #设置提现信息
 mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!) {
 	setUserPaymentInfo(pay_account: $pay_account, real_name: $real_name) {
@@ -34,20 +20,6 @@ mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!) 
 		is_old_user
 		is_admin
 		last_login_at
-	}
-}
-
-#提现订单
-mutation CreateTransactionMutation($amount: Float) {
-	createTransaction(amount: $amount) {
-		id
-		user_id
-		amount
-		balance
-		submit
-		remake
-		status
-		created_at
 	}
 }
 

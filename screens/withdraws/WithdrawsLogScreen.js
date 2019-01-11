@@ -16,7 +16,7 @@ import { Colors } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { TransactionsQuery, WithdrawsQuery } from '../../graphql/withdraws.graphql';
+import { WithdrawsQuery } from '../../graphql/withdraws.graphql';
 import { UserWithdrawQuery } from '../../graphql/user.graphql';
 import { Query } from 'react-apollo';
 

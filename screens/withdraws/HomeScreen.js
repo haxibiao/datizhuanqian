@@ -13,12 +13,7 @@ import { Colors, Methods } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import {
-	CreateTransactionMutation,
-	TransactionsQuery,
-	CreateWithdrawMutation,
-	WithdrawsQuery
-} from '../../graphql/withdraws.graphql';
+import { CreateWithdrawMutation, WithdrawsQuery } from '../../graphql/withdraws.graphql';
 
 import { UserQuery } from '../../graphql/User.graphql';
 import { Mutation, Query, compose, graphql } from 'react-apollo';

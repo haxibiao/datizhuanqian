@@ -78,7 +78,6 @@ query UserQuery($id: Int!) {
 		gold
 		ticket
 		avatar
-		accumulative
 		exp
 		next_level_exp
 		available_withdraw_count

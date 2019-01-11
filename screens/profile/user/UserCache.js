@@ -13,6 +13,7 @@ class UserCache extends Component {
 	render() {
 		let { navigation, refetch, userCache } = this.props;
 		console.log('userCache', userCache);
+		if (!userCache) return null;
 		return (
 			<TouchableOpacity style={styles.userInfoContainer} onPress={() => refetch()} activeOpacity={1}>
 				<View style={styles.userInfo}>
