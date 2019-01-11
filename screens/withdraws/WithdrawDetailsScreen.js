@@ -18,32 +18,16 @@ class WithdrawDetailsScreen extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		const { withdraws } = navigation.state.params;
-		let remark = JSON.parse(withdraws.remark);
-
+		let remark = '';
+		try {
+			remark = JSON.parse(withdraws.remark);
+		} catch {
+			remark = withdraws.remark;
+		}
+		console.log('remark', remark);
 		return (
 			<View style={styles.container}>
 				<Header />
-
-				{/*<View style={styles.content}>
-						<View style={styles.titleInfo}>
-							<Iconfont name={"tixian"} size={20} color={Colors.theme} />
-							<Text style={styles.title}>智慧点提现</Text>
-						</View>
-						<View style={styles.bottomInfo}>
-							<Text style={{ fontSize: 22, paddingBottom: 15 }}>￥{withdraws.amount}.00</Text>
-							<Text style={styles.infoItem}>回执信息：{withdraws.remark}</Text>
-							<TouchableOpacity
-								onPress={() => {
-									navigation.navigate("我的账户", { user: user });
-								}}
-							>
-								<Text style={{ color: Colors.themeRed, fontSize: 15 }}>修改</Text>
-							</TouchableOpacity>
-							<Text style={styles.infoItem}>提现方式：支付宝({user.pay_account})</Text>
-							<Text style={styles.infoItem}>提现时间：{withdraws.created_at}</Text>
-						</View>
-					</View>*/}
-
 				<View style={{ backgroundColor: Colors.white }}>
 					<View style={{ paddingHorizontal: 15 }}>
 						<View
@@ -129,7 +113,9 @@ class WithdrawDetailsScreen extends Component {
 							}}
 						>
 							<Text style={{ fontSize: 16, color: Colors.grey }}>回执信息</Text>
-							<Text style={{ fontSize: 16, color: Colors.black }}>{remark.msg}</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>
+								{remark.msg ? remark.msg : remark}
+							</Text>
 						</View>
 
 						{//需要提供字段用来判断修改支付宝账号

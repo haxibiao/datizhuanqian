@@ -250,13 +250,13 @@ class HomeScreen extends Component {
 					tips={'发现新版本'}
 					confirm={() => {
 						this.handleUpdateModalVisible();
-						this.openUrl('https://datizhuanqian.com/');
+						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
 					}}
 				/>
 				<UpdateTipsModal
 					visible={mustUpdateVisible}
 					openUrl={() => {
-						this.openUrl('https://datizhuanqian.com/');
+						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
 					}}
 					tips={'发现新版本'}
 				/>

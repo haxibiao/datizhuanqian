@@ -69,9 +69,10 @@ function numberVersion(version) {
 //获取线上apk版本信息
 export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsUpdate, login, auto) => {
 	let _this = this;
-	fetch(Config.ServerRoot + '/version.json')
+	fetch(Config.ServerRoot + '/api/app-version' + '?t=' + Date.now())
 		.then(response => response.json())
 		.then(data => {
+			console.log('data', data);
 			if (auto) {
 				autoCheckUpdate(data[1], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
 			} else {

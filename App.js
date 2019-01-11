@@ -39,7 +39,8 @@ class App extends Component {
         this.loadIntro();
       } else {
         this.setState({
-          storageVersionNumber: 100
+          storageVersionNumber: 100,
+          introImages: []
         });
         //暂时方法
       }
@@ -67,7 +68,9 @@ class App extends Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        this.setState({
+          introImages: []
+        });
       });
 
     //获取localstorage version 第一次启动APP设置初始值1
