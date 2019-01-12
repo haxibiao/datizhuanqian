@@ -122,7 +122,10 @@ class AnswerScreen extends Component {
 																			isMethod: true,
 																			name: '下一题',
 																			isShow: true,
-																			buttonColor: Colors.weixin,
+																			buttonColor:
+																				question.answer.indexOf(value) > -1
+																					? Colors.weixin
+																					: Colors.red,
 																			rightColor: Colors.weixin
 																		});
 																		answerQuestion({
