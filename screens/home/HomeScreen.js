@@ -174,10 +174,9 @@ class HomeScreen extends Component {
 							if (!(data && data.categories)) return null;
 
 							return (
-								<View>
+								<View style={{ flex: 1 }}>
 									<TabTop />
 									<FlatList
-										style={{ marginBottom: 40 }}
 										data={data.categories}
 										refreshControl={
 											<RefreshControl

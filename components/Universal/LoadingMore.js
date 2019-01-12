@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import Spinner from "react-native-spinkit";
+import React, { Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import Spinner from 'react-native-spinkit';
 
-import Colors from "../../constants/Colors";
-import { Iconfont } from "../../utils/Fonts";
+import Colors from '../../constants/Colors';
+import { Iconfont } from '../../utils/Fonts';
 
 class LoadingMore extends Component {
 	render() {
-		let { size = 18, fontSize = 12, color = Colors.theme, type = "FadingCircleAlt", isVisible = true } = this.props;
+		let { size = 18, fontSize = 12, color = Colors.theme, type = 'FadingCircleAlt', isVisible = true } = this.props;
 		return (
 			<View style={styles.loadingMore}>
 				<Spinner isVisible={isVisible} size={size} type={type} color={color} />
@@ -22,9 +22,9 @@ class LoadingMore extends Component {
 const styles = StyleSheet.create({
 	loadingMore: {
 		paddingVertical: 15,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 

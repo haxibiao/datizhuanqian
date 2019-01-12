@@ -27,7 +27,8 @@ class AppIntro extends Component {
 					<View
 						style={{
 							justifyContent: 'center',
-							alignItems: 'center'
+							alignItems: 'center',
+							flex: 1
 						}}
 					>
 						<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginBottom: 200 }}>
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	appLaunch: {
+		flex: 1,
 		width,
 		height,
 		position: 'absolute',
