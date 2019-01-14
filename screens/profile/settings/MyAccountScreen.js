@@ -28,7 +28,6 @@ class EditProfileScreen extends Component {
 	render() {
 		let { navigation, user } = this.props;
 		const { real_name, pay_account, password } = this.state;
-		console.log('password', password);
 		return (
 			<Screen header>
 				<Header customStyle={{ borderBottomColor: 'transparent' }} />

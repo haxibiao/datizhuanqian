@@ -72,7 +72,6 @@ export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsU
 	fetch(Config.ServerRoot + '/api/app-version' + '?t=' + Date.now())
 		.then(response => response.json())
 		.then(data => {
-			console.log('data', data);
 			if (auto) {
 				autoCheckUpdate(data[0], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
 			} else {
@@ -124,8 +123,6 @@ const checkUpdate = (versionInfo, handlePromotModalVisible) => {
 //首页自动检查更新
 const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceUpdateModal, propsIsUpdate, login) => {
 	let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
-	console.log('isUpdate', isUpdate);
-
 	let localVersion = Config.localVersion.split('');
 	localVersion.splice(3, 1);
 	let local = parseFloat(localVersion.join(''));

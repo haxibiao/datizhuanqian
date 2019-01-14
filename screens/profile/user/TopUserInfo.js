@@ -69,7 +69,7 @@ class UserTopInfo extends Component {
 							return (
 								<TouchableOpacity
 									style={styles.userInfoContainer}
-									onPress={() => navigation.navigate('编辑个人资料')}
+									onPress={() => navigation.navigate('编辑个人资料', { user: user })}
 									activeOpacity={1}
 								>
 									<View style={styles.userInfo}>

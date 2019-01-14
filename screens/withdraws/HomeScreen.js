@@ -276,7 +276,7 @@ class HomeScreen extends Component {
 											// />
 										}
 
-										{user.pay_account ? null : <WithdrawsTips />}
+										{user.pay_account ? null : <WithdrawsTips navigation={navigation} />}
 									</View>
 								);
 							}}
