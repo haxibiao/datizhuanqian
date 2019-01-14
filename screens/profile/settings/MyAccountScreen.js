@@ -20,7 +20,7 @@ class EditProfileScreen extends Component {
 		super(props);
 		this.state = {
 			real_name: this.props.user.real_name,
-			pay_account: null,
+			pay_account: '',
 			password: ''
 		};
 	}
@@ -28,6 +28,7 @@ class EditProfileScreen extends Component {
 	render() {
 		let { navigation, user } = this.props;
 		const { real_name, pay_account, password } = this.state;
+		console.log('password', password);
 		return (
 			<Screen header>
 				<Header customStyle={{ borderBottomColor: 'transparent' }} />
@@ -72,6 +73,7 @@ class EditProfileScreen extends Component {
 							fontSize: 16
 						}}
 						placeholder="请输入支付宝账号"
+						defaultValue={this.state.pay_account}
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
 						autoCapitalize={'none'}
@@ -93,6 +95,7 @@ class EditProfileScreen extends Component {
 						placeholder="请输入密码"
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
+						defaultValue={this.state.password}
 						autoCapitalize={'none'}
 						secureTextEntry={true}
 						onChangeText={password => {
@@ -138,11 +141,19 @@ class EditProfileScreen extends Component {
 														pay_account: pay_account
 													})
 												);
-												// navigation.goBack();
+												navigation.goBack();
 											}
+											this.setState({
+												pay_account: '',
+												password: ''
+											});
 										} else {
 											Methods.toast('支付宝账号格式错误', 80);
 										}
+										this.setState({
+											pay_account: '',
+											password: ''
+										});
 									}}
 								/>
 							);

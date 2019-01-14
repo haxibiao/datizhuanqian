@@ -6,7 +6,11 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js",
     devDisabledInStaging: true,
+    devDisabledInXiaomi: true,
+    devDisabledInBaidu: true,
     bundleInStaging: true,
+    bundleInXiaomi: true,
+    bundleInBaidu: true,
 ]
 
 //要为每个应用商店生成带有不同的.env内容的APK
@@ -85,9 +89,9 @@ android {
         }
         xiaomi {
             initWith release
-            matchingFallbacks = ['release']
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            matchingFallbacks = ['release']
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
