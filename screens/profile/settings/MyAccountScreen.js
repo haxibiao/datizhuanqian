@@ -88,23 +88,38 @@ class EditProfileScreen extends Component {
 									style={{ height: 40, marginHorizontal: 15, marginTop: 20 }}
 									disabled={!(real_name && pay_account)}
 									theme={real_name && pay_account ? Colors.theme : 'rgba(64,127,207,0.7)'}
-									handler={() => {
+									handler={async () => {
 										const phoneReg = /^1[3-9]\d{9}$/;
 										const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
 
 										//手机号限制11位   第一位为1  第二位不为2  后9位随机
 										if (phoneReg.test(pay_account) || mailReg.test(pay_account)) {
-											SetUserPaymentInfoMutation({
-												variables: {
-													real_name,
-													pay_account
-												}
-											});
-											Methods.toast('绑定成功', -200);
-											this.props.dispatch(
-												actions.updateAlipay({ real_name: real_name, pay_account: pay_account })
-											);
-											navigation.goBack();
+											let result = {};
+											try {
+												await SetUserPaymentInfoMutation({
+													variables: {
+														real_name,
+														pay_account
+													}
+												});
+											} catch (ex) {
+												result.errors = ex;
+											}
+											if (result && result.errors) {
+												let str = result.errors
+													.toString()
+													.replace(/Error: GraphQL error: /, '');
+												Methods.toast(str, -100); //打印错误信息
+											} else {
+												Methods.toast('绑定成功', -200);
+												this.props.dispatch(
+													actions.updateAlipay({
+														real_name: real_name,
+														pay_account: pay_account
+													})
+												);
+												// navigation.goBack();
+											}
 										} else {
 											Methods.toast('支付宝账号格式错误', 80);
 										}
@@ -115,7 +130,7 @@ class EditProfileScreen extends Component {
 					</Mutation>
 					<View style={{ paddingHorizontal: 15 }}>
 						<Text style={{ fontSize: 14, color: Colors.themeRed, paddingTop: 15 }}>
-							注意:支付宝账号一旦绑定将无法更改！
+							注意:每个用户最多修改5次支付宝！
 						</Text>
 					</View>
 				</View>

@@ -18,13 +18,6 @@ class WithdrawDetailsScreen extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		const { withdraws } = navigation.state.params;
-		let remark = '';
-		try {
-			remark = JSON.parse(withdraws.remark);
-		} catch {
-			remark = withdraws.remark;
-		}
-		console.log('remark', remark);
 		return (
 			<View style={styles.container}>
 				<Header />
@@ -113,30 +106,31 @@ class WithdrawDetailsScreen extends Component {
 							}}
 						>
 							<Text style={{ fontSize: 16, color: Colors.grey }}>回执信息</Text>
-							<Text style={{ fontSize: 16, color: Colors.black }}>
-								{remark && remark.msg ? remark.msg : remark}
-							</Text>
+							<Text style={{ fontSize: 16, color: Colors.black }}>{withdraws.remark}</Text>
 						</View>
 
-						{//需要提供字段用来判断修改支付宝账号
-						remark && remark.code == 10001 && (
-							<TouchableOpacity
-								style={{
-									paddingVertical: 15,
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-									borderTopWidth: 1,
-									borderTopColor: Colors.lightBorder
-								}}
-								onPress={() => {
-									navigation.navigate('我的账户', { user: user });
-								}}
-							>
-								<Text style={{ fontSize: 16, color: Colors.grey }}>修改支付账号</Text>
-								<Iconfont name={'right'} size={16} />
-							</TouchableOpacity>
-						)}
+						{
+							//需要提供字段用来判断修改支付宝账号
+							// remark &&
+							// 	remark.code == 10001 && (
+							// 		<TouchableOpacity
+							// 			style={{
+							// 				paddingVertical: 15,
+							// 				flexDirection: 'row',
+							// 				justifyContent: 'space-between',
+							// 				alignItems: 'center',
+							// 				borderTopWidth: 1,
+							// 				borderTopColor: Colors.lightBorder
+							// 			}}
+							// 			onPress={() => {
+							// 				navigation.navigate('我的账户', { user: user });
+							// 			}}
+							// 		>
+							// 			<Text style={{ fontSize: 16, color: Colors.grey }}>修改支付账号</Text>
+							// 			<Iconfont name={'right'} size={16} />
+							// 		</TouchableOpacity>
+							// )
+						}
 					</View>
 				</View>
 			</View>
