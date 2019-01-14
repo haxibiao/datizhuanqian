@@ -125,7 +125,7 @@ class AnswerScreen extends Component {
 																			buttonColor:
 																				question.answer.indexOf(value) > -1
 																					? Colors.weixin
-																					: Colors.red,
+																					: Colors.themeRed,
 																			rightColor: Colors.weixin
 																		});
 																		answerQuestion({

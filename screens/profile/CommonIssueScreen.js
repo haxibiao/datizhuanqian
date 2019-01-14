@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image, ScrollView } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image, ScrollView } from 'react-native';
 
-import Screen from "../Screen";
-import { Colors, Config, Divice } from "../../constants";
-import { DivisionLine, TabTop, ErrorBoundary } from "../../components/Universal";
+import Screen from '../Screen';
+import { Colors, Config, Divice } from '../../constants';
+import { DivisionLine, TabTop, ErrorBoundary } from '../../components/Universal';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class CommonIssueScreen extends Component {
 	constructor(props) {
@@ -32,7 +32,7 @@ class CommonIssueScreen extends Component {
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：提现多久到账？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
-								A：提现会在3个工作日内到账,请及时留意您的支付宝到账信息哦。
+								A：提现会在3-5个工作日内到账,请及时留意您的支付宝到账信息哦。
 							</Text>
 						</View>
 					</View>
@@ -40,7 +40,7 @@ class CommonIssueScreen extends Component {
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：精力点怎么获取？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
-								A：您好，系统默认初始值会有180点精力点，每天0点会重置精力点哦，若您答题时精力点不够，还可以到任务中心领取相关任务，更快的恢复您的精力点。
+								A：您好，系统默认初始值会有180点精力点，每天0点会重置精力点哦。
 							</Text>
 						</View>
 					</View>

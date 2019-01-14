@@ -12,6 +12,6 @@ cd /data/app/datizhuanqian
 
 cd ./android/app/build/outputs/apk/staging
 
-scp app-staging.apk root@datizhuanqian.com:/data/www/datizhuanqian.com/storage/app/public/apks
+scp app-staging.apk root@datizhuanqian.com:/data/www/datizhuanqian.com/storage/app/public/apks/datizhuanqian-staging.apk
 
-echo  -e "${grn}上传完成。。。\n下载地址：https://datizhuanqian.com/storage/apks/app-staging.apk${end}"
+echo  -e "${grn}上传完成。。。\n下载地址：https://datizhuanqian.com/storage/apks/datizhuanqian-staging.apk${end}"

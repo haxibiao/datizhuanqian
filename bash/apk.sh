@@ -10,6 +10,16 @@ cd /data/app/datizhuanqian
 cd ./android
 ./gradlew assembleRelease 
 
+echo "开始上传正式包到cdn ..."
+if [ ! -d /data/www/datizhuanqian.com ]; then
+	echo "datizhuanqian.com的源码 !!"
+	exit
+fi 
+
+cd /data/www/datizhuanqian.com
+git pull
+php artisan upload:cos APK --filePath=/data/app/datizhuanqian/android/app/build/outputs/apk/release/app-release.apk
+
 
 echo "${grn}开始生成内测包 ..."
 cd /data/app/datizhuanqian

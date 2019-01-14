@@ -45,17 +45,17 @@ class EditProfileScreen extends Component {
 							height: 44,
 							paddingHorizontal: 15,
 							padding: 0,
-							paddingTop: 15,
+							paddingVertical: 13,
 							borderTopWidth: 1,
 							borderTopColor: Colors.lightBorder,
 							borderBottomWidth: 1,
-							borderBottomColor: Colors.lightBorder
+							borderBottomColor: Colors.lightBorder,
+							fontSize: 16
 						}}
 						editable={user.real_name ? false : true}
 						placeholder={user.real_name ? user.real_name : '请输入支付宝姓名'}
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
-						multiline={true}
 						autoCapitalize={'none'}
 						onChangeText={real_name => {
 							this.setState({ real_name: real_name });
@@ -67,14 +67,14 @@ class EditProfileScreen extends Component {
 							height: 44,
 							paddingHorizontal: 15,
 							padding: 0,
-							paddingTop: 15,
+							paddingVertical: 13,
 							borderBottomWidth: 1,
-							borderBottomColor: Colors.lightBorder
+							borderBottomColor: Colors.lightBorder,
+							fontSize: 16
 						}}
 						placeholder="请输入支付宝账号"
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
-						multiline={true}
 						autoCapitalize={'none'}
 						onChangeText={pay_account => {
 							this.setState({ pay_account: pay_account });
