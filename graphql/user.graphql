@@ -12,6 +12,7 @@ mutation signUpMutation($account: String!, $password: String!) {
 		pay_account
 		status
 		token
+		pay_info_change_count
 	}
 }
 
@@ -30,6 +31,7 @@ mutation signInMutation($account: String!, $password: String!) {
 		pay_account
 		status
 		token
+		pay_info_change_count
 	}
 }
 
@@ -75,11 +77,14 @@ mutation UpdateUserPasswordMutation($old_password: String!, $new_password: Strin
 query UserQuery($id: Int!) {
 	user(id: $id) {
 		name
+		real_name
 		gold
 		ticket
 		avatar
 		exp
 		next_level_exp
+		pay_account
+		pay_info_change_count
 		available_withdraw_count
 		level {
 			id

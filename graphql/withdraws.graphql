@@ -1,28 +1,11 @@
 #设置提现信息
-mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!) {
-	setUserPaymentInfo(pay_account: $pay_account, real_name: $real_name) {
+mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!, $password: String) {
+	setUserPaymentInfo(pay_account: $pay_account, real_name: $real_name, password: $password) {
 		id
-		account
-		name
 		real_name
-		gender
-		avatar
-		gold
-		ticket
-		level {
-			id
-			name
-			ticket_max
-			level
-		}
 		pay_account
-		status
-		is_old_user
-		is_admin
-		last_login_at
 	}
 }
-
 #智慧点兑换到钱包
 mutation ExchangeCash($gold: Int!) {
 	exchangeCash(gold: $gold)

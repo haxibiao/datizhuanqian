@@ -20,15 +20,14 @@ class EditProfileScreen extends Component {
 		super(props);
 		this.state = {
 			real_name: this.props.user.real_name,
-			pay_account: null
+			pay_account: null,
+			password: ''
 		};
 	}
 
 	render() {
 		let { navigation, user } = this.props;
-		const { real_name, pay_account } = this.state;
-		// const { user } = navigation.state.params;
-		console.log('user', user);
+		const { real_name, pay_account, password } = this.state;
 		return (
 			<Screen header>
 				<Header customStyle={{ borderBottomColor: 'transparent' }} />
@@ -80,6 +79,26 @@ class EditProfileScreen extends Component {
 							this.setState({ pay_account: pay_account });
 						}}
 					/>
+					<TextInput
+						ref="textInput"
+						style={{
+							height: 44,
+							paddingHorizontal: 15,
+							padding: 0,
+							paddingVertical: 13,
+							borderBottomWidth: 1,
+							borderBottomColor: Colors.lightBorder,
+							fontSize: 16
+						}}
+						placeholder="请输入密码"
+						underlineColorAndroid="transparent"
+						selectionColor="#000"
+						autoCapitalize={'none'}
+						secureTextEntry={true}
+						onChangeText={password => {
+							this.setState({ password: password });
+						}}
+					/>
 					<Mutation mutation={SetUserPaymentInfoMutation}>
 						{SetUserPaymentInfoMutation => {
 							return (
@@ -99,7 +118,8 @@ class EditProfileScreen extends Component {
 												await SetUserPaymentInfoMutation({
 													variables: {
 														real_name,
-														pay_account
+														pay_account,
+														password
 													}
 												});
 											} catch (ex) {
@@ -130,7 +150,7 @@ class EditProfileScreen extends Component {
 					</Mutation>
 					<View style={{ paddingHorizontal: 15 }}>
 						<Text style={{ fontSize: 14, color: Colors.themeRed, paddingTop: 15 }}>
-							注意:每个用户最多修改5次支付宝！
+							注意:每个用户最多修改3次支付宝！
 						</Text>
 					</View>
 				</View>

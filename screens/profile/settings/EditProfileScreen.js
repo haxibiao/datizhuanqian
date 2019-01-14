@@ -72,9 +72,10 @@ class EditProfileScreen extends Component {
 	}
 
 	render() {
-		let { navigation } = this.props;
-		let { user, noTicketTips } = this.props;
+		let { navigation, user } = this.props;
+		const { pay_info_change_count } = navigation.state.params.user;
 		const { modalVisible, nickname, avatar } = this.state;
+		console.log('pay_info_change_count user', pay_info_change_count);
 		return (
 			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>
@@ -104,7 +105,7 @@ class EditProfileScreen extends Component {
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => navigation.navigate('我的账户')}
-							// disabled={user.pay_account ? true : false}
+							disabled={pay_info_change_count == -1 ? true : false}
 						>
 							<SettingItem
 								itemName="支付宝账号"
