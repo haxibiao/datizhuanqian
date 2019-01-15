@@ -105,9 +105,9 @@ class RetrievePasswordScreen extends Component {
 										handler={async () => {
 											if (result[0] == verification) {
 												if (password == againpassword) {
-													let result = {};
+													let errors = {};
 													try {
-														result = await ResetPasswordMutation({
+														errors = await ResetPasswordMutation({
 															variables: {
 																account: account,
 																password: password,
@@ -115,10 +115,10 @@ class RetrievePasswordScreen extends Component {
 															}
 														});
 													} catch (ex) {
-														result.errors = ex;
+														errors.error = ex;
 													}
-													if (result && result.errors) {
-														let str = result.errors
+													if (errors && errors.error) {
+														let str = errors.error
 															.toString()
 															.replace(/Error: GraphQL error: /, '');
 														Methods.toast(str, -100); //打印错误信息

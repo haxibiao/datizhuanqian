@@ -1,29 +1,31 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 
-import Screen from "../Screen";
+import Screen from '../Screen';
 
-import { Button } from "../../components/Control";
+import { Button } from '../../components/Control';
 
-import { Colors, Methods } from "../../constants";
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import { Colors, Methods } from '../../constants';
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
-import { ForgotPasswordMutation } from "../../graphql/user.graphql";
-import { Mutation, compose } from "react-apollo";
+import { ForgotPasswordMutation } from '../../graphql/user.graphql';
+import { Mutation, compose } from 'react-apollo';
 
 class VerificationEmailScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			account: ""
+			account: '',
+			isOnpress: true,
+			second: 5000,
+			buttonColor: Colors.theme
 		};
 	}
 
 	render() {
 		const { navigation } = this.props;
-		let { account } = this.state;
-		console.log("account ", account);
+		let { account, isOnpress, second, buttonColor } = this.state;
 
 		return (
 			<Screen>
@@ -48,6 +50,7 @@ class VerificationEmailScreen extends Component {
 									<Button
 										name="发送验证码"
 										handler={async () => {
+											this.setState({ isOnpress: false });
 											let result = {};
 											try {
 												result = await ForgotPasswordMutation({
@@ -59,16 +62,21 @@ class VerificationEmailScreen extends Component {
 												result.errors = error;
 											}
 											if (result && result.errors) {
-												Methods.toast("请输入正确的内容", -200);
+												Methods.toast('请输入正确的内容', -200);
 											} else {
-												navigation.navigate("找回密码", {
+												navigation.navigate('找回密码', {
 													result: result.data.forgotPassword,
 													account: account
 												});
 											}
+											setTimeout(() => {
+												this.setState({ isOnpress: true });
+											}, second);
 										}}
+										theme={buttonColor}
 										style={{ height: 38, fontSize: 16 }}
-										disabled={account ? false : true}
+										disabled={account && isOnpress ? false : true}
+										disabledColor={Colors.tintGray}
 									/>
 								);
 							}}
