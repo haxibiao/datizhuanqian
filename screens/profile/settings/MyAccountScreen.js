@@ -107,7 +107,7 @@ class EditProfileScreen extends Component {
 								<Button
 									name={'提交'}
 									style={{ height: 40, marginHorizontal: 15, marginTop: 20 }}
-									disabled={!(real_name && pay_account)}
+									disabled={!(real_name && pay_account && password)}
 									theme={real_name && pay_account ? Colors.theme : 'rgba(64,127,207,0.7)'}
 									handler={async () => {
 										const phoneReg = /^1[3-9]\d{9}$/;
