@@ -13,7 +13,7 @@ mutation ExchangeCash($gold: Int!) {
 
 #提交提现  兼容版本
 mutation CreateWithdrawMutation($amount: Float!) {
-	createWithdrawal(amount: $amount, version: "1.1.1")
+	createWithdrawal(amount: $amount)
 }
 
 #新提现日志
