@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from "react-native";
-import Toast from "react-native-root-toast";
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import Toast from 'react-native-root-toast';
 
-import Screen from "../Screen";
+import Screen from '../Screen';
 
-import { Button } from "../../components/Control";
+import { Button } from '../../components/Control';
 
-import { Colors, Methods } from "../../constants";
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import { Colors, Methods } from '../../constants';
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
-import { ResetPasswordMutation } from "../../graphql/user.graphql";
-import { Mutation } from "react-apollo";
+import { ResetPasswordMutation } from '../../graphql/user.graphql';
+import { Mutation } from 'react-apollo';
 
 class RetrievePasswordScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			verification: "",
-			password: "",
+			verification: '',
+			password: '',
 			disabled: true,
-			againpassword: ""
+			againpassword: ''
 		};
 	}
 
@@ -28,7 +28,7 @@ class RetrievePasswordScreen extends Component {
 		const { navigation } = this.props;
 		let { verification, password, disabled, againpassword } = this.state;
 		const { result, account } = navigation.state.params;
-		console.log("result ", result);
+		console.log('result ', result);
 		return (
 			<Screen>
 				<View style={styles.container}>
@@ -102,23 +102,35 @@ class RetrievePasswordScreen extends Component {
 								return (
 									<Button
 										name="完成"
-										handler={() => {
+										handler={async () => {
 											if (result[0] == verification) {
 												if (password == againpassword) {
-													ResetPasswordMutation({
-														variables: {
-															account: account,
-															password: password,
-															token: result[1]
-														}
-													});
-													Methods.toast("新密码设置成功");
-													navigation.pop(2);
+													let result = {};
+													try {
+														result = await ResetPasswordMutation({
+															variables: {
+																account: account,
+																password: password,
+																token: result[1]
+															}
+														});
+													} catch (ex) {
+														result.errors = ex;
+													}
+													if (result && result.errors) {
+														let str = result.errors
+															.toString()
+															.replace(/Error: GraphQL error: /, '');
+														Methods.toast(str, -100); //打印错误信息
+													} else {
+														Methods.toast('新密码设置成功');
+														navigation.pop(2);
+													}
 												} else {
-													Methods.toast("两次输入的密码不一致");
+													Methods.toast('两次输入的密码不一致');
 												}
 											} else {
-												Methods.toast("验证码错误,请输入正确的验证码");
+												Methods.toast('验证码错误,请输入正确的验证码');
 											}
 										}}
 										style={{ height: 38, fontSize: 16 }}
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder,
-		position: "relative"
+		position: 'relative'
 	},
 	textInput: {
 		fontSize: 16,
@@ -166,9 +178,9 @@ const styles = StyleSheet.create({
 		height: 50
 	},
 	repeat: {
-		position: "absolute",
-		justifyContent: "center",
-		alignItems: "center",
+		position: 'absolute',
+		justifyContent: 'center',
+		alignItems: 'center',
 		right: 15,
 		top: 7
 	}
