@@ -62,7 +62,7 @@ class HomeScreen extends Component {
 	//判断余额
 	_checkBalance(user, amount, wallet) {
 		let { exchangeRate, clickControl } = this.state;
-		if (!(user.gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
+		if (!(user.gold / exchangeRate > amount || (wallet && wallet.available_balance >= amount))) {
 			this.WithdrawsTipsModalVisible();
 			this.setState({
 				clickControl: false
