@@ -1,5 +1,4 @@
 #任务列表查询
-
 query TasksQuery($type: Int!, $offset: Int, $limit: Int) {
 	tasks(type: $type, offset: $offset, limit: $limit) {
 		id

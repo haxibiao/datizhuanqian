@@ -40,8 +40,7 @@ class WithdrawsLogScreen extends Component {
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
-						if (!(data && data.withdraws)) return null;
-						if (data.withdraws.length < 1)
+						if (!(data && data.withdraws))
 							return <BlankContent text={'暂无提现记录哦,快去赚取智慧点吧~'} fontSize={14} />;
 						return (
 							<FlatList

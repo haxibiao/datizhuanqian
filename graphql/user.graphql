@@ -83,6 +83,7 @@ query UserQuery($id: Int!) {
 		avatar
 		exp
 		next_level_exp
+		transaction_sum_amount
 		pay_account
 		pay_info_change_count
 		available_withdraw_count

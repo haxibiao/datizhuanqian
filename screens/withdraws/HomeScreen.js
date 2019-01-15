@@ -55,12 +55,12 @@ class HomeScreen extends Component {
 				withdrawTips: '今日提现次数已达上限~'
 			});
 		} else {
-			this._judgeBalance(user, amount, wallet);
+			this._checkBalance(user, amount, wallet);
 		}
 	}
 
 	//判断余额
-	_judgeBalance(user, amount, wallet) {
+	_checkBalance(user, amount, wallet) {
 		let { exchangeRate, clickControl } = this.state;
 		if (!(user.gold / exchangeRate > amount || (wallet && wallet.available_balance > amount))) {
 			this.WithdrawsTipsModalVisible();
