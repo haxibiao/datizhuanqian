@@ -46,10 +46,10 @@ class WithdrawApplyScreen extends Component {
 						</Text>
 					</View>
 					<Button
-						name={'继续答题赚钱'}
+						name={'确定'}
 						style={{ height: 38, borderRadius: 19, marginTop: 40, width: width - 60 }}
 						handler={() => {
-							this.props.navigation.navigate('主页');
+							this.props.navigation.goBack();
 						}}
 						theme={Colors.themeRed}
 						fontSize={14}
