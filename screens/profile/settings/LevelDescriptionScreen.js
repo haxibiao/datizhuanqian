@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image } from 'react-native';
 
-import Screen from "../../Screen";
-import { Colors, Config, Divice } from "../../../constants";
+import Screen from '../../Screen';
+import { Colors, Config, Divice } from '../../../constants';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class LevelDescriptionScreen extends Component {
 	constructor(props) {
@@ -34,56 +34,56 @@ class LevelDescriptionScreen extends Component {
 							</Text>
 						</View>
 					</View>
-					<View style={{ alignItems: "center", marginTop: 10, paddingHorizontal: 20 }}>
-						<View style={{ flexDirection: "row" }}>
+					<View style={{ alignItems: 'center', marginTop: 10, paddingHorizontal: 20 }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>等级</Text>
 							<Text style={styles.text}>头衔</Text>
 							<Text style={styles.text}>经验值</Text>
 							<Text style={styles.text}>精力点上限</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>8</Text>
 							<Text style={styles.text}>仁者无敌</Text>
 							<Text style={styles.text}>10000</Text>
-							<Text style={styles.text}>600</Text>
+							<Text style={styles.text}>350</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>7</Text>
 							<Text style={styles.text}>仁人名师</Text>
 							<Text style={styles.text}>5000</Text>
-							<Text style={styles.text}>440</Text>
+							<Text style={styles.text}>320</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>6</Text>
 							<Text style={styles.text}>为师有道</Text>
 							<Text style={styles.text}>2000</Text>
-							<Text style={styles.text}>360</Text>
+							<Text style={styles.text}>300</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>5</Text>
 							<Text style={styles.text}>学长师友</Text>
 							<Text style={styles.text}>1000</Text>
-							<Text style={styles.text}>300</Text>
+							<Text style={styles.text}>280</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>4</Text>
 							<Text style={styles.text}>有学而志</Text>
 							<Text style={styles.text}>500</Text>
 							<Text style={styles.text}>250</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>3</Text>
 							<Text style={styles.text}>游学四方</Text>
 							<Text style={styles.text}>200</Text>
 							<Text style={styles.text}>220</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>2</Text>
 							<Text style={styles.text}>小有所成</Text>
 							<Text style={styles.text}>50</Text>
 							<Text style={styles.text}>200</Text>
 						</View>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: 'row' }}>
 							<Text style={styles.text}>1</Text>
 							<Text style={styles.text}>初来乍到</Text>
 							<Text style={styles.text}>0</Text>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: Colors.lightBorder,
 		width: (width - 40) / 4,
-		textAlign: "center",
+		textAlign: 'center',
 		paddingVertical: 10,
 		fontSize: 13
 	}
