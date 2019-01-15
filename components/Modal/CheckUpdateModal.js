@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from "react-native";
-import BasicModal from "./BasicModal";
-import { Iconfont } from "../../utils/Fonts";
-import Colors from "../../constants/Colors";
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
+import BasicModal from './BasicModal';
+import { Iconfont } from '../../utils/Fonts';
+import Colors from '../../constants/Colors';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class CheckUpdateModal extends Component {
 	render() {
-		const { visible, handleVisible, confirm, title = "提示", tips, openUrl, cancel } = this.props;
+		const { visible, handleVisible, confirm, title = '提示', tips, openUrl, cancel } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -21,8 +21,8 @@ class CheckUpdateModal extends Component {
 					padding: 0
 				}}
 			>
-				<View style={{ alignItems: "center" }}>
-					<View style={{ height: 80, justifyContent: "center" }}>
+				<View style={{ alignItems: 'center' }}>
+					<View style={{ height: 80, justifyContent: 'center' }}>
 						<Text style={styles.modalRemindContent}>{tips}</Text>
 					</View>
 
@@ -30,10 +30,7 @@ class CheckUpdateModal extends Component {
 						<TouchableOpacity style={styles.operation} onPress={cancel}>
 							<Text style={styles.operationText}>取消</Text>
 						</TouchableOpacity>
-						<TouchableOpacity
-							style={[styles.operation, { borderLeftWidth: 1, borderLeftColor: Colors.tintGray }]}
-							onPress={confirm}
-						>
+						<TouchableOpacity style={[styles.operation]} onPress={confirm}>
 							<Text style={[styles.operationText, { color: Colors.theme }]}>立即更新</Text>
 						</TouchableOpacity>
 					</View>
@@ -46,31 +43,31 @@ class CheckUpdateModal extends Component {
 const styles = StyleSheet.create({
 	modalHeader: {
 		fontSize: 20,
-		fontWeight: "500",
+		fontWeight: '500',
 		color: Colors.primaryFont
 	},
 	modalRemindContent: {
 		fontSize: 16,
 		color: Colors.black,
 		paddingHorizontal: 15,
-		textAlign: "center",
+		textAlign: 'center',
 		lineHeight: 20
 	},
 	modalFooter: {
 		borderTopWidth: 1,
 		borderTopColor: Colors.tintGray,
-		flexDirection: "row"
+		flexDirection: 'row'
 	},
 	operation: {
 		paddingVertical: 15,
 		flex: 1,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	operationText: {
 		fontSize: 15,
-		fontWeight: "400",
+		fontWeight: '400',
 		color: Colors.primaryFont
 	}
 });
