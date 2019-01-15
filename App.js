@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   appLaunch: {
     width,
-    height,
+    height:StatusBar.currentHeight > 35 ? height + StatusBar.currentHeight : height,,
     position: 'absolute',
     top: 0,
     left: 0,

@@ -101,7 +101,7 @@ class WithdrawsLogScreen extends Component {
 		const { navigation } = this.props;
 		const { user } = navigation.state.params;
 		return (
-			<Query query={UserWithdrawQuery} variables={{ id: user.id }}>
+			<Query query={UserWithdrawQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 				{({ data, error, loading, refetch, fetchMore }) => {
 					if (error) return null;
 					if (!(data && data.user)) return null;

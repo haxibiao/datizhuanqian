@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, Animated } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	TouchableOpacity,
+	Text,
+	FlatList,
+	Image,
+	Dimensions,
+	Animated,
+	StatusBar
+} from 'react-native';
 import { Header } from '../../components/Header';
 import { Button } from '../../components/Control';
 import { Colors, Config, Divice } from '../../constants';
@@ -21,6 +31,9 @@ class AppIntro extends Component {
 	render() {
 		let { fadeAnim, bgc } = this.state;
 		let { navigation, showHome, introImages, actions, loading } = this.props;
+		console.log('height', height);
+		console.log('width', width);
+		console.log('StatusBar.currentHeight', StatusBar.currentHeight);
 		return (
 			<View style={[styles.appLaunch, { backgroundColor: bgc }]}>
 				{loading ? (
@@ -57,7 +70,7 @@ class AppIntro extends Component {
 						style={{
 							flex: 1,
 							position: 'absolute',
-							height,
+							height: StatusBar.currentHeight > 35 ? height + StatusBar.currentHeight : height,
 							width,
 							top: 0,
 							left: 0,
@@ -121,7 +134,7 @@ const styles = StyleSheet.create({
 	appLaunch: {
 		flex: 1,
 		width,
-		height,
+		height: StatusBar.currentHeight > 35 ? height + StatusBar.currentHeight : height,
 		position: 'absolute',
 		top: 0,
 		left: 0,
@@ -137,7 +150,7 @@ const styles = StyleSheet.create({
 	},
 	img: {
 		width,
-		height: height,
+		height: StatusBar.currentHeight > 35 ? height + StatusBar.currentHeight : height,
 		resizeMode: 'cover'
 	},
 	button: {
