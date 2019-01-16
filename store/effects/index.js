@@ -1,5 +1,5 @@
-import types from "../types";
-import { rememberUser, forgetUser } from "./StorageActions";
+import types from '../types';
+import { rememberUser, forgetUser, rememberVersion, rememberUserCache, rememberCategoryCache } from './StorageActions';
 
 function genericErrorHandler({ action, dispatch, error }) {
 	console.log({ error, action });
@@ -40,6 +40,21 @@ export default [
 	{
 		action: types.CANCEL_UPDATE,
 		effect: rememberUser,
+		error: genericErrorHandler
+	},
+	{
+		action: types.UPDATE_VERSION,
+		effect: rememberVersion,
+		error: genericErrorHandler
+	},
+	{
+		action: types.USER_CACHE,
+		effect: rememberUserCache,
+		error: genericErrorHandler
+	},
+	{
+		action: types.CATEGORY_CACHE,
+		effect: rememberCategoryCache,
 		error: genericErrorHandler
 	}
 ];

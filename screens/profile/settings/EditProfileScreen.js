@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar } from "react-native";
-import Toast from "react-native-root-toast";
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import Toast from 'react-native-root-toast';
 
-import Screen from "../../Screen";
-import SettingItem from "./SettingItem";
+import Screen from '../../Screen';
+import SettingItem from './SettingItem';
 
-import { Header } from "../../../components/Header";
-import { DivisionLine, Avatar } from "../../../components/Universal";
-import { ModifyNameModal } from "../../../components/Modal";
-import { Iconfont } from "../../../utils/Fonts";
+import { Header } from '../../../components/Header';
+import { DivisionLine, Avatar } from '../../../components/Universal';
+import { ModifyNameModal } from '../../../components/Modal';
+import { Iconfont } from '../../../utils/Fonts';
 
-import Colors from "../../../constants/Colors";
-import Config from "../../../constants/Config";
+import Colors from '../../../constants/Colors';
+import Config from '../../../constants/Config';
 
-import { connect } from "react-redux";
-import actions from "../../../store/actions";
-import { updateUserNameMutation, updateUserAvatarMutation, UserQuery } from "../../../graphql/user.graphql";
-import { Mutation, compose, graphql } from "react-apollo";
+import { connect } from 'react-redux';
+import actions from '../../../store/actions';
+import { updateUserNameMutation, updateUserAvatarMutation, UserQuery } from '../../../graphql/user.graphql';
+import { Mutation, compose, graphql } from 'react-apollo';
 
-import ImagePicker from "react-native-image-crop-picker";
+import ImagePicker from 'react-native-image-crop-picker';
 
 class EditProfileScreen extends Component {
 	constructor(props) {
@@ -26,8 +26,8 @@ class EditProfileScreen extends Component {
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
 		this.state = {
 			modalVisible: false,
-			nickname: "",
-			avatar: ""
+			nickname: '',
+			avatar: ''
 		};
 	}
 
@@ -57,10 +57,10 @@ class EditProfileScreen extends Component {
 					result.errors = ex;
 				}
 				if (result && result.errors) {
-					Methods.toast("上传头像失败，请检查您的网络");
+					Methods.toast('上传头像失败，请检查您的网络');
 				} else {
 					const { avatar } = result.data.updateUserAvatar;
-					this.props.dispatch(actions.updateAvatar(avatar + "?t=" + Date.now()));
+					this.props.dispatch(actions.updateAvatar(avatar + '?t=' + Date.now()));
 				}
 			})
 			.catch(error => {});
@@ -72,20 +72,20 @@ class EditProfileScreen extends Component {
 	}
 
 	render() {
-		let { navigation } = this.props;
-		let { user, noTicketTips } = this.props;
+		let { navigation, user } = this.props;
+		const { pay_info_change_count } = navigation.state.params.user;
 		const { modalVisible, nickname, avatar } = this.state;
 		return (
-			<Screen customStyle={{ borderBottomColor: "transparent" }}>
+			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
 						<DivisionLine height={10} />
 						<TouchableOpacity
 							style={{
 								marginHorizontal: 15,
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
+								flexDirection: 'row',
+								alignItems: 'center',
+								justifyContent: 'space-between',
 								height: 80,
 								borderBottomWidth: 1,
 								borderBottomColor: Colors.lightBorder
@@ -103,21 +103,21 @@ class EditProfileScreen extends Component {
 							<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
 						</TouchableOpacity>
 						<TouchableOpacity
-							onPress={() => navigation.navigate("我的账户")}
-							disabled={user.pay_account ? true : false}
+							onPress={() => navigation.navigate('我的账户')}
+							disabled={pay_info_change_count == -1 ? true : false}
 						>
 							<SettingItem
 								itemName="支付宝账号"
 								rightSize={15}
 								rightContent={
-									user.pay_account ? user.pay_account + "(" + user.real_name + ")" : "绑定支付宝"
+									user.pay_account ? user.pay_account + '(' + user.real_name + ')' : '绑定支付宝'
 								}
 							/>
 						</TouchableOpacity>
 
 						<TouchableOpacity
 							onPress={() => {
-								navigation.navigate("重置密码");
+								navigation.navigate('重置密码');
 							}}
 						>
 							<SettingItem itemName="重置密码" rightSize={15} />
@@ -174,5 +174,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => ({ user: store.users.user }))(
-	compose(graphql(updateUserAvatarMutation, { name: "updateUserAvatarMutation" }))(EditProfileScreen)
+	compose(graphql(updateUserAvatarMutation, { name: 'updateUserAvatarMutation' }))(EditProfileScreen)
 );

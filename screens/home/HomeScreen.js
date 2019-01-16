@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
 	StyleSheet,
@@ -10,25 +10,32 @@ import {
 	RefreshControl,
 	Linking,
 	BackHandler
-} from "react-native";
+} from 'react-native';
 
-import { Header } from "../../components/Header";
-import { CheckUpdateModal, UpdateTipsModal } from "../../components/Modal";
-import { DivisionLine, TabTop, LoadingMore, ContentEnd, LoadingError, Banner } from "../../components/Universal";
-import { Colors, Config, Divice, Methods } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import { Header } from '../../components/Header';
+import { CheckUpdateModal, UpdateTipsModal } from '../../components/Modal';
+import {
+	DivisionLine,
+	TabTop,
+	LoadingMore,
+	ContentEnd,
+	LoadingError,
+	Banner,
+	Loading
+} from '../../components/Universal';
+import { Colors, Config, Divice, Methods } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
-import PlateItem from "./PlateItem";
+import Screen from '../Screen';
+import PlateItem from './PlateItem';
+import CategoryCache from './CategoryCache';
 
-import { connect } from "react-redux";
-import actions from "../../store/actions";
-import { CategoriesQuery, QuestionQuery } from "../../graphql/question.graphql";
-import { Query, withApollo } from "react-apollo";
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
+import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
+import { Query, withApollo } from 'react-apollo';
 
-import { Storage, ItemKeys } from "../../store/localStorage";
-
-import codePush from "react-native-code-push";
+import codePush from 'react-native-code-push';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -40,12 +47,13 @@ class HomeScreen extends Component {
 			updateVisible: false,
 			mustUpdateVisible: false,
 			isMust: false,
-			versionInfo: null
+			versionInfo: null,
+			categoryCache: ''
 		};
 	}
 
 	componentDidMount() {
-		const { navigation, login, isUpdate } = this.props;
+		const { navigation, login, isUpdate, client, dispatch } = this.props;
 
 		let auto = true;
 		this.timer = setTimeout(() => {
@@ -58,8 +66,7 @@ class HomeScreen extends Component {
 			);
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
-
-		this.didFocusSubscription = navigation.addListener("didFocus", payload => {
+		this.didFocusSubscription = navigation.addListener('didFocus', payload => {
 			let { users, client, dispatch, login } = this.props;
 			if (login) {
 				client
@@ -73,19 +80,32 @@ class HomeScreen extends Component {
 						console.log(data);
 					})
 					.catch(error => {
-						let info = error.toString().indexOf("登录");
+						let info = error.toString().indexOf('登录');
 						if (info > -1) {
 							this.props.dispatch(actions.signOut());
-							Methods.toast("您的身份信息已过期,请重新登录", -90);
+							Methods.toast('您的身份信息已过期,请重新登录', -90);
 						}
 					});
+				console.log('home client', client);
 			}
 		});
+
+		client
+			.query({
+				query: CategoriesQuery
+			})
+			.then(({ data }) => {
+				console.log('data CategoriesQuery', data);
+				this.props.dispatch(actions.categoryCache(data.categories));
+			})
+			.catch(error => {});
+
 		//当有用户seesion 过期时 ,清空redux 强制登录。
 	}
 
 	componentWillUnmount() {
 		this.didFocusSubscription.remove();
+		this.timer && clearTimeout(this.timer);
 	}
 
 	handleUpdateModalVisible() {
@@ -101,7 +121,7 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log("uri", url);
+		console.log('uri', url);
 		Linking.openURL(url);
 	}
 
@@ -117,14 +137,15 @@ class HomeScreen extends Component {
 	}*/
 
 	render() {
-		const { plate, navigation, user, nextPlate, login } = this.props;
+		const { navigation, user, nextPlate, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
+
 		return (
 			<Screen header>
 				<Header
 					leftComponent={<Text />}
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-					routeName={"答题赚钱"}
+					routeName={'答题赚钱'}
 					// rightComponent={
 					// 	<TouchableOpacity
 					// 		onPress={() => {
@@ -137,67 +158,83 @@ class HomeScreen extends Component {
 				/>
 
 				<View style={styles.container}>
-					<TabTop />
 					<Query query={CategoriesQuery}>
 						{({ data, error, loading, refetch, fetchMore }) => {
-							if (error) return <LoadingError reload={() => refetch()} />;
+							if (error)
+								return (
+									<CategoryCache
+										navigation={navigation}
+										login={login}
+										refetch={() => {
+											refetch();
+										}}
+									/>
+								);
+							if (loading) return <Loading />;
 							if (!(data && data.categories)) return null;
+
 							return (
-								<FlatList
-									data={data.categories}
-									refreshControl={
-										<RefreshControl
-											refreshing={loading}
-											onRefresh={refetch}
-											colors={[Colors.theme]}
-										/>
-									}
-									keyExtractor={(item, index) => index.toString()}
-									renderItem={({ item, index }) => (
-										<PlateItem plate={item} navigation={navigation} login={login} />
-									)}
-									ListHeaderComponent={() => {
-										return <Banner />;
-									}}
-									onEndReachedThreshold={0.3}
-									onEndReached={() => {
-										if (data.categories) {
-											fetchMore({
-												variables: {
-													offset: data.categories.length
-												},
-												updateQuery: (prev, { fetchMoreResult }) => {
-													if (
-														!(
-															fetchMoreResult &&
-															fetchMoreResult.categories &&
-															fetchMoreResult.categories.length > 0
-														)
-													) {
-														this.setState({
-															fetchingMore: false
-														});
-														return prev;
-													}
-													return Object.assign({}, prev, {
-														categories: [...prev.categories, ...fetchMoreResult.categories]
-													});
-												}
-											});
-										} else {
-											this.setState({
-												fetchingMore: false
-											});
+								<View style={{ flex: 1 }}>
+									<TabTop />
+									<FlatList
+										data={data.categories}
+										refreshControl={
+											<RefreshControl
+												refreshing={loading}
+												onRefresh={refetch}
+												colors={[Colors.theme]}
+											/>
 										}
-									}}
-									ListFooterComponent={() => {
-										return this.state.fetchingMore ? (
-											<LoadingMore />
-										) : (
-											<ContentEnd content={"暂时没有更多分类~"} />
-										);
-									}}
-								/>
+										keyExtractor={(item, index) => index.toString()}
+										renderItem={({ item, index }) => (
+											<PlateItem category={item} navigation={navigation} login={login} />
+										)}
+										ListHeaderComponent={() => {
+											return <Banner />;
+										}}
+										onEndReachedThreshold={0.3}
+										onEndReached={() => {
+											if (data.categories) {
+												fetchMore({
+													variables: {
+														offset: data.categories.length
+													},
+													updateQuery: (prev, { fetchMoreResult }) => {
+														if (
+															!(
+																fetchMoreResult &&
+																fetchMoreResult.categories &&
+																fetchMoreResult.categories.length > 0
+															)
+														) {
+															this.setState({
+																fetchingMore: false
+															});
+															return prev;
+														}
+														return Object.assign({}, prev, {
+															categories: [
+																...prev.categories,
+																...fetchMoreResult.categories
+															]
+														});
+													}
+												});
+											} else {
+												this.setState({
+													fetchingMore: false
+												});
+											}
+										}}
+										ListFooterComponent={() => {
+											return this.state.fetchingMore ? (
+												<LoadingMore />
+											) : (
+												<ContentEnd content={'暂时没有更多分类~'} />
+											);
+										}}
+									/>
+								</View>
 							);
 						}}
 					</Query>
@@ -206,21 +243,21 @@ class HomeScreen extends Component {
 					visible={updateVisible}
 					cancel={() => {
 						this.handleUpdateModalVisible();
-						this.props.dispatch(actions.cancelUpdate(false));
+						this.props.dispatch(actions.cancelUpdate(true));
 					}}
 					handleVisible={this.handleUpdateModalVisible}
-					tips={"发现新版本"}
+					tips={'发现新版本'}
 					confirm={() => {
 						this.handleUpdateModalVisible();
-						this.openUrl("https://datizhuanqian.com/");
+						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
 					}}
 				/>
 				<UpdateTipsModal
 					visible={mustUpdateVisible}
 					openUrl={() => {
-						this.openUrl("https://datizhuanqian.com/");
+						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
 					}}
-					tips={"发现新版本"}
+					tips={'发现新版本'}
 				/>
 			</Screen>
 		);
@@ -236,7 +273,6 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return {
-		plate: store.question.plate,
 		user: store.users.user,
 		login: store.users.login,
 		isUpdate: store.users.isUpdate

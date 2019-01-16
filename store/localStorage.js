@@ -1,8 +1,11 @@
-import { AsyncStorage } from "react-native";
+import { AsyncStorage } from 'react-native';
 
 export const ItemKeys = {
-  user: "user",
-  isUpdate: "isUpdate"
+  user: 'user',
+  isUpdate: 'isUpdate',
+  version: '1.1.0',
+  userCache: 'userCache',
+  categoryCache: 'categoryCache'
 };
 
 async function removeItem(key) {

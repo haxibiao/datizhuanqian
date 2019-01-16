@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from "react-native";
-import Toast from "react-native-root-toast";
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import Toast from 'react-native-root-toast';
 
-import Screen from "../../Screen";
+import Screen from '../../Screen';
 
-import { Button } from "../../../components/Control";
+import { Button } from '../../../components/Control';
 
-import { Colors, Methods } from "../../../constants";
-import { connect } from "react-redux";
-import actions from "../../../store/actions";
+import { Colors, Methods } from '../../../constants';
+import { connect } from 'react-redux';
+import actions from '../../../store/actions';
 
-import { UpdateUserPasswordMutation } from "../../../graphql/user.graphql";
-import { Mutation } from "react-apollo";
+import { UpdateUserPasswordMutation } from '../../../graphql/user.graphql';
+import { Mutation } from 'react-apollo';
 
 class ChangePasswordScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			oldPassword: "",
-			password: "",
+			oldPassword: '',
+			password: '',
 			disabled: true,
-			againpassword: ""
+			againpassword: ''
 		};
 	}
 
 	render() {
 		const { navigation } = this.props;
 		let { oldPassword, password, disabled, againpassword } = this.state;
-		console.log("old", oldPassword, password);
+		console.log('old', oldPassword, password);
 		return (
 			<Screen>
 				<View style={styles.container}>
@@ -89,21 +89,33 @@ class ChangePasswordScreen extends Component {
 								return (
 									<Button
 										name="完成"
-										handler={() => {
-											if (password.indexOf(" ") >= 0) {
-												Methods.toast("密码格式错误", 70);
+										handler={async () => {
+											if (password.indexOf(' ') >= 0) {
+												Methods.toast('密码格式错误', 70);
 											} else {
+												let result = {};
 												if (password == againpassword) {
-													updateUserPassword({
-														variables: {
-															old_password: oldPassword,
-															new_password: password
-														}
-													});
-													Methods.toast("新密码设置成功");
-													navigation.goBack();
+													try {
+														result = await updateUserPassword({
+															variables: {
+																old_password: oldPassword,
+																new_password: password
+															}
+														});
+													} catch (ex) {
+														result.errors = ex;
+													}
+													if (result && result.errors) {
+														let str = result.errors
+															.toString()
+															.replace(/Error: GraphQL error: /, '');
+														Methods.toast(str, -100); //打印错误信息
+													} else {
+														Methods.toast('新密码设置成功');
+														navigation.goBack();
+													}
 												} else {
-													Methods.toast("两次输入的密码不一致");
+													Methods.toast('两次输入的密码不一致');
 												}
 											}
 										}}
@@ -113,7 +125,7 @@ class ChangePasswordScreen extends Component {
 												? false
 												: true
 										}
-										disabledColor={"rgba(255,177,0,0.7)"}
+										disabledColor={'rgba(255,177,0,0.7)'}
 									/>
 								);
 							}}
@@ -134,7 +146,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder,
-		position: "relative"
+		position: 'relative'
 	},
 	textInput: {
 		fontSize: 16,
@@ -143,9 +155,9 @@ const styles = StyleSheet.create({
 		height: 50
 	},
 	repeat: {
-		position: "absolute",
-		justifyContent: "center",
-		alignItems: "center",
+		position: 'absolute',
+		justifyContent: 'center',
+		alignItems: 'center',
 		right: 15,
 		top: 7
 	}

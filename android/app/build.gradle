@@ -6,14 +6,23 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js",
     devDisabledInStaging: true,
+    devDisabledInXiaomi: true,
+    devDisabledInBaidu: true,
     bundleInStaging: true,
+    bundleInXiaomi: true,
+    bundleInBaidu: true,
 ]
+
+//要为每个应用商店生成带有不同的.env内容的APK
 
 project.ext.envConfigFiles = [
     debug: ".env",
     release: ".env.prod",
     staging: ".env.staging",
+    xiaomi: ".env.xiaomi",
+    baidu: ".env.baidu",
 ]
+
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: "../../node_modules/react-native/react.gradle"
@@ -44,7 +53,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.1.0"
+        versionName "1.2.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -75,10 +84,24 @@ android {
             initWith release
             applicationIdSuffix '.staging'
             matchingFallbacks = ['release']
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+        }
+        xiaomi {
+            initWith release
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+        baidu {
+            initWith release
+            matchingFallbacks = ['release']
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release 
-            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
@@ -86,6 +109,7 @@ android {
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
+
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->

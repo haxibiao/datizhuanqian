@@ -1,31 +1,30 @@
-import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, Linking } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, Linking } from 'react-native';
 
-import Screen from "../../Screen";
-import { Colors, Methods, Config } from "../../../constants";
-import { Iconfont } from "../../../utils/Fonts";
+import Screen from '../../Screen';
+import { Colors, Methods, Config } from '../../../constants';
+import { Iconfont } from '../../../utils/Fonts';
 
-import { Header } from "../../../components/Header";
-import { Avatar, DivisionLine } from "../../../components/Universal";
-import { SignOutModal, CheckUpdateModal } from "../../../components/Modal";
-import SettingItem from "./SettingItem";
-import { NavigationActions } from "react-navigation";
+import { Header } from '../../../components/Header';
+import { Avatar, DivisionLine } from '../../../components/Universal';
+import { SignOutModal, CheckUpdateModal } from '../../../components/Modal';
+import SettingItem from './SettingItem';
+import SeetingPageUser from '../user/SeetingPageUser';
 
-import { UserQuery } from "../../../graphql/user.graphql";
-import { Query, ApolloClient, withApollo } from "react-apollo";
+import { NavigationActions } from 'react-navigation';
 
-import { connect } from "react-redux";
-import actions from "../../../store/actions";
-import { Storage } from "../../../store/localStorage";
+import { connect } from 'react-redux';
+import actions from '../../../store/actions';
+import { Storage } from '../../../store/localStorage';
 
-import codePush from "react-native-code-push";
+import codePush from 'react-native-code-push';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 const navigateAction = NavigationActions.navigate({
-	routeName: "主页",
+	routeName: '主页',
 	params: { resetStore: () => this.props.client.resetStore() },
-	action: NavigationActions.navigate({ routeName: "我的" })
+	action: NavigationActions.navigate({ routeName: '我的' })
 });
 
 class HomeScreen extends Component {
@@ -38,7 +37,7 @@ class HomeScreen extends Component {
 			promotModalVisible: false,
 			fontModalVisible: false,
 			checkedWordSize: 1,
-			storageSize: "1MB"
+			storageSize: '1MB'
 		};
 	}
 
@@ -53,86 +52,24 @@ class HomeScreen extends Component {
 		} = this.state;
 		const { navigation, users, client } = this.props;
 		const { login } = users;
-		console.log("login", login);
 		const { id } = users.user;
 		return (
-			<Screen customStyle={{ borderBottomColor: "transparent" }}>
+			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
-						{login ? (
-							<Query query={UserQuery} variables={{ id: id }}>
-								{({ data, loading, error }) => {
-									if (error) return null;
-									if (!(data && data.user)) return null;
-									let user = data.user;
-									let avatar = user.avatar + "?t=" + Date.now();
-									return (
-										<View>
-											<TouchableOpacity
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													justifyContent: "space-between",
-													height: 80,
-													paddingHorizontal: 15
-												}}
-												onPress={() => navigation.navigate("编辑个人资料")}
-											>
-												<View
-													style={{
-														flexDirection: "row",
-														alignItems: "center"
-													}}
-												>
-													<Avatar
-														uri={avatar}
-														size={52}
-														borderStyle={{ borderWidth: 1, borderColor: "#ffffff" }}
-													/>
-													<View
-														style={{
-															height: 34,
-															justifyContent: "space-between",
-															marginLeft: 15
-														}}
-													>
-														<Text style={{ color: Colors.black, fontSize: 15 }}>
-															{user.name}
-														</Text>
-														<Text
-															style={{
-																fontSize: 12,
-																color: Colors.grey,
-																fontWeight: "300",
-																paddingTop: 3
-															}}
-														>
-															LV.{user.level ? user.level.level : "1"} {"  "}
-															{user.level.name} {"  "}
-															{user.exp}/{user.next_level_exp}
-														</Text>
-													</View>
-												</View>
-												<Iconfont name={"right"} />
-											</TouchableOpacity>
-											<DivisionLine height={10} />
-										</View>
-									);
-								}}
-							</Query>
-						) : null}
+						{login ? <SeetingPageUser navigation={navigation} id={id} /> : null}
 
-						<TouchableOpacity onPress={() => navigation.navigate("关于答题赚钱")}>
+						<TouchableOpacity onPress={() => navigation.navigate('关于答题赚钱')}>
 							<SettingItem itemName="关于答题赚钱" />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate("等级说明")}>
+						<TouchableOpacity onPress={() => navigation.navigate('等级说明')}>
 							<SettingItem itemName="等级说明" />
 						</TouchableOpacity>
 						{/*<TouchableOpacity onPress={() => navigation.navigate("用户协议")}>
 							<SettingItem itemName="用户协议" />
 						</TouchableOpacity>*/}
-						<TouchableOpacity onPress={() => navigation.navigate("分享给好友")}>
+						<TouchableOpacity onPress={() => navigation.navigate('分享给好友')}>
 							<SettingItem itemName="分享给好友" endItem />
 						</TouchableOpacity>
 						<DivisionLine height={10} />
@@ -192,9 +129,9 @@ class HomeScreen extends Component {
 					cancel={this.handlePromotModalVisible}
 					confirm={() => {
 						this.handlePromotModalVisible();
-						this.openUrl("https://datizhuanqian.com/storage/apks/datizhuanqian.apk");
+						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
 					}}
-					tips={"发现新版本"}
+					tips={'发现新版本'}
 				/>
 			</Screen>
 		);
@@ -212,61 +149,13 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log("uri", url);
+		console.log('uri', url);
 		Linking.openURL(url);
 	}
 
 	clearCache = () => {
-		this.setState({ storageSize: "0MB" });
-		Methods.toast("清楚缓存成功", -200);
-	};
-	//获取APK版本
-	achieveUpdate = () => {
-		let _this = this;
-		fetch("http://staging.datizhuanqian.com/version.json")
-			.then(response => response.json())
-			.then(data => {
-				_this.checkUpdate(data[1]);
-			})
-			.catch(err => {
-				console.log(err);
-			});
-	};
-	//检查更新
-	checkUpdate = versionInfo => {
-		let localVersion = Config.localVersion.split("");
-		localVersion.splice(3, 1);
-		let local = parseFloat(localVersion.join(""));
-
-		let Version = versionInfo.version;
-		let onlineVersion = Version.split("");
-		onlineVersion.splice(3, 1);
-		let online = parseFloat(onlineVersion.join(""));
-		//转换成浮点数  判断版本大小
-
-		if (local < online) {
-			this.handlePromotModalVisible();
-			//首先判断APK是否有更新
-		} else {
-			//再判断codepush是否有更新
-			codePush.checkForUpdate().then(update => {
-				if (!update) {
-					Methods.toast("已经是最新版本了", -100);
-				} else {
-					codePush.sync({
-						updateDialog: {
-							// mandatoryContinueButtonLabel: "更新",
-							// mandatoryUpdateMessage: "有新版本了，请您及时更新",
-							optionalIgnoreButtonLabel: "取消",
-							optionalInstallButtonLabel: "后台更新",
-							optionalUpdateMessage: "发现新版本",
-							title: "更新提示"
-						},
-						installMode: codePush.InstallMode.IMMEDIATE
-					});
-				}
-			});
-		}
+		this.setState({ storageSize: '0MB' });
+		Methods.toast('清楚缓存成功', -200);
 	};
 }
 
@@ -288,13 +177,13 @@ const styles = StyleSheet.create({
 	loginOut: {
 		paddingHorizontal: 15,
 		paddingVertical: 15,
-		alignItems: "center"
+		alignItems: 'center'
 	},
 	fontSetting: {
 		paddingVertical: 15,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 	wordSize: {
 		fontSize: 17,
@@ -305,9 +194,9 @@ const styles = StyleSheet.create({
 		marginHorizontal: -20,
 		borderTopWidth: 1,
 		borderTopColor: Colors.lightBorder,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 	fontOperation: {
 		paddingVertical: 15,
