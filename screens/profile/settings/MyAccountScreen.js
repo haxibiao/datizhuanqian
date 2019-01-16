@@ -91,7 +91,7 @@ class EditProfileScreen extends Component {
 							borderBottomColor: Colors.lightBorder,
 							fontSize: 16
 						}}
-						placeholder="请输入密码"
+						placeholder="请输入APP登录密码"
 						underlineColorAndroid="transparent"
 						selectionColor="#000"
 						defaultValue={this.state.password}
