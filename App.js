@@ -32,19 +32,25 @@ class App extends Component {
   componentWillMount() {
     //用户状态加载
     this._loadResourcesAsync();
+    this.setState({
+      storageVersionNumber: 100,
+      introImages: []
+    });
 
     //首先检查手机网络状态  online 按照正常流程   offline强制使用原始启动页
-    NetInfo.isConnected.fetch().done(isConnected => {
-      if (isConnected) {
-        this.loadIntro();
-      } else {
-        this.setState({
-          storageVersionNumber: 100,
-          introImages: []
-        });
-        //暂时方法
-      }
-    });
+    // NetInfo.isConnected.fetch().done(isConnected => {
+
+    //   if (isConnected) {
+    //     this.loadIntro();
+    //   } else {
+    //     this.setState({
+    //       storageVersionNumber: 100,
+    //       introImages: []
+    //     });
+    //     //暂时方法
+    //   }
+    // });
+    //因为服务器原因  先注释功能  强制跳过检测
   }
 
   _loadResourcesAsync = async () => {
