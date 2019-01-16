@@ -36,7 +36,7 @@ class UserSeetingCache extends Component {
 						height: 80,
 						paddingHorizontal: 15
 					}}
-					onPress={() => navigation.navigate('编辑个人资料')}
+					onPress={() => navigation.navigate('编辑个人资料', { user: userCache })}
 				>
 					<View
 						style={{
