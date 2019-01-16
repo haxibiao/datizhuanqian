@@ -93,7 +93,7 @@ class EditProfileScreen extends Component {
 							onPress={this._changeAvatar.bind(this)}
 						>
 							<Text>头像</Text>
-							<Avatar uri={user.avatar ? user.avatar : avatar} size={42} />
+							<Avatar uri={user.avatar + '?t=' + Date.now()} size={42} />
 						</TouchableOpacity>
 
 						<TouchableOpacity onPress={this.toggleModalVisible}>
