@@ -1,4 +1,4 @@
-import { ServerRoot, AppName, AppVersion, localVersion, AppDisplayName, AppSlogan, Build } from '../app.json';
+import { ServerRoot, AppName, AppVersion, localVersion, AppDisplayName, AppSlogan, Build } from '../../app.json';
 // import * as Methods from './Methods';
 
 import Config from 'react-native-config';

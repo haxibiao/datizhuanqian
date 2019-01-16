@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     Image,
     Platform,
@@ -9,11 +9,11 @@ import {
     View,
     Button,
     FlatList
-} from "react-native";
-import { Divice } from "../constants";
+} from 'react-native';
+import { Divice } from '../constants';
 
-import { Iconfont } from "../utils/Fonts";
-import { Colors } from "../constants";
+import { Iconfont } from '../utils/Fonts';
+import { Colors } from '../constants';
 
 class MainTabBar extends React.Component {
     renderItem = (route, index) => {
@@ -59,9 +59,9 @@ class MainTabBar extends React.Component {
 
 const styles = {
     tab: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-around",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
         height: 50 + Divice.bottom_height,
         // borderTopWidth: 1,
         // borderTopColor: Colors.tintGray,
@@ -73,16 +73,16 @@ const styles = {
         paddingBottom: Divice.bottom_height
     },
     tabItem: {
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 50,
         width: 50,
-        position: "relative"
+        position: 'relative'
     },
     shot: {
         width: 40,
         height: 40,
-        resizeMode: "cover"
+        resizeMode: 'cover'
     }
 };
 
