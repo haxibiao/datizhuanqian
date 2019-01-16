@@ -4,6 +4,7 @@ import Colors from './Colors';
 import codePush from 'react-native-code-push';
 import Config from './Config';
 import { Storage, ItemKeys } from '../store/localStorage';
+import DeviceInfo from 'react-native-device-info';
 
 /*防止页面重复跳转
 使用方法：navigation.dispatch(navigationAction({...}))
@@ -69,9 +70,16 @@ function numberVersion(version) {
 //获取线上apk版本信息
 export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsUpdate, login, auto) => {
 	let _this = this;
-	fetch(Config.ServerRoot + '/api/app-version' + '?t=' + Date.now())
+	fetch(Config.ServerRoot + '/api/app-version' + '?t=' + Date.now(), {
+		method: 'POST',
+		headers: {
+			version: DeviceInfo.getVersion(),
+			brand: DeviceInfo.getBrand()
+		}
+	})
 		.then(response => response.json())
 		.then(data => {
+			console.log('data', data[0]);
 			if (auto) {
 				autoCheckUpdate(data[0], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
 			} else {
