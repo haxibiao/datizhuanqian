@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, StatusBar, Dimensions, Image, NetInfo } from 'react-native';
-import RootNavigation from './navigation/RootNavigation';
+import { StyleSheet, View, StatusBar, Dimensions, NetInfo } from 'react-native';
 
-import ApolloApp from './ApolloApp';
+import Apollo from './Apollo';
 import { Config, Colors, Divice, Methods } from './constants';
 import { AppIntro } from './components/Universal';
 
@@ -30,18 +29,17 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.loadUserState();
     //用户状态加载
-    this._loadResourcesAsync();
     this.setState({
       storageVersionNumber: 100,
       introImages: []
     });
-
     //首先检查手机网络状态  online 按照正常流程   offline强制使用原始启动页
     // NetInfo.isConnected.fetch().done(isConnected => {
 
     //   if (isConnected) {
-    //     this.loadIntro();
+    //     this.loadAppIntro();
     //   } else {
     //     this.setState({
     //       storageVersionNumber: 100,
@@ -53,7 +51,7 @@ class App extends Component {
     //因为服务器原因  先注释功能  强制跳过检测
   }
 
-  _loadResourcesAsync = async () => {
+  loadUserState = async () => {
     let user = await Storage.getItem(ItemKeys.user);
     store.dispatch(actions.setUser(user));
     if (user && user.token) {
@@ -62,7 +60,7 @@ class App extends Component {
     }
   };
 
-  loadIntro = async () => {
+  loadAppIntro = async () => {
     this.setState({
       storageVersionNumber: (await Storage.getItem(ItemKeys.version)) ? await Storage.getItem(ItemKeys.version) : 1
     });
@@ -82,7 +80,7 @@ class App extends Component {
     //获取localstorage version 第一次启动APP设置初始值1
   };
 
-  _handleFinishLoading = () => {
+  handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
 
@@ -96,7 +94,7 @@ class App extends Component {
     return (
       <View style={styles.container}>
         <Provider store={store}>
-          <ApolloApp onReady={this._handleFinishLoading} />
+          <Apollo onReady={this.handleFinishLoading} />
         </Provider>
         {
           //为了防止出现闪屏首先判断storageVersionNumber和introImages是否有数据
