@@ -1,34 +1,22 @@
 import React, { Component } from 'react';
 
-import {
-	StyleSheet,
-	View,
-	TouchableOpacity,
-	Text,
-	FlatList,
-	Image,
-	RefreshControl,
-	Linking,
-	BackHandler
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, RefreshControl, Linking } from 'react-native';
 
 import {
+	Screen,
 	Header,
 	CheckUpdateModal,
 	UpdateTipsModal,
-	DivisionLine,
 	TabTop,
 	LoadingMore,
 	ContentEnd,
-	LoadingError,
 	Banner,
-	Loading
+	Loading,
+	PlateItem
 } from '../../components';
 import { Colors, Config, Divice, Methods } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
-import Screen from '../Screen';
-import PlateItem from './PlateItem';
 import CategoryCache from './CategoryCache';
 
 import { connect } from 'react-redux';
@@ -67,6 +55,7 @@ class HomeScreen extends Component {
 			);
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
+
 		this.didFocusSubscription = navigation.addListener('didFocus', payload => {
 			let { users, client, dispatch, login } = this.props;
 			if (login) {
@@ -87,9 +76,10 @@ class HomeScreen extends Component {
 							Methods.toast('您的身份信息已过期,请重新登录', -90);
 						}
 					});
-				console.log('home client', client);
 			}
 		});
+		//当有用户seesion 过期时 ,清空redux 强制登录。
+		//删除此段代码后 更换账号登录后无法fetchQuery的BUG会再出现。预计还是未真正的解决apollo cache的bug
 
 		client
 			.query({
@@ -100,8 +90,7 @@ class HomeScreen extends Component {
 				this.props.dispatch(actions.categoryCache(data.categories));
 			})
 			.catch(error => {});
-
-		//当有用户seesion 过期时 ,清空redux 强制登录。
+		//启动APP的时候存入分类数据
 	}
 
 	componentWillUnmount() {
@@ -122,30 +111,18 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log('uri', url);
 		Linking.openURL(url);
 	}
-
-	/*	componentDidMount() {
-		const { navigation } = this.props;
-		Linking.getInitialURL()
-			.then(url => {
-				if (url) {
-					navigation.navigate("回答"); //question id
-				}
-			})
-			.catch(err => console.error("An error occurred", err));
-	}*/
 
 	render() {
 		const { navigation, user, nextPlate, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
 
 		return (
-			<Screen header>
+			<View style={styles.container}>
 				<Header
 					headerLeft
-					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
+					customStyle={{ backgroundColor: Colors.theme }}
 					routeName={'答题赚钱'}
 					// headerRight={
 					// 	<TouchableOpacity
@@ -158,88 +135,83 @@ class HomeScreen extends Component {
 					// } //上线隐藏功能
 				/>
 
-				<View style={styles.container}>
-					<Query query={CategoriesQuery}>
-						{({ data, error, loading, refetch, fetchMore }) => {
-							if (error)
-								return (
-									<CategoryCache
-										navigation={navigation}
-										login={login}
-										refetch={() => {
-											refetch();
-										}}
-									/>
-								);
-							if (loading) return <Loading />;
-							if (!(data && data.categories)) return null;
-
+				<Query query={CategoriesQuery}>
+					{({ data, error, loading, refetch, fetchMore }) => {
+						if (error)
 							return (
-								<View style={{ flex: 1 }}>
-									<TabTop />
-									<FlatList
-										data={data.categories}
-										refreshControl={
-											<RefreshControl
-												refreshing={loading}
-												onRefresh={refetch}
-												colors={[Colors.theme]}
-											/>
-										}
-										keyExtractor={(item, index) => index.toString()}
-										renderItem={({ item, index }) => (
-											<PlateItem category={item} navigation={navigation} login={login} />
-										)}
-										ListHeaderComponent={() => {
-											return <Banner />;
-										}}
-										onEndReachedThreshold={0.3}
-										onEndReached={() => {
-											if (data.categories) {
-												fetchMore({
-													variables: {
-														offset: data.categories.length
-													},
-													updateQuery: (prev, { fetchMoreResult }) => {
-														if (
-															!(
-																fetchMoreResult &&
-																fetchMoreResult.categories &&
-																fetchMoreResult.categories.length > 0
-															)
-														) {
-															this.setState({
-																fetchingMore: false
-															});
-															return prev;
-														}
-														return Object.assign({}, prev, {
-															categories: [
-																...prev.categories,
-																...fetchMoreResult.categories
-															]
-														});
-													}
-												});
-											} else {
-												this.setState({
-													fetchingMore: false
-												});
-											}
-										}}
-										ListFooterComponent={() => {
-											return this.state.fetchingMore ? (
-												<LoadingMore />
-											) : (
-												<ContentEnd content={'暂时没有更多分类~'} />
-											);
-										}}
-									/>
-								</View>
+								<CategoryCache
+									navigation={navigation}
+									login={login}
+									refetch={() => {
+										refetch();
+									}}
+								/>
 							);
-						}}
-					</Query>
-				</View>
+						if (loading) return <Loading />;
+						if (!(data && data.categories)) return null;
+
+						return (
+							<View style={{ flex: 1 }}>
+								<TabTop />
+								<FlatList
+									data={data.categories}
+									refreshControl={
+										<RefreshControl
+											refreshing={loading}
+											onRefresh={refetch}
+											colors={[Colors.theme]}
+										/>
+									}
+									keyExtractor={(item, index) => index.toString()}
+									renderItem={({ item, index }) => (
+										<PlateItem category={item} navigation={navigation} login={login} />
+									)}
+									ListHeaderComponent={() => {
+										return <Banner />;
+									}}
+									onEndReachedThreshold={0.3}
+									onEndReached={() => {
+										if (data.categories) {
+											fetchMore({
+												variables: {
+													offset: data.categories.length
+												},
+												updateQuery: (prev, { fetchMoreResult }) => {
+													if (
+														!(
+															fetchMoreResult &&
+															fetchMoreResult.categories &&
+															fetchMoreResult.categories.length > 0
+														)
+													) {
+														this.setState({
+															fetchingMore: false
+														});
+														return prev;
+													}
+													return Object.assign({}, prev, {
+														categories: [...prev.categories, ...fetchMoreResult.categories]
+													});
+												}
+											});
+										} else {
+											this.setState({
+												fetchingMore: false
+											});
+										}
+									}}
+									ListFooterComponent={() => {
+										return this.state.fetchingMore ? (
+											<LoadingMore />
+										) : (
+											<ContentEnd content={'暂时没有更多分类~'} />
+										);
+									}}
+								/>
+							</View>
+						);
+					}}
+				</Query>
 				<CheckUpdateModal
 					visible={updateVisible}
 					cancel={() => {
@@ -260,7 +232,7 @@ class HomeScreen extends Component {
 					}}
 					tips={'发现新版本'}
 				/>
-			</Screen>
+			</View>
 		);
 	}
 }
