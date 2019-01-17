@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animated, Image } from "react-native";
-import BasicModal from "./BasicModal";
-import { Iconfont } from "../../utils/Fonts";
-import { Colors, Divice } from "../../constants";
-import { Button } from "../Control";
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animated, Image } from 'react-native';
+import BasicModal from './BasicModal';
+import { Iconfont } from '../../utils/Fonts';
+import { Colors, Divice } from '../../constants';
+import Button from '../Control/Button';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class PropDetailsModal extends Component {
 	constructor(props) {
@@ -26,7 +26,7 @@ class PropDetailsModal extends Component {
 						<Image
 							source={{
 								uri:
-									"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545019358036&di=a658ef0ff0e65adf97cdce2712f288f6&imgtype=0&src=http%3A%2F%2Fp0.so.qhimgs1.com%2Ft0119ab6c82fbe06810.jpg"
+									'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545019358036&di=a658ef0ff0e65adf97cdce2712f288f6&imgtype=0&src=http%3A%2F%2Fp0.so.qhimgs1.com%2Ft0119ab6c82fbe06810.jpg'
 							}}
 							style={styles.img}
 						/>
@@ -39,8 +39,8 @@ class PropDetailsModal extends Component {
 				</View>
 				<View style={{ paddingBottom: 15 }}>
 					<View style={styles.bottom}>
-						<Button name={"取消"} style={styles.cancel} fontSize={14} handler={handleVisible} />
-						<Button name={"购买"} style={styles.buy} fontSize={14} />
+						<Button name={'取消'} style={styles.cancel} fontSize={14} handler={handleVisible} />
+						<Button name={'购买'} style={styles.buy} fontSize={14} />
 					</View>
 				</View>
 			</BasicModal>
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
 		width: (width * 2) / 3,
 		height: (width * 4) / 7,
 		borderRadius: 5,
-		alignItems: "center",
-		justifyContent: "space-between",
+		alignItems: 'center',
+		justifyContent: 'space-between',
 		padding: 0
 	},
 	header: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 		height: 80,
 		borderTopLeftRadius: 5,
 		borderTopRightRadius: 5,
-		alignItems: "center"
+		alignItems: 'center'
 	},
 	img: {
 		width: 72,
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	bottom: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between"
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
 	},
 	cancel: {
 		borderRadius: 5,

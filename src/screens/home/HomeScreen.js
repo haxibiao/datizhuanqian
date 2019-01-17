@@ -12,9 +12,10 @@ import {
 	BackHandler
 } from 'react-native';
 
-import { Header } from '../../components/Header';
-import { CheckUpdateModal, UpdateTipsModal } from '../../components/Modal';
 import {
+	Header,
+	CheckUpdateModal,
+	UpdateTipsModal,
 	DivisionLine,
 	TabTop,
 	LoadingMore,
@@ -22,7 +23,7 @@ import {
 	LoadingError,
 	Banner,
 	Loading
-} from '../../components/Universal';
+} from '../../components';
 import { Colors, Config, Divice, Methods } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
@@ -143,10 +144,10 @@ class HomeScreen extends Component {
 		return (
 			<Screen header>
 				<Header
-					leftComponent={<Text />}
+					headerLeft
 					customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
 					routeName={'答题赚钱'}
-					// rightComponent={
+					// headerRight={
 					// 	<TouchableOpacity
 					// 		onPress={() => {
 					// 			navigation.navigate("通知");

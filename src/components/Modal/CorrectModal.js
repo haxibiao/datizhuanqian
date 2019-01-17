@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animat
 import BasicModal from './BasicModal';
 import { Iconfont } from '../../utils/Fonts';
 import { Colors, Divice } from '../../constants';
-import { Button } from '../Control';
+import Button from '../Control/Button';
 
 const { width, height } = Dimensions.get('window');
 

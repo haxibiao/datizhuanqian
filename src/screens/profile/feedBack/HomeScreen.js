@@ -1,22 +1,20 @@
-import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from 'react-native';
 
-import { Methods, Colors } from "../../../constants";
-import { Iconfont } from "../../../utils/Fonts";
-import { DivisionLine } from "../../../components/Universal";
-import { Button } from "../../../components/Control";
-import { Header, TabBarHeader } from "../../../components/Header";
-import Screen from "../../Screen";
-import FeedBack from "./FeedBack";
-import FeedBackList from "./FeedBackList";
+import { Methods, Colors } from '../../../constants';
+import { Iconfont } from '../../../utils/Fonts';
+import { Button, DivisionLine, Header, TabBarHeader } from '../../../components';
+import Screen from '../../Screen';
+import FeedBack from './FeedBack';
+import FeedBackList from './FeedBackList';
 
-import { CreateFeedbackMutation } from "../../../graphql/user.graphql";
-import { Mutation } from "react-apollo";
+import { CreateFeedbackMutation } from '../../../graphql/user.graphql';
+import { Mutation } from 'react-apollo';
 
-import ImagePicker from "react-native-image-crop-picker";
-import ScrollableTabView from "react-native-scrollable-tab-view";
+import ImagePicker from 'react-native-image-crop-picker';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -48,9 +46,9 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorderColor,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 	title: {
 		fontSize: 16,

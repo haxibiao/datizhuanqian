@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { Iconfont } from '../../../utils/Fonts';
 import { Colors, Config } from '../../../constants';
-import { Avatar, LoadingError, BlankContent } from '../../../components/Universal';
+import { Avatar, LoadingError, BlankContent } from '../../../components';
 
 import { UserQuery } from '../../../graphql/user.graphql';
 import { Query, withApollo } from 'react-apollo';

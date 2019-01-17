@@ -5,9 +5,7 @@ import Screen from '../../Screen';
 import { Colors, Methods, Config } from '../../../constants';
 import { Iconfont } from '../../../utils/Fonts';
 
-import { Header } from '../../../components/Header';
-import { Avatar, DivisionLine } from '../../../components/Universal';
-import { SignOutModal, CheckUpdateModal } from '../../../components/Modal';
+import { SignOutModal, CheckUpdateModal, Header, Avatar, DivisionLine } from '../../../components';
 import SettingItem from './SettingItem';
 import SeetingPageUser from '../user/SeetingPageUser';
 

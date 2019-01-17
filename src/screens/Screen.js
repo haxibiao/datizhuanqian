@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { StyleSheet, View, StatusBar } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, StatusBar } from 'react-native';
 
-import { Divice } from "../constants";
-import { Header } from "../components/Header";
+import { Divice } from '../constants';
+import { Header } from '../components';
 
 class Screen extends Component {
 	render() {
@@ -10,9 +10,9 @@ class Screen extends Component {
 			customStyle = {},
 			lightBar,
 			header = false,
-			leftComponent = false,
+			headerLeft = false,
 			routeName,
-			rightComponent,
+			headerRight,
 			backHandler
 		} = this.props;
 		return (
@@ -20,23 +20,23 @@ class Screen extends Component {
 				style={[
 					{
 						flex: 1,
-						backgroundColor: "#ffffff"
+						backgroundColor: '#ffffff'
 					}
 				]}
 			>
 				<StatusBar
 					translucent={true}
-					backgroundColor={"transparent"}
-					barStyle={lightBar ? "light-content" : "dark-content"}
+					backgroundColor={'transparent'}
+					barStyle={lightBar ? 'light-content' : 'dark-content'}
 				/>
 				{header ? (
 					header
 				) : (
 					<Header
-						leftComponent={leftComponent}
+						headerLeft={headerLeft}
 						customStyle={customStyle}
 						routeName={routeName}
-						rightComponent={rightComponent}
+						headerRight={headerRight}
 						backHandler={backHandler}
 					/>
 				)}

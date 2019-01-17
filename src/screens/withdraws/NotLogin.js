@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 
-import { Header } from '../../components/Header';
-import { TabTop, Banner, DivisionLine, WithdrawsTips } from '../../components/Universal';
+import { TabTop, Banner, DivisionLine, WithdrawsTips, Header } from '../../components';
 import Screen from '../Screen';
 import { Colors, Config, Divice } from '../../constants';
 

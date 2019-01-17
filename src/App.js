@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Dimensions, NetInfo } from 'react-native';
 
-import Apollo from './Apollo';
 import { Config, Colors, Divice, Methods } from './constants';
-import { AppIntro } from './components/Universal';
-
+import { AppIntro } from './components';
 //redux
 import { Provider, connect } from 'react-redux';
 import store from './store';
 import actions from './store/actions';
 import { Storage, ItemKeys } from './store/localStorage';
 
-import { Query, withApollo, client } from 'react-apollo';
-
 import codePush from 'react-native-code-push';
+import Apollo from './Apollo';
 
 const { width, height } = Dimensions.get('window');
 
@@ -35,6 +32,7 @@ class App extends Component {
     NetInfo.isConnected.fetch().done(isConnected => {
       if (isConnected) {
         this.getAppIntro();
+        //获取介绍页图片
       } else {
         this.setState({
           isConnected: false

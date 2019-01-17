@@ -3,9 +3,7 @@ import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar,
 
 import Screen from '../../Screen';
 
-import { Header } from '../../../components/Header';
-import { DivisionLine, Avatar } from '../../../components/Universal';
-import { Button } from '../../../components/Control';
+import { DivisionLine, Avatar, Header, Button } from '../../../components';
 import { Iconfont } from '../../../utils/Fonts';
 
 import { Colors, Methods } from '../../../constants';

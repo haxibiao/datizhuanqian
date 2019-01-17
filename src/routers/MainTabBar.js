@@ -63,8 +63,6 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-around',
         height: 50 + Divice.bottom_height,
-        // borderTopWidth: 1,
-        // borderTopColor: Colors.tintGray,
         elevation: 20,
         shadowOffset: { width: 0, height: 0 },
         shadowColor: Colors.tintGray,

@@ -8,10 +8,10 @@ import {
 	BlankContent,
 	Loading,
 	Banner,
-	ErrorBoundary
-} from '../../components/Universal';
-import { Button } from '../../components/Control';
-import { CorrectModal } from '../../components/Modal';
+	ErrorBoundary,
+	Button,
+	CorrectModal
+} from '../../components';
 import { Colors } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
@@ -51,7 +51,7 @@ class AnswerScreen extends Component {
 			<Screen
 				routeName={'答题'}
 				customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-				// rightComponent={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}  隐藏功能
+				// headerRight={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}  隐藏功能
 			>
 				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {

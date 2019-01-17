@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-nativ
 
 import Screen from '../Screen';
 
-import { Button } from '../../components/Control';
+import { Button } from '../../components';
 
 import { Colors, Methods } from '../../constants';
 import { connect } from 'react-redux';

@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, FlatList, Text, Dimensions, TouchableOpacity, RefreshControl } from 'react-native';
 
-import {
-	DivisionLine,
-	TabTop,
-	BlankContent,
-	Loading,
-	LoadingError,
-	LoadingMore,
-	ContentEnd
-} from '../../components/Universal';
+import { DivisionLine, TabTop, BlankContent, Loading, LoadingError, LoadingMore, ContentEnd } from '../../components';
 import Screen from '../Screen';
 import { Colors } from '../../constants';
 

@@ -5,13 +5,10 @@ import Toast from 'react-native-root-toast';
 import Screen from '../../Screen';
 import SettingItem from './SettingItem';
 
-import { Header } from '../../../components/Header';
-import { DivisionLine, Avatar } from '../../../components/Universal';
-import { ModifyNameModal } from '../../../components/Modal';
+import { DivisionLine, Avatar, Header, ModifyNameModal } from '../../../components';
 import { Iconfont } from '../../../utils/Fonts';
 
-import Colors from '../../../constants/Colors';
-import Config from '../../../constants/Config';
+import { Colors, Config } from '../../../constants';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';

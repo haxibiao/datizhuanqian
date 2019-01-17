@@ -1,10 +1,8 @@
-import React, { Component } from "react";
-import { StyleSheet, View, StatusBar, Image, Text, TouchableOpacity } from "react-native";
-import { PropDetailsModal } from "../../components/Modal";
-import { Button } from "../../components/Control";
-import { DivisionLine, ErrorBoundary, ContentEnd } from "../../components/Universal";
+import React, { Component } from 'react';
+import { StyleSheet, View, StatusBar, Image, Text, TouchableOpacity } from 'react-native';
+import { DivisionLine, ErrorBoundary, ContentEnd, PropDetailsModal, Button } from '../../components';
 
-import { Colors, Config, Divice } from "../../constants";
+import { Colors, Config, Divice } from '../../constants';
 
 class Screen extends Component {
 	constructor(props) {
@@ -28,7 +26,7 @@ class Screen extends Component {
 						</View>
 					</View>
 					<Button
-						name={"立即购买"}
+						name={'立即购买'}
 						style={styles.buy}
 						// theme={Colors.theme}
 						fontSize={14}
@@ -57,17 +55,17 @@ class Screen extends Component {
 
 const styles = StyleSheet.create({
 	item: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 		// marginHorizontal: 15,
 		paddingHorizontal: 15,
 		paddingVertical: 15,
 		backgroundColor: Colors.white
 	},
 	itemLeft: {
-		flexDirection: "row",
-		alignItems: "center"
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	name: {
 		fontSize: 16,
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
 	content: {
 		height: 58,
 		marginLeft: 15,
-		justifyContent: "space-between"
+		justifyContent: 'space-between'
 	},
 	buy: {
 		borderRadius: 5,

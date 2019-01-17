@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from "react-native";
-import { Header } from "../../components/Header";
-import { Button } from "../../components/Control";
-import { DivisionLine, ErrorBoundary, ContentEnd } from "../../components/Universal";
-import { Colors, Config, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from 'react-native';
+import { DivisionLine, ErrorBoundary, ContentEnd, Header, Button } from '../../components';
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import Screen from "../Screen";
+import Screen from '../Screen';
 
 class MyPropScreen extends Component {
 	constructor(props) {
@@ -34,7 +32,7 @@ class MyPropScreen extends Component {
 		let { navigation } = this.props;
 		return (
 			<View style={styles.item}>
-				<View style={{ alignItems: "center", flexDirection: "row" }}>
+				<View style={{ alignItems: 'center', flexDirection: 'row' }}>
 					<Image source={{ uri: item.logo }} style={styles.img} />
 					<View style={styles.center}>
 						<Text style={{ fontSize: 16, lineHeight: 22, color: Colors.Black }}>{item.name} </Text>
@@ -42,7 +40,7 @@ class MyPropScreen extends Component {
 					</View>
 				</View>
 				<Button
-					name={item.status ? "使用" : "已使用"}
+					name={item.status ? '使用' : '已使用'}
 					style={{
 						borderRadius: 5,
 						height: 32,
@@ -62,9 +60,9 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.lightGray
 	},
 	item: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 		// marginHorizontal: 15,
 		paddingHorizontal: 15,
 		paddingVertical: 15,
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
 	center: {
 		marginLeft: 15,
 		height: 50,
-		justifyContent: "space-between"
+		justifyContent: 'space-between'
 	}
 });
 

@@ -1,18 +1,17 @@
-import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from 'react-native';
 
-import { Methods, Colors } from "../../../constants";
-import { Iconfont } from "../../../utils/Fonts";
-import { DivisionLine } from "../../../components/Universal";
-import { Button } from "../../../components/Control";
-import Screen from "../../Screen";
+import { Methods, Colors } from '../../../constants';
+import { Iconfont } from '../../../utils/Fonts';
+import { DivisionLine, Button } from '../../../components';
+import Screen from '../../Screen';
 
-import { CreateFeedbackMutation } from "../../../graphql/user.graphql";
-import { Mutation } from "react-apollo";
+import { CreateFeedbackMutation } from '../../../graphql/user.graphql';
+import { Mutation } from 'react-apollo';
 
-import ImagePicker from "react-native-image-crop-picker";
+import ImagePicker from 'react-native-image-crop-picker';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 class FeedBack extends Component {
 	constructor(props) {
 		super(props);
@@ -27,7 +26,7 @@ class FeedBack extends Component {
 		let { user } = this.props;
 		ImagePicker.openPicker({
 			multiple: true,
-			mediaType: "photo",
+			mediaType: 'photo',
 			includeBase64: true
 		})
 			.then(images => {
@@ -45,7 +44,7 @@ class FeedBack extends Component {
 	render() {
 		let { content, contact, pictures } = this.state;
 		const { navigation } = this.props;
-		console.log("pict", pictures);
+		console.log('pict', pictures);
 		return (
 			<Screen header>
 				<View style={styles.container}>
@@ -59,13 +58,13 @@ class FeedBack extends Component {
 							underlineColorAndroid="transparent"
 							selectionColor="#000"
 							multiline={true}
-							textAlignVertical={"top"}
+							textAlignVertical={'top'}
 							onChangeText={content => {
 								this.setState({ content: content });
 							}}
 							maxLength={200}
 						/>
-						<View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+						<View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
 							{pictures.map((image, index) => {
 								return (
 									<View key={index}>
@@ -79,14 +78,14 @@ class FeedBack extends Component {
 												});
 											}}
 										>
-											<Iconfont name={"close"} size={12} color={Colors.white} />
+											<Iconfont name={'close'} size={12} color={Colors.white} />
 										</TouchableOpacity>
 									</View>
 								);
 							})}
 
 							<TouchableOpacity style={styles.add} onPress={this.pickerPictures.bind(this)}>
-								<Iconfont name={"add"} size={26} color={Colors.tintGray} />
+								<Iconfont name={'add'} size={26} color={Colors.tintGray} />
 							</TouchableOpacity>
 						</View>
 						<View style={styles.mainBottom} />
@@ -96,7 +95,7 @@ class FeedBack extends Component {
 						{CreateFeedbackMutation => {
 							return (
 								<Button
-									name={"提交"}
+									name={'提交'}
 									style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
 									theme={content ? Colors.blue : Colors.tintGray}
 									textColor={content ? Colors.white : Colors.grey}
@@ -107,7 +106,7 @@ class FeedBack extends Component {
 												contact: contact
 											}
 										});
-										Methods.toast("反馈成功", -180);
+										Methods.toast('反馈成功', -180);
 										navigation.goBack();
 									}}
 								/>
@@ -131,11 +130,11 @@ const styles = StyleSheet.create({
 		marginBottom: 30
 	},
 	input: {
-		backgroundColor: "transparent",
+		backgroundColor: 'transparent',
 		fontSize: 15,
 		padding: 0,
 		height: 260,
-		justifyContent: "flex-start",
+		justifyContent: 'flex-start',
 		marginRight: 15
 		// marginTop:10,
 	},
@@ -144,8 +143,8 @@ const styles = StyleSheet.create({
 		height: (width - 75) / 4,
 		borderColor: Colors.tintGray,
 		borderWidth: 1,
-		justifyContent: "center",
-		alignItems: "center"
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	image: {
 		width: (width - 75) / 4,
@@ -156,13 +155,13 @@ const styles = StyleSheet.create({
 	delete: {
 		backgroundColor: Colors.grey,
 		borderRadius: 8,
-		position: "absolute",
+		position: 'absolute',
 		right: 7,
 		top: -7,
 		width: 15,
 		height: 15,
-		justifyContent: "flex-end",
-		alignItems: "center"
+		justifyContent: 'flex-end',
+		alignItems: 'center'
 	},
 	mainBottom: {
 		borderBottomWidth: 1,

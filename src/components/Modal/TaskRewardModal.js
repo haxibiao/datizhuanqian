@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animated, Image } from "react-native";
-import BasicModal from "./BasicModal";
-import { Iconfont } from "../../utils/Fonts";
-import { Colors, Divice } from "../../constants";
-import { Button } from "../Control";
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animated, Image } from 'react-native';
+import BasicModal from './BasicModal';
+import { Iconfont } from '../../utils/Fonts';
+import { Colors, Divice } from '../../constants';
+import Button from '../Control/Button';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class TaskRewardModal extends Component {
 	constructor(props) {
@@ -33,8 +33,8 @@ class TaskRewardModal extends Component {
 							backgroundColor: Colors.theme,
 							height: width / 3,
 							width: (width * 5) / 6,
-							alignItems: "center",
-							justifyContent: "center",
+							alignItems: 'center',
+							justifyContent: 'center',
 							borderTopLeftRadius: 10,
 							borderTopRightRadius: 10
 						}}
@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
 		color: Colors.grey
 	},
 	content: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
 		marginTop: 15
 	},
 	text: {

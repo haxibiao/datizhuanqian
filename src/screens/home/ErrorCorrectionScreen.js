@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, TextInput } from "react-native";
-import { Button, Radio } from "../../components/Control";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, TextInput } from 'react-native';
+import { Button, Radio } from '../../components';
 
-import { Colors, Config, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import Screen from "../Screen";
+import Screen from '../Screen';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class ErrorCorrectionScreen extends Component {
 	constructor(props) {
@@ -33,7 +33,7 @@ class ErrorCorrectionScreen extends Component {
 				<View style={styles.container}>
 					<View style={{ paddingHorizontal: 15, backgroundColor: Colors.white }}>
 						<Text style={{ fontSize: 17, paddingTop: 25 }}>错误类型</Text>
-						<View style={{ flexDirection: "row", flexWrap: "wrap", paddingVertical: 10 }}>
+						<View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingVertical: 10 }}>
 							<View style={styles.row}>
 								<Radio value={1} check={check} onCheck={this.onCheck} />
 								<Text style={styles.text}>题干有误</Text>
@@ -60,7 +60,7 @@ class ErrorCorrectionScreen extends Component {
 							underlineColorAndroid="transparent"
 							selectionColor="#000"
 							multiline={true}
-							textAlignVertical={"top"}
+							textAlignVertical={'top'}
 							onChangeText={content => {
 								this.setState({ content: content });
 							}}
@@ -69,7 +69,7 @@ class ErrorCorrectionScreen extends Component {
 					</View>
 					<View style={{ marginTop: 40, marginBottom: 20 }}>
 						<Button
-							name={"提交"}
+							name={'提交'}
 							style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
 							theme={Colors.blue}
 							fontSize={14}
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.lightGray
 	},
 	row: {
-		flexDirection: "row",
-		alignItems: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
 		width: (width - 30) / 2,
 		paddingVertical: 10
 	},
@@ -97,11 +97,11 @@ const styles = StyleSheet.create({
 		paddingLeft: 20
 	},
 	input: {
-		backgroundColor: "transparent",
+		backgroundColor: 'transparent',
 		fontSize: 15,
 		padding: 0,
 		height: 220,
-		justifyContent: "flex-start"
+		justifyContent: 'flex-start'
 		// marginTop:10,
 	}
 });

@@ -1,15 +1,13 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, ScrollView } from "react-native";
-import { Header } from "../../components/Header";
-import { Button } from "../../components/Control";
-import { PropDetailsModal } from "../../components/Modal";
-import { DivisionLine, ErrorBoundary, ContentEnd } from "../../components/Universal";
-import { Colors, Config, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, ScrollView } from 'react-native';
+import { Header, Button, PropDetailsModal, DivisionLine, ErrorBoundary, ContentEnd } from '../../components';
 
-import { connect } from "react-redux";
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import Screen from "../Screen";
+import { connect } from 'react-redux';
+
+import Screen from '../Screen';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -33,7 +31,7 @@ class HomeScreen extends Component {
 				{item.type == 1 && (
 					<View style={styles.content}>
 						<View style={styles.titleInfo}>
-							<Iconfont name={"tixian"} size={20} color={Colors.theme} />
+							<Iconfont name={'tixian'} size={20} color={Colors.theme} />
 							<Text style={styles.title}>智慧点提现</Text>
 						</View>
 						<View style={styles.bottomInfo}>
@@ -47,7 +45,7 @@ class HomeScreen extends Component {
 				{item.type == 2 && (
 					<View style={styles.content}>
 						<View style={styles.titleInfo}>
-							<Iconfont name={"like"} size={20} color={Colors.weixin} />
+							<Iconfont name={'like'} size={20} color={Colors.weixin} />
 							<Text style={styles.title}>精力点变化</Text>
 						</View>
 						<View style={styles.bottomInfo}>
@@ -63,7 +61,7 @@ class HomeScreen extends Component {
 				{item.type == 3 && (
 					<View style={styles.content}>
 						<View style={styles.titleInfo}>
-							<Iconfont name={"setting1"} size={20} color={Colors.red} />
+							<Iconfont name={'setting1'} size={20} color={Colors.red} />
 							<Text style={styles.title}>升级通知</Text>
 						</View>
 						<View style={styles.bottomInfo}>
@@ -98,11 +96,11 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.lightBorder
 	},
 	timeInfo: {
-		alignItems: "center",
+		alignItems: 'center',
 		marginTop: 10
 	},
 	time: {
-		backgroundColor: "#D8D8D8",
+		backgroundColor: '#D8D8D8',
 		paddingHorizontal: 7,
 		paddingVertical: 3,
 		borderRadius: 5
@@ -114,8 +112,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white
 	},
 	titleInfo: {
-		flexDirection: "row",
-		alignItems: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
 		paddingVertical: 15,
 		marginHorizontal: 15,
 		borderBottomWidth: 1,

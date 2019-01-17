@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
 import { Colors, Config, Divice, Methods } from '../../constants';
-import { Header } from '../../components/Header';
+import { Header } from '../../components';
 
 import Screen from '../Screen';
 import LoginInput from './LoginInput';

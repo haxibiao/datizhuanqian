@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
-import { Header } from '../../../components/Header';
-import { DivisionLine, ErrorBoundary } from '../../../components/Universal';
+import { DivisionLine, ErrorBoundary, Header } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 import { Iconfont } from '../../../utils/Fonts';
 

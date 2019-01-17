@@ -1,9 +1,9 @@
-import React from "react";
-import { Image, View, Text, Platform, Animated, Easing, StatusBar } from "react-native";
-import { StackNavigator } from "react-navigation";
-import router from "./Router";
+import React from 'react';
+import { Animated, Easing } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import router from './Router';
 
-const RootStackNavigator = StackNavigator(router, {
+const MainStack = StackNavigator(router, {
   navigationOptions: ({ navigation }) => {
     return {
       header: null
@@ -35,8 +35,8 @@ const RootStackNavigator = StackNavigator(router, {
   })
 });
 
-export default class RootNavigator extends React.Component {
+export default class MainRouter extends React.Component {
   render() {
-    return <RootStackNavigator ref="rootStackNavigator" />;
+    return <MainStack ref="rootStackNavigator" />;
   }
 }

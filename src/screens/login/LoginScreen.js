@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
-import { Header } from "../../components/Header";
-import Screen from "../Screen";
-import { Colors, Config, Divice, Methods } from "../../constants";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import { Header } from '../../components';
+import Screen from '../Screen';
+import { Colors, Config, Divice, Methods } from '../../constants';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
-import KeyboardSpacer from "react-native-keyboard-spacer";
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import { Iconfont } from "../../utils/Fonts";
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import { Iconfont } from '../../utils/Fonts';
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
-import { signUpMutation, signInMutation, UserQuery } from "../../graphql/user.graphql";
-import { graphql, compose } from "react-apollo";
-import { NavigationActions } from "react-navigation";
+import { signUpMutation, signInMutation, UserQuery } from '../../graphql/user.graphql';
+import { graphql, compose } from 'react-apollo';
+import { NavigationActions } from 'react-navigation';
 
 class LoginScreen extends Component {
 	constructor(props) {
 		super(props);
-		let login = props.navigation.getParam("login", false);
+		let login = props.navigation.getParam('login', false);
 		this.state = {
 			login
 		};
@@ -33,9 +33,9 @@ class LoginScreen extends Component {
 		const { navigation } = this.props;
 		return (
 			<Screen header>
-				<View style={{ marginTop: 40, alignItems: "flex-start", paddingLeft: 20 }}>
+				<View style={{ marginTop: 40, alignItems: 'flex-start', paddingLeft: 20 }}>
 					<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-						<Iconfont name={"close"} size={24} color={Colors.tintFontColor} style={{ fontWeight: "300" }} />
+						<Iconfont name={'close'} size={24} color={Colors.tintFontColor} style={{ fontWeight: '300' }} />
 					</TouchableOpacity>
 				</View>
 				{login ? (
@@ -70,7 +70,7 @@ class LoginScreen extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				Methods.toast("登录失败，请检查邮箱和密码是否正确", 50);
+				Methods.toast('登录失败，请检查邮箱和密码是否正确', 50);
 			} else {
 				const user = result.data.signIn;
 				this._saveUserData(user);
@@ -88,7 +88,7 @@ class LoginScreen extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				Methods.toast("注册失败，请检查邮箱地址是否已注册", 50);
+				Methods.toast('注册失败，请检查邮箱地址是否已注册', 50);
 			} else {
 				const user = result.data.signUp;
 				this._saveUserData(user);
@@ -113,7 +113,7 @@ export default connect(store => {
 	return { ...store };
 })(
 	compose(
-		graphql(signUpMutation, { name: "signUpMutation" }),
-		graphql(signInMutation, { name: "signInMutation" })
+		graphql(signUpMutation, { name: 'signUpMutation' }),
+		graphql(signInMutation, { name: 'signInMutation' })
 	)(LoginScreen)
 );

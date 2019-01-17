@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Slider, TextInput, Dimensions, Image, Linking } from 'react-native';
-import { Header } from '../../components/Header';
-import { DivisionLine, TabTop, Banner, LoadingError, BlankContent, WithdrawsTips } from '../../components/Universal';
-import { CheckUpdateModal, RuleDescriptionModal, WithdrawsTipsModal } from '../../components/Modal';
-import { Button } from '../../components/Control';
+import {
+	DivisionLine,
+	TabTop,
+	Banner,
+	LoadingError,
+	BlankContent,
+	WithdrawsTips,
+	Header,
+	CheckUpdateModal,
+	RuleDescriptionModal,
+	WithdrawsTipsModal,
+	Button
+} from '../../components';
+
 import { Iconfont } from '../../utils/Fonts';
 
 import Screen from '../Screen';
@@ -150,9 +160,9 @@ class HomeScreen extends Component {
 			<Screen header>
 				<View style={styles.container}>
 					<Header
-						leftComponent={<Text />}
-						customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}
-						rightComponent={
+						headerLeft
+						customStyle={{ backgroundColor: Colors.theme }}
+						headerRight={
 							<TouchableOpacity
 								onPress={() => {
 									this.RuleDescriptionModalVisible();

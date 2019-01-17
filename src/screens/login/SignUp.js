@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, TextInput } from 'react-native';
 
-import { Header } from '../../components/Header';
+import { Header } from '../../components';
 import Screen from '../Screen';
 import { Colors, Config, Divice, Methods } from '../../constants';
 

@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Iconfont } from "../../utils/Fonts";
-import Colors from "../../constants/Colors";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { Component } from 'react';
+import { Iconfont } from '../../utils/Fonts';
+import Colors from '../../constants/Colors';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-import { Button } from "../../components/Control";
+import { Button } from '../../components';
 
 class LoginInput extends Component {
 	constructor(props) {
 		super(props);
 		this.value = props.value;
-		this.state = { visibility: true, changes: 0, value: "" };
+		this.state = { visibility: true, changes: 0, value: '' };
 	}
 
 	componentDidMount() {
@@ -49,7 +49,7 @@ class LoginInput extends Component {
 						changeValue(keys, value);
 					}}
 					value={value}
-					autoCapitalize={"none"}
+					autoCapitalize={'none'}
 					maxLength={maxLength}
 					defaultValue={this.value}
 					onFocus={() => focusKey(keys)}
@@ -66,7 +66,7 @@ class LoginInput extends Component {
 								}))
 							}
 						>
-							<Iconfont name={visibility ? "eye" : "hide"} size={19} color={Colors.lightFont} />
+							<Iconfont name={visibility ? 'eye' : 'hide'} size={19} color={Colors.lightFont} />
 						</TouchableOpacity>
 					) : (
 						<View style={styles.inputOperation} />
@@ -75,16 +75,16 @@ class LoginInput extends Component {
 					<TouchableOpacity
 						style={styles.inputOperation}
 						onPress={() => {
-							this.setState({ value: "" });
+							this.setState({ value: '' });
 							emptyValue(keys);
 						}}
 					>
-						<Iconfont name={"close"} size={16} color={Colors.lightFont} />
+						<Iconfont name={'close'} size={16} color={Colors.lightFont} />
 					</TouchableOpacity>
 				) : (
 					<View style={styles.inputOperation} />
 				)}
-				{code ? <Button name={"获取验证码"} style={{ height: 32, marginLeft: 30, fontSize: 13 }} /> : null}
+				{code ? <Button name={'获取验证码'} style={{ height: 32, marginLeft: 30, fontSize: 13 }} /> : null}
 			</View>
 		);
 	}
@@ -92,8 +92,8 @@ class LoginInput extends Component {
 
 const styles = StyleSheet.create({
 	inputWrap: {
-		flexDirection: "row",
-		alignItems: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder
 	},
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
 	inputOperation: {
 		width: 46,
 		height: 46,
-		justifyContent: "center",
-		alignItems: "center"
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 

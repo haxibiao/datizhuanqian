@@ -10,8 +10,8 @@ import {
 	Animated,
 	StatusBar
 } from 'react-native';
-import { Header } from '../../components/Header';
-import { Button } from '../../components/Control';
+import Header from '../Header/Header';
+import Button from '../Control/Button';
 import { Colors, Config, Divice } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 

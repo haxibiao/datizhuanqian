@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
-import Colors from "../../constants/Colors";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
+import Colors from '../../constants/Colors';
+import { Iconfont } from '../../utils/Fonts';
 
-import { NoTicketTipsModal } from "../Modal";
+import NoTicketTipsModal from '../Modal/NoTicketTipsModal';
 
-import { BoxShadow } from "react-native-shadow";
+import { BoxShadow } from 'react-native-shadow';
 
-import { connect } from "react-redux";
-import actions from "../../store/actions";
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
 
-import { UserQuery } from "../../graphql/user.graphql";
-import { Query } from "react-apollo";
+import { UserQuery } from '../../graphql/user.graphql';
+import { Query } from 'react-apollo';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 const shadowOpt = {
 	width: width,
-	color: "#E8E8E8",
+	color: '#E8E8E8',
 	border: 3,
 	radius: 10,
 	opacity: 0.5,
@@ -56,7 +56,7 @@ class TabTop extends Component {
 								>
 									<View style={styles.container}>
 										<View style={styles.rowItem}>
-											<Iconfont name={"like"} size={24} color={Colors.theme} />
+											<Iconfont name={'like'} size={24} color={Colors.theme} />
 											<Text style={styles.text}> 精力点</Text>
 											<Text
 												style={{
@@ -65,14 +65,14 @@ class TabTop extends Component {
 													color: user.ticket > 10 ? Colors.black : Colors.themeRed
 												}}
 											>
-												{user.ticket ? user.ticket : "0"}
+												{user.ticket ? user.ticket : '0'}
 											</Text>
 											<Text style={styles.text}>
-												/{user.level ? user.level.ticket_max : "180"}
+												/{user.level ? user.level.ticket_max : '180'}
 											</Text>
 										</View>
 										<View style={styles.rowItem}>
-											<Iconfont name={"zhuanshi"} size={22} color={Colors.theme} />
+											<Iconfont name={'zhuanshi'} size={22} color={Colors.theme} />
 											<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
 											<Text style={styles.text}>{user.gold}</Text>
 										</View>
@@ -104,18 +104,18 @@ const styles = StyleSheet.create({
 	container: {
 		height: 44,
 		backgroundColor: Colors.white,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
 		shadowOffset: { width: 0, height: 2 },
-		shadowColor: "#F0F0F0",
+		shadowColor: '#F0F0F0',
 		shadowOpacity: 1
 	},
 	rowItem: {
 		flex: 1,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	text: {
 		fontSize: 15,

@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image, ScrollView
 
 import Screen from '../Screen';
 import { Colors, Config, Divice } from '../../constants';
-import { DivisionLine, TabTop, ErrorBoundary } from '../../components/Universal';
+import { DivisionLine, TabTop, ErrorBoundary } from '../../components';
 
 const { width, height } = Dimensions.get('window');
 

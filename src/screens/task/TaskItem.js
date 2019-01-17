@@ -1,15 +1,14 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
-import { TaskRewardModal } from "../../components/Modal";
-import { Button } from "../../components/Control";
-import { DivisionLine, ErrorBoundary } from "../../components/Universal";
-import { Colors, Config, Divice, Methods } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 
-import Screen from "../Screen";
+import { DivisionLine, ErrorBoundary, TaskRewardModal, Button } from '../../components';
+import { Colors, Config, Divice, Methods } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from "../../graphql/task.graphql";
-import { Mutation } from "react-apollo";
+import Screen from '../Screen';
+
+import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../graphql/task.graphql';
+import { Mutation } from 'react-apollo';
 
 class TaskItem extends Component {
 	constructor(props) {
@@ -25,14 +24,14 @@ class TaskItem extends Component {
 		return (
 			<View style={styles.container}>
 				<View>
-					<Text style={{ color: "#3c3c3c", fontSize: 15 }}>{title}</Text>
-					<Text style={{ color: Colors.tintFont, fontSize: 13, paddingTop: 10, fontWeight: "200" }}>
+					<Text style={{ color: '#3c3c3c', fontSize: 15 }}>{title}</Text>
+					<Text style={{ color: Colors.tintFont, fontSize: 13, paddingTop: 10, fontWeight: '200' }}>
 						奖励 <Text style={{ color: Colors.theme }}>{reword}</Text>
 					</Text>
 				</View>
 				{status == 2 && (
 					<Button
-						name={"已完成"}
+						name={'已完成'}
 						outline
 						disabled
 						disabledColor={Colors.white}
@@ -54,7 +53,7 @@ class TaskItem extends Component {
 						{taskReward => {
 							return (
 								<Button
-									name={"领取奖励"}
+									name={'领取奖励'}
 									outline
 									style={{
 										borderRadius: 45,
@@ -84,13 +83,13 @@ class TaskItem extends Component {
 											result.errors = error;
 										}
 										if (result && result.errors) {
-											Methods.toast("领取失败,请检查你的网络哦~", -80);
+											Methods.toast('领取失败,请检查你的网络哦~', -80);
 										} else {
 											if (result.data.taskReward == 1) {
-												Methods.toast("领取成功", -80);
+												Methods.toast('领取成功', -80);
 												// this.handleRewardModalVisible();
 											} else {
-												Methods.toast("已经领取奖励了哦~", -80);
+												Methods.toast('已经领取奖励了哦~', -80);
 											}
 										}
 									}}
@@ -101,7 +100,7 @@ class TaskItem extends Component {
 				)}
 				{status == 0 && (
 					<Button
-						name={"做任务"}
+						name={'做任务'}
 						outline
 						style={{
 							borderRadius: 45,
@@ -121,7 +120,7 @@ class TaskItem extends Component {
 						{receiveTask => {
 							return (
 								<Button
-									name={"领取"}
+									name={'领取'}
 									outline
 									style={{
 										borderRadius: 45,
@@ -151,12 +150,12 @@ class TaskItem extends Component {
 											result.errors = error;
 										}
 										if (result && result.errors) {
-											Methods.toast("领取失败,请检查你的网络哦~", -80);
+											Methods.toast('领取失败,请检查你的网络哦~', -80);
 										} else {
 											if (result.data.receiveTask == 1) {
-												Methods.toast("领取成功", -80);
+												Methods.toast('领取成功', -80);
 											} else {
-												Methods.toast("已经领取该任务了哦~", -80);
+												Methods.toast('已经领取该任务了哦~', -80);
 											}
 										}
 									}}
@@ -182,9 +181,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		borderTopWidth: 1,
 		borderTopColor: Colors.lightBorder,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 		height: 72
 	}
 });

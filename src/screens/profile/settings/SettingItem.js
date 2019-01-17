@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import Colors from "../../../constants/Colors";
+import React, { Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import Colors from '../../../constants/Colors';
 
 class SettingItem extends Component {
 	render() {
 		let {
-			itemName = "",
+			itemName = '',
 			explain = null,
-			rightContent = "",
+			rightContent = '',
 			leftComponent = null,
 			rightComponent = null,
 			endItem = false,
@@ -17,8 +17,8 @@ class SettingItem extends Component {
 			<View
 				style={[
 					styles.settingItem,
-					endItem && { borderBottomColor: "transparent" },
-					horizontal && { justifyContent: "flex-start" }
+					endItem && { borderBottomColor: 'transparent' },
+					horizontal && { justifyContent: 'flex-start' }
 				]}
 			>
 				{leftComponent ? (
@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
 		height: 60,
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 		marginHorizontal: 15
 	},
 	itemName: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 	rightContent: {
 		fontSize: 13,
 		color: Colors.tintFont,
-		textAlign: "right",
+		textAlign: 'right',
 		paddingLeft: 15
 	}
 });

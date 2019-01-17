@@ -1,33 +1,17 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Platform, StatusBar } from "react-native";
-import { withNavigation } from "react-navigation";
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
-import { Colors, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
-// import HeaderLeft from "./HeaderLeft";
+import { Colors, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
 class Header extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
-		let {
-			routeName,
-			leftComponent,
-			centerComponent,
-			rightComponent,
-			navigation,
-			hidden = false,
-			lightBar = false,
-			customStyle = {},
-			backHandler,
-			onLayout = event => null
-		} = this.props;
+		let { routeName, headerLeft, headerRight, navigation, customStyle = {}, backHandler } = this.props;
 		return (
-			<View style={[styles.header, lightBar && styles.lightHeader, customStyle]} onLayout={onLayout}>
-				{leftComponent ? (
-					leftComponent
+			<View style={[styles.header, customStyle]}>
+				{headerLeft ? (
+					headerLeft
 				) : (
 					<TouchableOpacity
 						activeOpacity={1}
@@ -40,19 +24,15 @@ class Header extends React.Component {
 							}
 						}}
 					>
-						<Iconfont name={"left"} size={19} color={lightBar ? "#fff" : Colors.primaryFontColor} />
+						<Iconfont name={'left'} size={19} color={Colors.primaryFont} />
 					</TouchableOpacity>
 				)}
-				{centerComponent ? (
-					centerComponent
-				) : (
-					<View style={styles.title}>
-						<Text style={[styles.routeName, lightBar && { color: "#fff" }]}>
-							{routeName ? routeName : navigation.state.routeName}
-						</Text>
-					</View>
-				)}
-				{rightComponent && <View style={[styles.side, { right: 15 }]}>{rightComponent}</View>}
+
+				<View style={styles.title}>
+					<Text style={styles.routeName}>{routeName ? routeName : navigation.state.routeName}</Text>
+				</View>
+
+				{headerRight && <View style={[styles.side, { right: 15 }]}>{headerRight}</View>}
 			</View>
 		);
 	}
@@ -60,38 +40,30 @@ class Header extends React.Component {
 
 const styles = StyleSheet.create({
 	header: {
-		paddingTop: Divice.STATUSBAR_HEIGHT + 13,
-		paddingBottom: 15,
-		paddingHorizontal: 13,
-		height: StatusBar.currentHeight + 46,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		borderBottomWidth: 1,
-		borderBottomColor: Colors.lightBorder,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		height: Divice.STATUSBAR_HEIGHT + 46,
+		paddingTop: Divice.STATUSBAR_HEIGHT,
+		paddingHorizontal: 15,
 		backgroundColor: Colors.white
 	},
-	lightHeader: {
-		backgroundColor: "transparent",
-		borderBottomColor: "transparent"
-	},
 	side: {
-		position: "absolute",
-		flexDirection: "row",
-		alignItems: "center",
+		position: 'absolute',
+		flexDirection: 'row',
+		alignItems: 'center',
 		height: 40,
 		bottom: 2
 	},
 	title: {
 		flex: 1,
 		marginHorizontal: 40,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center"
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	routeName: {
-		fontSize: 15,
-		fontWeight: "400",
+		fontSize: 16,
 		color: Colors.black
 	}
 });
