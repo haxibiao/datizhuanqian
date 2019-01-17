@@ -30,7 +30,7 @@ class WithdrawApplyScreen extends Component {
 		return (
 			<Screen customStyle={{ backgroundColor: Colors.themeRed, borderBottomWidth: 0 }} routeName={'提现'}>
 				<Image
-					source={require('../../assets/images/money.png')}
+					source={require('../../../assets/images/money.png')}
 					style={{ width: width, height: (width * 617) / 1080 }}
 				/>
 				<View style={{ alignItems: 'center', paddingHorizontal: 20 }}>

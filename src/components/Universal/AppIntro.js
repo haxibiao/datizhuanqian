@@ -31,9 +31,7 @@ class AppIntro extends Component {
 	render() {
 		let { fadeAnim, bgc } = this.state;
 		let { navigation, showHome, introImages, actions, loading } = this.props;
-		console.log('height', height);
-		console.log('width', width);
-		console.log('StatusBar.currentHeight', StatusBar.currentHeight);
+
 		return (
 			<View style={[styles.appLaunch, { backgroundColor: bgc }]}>
 				{loading ? (
@@ -45,10 +43,10 @@ class AppIntro extends Component {
 						}}
 					>
 						<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginBottom: 200 }}>
-							<Image style={styles.loadingImage} source={require('../../assets/images/logo.png')} />
+							<Image style={styles.loadingImage} source={require('../../../assets/images/logo.png')} />
 							<Image
 								style={{ width: width - 40, height: (width - 40) / 4, marginTop: 30 }}
-								source={require('../../assets/images/name.jpeg')}
+								source={require('../../../assets/images/name.jpeg')}
 							/>
 						</View>
 

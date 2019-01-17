@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animated, Image } from "react-native";
-import BasicModal from "./BasicModal";
-import { Iconfont } from "../../utils/Fonts";
-import { Colors, Divice } from "../../constants";
-import { Button } from "../Control";
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions, Animated, Image } from 'react-native';
+import BasicModal from './BasicModal';
+import { Iconfont } from '../../utils/Fonts';
+import { Colors, Divice } from '../../constants';
+import { Button } from '../Control';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class NoTicketTipsModal extends Component {
 	render() {
@@ -18,18 +18,18 @@ class NoTicketTipsModal extends Component {
 					width: 260,
 					height: 300,
 					borderRadius: 5,
-					alignItems: "center",
-					justifyContent: "space-between"
+					alignItems: 'center',
+					justifyContent: 'space-between'
 				}}
 				header={<Text style={styles.false}>没有精力点了哦</Text>}
 			>
-				<Image source={require("../../assets/images/tips.png")} style={{ height: 100, width: 100 }} />
+				<Image source={require('../../../assets/images/tips.png')} style={{ height: 100, width: 100 }} />
 				<View style={styles.content}>
 					<Text style={styles.text}>继续答题将不再增加智慧点</Text>
 					<Text style={styles.text}>精力点将在每日凌晨0点自动恢复</Text>
 				</View>
 				<Button
-					name={"知道了"}
+					name={'知道了'}
 					disabled={false}
 					handler={handleVisible}
 					style={{ height: 34, paddingHorizontal: 42 }}
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 		color: Colors.grey
 	},
 	content: {
-		alignItems: "center"
+		alignItems: 'center'
 	},
 	text: {
 		fontSize: 13,

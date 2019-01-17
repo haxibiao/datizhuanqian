@@ -24,31 +24,23 @@ class App extends Component {
       isLoadingComplete: false,
       showHome: false,
       storageVersionNumber: '',
-      introImages: ''
+      introImages: '',
+      isConnected: true
     };
   }
 
   componentWillMount() {
     this.loadUserState();
     //用户状态加载
-    this.setState({
-      storageVersionNumber: 100,
-      introImages: []
+    NetInfo.isConnected.fetch().done(isConnected => {
+      if (isConnected) {
+        this.getAppIntro();
+      } else {
+        this.setState({
+          isConnected: false
+        });
+      }
     });
-    //首先检查手机网络状态  online 按照正常流程   offline强制使用原始启动页
-    // NetInfo.isConnected.fetch().done(isConnected => {
-
-    //   if (isConnected) {
-    //     this.loadAppIntro();
-    //   } else {
-    //     this.setState({
-    //       storageVersionNumber: 100,
-    //       introImages: []
-    //     });
-    //     //暂时方法
-    //   }
-    // });
-    //因为服务器原因  先注释功能  强制跳过检测
   }
 
   loadUserState = async () => {
@@ -60,24 +52,36 @@ class App extends Component {
     }
   };
 
-  loadAppIntro = async () => {
+  getAppIntro = async () => {
     this.setState({
       storageVersionNumber: (await Storage.getItem(ItemKeys.version)) ? await Storage.getItem(ItemKeys.version) : 1
     });
-    fetch(Config.ServerRoot + '/api/app-loading-image')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          introImages: data
-        });
-      })
-      .catch(err => {
-        this.setState({
-          introImages: []
-        });
-      });
-
     //获取localstorage version 第一次启动APP设置初始值1
+    if (this.state.storageVersionNumber < Config.AppVersionNumber) {
+      //减少请求次数  如果storageVersionNuber小于当前app的version   证明没有浏览过新版本app介绍页 发起获取介绍页请求
+      //大于等于则跳过显示原始启动页
+      Promise.race([
+        fetch(Config.ServerRoot + '/api/app-loading-image'),
+        new Promise(function(resolve, reject) {
+          setTimeout(() => reject(new Error('request timeout')), 2000);
+        })
+      ])
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            introImages: data
+          });
+        })
+        .catch(err => {
+          this.setState({
+            introImages: []
+          });
+        });
+    } else {
+      this.setState({
+        isConnected: false
+      });
+    }
   };
 
   handleFinishLoading = () => {
@@ -89,38 +93,38 @@ class App extends Component {
   };
 
   render() {
-    let { isLoadingComplete, showHome, introImages, storageVersionNumber } = this.state;
-
+    let { isLoadingComplete, showHome, introImages, storageVersionNumber, isConnected } = this.state;
     return (
       <View style={styles.container}>
         <Provider store={store}>
           <Apollo onReady={this.handleFinishLoading} />
         </Provider>
-        {
-          //为了防止出现闪屏首先判断storageVersionNumber和introImages是否有数据
-          //再判断介绍图是否有两张以上 并且localstorage version 小于 app version显示启动介绍页
-          //反之显示APP加载页
-          //无网状态下只渲染原始启动页  并且启动介绍页对每个版本只渲染一次
-        }
-
-        {storageVersionNumber && introImages ? (
-          introImages.length > 1 && storageVersionNumber < Config.AppVersionNumber ? (
-            !showHome && (
-              <AppIntro
-                showHome={showHome}
-                method={this.handleIntro}
-                introImages={introImages}
-                actions={() => {
-                  store.dispatch(actions.updateVersion(Config.AppVersionNumber));
-                }}
-              />
-              //介绍页
+        {isConnected ? (
+          //判断是否联网 有网就需要判断是否介绍图 以及版本号  无网不请求数据
+          storageVersionNumber && introImages ? (
+            //判断异步加载的 storgeVersion introImages 值是否拿到  没有值得时候拿白底渲染，防止UI跳动。
+            introImages.length > 1 ? (
+              //判断介绍图的数量
+              !showHome && (
+                <AppIntro
+                  showHome={showHome}
+                  method={this.handleIntro}
+                  introImages={introImages}
+                  actions={() => {
+                    store.dispatch(actions.updateVersion(Config.AppVersionNumber));
+                  }}
+                />
+                //浏览完介绍页之后会将版本号保存到storage中，只要不卸载APP，当前版本的介绍页就只渲染一次
+                //介绍页
+              )
+            ) : (
+              !isLoadingComplete && <AppIntro loading={true} /> //启动页
             )
           ) : (
-            !isLoadingComplete && <AppIntro loading={true} /> //加载页
+            <View style={styles.appLaunch} /> //预留底色
           )
         ) : (
-          <View style={styles.appLaunch} /> //预留底色
+          !isLoadingComplete && <AppIntro loading={true} /> //启动页
         )}
       </View>
     );

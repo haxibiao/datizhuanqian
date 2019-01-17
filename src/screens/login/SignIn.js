@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
-import { Colors, Config, Divice, Methods } from "../../constants";
-import { Header } from "../../components/Header";
+import { Colors, Config, Divice, Methods } from '../../constants';
+import { Header } from '../../components/Header';
 
-import Screen from "../Screen";
-import LoginInput from "./LoginInput";
+import Screen from '../Screen';
+import LoginInput from './LoginInput';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class SignIn extends Component {
 	constructor(props) {
@@ -16,11 +16,11 @@ class SignIn extends Component {
 		this.changeValue = this.changeValue.bind(this);
 		this.emptyValue = this.emptyValue.bind(this);
 		this.accountState = {
-			account: "",
-			password: ""
+			account: '',
+			password: ''
 		};
 		this.state = {
-			focusItem: "account",
+			focusItem: 'account',
 			modalVisible: false,
 			disableSubmit: true
 		};
@@ -40,47 +40,47 @@ class SignIn extends Component {
 	}
 
 	emptyValue(key) {
-		this.accountState[key] = "";
+		this.accountState[key] = '';
 	}
 
 	render() {
 		let { focusItem, modalVisible, disableSubmit } = this.state;
 		let { switchView, handleSubmit, navigation } = this.props;
-		console.log("charCodeAt", this.accountState.password.indexOf(" "));
+		console.log('charCodeAt', this.accountState.password.indexOf(' '));
 		return (
 			<View style={styles.container}>
-				<View style={{ justifyContent: "space-between", flex: 1 }}>
+				<View style={{ justifyContent: 'space-between', flex: 1 }}>
 					<View style={styles.top}>
-						<Image source={require("../../assets/images/logo.png")} style={styles.logo} />
+						<Image source={require('../../../assets/images/logo.png')} style={styles.logo} />
 					</View>
 					<View>
 						<View>
 							<LoginInput
-								name={"user"}
-								keys={"account"}
+								name={'user'}
+								keys={'account'}
 								focusItem={focusItem}
 								value={this.accountState.account}
 								focusKey={this.focusKey}
 								emptyValue={this.emptyValue}
-								placeholder={"手机号码/邮箱"}
+								placeholder={'手机号码/邮箱'}
 								changeValue={this.changeValue}
 							/>
 							<LoginInput
-								name={"lock"}
-								keys={"password"}
+								name={'lock'}
+								keys={'password'}
 								focusItem={focusItem}
 								value={this.accountState.password}
 								secure={true}
 								focusKey={this.focusKey}
-								placeholder={"密码"}
+								placeholder={'密码'}
 								changeValue={this.changeValue}
 								maxLength={16}
 							/>
 						</View>
-						<View style={{ marginTop: 10, alignItems: "flex-end" }}>
+						<View style={{ marginTop: 10, alignItems: 'flex-end' }}>
 							<TouchableOpacity
 								onPress={() => {
-									navigation.navigate("验证");
+									navigation.navigate('验证');
 								}}
 							>
 								<Text
@@ -104,11 +104,11 @@ class SignIn extends Component {
 									if (
 										(phoneReg.test(this.accountState.account) ||
 											mailReg.test(this.accountState.account)) &&
-										this.accountState.password.indexOf(" ") < 0
+										this.accountState.password.indexOf(' ') < 0
 									) {
 										handleSubmit(this.accountState);
 									} else {
-										Methods.toast("账号或密码错误", 80);
+										Methods.toast('账号或密码错误', 80);
 									}
 								}}
 								style={[
@@ -122,11 +122,11 @@ class SignIn extends Component {
 							</TouchableOpacity>
 						</View>
 					</View>
-					<View style={{ alignItems: "center" }}>
+					<View style={{ alignItems: 'center' }}>
 						<View
 							style={{
 								marginVertical: 15,
-								flexDirection: "row"
+								flexDirection: 'row'
 							}}
 						>
 							<Text
@@ -161,12 +161,12 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 		paddingHorizontal: 25,
 		paddingVertical: 15,
-		justifyContent: "space-between"
+		justifyContent: 'space-between'
 	},
 	top: {
 		marginTop: 20,
 		marginBottom: 20,
-		alignItems: "center"
+		alignItems: 'center'
 	},
 	logo: {
 		width: width / 4,
@@ -178,14 +178,14 @@ const styles = StyleSheet.create({
 	signInBtn: {
 		height: 42,
 		borderRadius: 5,
-		backgroundColor: "rgba(255,177,0,0.7)",
-		alignItems: "center",
-		justifyContent: "center"
+		backgroundColor: 'rgba(255,177,0,0.7)',
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	signInBtnText: {
 		fontSize: 18,
-		fontWeight: "300",
-		color: "#fff"
+		fontWeight: '300',
+		color: '#fff'
 	}
 });
 

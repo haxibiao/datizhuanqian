@@ -32,7 +32,7 @@ class LoadingError extends Component {
 			<View style={styles.container}>
 				{this.state.loading ? (
 					<View style={styles.container}>
-						<Image style={styles.image} source={require('../../assets/images/network.jpg')} />
+						<Image style={styles.image} source={require('../../../assets/images/network.jpg')} />
 						<Text style={{ fontSize, color: Colors.tintFont, marginVertical: 15, fontWeight: '300' }}>
 							{text ? text : '哎呀，网络好像出了点问题'}
 						</Text>

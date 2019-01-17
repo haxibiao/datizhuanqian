@@ -22,7 +22,7 @@ class AboutScreen extends Component {
 				<View style={styles.container}>
 					<View style={{ alignItems: 'center', marginTop: 15 }}>
 						<Image
-							source={require('../../../assets/images/logo.png')}
+							source={require('../../../../assets/images/logo.png')}
 							style={{ width: width / 4, height: width / 4 }}
 						/>
 						<Text style={{ color: Colors.black, fontSize: 15, margin: 20 }}>

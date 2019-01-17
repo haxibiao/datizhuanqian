@@ -18,7 +18,7 @@ class WithdrawsTips extends Component {
 				}}
 			>
 				<Image
-					source={require('../../assets/images/alipay.jpg')}
+					source={require('../../../assets/images/alipay.jpg')}
 					style={{ width: width / 3, height: width / 3 }}
 				/>
 				<Text style={{ color: Colors.grey, fontSize: 13, fontWeight: '300' }}>
