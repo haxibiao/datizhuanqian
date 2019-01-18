@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Dimensions } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
-import { Colors } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import { Colors } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class Question extends Component {
 	constructor(props) {
@@ -12,7 +12,7 @@ class Question extends Component {
 		this.state = {};
 	}
 	render() {
-		const { question, option, navigation, isMethod, value, changeValue, showColor, rightColor } = this.props;
+		const { question, option, isMethod, value, changeValue, pickColor, rightColor } = this.props;
 		return (
 			<View>
 				<Text style={styles.title}>{question.description}</Text>
@@ -40,7 +40,7 @@ class Question extends Component {
 									{
 										borderColor:
 											value == option.Value
-												? showColor
+												? pickColor
 												: option.Value == question.answer
 													? rightColor
 													: Colors.tintGray
@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
 		marginTop: 13,
 		borderWidth: 1,
 		borderRadius: 5,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center",
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		paddingVertical: 12,
 		paddingHorizontal: 15
 	}
