@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
-import { DivisionLine, ErrorBoundary, Header } from '../../components';
+import { DivisionLine, ErrorBoundary, Header, Screen } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
-import Screen from '../Screen';
 import TopUserInfo from './user/TopUserInfo';
 
 import { Storage, ItemKeys } from '../../store/localStorage';

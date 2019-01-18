@@ -1,3 +1,5 @@
+import CategoryCache from './Cache/CategoryCache';
+
 import Screen from './Container/Screen';
 
 import PlateItem from './ListItem/PlateItem';
@@ -21,6 +23,8 @@ import UpdateTipsModal from './Modal/UpdateTipsModal';
 import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
 
+import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
+
 import Avatar from './Universal/Avatar';
 import DivisionLine from './Universal/DivisionLine';
 import TabTop from './Universal/TabTop';
@@ -35,6 +39,8 @@ import WithdrawsTips from './Universal/WithdrawsTips';
 import AppIntro from './Universal/AppIntro';
 
 export {
+	CategoryCache,
+	//
 	Screen,
 	//
 	PlateItem,
@@ -57,6 +63,8 @@ export {
 	UpdateTipsModal,
 	RuleDescriptionModal,
 	WithdrawsTipsModal,
+	//
+	WithdrawsNotLogin,
 	//
 	Avatar,
 	DivisionLine,

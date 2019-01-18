@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar } from 'react-native';
 
-import { Header } from '../components';
+import Header from '../../components';
 
 class Screen extends Component {
 	render() {

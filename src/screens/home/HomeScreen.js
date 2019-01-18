@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, RefreshControl, Linking } from 'react-native';
 
 import {
-	Screen,
 	Header,
 	CheckUpdateModal,
 	UpdateTipsModal,
@@ -12,19 +11,16 @@ import {
 	ContentEnd,
 	Banner,
 	Loading,
-	PlateItem
+	PlateItem,
+	CategoryCache
 } from '../../components';
 import { Colors, Config, Divice, Methods } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
-
-import CategoryCache from './CategoryCache';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { Query, withApollo } from 'react-apollo';
-
-import codePush from 'react-native-code-push';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -34,10 +30,7 @@ class HomeScreen extends Component {
 		this.state = {
 			fetchingMore: true,
 			updateVisible: false,
-			mustUpdateVisible: false,
-			isMust: false,
-			versionInfo: null,
-			categoryCache: ''
+			mustUpdateVisible: false
 		};
 	}
 
@@ -86,7 +79,6 @@ class HomeScreen extends Component {
 				query: CategoriesQuery
 			})
 			.then(({ data }) => {
-				console.log('data CategoriesQuery', data);
 				this.props.dispatch(actions.categoryCache(data.categories));
 			})
 			.catch(error => {});

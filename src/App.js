@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Dimensions, NetInfo } from 'react-native';
+import { StyleSheet, View, StatusBar, Dimensions, NetInfo, YellowBox } from 'react-native';
 
 import { Config, Colors, Divice, Methods } from './constants';
 import { AppIntro } from './components';
@@ -27,6 +27,8 @@ class App extends Component {
   }
 
   componentWillMount() {
+    YellowBox.ignoreWarnings(['Require cycle:']);
+    //忽略互相引用组件的警告
     this.loadUserState();
     //用户状态加载
     NetInfo.isConnected.fetch().done(isConnected => {
