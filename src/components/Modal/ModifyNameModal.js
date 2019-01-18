@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from "react-native";
-import BasicModal from "./BasicModal";
-import { Iconfont } from "../../utils/Fonts";
-import Colors from "../../constants/Colors";
-const { width, height } = Dimensions.get("window");
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
+import BasicModal from './BasicModal';
+import { Iconfont } from '../../utils/Fonts';
+import Colors from '../../constants/Colors';
+const { width, height } = Dimensions.get('window');
 
 class ModifyNameModal extends Component {
 	render() {
-		const { modalName, visible, value, handleVisible, changeVaule, submit, placeholder } = this.props;
+		const { modalName, visible, value, handleVisible, changeValue, submit, placeholder } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -27,8 +27,8 @@ class ModifyNameModal extends Component {
 						autoFocus={true}
 						placeholder={placeholder}
 						placeholderText={Colors.tintFontColor}
-						onChangeText={changeVaule}
-						defaultValue={value + ""}
+						onChangeText={changeValue}
+						defaultValue={value + ''}
 						maxLength={8}
 					/>
 					<View style={styles.modalFooter}>
@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
 	},
 	modalFooter: {
 		marginTop: 20,
-		flexDirection: "row-reverse"
+		flexDirection: 'row-reverse'
 	},
 	modalFooterText: {
 		fontSize: 14,
-		fontWeight: "400",
+		fontWeight: '400',
 		color: Colors.primaryFont,
 		padding: 10
 	}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions } from 'react-native';
 
 import { TabTop, Banner, DivisionLine, WithdrawsTips, Header } from '../../components';
 import Screen from '../Screen';

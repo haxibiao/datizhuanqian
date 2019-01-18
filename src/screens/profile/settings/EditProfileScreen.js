@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import Toast from 'react-native-root-toast';
 
-import Screen from '../../Screen';
-import SettingItem from './SettingItem';
-
-import { DivisionLine, Avatar, Header, ModifyNameModal } from '../../../components';
+import { DivisionLine, Avatar, Header, ModifyNameModal, SettingItem, Screen } from '../../../components';
 import { Iconfont } from '../../../utils/Fonts';
 
-import { Colors, Config } from '../../../constants';
+import { Colors, Config, Methods } from '../../../constants';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
@@ -23,12 +20,12 @@ class EditProfileScreen extends Component {
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
 		this.state = {
 			modalVisible: false,
-			nickname: '',
-			avatar: ''
+			nickname: ''
 		};
 	}
 
-	_changeAvatar() {
+	//修改头像
+	changeAvatar() {
 		let { user } = this.props;
 		ImagePicker.openPicker({
 			width: 400,
@@ -62,6 +59,43 @@ class EditProfileScreen extends Component {
 			})
 			.catch(error => {});
 	}
+
+	//修改昵称
+	async changeName() {
+		let result = {};
+		let { nickname } = this.state;
+		const { navigation, user } = this.props;
+		console.log('nickname', nickname);
+		if (!nickname) {
+			this.toggleModalVisible();
+			return;
+		}
+
+		try {
+			result = await this.props.updateUserNameMutation({
+				variables: {
+					name: nickname
+				},
+				refetchQueries: updateUserName => [
+					{
+						query: UserQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -180); //Toast错误信息
+		} else {
+			this.toggleModalVisible();
+			this.props.dispatch(actions.updateName(nickname));
+			Methods.toast('修改成功', -180);
+		}
+	}
+
 	toggleModalVisible() {
 		this.setState(prevState => ({
 			modalVisible: !prevState.modalVisible
@@ -69,56 +103,44 @@ class EditProfileScreen extends Component {
 	}
 
 	render() {
-		let { navigation, user } = this.props;
+		const { navigation, user } = this.props;
 		const { pay_info_change_count } = navigation.state.params.user;
-		const { modalVisible, nickname, avatar } = this.state;
+		let { modalVisible, nickname } = this.state;
 		return (
 			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
 						<DivisionLine height={10} />
-						<TouchableOpacity
-							style={{
-								marginHorizontal: 15,
-								flexDirection: 'row',
-								alignItems: 'center',
-								justifyContent: 'space-between',
-								height: 80,
-								borderBottomWidth: 1,
-								borderBottomColor: Colors.lightBorder
-							}}
-							onPress={this._changeAvatar.bind(this)}
-						>
-							<Text>头像</Text>
-							<Avatar uri={user.avatar + '?t=' + Date.now()} size={42} />
-						</TouchableOpacity>
+						<SettingItem
+							rightComponent={<Avatar uri={user.avatar + '?t=' + Date.now()} size={42} />}
+							customStyle={{ height: 80 }}
+							itemName={'头像'}
+							handler={this.changeAvatar.bind(this)}
+						/>
 
-						<TouchableOpacity onPress={this.toggleModalVisible}>
-							<SettingItem itemName="设置昵称" rightSize={15} rightContent={user.name} />
-						</TouchableOpacity>
-						<TouchableOpacity>
-							<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
-						</TouchableOpacity>
-						<TouchableOpacity
-							onPress={() => navigation.navigate('我的账户')}
+						<SettingItem
+							itemName="设置昵称"
+							rightSize={15}
+							rightContent={user.name}
+							handler={this.toggleModalVisible}
+						/>
+						<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
+						<SettingItem
+							itemName="支付宝账号"
+							rightSize={15}
+							rightContent={
+								user.pay_account ? user.pay_account + '(' + user.real_name + ')' : '绑定支付宝'
+							}
 							disabled={pay_info_change_count == -1 ? true : false}
-						>
-							<SettingItem
-								itemName="支付宝账号"
-								rightSize={15}
-								rightContent={
-									user.pay_account ? user.pay_account + '(' + user.real_name + ')' : '绑定支付宝'
-								}
-							/>
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							onPress={() => {
+							handler={() => navigation.navigate('我的账户')}
+						/>
+						<SettingItem
+							itemName="重置密码"
+							rightSize={15}
+							handler={() => {
 								navigation.navigate('重置密码');
 							}}
-						>
-							<SettingItem itemName="重置密码" rightSize={15} />
-						</TouchableOpacity>
+						/>
 					</ScrollView>
 					<Mutation mutation={updateUserNameMutation}>
 						{updateUserName => {
@@ -129,30 +151,12 @@ class EditProfileScreen extends Component {
 									visible={modalVisible}
 									value={nickname}
 									handleVisible={this.toggleModalVisible}
-									changeVaule={val => {
+									changeValue={val => {
 										this.setState({
 											nickname: val
 										});
 									}}
-									submit={() => {
-										if (nickname.length < 1) {
-											this.toggleModalVisible();
-											return;
-										}
-										this.toggleModalVisible();
-										updateUserName({
-											variables: {
-												name: nickname
-											},
-											refetchQueries: updateUserName => [
-												{
-													query: UserQuery,
-													variables: { id: user.id }
-												}
-											]
-										});
-										this.props.dispatch(actions.updateName(nickname));
-									}}
+									submit={this.changeName.bind(this)}
 								/>
 							);
 						}}
@@ -171,5 +175,8 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => ({ user: store.users.user }))(
-	compose(graphql(updateUserAvatarMutation, { name: 'updateUserAvatarMutation' }))(EditProfileScreen)
+	compose(
+		graphql(updateUserAvatarMutation, { name: 'updateUserAvatarMutation' }),
+		graphql(updateUserNameMutation, { name: 'updateUserNameMutation' })
+	)(EditProfileScreen)
 );

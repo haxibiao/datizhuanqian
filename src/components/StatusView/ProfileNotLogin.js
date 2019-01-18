@@ -1,47 +1,43 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
-import { DivisionLine, ErrorBoundary, Avatar, Header } from '../../../components';
-import { Colors, Config, Divice } from '../../../constants';
-import { Iconfont } from '../../../utils/Fonts';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
 
-class UserCache extends Component {
+class ProfileNotLogin extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
 	render() {
-		let { navigation, refetch, userCache } = this.props;
-		console.log('userCache', userCache);
-		if (!userCache) return null;
+		let { navigation, login } = this.props;
+
 		return (
-			<TouchableOpacity style={styles.userInfoContainer} onPress={() => refetch()} activeOpacity={1}>
+			<TouchableOpacity
+				style={styles.userInfoContainer}
+				onPress={() => navigation.navigate('登录注册')}
+				activeOpacity={1}
+			>
 				<View style={styles.userInfo}>
 					<View style={{ flexDirection: 'row', marginLeft: 30 }}>
-						<View>
-							<Avatar
-								uri={userCache.avatar}
-								size={68}
-								borderStyle={{
-									borderWidth: 1,
-									borderColor: Colors.white
-								}}
-							/>
+						<View style={styles.defaultAvatar}>
+							<Iconfont name={'my'} size={44} color={Colors.lightFontColor} />
 						</View>
+
 						<View style={{ marginLeft: 20 }}>
 							<View style={styles.headerInfo}>
-								<Text style={styles.userName}>{userCache.name}</Text>
+								<Text style={styles.userName}>登录 / 注册</Text>
 								<View
 									style={{
 										flexDirection: 'row',
 										alignItems: 'center'
 									}}
 								>
-									<Text style={styles.level}>LV.{userCache.level && userCache.level.level}</Text>
+									<Text style={styles.level}>LV.0</Text>
 									<View style={styles.progress} />
 									<View
 										style={{
 											height: 10,
-											width: (userCache.exp * 150) / userCache.next_level_exp,
+											width: 0,
 											backgroundColor: Colors.orange,
 											borderRadius: 5,
 											marginLeft: 10,
@@ -61,14 +57,14 @@ class UserCache extends Component {
 					>
 						<View
 							style={{
-								paddingHorizontal: 20,
+								paddingRight: 20,
 								borderRightWidth: 1,
 								borderRightColor: '#CD6839'
 							}}
 						>
-							<Text style={{ color: Colors.orange }}>精力点: {userCache.ticket}</Text>
+							<Text style={{ color: Colors.orange }}>精力点: 0</Text>
 						</View>
-						<Text style={{ paddingLeft: 20, color: Colors.orange }}>智慧点: {userCache.gold}</Text>
+						<Text style={{ paddingLeft: 20, color: Colors.orange }}>智慧点: 0</Text>
 					</View>
 				</View>
 			</TouchableOpacity>
@@ -86,6 +82,14 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		borderBottomColor: Colors.lightBorder,
 		borderBottomWidth: 1
+	},
+	defaultAvatar: {
+		width: 68,
+		height: 68,
+		borderRadius: 34,
+		backgroundColor: Colors.tintGray,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	userInfo: {
 		marginTop: 65
@@ -115,4 +119,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default UserCache;
+export default ProfileNotLogin;

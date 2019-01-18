@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import Toast from 'react-native-root-toast';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import Screen from '../../Screen';
-
-import { Button } from '../../../components';
-
+import { Button, Input, Screen, DivisionLine } from '../../../components';
 import { Colors, Methods } from '../../../constants';
+
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
 import { UpdateUserPasswordMutation } from '../../../graphql/user.graphql';
-import { Mutation } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 
 class ChangePasswordScreen extends Component {
 	constructor(props) {
@@ -24,113 +21,79 @@ class ChangePasswordScreen extends Component {
 		};
 	}
 
-	render() {
+	//修改账号密码
+	async updatePassword() {
+		let { password, oldPassword, againpassword } = this.state;
 		const { navigation } = this.props;
+
+		if (password.indexOf(' ') >= 0) {
+			Methods.toast('密码格式错误', 70);
+		} else {
+			let result = {};
+			if (password == againpassword) {
+				try {
+					result = await this.props.UpdateUserPasswordMutation({
+						variables: {
+							old_password: oldPassword,
+							new_password: password
+						}
+					});
+				} catch (ex) {
+					result.errors = ex;
+				}
+				if (result && result.errors) {
+					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+					Methods.toast(str, -100); //打印错误信息
+				} else {
+					Methods.toast('新密码设置成功', -180);
+					navigation.goBack();
+				}
+			} else {
+				Methods.toast('两次输入的密码不一致', 80);
+			}
+		}
+	}
+
+	render() {
 		let { oldPassword, password, disabled, againpassword } = this.state;
-		console.log('old', oldPassword, password);
 		return (
 			<Screen>
-				<View style={styles.container}>
-					<View
-						style={{
-							height: 20,
-							backgroundColor: Colors.skinColor,
-							borderBottomWidth: 1,
-							borderBottomColor: Colors.lightBorder
-						}}
+				<DivisionLine height={10} />
+				<Input
+					placeholder={'请输入原始密码'}
+					password
+					changeValue={value => {
+						this.setState({
+							oldPassword: value
+						});
+					}}
+				/>
+				<Input
+					placeholder={'请输入新密码,不少于6位'}
+					password
+					changeValue={value => {
+						this.setState({
+							password: value
+						});
+					}}
+				/>
+				<Input
+					placeholder={'请再次输入新密码,不少于6位'}
+					password
+					changeValue={value => {
+						this.setState({
+							againpassword: value
+						});
+					}}
+				/>
+				<View style={{ margin: 20, height: 48 }}>
+					<Button
+						name="完成"
+						handler={this.updatePassword.bind(this)}
+						style={{ height: 38, fontSize: 16 }}
+						disabled={oldPassword && password.length > 5 && againpassword.length > 5 ? false : true}
+						disabledColor={'rgba(255,177,0,0.7)'}
 					/>
-					<View style={styles.textWrap}>
-						<TextInput
-							textAlignVertical="center"
-							underlineColorAndroid="transparent"
-							placeholder="请输入旧密码"
-							placeholderText={Colors.tintFontColor}
-							selectionColor={Colors.themeColor}
-							style={styles.textInput}
-							onChangeText={oldPassword => {
-								this.setState({ oldPassword });
-							}}
-							// maxLength={10}
-							secureTextEntry={true}
-							maxLength={16}
-						/>
-					</View>
-					<View style={styles.textWrap}>
-						<TextInput
-							textAlignVertical="center"
-							underlineColorAndroid="transparent"
-							placeholder="请输入新密码,不少于6位"
-							placeholderText={Colors.tintFontColor}
-							selectionColor={Colors.themeColor}
-							style={styles.textInput}
-							onChangeText={password => {
-								this.setState({ password });
-							}}
-							secureTextEntry={true}
-							maxLength={16}
-						/>
-					</View>
-					<View style={styles.textWrap}>
-						<TextInput
-							textAlignVertical="center"
-							underlineColorAndroid="transparent"
-							placeholder="请再次输入新密码"
-							placeholderText={Colors.tintFontColor}
-							selectionColor={Colors.themeColor}
-							style={styles.textInput}
-							onChangeText={againpassword => this.setState({ againpassword })}
-							secureTextEntry={true}
-							maxLength={16}
-						/>
-					</View>
-					<View style={{ margin: 20, height: 48 }}>
-						<Mutation mutation={UpdateUserPasswordMutation}>
-							{updateUserPassword => {
-								return (
-									<Button
-										name="完成"
-										handler={async () => {
-											if (password.indexOf(' ') >= 0) {
-												Methods.toast('密码格式错误', 70);
-											} else {
-												let result = {};
-												if (password == againpassword) {
-													try {
-														result = await updateUserPassword({
-															variables: {
-																old_password: oldPassword,
-																new_password: password
-															}
-														});
-													} catch (ex) {
-														result.errors = ex;
-													}
-													if (result && result.errors) {
-														let str = result.errors
-															.toString()
-															.replace(/Error: GraphQL error: /, '');
-														Methods.toast(str, -100); //打印错误信息
-													} else {
-														Methods.toast('新密码设置成功');
-														navigation.goBack();
-													}
-												} else {
-													Methods.toast('两次输入的密码不一致');
-												}
-											}
-										}}
-										style={{ height: 38, fontSize: 16 }}
-										disabled={
-											oldPassword && password.length > 5 && againpassword.length > 5
-												? false
-												: true
-										}
-										disabledColor={'rgba(255,177,0,0.7)'}
-									/>
-								);
-							}}
-						</Mutation>
-					</View>
 				</View>
 			</Screen>
 		);
@@ -141,28 +104,9 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white
-	},
-	textWrap: {
-		paddingHorizontal: 20,
-		borderBottomWidth: 1,
-		borderBottomColor: Colors.lightBorder,
-		position: 'relative'
-	},
-	textInput: {
-		fontSize: 16,
-		color: Colors.primaryFont,
-		padding: 0,
-		height: 50
-	},
-	repeat: {
-		position: 'absolute',
-		justifyContent: 'center',
-		alignItems: 'center',
-		right: 15,
-		top: 7
 	}
 });
 
-export default connect(store => ({
-	user: store.users.user
-}))(ChangePasswordScreen);
+export default compose(graphql(UpdateUserPasswordMutation, { name: 'UpdateUserPasswordMutation' }))(
+	ChangePasswordScreen
+);

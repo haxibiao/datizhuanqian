@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import { Avatar, LoadingError, BlankContent, UserProfileCache, ProfileNotLogin } from '../../../components';
 import { Iconfont } from '../../../utils/Fonts';
 import { Colors, Config } from '../../../constants';
-import { Avatar, LoadingError, BlankContent } from '../../../components';
 
-import { UserQuery } from '../../../graphql/user.graphql';
-import { Query, withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
-import NotLogin from './NotLogin';
-import UserCache from './UserCache';
-const { width, height } = Dimensions.get('window');
+import { UserQuery } from '../../../graphql/user.graphql';
+import { Query, withApollo } from 'react-apollo';
 
 class UserTopInfo extends Component {
 	constructor(props) {
@@ -31,16 +28,11 @@ class UserTopInfo extends Component {
 						variables: { id: userInfo.id }
 					})
 					.then(({ data }) => {
-						console.log('data UserQuery', data);
 						this.props.dispatch(actions.userCache(data.user));
 					})
 					.catch(error => {});
 			}
 		});
-	}
-
-	componentWillUnmount() {
-		this.didFocusSubscription.remove();
 	}
 
 	render() {
@@ -54,15 +46,14 @@ class UserTopInfo extends Component {
 						{({ data, loading, error, refetch }) => {
 							if (error)
 								return (
-									<UserCache
+									<UserProfileCache
 										navigation={navigation}
 										refetch={() => {
 											refetch();
 										}}
-										userCache={userCache}
 									/>
 								);
-							if (!(data && data.user)) return <NotLogin navigation={navigation} />;
+							if (!(data && data.user)) return <ProfileNotLogin navigation={navigation} />;
 							let user = data.user;
 							let avatar = user.avatar + '?t=' + Date.now();
 
@@ -94,35 +85,21 @@ class UserTopInfo extends Component {
 														}}
 													>
 														<Text style={styles.level}>LV.{user.level.level}</Text>
-														<View style={styles.progress} />
+														<View style={styles.backProgress} />
 														<View
-															style={{
-																height: 10,
-																width: (user.exp * 150) / user.next_level_exp,
-																backgroundColor: Colors.orange,
-																borderRadius: 5,
-																marginLeft: 10,
-																marginLeft: -150
-															}}
+															style={[
+																styles.progress,
+																{
+																	width: (user.exp * 150) / user.next_level_exp
+																}
+															]}
 														/>
 													</View>
 												</View>
 											</View>
 										</View>
-										<View
-											style={{
-												flexDirection: 'row',
-												justifyContent: 'center',
-												paddingVertical: 20
-											}}
-										>
-											<View
-												style={{
-													paddingHorizontal: 20,
-													borderRightWidth: 1,
-													borderRightColor: '#CD6839'
-												}}
-											>
+										<View style={styles.footer}>
+											<View style={styles.ticket}>
 												<Text style={{ color: Colors.orange }}>
 													精力点: {user.ticket ? user.ticket : '0'}
 												</Text>
@@ -137,7 +114,7 @@ class UserTopInfo extends Component {
 						}}
 					</Query>
 				) : (
-					<NotLogin navigation={navigation} />
+					<ProfileNotLogin navigation={navigation} />
 				)}
 			</View>
 		);
@@ -176,7 +153,7 @@ const styles = StyleSheet.create({
 		color: Colors.white,
 		fontSize: 12
 	},
-	progress: {
+	backProgress: {
 		height: 10,
 		width: 150,
 		backgroundColor: '#ffffff',
@@ -184,6 +161,23 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 		// borderWidth: 1,
 		// borderColor: "#FE9900"
+	},
+	progress: {
+		height: 10,
+		backgroundColor: Colors.orange,
+		borderRadius: 5,
+		marginLeft: 10,
+		marginLeft: -150
+	},
+	footer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		paddingVertical: 20
+	},
+	ticket: {
+		paddingHorizontal: 20,
+		borderRightWidth: 1,
+		borderRightColor: '#CD6839'
 	}
 });
 

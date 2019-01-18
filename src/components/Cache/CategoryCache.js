@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, RefreshControl, FlatList } from 'react-native';
+import { StyleSheet, View, Text, RefreshControl, FlatList } from 'react-native';
 
 import { Loading, ContentEnd, Banner, LoadingMore, TabTop, PlateItem } from '../../components';
 
@@ -7,8 +7,6 @@ import { Colors } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
 
 import { Storage, ItemKeys } from '../../store/localStorage';
-
-const { width, height } = Dimensions.get('window');
 
 class CategoryCache extends Component {
 	constructor(props) {

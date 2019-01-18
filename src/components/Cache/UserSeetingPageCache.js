@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
-import { Colors, Config, Divice } from '../../../constants';
-import { Iconfont } from '../../../utils/Fonts';
-import { Avatar, DivisionLine } from '../../../components';
+import { Colors, Config, Divice } from '../../constants';
+import { Iconfont } from '../../utils/Fonts';
+import { Avatar, DivisionLine } from '../../components';
 
-import { connect } from 'react-redux';
-import actions from '../../../store/actions';
-import { Storage, ItemKeys } from '../../../store/localStorage';
+import { Storage, ItemKeys } from '../../store/localStorage';
 
-class UserSeetingCache extends Component {
+class UserSeetingPageCache extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -29,42 +27,18 @@ class UserSeetingCache extends Component {
 		return (
 			<View>
 				<TouchableOpacity
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						justifyContent: 'space-between',
-						height: 80,
-						paddingHorizontal: 15
-					}}
+					style={styles.container}
 					onPress={() => navigation.navigate('编辑个人资料', { user: userCache })}
 				>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center'
-						}}
-					>
+					<View style={styles.left}>
 						<Avatar
 							uri={userCache.avatar}
 							size={52}
 							borderStyle={{ borderWidth: 1, borderColor: '#ffffff' }}
 						/>
-						<View
-							style={{
-								height: 34,
-								justifyContent: 'space-between',
-								marginLeft: 15
-							}}
-						>
+						<View style={styles.content}>
 							<Text style={{ color: Colors.black, fontSize: 15 }}>{userCache && userCache.name}</Text>
-							<Text
-								style={{
-									fontSize: 12,
-									color: Colors.grey,
-									fontWeight: '300',
-									paddingTop: 3
-								}}
-							>
+							<Text style={styles.user}>
 								LV.{userCache.level && userCache.level.level} {'  '}
 								{userCache.level.name} {'  '}
 								{userCache.exp}/{userCache.next_level_exp}
@@ -81,9 +55,26 @@ class UserSeetingCache extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: Colors.white
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		height: 80,
+		paddingHorizontal: 15
+	},
+	left: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	content: {
+		height: 34,
+		justifyContent: 'space-between',
+		marginLeft: 15
+	},
+	user: {
+		fontSize: 12,
+		color: Colors.grey,
+		fontWeight: '300',
+		paddingTop: 3
 	}
 });
-
-export default UserSeetingCache;
+export default UserSeetingPageCache;

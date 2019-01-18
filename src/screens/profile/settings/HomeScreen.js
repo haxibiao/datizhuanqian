@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, Linking } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Linking } from 'react-native';
 
-import Screen from '../../Screen';
+import { SignOutModal, CheckUpdateModal, DivisionLine, SettingItem, Screen } from '../../../components';
 import { Colors, Methods, Config } from '../../../constants';
 import { Iconfont } from '../../../utils/Fonts';
-
-import { SignOutModal, CheckUpdateModal, Header, Avatar, DivisionLine } from '../../../components';
-import SettingItem from './SettingItem';
 import SeetingPageUser from '../user/SeetingPageUser';
 
 import { NavigationActions } from 'react-navigation';
@@ -14,10 +11,6 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 import { Storage } from '../../../store/localStorage';
-
-import codePush from 'react-native-code-push';
-
-const { width, height } = Dimensions.get('window');
 
 const navigateAction = NavigationActions.navigate({
 	routeName: '主页',
@@ -33,63 +26,46 @@ class HomeScreen extends Component {
 		this.state = {
 			signOutModalVisible: false,
 			promotModalVisible: false,
-			fontModalVisible: false,
-			checkedWordSize: 1,
 			storageSize: '1MB'
 		};
 	}
 
 	render() {
-		let {
-			promotModalVisible,
-			signOutModalVisible,
-			fontModalVisible,
-			storageSize,
-			wordSize,
-			checkedWordSize
-		} = this.state;
+		let { promotModalVisible, signOutModalVisible, storageSize } = this.state;
 		const { navigation, users, client } = this.props;
-		const { login } = users;
-		const { id } = users.user;
+		const { login, user } = users;
 		return (
 			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
-						{login ? <SeetingPageUser navigation={navigation} id={id} /> : null}
-
-						<TouchableOpacity onPress={() => navigation.navigate('关于答题赚钱')}>
-							<SettingItem itemName="关于答题赚钱" />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate('等级说明')}>
-							<SettingItem itemName="等级说明" />
-						</TouchableOpacity>
-						{/*<TouchableOpacity onPress={() => navigation.navigate("用户协议")}>
-							<SettingItem itemName="用户协议" />
-						</TouchableOpacity>*/}
-						<TouchableOpacity onPress={() => navigation.navigate('分享给好友')}>
-							<SettingItem itemName="分享给好友" endItem />
-						</TouchableOpacity>
+						{login ? <SeetingPageUser navigation={navigation} id={user.id} /> : null}
+						<SettingItem itemName="关于答题赚钱" handler={() => navigation.navigate('关于答题赚钱')} />
+						<SettingItem itemName="等级说明" handler={() => navigation.navigate('等级说明')} />
+						<SettingItem itemName="用户协议" handler={() => navigation.navigate('用户协议')} />
+						<SettingItem itemName="分享给好友" handler={() => navigation.navigate('分享给好友')} endItem />
 						<DivisionLine height={10} />
-						<TouchableOpacity
-							onPress={() => {
+						<SettingItem
+							rightSize={15}
+							itemName="清除缓存"
+							rightContent={storageSize}
+							handler={() => {
 								this.clearCache();
 							}}
-						>
-							<SettingItem rightSize={15} itemName="清除缓存" rightContent={storageSize} />
-						</TouchableOpacity>
-						<TouchableOpacity
-							onPress={() => {
+						/>
+						{
+							//初步先用简单的判断版本号大小  外链到官网的下载地址，手动下载更新
+							//TODO:后期需要整合原生模块,在APP内部下载自动安装。
+						}
+						<SettingItem
+							rightSize={15}
+							itemName="检查更新"
+							rightContent={Config.AppVersion}
+							handler={() => {
 								Methods.achieveUpdate(this.handlePromotModalVisible);
 							}}
-						>
-							{
-								//初步先用简单的判断版本号大小  外链到官网的下载地址，手动下载更新
-								//TODO:后期需要整合原生模块,在APP内部下载自动安装。
-							}
-
-							<SettingItem rightSize={15} itemName="检查更新" rightContent={Config.AppVersion} endItem />
-						</TouchableOpacity>
+							endItem
+						/>
 						<DivisionLine height={10} />
 						{login && (
 							<View>
@@ -127,7 +103,7 @@ class HomeScreen extends Component {
 					cancel={this.handlePromotModalVisible}
 					confirm={() => {
 						this.handlePromotModalVisible();
-						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
+						this.openUrl('https://datizhuanqian.com');
 					}}
 					tips={'发现新版本'}
 				/>
@@ -147,7 +123,6 @@ class HomeScreen extends Component {
 	}
 
 	openUrl(url) {
-		console.log('uri', url);
 		Linking.openURL(url);
 	}
 
@@ -162,43 +137,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.white
 	},
-	settingItemContent: {
-		fontSize: 17,
-		color: Colors.tintFont
-	},
-	settingItemName: {
-		fontSize: 17,
-		color: Colors.primaryFont,
-		paddingRight: 10,
-		paddingBottom: 5
-	},
 	loginOut: {
 		paddingHorizontal: 15,
 		paddingVertical: 15,
 		alignItems: 'center'
-	},
-	fontSetting: {
-		paddingVertical: 15,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-	wordSize: {
-		fontSize: 17,
-		color: Colors.primaryFont
-	},
-	wordSizeModalFooter: {
-		marginTop: 20,
-		marginHorizontal: -20,
-		borderTopWidth: 1,
-		borderTopColor: Colors.lightBorder,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-	fontOperation: {
-		paddingVertical: 15,
-		paddingHorizontal: 20
 	}
 });
 

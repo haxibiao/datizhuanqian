@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import Colors from '../../../constants/Colors';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Colors } from '../../constants';
 
 class SettingItem extends Component {
 	render() {
 		let {
 			itemName = '',
-			explain = null,
 			rightContent = '',
 			leftComponent = null,
 			rightComponent = null,
 			endItem = false,
-			horizontal = false
+			customStyle = {},
+			handler,
+			disabled
 		} = this.props;
 		return (
-			<View
-				style={[
-					styles.settingItem,
-					endItem && { borderBottomColor: 'transparent' },
-					horizontal && { justifyContent: 'flex-start' }
-				]}
+			<TouchableOpacity
+				style={[styles.settingItem, customStyle, endItem && { borderBottomColor: 'transparent' }]}
+				onPress={handler}
+				disabled={disabled}
 			>
 				{leftComponent ? (
 					leftComponent
@@ -28,11 +27,6 @@ class SettingItem extends Component {
 						<Text numberOfLines={1} style={styles.itemName}>
 							{itemName}
 						</Text>
-						{explain && (
-							<Text numberOfLines={1} style={styles.explain}>
-								{explain}
-							</Text>
-						)}
 					</View>
 				)}
 				{rightComponent ? (
@@ -44,7 +38,7 @@ class SettingItem extends Component {
 						</Text>
 					</View>
 				)}
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }
@@ -62,11 +56,6 @@ const styles = StyleSheet.create({
 	itemName: {
 		fontSize: 15,
 		color: Colors.black
-	},
-	explain: {
-		fontSize: 12,
-		color: Colors.tintFont,
-		marginTop: 6
 	},
 	rightContent: {
 		fontSize: 13,
