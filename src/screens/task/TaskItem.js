@@ -150,7 +150,8 @@ class TaskItem extends Component {
 											result.errors = error;
 										}
 										if (result && result.errors) {
-											Methods.toast('领取失败,请检查你的网络哦~', -80);
+											let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+											Methods.toast(str, -100); //Toast错误信息
 										} else {
 											if (result.data.receiveTask == 1) {
 												Methods.toast('领取成功', -80);

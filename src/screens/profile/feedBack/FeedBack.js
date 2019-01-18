@@ -99,15 +99,25 @@ class FeedBack extends Component {
 									style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
 									theme={content ? Colors.blue : Colors.tintGray}
 									textColor={content ? Colors.white : Colors.grey}
-									handler={() => {
-										CreateFeedbackMutation({
-											variables: {
-												content: content,
-												contact: contact
-											}
-										});
-										Methods.toast('反馈成功', -180);
-										navigation.goBack();
+									handler={async () => {
+										let result = {};
+										try {
+											result = await CreateFeedbackMutation({
+												variables: {
+													content: content,
+													contact: contact
+												}
+											});
+										} catch (ex) {
+											result.errors = ex;
+										}
+										if (result && result.errors) {
+											let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+											Methods.toast(str, -180); //Toast错误信息
+										} else {
+											Methods.toast('反馈成功', -180);
+											navigation.goBack();
+										}
 									}}
 								/>
 							);

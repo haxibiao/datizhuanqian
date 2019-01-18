@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
 
-import { Colors } from '../../constants';
+import { Colors, Divice } from '../../constants';
 import { Iconfont } from '../../utils/Fonts';
-
-const { width, height } = Dimensions.get('window');
 
 class Question extends Component {
 	constructor(props) {
@@ -22,7 +20,7 @@ class Question extends Component {
 							uri: question.image.path
 						}}
 						style={{
-							width: width - 60,
+							width: Divice.width - 60,
 							height: (question.image.height / question.image.width) * (width - 60),
 							marginTop: 10,
 							borderRadius: 5

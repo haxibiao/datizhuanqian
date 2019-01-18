@@ -70,7 +70,8 @@ class LoginScreen extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				Methods.toast('登录失败，请检查邮箱和密码是否正确', 50);
+				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, -100); //Toast错误信息
 			} else {
 				const user = result.data.signIn;
 				this._saveUserData(user);
@@ -88,7 +89,8 @@ class LoginScreen extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				Methods.toast('注册失败，请检查邮箱地址是否已注册', 50);
+				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, -100); //Toast错误信息
 			} else {
 				const user = result.data.signUp;
 				this._saveUserData(user);

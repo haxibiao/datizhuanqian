@@ -29,7 +29,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.RuleDescriptionModalVisible = this.RuleDescriptionModalVisible.bind(this);
 		this.WithdrawsTipsModalVisible = this.WithdrawsTipsModalVisible.bind(this);
-		this._withdraws = this._withdraws.bind(this);
+		this.handleWithdraws = this.handleWithdraws.bind(this);
 		this.state = {
 			promotModalVisible: false,
 			RuleDescriptioVisible: false,
@@ -40,8 +40,8 @@ class HomeScreen extends Component {
 		};
 	}
 
-	//点击提现
-	_withdraws(user, amount, wallet) {
+	//处理提现
+	handleWithdraws(user, amount, wallet) {
 		this.setState({
 			clickControl: true
 		});
@@ -177,7 +177,7 @@ class HomeScreen extends Component {
 													<TouchableOpacity
 														style={styles.item}
 														onPress={() => {
-															this._withdraws(
+															this.handleWithdraws(
 																data.user,
 																luckyMoney.value,
 																data.user.wallet
