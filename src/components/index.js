@@ -7,6 +7,7 @@ import Screen from './Container/Screen';
 import PlateItem from './ListItem/PlateItem';
 import ProfileItem from './ListItem/ProfileItem';
 import SettingItem from './ListItem/SettingItem';
+import WithdrawsLogItem from './ListItem/WithdrawsLogItem';
 
 import Button from './Control/Button';
 import Radio from './Control/Radio';
@@ -54,6 +55,7 @@ export {
 	PlateItem,
 	ProfileItem,
 	SettingItem,
+	WithdrawsLogItem,
 	//
 	Button,
 	Radio,

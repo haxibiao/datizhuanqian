@@ -19,8 +19,6 @@ import actions from '../../store/actions';
 import { BoxShadow } from 'react-native-shadow';
 
 import TaskItem from './TaskItem';
-import NotLogin from '../withdraws/NotLogin';
-
 import { TasksQuery, ReceiveTaskMutation, CompleteTaskMutation } from '../../graphql/task.graphql';
 import { Query, Mutation } from 'react-apollo';
 

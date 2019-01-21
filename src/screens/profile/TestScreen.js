@@ -23,7 +23,6 @@ class TestScreen extends Component {
 	render() {
 		let { showHome, fadeAnim } = this.state;
 		let { navigation } = this.props;
-		console.log('fadeAnim', fadeAnim);
 		return (
 			<View // Special animatable View
 				style={{
