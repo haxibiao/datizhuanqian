@@ -1,12 +1,11 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
-import { Colors } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
+import { Colors } from '../../constants';
 
-import Screen from "../Screen";
+import Screen from '../Screen';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class SetQuestionScreen extends Component {
 	constructor(props) {

@@ -12,10 +12,10 @@ import {
 	Banner,
 	Loading,
 	PlateItem,
-	CategoryCache
+	CategoryCache,
+	Iconfont
 } from '../../components';
 import { Colors, Config, Divice, Methods } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';

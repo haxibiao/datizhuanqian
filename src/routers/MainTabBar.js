@@ -10,10 +10,9 @@ import {
     Button,
     FlatList
 } from 'react-native';
-import { Divice } from '../constants';
+import { Divice, Colors } from '../constants';
 
-import { Iconfont } from '../utils/Fonts';
-import { Colors } from '../constants';
+import { Iconfont } from '../components';
 
 class MainTabBar extends React.Component {
     renderItem = (route, index) => {

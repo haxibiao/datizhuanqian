@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, ScrollView } from 'react-native';
-import { Header, Button, PropDetailsModal, DivisionLine, ErrorBoundary, ContentEnd } from '../../components';
-
+import {
+	Header,
+	Button,
+	PropDetailsModal,
+	DivisionLine,
+	ErrorBoundary,
+	ContentEnd,
+	Iconfont,
+	Screen
+} from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import { connect } from 'react-redux';
-
-import Screen from '../Screen';
 
 class HomeScreen extends Component {
 	constructor(props) {

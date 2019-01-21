@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Linking } from 'r
 
 import { SignOutModal, CheckUpdateModal, DivisionLine, SettingItem, Screen } from '../../../components';
 import { Colors, Methods, Config } from '../../../constants';
-import { Iconfont } from '../../../utils/Fonts';
+
 import SeetingPageUser from '../user/SeetingPageUser';
 
 import { NavigationActions } from 'react-navigation';
@@ -35,7 +35,7 @@ class HomeScreen extends Component {
 		const { navigation, users, client } = this.props;
 		const { login, user } = users;
 		return (
-			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
+			<Screen>
 				<View style={styles.container}>
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>

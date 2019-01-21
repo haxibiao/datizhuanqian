@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
 import BasicModal from './BasicModal';
-import { Iconfont } from '../../utils/Fonts';
+
 import Colors from '../../constants/Colors';
 const { width, height } = Dimensions.get('window');
 

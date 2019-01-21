@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, 
 import { Button, Radio } from '../../components';
 
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import { connect } from 'react-redux';
 

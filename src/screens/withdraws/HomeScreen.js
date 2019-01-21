@@ -10,9 +10,10 @@ import {
 	WithdrawsTipsModal,
 	Button,
 	Screen,
-	WithdrawsNotLogin
+	WithdrawsNotLogin,
+	Iconfont
 } from '../../components';
-import { Iconfont } from '../../utils/Fonts';
+
 import { Colors, Methods, Divice } from '../../constants';
 
 import { connect } from 'react-redux';
@@ -135,7 +136,11 @@ class HomeScreen extends Component {
 			<Screen header>
 				<Header
 					headerLeft
-					customStyle={{ backgroundColor: Colors.theme }}
+					customStyle={{
+						backgroundColor: Colors.theme,
+						borderBottomWidth: 0,
+						borderBottomColor: 'transparent'
+					}}
 					headerRight={
 						<TouchableOpacity
 							onPress={() => {

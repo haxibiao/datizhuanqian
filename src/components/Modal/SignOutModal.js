@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from "react-native";
-import BasicModal from "./BasicModal";
-import { Iconfont } from "../../utils/Fonts";
-import Colors from "../../constants/Colors";
+import React, { Component } from 'react';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
+import BasicModal from './BasicModal';
+import { Iconfont } from '../utils/Fonts';
+import Colors from '../../constants/Colors';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 class SignOutModal extends Component {
 	render() {
-		const { visible, handleVisible, confirm, title = "提示" } = this.props;
+		const { visible, handleVisible, confirm, title = '提示' } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -21,8 +21,8 @@ class SignOutModal extends Component {
 					padding: 0
 				}}
 			>
-				<View style={{ alignItems: "center" }}>
-					<View style={{ height: 80, justifyContent: "center" }}>
+				<View style={{ alignItems: 'center' }}>
+					<View style={{ height: 80, justifyContent: 'center' }}>
 						<Text style={styles.modalRemindContent}>确认退出当前账号</Text>
 					</View>
 					<View style={styles.modalFooter}>
@@ -45,7 +45,7 @@ class SignOutModal extends Component {
 const styles = StyleSheet.create({
 	modalHeader: {
 		fontSize: 20,
-		fontWeight: "500",
+		fontWeight: '500',
 		color: Colors.primaryFont
 	},
 	modalRemindContent: {
@@ -55,18 +55,18 @@ const styles = StyleSheet.create({
 	modalFooter: {
 		borderTopWidth: 1,
 		borderTopColor: Colors.tintGray,
-		flexDirection: "row"
+		flexDirection: 'row'
 	},
 	operation: {
 		paddingVertical: 15,
 		flex: 1,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center"
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	operationText: {
 		fontSize: 15,
-		fontWeight: "400",
+		fontWeight: '400',
 		color: Colors.primaryFont
 	}
 });

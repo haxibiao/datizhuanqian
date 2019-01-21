@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Iconfont } from '../../utils/Fonts';
+import { Iconfont } from '../utils/Fonts';
 import Colors from '../../constants/Colors';
 
 import { Button } from '../../components';

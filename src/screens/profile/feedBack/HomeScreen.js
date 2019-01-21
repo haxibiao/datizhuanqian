@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from 'react-native';
 
 import { Methods, Colors } from '../../../constants';
-import { Iconfont } from '../../../utils/Fonts';
-import { Button, DivisionLine, Header, TabBarHeader } from '../../../components';
+
+import { Button, DivisionLine, Header, TabBarHeader, Iconfont } from '../../../components';
 import Screen from '../../Screen';
 import FeedBack from './FeedBack';
 import FeedBackList from './FeedBackList';

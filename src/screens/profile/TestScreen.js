@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, Animated } from 'react-native';
 import { DivisionLine, ErrorBoundary, ContentEnd, Button, Header } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import { connect } from 'react-redux';
 

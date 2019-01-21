@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 import Colors from '../../constants/Colors';
-import { Iconfont } from '../../utils/Fonts';
+import { Iconfont } from '../utils/Fonts';
 
 import NoTicketTipsModal from '../Modal/NoTicketTipsModal';
 

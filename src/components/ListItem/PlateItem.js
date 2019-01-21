@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
 import { Colors } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
+import { Iconfont } from '../utils/Fonts';
 
 const { width, height } = Dimensions.get('window');
 

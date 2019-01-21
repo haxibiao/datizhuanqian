@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
-import { Iconfont } from '../utils/Fonts';
+import { Iconfont } from '../components';
 import { Colors } from '../constants';
 
 import HomeScreen from '../screens/home/HomeScreen';

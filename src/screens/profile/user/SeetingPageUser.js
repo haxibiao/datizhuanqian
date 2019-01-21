@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 import { Colors, Config, Divice } from '../../../constants';
-import { Iconfont } from '../../../utils/Fonts';
-import { Avatar, DivisionLine, UserSeetingPageCache } from '../../../components';
+
+import { Avatar, DivisionLine, UserSeetingPageCache, Iconfont } from '../../../components';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';

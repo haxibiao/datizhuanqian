@@ -29,7 +29,7 @@ class WithdrawsLogScreen extends Component {
 		const { log, navigation } = this.props;
 		const { user } = navigation.state.params;
 		return (
-			<Screen customStyle={{ borderBottomColor: Colors.lightBorder, borderBottomWidth: 1 }}>
+			<Screen>
 				<Query query={WithdrawsQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;

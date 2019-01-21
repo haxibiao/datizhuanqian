@@ -3,7 +3,6 @@ import { StyleSheet, View, Text } from 'react-native';
 import Spinner from 'react-native-spinkit';
 
 import Colors from '../../constants/Colors';
-import { Iconfont } from '../../utils/Fonts';
 
 class LoadingMore extends Component {
 	render() {

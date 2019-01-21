@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { Avatar, LoadingError, BlankContent, UserProfileCache, ProfileNotLogin } from '../../../components';
-import { Iconfont } from '../../../utils/Fonts';
 import { Colors, Config } from '../../../constants';
 
 import { connect } from 'react-redux';

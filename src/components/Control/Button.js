@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
-import { Iconfont } from '../../utils/Fonts';
+import { Iconfont } from '../utils/Fonts';
 import Colors from '../../constants/Colors';
 
 class Button extends Component {

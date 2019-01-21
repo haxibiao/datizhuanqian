@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Iconfont } from '../../utils/Fonts';
 import Colors from '../../constants/Colors';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-import { Button } from '../../components';
+import { Button，Iconfont } from '../../components';
 
 class LoginInput extends Component {
 	constructor(props) {

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, RefreshControl, FlatList } from 'react-native';
 
-import { Loading, ContentEnd, Banner, LoadingMore, TabTop, PlateItem } from '../../components';
+import { Loading, ContentEnd, Banner, LoadingMore, TabTop, PlateItem, Iconfont } from '../../components';
 
 import { Colors } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import { Storage, ItemKeys } from '../../store/localStorage';
 

@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar 
 import Toast from 'react-native-root-toast';
 
 import { DivisionLine, Avatar, Header, ModifyNameModal, SettingItem, Screen } from '../../../components';
-import { Iconfont } from '../../../utils/Fonts';
 
 import { Colors, Config, Methods } from '../../../constants';
 

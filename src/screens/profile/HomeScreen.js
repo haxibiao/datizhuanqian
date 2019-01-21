@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
 import { DivisionLine, ErrorBoundary, Header, Screen, ProfileItem } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import TopUserInfo from './user/TopUserInfo';
 

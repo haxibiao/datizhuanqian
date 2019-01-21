@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Dimensions, FlatL
 
 import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
-import { Iconfont } from '../../../utils/Fonts';
 
 import { connect } from 'react-redux';
 

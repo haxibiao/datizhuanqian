@@ -13,7 +13,6 @@ import {
 import Header from '../Header/Header';
 import Button from '../Control/Button';
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import Swiper from 'react-native-swiper';
 

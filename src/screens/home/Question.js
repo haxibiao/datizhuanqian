@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
 
 import { Colors, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 class Question extends Component {
 	constructor(props) {

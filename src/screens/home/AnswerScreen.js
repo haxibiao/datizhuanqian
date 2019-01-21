@@ -10,11 +10,11 @@ import {
 	ErrorBoundary,
 	Button,
 	CorrectModal,
-	Screen
+	Screen,
+	Iconfont
 } from '../../components';
 
 import { Colors, Methods } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import Question from './Question';
 import { connect } from 'react-redux';

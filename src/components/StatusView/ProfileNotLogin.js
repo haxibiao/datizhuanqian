@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
+import { Iconfont } from '../utils/Fonts';
 
 class ProfileNotLogin extends Component {
 	constructor(props) {

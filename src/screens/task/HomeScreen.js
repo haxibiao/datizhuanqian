@@ -59,12 +59,12 @@ class HomeScreen extends Component {
 					headerLeft={<Text />}
 					customStyle={{
 						backgroundColor: Colors.theme,
-						borderBottomWidth: 0
+						borderBottomWidth: 0,
+						borderBottomColor: 'transparent'
 					}}
 				/>
 				<View style={styles.container}>
 					<TabTop user={user} />
-					{/*<Banner />*/}
 					{login ? (
 						<ScrollView>
 							<Query query={TasksQuery} variables={{ type: 0 }} fetchPolicy="network-only">

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import { Colors, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
+import { Iconfont } from '../utils/Fonts';
 
 class Header extends React.Component {
 	render() {
@@ -46,7 +46,9 @@ const styles = StyleSheet.create({
 		height: Divice.STATUSBAR_HEIGHT + 46,
 		paddingTop: Divice.STATUSBAR_HEIGHT,
 		paddingHorizontal: 15,
-		backgroundColor: Colors.white
+		backgroundColor: Colors.white,
+		borderBottomWidth: 1,
+		borderBottomColor: Colors.lightBorder
 	},
 	side: {
 		position: 'absolute',

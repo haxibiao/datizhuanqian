@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-import React, { Component } from "react";
-import { withNavigation } from "react-navigation";
+import React, { Component } from 'react';
+import { withNavigation } from 'react-navigation';
 
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Colors, Divice } from "../../constants";
-import { Iconfont } from "../../utils/Fonts";
-import CustomTabBar from "./CustomTabBar";
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Colors, Divice } from '../../constants';
+import { Iconfont } from '../utils/Fonts';
+import CustomTabBar from './CustomTabBar';
 
 class TabBarHeader extends Component {
 	render() {
@@ -14,7 +14,7 @@ class TabBarHeader extends Component {
 		return (
 			<View style={styles.header}>
 				<TouchableOpacity activeOpacity={1} style={styles.goBack} onPress={() => navigation.goBack()}>
-					<Iconfont name={"left"} size={19} color={Colors.primaryFont} />
+					<Iconfont name={'left'} size={19} color={Colors.primaryFont} />
 				</TouchableOpacity>
 				<CustomTabBar
 					tabUnderlineWidth={50}
@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
 	header: {
 		paddingTop: Divice.STATUSBAR_HEIGHT,
 		height: Divice.STATUSBAR_HEIGHT + 40,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
 		backgroundColor: Colors.skin
 	},
 	goBack: {
-		position: "absolute",
-		flexDirection: "row",
-		alignItems: "center",
+		position: 'absolute',
+		flexDirection: 'row',
+		alignItems: 'center',
 		width: 40,
 		height: 40,
 		bottom: 0,

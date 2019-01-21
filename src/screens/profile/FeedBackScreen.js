@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from 'react-native';
 
 import { Methods, Colors } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
-import { DivisionLine, Button } from '../../components';
+
+import { DivisionLine, Button, Iconfont } from '../../components';
 import Screen from '../Screen';
 
 import { CreateFeedbackMutation } from '../../graphql/user.graphql';

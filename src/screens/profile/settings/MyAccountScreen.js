@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 import { DivisionLine, Button, Input, Screen } from '../../../components';
-import { Iconfont } from '../../../utils/Fonts';
+
 import { Colors, Methods } from '../../../constants';
 
 import { connect } from 'react-redux';

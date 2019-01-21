@@ -46,6 +46,8 @@ import Banner from './Universal/Banner';
 import WithdrawsTips from './Universal/WithdrawsTips';
 import AppIntro from './Universal/AppIntro';
 
+import { Iconfont } from './utils/Fonts';
+
 export {
 	CategoryCache,
 	UserProfileCache,
@@ -93,5 +95,7 @@ export {
 	ErrorBoundary,
 	Banner,
 	WithdrawsTips,
-	AppIntro
+	AppIntro,
+	//
+	Iconfont
 };

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from 'react-native';
-import { Button, Header, PropDetailsModal, DivisionLine, ErrorBoundary, ContentEnd } from '../../components';
+import { Button, Header, PropDetailsModal, DivisionLine, ErrorBoundary, ContentEnd, Iconfont } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
 
 import PropItem from './PropItem';
 

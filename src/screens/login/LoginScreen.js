@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../Helpers';
-import { Screen } from '../../components';
-import { Iconfont } from '../../utils/Fonts';
+import { Screen, Iconfont } from '../../components';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';

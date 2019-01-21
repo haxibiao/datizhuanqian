@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 
-import { DivisionLine, ErrorBoundary, TaskRewardModal, Button } from '../../components';
+import { DivisionLine, ErrorBoundary, TaskRewardModal, Button, Screen } from '../../components';
 import { Colors, Config, Divice, Methods } from '../../constants';
-import { Iconfont } from '../../utils/Fonts';
-
-import Screen from '../Screen';
 
 import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../graphql/task.graphql';
 import { Mutation } from 'react-apollo';
