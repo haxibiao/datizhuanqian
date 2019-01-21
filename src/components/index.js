@@ -12,6 +12,7 @@ import WithdrawsLogItem from './ListItem/WithdrawsLogItem';
 import Button from './Control/Button';
 import Radio from './Control/Radio';
 import Input from './Control/Input';
+import LoginInput from './Control/LoginInput';
 
 import Header from './Header/Header';
 import TabBarHeader from './Header/TabBarHeader';
@@ -60,6 +61,7 @@ export {
 	Button,
 	Radio,
 	Input,
+	LoginInput,
 	//
 	Header,
 	TabBarHeader,

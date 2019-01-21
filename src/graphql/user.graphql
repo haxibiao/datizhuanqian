@@ -2,6 +2,7 @@
 mutation signUpMutation($account: String!, $password: String!) {
 	signUp(account: $account, password: $password) {
 		id
+		account
 		name
 		real_name
 		gender

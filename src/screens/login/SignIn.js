@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
-
-import { Colors, Config, Divice, Methods } from '../../constants';
-import { Header } from '../../components';
-
-import Screen from '../Screen';
-import LoginInput from './LoginInput';
-
-const { width, height } = Dimensions.get('window');
+import { StyleSheet, View, TouchableOpacity, Text, Image, Screen } from 'react-native';
+import { Colors, Config, Divice } from '../../constants';
+import { Methods } from '../../Helpers';
+import { Button, LoginInput } from '../../components';
 
 class SignIn extends Component {
 	constructor(props) {
@@ -22,8 +17,81 @@ class SignIn extends Component {
 		this.state = {
 			focusItem: 'account',
 			modalVisible: false,
-			disableSubmit: true
+			disableSubmit: true,
+			img: require('../../../assets/images/logo.png')
 		};
+	}
+
+	//登录
+	signIn = () => {
+		let { handleSubmit } = this.props;
+
+		if (Methods.regular(this.accountState.account) && this.accountState.password.indexOf(' ') < 0) {
+			handleSubmit(this.accountState);
+		} else {
+			Methods.toast('账号或密码错误', 80);
+		}
+	};
+
+	render() {
+		let { focusItem, modalVisible, disableSubmit, img } = this.state;
+		let { switchView, handleSubmit, navigation } = this.props;
+		return (
+			<View style={styles.container}>
+				<View style={styles.top}>
+					<Image source={img} style={styles.logo} />
+				</View>
+				<View>
+					<View>
+						<LoginInput
+							name={'user'}
+							keys={'account'}
+							focusItem={focusItem}
+							value={this.accountState.account}
+							focusKey={this.focusKey}
+							emptyValue={this.emptyValue}
+							placeholder={'手机号码/邮箱'}
+							changeValue={this.changeValue}
+						/>
+						<LoginInput
+							name={'lock'}
+							keys={'password'}
+							focusItem={focusItem}
+							value={this.accountState.password}
+							secure={true}
+							focusKey={this.focusKey}
+							placeholder={'密码'}
+							changeValue={this.changeValue}
+							maxLength={16}
+						/>
+					</View>
+					<View style={styles.centerRight}>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate('验证');
+							}}
+						>
+							<Text style={styles.rightText}>忘记密码？</Text>
+						</TouchableOpacity>
+					</View>
+					<Button
+						name={'登录'}
+						disabled={disableSubmit}
+						handler={this.signIn}
+						style={{ height: 42, marginTop: 20 }}
+						theme={Colors.theme}
+						fontSize={17}
+						disabledColor={'rgba(255,177,0,0.7)'}
+					/>
+				</View>
+				<View style={styles.footer}>
+					<Text style={styles.footerText}>还没有账号？</Text>
+					<TouchableOpacity onPress={switchView}>
+						<Text style={styles.signUp}>注册</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+		);
 	}
 
 	focusKey(key) {
@@ -42,117 +110,6 @@ class SignIn extends Component {
 	emptyValue(key) {
 		this.accountState[key] = '';
 	}
-
-	render() {
-		let { focusItem, modalVisible, disableSubmit } = this.state;
-		let { switchView, handleSubmit, navigation } = this.props;
-		console.log('charCodeAt', this.accountState.password.indexOf(' '));
-		return (
-			<View style={styles.container}>
-				<View style={{ justifyContent: 'space-between', flex: 1 }}>
-					<View style={styles.top}>
-						<Image source={require('../../../assets/images/logo.png')} style={styles.logo} />
-					</View>
-					<View>
-						<View>
-							<LoginInput
-								name={'user'}
-								keys={'account'}
-								focusItem={focusItem}
-								value={this.accountState.account}
-								focusKey={this.focusKey}
-								emptyValue={this.emptyValue}
-								placeholder={'手机号码/邮箱'}
-								changeValue={this.changeValue}
-							/>
-							<LoginInput
-								name={'lock'}
-								keys={'password'}
-								focusItem={focusItem}
-								value={this.accountState.password}
-								secure={true}
-								focusKey={this.focusKey}
-								placeholder={'密码'}
-								changeValue={this.changeValue}
-								maxLength={16}
-							/>
-						</View>
-						<View style={{ marginTop: 10, alignItems: 'flex-end' }}>
-							<TouchableOpacity
-								onPress={() => {
-									navigation.navigate('验证');
-								}}
-							>
-								<Text
-									style={{
-										fontSize: 14,
-										color: Colors.tintFont
-									}}
-								>
-									忘记密码？
-								</Text>
-							</TouchableOpacity>
-						</View>
-						<View style={{ marginTop: 20 }}>
-							<TouchableOpacity
-								disabled={disableSubmit}
-								onPress={() => {
-									const phoneReg = /^1[3-9]\d{9}$/;
-									const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-									// 因为给了手机号直接登录的功能  所以也做表单验证
-
-									if (
-										(phoneReg.test(this.accountState.account) ||
-											mailReg.test(this.accountState.account)) &&
-										this.accountState.password.indexOf(' ') < 0
-									) {
-										handleSubmit(this.accountState);
-									} else {
-										Methods.toast('账号或密码错误', 80);
-									}
-								}}
-								style={[
-									styles.signInBtn,
-									!disableSubmit && {
-										backgroundColor: Colors.theme
-									}
-								]}
-							>
-								<Text style={styles.signInBtnText}>登录</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-					<View style={{ alignItems: 'center' }}>
-						<View
-							style={{
-								marginVertical: 15,
-								flexDirection: 'row'
-							}}
-						>
-							<Text
-								style={{
-									fontSize: 16,
-									color: Colors.tintFontColor
-								}}
-							>
-								还没有账号？
-							</Text>
-							<TouchableOpacity onPress={switchView}>
-								<Text
-									style={{
-										fontSize: 16,
-										color: Colors.theme
-									}}
-								>
-									注册
-								</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				</View>
-			</View>
-		);
-	}
 }
 
 const styles = StyleSheet.create({
@@ -169,23 +126,30 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	logo: {
-		width: width / 4,
-		height: width / 4
+		width: Divice.width / 4,
+		height: Divice.width / 4
 	},
-	input: {
-		marginTop: 0
+	centerRight: {
+		marginTop: 10,
+		alignItems: 'flex-end'
 	},
-	signInBtn: {
-		height: 42,
-		borderRadius: 5,
-		backgroundColor: 'rgba(255,177,0,0.7)',
+	rightText: {
+		fontSize: 14,
+		color: Colors.tintFont
+	},
+	footer: {
+		justifyContent: 'center',
 		alignItems: 'center',
-		justifyContent: 'center'
+		marginVertical: 15,
+		flexDirection: 'row'
 	},
-	signInBtnText: {
-		fontSize: 18,
-		fontWeight: '300',
-		color: '#fff'
+	footerText: {
+		fontSize: 16,
+		color: Colors.tintFontColor
+	},
+	signUp: {
+		fontSize: 16,
+		color: Colors.theme
 	}
 });
 
