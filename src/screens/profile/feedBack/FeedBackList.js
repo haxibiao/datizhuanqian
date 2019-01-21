@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Dimensions, FlatList, Image } from 'react-native';
 
-import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header } from '../../../components';
+import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header, Screen } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 
 import { connect } from 'react-redux';
-
-import Screen from '../../Screen';
 
 const { width, height } = Dimensions.get('window');
 

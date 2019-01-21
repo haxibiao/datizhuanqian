@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 
 import { DivisionLine, ErrorBoundary, TaskRewardModal, Button, Screen } from '../../components';
-import { Colors, Config, Divice, Methods } from '../../constants';
+import { Colors, Config, Divice } from '../../constants';
+import { Methods } from '../../helpers';
 
 import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../graphql/task.graphql';
 import { Mutation } from 'react-apollo';

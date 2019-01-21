@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Screen } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods } from '../../Helpers';
+import { Methods } from '../../helpers';
 import { Button, LoginInput } from '../../components';
 
 class SignIn extends Component {

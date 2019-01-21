@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image, ScrollView } from 'react-native';
-
-import Screen from '../Screen';
+import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
-import { DivisionLine, TabTop, ErrorBoundary } from '../../components';
-
-const { width, height } = Dimensions.get('window');
+import { DivisionLine, Screen } from '../../components';
 
 class CommonIssueScreen extends Component {
 	constructor(props) {

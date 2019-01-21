@@ -3,7 +3,8 @@ import { StyleSheet, View, Text } from 'react-native';
 
 import { DivisionLine, Button, Input, Screen } from '../../../components';
 
-import { Colors, Methods } from '../../../constants';
+import { Colors } from '../../../constants';
+import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';

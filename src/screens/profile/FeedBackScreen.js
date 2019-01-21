@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, TextInput, Image } from 'react-native';
 
-import { Methods, Colors } from '../../constants';
+import { Colors } from '../../constants';
+import { Methods } from '../../helpers';
 
-import { DivisionLine, Button, Iconfont } from '../../components';
-import Screen from '../Screen';
+import { DivisionLine, Button, Iconfont, Screen } from '../../components';
 
 import { CreateFeedbackMutation } from '../../graphql/user.graphql';
 import { Mutation } from 'react-apollo';

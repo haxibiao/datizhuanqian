@@ -15,7 +15,8 @@ import {
 	CategoryCache,
 	Iconfont
 } from '../../components';
-import { Colors, Config, Divice, Methods } from '../../constants';
+import { Colors, Config, Divice } from '../../constants';
+import { Methods } from '../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';

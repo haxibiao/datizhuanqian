@@ -14,7 +14,8 @@ import {
 	Iconfont
 } from '../../components';
 
-import { Colors, Methods, Divice } from '../../constants';
+import { Colors, Divice } from '../../constants';
+import { Methods } from '../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';

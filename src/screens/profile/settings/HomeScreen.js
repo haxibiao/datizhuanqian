@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Linking } from 'react-native';
 
 import { SignOutModal, CheckUpdateModal, DivisionLine, SettingItem, Screen } from '../../../components';
-import { Colors, Methods, Config } from '../../../constants';
+import { Colors, Config } from '../../../constants';
+import { Methods } from '../../../helpers';
 
 import SeetingPageUser from '../user/SeetingPageUser';
 

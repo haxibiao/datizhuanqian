@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Dimensions, NetInfo, YellowBox } from 'react-native';
 
-import { Config, Colors, Divice, Methods } from './constants';
+import { Config, Colors, Divice } from './constants';
 import { AppIntro } from './components';
 //redux
 import { Provider, connect } from 'react-redux';

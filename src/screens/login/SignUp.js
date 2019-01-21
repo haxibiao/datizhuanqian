@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 import { Button, LoginInput } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods } from '../../Helpers';
+import { Methods } from '../../helpers';
 
 class SignUp extends Component {
 	constructor(props) {

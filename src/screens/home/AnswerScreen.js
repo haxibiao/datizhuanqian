@@ -14,7 +14,8 @@ import {
 	Iconfont
 } from '../../components';
 
-import { Colors, Methods } from '../../constants';
+import { Colors } from '../../constants';
+import { Methods } from '../../helpers';
 
 import Question from './Question';
 import { connect } from 'react-redux';

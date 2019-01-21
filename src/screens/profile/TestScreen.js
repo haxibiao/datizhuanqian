@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, Animated } from 'react-native';
-import { DivisionLine, ErrorBoundary, ContentEnd, Button, Header } from '../../components';
+import { DivisionLine, ErrorBoundary, ContentEnd, Button, Header, Screen } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import { connect } from 'react-redux';
 
-import Screen from '../Screen';
 import Swiper from 'react-native-swiper';
 
 const { width, height } = Dimensions.get('window');

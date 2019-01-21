@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Button, Screen } from '../../components';
+import { Colors } from '../../constants';
+import { Methods } from '../../helpers';
 
-import Screen from '../Screen';
-
-import { Button } from '../../components';
-
-import { Colors, Methods } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 

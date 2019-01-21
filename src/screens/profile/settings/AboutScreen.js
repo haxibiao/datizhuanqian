@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image } from 'react-native';
-
-import Screen from '../../Screen';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { Screen } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
-const { width, height } = Dimensions.get('window');
 
 class AboutScreen extends Component {
 	constructor(props) {
@@ -23,7 +21,7 @@ class AboutScreen extends Component {
 					<View style={{ alignItems: 'center', marginTop: 15 }}>
 						<Image
 							source={require('../../../../assets/images/logo.png')}
-							style={{ width: width / 4, height: width / 4 }}
+							style={{ width: Divice.width / 4, height: Divice.width / 4 }}
 						/>
 						<Text style={{ color: Colors.black, fontSize: 15, margin: 20 }}>
 							答题赚钱 {Config.AppVersion}

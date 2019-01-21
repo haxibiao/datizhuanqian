@@ -10,8 +10,7 @@ import {
 	DeviceEventEmitter
 } from 'react-native';
 
-import { TabTop, Banner, BlankContent, Button, Header } from '../../components';
-import Screen from '../Screen';
+import { TabTop, Banner, BlankContent, Button, Header, Screen } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import { connect } from 'react-redux';

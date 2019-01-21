@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import { Button, Input, Screen, DivisionLine } from '../../../components';
-import { Colors, Methods } from '../../../constants';
+import { Colors } from '../../../constants';
+import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';

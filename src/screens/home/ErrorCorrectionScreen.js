@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, TextInput } from 'react-native';
-import { Button, Radio } from '../../components';
+import { Button, Radio, Screen } from '../../components';
 
 import { Colors, Config, Divice } from '../../constants';
 
 import { connect } from 'react-redux';
-
-import Screen from '../Screen';
 
 const { width, height } = Dimensions.get('window');
 

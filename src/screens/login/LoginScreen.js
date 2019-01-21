@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods } from '../../Helpers';
+import { Methods } from '../../helpers';
 import { Screen, Iconfont } from '../../components';
 
 import SignIn from './SignIn';

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Dimensions, Image } from 'react-native';
-
-import Screen from '../../Screen';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { Screen } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
-
-const { width, height } = Dimensions.get('window');
 
 class LevelDescriptionScreen extends Component {
 	constructor(props) {
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
 	text: {
 		borderWidth: 1,
 		borderColor: Colors.lightBorder,
-		width: (width - 40) / 4,
+		width: (Divice.width - 40) / 4,
 		textAlign: 'center',
 		paddingVertical: 10,
 		fontSize: 13

@@ -1,6 +1,7 @@
-import Colors from "./Colors";
-import Config from "./Config";
-import Divice from "./Divice";
-import * as Methods from "./Methods";
+//公共常量
 
-export { Colors, Config, Divice, Methods };
+import Colors from './Colors';
+import Config from './Config';
+import Divice from './Divice';
+
+export { Colors, Config, Divice };

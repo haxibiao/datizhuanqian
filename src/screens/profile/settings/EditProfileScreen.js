@@ -4,7 +4,8 @@ import Toast from 'react-native-root-toast';
 
 import { DivisionLine, Avatar, Header, ModifyNameModal, SettingItem, Screen } from '../../../components';
 
-import { Colors, Config, Methods } from '../../../constants';
+import { Colors, Config } from '../../../constants';
+import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
