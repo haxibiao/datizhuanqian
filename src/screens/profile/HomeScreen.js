@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
-import { DivisionLine, ErrorBoundary, Header, Screen, ProfileItem } from '../../components';
+import { DivisionLine, ErrorBoundary, Header, Screen, ProfileItem, ProfileNotLogin } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import TopUserInfo from './user/TopUserInfo';
@@ -22,7 +22,8 @@ class HomeScreen extends Component {
 			<Screen header>
 				<View style={styles.container}>
 					<ScrollView bounces={false}>
-						<TopUserInfo navigation={navigation} />
+						{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
+
 						<DivisionLine height={10} />
 						{/*<ProfileItem
 							name={'我的道具'}

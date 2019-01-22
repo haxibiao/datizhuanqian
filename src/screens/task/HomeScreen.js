@@ -102,7 +102,8 @@ class HomeScreen extends Component {
 												{data.tasks.map((task, index) => {
 													return (
 														<TaskItem
-															title={task.description}
+															user={user}
+															title={task.name}
 															reword={`+${task.gold}智慧点`}
 															key={index}
 															handler={() => {

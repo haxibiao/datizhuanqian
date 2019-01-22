@@ -1,6 +1,7 @@
 import CategoryCache from './Cache/CategoryCache';
 import UserProfileCache from './Cache/UserProfileCache';
 import UserSeetingPageCache from './Cache/UserSeetingPageCache';
+import UserWithdrawsCache from './Cache/UserWithdrawsCache';
 
 import Screen from './Container/Screen';
 
@@ -52,6 +53,7 @@ export {
 	CategoryCache,
 	UserProfileCache,
 	UserSeetingPageCache,
+	UserWithdrawsCache,
 	//
 	Screen,
 	//

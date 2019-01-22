@@ -1,6 +1,6 @@
 #专题分类
-query CategoriesQuery($offset: Int, $limit: Int) {
-	categories(offset: $offset, limit: $limit) {
+query CategoriesQuer {
+	categories(limit: 10) {
 		id
 		name
 		description

@@ -11,6 +11,7 @@ import {
 	Button,
 	Screen,
 	WithdrawsNotLogin,
+	UserWithdrawsCache,
 	Iconfont
 } from '../../components';
 
@@ -156,8 +157,13 @@ class HomeScreen extends Component {
 				{login ? (
 					<Query query={UserQuery} variables={{ id: user.id }}>
 						{({ data, loading, error, refetch }) => {
-							if (error) return <LoadingError reload={() => refetch()} />;
+							//点击刷新
+							navigation.addListener('didFocus', payload => {
+								refetch();
+							});
+							if (error) return <UserWithdrawsCache luckyMoney={luckyMoney} />;
 							if (!(data && data.user)) return <BlankContent />;
+
 							return (
 								<View style={styles.container}>
 									<View style={styles.header}>

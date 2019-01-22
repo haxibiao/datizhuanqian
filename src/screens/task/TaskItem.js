@@ -6,6 +6,7 @@ import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../graphql/task.graphql';
+import { UserQuery } from '../../graphql/user.graphql';
 import { Mutation } from 'react-apollo';
 
 class TaskItem extends Component {
@@ -17,7 +18,7 @@ class TaskItem extends Component {
 		};
 	}
 	render() {
-		let { title, navigation, reword, status, handler, task_id, type } = this.props;
+		let { title, navigation, reword, status, handler, task_id, type, user } = this.props;
 		let { RewarVisible } = this.state;
 		return (
 			<View style={styles.container}>
@@ -74,6 +75,10 @@ class TaskItem extends Component {
 													{
 														query: TasksQuery,
 														variables: { type: type }
+													},
+													{
+														query: UserQuery,
+														variables: { id: user.id }
 													}
 												]
 											});

@@ -24,7 +24,11 @@ class UserCache extends Component {
 		let { userCache } = this.state;
 		if (!userCache) return null;
 		return (
-			<TouchableOpacity style={styles.userInfoContainer} onPress={() => refetch()} activeOpacity={1}>
+			<TouchableOpacity
+				style={styles.userInfoContainer}
+				onPress={() => navigation.navigate('编辑个人资料', { user: userCache })}
+				activeOpacity={1}
+			>
 				<View style={styles.userInfo}>
 					<View style={{ flexDirection: 'row', marginLeft: 30 }}>
 						<View>

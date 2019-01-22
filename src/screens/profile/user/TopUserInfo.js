@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
 import { UserQuery } from '../../../graphql/user.graphql';
-import { Query, withApollo } from 'react-apollo';
+import { Query, withApollo, compose, graphql } from 'react-apollo';
 
 class UserTopInfo extends Component {
 	constructor(props) {
@@ -15,107 +15,75 @@ class UserTopInfo extends Component {
 		this.state = {};
 	}
 
-	componentDidMount() {
-		const { navigation } = this.props;
-
-		this.didFocusSubscription = navigation.addListener('didFocus', payload => {
-			let { users, client, dispatch, login, userInfo } = this.props;
-			if (login) {
-				client
-					.query({
-						query: UserQuery,
-						variables: { id: userInfo.id }
-					})
-					.then(({ data }) => {
-						this.props.dispatch(actions.userCache(data.user));
-					})
-					.catch(error => {});
-			}
-		});
-	}
-
 	render() {
-		let { login, userInfo, navigation, userCache } = this.props;
-		const { exp, level, levelExp } = this.state;
+		const {
+			data,
+			navigation,
+			data: { loading, error, user, refetch }
+		} = this.props;
+
+		navigation.addListener('didFocus', payload => {
+			refetch();
+		});
+
+		if (error) return <UserProfileCache navigation={navigation} />;
+		if (loading) return <ProfileNotLogin navigation={navigation} />;
+		if (!(data && data.user)) return <ProfileNotLogin navigation={navigation} />;
+
+		let avatar = user.avatar + '?t=' + Date.now();
+		this.props.dispatch(actions.userCache(data.user));
 
 		return (
-			<View>
-				{login ? (
-					<Query query={UserQuery} variables={{ id: userInfo.id }}>
-						{({ data, loading, error, refetch }) => {
-							if (error)
-								return (
-									<UserProfileCache
-										navigation={navigation}
-										refetch={() => {
-											refetch();
-										}}
-									/>
-								);
-							if (!(data && data.user)) return <ProfileNotLogin navigation={navigation} />;
-							let user = data.user;
-							let avatar = user.avatar + '?t=' + Date.now();
-
-							return (
-								<TouchableOpacity
-									style={styles.userInfoContainer}
-									onPress={() => navigation.navigate('编辑个人资料', { user: user })}
-									activeOpacity={1}
+			<TouchableOpacity
+				style={styles.userInfoContainer}
+				onPress={() => navigation.navigate('编辑个人资料', { user: user })}
+				activeOpacity={1}
+			>
+				<View style={styles.userInfo}>
+					<View style={{ flexDirection: 'row', marginLeft: 30 }}>
+						<View style={{}}>
+							<Avatar
+								uri={avatar}
+								size={68}
+								borderStyle={{
+									borderWidth: 1,
+									borderColor: Colors.white
+								}}
+							/>
+						</View>
+						<View style={{ marginLeft: 20 }}>
+							<View style={styles.headerInfo}>
+								<Text style={styles.userName}>{user.name}</Text>
+								<View
+									style={{
+										flexDirection: 'row',
+										alignItems: 'center'
+									}}
 								>
-									<View style={styles.userInfo}>
-										<View style={{ flexDirection: 'row', marginLeft: 30 }}>
-											<View style={{}}>
-												<Avatar
-													uri={avatar}
-													size={68}
-													borderStyle={{
-														borderWidth: 1,
-														borderColor: Colors.white
-													}}
-												/>
-											</View>
-											<View style={{ marginLeft: 20 }}>
-												<View style={styles.headerInfo}>
-													<Text style={styles.userName}>{user.name}</Text>
-													<View
-														style={{
-															flexDirection: 'row',
-															alignItems: 'center'
-														}}
-													>
-														<Text style={styles.level}>LV.{user.level.level}</Text>
-														<View style={styles.backProgress} />
-														<View
-															style={[
-																styles.progress,
-																{
-																	width: (user.exp * 150) / user.next_level_exp
-																}
-															]}
-														/>
-													</View>
-												</View>
-											</View>
-										</View>
-										<View style={styles.footer}>
-											<View style={styles.ticket}>
-												<Text style={{ color: Colors.orange }}>
-													精力点: {user.ticket ? user.ticket : '0'}
-												</Text>
-											</View>
-											<Text style={{ paddingLeft: 20, color: Colors.orange }}>
-												智慧点: {user.gold ? user.gold : '0'}
-											</Text>
-										</View>
-									</View>
-								</TouchableOpacity>
-							);
-						}}
-					</Query>
-				) : (
-					<ProfileNotLogin navigation={navigation} />
-				)}
-			</View>
+									<Text style={styles.level}>LV.{user.level.level}</Text>
+									<View style={styles.backProgress} />
+									<View
+										style={[
+											styles.progress,
+											{
+												width: (user.exp * 150) / user.next_level_exp
+											}
+										]}
+									/>
+								</View>
+							</View>
+						</View>
+					</View>
+					<View style={styles.footer}>
+						<View style={styles.ticket}>
+							<Text style={{ color: Colors.orange }}>精力点: {user.ticket ? user.ticket : '0'}</Text>
+						</View>
+						<Text style={{ paddingLeft: 20, color: Colors.orange }}>
+							智慧点: {user.gold ? user.gold : '0'}
+						</Text>
+					</View>
+				</View>
+			</TouchableOpacity>
 		);
 	}
 }
@@ -181,5 +149,11 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => {
-	return { userInfo: store.users.user, login: store.users.login };
-})(withApollo(UserTopInfo));
+	return { userInfo: store.users.user };
+})(
+	compose(
+		graphql(UserQuery, {
+			options: props => ({ variables: { id: props.userInfo.id } })
+		})
+	)(withApollo(UserTopInfo))
+);

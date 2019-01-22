@@ -21,7 +21,7 @@ import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
-import { Query, withApollo } from 'react-apollo';
+import { Query, withApollo, compose, graphql } from 'react-apollo';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -72,17 +72,14 @@ class HomeScreen extends Component {
 					});
 			}
 		});
+
 		//当有用户seesion 过期时 ,清空redux 强制登录。
 		//删除此段代码后 更换账号登录后无法fetchQuery的BUG会再出现。预计还是未真正的解决apollo cache的bug
-
-		client
-			.query({
-				query: CategoriesQuery
-			})
-			.then(({ data }) => {
-				this.props.dispatch(actions.categoryCache(data.categories));
-			})
-			.catch(error => {});
+	}
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.data && nextProps.data.categories) {
+			nextProps.dispatch(actions.categoryCache(nextProps.data.categories));
+		}
 		//启动APP的时候存入分类数据
 	}
 
@@ -108,7 +105,7 @@ class HomeScreen extends Component {
 	}
 
 	render() {
-		const { navigation, user, nextPlate, login } = this.props;
+		const { navigation, user, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
 
 		return (
@@ -127,84 +124,7 @@ class HomeScreen extends Component {
 					// 	</TouchableOpacity>
 					// } //上线隐藏功能
 				/>
-
-				<Query query={CategoriesQuery}>
-					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error)
-							return (
-								<CategoryCache
-									navigation={navigation}
-									login={login}
-									refetch={() => {
-										refetch();
-									}}
-								/>
-							);
-						if (loading) return <Loading />;
-						if (!(data && data.categories)) return null;
-
-						return (
-							<View style={{ flex: 1 }}>
-								<TabTop />
-								<FlatList
-									data={data.categories}
-									refreshControl={
-										<RefreshControl
-											refreshing={loading}
-											onRefresh={refetch}
-											colors={[Colors.theme]}
-										/>
-									}
-									keyExtractor={(item, index) => index.toString()}
-									renderItem={({ item, index }) => (
-										<PlateItem category={item} navigation={navigation} login={login} />
-									)}
-									ListHeaderComponent={() => {
-										return <Banner />;
-									}}
-									onEndReachedThreshold={0.3}
-									onEndReached={() => {
-										if (data.categories) {
-											fetchMore({
-												variables: {
-													offset: data.categories.length
-												},
-												updateQuery: (prev, { fetchMoreResult }) => {
-													if (
-														!(
-															fetchMoreResult &&
-															fetchMoreResult.categories &&
-															fetchMoreResult.categories.length > 0
-														)
-													) {
-														this.setState({
-															fetchingMore: false
-														});
-														return prev;
-													}
-													return Object.assign({}, prev, {
-														categories: [...prev.categories, ...fetchMoreResult.categories]
-													});
-												}
-											});
-										} else {
-											this.setState({
-												fetchingMore: false
-											});
-										}
-									}}
-									ListFooterComponent={() => {
-										return this.state.fetchingMore ? (
-											<LoadingMore />
-										) : (
-											<ContentEnd content={'暂时没有更多分类~'} />
-										);
-									}}
-								/>
-							</View>
-						);
-					}}
-				</Query>
+				{this._renderCategoryList()}
 				<CheckUpdateModal
 					visible={updateVisible}
 					cancel={() => {
@@ -228,6 +148,87 @@ class HomeScreen extends Component {
 			</View>
 		);
 	}
+
+	_renderCategoryList = () => {
+		const {
+			data,
+			navigation,
+			user,
+			login,
+			data: { loading, error, categories, refetch, fetchMore }
+		} = this.props;
+		if (error)
+			return (
+				<CategoryCache
+					navigation={navigation}
+					login={login}
+					refetch={() => {
+						refetch();
+					}}
+				/>
+			);
+		if (loading) return <Loading />;
+		if (!(data && data.categories)) {
+			return null;
+		} else {
+			return (
+				<View style={{ flex: 1 }}>
+					<TabTop />
+					<FlatList
+						data={data.categories}
+						refreshControl={
+							<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
+						}
+						keyExtractor={(item, index) => index.toString()}
+						renderItem={({ item, index }) => (
+							<PlateItem category={item} navigation={navigation} login={login} />
+						)}
+						ListHeaderComponent={() => {
+							return <Banner />;
+						}}
+						onEndReachedThreshold={0.3}
+						onEndReached={() => {
+							if (data.categories) {
+								fetchMore({
+									variables: {
+										offset: data.categories.length
+									},
+									updateQuery: (prev, { fetchMoreResult }) => {
+										if (
+											!(
+												fetchMoreResult &&
+												fetchMoreResult.categories &&
+												fetchMoreResult.categories.length > 0
+											)
+										) {
+											this.setState({
+												fetchingMore: false
+											});
+											return prev;
+										}
+										return Object.assign({}, prev, {
+											categories: [...prev.categories, ...fetchMoreResult.categories]
+										});
+									}
+								});
+							} else {
+								this.setState({
+									fetchingMore: false
+								});
+							}
+						}}
+						ListFooterComponent={() => {
+							return this.state.fetchingMore ? (
+								<LoadingMore />
+							) : (
+								<ContentEnd content={'暂时没有更多分类~'} />
+							);
+						}}
+					/>
+				</View>
+			);
+		}
+	};
 }
 
 const styles = StyleSheet.create({
@@ -243,4 +244,4 @@ export default connect(store => {
 		login: store.users.login,
 		isUpdate: store.users.isUpdate
 	};
-})(withApollo(HomeScreen));
+})(compose(graphql(CategoriesQuery))(withApollo(HomeScreen)));
