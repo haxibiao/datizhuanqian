@@ -69,7 +69,7 @@ class HomeScreen extends Component {
 							icon={'feedback2'}
 							right
 							navigation={navigation}
-							handler={() => (login ? navigation.navigate('问题反馈') : navigation.navigate('登录注册'))}
+							handler={() => (login ? navigation.navigate('意见反馈') : navigation.navigate('登录注册'))}
 						/>
 						<DivisionLine height={10} />
 						<ProfileItem name={'设置'} icon={'setting1'} right navigation={navigation} />

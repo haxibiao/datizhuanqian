@@ -12,6 +12,7 @@ import MyAccountScreen from '../screens/profile/settings/MyAccountScreen';
 import SettingScreen from '../screens/profile/settings/HomeScreen';
 import AboutScreen from '../screens/profile/settings/AboutScreen';
 import FeedBackScreen from '../screens/profile/feedBack/HomeScreen';
+import FeedBackDetailsScreen from '../screens/profile/feedBack/FeedBackDetailsScreen';
 
 import ShareScreen from '../screens/profile/settings/ShareScreen';
 import LevelDescriptionScreen from '../screens/profile/settings/LevelDescriptionScreen';
@@ -74,6 +75,9 @@ export default {
 	},
 	问题反馈: {
 		screen: GoFeedBackScreen
+	},
+	反馈详情: {
+		screen: FeedBackDetailsScreen
 	},
 	我的道具: {
 		screen: MyPropScreen

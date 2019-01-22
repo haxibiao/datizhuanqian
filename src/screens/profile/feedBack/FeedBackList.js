@@ -73,13 +73,21 @@ class FeedBackList extends Component {
 	_feedbackItem = ({ item, index }) => {
 		let { navigation } = this.props;
 		return (
-			<TouchableOpacity style={styles.feedbackItem}>
+			<TouchableOpacity
+				style={styles.feedbackItem}
+				onPress={() => {
+					navigation.navigate('反馈详情');
+				}}
+			>
 				<View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
 					<Avatar uri={item.user.avatar} size={34} />
-					<Text style={{ paddingLeft: 10 }}>{item.user.name}</Text>
+					<View style={{ paddingLeft: 10, justifyContent: 'center' }}>
+						<Text style={{ color: Colors.black }}>风清扬</Text>
+						<Text style={{ fontSize: 12, color: Colors.grey, paddingTop: 5 }}>发布于3小时前</Text>
+					</View>
 				</View>
 				<View>
-					<Text>{item.description}</Text>
+					<Text style={{ fontSize: 15, lineHeight: 18 }}>{item.description}</Text>
 					<View style={{ flexDirection: 'row', marginTop: 10 }}>
 						{item.images.map((image, index) => {
 							return (
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white
 	},
 	feedbackItem: {
-		marginHorizontal: 10,
+		marginHorizontal: 15,
 		borderBottomColor: Colors.lightBorder,
 		borderBottomWidth: 1,
 		paddingVertical: 15
