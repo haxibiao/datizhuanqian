@@ -96,7 +96,7 @@ class Comments extends Component {
 							borderRadius: 3
 						}}
 					>
-						<Iconfont name={'like'} color={Colors.theme} size={14} />
+						<Iconfont name={'praise2'} color={Colors.theme} size={14} style={{ paddingRight: 5 }} />
 						<Text style={{ color: Colors.theme }}>{item.praise}</Text>
 					</View>
 					<View
@@ -111,7 +111,7 @@ class Comments extends Component {
 							marginLeft: 8
 						}}
 					>
-						<Iconfont name={'like'} color={Colors.black} size={14} />
+						<Iconfont name={'step2'} color={Colors.black} size={14} style={{ paddingRight: 5 }} />
 						<Text>{item.step}</Text>
 					</View>
 				</View>

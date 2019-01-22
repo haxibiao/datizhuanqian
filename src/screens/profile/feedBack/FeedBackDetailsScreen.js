@@ -21,7 +21,7 @@ class FeedBackDetailsScreen extends Component {
 		const { navigation } = this.props;
 		let { title, body, images } = this.state;
 		return (
-			<Screen>
+			<Screen headerRight={<Iconfont name={'more-horizontal'} size={18} color={Colors.primaryFont} />}>
 				<ScrollView style={styles.container}>
 					<View style={styles.header}>
 						<Text style={{ color: Colors.black, fontSize: 20 }}>{title}</Text>

@@ -2,7 +2,6 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 
-
 project.ext.react = [
     entryFile: "index.js",
     devDisabledInStaging: true,
@@ -22,7 +21,6 @@ project.ext.envConfigFiles = [
     xiaomi: ".env.xiaomi",
     baidu: ".env.baidu",
 ]
-
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: "../../node_modules/react-native/react.gradle"

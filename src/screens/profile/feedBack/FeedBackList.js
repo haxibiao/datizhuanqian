@@ -43,7 +43,7 @@ class FeedBackList extends Component {
 							});
 						}}
 					>
-						<Text>最新</Text>
+						<Text>反馈列表</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={{
@@ -58,7 +58,7 @@ class FeedBackList extends Component {
 							});
 						}}
 					>
-						<Text>我的建议</Text>
+						<Text>我的反馈</Text>
 					</TouchableOpacity>
 				</View>
 				<FlatList
@@ -87,7 +87,7 @@ class FeedBackList extends Component {
 					</View>
 				</View>
 				<View>
-					<Text style={{ fontSize: 15, lineHeight: 18 }}>{item.description}</Text>
+					<Text style={{ fontSize: 15, lineHeight: 18, color: Colors.black }}>{item.description}</Text>
 					<View style={{ flexDirection: 'row', marginTop: 10 }}>
 						{item.images.map((image, index) => {
 							return (
