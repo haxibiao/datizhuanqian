@@ -1,9 +1,11 @@
 import { NavigationActions } from 'react-navigation';
 import { Colors, Config } from '../constants';
 import { Storage, ItemKeys } from '../store/localStorage';
+
 import DeviceInfo from 'react-native-device-info';
 import codePush from 'react-native-code-push';
 import Toast from 'react-native-root-toast';
+import ImagePicker from 'react-native-image-crop-picker';
 
 /*防止页面重复跳转
 使用方法：navigation.dispatch(navigationAction({...}))
@@ -73,6 +75,17 @@ function regular(account) {
 
 	let value = phoneReg.test(account) || mailReg.test(account);
 	return value;
+}
+
+//选择图片
+function imagePicker(callback: Function) {
+	ImagePicker.openPicker({
+		multiple: true,
+		mediaType: 'photo',
+		includeBase64: true
+	})
+		.then(callback)
+		.catch(error => {});
 }
 
 //获取线上apk版本信息
@@ -169,4 +182,4 @@ const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceU
 };
 //首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。
 
-export { navigationAction, operationMiddleware, numberFormat, toast, regular, numberVersion };
+export { navigationAction, operationMiddleware, numberFormat, toast, regular, imagePicker, numberVersion };

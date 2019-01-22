@@ -43,7 +43,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: false,
+			login: true,
 			data: 0
 		};
 	}
@@ -154,7 +154,14 @@ class HomeScreen extends Component {
 													<Text style={{ fontSize: 16, color: Colors.black }}>每日任务</Text>
 												</View>
 												<TaskItem title={'参与10道答题'} reword={'+20精力点'} status={1} />
-												<TaskItem title={'完成5道题目纠错'} reword={'+20精力点'} status={0} />
+												<TaskItem
+													title={'完成5道题目纠错'}
+													reword={'+20精力点'}
+													status={0}
+													handler={() => {
+														navigation.navigate('提交任务');
+													}}
+												/>
 												<TaskItem title={'分享朋友圈'} reword={'+10精力点'} status={-1} />
 												<TaskItem title={'邀请新用户'} reword={'+15精力点'} status={2} />
 											</View>

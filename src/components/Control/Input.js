@@ -4,21 +4,41 @@ import { Colors } from '../../constants';
 
 class Input extends Component {
 	render() {
-		let { customStyle = {}, placeholder, password, changeValue, defaultValue, editable } = this.props;
+		let {
+			customStyle = {},
+			placeholder,
+			password,
+			changeValue,
+			defaultValue,
+			editable,
+			maxLength,
+			multiline,
+			underline
+		} = this.props;
 		return (
-			<View style={[styles.textWrap, customStyle]}>
+			<View
+				style={[
+					styles.textWrap,
+					underline && {
+						borderBottomWidth: 0,
+						borderBottomColor: Colors.white
+					}
+				]}
+			>
 				<TextInput
 					textAlignVertical="center"
 					underlineColorAndroid="transparent"
+					textAlignVertical={'top'}
 					autoCapitalize={'none'}
 					secureTextEntry={password}
 					defaultValue={defaultValue}
-					maxLength={16}
+					maxLength={maxLength ? maxLength : 16}
+					multiline={multiline}
 					editable={editable}
 					placeholder={placeholder}
 					placeholderText={Colors.tintFont}
-					selectionColor={Colors.theme}
-					style={styles.textInput}
+					selectionColor={Colors.grey}
+					style={[styles.textInput, customStyle]}
 					onChangeText={value => {
 						changeValue(value);
 					}}

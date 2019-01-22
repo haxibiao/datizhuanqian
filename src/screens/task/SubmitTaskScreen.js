@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { DivisionLine, Button, Iconfont, Screen, Input } from '../../../components';
+import { DivisionLine, Button, Iconfont, Screen, Input } from '../../components';
 
-import { Colors, Divice } from '../../../constants';
-import { Methods } from '../../../helpers';
+import { Colors, Divice } from '../../constants';
+import { Methods } from '../../helpers';
 
-import { CreateFeedbackMutation } from '../../../graphql/user.graphql';
-import { Mutation } from 'react-apollo';
-
-class FeedBack extends Component {
+class SubmitTaskScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -36,9 +33,8 @@ class FeedBack extends Component {
 		const { navigation } = this.props;
 
 		return (
-			<Screen header>
+			<Screen>
 				<View style={styles.container}>
-					{/*<Text style={{ paddingHorizontal: 15, paddingVertical: 10, color: Colors.gery }}>反馈内容</Text>*/}
 					<DivisionLine height={5} />
 					<View style={styles.main}>
 						<Input
@@ -79,38 +75,13 @@ class FeedBack extends Component {
 						<View style={styles.mainBottom} />
 					</View>
 
-					<Mutation mutation={CreateFeedbackMutation}>
-						{CreateFeedbackMutation => {
-							return (
-								<Button
-									name={'提交'}
-									style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
-									theme={content ? Colors.blue : Colors.tintGray}
-									textColor={content ? Colors.white : Colors.grey}
-									handler={async () => {
-										let result = {};
-										try {
-											result = await CreateFeedbackMutation({
-												variables: {
-													content: content,
-													contact: contact
-												}
-											});
-										} catch (ex) {
-											result.errors = ex;
-										}
-										if (result && result.errors) {
-											let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-											Methods.toast(str, -180); //Toast错误信息
-										} else {
-											Methods.toast('反馈成功', -180);
-											navigation.goBack();
-										}
-									}}
-								/>
-							);
-						}}
-					</Mutation>
+					<Button
+						name={'提交'}
+						style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
+						theme={content ? Colors.blue : Colors.tintGray}
+						textColor={content ? Colors.white : Colors.grey}
+						handler={() => {}}
+					/>
 				</View>
 			</Screen>
 		);
@@ -168,4 +139,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default FeedBack;
+export default SubmitTaskScreen;
