@@ -5,11 +5,16 @@ import { DivisionLine, Button, Iconfont, Screen, Input } from '../../components'
 import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
+import { ReplyTaskMutation, TasksQuery } from '../../graphql/task.graphql';
+import { graphql, compose } from 'react-apollo';
+
+let arry = {};
+
 class SubmitTaskScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			content: 'null',
+			content: '',
 			pictures: []
 		};
 	}
@@ -25,19 +30,50 @@ class SubmitTaskScreen extends Component {
 				this.setState({
 					pictures: pictures.slice(0, 6)
 				});
+				arry['screenshots'] = pictures.slice(0, 6);
 				Methods.toast('最大上传不超过6张图片');
 			} else {
 				this.setState({
 					pictures
 				});
+				arry['screenshots'] = pictures;
 			}
 		});
 	};
 
+	async submitTask() {
+		const { navigation } = this.props;
+		let { content, pictures } = this.state;
+		const { task_id } = navigation.state.params;
+		let result = {};
+		try {
+			result = await this.props.ReplyTaskMutation({
+				variables: {
+					task_id: task_id,
+					content: arry
+				},
+				refetchQueries: () => [
+					{
+						query: TasksQuery
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			console.log('提交失败', result.errors);
+		} else {
+			Methods.toast('提交成功,工作人员会尽快审核您的答复信息', -100);
+			this.props.navigation.goBack();
+		}
+	}
 	render() {
 		let { content, pictures } = this.state;
 		const { navigation } = this.props;
 		console.log('pictures', pictures);
+		console.log('content', content);
+		console.log('content', content);
 		return (
 			<Screen>
 				<View style={styles.container}>
@@ -62,6 +98,8 @@ class SubmitTaskScreen extends Component {
 							this.setState({
 								content: value
 							});
+							arry['content'] = content;
+							console.log('arry', arry);
 						}}
 					/>
 					<View style={styles.main}>
@@ -110,7 +148,9 @@ class SubmitTaskScreen extends Component {
 						style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
 						theme={pictures.length > 0 ? Colors.theme : Colors.tintGray}
 						textColor={pictures.length > 0 ? Colors.white : Colors.grey}
-						handler={() => {}}
+						handler={() => {
+							this.submitTask();
+						}}
 					/>
 				</View>
 			</Screen>
@@ -169,4 +209,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SubmitTaskScreen;
+export default compose(graphql(ReplyTaskMutation, { name: 'ReplyTaskMutation' }))(SubmitTaskScreen);

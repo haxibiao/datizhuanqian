@@ -43,7 +43,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: false,
+			login: true,
 			data: 0
 		};
 	}
@@ -107,12 +107,11 @@ class HomeScreen extends Component {
 															reword={`+${task.gold}智慧点`}
 															key={index}
 															handler={() => {
-																navigation.navigate('编辑个人资料');
+																navigation.navigate('编辑个人资料', { user: user });
 															}}
 															navigation={navigation}
 															task_id={task.id}
 															status={task.taskStatus}
-															type={0}
 														/>
 													);
 												})}
@@ -127,12 +126,13 @@ class HomeScreen extends Component {
 									navigation.addListener('didFocus', payload => {
 										refetch();
 									});
+
 									if (error) return null;
-									if (!(data && data.tasks)) return null;
+									if (!(data && data.tasks && data.task == [])) return null;
 									return (
 										<BoxShadow
 											setting={Object.assign({}, shadowOpt, {
-												height: 46 + 72 * 4
+												height: 46 + 72 * data.tasks.length
 											})}
 										>
 											<View
@@ -166,6 +166,60 @@ class HomeScreen extends Component {
 												/>
 												<TaskItem title={'分享朋友圈'} reword={'+10精力点'} status={-1} />
 												<TaskItem title={'邀请新用户'} reword={'+15精力点'} status={2} />
+											</View>
+										</BoxShadow>
+									);
+									//先静态UI用来测试
+								}}
+							</Query>
+							<Query query={TasksQuery} variables={{ type: 2 }}>
+								{({ data, error, loading, refetch }) => {
+									navigation.addListener('didFocus', payload => {
+										refetch();
+									});
+									if (error) return null;
+									if (!(data && data.tasks)) return null;
+									return (
+										<BoxShadow
+											setting={Object.assign({}, shadowOpt, {
+												height: 46 + 72 * data.tasks.length
+											})}
+										>
+											<View
+												style={{
+													backgroundColor: Colors.white,
+													borderRadius: 10,
+													height: 46 + 72 * data.tasks.length,
+													shadowOffset: { width: 5, height: 5 },
+													shadowColor: '#E8E8E8',
+													shadowOpacity: 0.8,
+													shadowRadius: 10
+												}}
+											>
+												<View
+													style={{
+														marginHorizontal: 15,
+														paddingVertical: 15
+													}}
+												>
+													<Text style={{ fontSize: 16, color: Colors.black }}>成长任务</Text>
+												</View>
+												{data.tasks.map((task, index) => {
+													return (
+														<TaskItem
+															user={user}
+															title={task.name}
+															reword={`+${task.gold}智慧点`}
+															key={index}
+															handler={() => {
+																navigation.navigate('提交任务', { task_id: task.id });
+															}}
+															navigation={navigation}
+															task_id={task.id}
+															status={task.taskStatus}
+														/>
+													);
+												})}
 											</View>
 										</BoxShadow>
 									);

@@ -24,7 +24,7 @@ class TaskItem extends Component {
 			<TouchableOpacity
 				style={styles.container}
 				onPress={() => {
-					navigation.navigate('任务详情');
+					navigation.navigate('任务详情', { task_id: task_id });
 				}}
 			>
 				<View>
@@ -149,8 +149,7 @@ class TaskItem extends Component {
 												},
 												refetchQueries: () => [
 													{
-														query: TasksQuery,
-														variables: { type: type }
+														query: TasksQuery
 													}
 												]
 											});

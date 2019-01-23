@@ -24,3 +24,23 @@ mutation ReceiveTaskMutation($task_id: Int!) {
 mutation TaskRewardMutation($task_id: Int!) {
 	taskReward(task_id: $task_id)
 }
+
+#任务详情
+query TaskQuery($task_id: Int!) {
+	task(task_id: $task_id) {
+		id
+		name
+		details
+		type
+		gold
+		ticket
+		count
+		merchant_id
+		status
+	}
+}
+
+#答复任务
+mutation ReplyTaskMutation($task_id: Int!, $content: ReplyContent) {
+	replyTask(task_id: $task_id, content: $content)
+}
