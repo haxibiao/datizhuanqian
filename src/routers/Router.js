@@ -31,6 +31,7 @@ import WithdrawDetailsScreen from '../screens/withdraws/WithdrawDetailsScreen';
 import WithdrawApplyScreen from '../screens/withdraws/WithdrawApplyScreen';
 
 import SubmitTaskScreen from '../screens/task/SubmitTaskScreen';
+import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
 
 export default {
 	主页: {
@@ -116,5 +117,8 @@ export default {
 	//提现
 	提交任务: {
 		screen: SubmitTaskScreen
+	},
+	任务详情: {
+		screen: TaskDetailsScreen
 	}
 };

@@ -20,7 +20,7 @@ class Question extends Component {
 						}}
 						style={{
 							width: Divice.width - 60,
-							height: (question.image.height / question.image.width) * (width - 60),
+							height: (question.image.height / question.image.width) * (Divice.width - 60),
 							marginTop: 10,
 							borderRadius: 5
 						}}

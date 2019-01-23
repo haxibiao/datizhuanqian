@@ -21,7 +21,12 @@ class TaskItem extends Component {
 		let { title, navigation, reword, status, handler, task_id, type, user } = this.props;
 		let { RewarVisible } = this.state;
 		return (
-			<View style={styles.container}>
+			<TouchableOpacity
+				style={styles.container}
+				onPress={() => {
+					navigation.navigate('任务详情');
+				}}
+			>
 				<View>
 					<Text style={{ color: '#3c3c3c', fontSize: 15 }}>{title}</Text>
 					<Text style={{ color: Colors.tintFont, fontSize: 13, paddingTop: 10, fontWeight: '200' }}>
@@ -169,7 +174,7 @@ class TaskItem extends Component {
 					</Mutation>
 				)}
 				<TaskRewardModal visible={RewarVisible} handleVisible={this.handleRewardModalVisible} />
-			</View>
+			</TouchableOpacity>
 		);
 	}
 	handleRewardModalVisible() {

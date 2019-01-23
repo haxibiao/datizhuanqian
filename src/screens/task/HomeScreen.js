@@ -43,7 +43,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			counts: props.user,
-			login: true,
+			login: false,
 			data: 0
 		};
 	}
@@ -109,6 +109,7 @@ class HomeScreen extends Component {
 															handler={() => {
 																navigation.navigate('编辑个人资料');
 															}}
+															navigation={navigation}
 															task_id={task.id}
 															status={task.taskStatus}
 															type={0}
@@ -158,6 +159,7 @@ class HomeScreen extends Component {
 													title={'完成5道题目纠错'}
 													reword={'+20精力点'}
 													status={0}
+													navigation={navigation}
 													handler={() => {
 														navigation.navigate('提交任务');
 													}}
@@ -172,7 +174,16 @@ class HomeScreen extends Component {
 							</Query>
 						</ScrollView>
 					) : (
-						<BlankContent text={'暂时还没有任务哦~'} fontSize={14} />
+						/*<BlankContent text={'暂时还没有任务哦~'} fontSize={14} />*/
+						<TaskItem
+							title={'完成5道题目纠错'}
+							reword={'+20精力点'}
+							status={0}
+							navigation={navigation}
+							handler={() => {
+								navigation.navigate('提交任务');
+							}}
+						/>
 					)}
 				</View>
 			</Screen>

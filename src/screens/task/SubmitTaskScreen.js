@@ -22,33 +22,50 @@ class SubmitTaskScreen extends Component {
 			images.map(image => {
 				pictures.push(image.path);
 			});
-			this.setState({
-				pictures
-			});
+			if (pictures.length > 6) {
+				this.setState({
+					pictures: pictures.slice(0, 6)
+				});
+				Methods.toast('最大上传不超过6张图片');
+			} else {
+				this.setState({
+					pictures
+				});
+			}
 		});
 	};
 
 	render() {
 		let { content, contact, pictures } = this.state;
 		const { navigation } = this.props;
-
+		console.log('pictures', pictures);
 		return (
 			<Screen>
 				<View style={styles.container}>
 					<DivisionLine height={5} />
+					<View
+						style={{
+							flexDirection: 'row',
+							alignItems: 'center',
+							paddingVertical: 20
+						}}
+					>
+						<View style={{ height: 22, width: 10, backgroundColor: Colors.theme, marginRight: 15 }} />
+						<Text style={{ color: Colors.primaryFont, fontSize: 18 }}>小米应用商店评论</Text>
+					</View>
 					<View style={styles.main}>
-						<Input
-							customStyle={styles.input}
-							maxLength={400}
-							multiline
-							underline
-							changeValue={value => {
-								this.setState({
-									content: value
-								});
+						<View
+							style={{
+								marginHorizontal: 25,
+								paddingBottom: 40,
+								flexDirection: 'row',
+								alignItems: 'center'
 							}}
-						/>
-						<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>
+						>
+							<Text style={{ fontSize: 16, color: Colors.primaryFont }}>上传截图</Text>
+							<Text style={{ fontSize: 15, color: Colors.grey }}>（{pictures.length}/6）</Text>
+						</View>
+						<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 25 }}>
 							{pictures.map((image, index) => {
 								return (
 									<View key={index}>
@@ -68,9 +85,11 @@ class SubmitTaskScreen extends Component {
 								);
 							})}
 
-							<TouchableOpacity style={styles.add} onPress={this.openPhotos}>
-								<Iconfont name={'add'} size={26} color={Colors.tintGray} />
-							</TouchableOpacity>
+							{!(pictures.length > 5) && (
+								<TouchableOpacity style={styles.add} onPress={this.openPhotos}>
+									<Iconfont name={'add'} size={26} color={Colors.tintGray} />
+								</TouchableOpacity>
+							)}
 						</View>
 						<View style={styles.mainBottom} />
 					</View>
@@ -78,8 +97,8 @@ class SubmitTaskScreen extends Component {
 					<Button
 						name={'提交'}
 						style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
-						theme={content ? Colors.blue : Colors.tintGray}
-						textColor={content ? Colors.white : Colors.grey}
+						theme={pictures.length > 0 ? Colors.theme : Colors.tintGray}
+						textColor={pictures.length > 0 ? Colors.white : Colors.grey}
 						handler={() => {}}
 					/>
 				</View>
@@ -107,35 +126,35 @@ const styles = StyleSheet.create({
 		// marginTop:10,
 	},
 	add: {
-		width: (Divice.width - 75) / 4,
-		height: (Divice.width - 75) / 4,
-		borderColor: Colors.tintGray,
+		width: (Divice.width - 60) / 3,
+		height: (Divice.width - 60) / 3,
+		borderColor: Colors.lightBorder,
 		borderWidth: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	image: {
-		width: (Divice.width - 75) / 4,
-		height: (Divice.width - 75) / 4,
-		marginRight: 15,
-		marginBottom: 15
+		width: (Divice.width - 60) / 3,
+		height: (Divice.width - 60) / 3,
+		marginRight: 5,
+		marginBottom: 5
 	},
 	delete: {
-		backgroundColor: Colors.grey,
+		backgroundColor: 'rgba(150,150,150,0.5)',
 		borderRadius: 8,
 		position: 'absolute',
-		right: 7,
-		top: -7,
-		width: 15,
-		height: 15,
-		justifyContent: 'flex-end',
+		right: 8,
+		top: 2,
+		width: 16,
+		height: 16,
+		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	mainBottom: {
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder,
 		marginRight: 15,
-		marginTop: 15
+		marginTop: 40
 	}
 });
 
