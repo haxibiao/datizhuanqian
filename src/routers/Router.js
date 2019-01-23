@@ -20,6 +20,7 @@ import GoFeedBackScreen from '../screens/profile/FeedBackScreen';
 import CommonIssueScreen from '../screens/profile/CommonIssueScreen';
 import MyPropScreen from '../screens/profile/MyPropScreen';
 import TestScreen from '../screens/profile/TestScreen';
+import BusinessScreen from '../screens/profile/BusinessScreen';
 
 import FeedBackScreen from '../screens/profile/feedBack/HomeScreen';
 import FeedBackDetailsScreen from '../screens/profile/feedBack/FeedBackDetailsScreen';
@@ -86,6 +87,9 @@ export default {
 	常见问题: {
 		screen: CommonIssueScreen,
 		path: 'demo/problem'
+	},
+	商务合作: {
+		screen: BusinessScreen
 	},
 	//我的
 	意见反馈: {

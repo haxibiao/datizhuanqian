@@ -25,9 +25,16 @@ class FeedBack extends Component {
 			images.map(image => {
 				pictures.push(image.path);
 			});
-			this.setState({
-				pictures
-			});
+			if (pictures.length > 6) {
+				this.setState({
+					pictures: pictures.slice(0, 6)
+				});
+				Methods.toast('最大上传不超过6张图片');
+			} else {
+				this.setState({
+					pictures
+				});
+			}
 		});
 	};
 
@@ -44,6 +51,7 @@ class FeedBack extends Component {
 						<Input
 							customStyle={styles.input}
 							maxLength={400}
+							placeholder={'请简要描述您的问题和意见,我们将为您不断改进'}
 							multiline
 							underline
 							changeValue={value => {
@@ -73,7 +81,7 @@ class FeedBack extends Component {
 							})}
 
 							<TouchableOpacity style={styles.add} onPress={this.openPhotos}>
-								<Iconfont name={'add'} size={26} color={Colors.tintGray} />
+								<Iconfont name={'add'} size={24} color={Colors.tintGray} />
 							</TouchableOpacity>
 						</View>
 						<View style={styles.mainBottom} />
@@ -85,7 +93,7 @@ class FeedBack extends Component {
 								<Button
 									name={'提交'}
 									style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
-									theme={content ? Colors.blue : Colors.tintGray}
+									theme={content ? Colors.theme : Colors.tintGray}
 									textColor={content ? Colors.white : Colors.grey}
 									handler={async () => {
 										let result = {};
@@ -132,32 +140,32 @@ const styles = StyleSheet.create({
 		padding: 0,
 		height: 260,
 		justifyContent: 'flex-start',
-		marginRight: 15
+		marginRight: 0
 		// marginTop:10,
 	},
 	add: {
-		width: (Divice.width - 75) / 4,
-		height: (Divice.width - 75) / 4,
+		width: (Divice.width - 45) / 4,
+		height: (Divice.width - 45) / 4,
 		borderColor: Colors.tintGray,
 		borderWidth: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	image: {
-		width: (Divice.width - 75) / 4,
-		height: (Divice.width - 75) / 4,
-		marginRight: 15,
+		width: (Divice.width - 45) / 4,
+		height: (Divice.width - 45) / 4,
+		marginRight: 5,
 		marginBottom: 15
 	},
 	delete: {
-		backgroundColor: Colors.grey,
+		backgroundColor: 'rgba(150,150,150,0.5)',
 		borderRadius: 8,
 		position: 'absolute',
-		right: 7,
-		top: -7,
-		width: 15,
-		height: 15,
-		justifyContent: 'flex-end',
+		right: 9,
+		top: 2,
+		width: 14,
+		height: 14,
+		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	mainBottom: {

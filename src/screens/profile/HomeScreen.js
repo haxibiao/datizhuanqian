@@ -71,6 +71,7 @@ class HomeScreen extends Component {
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('意见反馈') : navigation.navigate('登录注册'))}
 						/>
+						<ProfileItem name={'商务合作'} icon={'book2'} size={19} right navigation={navigation} />
 						<DivisionLine height={10} />
 						<ProfileItem name={'设置'} icon={'setting1'} right navigation={navigation} />
 					</ScrollView>

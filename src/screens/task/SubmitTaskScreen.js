@@ -9,8 +9,7 @@ class SubmitTaskScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			content: null,
-			contact: null,
+			content: 'null',
 			pictures: []
 		};
 	}
@@ -36,7 +35,7 @@ class SubmitTaskScreen extends Component {
 	};
 
 	render() {
-		let { content, contact, pictures } = this.state;
+		let { content, pictures } = this.state;
 		const { navigation } = this.props;
 		console.log('pictures', pictures);
 		return (
@@ -53,6 +52,18 @@ class SubmitTaskScreen extends Component {
 						<View style={{ height: 22, width: 10, backgroundColor: Colors.theme, marginRight: 15 }} />
 						<Text style={{ color: Colors.primaryFont, fontSize: 18 }}>小米应用商店评论</Text>
 					</View>
+					<Input
+						customStyle={styles.input}
+						maxLength={400}
+						placeholder={'文字说明'}
+						multiline
+						underline
+						changeValue={value => {
+							this.setState({
+								content: value
+							});
+						}}
+					/>
 					<View style={styles.main}>
 						<View
 							style={{
@@ -120,7 +131,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		fontSize: 15,
 		padding: 0,
-		height: 260,
+		height: 160,
 		justifyContent: 'flex-start',
 		marginRight: 15
 		// marginTop:10,

@@ -125,6 +125,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-webview')
     compile project(':react-native-config')
     compile project(':appcenter-crashes')
     compile project(':appcenter-analytics')

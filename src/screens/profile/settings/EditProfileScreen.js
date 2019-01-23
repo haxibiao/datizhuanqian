@@ -55,6 +55,7 @@ class EditProfileScreen extends Component {
 				} else {
 					const { avatar } = result.data.updateUserAvatar;
 					this.props.dispatch(actions.updateAvatar(avatar + '?t=' + Date.now()));
+					Methods.toast('修改成功');
 				}
 			})
 			.catch(error => {});
@@ -106,6 +107,8 @@ class EditProfileScreen extends Component {
 		const { navigation, user } = this.props;
 		const { pay_info_change_count } = navigation.state.params.user;
 		let { modalVisible, nickname } = this.state;
+
+		console.log('user', user.avatar);
 		return (
 			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>

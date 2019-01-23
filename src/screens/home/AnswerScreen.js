@@ -106,7 +106,24 @@ class AnswerScreen extends Component {
 			>
 				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <LoadingError reload={() => refetch()} />;
+						if (error) {
+							let info = error.toString().indexOf('系统');
+							if (info > -1) {
+								return (
+									<View
+										style={{
+											flex: 1,
+											justifyContent: 'center',
+											alignItems: 'center',
+											width: Divice.width - 30
+										}}
+									>
+										<Text style={{ textAlign: 'center' }}>{error.toString()}</Text>
+									</View>
+								);
+							}
+							return <LoadingError reload={() => refetch()} />;
+						}
 						if (loading) return <Loading />;
 						if (!(data && data.question))
 							return (
