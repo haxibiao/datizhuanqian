@@ -14,7 +14,7 @@ import {
 	Iconfont
 } from '../../components';
 
-import { Colors } from '../../constants';
+import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 import Question from './Question';
@@ -106,8 +106,9 @@ class AnswerScreen extends Component {
 			>
 				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
+						console.log('exc', error);
 						if (error) {
-							let info = error.toString().indexOf('系统');
+							let info = error.toString().indexOf('维护');
 							if (info > -1) {
 								return (
 									<View
@@ -118,7 +119,9 @@ class AnswerScreen extends Component {
 											width: Divice.width - 30
 										}}
 									>
-										<Text style={{ textAlign: 'center' }}>{error.toString()}</Text>
+										<Text style={{ textAlign: 'center' }}>
+											{error.toString().replace(/Error: GraphQL error: /, '')}
+										</Text>
 									</View>
 								);
 							}

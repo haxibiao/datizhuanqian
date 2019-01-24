@@ -124,7 +124,7 @@ class TaskDetailsScreen extends Component {
 													? parseInt(htmlAttribs.height)
 													: Divice.width - 30;
 												let size = imageSize({ width, height });
-
+												console.log('size', size);
 												return (
 													<TouchableOpacity
 														activeOpacity={1}

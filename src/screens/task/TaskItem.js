@@ -7,7 +7,7 @@ import { Methods } from '../../helpers';
 
 import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../graphql/task.graphql';
 import { UserQuery } from '../../graphql/user.graphql';
-import { Mutation } from 'react-apollo';
+import { Mutation, compose, graphql } from 'react-apollo';
 
 class TaskItem extends Component {
 	constructor(props) {
@@ -17,161 +17,142 @@ class TaskItem extends Component {
 			RewarVisible: false
 		};
 	}
+
+	//领取奖励
+	taskReward = async () => {
+		const { task, user } = this.props;
+		let result = {};
+		try {
+			result = await this.props.TaskRewardMutation({
+				variables: {
+					task_id: task.id
+				},
+				refetchQueries: () => [
+					{
+						query: TasksQuery
+					},
+					{
+						query: UserQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+		} catch (error) {
+			result.errors = error;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -100);
+		} else {
+			if (result.data.taskReward == 1) {
+				Methods.toast('领取成功', -80);
+			} else {
+				Methods.toast('已经领取奖励了哦~', -80);
+			}
+		}
+	};
+
+	//领取任务
+	receiveTask = async () => {
+		const { task, user } = this.props;
+		let result = {};
+		try {
+			result = await this.props.ReceiveTaskMutation({
+				variables: {
+					task_id: task.id
+				},
+				refetchQueries: () => [
+					{
+						query: TasksQuery
+					},
+					{
+						query: UserQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+		} catch (error) {
+			result.errors = error;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -100);
+		} else {
+			if (result.data.receiveTask == 1) {
+				Methods.toast('领取成功', -80);
+			} else {
+				Methods.toast('已经领取该任务了哦~', -80);
+			}
+		}
+	};
+
 	render() {
-		let { title, navigation, reword, status, handler, task_id, type, user } = this.props;
+		let { navigation, reword, handler, user, task, handleHeight } = this.props;
 		let { RewarVisible } = this.state;
 		return (
 			<TouchableOpacity
+				activeOpacity={0.6}
+				disabled={task.type == 2 ? false : true}
 				style={styles.container}
 				onPress={() => {
-					navigation.navigate('任务详情', { task_id: task_id });
+					navigation.navigate('任务详情', { task_id: task.id });
+				}}
+				onLayout={event => {
+					handleHeight(event.nativeEvent.layout.height);
 				}}
 			>
 				<View>
-					<Text style={{ color: '#3c3c3c', fontSize: 15 }}>{title}</Text>
-					<Text style={{ color: Colors.tintFont, fontSize: 13, paddingTop: 10, fontWeight: '200' }}>
-						奖励 <Text style={{ color: Colors.theme }}>{reword}</Text>
+					<Text style={styles.name}>{task.name}</Text>
+					<Text style={styles.reword}>
+						奖励 <Text style={{ color: Colors.theme }}>{`+${task.gold}智慧点`}</Text>
 					</Text>
 				</View>
-				{status == 2 && (
+				{task.taskStatus == -1 && (
 					<Button
-						name={'已完成'}
+						name={'领取'}
 						outline
-						disabled
-						disabledColor={Colors.white}
-						style={{
-							borderRadius: 45,
-							// paddingHorizontal: 15,
-							height: 32,
-							width: 84,
-							borderWidth: 1,
-							borderColor: Colors.grey
-						}}
-						theme={Colors.tintFont}
-						textColor={Colors.tintFont}
+						style={styles.themeButton}
+						textColor={Colors.theme}
 						fontSize={13}
+						handler={this.receiveTask}
 					/>
 				)}
-				{status == 1 && (
-					<Mutation mutation={TaskRewardMutation}>
-						{taskReward => {
-							return (
-								<Button
-									name={'领取奖励'}
-									outline
-									style={{
-										borderRadius: 45,
-										// paddingHorizontal: 15,
-										height: 32,
-										width: 84,
-										borderWidth: 1,
-										borderColor: Colors.theme
-									}}
-									textColor={Colors.theme}
-									fontSize={13}
-									handler={async () => {
-										let result = {};
-										try {
-											result = await taskReward({
-												variables: {
-													task_id: task_id
-												},
-												refetchQueries: () => [
-													{
-														query: TasksQuery,
-														variables: { type: type }
-													},
-													{
-														query: UserQuery,
-														variables: { id: user.id }
-													}
-												]
-											});
-										} catch (error) {
-											result.errors = error;
-										}
-										if (result && result.errors) {
-											Methods.toast('领取失败,请检查你的网络哦~', -80);
-										} else {
-											if (result.data.taskReward == 1) {
-												Methods.toast('领取成功', -80);
-												// this.handleRewardModalVisible();
-											} else {
-												Methods.toast('已经领取奖励了哦~', -80);
-											}
-										}
-									}}
-								/>
-							);
-						}}
-					</Mutation>
-				)}
-				{status == 0 && (
+				{task.taskStatus == 0 && (
 					<Button
 						name={'做任务'}
 						outline
-						style={{
-							borderRadius: 45,
-							// paddingHorizontal: 15,
-							height: 32,
-							width: 84,
-							borderWidth: 1,
-							borderColor: Colors.theme
-						}}
+						style={styles.themeButton}
 						textColor={Colors.theme}
 						fontSize={13}
 						handler={handler}
 					/>
 				)}
-				{status == -1 && (
-					<Mutation mutation={ReceiveTaskMutation}>
-						{receiveTask => {
-							return (
-								<Button
-									name={'领取'}
-									outline
-									style={{
-										borderRadius: 45,
-										// paddingHorizontal: 15,
-										height: 32,
-										width: 84,
-										borderWidth: 1,
-										borderColor: Colors.theme
-									}}
-									textColor={Colors.theme}
-									fontSize={13}
-									handler={async () => {
-										let result = {};
-										try {
-											result = await receiveTask({
-												variables: {
-													task_id: task_id
-												},
-												refetchQueries: () => [
-													{
-														query: TasksQuery
-													}
-												]
-											});
-										} catch (error) {
-											result.errors = error;
-										}
-										if (result && result.errors) {
-											let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-											Methods.toast(str, -100); //Toast错误信息
-										} else {
-											if (result.data.receiveTask == 1) {
-												Methods.toast('领取成功', -80);
-											} else {
-												Methods.toast('已经领取该任务了哦~', -80);
-											}
-										}
-									}}
-								/>
-							);
-						}}
-					</Mutation>
+				{task.taskStatus == 1 && (
+					<Button name={'审核中'} outline style={styles.themeButton} textColor={Colors.theme} fontSize={13} />
 				)}
+				{task.taskStatus == 2 && (
+					<Button
+						name={'领取奖励'}
+						outline
+						style={styles.themeButton}
+						textColor={Colors.theme}
+						fontSize={13}
+						handler={this.taskReward}
+					/>
+				)}
+				{task.taskStatus == 3 && (
+					<Button
+						name={'已完成'}
+						outline
+						disabled
+						disabledColor={Colors.white}
+						style={styles.greyButton}
+						theme={Colors.tintFont}
+						textColor={Colors.tintFont}
+						fontSize={13}
+					/>
+				)}
+
 				<TaskRewardModal visible={RewarVisible} handleVisible={this.handleRewardModalVisible} />
 			</TouchableOpacity>
 		);
@@ -186,14 +167,40 @@ class TaskItem extends Component {
 const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: 15,
-		paddingVertical: 15,
+		paddingVertical: 12,
 		borderTopWidth: 1,
 		borderTopColor: Colors.lightBorder,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center',
-		height: 72
+		alignItems: 'center'
+	},
+	name: {
+		color: '#3c3c3c',
+		fontSize: 15
+	},
+	reword: {
+		color: Colors.tintFont,
+		fontSize: 13,
+		fontWeight: '200'
+	},
+	greyButton: {
+		borderRadius: 45,
+		height: 32,
+		width: 84,
+		borderWidth: 1,
+		borderColor: Colors.grey
+	},
+	themeButton: {
+		borderRadius: 45,
+		// paddingHorizontal: 15,
+		height: 32,
+		width: 84,
+		borderWidth: 1,
+		borderColor: Colors.theme
 	}
 });
 
-export default TaskItem;
+export default compose(
+	graphql(TaskRewardMutation, { name: 'TaskRewardMutation' }),
+	graphql(ReceiveTaskMutation, { name: 'ReceiveTaskMutation' })
+)(TaskItem);

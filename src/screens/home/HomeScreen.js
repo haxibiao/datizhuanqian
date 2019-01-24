@@ -76,33 +76,6 @@ class HomeScreen extends Component {
 		//当有用户seesion 过期时 ,清空redux 强制登录。
 		//删除此段代码后 更换账号登录后无法fetchQuery的BUG会再出现。预计还是未真正的解决apollo cache的bug
 	}
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.data && nextProps.data.categories) {
-			nextProps.dispatch(actions.categoryCache(nextProps.data.categories));
-		}
-		//启动APP的时候存入分类数据
-	}
-
-	componentWillUnmount() {
-		this.didFocusSubscription.remove();
-		this.timer && clearTimeout(this.timer);
-	}
-
-	handleUpdateModalVisible() {
-		this.setState(prevState => ({
-			updateVisible: !prevState.updateVisible
-		}));
-	}
-
-	handForceUpdateModal() {
-		this.setState(prevState => ({
-			mustUpdateVisible: !prevState.mustUpdateVisible
-		}));
-	}
-
-	openUrl(url) {
-		Linking.openURL(url);
-	}
 
 	render() {
 		const { navigation, user, login } = this.props;
@@ -229,6 +202,34 @@ class HomeScreen extends Component {
 			);
 		}
 	};
+
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.data && nextProps.data.categories) {
+			nextProps.dispatch(actions.categoryCache(nextProps.data.categories));
+		}
+		//启动APP的时候存入分类数据
+	}
+
+	componentWillUnmount() {
+		this.didFocusSubscription.remove();
+		this.timer && clearTimeout(this.timer);
+	}
+
+	handleUpdateModalVisible() {
+		this.setState(prevState => ({
+			updateVisible: !prevState.updateVisible
+		}));
+	}
+
+	handForceUpdateModal() {
+		this.setState(prevState => ({
+			mustUpdateVisible: !prevState.mustUpdateVisible
+		}));
+	}
+
+	openUrl(url) {
+		Linking.openURL(url);
+	}
 }
 
 const styles = StyleSheet.create({

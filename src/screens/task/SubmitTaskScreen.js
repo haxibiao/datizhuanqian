@@ -6,7 +6,7 @@ import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 import { ReplyTaskMutation, TasksQuery, UploadImage } from '../../graphql/task.graphql';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo';
 
 let arry = {};
 
@@ -33,9 +33,6 @@ class SubmitTaskScreen extends Component {
 				this.setState({
 					pictures: pictures.slice(0, 6)
 				});
-				// this.startUploadImage(`data:${image.mime};base64,${image.data}`);
-				// arry['screenshots'] = pictures.slice(0, 6);
-				// Methods.toast('最大上传不超过6张图片');
 			} else {
 				this.setState({
 					pictures
@@ -46,31 +43,41 @@ class SubmitTaskScreen extends Component {
 
 	//先上传图片，等返回图片地址后再提交
 	startUploadImage = async () => {
-		let result = {};
 		let { pictures, waitingVisible } = this.state;
-		Keyboard.dismiss();
-		this.submit = true;
+		let { client } = this.props;
+
+		Keyboard.dismiss(); //关闭键盘
+		this.submit = true; //禁止点击
 		this.setState({
 			waitingVisible: true
 		});
-		try {
-			result = await this.props.UploadImage({
+		//等待提示
+
+		let promises = [
+			client.mutate({
+				mutation: UploadImage,
 				variables: {
 					image: pictures
 				}
+			}),
+			new Promise(function(resolve, reject) {
+				setTimeout(() => reject(new Error('网络超时')), 8000);
+			})
+		];
+		//超时检测
+
+		Promise.race(promises)
+			.then(result => {
+				this.submitTask(result.data.uploadImage);
+			})
+			.catch(rejected => {
+				this.setState({
+					waitingVisible: false
+				});
+				this.submit = false;
+				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, -100);
 			});
-		} catch (ex) {
-			result.errors = ex;
-		}
-		if (result && result.errors) {
-			Methods.toast('提交失败，请检查您的网络', -100);
-			this.submit = false;
-			this.setState({
-				waitingVisible: false
-			});
-		} else {
-			this.submitTask(result.data.uploadImage);
-		}
 	};
 
 	//提交任务
@@ -97,17 +104,18 @@ class SubmitTaskScreen extends Component {
 			result.errors = ex;
 		}
 		if (result && result.errors) {
-			Methods.toast('提交失败，请检查您的网络', -100);
 			this.submit = false;
 			this.setState({
 				waitingVisible: false
 			});
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -100);
 		} else {
-			Methods.toast('提交成功,工作人员会尽快审核您的答复信息', -100);
 			this.submit = false;
 			this.setState({
 				waitingVisible: false
 			});
+			Methods.toast('提交成功,工作人员会尽快审核您的答复信息', -100);
 			this.props.navigation.goBack();
 		}
 	}
@@ -266,7 +274,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(
-	graphql(ReplyTaskMutation, { name: 'ReplyTaskMutation' }),
-	graphql(UploadImage, { name: 'UploadImage' })
-)(SubmitTaskScreen);
+export default compose(graphql(ReplyTaskMutation, { name: 'ReplyTaskMutation' }))(withApollo(SubmitTaskScreen));
