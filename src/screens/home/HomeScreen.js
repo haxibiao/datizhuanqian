@@ -244,4 +244,4 @@ export default connect(store => {
 		login: store.users.login,
 		isUpdate: store.users.isUpdate
 	};
-})(compose(graphql(CategoriesQuery))(withApollo(HomeScreen)));
+})(compose(graphql(CategoriesQuery, { options: props => ({ variables: { limit: 10 } }) }))(withApollo(HomeScreen)));

@@ -44,3 +44,8 @@ query TaskQuery($task_id: Int!) {
 mutation ReplyTaskMutation($task_id: Int!, $content: ReplyContent) {
 	replyTask(task_id: $task_id, content: $content)
 }
+
+#上传图片
+mutation UploadImage($image: [String]!) {
+	uploadImage(image: $image)
+}

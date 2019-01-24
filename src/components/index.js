@@ -46,6 +46,7 @@ import ErrorBoundary from './Universal/ErrorBoundary';
 import Banner from './Universal/Banner';
 import WithdrawsTips from './Universal/WithdrawsTips';
 import AppIntro from './Universal/AppIntro';
+import Waiting from './Universal/Waiting';
 
 import { Iconfont } from './utils/Fonts';
 
@@ -98,6 +99,7 @@ export {
 	Banner,
 	WithdrawsTips,
 	AppIntro,
+	Waiting,
 	//
 	Iconfont
 };

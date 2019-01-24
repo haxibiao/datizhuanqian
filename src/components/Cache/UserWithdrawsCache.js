@@ -4,6 +4,7 @@ import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 import DivisionLine from '../Universal/DivisionLine';
+import WithdrawsTips from '../Universal/WithdrawsTips';
 import Button from '../Control/Button';
 import { Storage, ItemKeys } from '../../store/localStorage';
 
