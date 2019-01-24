@@ -15,6 +15,13 @@ class UserTopInfo extends Component {
 		this.state = {};
 	}
 
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.data && nextProps.data.categories) {
+			nextProps.dispatch(actions.userCache(nextProps.data.user));
+		}
+		//props更新时存入用户信息
+	}
+
 	render() {
 		const {
 			data,
@@ -25,13 +32,11 @@ class UserTopInfo extends Component {
 		navigation.addListener('didFocus', payload => {
 			refetch();
 		});
-
 		if (error) return <UserProfileCache navigation={navigation} />;
 		if (loading) return <ProfileNotLogin navigation={navigation} />;
 		if (!(data && data.user)) return <ProfileNotLogin navigation={navigation} />;
 
 		let avatar = user.avatar + '?t=' + Date.now();
-		this.props.dispatch(actions.userCache(data.user));
 
 		return (
 			<TouchableOpacity
@@ -95,14 +100,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: Colors.lightBorder,
 		borderBottomWidth: 1
 	},
-	defaultAvatar: {
-		width: 68,
-		height: 68,
-		borderRadius: 34,
-		backgroundColor: Colors.tintGray,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
+
 	userInfo: {
 		marginTop: 65
 	},

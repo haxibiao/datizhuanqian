@@ -40,7 +40,7 @@ class EditProfileScreen extends Component {
 						variables: {
 							avatar: `data:${image.mime};base64,${image.data}`
 						},
-						refetchQueries: updateUserAvatarMutation => [
+						refetchQueries: () => [
 							{
 								query: UserQuery,
 								variables: { id: user.id }
@@ -51,7 +51,8 @@ class EditProfileScreen extends Component {
 					result.errors = ex;
 				}
 				if (result && result.errors) {
-					Methods.toast('上传头像失败，请检查您的网络');
+					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+					Methods.toast(str, -100); //Toast错误信息  后端暂停服务需求
 				} else {
 					const { avatar } = result.data.updateUserAvatar;
 					this.props.dispatch(actions.updateAvatar(avatar + '?t=' + Date.now()));
@@ -66,7 +67,6 @@ class EditProfileScreen extends Component {
 		let result = {};
 		let { nickname } = this.state;
 		const { navigation, user } = this.props;
-		console.log('nickname', nickname);
 		if (!nickname) {
 			this.toggleModalVisible();
 			return;

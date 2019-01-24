@@ -161,9 +161,10 @@ class HomeScreen extends Component {
 							navigation.addListener('didFocus', payload => {
 								refetch();
 							});
+
 							if (error) return <UserWithdrawsCache luckyMoney={luckyMoney} />;
 							if (!(data && data.user)) return <BlankContent />;
-
+							console.log('with user ', data.user);
 							return (
 								<View style={styles.container}>
 									<View style={styles.header}>
