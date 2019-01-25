@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-nativ
 import { Iconfont } from '../utils/Fonts';
 import Colors from '../../constants/Colors';
 
-import { Button } from '../../components';
+import Button from './Button';
 
 class LoginInput extends Component {
 	constructor(props) {

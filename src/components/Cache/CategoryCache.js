@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, RefreshControl, FlatList } from 'react-native';
 
-import { Loading, ContentEnd, Banner, LoadingMore, TabTop, PlateItem, Iconfont } from '../../components';
+import { Loading, ContentEnd, Banner, LoadingMore, TabTop } from '../Universal';
+import PlateItem from '../ListItem/PlateItem';
 
 import { Colors } from '../../constants';
 

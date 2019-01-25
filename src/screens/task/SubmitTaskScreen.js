@@ -33,6 +33,7 @@ class SubmitTaskScreen extends Component {
 				this.setState({
 					pictures: pictures.slice(0, 6)
 				});
+				Methods.toast('最多选择6张图片', -50);
 			} else {
 				this.setState({
 					pictures

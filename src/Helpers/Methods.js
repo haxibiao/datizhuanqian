@@ -113,14 +113,8 @@ export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsU
 
 //设置页检查更新
 const checkUpdate = (versionInfo, handlePromotModalVisible) => {
-	let localVersion = Config.localVersion.split('');
-	localVersion.splice(3, 1);
-	let local = parseFloat(localVersion.join(''));
-
-	let Version = versionInfo.version;
-	let onlineVersion = Version.split('');
-	onlineVersion.splice(3, 1);
-	let online = parseFloat(onlineVersion.join(''));
+	let local = numberVersion(Config.localVersion);
+	let online = numberVersion(versionInfo.version);
 	//转换成浮点数  判断版本大小
 
 	if (local < online) {
@@ -151,13 +145,9 @@ const checkUpdate = (versionInfo, handlePromotModalVisible) => {
 //首页自动检查更新
 const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceUpdateModal, propsIsUpdate, login) => {
 	let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
-	let localVersion = Config.localVersion.split('');
-	localVersion.splice(3, 1);
-	let local = parseFloat(localVersion.join(''));
-	let Version = versionInfo.version;
-	let onlineVersion = Version.split('');
-	onlineVersion.splice(3, 1);
-	let online = parseFloat(onlineVersion.join(''));
+
+	let local = numberVersion(Config.localVersion);
+	let online = numberVersion(versionInfo.version);
 
 	if (local < online && versionInfo.is_force) {
 		handForceUpdateModal();

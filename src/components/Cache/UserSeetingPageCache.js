@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
-import { Avatar, DivisionLine, Iconfont } from '../../components';
+import { Avatar, DivisionLine } from '../Universal';
+import { Iconfont } from '../utils/Fonts';
 
 import { Storage, ItemKeys } from '../../store/localStorage';
 

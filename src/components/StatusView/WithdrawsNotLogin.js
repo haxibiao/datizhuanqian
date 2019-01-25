@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 
-import { TabTop, Banner, DivisionLine, WithdrawsTips, Header, Screen } from '../../components';
+import { DivisionLine, WithdrawsTips } from '../Universal';
 import { Colors, Config, Divice } from '../../constants';
-
-const { width, height } = Dimensions.get('window');
 
 class NotLogin extends Component {
 	constructor(props) {
@@ -25,11 +23,11 @@ class NotLogin extends Component {
 							paddingBottom: 30
 						}}
 					>
-						<View style={{ width: width / 2 }}>
+						<View style={{ width: Divice.width / 2 }}>
 							<Text style={styles.gold}>0</Text>
 							<Text style={styles.type}>智慧点</Text>
 						</View>
-						<View style={{ width: width / 2 }}>
+						<View style={{ width: Divice.width / 2 }}>
 							<Text style={styles.gold}>0.00</Text>
 							<Text style={styles.type}>余额（元）</Text>
 						</View>
@@ -113,7 +111,7 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		paddingVertical: 25,
-		width: (width - 44) / 2,
+		width: (Divice.width - 44) / 2,
 		borderColor: '#E0E0E0',
 		borderWidth: 0.5,
 		alignItems: 'center',

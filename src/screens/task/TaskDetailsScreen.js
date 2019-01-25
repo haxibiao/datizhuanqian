@@ -39,16 +39,13 @@ class TaskDetailsScreen extends Component {
 										<Text style={styles.headerContent}>{task.name}</Text>
 									</View>
 									<View style={styles.row}>
-										<Iconfont name={'zhuanshi'} size={22} color={Colors.theme} />
-										<Text style={styles.gold}>
-											{task.gold}
-											<Text style={{ fontSize: 19 }}>智慧点</Text>
-										</Text>
+										<Iconfont name={'zhuanshi'} size={40} color={Colors.theme} />
+										<Text style={styles.gold}>{task.gold}</Text>
 									</View>
 									<View style={styles.center}>
 										<View style={styles.rowCenter}>
 											<Image source={TIME_ICON} style={styles.icon} />
-											<Text>2019-01-25截止</Text>
+											<Text>{task.end_at} 前完成</Text>
 										</View>
 										<View style={styles.rowCenter}>
 											<Image source={AUDIT_ICON} style={styles.icon} />
@@ -156,24 +153,23 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingTop: 5,
-		paddingBottom: 20,
-		marginHorizontal: 20
+		justifyContent: 'center',
+		paddingVertical: 20
 	},
 	gold: {
-		fontSize: 20,
+		fontSize: 42,
 		color: Colors.theme,
 		paddingLeft: 5
 	},
 	center: {
-		flexDirection: 'row',
 		paddingBottom: 20,
 		marginHorizontal: 25,
 		justifyContent: 'space-between'
 	},
 	rowCenter: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingVertical: 5
 	},
 	icon: {
 		height: 15,

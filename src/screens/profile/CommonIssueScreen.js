@@ -56,6 +56,14 @@ class CommonIssueScreen extends Component {
 							</Text>
 						</View>
 					</View>
+					<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
+						<View style={{ paddingHorizontal: 20 }}>
+							<Text style={{ fontSize: 15, color: Colors.black }}>Q：无法更新怎么办?</Text>
+							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
+								A：请到datizhuanqian.com、datizhuanqian.cn下载最新版本，如遇无法安装，请先卸载旧的答题赚钱再安装。
+							</Text>
+						</View>
+					</View>
 
 					{/*<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
 						<View style={{ paddingHorizontal: 20 }}>

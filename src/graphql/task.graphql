@@ -37,6 +37,7 @@ query TaskQuery($task_id: Int!) {
 		count
 		merchant_id
 		status
+		end_at
 	}
 }
 
