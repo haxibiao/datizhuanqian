@@ -18,7 +18,7 @@ class ImageView extends Component {
 		} = this.props;
 		return (
 			<View>
-				<StatusBar backgroundColor={visible ? '#000' : '#fff'} barStyle={'dark-content'} />
+				<StatusBar backgroundColor={visible ? '#000' : '#fff'} barStyle={'dark-content'} translucent={true} />
 				<Modal visible={visible} transparent={true} onRequestClose={handleVisible}>
 					<ImageViewer
 						onClick={onClick}

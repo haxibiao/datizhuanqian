@@ -107,6 +107,18 @@ class TaskItem extends Component {
 						奖励 <Text style={{ color: Colors.theme }}>{`+${task.gold}智慧点`}</Text>
 					</Text>
 				</View>
+				{task.taskStatus == -2 && (
+					<Button
+						name={'任务失败'}
+						outline
+						style={styles.redButton}
+						textColor={Colors.themeRed}
+						fontSize={13}
+						handler={() => {
+							navigation.navigate('失败详情', { task_id: task.id });
+						}}
+					/>
+				)}
 				{task.taskStatus == -1 && (
 					<Button
 						name={'领取'}
@@ -197,6 +209,14 @@ const styles = StyleSheet.create({
 		width: 84,
 		borderWidth: 1,
 		borderColor: Colors.theme
+	},
+	redButton: {
+		borderRadius: 45,
+		// paddingHorizontal: 15,
+		height: 32,
+		width: 84,
+		borderWidth: 1,
+		borderColor: Colors.themeRed
 	}
 });
 

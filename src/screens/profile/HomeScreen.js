@@ -62,7 +62,7 @@ class HomeScreen extends Component {
 									: navigation.navigate('登录注册')
 							}
 						/>
-						<ProfileItem
+						{/*<ProfileItem
 							name={'任务日志'}
 							icon={'task2'}
 							right
@@ -74,7 +74,7 @@ class HomeScreen extends Component {
 									  })
 									: navigation.navigate('登录注册')
 							}
-						/>
+						/>*/}
 						<DivisionLine height={10} />
 						<ProfileItem name={'常见问题'} icon={'question'} right navigation={navigation} />
 						<ProfileItem
