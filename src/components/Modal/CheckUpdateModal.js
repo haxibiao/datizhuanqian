@@ -23,6 +23,9 @@ class CheckUpdateModal extends Component {
 				<View style={{ alignItems: 'center' }}>
 					<View style={{ height: 80, justifyContent: 'center' }}>
 						<Text style={styles.modalRemindContent}>{tips}</Text>
+						<Text style={{ fontSize: 12, color: Colors.grey, paddingTop: 10 }}>
+							如遇无法安装，请先卸载老版本
+						</Text>
 					</View>
 
 					<View style={styles.modalFooter}>

@@ -15,17 +15,12 @@ import TaskType from './TaskType';
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			counts: props.user,
-			login: true,
-			data: 0
-		};
+		this.state = {};
 	}
 
 	render() {
-		const { data, login } = this.state;
-		const { navigation, user } = this.props;
-
+		const { navigation, user, login } = this.props;
+		console.log('login', login);
 		return (
 			<Screen header>
 				<Header
@@ -88,7 +83,7 @@ class HomeScreen extends Component {
 						}}
 					</Query>
 				) : (
-					<BlankContent text={'暂时还没有任务哦~'} fontSize={14} />
+					<BlankContent text={'登录之后才能查看任务哦~'} fontSize={14} />
 				)}
 			</Screen>
 		);

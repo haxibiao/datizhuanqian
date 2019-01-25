@@ -73,7 +73,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
-        width: 50,
+        width: Divice.width / 4,
         position: 'relative'
     },
     shot: {

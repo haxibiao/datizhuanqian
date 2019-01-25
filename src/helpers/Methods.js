@@ -89,7 +89,14 @@ function imagePicker(callback: Function) {
 }
 
 //获取线上apk版本信息
-export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsUpdate, login, auto) => {
+export const achieveUpdate = (
+	handleModalVisible,
+	handForceUpdateModal,
+	changeVersionInfo,
+	propsIsUpdate,
+	login,
+	auto
+) => {
 	fetch(Config.ServerRoot + '/api/app-version' + '?t=' + Date.now(), {
 		method: 'POST',
 		headers: {
@@ -99,9 +106,15 @@ export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsU
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log('data', data[0]);
 			if (auto) {
-				autoCheckUpdate(data[0], handleModalVisible, handForceUpdateModal, propsIsUpdate, login);
+				autoCheckUpdate(
+					data[0],
+					handleModalVisible,
+					handForceUpdateModal,
+					propsIsUpdate,
+					login,
+					changeVersionInfo
+				);
 			} else {
 				checkUpdate(data[0], handleModalVisible);
 			}
@@ -113,7 +126,7 @@ export const achieveUpdate = (handleModalVisible, handForceUpdateModal, propsIsU
 
 //设置页检查更新
 const checkUpdate = (versionInfo, handlePromotModalVisible) => {
-	let local = numberVersion(Config.localVersion);
+	let local = Config.AppVersionNumber;
 	let online = numberVersion(versionInfo.version);
 	//转换成浮点数  判断版本大小
 
@@ -143,17 +156,30 @@ const checkUpdate = (versionInfo, handlePromotModalVisible) => {
 };
 
 //首页自动检查更新
-const autoCheckUpdate = async (versionInfo, handleUpdateModalVisible, handForceUpdateModal, propsIsUpdate, login) => {
-	let isUpdate = await Storage.getItem(ItemKeys.isUpdate);
+//TODO:是否要检查跨版本的用户
 
-	let local = numberVersion(Config.localVersion);
-	let online = numberVersion(versionInfo.version);
+const autoCheckUpdate = async (
+	versionInfo,
+	handleUpdateModalVisible,
+	handForceUpdateModal,
+	propsIsUpdate,
+	login,
+	changeVersionInfo
+) => {
+	let updateTipsVersion = (await Storage.getItem(ItemKeys.updateTipsVersion))
+		? await Storage.getItem(ItemKeys.updateTipsVersion)
+		: 1;
+
+	let local = Config.AppVersionNumber; //本地版本
+	let online = numberVersion(versionInfo.version); //线上版本
+
+	changeVersionInfo(versionInfo.apk, online); //为提示框 link  取消更新赋值
 
 	if (local < online && versionInfo.is_force) {
 		handForceUpdateModal();
 		// 如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
-	} else if (local < online && !versionInfo.is_force && !isUpdate) {
-		// 线上版本大于本地版本但不需要强制更新则弹出非强制更新MODAL
+	} else if (local < online && !versionInfo.is_force && updateTipsVersion < online) {
+		// 线上版本大于本地版本并且更新提示的版本小于线上版本则弹出选择更新Modal
 		handleUpdateModalVisible();
 	} else {
 		codePush.sync({

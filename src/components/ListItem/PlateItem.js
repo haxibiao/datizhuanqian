@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
 import { Colors } from '../../constants';
+import { Methods } from '../../helpers';
 import { Iconfont } from '../utils/Fonts';
 
 const { width, height } = Dimensions.get('window');
@@ -18,10 +19,10 @@ class PlateItem extends Component {
 				style={styles.container}
 				onPress={() =>
 					login
-						? navigation.navigate('回答', {
-								category: category
-						  })
-						: navigation.navigate('登录注册')
+						? navigation.dispatch(
+								Methods.navigationAction({ routeName: '回答', params: { category: category } })
+						  )
+						: navigation.dispatch(Methods.navigationAction({ routeName: '登录注册' }))
 				}
 			>
 				<View style={styles.leftContent}>

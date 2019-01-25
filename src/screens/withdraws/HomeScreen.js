@@ -122,9 +122,10 @@ class HomeScreen extends Component {
 				clickControl: false
 			});
 		} else {
-			this.props.navigation.navigate('提现申请', {
-				amount: amount
-			});
+			this.props.navigation.dispatch(
+				Methods.navigationAction({ routeName: '提现申请', params: { amount: amount } })
+			);
+
 			this.setState({
 				clickControl: false
 			});

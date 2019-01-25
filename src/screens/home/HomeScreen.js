@@ -28,10 +28,13 @@ class HomeScreen extends Component {
 		super(props);
 		this.handleUpdateModalVisible = this.handleUpdateModalVisible.bind(this);
 		this.handForceUpdateModal = this.handForceUpdateModal.bind(this);
+		this.changeVersionInfo = this.changeVersionInfo.bind(this);
 		this.state = {
 			fetchingMore: true,
 			updateVisible: false,
-			mustUpdateVisible: false
+			mustUpdateVisible: false,
+			url: 'https://datizhuanqian.com',
+			onlineVersion: '1.1.0'
 		};
 	}
 
@@ -43,6 +46,7 @@ class HomeScreen extends Component {
 			Methods.achieveUpdate(
 				this.handleUpdateModalVisible,
 				this.handForceUpdateModal,
+				this.changeVersionInfo,
 				isUpdate,
 				this.props.login,
 				auto
@@ -80,7 +84,6 @@ class HomeScreen extends Component {
 	render() {
 		const { navigation, user, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
-
 		return (
 			<View style={styles.container}>
 				<Header
@@ -102,19 +105,19 @@ class HomeScreen extends Component {
 					visible={updateVisible}
 					cancel={() => {
 						this.handleUpdateModalVisible();
-						this.props.dispatch(actions.cancelUpdate(true));
+						this.props.dispatch(actions.changeUpdateTipsVersion(this.state.onlineVersion));
 					}}
 					handleVisible={this.handleUpdateModalVisible}
 					tips={'发现新版本'}
 					confirm={() => {
 						this.handleUpdateModalVisible();
-						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
+						this.openUrl(this.state.url);
 					}}
 				/>
 				<UpdateTipsModal
 					visible={mustUpdateVisible}
 					openUrl={() => {
-						this.openUrl('https://datizhuanqian.com/storage/apks/datizhuanqian.apk');
+						this.openUrl(this.state.url);
 					}}
 					tips={'发现新版本'}
 				/>
@@ -229,6 +232,13 @@ class HomeScreen extends Component {
 
 	openUrl(url) {
 		Linking.openURL(url);
+	}
+
+	changeVersionInfo(url, version) {
+		this.setState({
+			url: url,
+			onlineVersion: version
+		});
 	}
 }
 

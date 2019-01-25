@@ -14,13 +14,20 @@ class WithdrawApplyScreen extends Component {
 		const { amount } = navigation.state.params;
 
 		return (
-			<Screen customStyle={{ backgroundColor: Colors.themeRed }} routeName={'提现'}>
+			<Screen
+				customStyle={{
+					backgroundColor: Colors.themeRed,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
+				routeName={'提现'}
+			>
 				<Image source={require('../../../assets/images/money.png')} style={styles.image} />
 				<View style={styles.content}>
 					<Text style={styles.header}>提现申请已提交</Text>
 					<View style={styles.center}>
 						<Text style={styles.money}>{amount}.00</Text>
-						<Text style={[styles.money, { paddingTop: 32 }]}> 元</Text>
+						<Text style={{ fontSize: 15, color: Colors.themeRed, paddingTop: 32 }}> 元</Text>
 					</View>
 					<View style={styles.bottom}>
 						<Text style={styles.text}>预计3~5个工作日内到账支付宝</Text>
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
 		color: Colors.grey,
 		paddingTop: 10
 	},
-	botton: {
+	button: {
 		height: 38,
 		borderRadius: 19,
 		marginTop: 40,

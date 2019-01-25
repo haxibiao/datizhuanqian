@@ -16,8 +16,8 @@ export default defineActionConstants([
 	'UPDATE_GOLD',
 	'RECORD_OPERATION',
 	'WIDTH_DRAWS',
-	'CANCEL_UPDATE',
-	'UPDATE_VERSION',
+	'CHANGE_UPDATE_TIPS_VERSION',
+	'UPDATE_APP_INTRO_VERSION',
 
 	// 本地缓存
 	'USER_CACHE',

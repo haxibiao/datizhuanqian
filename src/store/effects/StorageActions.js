@@ -7,14 +7,19 @@ export async function rememberUser({ action, getState, dispatch }) {
 	let { isUpdate } = action;
 
 	await Storage.setItem(ItemKeys.user, store.users.user);
-	if (isUpdate) {
-		await Storage.setItem(ItemKeys.isUpdate, true);
-	}
+	// if (isUpdate) {
+	// 	await Storage.setItem(ItemKeys.isUpdate, true);
+	// }
 }
 
-export async function rememberVersion({ action, getState, dispatch }) {
-	let { version } = action;
-	await Storage.setItem(ItemKeys.version, version);
+export async function appIntroVersion({ action, getState, dispatch }) {
+	let { appIntroVersion } = action;
+	await Storage.setItem(ItemKeys.appIntroVersion, appIntroVersion);
+}
+
+export async function updateTipsVersion({ action, getState, dispatch }) {
+	let { updateTipsVersion } = action;
+	await Storage.setItem(ItemKeys.updateTipsVersion, updateTipsVersion);
 }
 
 export async function rememberUserCache({ action, getState, dispatch }) {

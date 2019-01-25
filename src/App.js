@@ -12,23 +12,19 @@ import { Storage, ItemKeys } from './store/localStorage';
 import codePush from 'react-native-code-push';
 import Apollo from './Apollo';
 
-const { width, height } = Dimensions.get('window');
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoadingComplete: false,
       showHome: false,
-      storageVersionNumber: '',
+      appIntroVersion: '',
       introImages: '',
       isConnected: true
     };
   }
 
   componentWillMount() {
-    YellowBox.ignoreWarnings(['Require cycle:']);
-    //忽略互相引用组件的警告
     this.loadUserState();
     //用户状态加载
     NetInfo.isConnected.fetch().done(isConnected => {
@@ -54,11 +50,13 @@ class App extends Component {
 
   getAppIntro = async () => {
     this.setState({
-      storageVersionNumber: (await Storage.getItem(ItemKeys.version)) ? await Storage.getItem(ItemKeys.version) : 1
+      appIntroVersion: (await Storage.getItem(ItemKeys.appIntroVersion))
+        ? await Storage.getItem(ItemKeys.appIntroVersion)
+        : 1
     });
     //获取localstorage version 第一次启动APP设置初始值1
-    if (this.state.storageVersionNumber < Config.AppVersionNumber) {
-      //减少请求次数  如果storageVersionNuber小于当前app的version   证明没有浏览过新版本app介绍页 发起获取介绍页请求
+    if (this.state.appIntroVersion < Config.AppVersionNumber) {
+      //减少请求次数  如果appIntroVersion小于当前app的version   证明没有浏览过新版本app介绍页 发起获取介绍页请求
       //大于等于则跳过显示原始启动页
       Promise.race([
         fetch(Config.ServerRoot + '/api/app-loading-image'),
@@ -93,7 +91,8 @@ class App extends Component {
   };
 
   render() {
-    let { isLoadingComplete, showHome, introImages, storageVersionNumber, isConnected } = this.state;
+    let { isLoadingComplete, showHome, introImages, appIntroVersion, isConnected } = this.state;
+
     return (
       <View style={styles.container}>
         <Provider store={store}>
@@ -101,7 +100,7 @@ class App extends Component {
         </Provider>
         {isConnected ? (
           //判断是否联网 有网就需要判断是否介绍图 以及版本号  无网不请求数据
-          storageVersionNumber && introImages ? (
+          appIntroVersion && introImages ? (
             //判断异步加载的 storgeVersion introImages 值是否拿到  没有值得时候拿白底渲染，防止UI跳动。
             introImages.length > 1 ? (
               //判断介绍图的数量
@@ -111,7 +110,7 @@ class App extends Component {
                   method={this.handleIntro}
                   introImages={introImages}
                   actions={() => {
-                    store.dispatch(actions.updateVersion(Config.AppVersionNumber));
+                    store.dispatch(actions.updateAppIntroVersion(Config.AppVersionNumber));
                   }}
                 />
                 //浏览完介绍页之后会将版本号保存到storage中，只要不卸载APP，当前版本的介绍页就只渲染一次
@@ -137,8 +136,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   appLaunch: {
-    width,
-    height: StatusBar.currentHeight > 35 ? height + StatusBar.currentHeight : height,
+    width: Divice.width,
+    height: StatusBar.currentHeight > 35 ? Divice.height + StatusBar.currentHeight : Divice.height,
     position: 'absolute',
     top: 0,
     left: 0,

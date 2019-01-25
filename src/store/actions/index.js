@@ -54,16 +54,17 @@ export default {
     };
   },
   //用户账号状态
-  cancelUpdate(isUpdate) {
+  changeUpdateTipsVersion(updateTipsVersion) {
     return {
-      type: types.CANCEL_UPDATE,
-      isUpdate
+      type: types.CHANGE_UPDATE_TIPS_VERSION,
+      updateTipsVersion
     };
   },
-  updateVersion(version) {
+
+  updateAppIntroVersion(appIntroVersion) {
     return {
-      type: types.UPDATE_VERSION,
-      version
+      type: types.UPDATE_APP_INTRO_VERSION,
+      appIntroVersion
     };
   },
   //localstorge APP状态
