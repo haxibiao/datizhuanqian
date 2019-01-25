@@ -128,7 +128,7 @@ class SubmitTaskScreen extends Component {
 					<DivisionLine height={5} />
 					<View style={styles.header}>
 						<View style={styles.headerLeft} />
-						<Text style={styles.headerCotent}>小米应用商店评论</Text>
+						<Text style={styles.headerContent}>小米应用商店评论</Text>
 					</View>
 					<Input
 						customStyle={styles.input}
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
 	},
 	headerContent: {
 		color: Colors.primaryFont,
-		fontSize: 18
+		fontSize: 16
 	},
 	main: {
 		paddingVertical: 15,

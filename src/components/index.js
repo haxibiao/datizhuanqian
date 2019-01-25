@@ -30,6 +30,7 @@ import TaskRewardModal from './Modal/TaskRewardModal';
 import UpdateTipsModal from './Modal/UpdateTipsModal';
 import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
+import ImageViewModal from './Modal/ImageViewModal';
 
 import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
 import ProfileNotLogin from './StatusView/ProfileNotLogin';
@@ -83,6 +84,7 @@ export {
 	UpdateTipsModal,
 	RuleDescriptionModal,
 	WithdrawsTipsModal,
+	ImageViewModal,
 	//
 	WithdrawsNotLogin,
 	ProfileNotLogin,

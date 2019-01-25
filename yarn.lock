@@ -4602,6 +4602,16 @@ react-native-image-crop-picker@^0.21.3:
   version "0.21.3"
   resolved "http://registry.npm.taobao.org/react-native-image-crop-picker/download/react-native-image-crop-picker-0.21.3.tgz#04457a3f2a888949f51be4a670dcf2520b9994f8"
 
+react-native-image-pan-zoom@^2.1.9:
+  version "2.1.11"
+  resolved "http://registry.npm.taobao.org/react-native-image-pan-zoom/download/react-native-image-pan-zoom-2.1.11.tgz#61bcb69219d95e76a9797d23e4a2e8e0bd654ae9"
+
+react-native-image-zoom-viewer@^2.2.25:
+  version "2.2.25"
+  resolved "http://registry.npm.taobao.org/react-native-image-zoom-viewer/download/react-native-image-zoom-viewer-2.2.25.tgz#61d0978b26d5a07bbbdfe04791818e49d1e538a0"
+  dependencies:
+    react-native-image-pan-zoom "^2.1.9"
+
 react-native-keyboard-spacer@^0.4.1:
   version "0.4.1"
   resolved "http://registry.npm.taobao.org/react-native-keyboard-spacer/download/react-native-keyboard-spacer-0.4.1.tgz#46f18a320432098a25ea9fa89f5143dd254d332d"
