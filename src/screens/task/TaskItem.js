@@ -103,11 +103,22 @@ class TaskItem extends Component {
 			>
 				<View>
 					<Text style={styles.name}>{task.name}</Text>
-					<Text style={styles.reword}>
-						奖励 <Text style={{ color: Colors.theme }}>{`+${task.gold}智慧点`}</Text>
-					</Text>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						{task.gold ? (
+							<Text style={styles.reword}>
+								奖励
+								<Text style={{ color: Colors.theme }}>{`+${task.gold}智慧点`}</Text>
+							</Text>
+						) : null}
+						{task.ticket ? (
+							<Text style={styles.reword}>
+								奖励
+								<Text style={{ color: Colors.theme }}>{`+${task.ticket}精力点`}</Text>
+							</Text>
+						) : null}
+					</View>
 				</View>
-				{task.taskStatus == -2 && (
+				{task.taskStatus == -1 && (
 					<Button
 						name={'任务失败'}
 						outline
@@ -115,11 +126,13 @@ class TaskItem extends Component {
 						textColor={Colors.themeRed}
 						fontSize={13}
 						handler={() => {
-							navigation.navigate('失败详情', { task_id: task.id });
+							navigation.navigate('失败详情', {
+								task_id: task.id
+							});
 						}}
 					/>
 				)}
-				{task.taskStatus == -1 && (
+				{task.taskStatus == null && (
 					<Button
 						name={'领取'}
 						outline

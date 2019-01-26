@@ -15,6 +15,17 @@ class TaskType extends Component {
 		};
 	}
 
+	doTask(task) {
+		const { navigation } = this.props;
+		if (task.type == 2) {
+			navigation.navigate('提交任务', { task_id: task.id });
+		} else if (task.type == 1) {
+			navigation.navigate('主页');
+		} else {
+			navigation.navigate('编辑个人资料', { user: user });
+		}
+	}
+
 	render() {
 		const { navigation, tasks, user, name } = this.props;
 		let { itemHeight, headerHeight } = this.state;
@@ -43,9 +54,7 @@ class TaskType extends Component {
 								user={user}
 								key={index}
 								handler={() => {
-									task.type == 2
-										? navigation.navigate('提交任务', { task_id: task.id })
-										: navigation.navigate('编辑个人资料', { user: user });
+									this.doTask(task);
 								}}
 								navigation={navigation}
 								task={task}

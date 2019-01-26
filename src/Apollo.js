@@ -23,7 +23,7 @@ class Apollo extends Component {
 			deviceHeaders.brand = DeviceInfo.getBrand(); //设备品牌
 			deviceHeaders.build = Config.Build; //手动修改的build版本号
 			deviceHeaders.deviceCountry = DeviceInfo.getDeviceCountry(); //国家
-			deviceHeaders.referrer = Config.AppStore; //根据不同的.env文件打包不同的apk，方便追踪商店流量
+			deviceHeaders.referrer = Config.AppStore; //根据不同的.env文件打包不同的apk，方便追踪应用商店流量
 			deviceHeaders.version = DeviceInfo.getVersion(); //版本号
 			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion(); //系统版本
 			deviceHeaders.uniqueId = DeviceInfo.getUniqueID(); //uniqueId
