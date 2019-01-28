@@ -18,7 +18,7 @@ class WithdrawsLogItem extends Component {
 					item.status == 0
 						? null
 						: navigation.navigate('提现详情', {
-								withdraws: item
+								withdraw_id: item.id
 						  });
 				}}
 			>

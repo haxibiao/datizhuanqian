@@ -33,3 +33,21 @@ query WithdrawsQuery($limit: Int, $offset: Int) {
 		updated_at
 	}
 }
+
+#提现详情
+query WithdrawQuery($id: Int!) {
+	withdraw(id: $id) {
+		id
+		status
+		wallet_id
+		transaction_id
+		amount
+		remark
+		trade_no
+		biz_no
+		to_account
+		to_platform
+		created_at
+		updated_at
+	}
+}

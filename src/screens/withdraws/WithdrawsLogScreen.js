@@ -26,8 +26,8 @@ class WithdrawsLogScreen extends Component {
 	}
 
 	render() {
-		const { log, navigation } = this.props;
-		const { user } = navigation.state.params;
+		const { user, navigation } = this.props;
+
 		return (
 			<Screen>
 				<Query query={WithdrawsQuery} fetchPolicy="network-only">
@@ -36,6 +36,7 @@ class WithdrawsLogScreen extends Component {
 						if (loading) return <Loading />;
 						if (!(data && data.withdraws))
 							return <BlankContent text={'暂无提现记录哦,快去赚取智慧点吧~'} fontSize={14} />;
+
 						return (
 							<FlatList
 								data={data.withdraws}
@@ -43,7 +44,6 @@ class WithdrawsLogScreen extends Component {
 								refreshControl={
 									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
 								}
-								renderItem={this._withdrawLogItem}
 								renderItem={({ item, index }) => (
 									<WithdrawsLogItem item={item} navigation={navigation} />
 								)}
@@ -56,6 +56,11 @@ class WithdrawsLogScreen extends Component {
 												offset: data.withdraws.length
 											},
 											updateQuery: (prev, { fetchMoreResult }) => {
+												console.log(
+													'fetchMoreResult',
+													fetchMoreResult,
+													fetchMoreResult.withdraws
+												);
 												if (
 													!(
 														fetchMoreResult &&
@@ -95,8 +100,7 @@ class WithdrawsLogScreen extends Component {
 	}
 
 	_userWithdrawInfo = () => {
-		const { navigation } = this.props;
-		const { user } = navigation.state.params;
+		const { navigation, user } = this.props;
 		return (
 			<Query query={UserWithdrawQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 				{({ data, error, loading, refetch, fetchMore }) => {
@@ -121,35 +125,6 @@ class WithdrawsLogScreen extends Component {
 					);
 				}}
 			</Query>
-		);
-	};
-
-	_withdrawLogItem = ({ item, index }) => {
-		const { navigation } = this.props;
-		return (
-			<TouchableOpacity
-				style={styles.item}
-				activeOpacity={0.7}
-				onPress={() => {
-					item.status == 0
-						? null
-						: navigation.navigate('提现详情', {
-								withdraws: item
-						  });
-				}}
-			>
-				<View>
-					{item.status == -1 && <Text style={{ fontSize: 18, color: Colors.themeRed }}>提现失败</Text>}
-					{item.status == 1 && <Text style={{ fontSize: 18, color: Colors.weixin }}>提现成功</Text>}
-					{item.status == 0 && <Text style={{ fontSize: 18, color: Colors.theme }}>待处理</Text>}
-					<Text style={{ fontSize: 15, color: Colors.grey, paddingTop: 10 }}>{item.created_at}</Text>
-				</View>
-				<View>
-					<Text style={{ fontSize: 26, color: item.status == 1 ? Colors.weixin : Colors.black }}>
-						￥{item.amount.toFixed(0)}.00
-					</Text>
-				</View>
-			</TouchableOpacity>
 		);
 	};
 }
@@ -186,6 +161,6 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return {
-		log: store.users.log
+		user: store.users.user
 	};
 })(WithdrawsLogScreen);

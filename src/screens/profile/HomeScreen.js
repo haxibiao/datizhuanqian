@@ -12,7 +12,7 @@ import actions from '../../store/actions';
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { status: 1 };
 	}
 
 	render() {
@@ -53,13 +53,7 @@ class HomeScreen extends Component {
 							name={'提现日志'}
 							icon={'book'}
 							navigation={navigation}
-							handler={() =>
-								login
-									? navigation.navigate('提现日志', {
-											user: user
-									  })
-									: navigation.navigate('登录注册')
-							}
+							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
 						/>
 						<ProfileItem
 							name={'通知消息'}
@@ -67,15 +61,18 @@ class HomeScreen extends Component {
 							size={17}
 							right={
 								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<View
-										style={{
-											width: 6,
-											height: 6,
-											borderRadius: 3,
-											backgroundColor: Colors.themeRed,
-											paddingRight: 3
-										}}
-									/>
+									{this.state.status ? (
+										<View
+											style={{
+												width: 6,
+												height: 6,
+												borderRadius: 3,
+												backgroundColor: Colors.themeRed,
+												paddingRight: 3
+											}}
+										/>
+									) : null}
+
 									<Iconfont name={'right'} />
 								</View>
 							}

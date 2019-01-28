@@ -103,8 +103,7 @@ class HomeScreen extends Component {
 										try {
 											result = await CreateFeedbackMutation({
 												variables: {
-													content: content,
-													contact: contact
+													content: content
 												}
 											});
 										} catch (ex) {
