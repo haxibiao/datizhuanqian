@@ -14,6 +14,7 @@ import Button from './Control/Button';
 import Radio from './Control/Radio';
 import Input from './Control/Input';
 import LoginInput from './Control/LoginInput';
+import Select from './Control/Select';
 
 import Header from './Header/Header';
 import TabBarHeader from './Header/TabBarHeader';
@@ -68,6 +69,7 @@ export {
 	Radio,
 	Input,
 	LoginInput,
+	Select,
 	//
 	Header,
 	TabBarHeader,

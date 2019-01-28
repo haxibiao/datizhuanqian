@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
-import Toast from 'react-native-root-toast';
-
-import { DivisionLine, Avatar, Header, ModifyNameModal, SettingItem, Screen } from '../../../components';
+import { DivisionLine, Avatar, Header, ModifyNameModal, SettingItem, Screen, Select } from '../../../components';
 
 import { Colors, Config } from '../../../constants';
 import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
-import { updateUserNameMutation, updateUserAvatarMutation, UserQuery } from '../../../graphql/user.graphql';
+import {
+	updateUserNameMutation,
+	updateUserAvatarMutation,
+	UserQuery,
+	setUserInfoMutation
+} from '../../../graphql/user.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
 
 import ImagePicker from 'react-native-image-crop-picker';
+
+const selectedArr = ['男', '女'];
 
 class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
+		this.callbackSelected = this.callbackSelected.bind(this);
 		this.state = {
 			modalVisible: false,
-			nickname: ''
+			nickname: '',
+			gender: this.props.user.gender
 		};
 	}
 
@@ -103,12 +110,47 @@ class EditProfileScreen extends Component {
 		}));
 	}
 
+	showAlertSelected() {
+		this.dialog.show('请选择性别', selectedArr, '#333333', this.callbackSelected);
+	}
+	// 回调
+	async callbackSelected(i) {
+		switch (i) {
+			case 0: // 拍照
+				this.setState({ gender: 0 });
+
+				break;
+			case 1: // 图库
+				this.setState({ gender: 1 });
+				break;
+		}
+		let result = {};
+		try {
+			result = await this.props.setUserInfoMutation({
+				variables: {
+					data: {
+						gender: this.state.gender.toString()
+					}
+				}
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -180); //Toast错误信息
+		} else {
+			this.props.dispatch(actions.updateGender(this.state.gender));
+			Methods.toast('设置成功', -180);
+		}
+	}
+
 	render() {
 		const { navigation, user } = this.props;
 		const { pay_info_change_count } = navigation.state.params.user;
-		let { modalVisible, nickname } = this.state;
+		let { modalVisible, nickname, gender } = this.state;
 
-		console.log('user', user.avatar);
+		console.log('gender', gender);
 		return (
 			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>
@@ -122,12 +164,19 @@ class EditProfileScreen extends Component {
 						/>
 
 						<SettingItem
-							itemName="设置昵称"
+							itemName="昵称"
 							rightSize={15}
 							rightContent={user.name}
 							handler={this.toggleModalVisible}
 						/>
-						<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
+						<SettingItem
+							itemName="性别"
+							rightSize={15}
+							rightContent={user.gender == null ? '未知' : user.gender ? '女' : '男'}
+							handler={() => {
+								this.showAlertSelected();
+							}}
+						/>
 						<SettingItem
 							itemName="支付宝账号"
 							rightSize={15}
@@ -137,6 +186,7 @@ class EditProfileScreen extends Component {
 							disabled={pay_info_change_count == -1 ? true : false}
 							handler={() => navigation.navigate('我的账户')}
 						/>
+						<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
 						<SettingItem
 							itemName="重置密码"
 							rightSize={15}
@@ -165,6 +215,11 @@ class EditProfileScreen extends Component {
 						}}
 					</Mutation>
 				</View>
+				<Select
+					ref={dialog => {
+						this.dialog = dialog;
+					}}
+				/>
 			</Screen>
 		);
 	}
@@ -180,6 +235,7 @@ const styles = StyleSheet.create({
 export default connect(store => ({ user: store.users.user }))(
 	compose(
 		graphql(updateUserAvatarMutation, { name: 'updateUserAvatarMutation' }),
-		graphql(updateUserNameMutation, { name: 'updateUserNameMutation' })
+		graphql(updateUserNameMutation, { name: 'updateUserNameMutation' }),
+		graphql(setUserInfoMutation, { name: 'setUserInfoMutation' })
 	)(EditProfileScreen)
 );

@@ -129,7 +129,7 @@ class HomeScreen extends Component {
 
 	clearCache = () => {
 		this.setState({ storageSize: '0MB' });
-		Methods.toast('清楚缓存成功', -200);
+		Methods.toast('清除缓存成功', -200);
 	};
 }
 

@@ -40,6 +40,11 @@ export default [
 		error: genericErrorHandler
 	},
 	{
+		action: types.UPDATE_GENDER,
+		effect: rememberUser,
+		error: genericErrorHandler
+	},
+	{
 		action: types.SIGN_OUT,
 		effect: forgetUser,
 		error: genericErrorHandler

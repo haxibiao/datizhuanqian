@@ -46,6 +46,12 @@ export default {
       gold
     };
   },
+  updateGender(gender) {
+    return {
+      type: types.UPDATE_GENDER,
+      gender
+    };
+  },
 
   recordOperation(noTicketTips) {
     return {

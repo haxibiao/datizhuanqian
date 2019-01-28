@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
-import { DivisionLine, ErrorBoundary, Header, Screen, ProfileItem, ProfileNotLogin } from '../../components';
+import { DivisionLine, ErrorBoundary, Header, Screen, ProfileItem, ProfileNotLogin, Iconfont } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import TopUserInfo from './user/TopUserInfo';
@@ -52,7 +52,6 @@ class HomeScreen extends Component {
 						<ProfileItem
 							name={'提现日志'}
 							icon={'book'}
-							right
 							navigation={navigation}
 							handler={() =>
 								login
@@ -61,6 +60,27 @@ class HomeScreen extends Component {
 									  })
 									: navigation.navigate('登录注册')
 							}
+						/>
+						<ProfileItem
+							name={'通知消息'}
+							icon={'notification'}
+							size={17}
+							right={
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View
+										style={{
+											width: 6,
+											height: 6,
+											borderRadius: 3,
+											backgroundColor: Colors.themeRed,
+											paddingRight: 3
+										}}
+									/>
+									<Iconfont name={'right'} />
+								</View>
+							}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}
 						/>
 						{/*<ProfileItem
 							name={'任务日志'}
@@ -76,17 +96,17 @@ class HomeScreen extends Component {
 							}
 						/>*/}
 						<DivisionLine height={10} />
-						<ProfileItem name={'常见问题'} icon={'question'} right navigation={navigation} />
+						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
 						<ProfileItem
 							name={'意见反馈'}
 							icon={'feedback2'}
-							right
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('意见反馈') : navigation.navigate('登录注册'))}
 						/>
-						<ProfileItem name={'商务合作'} icon={'business'} size={20} right navigation={navigation} />
+						{/*
+						<ProfileItem name={'商务合作'} icon={'business'} size={20} right navigation={navigation} />*/}
 						<DivisionLine height={10} />
-						<ProfileItem name={'设置'} icon={'setting1'} right navigation={navigation} />
+						<ProfileItem name={'设置'} icon={'setting1'} navigation={navigation} />
 					</ScrollView>
 				</View>
 			</Screen>

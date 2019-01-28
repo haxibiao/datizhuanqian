@@ -20,7 +20,7 @@ class PlateItem extends Component {
 					<Iconfont name={icon} size={size ? size : 18} />
 					<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>{name}</Text>
 				</View>
-				{right && <Iconfont name={'right'} />}
+				{right ? right : <Iconfont name={'right'} />}
 			</TouchableOpacity>
 		);
 	}

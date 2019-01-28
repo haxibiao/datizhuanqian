@@ -20,6 +20,7 @@ class HomeScreen extends Component {
 		this.state = {};
 	}
 	_notificationItem = ({ item, index }) => {
+		const { navigation } = this.props;
 		return (
 			<View>
 				<View style={styles.timeInfo}>
@@ -34,7 +35,16 @@ class HomeScreen extends Component {
 					</View>
 				</View>
 				{item.type == 1 && (
-					<View style={styles.content}>
+					<TouchableOpacity
+						style={styles.content}
+						onPress={() => {
+							navigation.navigate('提现详情', {
+								withdraws: {
+									amount: 10
+								}
+							});
+						}}
+					>
 						<View style={styles.titleInfo}>
 							<Iconfont name={'tixian'} size={20} color={Colors.theme} />
 							<Text style={styles.title}>智慧点提现</Text>
@@ -45,7 +55,7 @@ class HomeScreen extends Component {
 							<Text style={styles.infoItem}>提现时间:{item.transaction.created_at}</Text>
 							<Text style={styles.infoItem}>预计到账时间:1-3个工作日</Text>
 						</View>
-					</View>
+					</TouchableOpacity>
 				)}
 				{item.type == 2 && (
 					<View style={styles.content}>
@@ -66,7 +76,7 @@ class HomeScreen extends Component {
 				{item.type == 3 && (
 					<View style={styles.content}>
 						<View style={styles.titleInfo}>
-							<Iconfont name={'setting1'} size={20} color={Colors.red} />
+							<Iconfont name={'rank-up'} size={20} color={Colors.red} />
 							<Text style={styles.title}>升级通知</Text>
 						</View>
 						<View style={styles.bottomInfo}>
@@ -77,6 +87,19 @@ class HomeScreen extends Component {
 						</View>
 					</View>
 				)}
+
+				<View style={styles.content}>
+					<View style={styles.titleInfo}>
+						<Iconfont name={'task'} size={18} color={Colors.theme} />
+						<Text style={styles.title}>任务审核</Text>
+					</View>
+					<View style={styles.bottomInfo}>
+						<Text style={{ fontSize: 20, paddingBottom: 15 }}>审核已通过</Text>
+						<Text style={styles.infoItem}>任务名：小米应用商店评论 </Text>
+						<Text style={styles.infoItem}>奖励：200智慧点 </Text>
+						<Text style={styles.infoItem}>请到任务列表领取奖励 </Text>
+					</View>
+				</View>
 			</View>
 		);
 	};

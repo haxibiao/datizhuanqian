@@ -4,12 +4,7 @@ import { Storage, ItemKeys } from '../localStorage';
 
 export async function rememberUser({ action, getState, dispatch }) {
 	let store = getState();
-	let { isUpdate } = action;
-
 	await Storage.setItem(ItemKeys.user, store.users.user);
-	// if (isUpdate) {
-	// 	await Storage.setItem(ItemKeys.isUpdate, true);
-	// }
 }
 
 export async function appIntroVersion({ action, getState, dispatch }) {

@@ -129,6 +129,14 @@ mutation updateUserAvatarMutation($avatar: String!) {
 	}
 }
 
+#设置性别
+mutation setUserInfoMutation($data: UserInfo) {
+	setUserInfo(data: $data) {
+		id
+		gender
+	}
+}
+
 #意见反馈
 mutation CreateFeedbackMutation($content: String!, $contact: String, $contact_type: String) {
 	createFeedback(content: $content, contact: $contact, contact_type: $contact_type) {

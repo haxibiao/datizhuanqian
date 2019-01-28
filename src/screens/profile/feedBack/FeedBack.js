@@ -54,6 +54,7 @@ class FeedBack extends Component {
 							placeholder={'请简要描述您的问题和意见,我们将为您不断改进'}
 							multiline
 							underline
+							textAlignVertical={'Top'}
 							changeValue={value => {
 								this.setState({
 									content: value

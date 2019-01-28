@@ -137,6 +137,7 @@ class SubmitTaskScreen extends Component {
 						placeholder={'文字说明'}
 						multiline
 						underline
+						textAlignVertical={'Top'}
 						changeValue={value => {
 							this.setState({
 								content: value

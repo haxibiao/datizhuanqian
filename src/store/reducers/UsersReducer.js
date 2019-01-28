@@ -64,6 +64,15 @@ class UsersReducer {
 		};
 		return state.set('user', user);
 	}
+	static [types.UPDATE_GENDER](state, action) {
+		let { user } = state;
+		let { gender } = action;
+		user = {
+			...user,
+			gender: gender
+		};
+		return state.set('user', user);
+	}
 
 	static [types.RECORD_OPERATION](state, action) {
 		let { noTicketTips } = action;

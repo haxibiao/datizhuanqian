@@ -13,7 +13,8 @@ class Input extends Component {
 			editable,
 			maxLength,
 			multiline,
-			underline
+			underline,
+			textAlignVertical
 		} = this.props;
 		return (
 			<View
@@ -26,9 +27,8 @@ class Input extends Component {
 				]}
 			>
 				<TextInput
-					textAlignVertical="center"
 					underlineColorAndroid="transparent"
-					textAlignVertical={'top'}
+					textAlignVertical={textAlignVertical}
 					autoCapitalize={'none'}
 					secureTextEntry={password}
 					defaultValue={defaultValue}
