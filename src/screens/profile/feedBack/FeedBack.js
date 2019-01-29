@@ -6,7 +6,7 @@ import { Colors, Divice } from '../../../constants';
 import { Methods } from '../../../helpers';
 
 import { CreateFeedbackMutation } from '../../../graphql/user.graphql';
-import { Mutation, graphql, compose } from 'react-apollo';
+import { Mutation, graphql, compose, withApollo } from 'react-apollo';
 
 class FeedBack extends Component {
 	constructor(props) {
@@ -40,36 +40,44 @@ class FeedBack extends Component {
 	};
 
 	submitFeedback = async () => {
-		const { navigation } = this.props;
+		const { navigation, client } = this.props;
 		let { title, pictures, content, waitingVisible } = this.state;
 		let result = {};
 		this.setState({
 			waitingVisible: true
 		});
-		try {
-			result = await this.props.CreateFeedbackMutation({
+		//等待提示
+		let promises = [
+			client.mutate({
+				mutation: CreateFeedbackMutation,
 				variables: {
 					title: title,
 					content: content,
 					images: pictures
 				}
+			}),
+			new Promise(function(resolve, reject) {
+				setTimeout(() => reject(new Error('网络超时')), 10000);
+			})
+		];
+		//超时检测
+
+		Promise.race(promises)
+			.then(result => {
+				console.log('result', result);
+				this.setState({
+					waitingVisible: false
+				});
+				Methods.toast('反馈成功', -180);
+				navigation.goBack();
+			})
+			.catch(rejected => {
+				this.setState({
+					waitingVisible: false
+				});
+				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, -100);
 			});
-		} catch (ex) {
-			result.errors = ex;
-		}
-		if (result && result.errors) {
-			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Methods.toast(str, -180); //Toast错误信息
-			this.setState({
-				waitingVisible: true
-			});
-		} else {
-			Methods.toast('反馈成功', -180);
-			navigation.goBack();
-			this.setState({
-				waitingVisible: true
-			});
-		}
 	};
 
 	render() {
@@ -157,8 +165,7 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		padding: 0,
 		height: 240,
-		justifyContent: 'flex-start',
-		marginRight: 15
+		justifyContent: 'flex-start'
 		// marginTop:10,
 	},
 	add: {
@@ -194,4 +201,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(graphql(CreateFeedbackMutation, { name: 'CreateFeedbackMutation' }))(FeedBack);
+export default withApollo(FeedBack);

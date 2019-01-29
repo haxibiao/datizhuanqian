@@ -41,33 +41,13 @@ class Comments extends Component {
 
 	_commentItem = ({ item, index }) => {
 		return (
-			<View
-				style={{
-					paddingHorizontal: 15,
-					paddingVertical: 15,
-					borderBottomColor: Colors.lightBorder,
-					borderBottomWidth: 0.5
-				}}
-			>
-				<View
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						justifyContent: 'space-between'
-					}}
-				>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center'
-						}}
-					>
-						<Avatar uri={'http://cos.qunyige.com/storage/avatar/13.jpg'} size={28} />
-						<View style={{ paddingLeft: 10, justifyContent: 'center' }}>
-							<Text style={{ color: Colors.black, fontSize: 12 }}>{item.user.name}</Text>
-							<Text style={{ fontSize: 10, color: Colors.grey, lineHeight: 16 }}>
-								评论于{item.time_ago}
-							</Text>
+			<View style={styles.container}>
+				<View style={styles.top}>
+					<View style={styles.topLeft}>
+						<Avatar uri={'http://cos.qunyige.com/storage/avatar/13.jpg'} size={34} />
+						<View style={styles.user}>
+							<Text style={styles.name}>{item.user.name}</Text>
+							<Text style={styles.time}>评论于{item.time_ago}</Text>
 						</View>
 					</View>
 					<TouchableOpacity>
@@ -75,8 +55,8 @@ class Comments extends Component {
 					</TouchableOpacity>
 				</View>
 
-				<View style={{ marginTop: 10 }}>
-					<Text style={{ color: Colors.black }}>{item.body}</Text>
+				<View style={{ marginTop: 10, marginLeft: 44 }}>
+					<Text style={{ color: Colors.black, fontSize: 15 }}>{item.body}</Text>
 				</View>
 				{/*<View
 					style={{
@@ -110,11 +90,11 @@ class Comments extends Component {
 						style={{
 							paddingHorizontal: 15,
 							paddingVertical: 10,
-							borderBottomWidth: 1,
+							borderBottomWidth: 0.5,
 							borderBottomColor: Colors.lightBorder
 						}}
 					>
-						<Text style={{ fontSize: 15, color: Colors.black }}>评论</Text>
+						<Text style={{ fontSize: 16, color: Colors.black }}>评论</Text>
 					</View>
 				)}
 			/>
@@ -124,8 +104,33 @@ class Comments extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: Colors.white
+		paddingHorizontal: 15,
+		paddingVertical: 15,
+		borderBottomColor: Colors.lightBorder,
+		borderBottomWidth: 0.5
+	},
+	top: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
+	},
+	topLeft: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	user: {
+		paddingLeft: 10,
+		justifyContent: 'space-between',
+		height: 34
+	},
+	name: {
+		color: Colors.black,
+		fontSize: 14
+	},
+	time: {
+		fontSize: 11,
+		color: Colors.grey,
+		lineHeight: 16
 	},
 	button: {
 		flexDirection: 'row',

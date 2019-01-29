@@ -17,6 +17,8 @@ class FeedBackDetailsScreen extends Component {
 		};
 	}
 
+	submitComment = async () => {};
+
 	render() {
 		const { navigation } = this.props;
 		let { title, body, images } = this.state;
@@ -26,25 +28,17 @@ class FeedBackDetailsScreen extends Component {
 			<Screen headerRight={<Iconfont name={'more-horizontal'} size={18} color={Colors.primaryFont} />}>
 				<ScrollView style={styles.container}>
 					<View style={styles.header}>
-						<Text style={{ color: Colors.black, fontSize: 20 }}>{feedback.title}</Text>
-						<View
-							style={{
-								flexDirection: 'row',
-								alignItems: 'center',
-								marginTop: 20
-							}}
-						>
+						<Text style={styles.title}>{feedback.title}</Text>
+						<View style={styles.user}>
 							<Avatar uri={feedback.user.avatar} size={34} />
-							<View style={{ paddingLeft: 10, justifyContent: 'space-between', height: 34 }}>
+							<View style={styles.userRight}>
 								<Text style={{ color: Colors.black }}>{feedback.user.name}</Text>
-								<Text style={{ fontSize: 12, color: Colors.grey }}>发布于{feedback.time_ago}</Text>
+								<Text style={styles.time}>发布于{feedback.time_ago}</Text>
 							</View>
 						</View>
 					</View>
-					<View style={{ marginTop: 15, paddingHorizontal: 15, paddingBottom: 20 }}>
-						<Text style={{ color: Colors.black, fontSize: 14, paddingBottom: 5, lineHeight: 20 }}>
-							{feedback.content}
-						</Text>
+					<View style={styles.footer}>
+						<Text style={styles.body}>{feedback.content}</Text>
 						{feedback.images.map((image, index) => {
 							let width = image.width;
 							let height = image.height;
@@ -65,12 +59,12 @@ class FeedBackDetailsScreen extends Component {
 					<DivisionLine height={5} />
 					<Comments />
 				</ScrollView>
-				<View style={{ borderTopColor: Colors.lightBorder, borderTopWidth: 0.5, paddingVertical: 10 }}>
+				<View style={styles.footer}>
 					<Input
 						customStyle={styles.input}
 						viewStyle={{ paddingHorizontal: 15 }}
 						maxLength={140}
-						placeholder={'说说你的意见'}
+						placeholder={'说说你的意见...'}
 						multiline
 						underline
 						changeValue={value => {
@@ -79,6 +73,9 @@ class FeedBackDetailsScreen extends Component {
 							});
 						}}
 					/>
+					<TouchableOpacity onPress={this.submitComment}>
+						<Text style={styles.commentText}>发布</Text>
+					</TouchableOpacity>
 				</View>
 			</Screen>
 		);
@@ -105,9 +102,53 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingTop: 20
 	},
+	title: {
+		color: Colors.theme,
+		fontSize: 16
+	},
+	user: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 20
+	},
+	userRight: {
+		paddingLeft: 10,
+		justifyContent: 'space-between',
+		height: 34
+	},
+	time: {
+		fontSize: 12,
+		color: Colors.grey
+	},
+	footer: {
+		marginTop: 15,
+		paddingHorizontal: 15,
+		paddingBottom: 20
+	},
+	body: {
+		color: Colors.black,
+		fontSize: 16,
+		paddingBottom: 5,
+		lineHeight: 20
+	},
 	input: {
 		padding: 0,
-		height: null
+		height: null,
+		width: Divice.width - 100
+	},
+	footer: {
+		borderTopColor: Colors.lightBorder,
+		borderTopWidth: 0.5,
+		paddingVertical: 10,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingHorizontal: 10,
+		maxHeight: 100
+	},
+	commentText: {
+		color: Colors.theme,
+		fontSize: 16
 	}
 });
 
