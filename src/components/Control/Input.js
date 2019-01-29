@@ -6,6 +6,7 @@ class Input extends Component {
 	render() {
 		let {
 			customStyle = {},
+			viewStyle = {},
 			placeholder,
 			password,
 			changeValue,
@@ -20,6 +21,7 @@ class Input extends Component {
 			<View
 				style={[
 					styles.textWrap,
+					viewStyle,
 					underline && {
 						borderBottomWidth: 0,
 						borderBottomColor: Colors.white

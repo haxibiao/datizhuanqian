@@ -138,12 +138,32 @@ mutation setUserInfoMutation($data: UserInfo) {
 }
 
 #意见反馈
-mutation CreateFeedbackMutation($content: String!, $contact: String, $contact_type: String) {
-	createFeedback(content: $content, contact: $contact, contact_type: $contact_type) {
+mutation CreateFeedbackMutation($title: String, $content: String, $images: [String]) {
+	createFeedback(title: $title, content: $content, images: $images) {
 		id
-		user_id
+		title
+	}
+}
+
+#反馈列表
+query feedbacksQuery($user_id: Int) {
+	feedbacks(user_id: $user_id) {
+		id
+		title
 		content
-		contact
-		contact_type
+		hot
+		public_comments_count
+		time_ago
+		images {
+			id
+			path
+			width
+			height
+		}
+		user {
+			id
+			name
+			avatar
+		}
 	}
 }

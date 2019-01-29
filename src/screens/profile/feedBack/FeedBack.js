@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { DivisionLine, Button, Iconfont, Screen, Input } from '../../../components';
+import { DivisionLine, Button, Iconfont, Screen, Input, Waiting } from '../../../components';
 
 import { Colors, Divice } from '../../../constants';
 import { Methods } from '../../../helpers';
 
 import { CreateFeedbackMutation } from '../../../graphql/user.graphql';
-import { Mutation } from 'react-apollo';
+import { Mutation, graphql, compose } from 'react-apollo';
 
 class FeedBack extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			content: null,
-			contact: null,
-			pictures: []
+			content: '',
+			pictures: [],
+			titile: '',
+			waitingVisible: false
 		};
 	}
 
@@ -23,7 +24,7 @@ class FeedBack extends Component {
 		Methods.imagePicker(images => {
 			let { pictures } = this.state;
 			images.map(image => {
-				pictures.push(image.path);
+				pictures.push(`data:${image.mime};base64,${image.data}`);
 			});
 			if (pictures.length > 6) {
 				this.setState({
@@ -38,8 +39,41 @@ class FeedBack extends Component {
 		});
 	};
 
+	submitFeedback = async () => {
+		const { navigation } = this.props;
+		let { title, pictures, content, waitingVisible } = this.state;
+		let result = {};
+		this.setState({
+			waitingVisible: true
+		});
+		try {
+			result = await this.props.CreateFeedbackMutation({
+				variables: {
+					title: title,
+					content: content,
+					images: pictures
+				}
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -180); //Toast错误信息
+			this.setState({
+				waitingVisible: true
+			});
+		} else {
+			Methods.toast('反馈成功', -180);
+			navigation.goBack();
+			this.setState({
+				waitingVisible: true
+			});
+		}
+	};
+
 	render() {
-		let { content, contact, pictures } = this.state;
+		let { content, pictures, waitingVisible } = this.state;
 		const { navigation } = this.props;
 
 		return (
@@ -54,14 +88,15 @@ class FeedBack extends Component {
 							placeholder={'请简要描述您的问题和意见,我们将为您不断改进'}
 							multiline
 							underline
-							textAlignVertical={'Top'}
+							textAlignVertical={'top'}
 							changeValue={value => {
 								this.setState({
 									content: value
 								});
 							}}
 						/>
-						<View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>
+
+						<View style={styles.images}>
 							{pictures.map((image, index) => {
 								return (
 									<View key={index}>
@@ -81,46 +116,23 @@ class FeedBack extends Component {
 								);
 							})}
 
-							<TouchableOpacity style={styles.add} onPress={this.openPhotos}>
-								<Iconfont name={'add'} size={24} color={Colors.tintGray} />
-							</TouchableOpacity>
+							{!(pictures.length > 5) && (
+								<TouchableOpacity style={styles.add} onPress={this.openPhotos}>
+									<Iconfont name={'add'} size={26} color={Colors.tintGray} />
+								</TouchableOpacity>
+							)}
 						</View>
 						<View style={styles.mainBottom} />
 					</View>
-
-					<Mutation mutation={CreateFeedbackMutation}>
-						{CreateFeedbackMutation => {
-							return (
-								<Button
-									name={'提交'}
-									style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
-									theme={content ? Colors.theme : Colors.tintGray}
-									textColor={content ? Colors.white : Colors.grey}
-									handler={async () => {
-										let result = {};
-										try {
-											result = await CreateFeedbackMutation({
-												variables: {
-													content: content,
-													contact: contact
-												}
-											});
-										} catch (ex) {
-											result.errors = ex;
-										}
-										if (result && result.errors) {
-											let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-											Methods.toast(str, -180); //Toast错误信息
-										} else {
-											Methods.toast('反馈成功', -180);
-											navigation.goBack();
-										}
-									}}
-								/>
-							);
-						}}
-					</Mutation>
+					<Button
+						name={'提交'}
+						style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
+						theme={content ? Colors.theme : Colors.tintGray}
+						textColor={content ? Colors.white : Colors.grey}
+						handler={this.submitFeedback}
+					/>
 				</View>
+				<Waiting isVisible={waitingVisible} />
 			</Screen>
 		);
 	}
@@ -135,37 +147,42 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		marginBottom: 30
 	},
+	images: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		marginLeft: 25
+	},
 	input: {
 		backgroundColor: 'transparent',
 		fontSize: 15,
 		padding: 0,
-		height: 260,
+		height: 240,
 		justifyContent: 'flex-start',
-		marginRight: 0
+		marginRight: 15
 		// marginTop:10,
 	},
 	add: {
-		width: (Divice.width - 45) / 4,
-		height: (Divice.width - 45) / 4,
-		borderColor: Colors.tintGray,
+		width: (Divice.width - 60) / 3,
+		height: (Divice.width - 60) / 3,
+		borderColor: Colors.lightBorder,
 		borderWidth: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	image: {
-		width: (Divice.width - 45) / 4,
-		height: (Divice.width - 45) / 4,
+		width: (Divice.width - 60) / 3,
+		height: (Divice.width - 60) / 3,
 		marginRight: 5,
-		marginBottom: 15
+		marginBottom: 5
 	},
 	delete: {
 		backgroundColor: 'rgba(150,150,150,0.5)',
 		borderRadius: 8,
 		position: 'absolute',
-		right: 9,
+		right: 8,
 		top: 2,
-		width: 14,
-		height: 14,
+		width: 16,
+		height: 16,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -177,4 +194,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default FeedBack;
+export default compose(graphql(CreateFeedbackMutation, { name: 'CreateFeedbackMutation' }))(FeedBack);

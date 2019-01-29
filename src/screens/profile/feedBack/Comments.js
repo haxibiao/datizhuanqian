@@ -46,7 +46,7 @@ class Comments extends Component {
 					paddingHorizontal: 15,
 					paddingVertical: 15,
 					borderBottomColor: Colors.lightBorder,
-					borderBottomWidth: 1
+					borderBottomWidth: 0.5
 				}}
 			>
 				<View
@@ -78,43 +78,22 @@ class Comments extends Component {
 				<View style={{ marginTop: 10 }}>
 					<Text style={{ color: Colors.black }}>{item.body}</Text>
 				</View>
-				<View
+				{/*<View
 					style={{
 						flexDirection: 'row',
 						alignItems: 'center',
 						paddingTop: 15
 					}}
 				>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							borderWidth: 1,
-							borderColor: Colors.lightBorder,
-							paddingHorizontal: 7,
-							paddingVertical: 3,
-							borderRadius: 3
-						}}
-					>
+					<View style={styles.button}>
 						<Iconfont name={'praise2'} color={Colors.theme} size={14} style={{ paddingRight: 5 }} />
 						<Text style={{ color: Colors.theme }}>{item.praise}</Text>
 					</View>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							borderWidth: 1,
-							borderColor: Colors.lightBorder,
-							paddingHorizontal: 7,
-							paddingVertical: 3,
-							borderRadius: 3,
-							marginLeft: 8
-						}}
-					>
+					<View style={styles.button}>
 						<Iconfont name={'step2'} color={Colors.black} size={14} style={{ paddingRight: 5 }} />
 						<Text>{item.step}</Text>
 					</View>
-				</View>
+				</View>*/}
 			</View>
 		);
 	};
@@ -147,6 +126,16 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white
+	},
+	button: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderWidth: 1,
+		borderColor: Colors.lightBorder,
+		paddingHorizontal: 7,
+		paddingVertical: 3,
+		borderRadius: 5,
+		marginLeft: 8
 	}
 });
 

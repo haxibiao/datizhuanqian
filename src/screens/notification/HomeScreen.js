@@ -34,11 +34,11 @@ class HomeScreen extends Component {
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
-						if (!(data && data.notifications !== []))
+						if (!(data && !data.notifications == []))
 							return <BlankContent text={'还没有通知哦'} fontSize={14} />;
 						return (
 							<FlatList
-								style={{ backgroundColor: Colors.lightBorder, marginBottom: 50 }}
+								style={{ backgroundColor: Colors.lightBorder }}
 								data={data.notifications}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (

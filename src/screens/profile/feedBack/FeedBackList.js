@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Dimensions, FlatList, Image } from 'react-native';
-
 import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header, Screen } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 
 import { connect } from 'react-redux';
-
-const { width, height } = Dimensions.get('window');
+import { Query } from 'react-apollo';
+import { feedbacksQuery } from '../../../graphql/user.graphql';
 
 class FeedBackList extends Component {
 	constructor(props) {
@@ -16,9 +15,8 @@ class FeedBackList extends Component {
 		};
 	}
 	render() {
-		let { user, navigation, login, feedback } = this.props;
+		let { user, navigation, login } = this.props;
 		let { onPress } = this.state;
-		console.log('feed', feedback);
 		return (
 			<Screen header tabLabel="今日">
 				<DivisionLine height={5} />
@@ -61,12 +59,20 @@ class FeedBackList extends Component {
 						<Text>我的反馈</Text>
 					</TouchableOpacity>
 				</View>
-				<FlatList
-					data={feedback}
-					keyExtractor={(item, index) => index.toString()}
-					renderItem={this._feedbackItem}
-					ListFooterComponent={() => <ContentEnd />}
-				/>
+				<Query query={feedbacksQuery} variables={{ user_id: user.id }}>
+					{({ data, loading, error, refetch, fetchMore }) => {
+						if (error) return null;
+						if (!(data && data.feedbacks !== [])) return null;
+						return (
+							<FlatList
+								data={data.feedbacks}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={this._feedbackItem}
+								ListFooterComponent={() => <ContentEnd />}
+							/>
+						);
+					}}
+				</Query>
 			</Screen>
 		);
 	}
@@ -76,7 +82,7 @@ class FeedBackList extends Component {
 			<TouchableOpacity
 				style={styles.feedbackItem}
 				onPress={() => {
-					navigation.navigate('反馈详情');
+					navigation.navigate('反馈详情', { feedback: item });
 				}}
 			>
 				<View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
@@ -87,13 +93,17 @@ class FeedBackList extends Component {
 					</View>
 				</View>
 				<View>
-					<Text style={{ fontSize: 15, lineHeight: 18, color: Colors.black }}>{item.description}</Text>
+					<Text style={{ fontSize: 15, lineHeight: 18, color: Colors.primaryFont }}>{item.content}</Text>
 					<View style={{ flexDirection: 'row', marginTop: 10 }}>
 						{item.images.map((image, index) => {
 							return (
 								<Image
-									source={{ uri: image }}
-									style={{ width: (width - 60) / 3, height: (width - 60) / 3, marginRight: 20 }}
+									source={{ uri: image.path }}
+									style={{
+										width: (Divice.width - 60) / 3,
+										height: (Divice.width - 60) / 3,
+										marginRight: 20
+									}}
 									key={index}
 								/>
 							);
@@ -113,13 +123,13 @@ const styles = StyleSheet.create({
 	feedbackItem: {
 		marginHorizontal: 15,
 		borderBottomColor: Colors.lightBorder,
-		borderBottomWidth: 1,
+		borderBottomWidth: 0.5,
 		paddingVertical: 15
 	}
 });
 
 export default connect(store => {
 	return {
-		feedback: store.users.feedback
+		user: store.users.user
 	};
 })(FeedBackList);

@@ -39,7 +39,7 @@ class HomeScreen extends Component {
 								refetch();
 							});
 							if (error) return <LoadingError />;
-							if (!(data && data.tasks == []))
+							if (!(data && !data.tasks == []))
 								return <BlankContent text={'暂时还没有任务哦~'} fontSize={14} />;
 
 							let newUserTask = data.tasks.filter((elem, i) => {
