@@ -28,7 +28,13 @@ class CommentItem extends Component {
 					<View style={styles.topLeft}>
 						<Avatar uri={item.user.avatar} size={34} />
 						<View style={styles.user}>
-							<Text style={styles.name}>{item.user.name}</Text>
+							<Text
+								style={{
+									color: item.user.is_admin ? Colors.themeRed : Colors.black
+								}}
+							>
+								{item.user.name}
+							</Text>
 							<Text style={styles.time}>评论于{item.time_ago}</Text>
 						</View>
 					</View>
@@ -106,10 +112,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		height: 34
 	},
-	name: {
-		color: Colors.black,
-		fontSize: 14
-	},
+
 	time: {
 		fontSize: 11,
 		color: Colors.grey,

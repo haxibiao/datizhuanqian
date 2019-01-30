@@ -160,7 +160,9 @@ class FeedBackDetailsScreen extends Component {
 					<View style={styles.user}>
 						<Avatar uri={feedback.user.avatar} size={34} />
 						<View style={styles.userRight}>
-							<Text style={{ color: Colors.black }}>{feedback.user.name}</Text>
+							<Text style={{ color: feedback.user.is_admin ? Colors.themeRed : Colors.black }}>
+								{feedback.user.name}
+							</Text>
 							<Text style={styles.time}>发布于{feedback.time_ago}</Text>
 						</View>
 					</View>

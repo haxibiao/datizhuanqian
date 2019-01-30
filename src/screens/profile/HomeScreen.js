@@ -9,6 +9,9 @@ import { Storage, ItemKeys } from '../../store/localStorage';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
+import { userUnreadQuery } from '../../graphql/notification.graphql';
+import { Query } from 'react-apollo';
+
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -25,14 +28,14 @@ class HomeScreen extends Component {
 						{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
 
 						<DivisionLine height={10} />
-						<ProfileItem
+						{/*<ProfileItem
 							name={'我的道具'}
 							icon={'box'}
 							size={19}
 							right
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('道具') : navigation.navigate('登录注册'))}
-						/>
+						/>*/}
 						{/*
 						<ProfileItem
 							name={'分享邀请'}
@@ -62,17 +65,28 @@ class HomeScreen extends Component {
 							size={17}
 							right={
 								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									{this.state.status ? (
-										<View
-											style={{
-												width: 6,
-												height: 6,
-												borderRadius: 3,
-												backgroundColor: Colors.themeRed,
-												paddingRight: 3
-											}}
-										/>
-									) : null}
+									<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={50000}>
+										{({ data, error }) => {
+											if (error) return null;
+											if (!(data && data.user)) return null;
+											console.log('Data user', data.user);
+											if (data.user.unread_notifications_count) {
+												return (
+													<View
+														style={{
+															width: 6,
+															height: 6,
+															borderRadius: 3,
+															backgroundColor: Colors.themeRed,
+															paddingRight: 3
+														}}
+													/>
+												);
+											} else {
+												return null;
+											}
+										}}
+									</Query>
 
 									<Iconfont name={'right'} />
 								</View>

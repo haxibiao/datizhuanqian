@@ -1,9 +1,33 @@
 #通知
-query notificationsQuery($filter: NotificationEnumType, $limit: Int, $offset: Int) {
+query notificationsQuery($filter: NotificationEnum, $limit: Int, $offset: Int) {
 	notifications(filter: $filter, limit: $limit, offset: $offset) {
 		type
-		data
-		read_at
 		created_at
+		withdraw {
+			id
+			status
+			amount
+			to_account
+			updated_at
+			biz_no
+			remark
+		}
+		comment {
+			id
+			content
+			time_ago
+			user {
+				id
+				name
+				avatar
+			}
+		}
+	}
+}
+
+query userUnreadQuery($id: Int) {
+	user(id: $id) {
+		id
+		unread_notifications_count
 	}
 }

@@ -90,31 +90,77 @@ class FeedBackList extends Component {
 			>
 				<View style={styles.top}>
 					<View style={styles.topLeft}>
-						<Avatar uri={item.user.avatar} size={36} />
-						<View style={styles.user}>
-							<Text style={{ color: Colors.black }}>{item.user.name}</Text>
-							<Text style={styles.time}>发布于{item.time_ago}</Text>
+						<Avatar uri={item.user.avatar} size={28} />
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<View style={{ justifyContent: 'center' }}>
+								<Text
+									style={{
+										color: Colors.black,
+										paddingLeft: 10
+									}}
+								>
+									{item.user.name}
+								</Text>
+							</View>
+
+							<View
+								style={{
+									backgroundColor: Colors.theme,
+									paddingHorizontal: 2,
+									marginLeft: 5,
+									marginTop: 1,
+									borderRadius: 1
+								}}
+							>
+								<Text style={{ fontSize: 8, color: Colors.white }}>Lv.7</Text>
+							</View>
 						</View>
 					</View>
-					<TouchableOpacity>
-						<Iconfont name={'more-horizontal'} size={15} color={Colors.grey} />
-					</TouchableOpacity>
 				</View>
-				<View style={{ marginHorizontal: 15, paddingBottom: 15 }}>
+				<View style={{ marginLeft: 15, marginRight: 10, paddingBottom: 10 }}>
 					<Text style={styles.body}>{item.content}</Text>
 					<View style={styles.images}>
-						{item.images.map((image, index) => {
+						{item.images.slice(0, 3).map((image, index) => {
 							return (
 								<Image
 									source={{ uri: image.path }}
 									style={{
 										width: (Divice.width - 40) / 3,
-										height: (Divice.width - 40) / 3
+										height: (Divice.width - 40) / 3,
+										marginRight: 5
 									}}
 									key={index}
 								/>
 							);
 						})}
+					</View>
+				</View>
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						justifyContent: 'space-between',
+						marginHorizontal: 15,
+						paddingBottom: 10
+					}}
+				>
+					<View>
+						<Text style={styles.text}>{item.time_ago}</Text>
+					</View>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+							<Iconfont name={'hot'} size={15} color={Colors.theme} style={{ marginHorizontal: 5 }} />
+							<Text style={styles.text}>{item.hot}</Text>
+						</View>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Iconfont
+								name={'notification'}
+								style={{ marginHorizontal: 5 }}
+								color={Colors.theme}
+								size={12}
+							/>
+							<Text style={styles.text}>{item.publish_comments_count}</Text>
+						</View>
 					</View>
 				</View>
 				<DivisionLine height={5} />
@@ -156,20 +202,18 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 		justifyContent: 'center'
 	},
-	time: {
-		fontSize: 12,
-		color: Colors.grey,
-		paddingTop: 5
+	text: {
+		fontSize: 13,
+		color: Colors.grey
 	},
 	body: {
-		fontSize: 15,
+		fontSize: 16,
 		lineHeight: 18,
 		color: Colors.primaryFont
 	},
 	images: {
 		flexDirection: 'row',
-		marginTop: 10,
-		justifyContent: 'space-between'
+		marginTop: 10
 	}
 });
 

@@ -8,16 +8,14 @@ import {
 	LoadingMore,
 	ContentEnd,
 	Iconfont,
-	Screen
+	Screen,
+	Avatar
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { notificationsQuery } from '../../graphql/notification.graphql';
 
-import NotificationType from './NotificationType';
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -30,62 +28,56 @@ class HomeScreen extends Component {
 		let { navigation } = this.props;
 		return (
 			<Screen>
-				<Query query={notificationsQuery}>
-					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <LoadingError reload={() => refetch()} />;
-						if (loading) return <Loading />;
-						if (!(data && !data.notifications == []))
-							return <BlankContent text={'还没有通知哦'} fontSize={14} />;
-						return (
-							<FlatList
-								style={{ backgroundColor: Colors.lightBorder }}
-								data={data.notifications}
-								keyExtractor={(item, index) => index.toString()}
-								renderItem={({ item, index }) => (
-									<NotificationType notification={item} navigation={navigation} />
-								)}
-								refreshControl={
-									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
-								}
-								onEndReachedThreshold={0.3}
-								onEndReached={() => {
-									if (data.notifications) {
-										fetchMore({
-											variables: {
-												offset: data.notifications.length
-											},
-											updateQuery: (prev, { fetchMoreResult }) => {
-												if (!(fetchMoreResult && fetchMoreResult.notifications.length > 0)) {
-													this.setState({
-														fetchingMore: false
-													});
-													return prev;
-												}
-												return Object.assign({}, prev, {
-													notifications: [
-														...prev.notifications,
-														...fetchMoreResult.notifications
-													]
-												});
-											}
-										});
-									} else {
-										this.setState({
-											fetchingMore: false
-										});
-									}
-								}}
-								ListFooterComponent={() => {
-									return this.state.fetchingMore ? (
-										<LoadingMore />
-									) : (
-										<ContentEnd content={'没有更多记录了~'} />
-									);
-								}}
-							/>
-						);
+				<TouchableOpacity
+					style={{
+						flexDirection: 'row',
+						paddingHorizontal: 15,
+						paddingVertical: 10,
+						alignItems: 'center'
 					}}
-				</Query>
+					onPress={() => {
+						navigation.navigate('系统通知');
+					}}
+				>
+					<Avatar uri={'http://cos.datizhuanqian.cn/storage/app/avatars/avatar.png'} size={48} />
+					<View
+						style={{
+							marginLeft: 10,
+							borderBottomWidth: 0.5,
+							borderBottomColor: Colors.lightBorder,
+							paddingVertical: 20,
+							flex: 1,
+							flexDirection: 'row'
+						}}
+					>
+						<Text style={{ fontSize: 15, color: Colors.balck }}>系统通知</Text>
+					</View>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={{
+						flexDirection: 'row',
+						paddingHorizontal: 15,
+						paddingVertical: 10,
+						alignItems: 'center'
+					}}
+					onPress={() => {
+						navigation.navigate('评论');
+					}}
+				>
+					<Avatar uri={'http://cos.datizhuanqian.cn/storage/app/avatars/avatar.png'} size={48} />
+					<View
+						style={{
+							marginLeft: 10,
+							borderBottomWidth: 0.5,
+							borderBottomColor: Colors.lightBorder,
+							paddingVertical: 20,
+							flex: 1,
+							flexDirection: 'row'
+						}}
+					>
+						<Text style={{ fontSize: 15, color: Colors.balck }}>评论</Text>
+					</View>
+				</TouchableOpacity>
 			</Screen>
 		);
 	}

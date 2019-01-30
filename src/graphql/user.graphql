@@ -77,6 +77,7 @@ mutation UpdateUserPasswordMutation($old_password: String!, $new_password: Strin
 #用户个人资料
 query UserQuery($id: Int!) {
 	user(id: $id) {
+		id
 		name
 		real_name
 		gold
@@ -106,6 +107,7 @@ query UserQuery($id: Int!) {
 #用户提现信息
 query UserWithdrawQuery($id: Int!) {
 	user(id: $id) {
+		id
 		gold
 		transaction_sum_amount
 	}
@@ -187,6 +189,7 @@ query feedbackQuery($id: Int!) {
 			id
 			name
 			avatar
+			is_admin
 		}
 		comments {
 			id
@@ -198,12 +201,14 @@ query feedbackQuery($id: Int!) {
 				user {
 					id
 					name
+					is_admin
 				}
 			}
 			user {
 				id
 				name
 				avatar
+				is_admin
 			}
 		}
 	}

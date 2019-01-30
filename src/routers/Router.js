@@ -25,7 +25,9 @@ import BusinessScreen from '../screens/profile/BusinessScreen';
 import FeedBackScreen from '../screens/profile/feedBack/HomeScreen';
 import FeedBackDetailsScreen from '../screens/profile/feedBack/FeedBackDetailsScreen';
 
-import Notification from '../screens/notification/HomeScreen';
+import NotificationScreen from '../screens/notification/HomeScreen';
+import SystemNotificationScreen from '../screens/notification/SystemNotificationScreen';
+import CommentNotificationScreen from '../screens/notification/CommentNotificationScreen';
 
 import WithdrawsLogScreen from '../screens/withdraws/WithdrawsLogScreen';
 import WithdrawDetailsScreen from '../screens/withdraws/WithdrawDetailsScreen';
@@ -105,7 +107,13 @@ export default {
 	},
 	//反馈
 	通知: {
-		screen: Notification
+		screen: NotificationScreen
+	},
+	系统通知: {
+		screen: SystemNotificationScreen
+	},
+	评论: {
+		screen: CommentNotificationScreen
 	},
 	//通知
 	提现日志: {

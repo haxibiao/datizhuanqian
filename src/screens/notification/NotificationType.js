@@ -13,8 +13,6 @@ class NotificationType extends Component {
 
 	render() {
 		const { navigation, user, notification } = this.props;
-		let data = JSON.parse(notification.data);
-		console.log('data', data);
 		return (
 			<View>
 				<View style={styles.timeInfo}>
@@ -29,7 +27,7 @@ class NotificationType extends Component {
 						</Text>
 					</View>
 				</View>
-				{notification.type == 'WITHDRAW' && (
+				{notification.type == 'WITHDRAW_SUCCESS' && (
 					<TouchableOpacity
 						style={styles.item}
 						onPress={() => {
@@ -41,26 +39,20 @@ class NotificationType extends Component {
 							<Text style={styles.title}>提现通知</Text>
 						</View>
 						<View style={styles.bottomInfo}>
-							<Text style={styles.text}>￥{data.amount}</Text>
-							{data.alias == 'withdrawSucess' ? (
-								<View>
-									<Text style={{ color: Colors.weixin, paddingVertical: 3 }}>{data.title}</Text>
-									<Text style={styles.infoItem}>提现方式：支付宝({data.to_account})</Text>
-									<Text style={styles.infoItem}>到账时间：{data.withdraw_success_at}</Text>
-								</View>
-							) : (
-								<View>
-									<Text style={{ color: Colors.themeRed, paddingVertical: 3 }}>{data.title}</Text>
-									<Text style={styles.infoItem}>提现单号：{data.biz_no}</Text>
-									<Text style={styles.infoItem}>回执信息：{data.remark}</Text>
-								</View>
-							)}
+							<Text style={styles.text}>￥{notification.withdraw.amount}.00</Text>
+							<View>
+								<Text style={{ color: Colors.weixin, paddingVertical: 3 }}>提现成功</Text>
+								<Text style={styles.infoItem}>
+									提现方式：支付宝({notification.withdraw.to_account})
+								</Text>
+								<Text style={styles.infoItem}>到账时间：{notification.withdraw.updated_at}</Text>
+							</View>
 						</View>
 						<TouchableOpacity
 							style={styles.footer}
 							onPress={() => {
 								navigation.navigate('提现详情', {
-									withdraw_id: data.withdraw_id
+									withdraw_id: notification.withdraw.withdraw_id
 								});
 							}}
 						>
@@ -69,6 +61,39 @@ class NotificationType extends Component {
 						</TouchableOpacity>
 					</TouchableOpacity>
 				)}
+				{notification.type == 'WITHDRAW_FAILURE' && (
+					<TouchableOpacity
+						style={styles.item}
+						onPress={() => {
+							navigation.navigate('提现日志');
+						}}
+					>
+						<View style={styles.titleInfo}>
+							<Iconfont name={'tixian'} size={20} color={Colors.theme} />
+							<Text style={styles.title}>提现通知</Text>
+						</View>
+						<View style={styles.bottomInfo}>
+							<Text style={styles.text}>￥{notification.withdraw.amount}.00</Text>
+							<View>
+								<Text style={{ color: Colors.themeRed, paddingVertical: 3 }}>提现失败</Text>
+								<Text style={styles.infoItem}>提现单号：{notification.withdraw.biz_no}</Text>
+								<Text style={styles.infoItem}>回执信息：{notification.withdraw.remark}</Text>
+							</View>
+						</View>
+						<TouchableOpacity
+							style={styles.footer}
+							onPress={() => {
+								navigation.navigate('提现详情', {
+									withdraw_id: notification.withdraw.withdraw_id
+								});
+							}}
+						>
+							<Text>查看详情</Text>
+							<Iconfont name={'right'} size={14} />
+						</TouchableOpacity>
+					</TouchableOpacity>
+				)}
+
 				{notification.type == 2 && (
 					<View style={styles.item}>
 						<View style={styles.titleInfo}>
