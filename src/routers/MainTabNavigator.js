@@ -34,18 +34,22 @@ export default TabNavigator(
         let iconName;
         switch (routeName) {
           case '答题':
-            iconName = 'home';
+            iconName = 'answer';
+            size = 22;
             break;
           case '提现':
-            iconName = 'tixian';
+            iconName = 'withdraw';
+            size = 20;
             break;
           case '任务':
-            iconName = 'task';
+            iconName = 'task3';
+            size = 22;
             break;
           case '我的':
             iconName = 'my';
+            size = 22;
         }
-        return <Iconfont name={iconName} size={22} color={focused ? Colors.theme : Colors.grey} />;
+        return <Iconfont name={iconName} size={size} color={focused ? Colors.theme : Colors.grey} />;
       }
     }),
     tabBarComponent: props => <MainTabBar {...props} />,

@@ -6,12 +6,24 @@ const { width, height } = Dimensions.get('window');
 
 class BasicModal extends Component {
 	render() {
-		const { visible, handleVisible, header, children, customStyle = {}, animationType = 'fade' } = this.props;
+		const {
+			visible,
+			handleVisible,
+			header,
+			children,
+			customStyle = {},
+			animationType = 'fade',
+			backgroundColor
+		} = this.props;
 		const mergeStyle = StyleSheet.flatten([styles.modalInner, customStyle]);
 		return (
 			<Modal animationType={animationType} transparent={true} visible={visible} onRequestClose={handleVisible}>
 				<View
-					style={[styles.modalShade, animationType == 'slide' && { justifyContent: 'flex-end' }]}
+					style={[
+						styles.modalShade,
+						animationType == 'slide' && { justifyContent: 'flex-end' },
+						{ backgroundColor: backgroundColor ? backgroundColor : 'rgba(48,48,48,0.5)' }
+					]}
 					onStartShouldSetResponder={evt => true}
 					onResponderStart={handleVisible}
 					onStartShouldSetResponderCapture={evt => false}

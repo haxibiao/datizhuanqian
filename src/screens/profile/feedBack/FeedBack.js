@@ -69,7 +69,9 @@ class FeedBack extends Component {
 					waitingVisible: false
 				});
 				Methods.toast('反馈成功', -180);
-				navigation.goBack();
+				navigation.navigate('反馈详情', {
+					feedback_id: result.data.createFeedback.id
+				});
 			})
 			.catch(rejected => {
 				this.setState({
@@ -78,6 +80,10 @@ class FeedBack extends Component {
 				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
 				Methods.toast(str, -100);
 			});
+		this.setState({
+			pictures: [],
+			content: ''
+		});
 	};
 
 	render() {
@@ -97,6 +103,7 @@ class FeedBack extends Component {
 							multiline
 							underline
 							textAlignVertical={'top'}
+							defaultValue={this.state.content}
 							changeValue={value => {
 								this.setState({
 									content: value

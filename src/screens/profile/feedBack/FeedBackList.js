@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from 'react-native';
-import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header, Screen } from '../../../components';
+import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header, Screen, Iconfont } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 
 import { connect } from 'react-redux';
@@ -85,17 +85,22 @@ class FeedBackList extends Component {
 			<TouchableOpacity
 				style={styles.feedbackItem}
 				onPress={() => {
-					navigation.navigate('反馈详情', { feedback: item });
+					navigation.navigate('反馈详情', { feedback_id: item.id });
 				}}
 			>
 				<View style={styles.top}>
-					<Avatar uri={item.user.avatar} size={34} />
-					<View style={styles.user}>
-						<Text style={{ color: Colors.black }}>风清扬</Text>
-						<Text style={styles.time}>发布于3小时前</Text>
+					<View style={styles.topLeft}>
+						<Avatar uri={item.user.avatar} size={36} />
+						<View style={styles.user}>
+							<Text style={{ color: Colors.black }}>{item.user.name}</Text>
+							<Text style={styles.time}>发布于{item.time_ago}</Text>
+						</View>
 					</View>
+					<TouchableOpacity>
+						<Iconfont name={'more-horizontal'} size={15} color={Colors.grey} />
+					</TouchableOpacity>
 				</View>
-				<View>
+				<View style={{ marginHorizontal: 15, paddingBottom: 15 }}>
 					<Text style={styles.body}>{item.content}</Text>
 					<View style={styles.images}>
 						{item.images.map((image, index) => {
@@ -112,6 +117,7 @@ class FeedBackList extends Component {
 						})}
 					</View>
 				</View>
+				<DivisionLine height={5} />
 			</TouchableOpacity>
 		);
 	};
@@ -130,20 +136,21 @@ const styles = StyleSheet.create({
 	},
 	tab: {
 		borderBottomWidth: 2,
-
 		marginRight: 30,
 		paddingVertical: 10
 	},
-	feedbackItem: {
-		marginHorizontal: 15,
-		borderBottomColor: Colors.lightBorder,
-		borderBottomWidth: 0.5,
-		paddingVertical: 15
-	},
+	feedbackItem: {},
 	top: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 10
+		justifyContent: 'space-between',
+		marginBottom: 10,
+		paddingTop: 15,
+		marginHorizontal: 15
+	},
+	topLeft: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	user: {
 		paddingLeft: 10,

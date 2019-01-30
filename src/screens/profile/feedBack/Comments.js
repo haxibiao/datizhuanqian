@@ -4,38 +4,14 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image }
 import { Colors } from '../../../constants';
 import { Methods } from '../../../helpers';
 
-import { Avatar, Iconfont, Screen, DivisionLine } from '../../../components';
+import { Avatar, Iconfont, Screen, DivisionLine, FeedbackCommentModal } from '../../../components';
 
 class Comments extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			comments: [
-				{
-					id: 1,
-					user: {
-						id: 8,
-						name: 'Xuan',
-						avatar: 'http://cos.qunyige.com/storage/avatar/13.jpg'
-					},
-					time_ago: '3小时前',
-					body: '目前提现用户过多，请耐心等待哦',
-					praise: 15,
-					step: 12
-				},
-				{
-					id: 2,
-					user: {
-						id: 1,
-						name: '风清扬',
-						avatar: 'http://cos.qunyige.com/storage/avatar/12.jpg'
-					},
-					time_ago: '15小时前',
-					body: '目前提现用户过多，请耐心等待哦',
-					praise: 15,
-					step: 12
-				}
-			]
+			feedbackCommentVisible: false,
+			commentable_id: null
 		};
 	}
 
@@ -44,19 +20,26 @@ class Comments extends Component {
 			<View style={styles.container}>
 				<View style={styles.top}>
 					<View style={styles.topLeft}>
-						<Avatar uri={'http://cos.qunyige.com/storage/avatar/13.jpg'} size={34} />
+						<Avatar uri={item.user.avatar} size={34} />
 						<View style={styles.user}>
 							<Text style={styles.name}>{item.user.name}</Text>
 							<Text style={styles.time}>评论于{item.time_ago}</Text>
 						</View>
 					</View>
-					<TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => {
+							this.FeedbackCommentModalVisible();
+							this.setState({
+								commentable_id: item.id
+							});
+						}}
+					>
 						<Iconfont name={'more-horizontal'} size={14} />
 					</TouchableOpacity>
 				</View>
 
 				<View style={{ marginTop: 10, marginLeft: 44 }}>
-					<Text style={{ color: Colors.black, fontSize: 15 }}>{item.body}</Text>
+					<Text style={{ color: Colors.black, fontSize: 15 }}>{item.content}</Text>
 				</View>
 				{/*<View
 					style={{
@@ -79,10 +62,11 @@ class Comments extends Component {
 	};
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, feedback } = this.props;
+		let { feedbackCommentVisible, commentable_id } = this.state;
 		return (
 			<FlatList
-				data={this.state.comments}
+				data={feedback.comments}
 				keyExtractor={(item, index) => index.toString()}
 				renderItem={this._commentItem}
 				ListHeaderComponent={() => (
@@ -94,11 +78,31 @@ class Comments extends Component {
 							borderBottomColor: Colors.lightBorder
 						}}
 					>
-						<Text style={{ fontSize: 16, color: Colors.black }}>评论</Text>
+						<Text style={{ fontSize: 16, color: Colors.black }}>
+							评论 {feedback.publish_comments_count}
+						</Text>
+						<FeedbackCommentModal
+							visible={feedbackCommentVisible}
+							handleVisible={() => {
+								this.FeedbackCommentModalVisible();
+							}}
+							// reply={() => {
+							// 	this.setState({
+							// 		commentable_id:
+							// 	})
+							// }}
+							commentable_id={commentable_id}
+						/>
 					</View>
 				)}
 			/>
 		);
+	}
+
+	FeedbackCommentModalVisible() {
+		this.setState(prevState => ({
+			feedbackCommentVisible: !prevState.feedbackCommentVisible
+		}));
 	}
 }
 

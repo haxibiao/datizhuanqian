@@ -152,7 +152,7 @@ query feedbacksQuery($user_id: Int) {
 		title
 		content
 		hot
-		public_comments_count
+		publish_comments_count
 		time_ago
 		images {
 			id
@@ -166,4 +166,67 @@ query feedbacksQuery($user_id: Int) {
 			avatar
 		}
 	}
+}
+
+#反馈详情
+query feedbackQuery($id: Int!) {
+	feedback(id: $id) {
+		id
+		title
+		content
+		hot
+		publish_comments_count
+		time_ago
+		images {
+			id
+			path
+			width
+			height
+		}
+		user {
+			id
+			name
+			avatar
+		}
+		comments {
+			id
+			content
+			time_ago
+			parent_comment {
+				id
+				content
+				user {
+					id
+					name
+				}
+			}
+			user {
+				id
+				name
+				avatar
+			}
+		}
+	}
+}
+
+#反馈评论
+mutation createCommentMutation(
+	$content: String!
+	$comment_id: Int
+	$commentable_id: Int
+	$commentable_type: CommentTableEnum
+) {
+	createComment(
+		content: $content
+		comment_id: $comment_id
+		commentable_id: $commentable_id
+		commentable_type: $commentable_type
+	) {
+		id
+		content
+	}
+}
+
+mutation deleteCommentMutation($id: Int!) {
+	deleteComment(id: $id)
 }

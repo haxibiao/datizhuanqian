@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
-import { DivisionLine, Iconfont, Screen, Avatar, Header, Input } from '../../../components';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Keyboard, FlatList } from 'react-native';
+import {
+	DivisionLine,
+	Iconfont,
+	Screen,
+	Avatar,
+	Header,
+	Input,
+	CommentItem,
+	FeedbackCommentModal
+} from '../../../components';
 
 import { Colors, Divice } from '../../../constants';
 import { Methods } from '../../../helpers';
+
+import { connect } from 'react-redux';
+import { createCommentMutation, feedbacksQuery, feedbackQuery } from '../../../graphql/user.graphql';
+import { compose, graphql, Query } from 'react-apollo';
 
 import Comments from './Comments';
 
@@ -11,75 +24,195 @@ class FeedBackDetailsScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			title: '提现多久到账',
-			body: '提现3天了还没有点反应。。。',
-			images: ['http://cos.qunyige.com/storage/image/14434.jpg']
+			content: '',
+			feedbackCommentVisible: false,
+			commentable_id: null,
+			autoFocus: false,
+			comment_id: null,
+			reply: null
 		};
 	}
 
-	submitComment = async () => {};
+	submitComment = async () => {
+		let result = {};
+		const { navigation } = this.props;
+		const { feedback_id } = navigation.state.params;
+		let { comment_id, content } = this.state;
+		try {
+			result = await this.props.createCommentMutation({
+				variables: {
+					content: this.state.content,
+					commentable_type: 'feedbacks',
+					commentable_id: feedback_id,
+					comment_id: comment_id
+				},
+				refetchQueries: () => [
+					{
+						query: feedbackQuery,
+						variables: {
+							id: feedback_id
+						}
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -100);
+		} else {
+			Methods.toast('评论成功', -100);
+			Keyboard.dismiss();
+		}
+		this.setState({
+			content: ''
+		});
+	};
 
 	render() {
-		const { navigation } = this.props;
-		let { title, body, images } = this.state;
-		let { feedback } = navigation.state.params;
-		console.log('feed', feedback);
+		const { navigation, user } = this.props;
+		let { feedback_id } = navigation.state.params;
+		let { autoFocus, reply } = this.state;
 		return (
 			<Screen headerRight={<Iconfont name={'more-horizontal'} size={18} color={Colors.primaryFont} />}>
-				<ScrollView style={styles.container}>
-					<View style={styles.header}>
-						<Text style={styles.title}>{feedback.title}</Text>
-						<View style={styles.user}>
-							<Avatar uri={feedback.user.avatar} size={34} />
-							<View style={styles.userRight}>
-								<Text style={{ color: Colors.black }}>{feedback.user.name}</Text>
-								<Text style={styles.time}>发布于{feedback.time_ago}</Text>
-							</View>
+				<Query query={feedbackQuery} variables={{ id: feedback_id }}>
+					{({ data, error, loading }) => {
+						console.log('data', data, error);
+
+						if (error) return null;
+						if (!(data && data.feedback)) return null;
+						let feedback = data.feedback;
+						return (
+							<FlatList
+								onScrollBeginDrag={() => {
+									Keyboard.dismiss();
+								}}
+								data={feedback.comments}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={({ item, index }) => (
+									<CommentItem
+										item={item}
+										user={user}
+										feedback_id={feedback_id}
+										navigation={navigation}
+										switchKeybord={this.switchKeybord}
+										replyComment={this.replyComment}
+									/>
+								)}
+								ListHeaderComponent={this.feedbackDetails(feedback)}
+							/>
+						);
+					}}
+				</Query>
+
+				<TouchableOpacity style={styles.footer} onPress={this.switchKeybord}>
+					{autoFocus ? (
+						<View>
+							{reply && (
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={{ height: 16, width: 4, backgroundColor: '#dfe2e5' }} />
+									<Text
+										style={{
+											color: Colors.grey,
+											fontSize: 13,
+											paddingLeft: 10,
+											height: 20
+										}}
+									>
+										{reply}
+									</Text>
+								</View>
+							)}
+							<Input
+								customStyle={styles.input}
+								viewStyle={{ paddingHorizontal: 0 }}
+								maxLength={140}
+								placeholder={'说说你的意见...'}
+								multiline
+								underline
+								autoFocus
+								onEndEditing={this.switchKeybord}
+								defaultValue={this.state.content}
+								changeValue={value => {
+									this.setState({
+										content: value
+									});
+								}}
+							/>
 						</View>
-					</View>
-					<View style={styles.footer}>
-						<Text style={styles.body}>{feedback.content}</Text>
-						{feedback.images.map((image, index) => {
-							let width = image.width;
-							let height = image.height;
-							let size = imageSize({ width, height });
-							return (
-								<Image
-									source={{ uri: image.path }}
-									style={{
-										width: size.width,
-										height: size.height,
-										marginTop: 10
-									}}
-									key={index}
-								/>
-							);
-						})}
-					</View>
-					<DivisionLine height={5} />
-					<Comments />
-				</ScrollView>
-				<View style={styles.footer}>
-					<Input
-						customStyle={styles.input}
-						viewStyle={{ paddingHorizontal: 15 }}
-						maxLength={140}
-						placeholder={'说说你的意见...'}
-						multiline
-						underline
-						changeValue={value => {
-							this.setState({
-								content: value
-							});
-						}}
-					/>
+					) : (
+						<Text style={{ color: Colors.grey, fontSize: 15 }}>说说你的意见</Text>
+					)}
 					<TouchableOpacity onPress={this.submitComment}>
 						<Text style={styles.commentText}>发布</Text>
 					</TouchableOpacity>
-				</View>
+				</TouchableOpacity>
 			</Screen>
 		);
 	}
+
+	feedbackDetails = feedback => {
+		return (
+			<View>
+				<View style={styles.header}>
+					<Text style={styles.title}>{feedback.title}</Text>
+					<View style={styles.user}>
+						<Avatar uri={feedback.user.avatar} size={34} />
+						<View style={styles.userRight}>
+							<Text style={{ color: Colors.black }}>{feedback.user.name}</Text>
+							<Text style={styles.time}>发布于{feedback.time_ago}</Text>
+						</View>
+					</View>
+				</View>
+				<View style={styles.center}>
+					<Text style={styles.body}>{feedback.content}</Text>
+					{feedback.images.map((image, index) => {
+						let width = image.width;
+						let height = image.height;
+						let size = imageSize({ width, height });
+						return (
+							<Image
+								source={{ uri: image.path }}
+								style={{
+									width: size.width,
+									height: size.height,
+									marginTop: 10
+								}}
+								key={index}
+							/>
+						);
+					})}
+				</View>
+				<DivisionLine height={5} />
+				<View
+					style={{
+						paddingHorizontal: 15,
+						paddingVertical: 10,
+						borderBottomWidth: 0.5,
+						borderBottomColor: Colors.lightBorder
+					}}
+				>
+					<Text style={{ fontSize: 16, color: Colors.black }}>评论 {feedback.publish_comments_count}</Text>
+				</View>
+			</View>
+		);
+	};
+	switchKeybord = () => {
+		this.setState({
+			autoFocus: !this.state.autoFocus,
+			content: '',
+			reply: null,
+			comment_id: null
+		});
+	};
+	replyComment = comment => {
+		this.setState({
+			reply: `引用  #${comment.id}  ${comment.user.name}的评论\n`,
+			// content: `引用  #${comment.id}  ${comment.user.name}的评论\n`,
+			comment_id: comment.id
+		});
+	};
 }
 
 function imageSize({ width, height }) {
@@ -103,8 +236,8 @@ const styles = StyleSheet.create({
 		paddingTop: 20
 	},
 	title: {
-		color: Colors.theme,
-		fontSize: 16
+		color: Colors.black,
+		fontSize: 18
 	},
 	user: {
 		flexDirection: 'row',
@@ -120,7 +253,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		color: Colors.grey
 	},
-	footer: {
+	center: {
 		marginTop: 15,
 		paddingHorizontal: 15,
 		paddingBottom: 20
@@ -134,7 +267,8 @@ const styles = StyleSheet.create({
 	input: {
 		padding: 0,
 		height: null,
-		width: Divice.width - 100
+		margin: 0,
+		width: Divice.width - 60
 	},
 	footer: {
 		borderTopColor: Colors.lightBorder,
@@ -143,7 +277,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingHorizontal: 10,
+		paddingHorizontal: 15,
 		maxHeight: 100
 	},
 	commentText: {
@@ -152,4 +286,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default FeedBackDetailsScreen;
+export default connect(store => {
+	return {
+		user: store.users.user
+	};
+})(compose(graphql(createCommentMutation, { name: 'createCommentMutation' }))(FeedBackDetailsScreen));

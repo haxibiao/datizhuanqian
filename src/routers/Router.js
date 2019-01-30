@@ -34,6 +34,8 @@ import WithdrawApplyScreen from '../screens/withdraws/WithdrawApplyScreen';
 import SubmitTaskScreen from '../screens/task/SubmitTaskScreen';
 import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
 
+import PropScreen from '../screens/prop/HomeScreen';
+
 export default {
 	主页: {
 		screen: MainTabNavigator
@@ -124,5 +126,9 @@ export default {
 	},
 	任务详情: {
 		screen: TaskDetailsScreen
+	},
+	//
+	道具: {
+		screen: PropScreen
 	}
 };

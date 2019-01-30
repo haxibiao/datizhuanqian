@@ -25,14 +25,15 @@ class HomeScreen extends Component {
 						{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
 
 						<DivisionLine height={10} />
-						{/*<ProfileItem
+						<ProfileItem
 							name={'我的道具'}
 							icon={'box'}
 							size={19}
 							right
 							navigation={navigation}
-							handler={() => (login ? navigation.navigate('我的道具') : navigation.navigate('登录注册'))}
+							handler={() => (login ? navigation.navigate('道具') : navigation.navigate('登录注册'))}
 						/>
+						{/*
 						<ProfileItem
 							name={'分享邀请'}
 							icon={'invitation'}

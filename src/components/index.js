@@ -9,6 +9,7 @@ import PlateItem from './ListItem/PlateItem';
 import ProfileItem from './ListItem/ProfileItem';
 import SettingItem from './ListItem/SettingItem';
 import WithdrawsLogItem from './ListItem/WithdrawsLogItem';
+import CommentItem from './ListItem/CommentItem';
 
 import Button from './Control/Button';
 import Radio from './Control/Radio';
@@ -32,6 +33,7 @@ import UpdateTipsModal from './Modal/UpdateTipsModal';
 import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
 import ImageViewModal from './Modal/ImageViewModal';
+import FeedbackCommentModal from './Modal/FeedbackCommentModal';
 
 import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
 import ProfileNotLogin from './StatusView/ProfileNotLogin';
@@ -64,6 +66,7 @@ export {
 	ProfileItem,
 	SettingItem,
 	WithdrawsLogItem,
+	CommentItem,
 	//
 	Button,
 	Radio,
@@ -87,6 +90,7 @@ export {
 	RuleDescriptionModal,
 	WithdrawsTipsModal,
 	ImageViewModal,
+	FeedbackCommentModal,
 	//
 	WithdrawsNotLogin,
 	ProfileNotLogin,

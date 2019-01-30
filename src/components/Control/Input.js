@@ -12,10 +12,12 @@ class Input extends Component {
 			changeValue,
 			defaultValue,
 			editable,
+			onEndEditing,
 			maxLength,
 			multiline,
 			underline,
-			textAlignVertical
+			textAlignVertical,
+			autoFocus
 		} = this.props;
 		return (
 			<View
@@ -37,9 +39,11 @@ class Input extends Component {
 					maxLength={maxLength ? maxLength : 16}
 					multiline={multiline}
 					editable={editable}
+					onEndEditing={onEndEditing}
 					placeholder={placeholder}
 					placeholderText={Colors.tintFont}
 					selectionColor={Colors.grey}
+					autoFocus={autoFocus}
 					style={[styles.textInput, customStyle]}
 					onChangeText={value => {
 						changeValue(value);

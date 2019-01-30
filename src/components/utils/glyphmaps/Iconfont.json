@@ -7,6 +7,7 @@
   "task": 58947,
   "zhuanshi": 58902,
   "home": 58892,
+  "home-light": 59033,
   "left": 59106,
   "right": 59275,
   "close": 59173,
@@ -35,5 +36,12 @@
   "step1": 58893,
   "step2": 58894,
   "business": 58927,
-  "task2": 59200
+  "task2": 59200,
+  "task3": 59258,
+  "hot": 58906,
+  "answer": 59399,
+  "answer2": 59220,
+  "withdraw": 58903,
+  "down": 58941,
+  "up": 58940
 }
