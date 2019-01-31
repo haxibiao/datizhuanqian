@@ -148,8 +148,8 @@ mutation CreateFeedbackMutation($title: String, $content: String, $images: [Stri
 }
 
 #反馈列表
-query feedbacksQuery($user_id: Int) {
-	feedbacks(user_id: $user_id) {
+query feedbacksQuery($user_id: Int, $offset: Int, $limit: Int) {
+	feedbacks(user_id: $user_id, offset: $offset, limit: $limit) {
 		id
 		title
 		content
@@ -166,6 +166,11 @@ query feedbacksQuery($user_id: Int) {
 			id
 			name
 			avatar
+			is_admin
+			level {
+				id
+				level
+			}
 		}
 	}
 }
@@ -190,6 +195,10 @@ query feedbackQuery($id: Int!) {
 			name
 			avatar
 			is_admin
+			level {
+				id
+				level
+			}
 		}
 		comments {
 			id
@@ -209,6 +218,10 @@ query feedbackQuery($id: Int!) {
 				name
 				avatar
 				is_admin
+				level {
+					id
+					level
+				}
 			}
 		}
 	}

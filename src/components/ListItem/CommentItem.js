@@ -28,14 +28,39 @@ class CommentItem extends Component {
 					<View style={styles.topLeft}>
 						<Avatar uri={item.user.avatar} size={34} />
 						<View style={styles.user}>
-							<Text
-								style={{
-									color: item.user.is_admin ? Colors.themeRed : Colors.black
-								}}
-							>
-								{item.user.name}
+							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+								<Text
+									style={{
+										color: item.user.is_admin ? Colors.themeRed : Colors.black
+									}}
+								>
+									{item.user.name}
+								</Text>
+								{item.user.is_admin ? (
+									<Image
+										source={require('../../../assets/images/admin.png')}
+										style={{ height: 13, width: 13, marginLeft: 5 }}
+									/>
+								) : (
+									<View
+										style={{
+											backgroundColor: Colors.theme,
+											paddingHorizontal: 2,
+											marginLeft: 5,
+											marginTop: 1,
+											borderRadius: 1
+										}}
+									>
+										<Text style={{ fontSize: 8, color: Colors.white }}>
+											Lv.{item.user.level.level}
+										</Text>
+									</View>
+								)}
+							</View>
+
+							<Text style={styles.time}>
+								#{item.id} {item.time_ago}
 							</Text>
-							<Text style={styles.time}>评论于{item.time_ago}</Text>
 						</View>
 					</View>
 					<TouchableOpacity

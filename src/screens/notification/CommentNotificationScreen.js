@@ -9,7 +9,8 @@ import {
 	ContentEnd,
 	Iconfont,
 	Screen,
-	Avatar
+	Avatar,
+	DivisionLine
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -22,19 +23,23 @@ import NotificationType from './NotificationType';
 class CommentNotificationScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			fetchingMore: true
+		};
 	}
 
 	render() {
 		const { navigation } = this.props;
 		return (
 			<Screen>
-				<Query query={notificationsQuery}>
+				<DivisionLine height={5} />
+				<Query query={notificationsQuery} variables={{ filter: ['FEEDBACK_COMMENT', 'REPLY_COMMENT'] }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
 						if (!(data && data.notifications.length > 0))
 							return <BlankContent text={'还没有通知哦'} fontSize={14} />;
+						console.log('comment', data.notifications);
 						return (
 							<FlatList
 								style={{ backgroundColor: Colors.lightBorder }}

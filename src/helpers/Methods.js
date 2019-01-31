@@ -1,5 +1,5 @@
 import { NavigationActions } from 'react-navigation';
-import { Colors, Config } from '../constants';
+import { Colors, Config, Divice } from '../constants';
 import { Storage, ItemKeys } from '../store/localStorage';
 
 import DeviceInfo from 'react-native-device-info';
@@ -198,4 +198,79 @@ const autoCheckUpdate = async (
 };
 //首先判断是否是强制更新版本,渲染不同的MODAL,如果不是 需要存储取消的动作,以便不用每次启动APP都提示更新。
 
-export { navigationAction, operationMiddleware, numberFormat, toast, regular, imagePicker, numberVersion };
+function imgsLayoutSize(imgCount, images, space = 5, maxWidth = Divice.width - 30) {
+	let width,
+		height,
+		i = 0;
+	let imgSize = [];
+	switch (true) {
+		case imgCount == 1:
+			if (images[0].height > images[0].width) {
+				height = (maxWidth * 2) / 3;
+				width = (height * images[0].width) / images[0].height;
+				imgSize.push({ width, height, marginTop: space });
+			} else {
+				if (images[0].width > maxWidth) {
+					width = maxWidth;
+					height = (width * images[0].height) / images[0].width;
+					imgSize.push({ width, height, marginTop: space });
+				} else {
+					width = images[0].width;
+					height = images[0].height;
+					imgSize.push({ width, height, marginTop: space });
+				}
+			}
+
+			break;
+		case imgCount == 7:
+			for (; i < imgCount; i++) {
+				if (i == 0) {
+					width = maxWidth;
+					height = maxWidth / 2;
+				} else {
+					width = height = (maxWidth - space * 2) / 3;
+				}
+				imgSize.push({ width, height, marginLeft: space, marginTop: space });
+			}
+			break;
+		case imgCount == 5:
+		case imgCount == 8:
+			for (; i < imgCount; i++) {
+				if (i == 0 || i == 1) {
+					width = height = (maxWidth - space) / 2;
+				} else {
+					width = height = (maxWidth - space * 2) / 3;
+				}
+				imgSize.push({ width, height, marginLeft: space, marginTop: space });
+			}
+			break;
+
+		case imgCount == 2:
+		case imgCount == 4:
+			width = height = (maxWidth - space) / 2;
+			for (; i < imgCount; i++) {
+				imgSize.push({ width, height, marginRight: space, marginTop: space });
+			}
+			break;
+		case imgCount == 3:
+		case imgCount == 6:
+		case imgCount == 9:
+			width = height = (maxWidth - space * 2) / 3;
+			for (; i < imgCount; i++) {
+				imgSize.push({ width, height, marginRight: space, marginTop: space });
+			}
+			break;
+	}
+	return imgSize;
+}
+
+export {
+	navigationAction,
+	operationMiddleware,
+	numberFormat,
+	toast,
+	regular,
+	imagePicker,
+	numberVersion,
+	imgsLayoutSize
+};

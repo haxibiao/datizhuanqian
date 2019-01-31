@@ -8,14 +8,20 @@ import {
 	Header,
 	Input,
 	CommentItem,
-	FeedbackCommentModal
+	FeedbackCommentModal,
+	BlankContent,
+	Loading,
+	LoadingError,
+	LoadingMore,
+	ContentEnd
 } from '../../../components';
 
 import { Colors, Divice } from '../../../constants';
 import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
-import { createCommentMutation, feedbacksQuery, feedbackQuery } from '../../../graphql/user.graphql';
+import { createCommentMutation, feedbackQuery } from '../../../graphql/user.graphql';
+import { feedbackCommentsQuery } from '../../../graphql/feedback.graphql';
 import { compose, graphql, Query } from 'react-apollo';
 
 import Comments from './Comments';
@@ -29,7 +35,8 @@ class FeedBackDetailsScreen extends Component {
 			commentable_id: null,
 			autoFocus: false,
 			comment_id: null,
-			reply: null
+			reply: null,
+			fetchingMore: true
 		};
 	}
 
@@ -48,9 +55,10 @@ class FeedBackDetailsScreen extends Component {
 				},
 				refetchQueries: () => [
 					{
-						query: feedbackQuery,
+						query: feedbackCommentsQuery,
 						variables: {
-							id: feedback_id
+							commentable_id: feedback_id,
+							commentable_type: 'feedbacks'
 						}
 					}
 				]
@@ -75,20 +83,29 @@ class FeedBackDetailsScreen extends Component {
 		let { feedback_id } = navigation.state.params;
 		let { autoFocus, reply } = this.state;
 		return (
-			<Screen headerRight={<Iconfont name={'more-horizontal'} size={18} color={Colors.primaryFont} />}>
-				<Query query={feedbackQuery} variables={{ id: feedback_id }}>
-					{({ data, error, loading }) => {
-						console.log('data', data, error);
+			<Screen
+				headerRight={
+					<TouchableOpacity onPress={() => this.FeedbackCommentModalVisible()}>
+						<Iconfont name={'more-horizontal'} size={18} color={Colors.primaryFont} />
+					</TouchableOpacity>
+				}
+			>
+				<Query
+					query={feedbackCommentsQuery}
+					variables={{ commentable_id: feedback_id, commentable_type: 'feedbacks' }}
+				>
+					{({ data, error, loading, refetch, fetchMore }) => {
+						if (error) return <LoadingError reload={() => refetch()} />;
+						if (loading) return <Loading />;
+						// if (!(data && data.comments.length > 0)) return null;
 
-						if (error) return null;
-						if (!(data && data.feedback)) return null;
-						let feedback = data.feedback;
 						return (
 							<FlatList
+								ref={flatList => (this._flatList = flatList)}
 								onScrollBeginDrag={() => {
 									Keyboard.dismiss();
 								}}
-								data={feedback.comments}
+								data={data.comments}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
 									<CommentItem
@@ -100,7 +117,40 @@ class FeedBackDetailsScreen extends Component {
 										replyComment={this.replyComment}
 									/>
 								)}
-								ListHeaderComponent={this.feedbackDetails(feedback)}
+								ListHeaderComponent={this.feedbackDetails()}
+								onEndReachedThreshold={0.3}
+								onEndReached={() => {
+									if (data.comments) {
+										fetchMore({
+											variables: {
+												offset: data.comments.length
+											},
+											updateQuery: (prev, { fetchMoreResult }) => {
+												console.log('update', fetchMoreResult);
+												if (!(fetchMoreResult && fetchMoreResult.comments.length > 0)) {
+													this.setState({
+														fetchingMore: false
+													});
+													return prev;
+												}
+												return Object.assign({}, prev, {
+													comments: [...prev.comments, ...fetchMoreResult.comments]
+												});
+											}
+										});
+									} else {
+										this.setState({
+											fetchingMore: false
+										});
+									}
+								}}
+								ListFooterComponent={() => {
+									return this.state.fetchingMore ? (
+										<LoadingMore />
+									) : (
+										<ContentEnd content={'没有更多记录了~'} />
+									);
+								}}
 							/>
 						);
 					}}
@@ -148,56 +198,105 @@ class FeedBackDetailsScreen extends Component {
 						<Text style={styles.commentText}>发布</Text>
 					</TouchableOpacity>
 				</TouchableOpacity>
+				<FeedbackCommentModal
+					visible={this.state.feedbackCommentVisible}
+					handleVisible={() => {
+						this.FeedbackCommentModalVisible();
+					}}
+					feedback
+				/>
 			</Screen>
 		);
 	}
 
-	feedbackDetails = feedback => {
+	feedbackDetails = () => {
+		const { navigation } = this.props;
+		const { feedback_id } = navigation.state.params;
 		return (
-			<View>
-				<View style={styles.header}>
-					<Text style={styles.title}>{feedback.title}</Text>
-					<View style={styles.user}>
-						<Avatar uri={feedback.user.avatar} size={34} />
-						<View style={styles.userRight}>
-							<Text style={{ color: feedback.user.is_admin ? Colors.themeRed : Colors.black }}>
-								{feedback.user.name}
-							</Text>
-							<Text style={styles.time}>发布于{feedback.time_ago}</Text>
-						</View>
-					</View>
-				</View>
-				<View style={styles.center}>
-					<Text style={styles.body}>{feedback.content}</Text>
-					{feedback.images.map((image, index) => {
-						let width = image.width;
-						let height = image.height;
-						let size = imageSize({ width, height });
-						return (
-							<Image
-								source={{ uri: image.path }}
+			<Query query={feedbackQuery} variables={{ id: feedback_id }}>
+				{({ data, error, loading }) => {
+					if (error) return <LoadingError reload={() => refetch()} />;
+					if (loading) return <Loading />;
+					if (!(data && data.feedback))
+						return <View style={{ height: Divice.height / 2, backgroundColor: Colors.white }} />;
+					let feedback = data.feedback;
+
+					return (
+						<View>
+							<View style={styles.header}>
+								<Text style={styles.title}>{feedback.title}</Text>
+								<View style={styles.user}>
+									<Avatar uri={feedback.user.avatar} size={34} />
+									<View style={styles.userRight}>
+										<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+											<Text
+												style={{
+													color: feedback.user.is_admin ? Colors.themeRed : Colors.black
+												}}
+											>
+												{feedback.user.name}
+											</Text>
+											{feedback.user.is_admin ? (
+												<Image
+													source={require('../../../../assets/images/admin.png')}
+													style={{ height: 13, width: 13, marginLeft: 5 }}
+												/>
+											) : (
+												<View
+													style={{
+														backgroundColor: Colors.theme,
+														paddingHorizontal: 2,
+														marginLeft: 5,
+														marginTop: 1,
+														borderRadius: 1
+													}}
+												>
+													<Text style={{ fontSize: 8, color: Colors.white }}>
+														Lv.{feedback.user.level.level}
+													</Text>
+												</View>
+											)}
+										</View>
+										<Text style={styles.time}>发布于{feedback.time_ago}</Text>
+									</View>
+								</View>
+							</View>
+							<View style={styles.center}>
+								<Text style={styles.body}>{feedback.content}</Text>
+								{feedback.images.map((image, index) => {
+									let width = image.width;
+									let height = image.height;
+									let size = imageSize({ width, height });
+									return (
+										<Image
+											source={{ uri: image.path }}
+											style={{
+												width: size.width,
+												height: size.height,
+												marginTop: 10
+											}}
+											key={index}
+										/>
+									);
+								})}
+							</View>
+							<DivisionLine height={5} />
+							<View
 								style={{
-									width: size.width,
-									height: size.height,
-									marginTop: 10
+									paddingHorizontal: 15,
+									paddingVertical: 10,
+									borderBottomWidth: 0.5,
+									borderBottomColor: Colors.lightBorder
 								}}
-								key={index}
-							/>
-						);
-					})}
-				</View>
-				<DivisionLine height={5} />
-				<View
-					style={{
-						paddingHorizontal: 15,
-						paddingVertical: 10,
-						borderBottomWidth: 0.5,
-						borderBottomColor: Colors.lightBorder
-					}}
-				>
-					<Text style={{ fontSize: 16, color: Colors.black }}>评论 {feedback.publish_comments_count}</Text>
-				</View>
-			</View>
+							>
+								<Text style={{ fontSize: 16, color: Colors.black }}>
+									评论 {feedback.publish_comments_count}
+								</Text>
+							</View>
+						</View>
+					);
+				}}
+			</Query>
 		);
 	};
 	switchKeybord = () => {
@@ -215,6 +314,12 @@ class FeedBackDetailsScreen extends Component {
 			comment_id: comment.id
 		});
 	};
+
+	FeedbackCommentModalVisible() {
+		this.setState(prevState => ({
+			feedbackCommentVisible: !prevState.feedbackCommentVisible
+		}));
+	}
 }
 
 function imageSize({ width, height }) {

@@ -22,14 +22,16 @@ import NotificationType from './NotificationType';
 class SystemNotificationScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			fetchingMore: true
+		};
 	}
 
 	render() {
 		const { navigation } = this.props;
 		return (
 			<Screen>
-				<Query query={notificationsQuery}>
+				<Query query={notificationsQuery} variables={{ filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE'] }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;

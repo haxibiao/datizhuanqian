@@ -91,7 +91,7 @@ class FeedBack extends Component {
 		const { navigation } = this.props;
 
 		return (
-			<Screen header>
+			<Screen header tabLabel="意见反馈">
 				<View style={styles.container}>
 					{/*<Text style={{ paddingHorizontal: 15, paddingVertical: 10, color: Colors.gery }}>反馈内容</Text>*/}
 					<DivisionLine height={5} />

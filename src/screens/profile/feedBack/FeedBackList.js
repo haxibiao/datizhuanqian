@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from 'react-native';
-import { DivisionLine, ErrorBoundary, ContentEnd, Avatar, Header, Screen, Iconfont } from '../../../components';
+import {
+	DivisionLine,
+	ErrorBoundary,
+	ContentEnd,
+	LoadingMore,
+	BlankContent,
+	Loading,
+	LoadingError,
+	Avatar,
+	Header,
+	Screen,
+	Iconfont
+} from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
+import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
@@ -12,6 +25,7 @@ class FeedBackList extends Component {
 		super(props);
 		this.state = {
 			onPress: 'LATEST',
+			fetchingMore: true,
 			filter: this.props.user.id
 		};
 	}
@@ -19,12 +33,14 @@ class FeedBackList extends Component {
 		let { user, navigation, login } = this.props;
 		let { onPress, filter } = this.state;
 		return (
-			<Screen header tabLabel="今日">
+			<Screen header tabLabel="反馈记录">
 				<DivisionLine height={5} />
 				<Query query={feedbacksQuery} variables={{ user_id: filter }}>
 					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return null;
-						if (!(data && data.feedbacks !== [])) return null;
+						if (error) return <LoadingError reload={() => refetch()} />;
+						if (loading) return <Loading />;
+						if (!(data && data.feedbacks.length > 0))
+							return <BlankContent text={'暂无反馈'} fontSize={14} />;
 						return (
 							<View>
 								<View style={styles.header}>
@@ -62,7 +78,6 @@ class FeedBackList extends Component {
 									data={data.feedbacks}
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={this._feedbackItem}
-									ListFooterComponent={() => <ContentEnd />}
 									refreshControl={
 										<RefreshControl
 											refreshing={loading}
@@ -70,6 +85,39 @@ class FeedBackList extends Component {
 											colors={[Colors.theme]}
 										/>
 									}
+									onEndReachedThreshold={0.3}
+									onEndReached={() => {
+										if (data.feedbacks) {
+											fetchMore({
+												variables: {
+													offset: data.feedbacks.length
+												},
+												updateQuery: (prev, { fetchMoreResult }) => {
+													console.log('update', fetchMoreResult);
+													if (!(fetchMoreResult && fetchMoreResult.feedbacks.length > 0)) {
+														this.setState({
+															fetchingMore: false
+														});
+														return prev;
+													}
+													return Object.assign({}, prev, {
+														feedbacks: [...prev.feedbacks, ...fetchMoreResult.feedbacks]
+													});
+												}
+											});
+										} else {
+											this.setState({
+												fetchingMore: false
+											});
+										}
+									}}
+									ListFooterComponent={() => {
+										return this.state.fetchingMore ? (
+											<LoadingMore />
+										) : (
+											<ContentEnd content={'没有更多记录了~'} />
+										);
+									}}
 								/>
 							</View>
 						);
@@ -95,45 +143,37 @@ class FeedBackList extends Component {
 							<View style={{ justifyContent: 'center' }}>
 								<Text
 									style={{
-										color: Colors.black,
+										color: item.user.is_admin ? Colors.themeRed : Colors.black,
 										paddingLeft: 10
 									}}
 								>
 									{item.user.name}
 								</Text>
 							</View>
-
-							<View
-								style={{
-									backgroundColor: Colors.theme,
-									paddingHorizontal: 2,
-									marginLeft: 5,
-									marginTop: 1,
-									borderRadius: 1
-								}}
-							>
-								<Text style={{ fontSize: 8, color: Colors.white }}>Lv.7</Text>
-							</View>
+							{item.user.is_admin ? (
+								<Image
+									source={require('../../../../assets/images/admin.png')}
+									style={{ height: 13, width: 13, marginLeft: 5 }}
+								/>
+							) : (
+								<View
+									style={{
+										backgroundColor: Colors.theme,
+										paddingHorizontal: 2,
+										marginLeft: 5,
+										marginTop: 1,
+										borderRadius: 1
+									}}
+								>
+									<Text style={{ fontSize: 8, color: Colors.white }}>Lv.{item.user.level.level}</Text>
+								</View>
+							)}
 						</View>
 					</View>
 				</View>
-				<View style={{ marginLeft: 15, marginRight: 10, paddingBottom: 10 }}>
+				<View style={{ marginLeft: 15, marginRight: 15, paddingBottom: 10 }}>
 					<Text style={styles.body}>{item.content}</Text>
-					<View style={styles.images}>
-						{item.images.slice(0, 3).map((image, index) => {
-							return (
-								<Image
-									source={{ uri: image.path }}
-									style={{
-										width: (Divice.width - 40) / 3,
-										height: (Divice.width - 40) / 3,
-										marginRight: 5
-									}}
-									key={index}
-								/>
-							);
-						})}
-					</View>
+					{this.renderImage(item.images.slice(0, 3))}
 				</View>
 				<View
 					style={{
@@ -167,6 +207,18 @@ class FeedBackList extends Component {
 			</TouchableOpacity>
 		);
 	};
+
+	renderImage = images => {
+		let images_length = images.length;
+		let sizeArr = Methods.imgsLayoutSize(images_length, images);
+		return (
+			<View style={styles.images}>
+				{images.map((image, index) => {
+					return <Image source={{ uri: image.path }} style={sizeArr[index]} key={index} />;
+				})}
+			</View>
+		);
+	};
 }
 
 const styles = StyleSheet.create({
@@ -185,7 +237,7 @@ const styles = StyleSheet.create({
 		marginRight: 30,
 		paddingVertical: 10
 	},
-	feedbackItem: {},
+	itemItem: {},
 	top: {
 		flexDirection: 'row',
 		alignItems: 'center',

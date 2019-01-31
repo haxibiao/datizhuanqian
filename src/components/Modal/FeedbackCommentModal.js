@@ -4,7 +4,8 @@ import BasicModal from './BasicModal';
 
 import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-import { deleteCommentMutation, feedbackQuery } from '../../graphql/user.graphql';
+import { deleteCommentMutation } from '../../graphql/user.graphql';
+import { feedbackCommentsQuery } from '../../graphql/feedback.graphql';
 import { graphql, compose } from 'react-apollo';
 
 class FeedbackCommentModal extends Component {
@@ -20,7 +21,8 @@ class FeedbackCommentModal extends Component {
 					{
 						query: feedbackQuery,
 						variables: {
-							id: feedback_id
+							commentable_id: feedback_id,
+							commentable_type: 'feedbacks'
 						}
 					}
 				]
@@ -46,7 +48,8 @@ class FeedbackCommentModal extends Component {
 			switchKeybord,
 			replyComment,
 			comment,
-			user
+			user,
+			feedback
 		} = this.props;
 		return (
 			<BasicModal
@@ -62,28 +65,32 @@ class FeedbackCommentModal extends Component {
 					style={{ paddingVertical: 15 }}
 					onPress={() => {
 						handleVisible();
-						switchKeybord();
-						replyComment(comment);
-					}}
-				>
-					<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>引用</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={{ paddingVertical: 15, borderTopColor: Colors.lightBorder, borderTopWidth: 0.5 }}
-					onPress={() => {
-						handleVisible();
 					}}
 				>
 					<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>举报</Text>
 				</TouchableOpacity>
-				{user.id == comment.user.id && (
+				{!feedback && (
 					<TouchableOpacity
 						style={{ paddingVertical: 15, borderTopColor: Colors.lightBorder, borderTopWidth: 0.5 }}
-						onPress={this.deleteComment}
+						onPress={() => {
+							handleVisible();
+							switchKeybord();
+							replyComment(comment);
+						}}
 					>
-						<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>删除</Text>
+						<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>引用</Text>
 					</TouchableOpacity>
 				)}
+				{!feedback
+					? user.id == comment.user.id && (
+							<TouchableOpacity
+								style={{ paddingVertical: 15, borderTopColor: Colors.lightBorder, borderTopWidth: 0.5 }}
+								onPress={this.deleteComment}
+							>
+								<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>删除</Text>
+							</TouchableOpacity>
+					  )
+					: null}
 			</BasicModal>
 		);
 	}

@@ -56,40 +56,43 @@ class HomeScreen extends Component {
 						<ProfileItem
 							name={'提现日志'}
 							icon={'book'}
+							IconStyle={{ paddingBottom: 3 }}
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
 						/>
 						<ProfileItem
 							name={'通知消息'}
-							icon={'notification'}
+							icon={'message'}
+							IconStyle={{ paddingBottom: 3 }}
 							size={17}
 							right={
-								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={50000}>
-										{({ data, error }) => {
-											if (error) return null;
-											if (!(data && data.user)) return null;
-											console.log('Data user', data.user);
-											if (data.user.unread_notifications_count) {
-												return (
-													<View
-														style={{
-															width: 6,
-															height: 6,
-															borderRadius: 3,
-															backgroundColor: Colors.themeRed,
-															paddingRight: 3
-														}}
-													/>
-												);
-											} else {
-												return null;
-											}
-										}}
-									</Query>
-
-									<Iconfont name={'right'} />
-								</View>
+								<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={50000}>
+									{({ data, error }) => {
+										if (error) return null;
+										if (!(data && data.user)) return null;
+										console.log('Data user', data.user);
+										if (data.user.unread_notifications_count) {
+											return (
+												<View
+													style={{
+														height: 16,
+														borderRadius: 8,
+														paddingHorizontal: 5,
+														backgroundColor: Colors.themeRed,
+														justifyContent: 'center',
+														alignItems: 'center'
+													}}
+												>
+													<Text style={{ fontSize: 10, color: Colors.white }}>
+														{data.user.unread_notifications_count}
+													</Text>
+												</View>
+											);
+										} else {
+											return <Iconfont name={'right'} size={15} />;
+										}
+									}}
+								</Query>
 							}
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}

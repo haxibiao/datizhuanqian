@@ -10,17 +10,17 @@ class PlateItem extends Component {
 		this.state = {};
 	}
 	render() {
-		const { navigation, customStyle = {}, right, icon, name, size, handler } = this.props;
+		const { navigation, customStyle = {}, IconStyle = {}, right, icon, name, size, handler } = this.props;
 		return (
 			<TouchableOpacity
 				style={[styles.rowItem, customStyle]}
 				onPress={handler ? handler : () => navigation.navigate(name)}
 			>
 				<View style={styles.itemLeft}>
-					<Iconfont name={icon} size={size ? size : 18} />
+					<Iconfont name={icon} size={size ? size : 18} style={IconStyle} />
 					<Text style={{ paddingLeft: 10, fontSize: 15, color: Colors.black }}>{name}</Text>
 				</View>
-				{right ? right : <Iconfont name={'right'} />}
+				{right ? right : <Iconfont name={'right'} size={14} />}
 			</TouchableOpacity>
 		);
 	}

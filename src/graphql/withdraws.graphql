@@ -27,6 +27,7 @@ query WithdrawsQuery($limit: Int, $offset: Int) {
 }
 
 #提现详情
+
 query WithdrawQuery($id: Int!) {
 	withdraw(id: $id) {
 		id
