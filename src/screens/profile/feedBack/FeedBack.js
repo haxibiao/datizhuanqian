@@ -72,6 +72,10 @@ class FeedBack extends Component {
 				navigation.navigate('反馈详情', {
 					feedback_id: result.data.createFeedback.id
 				});
+				this.setState({
+					pictures: [],
+					content: ''
+				});
 			})
 			.catch(rejected => {
 				this.setState({
@@ -80,10 +84,6 @@ class FeedBack extends Component {
 				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
 				Methods.toast(str, -100);
 			});
-		this.setState({
-			pictures: [],
-			content: ''
-		});
 	};
 
 	render() {

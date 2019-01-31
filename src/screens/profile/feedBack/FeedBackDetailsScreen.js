@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Keyboard, FlatList } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	Image,
+	Keyboard,
+	FlatList,
+	RefreshControl
+} from 'react-native';
 import {
 	DivisionLine,
 	Iconfont,
@@ -105,6 +115,9 @@ class FeedBackDetailsScreen extends Component {
 								onScrollBeginDrag={() => {
 									Keyboard.dismiss();
 								}}
+								refreshControl={
+									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
+								}
 								data={data.comments}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
@@ -117,7 +130,7 @@ class FeedBackDetailsScreen extends Component {
 										replyComment={this.replyComment}
 									/>
 								)}
-								ListHeaderComponent={this.feedbackDetails()}
+								ListHeaderComponent={this.feedbackDetails(data.comments)}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									if (data.comments) {
@@ -208,7 +221,7 @@ class FeedBackDetailsScreen extends Component {
 		);
 	}
 
-	feedbackDetails = () => {
+	feedbackDetails = comment => {
 		const { navigation } = this.props;
 		const { feedback_id } = navigation.state.params;
 		return (
@@ -288,9 +301,7 @@ class FeedBackDetailsScreen extends Component {
 									borderBottomColor: Colors.lightBorder
 								}}
 							>
-								<Text style={{ fontSize: 16, color: Colors.black }}>
-									评论 {feedback.publish_comments_count}
-								</Text>
+								<Text style={{ fontSize: 16, color: Colors.black }}>评论 {comment.length}</Text>
 							</View>
 						</View>
 					);

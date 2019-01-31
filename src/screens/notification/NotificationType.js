@@ -53,7 +53,7 @@ class NotificationType extends Component {
 								style={styles.footer}
 								onPress={() => {
 									navigation.navigate('提现详情', {
-										withdraw_id: notification.withdraw.withdraw_id
+										withdraw_id: notification.withdraw.id
 									});
 								}}
 							>
@@ -99,7 +99,7 @@ class NotificationType extends Component {
 								style={styles.footer}
 								onPress={() => {
 									navigation.navigate('提现详情', {
-										withdraw_id: notification.withdraw.withdraw_id
+										withdraw_id: notification.withdraw.id
 									});
 								}}
 							>
@@ -118,6 +118,11 @@ class NotificationType extends Component {
 							backgroundColor: Colors.white,
 							borderBottomWidth: 0.5,
 							borderBottomColor: Colors.lightBorder
+						}}
+						onPress={() => {
+							navigation.navigate('反馈详情', {
+								feedback_id: notification.comment.feedback.id
+							});
 						}}
 					>
 						<View style={styles.topLeft}>
@@ -173,6 +178,11 @@ class NotificationType extends Component {
 							paddingVertical: 15,
 							paddingHorizontal: 10,
 							backgroundColor: Colors.white
+						}}
+						onPress={() => {
+							navigation.navigate('反馈详情', {
+								feedback_id: notification.comment.feedback.id
+							});
 						}}
 					>
 						<View style={styles.topLeft}>

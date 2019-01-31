@@ -81,7 +81,7 @@ class FeedbackCommentModal extends Component {
 						<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>引用</Text>
 					</TouchableOpacity>
 				)}
-				{!feedback
+				{/*	{!feedback
 					? user.id == comment.user.id && (
 							<TouchableOpacity
 								style={{ paddingVertical: 15, borderTopColor: Colors.lightBorder, borderTopWidth: 0.5 }}
@@ -90,7 +90,7 @@ class FeedbackCommentModal extends Component {
 								<Text style={{ fontSize: 15, color: Colors.black, paddingLeft: 15 }}>删除</Text>
 							</TouchableOpacity>
 					  )
-					: null}
+					: null}*/}
 			</BasicModal>
 		);
 	}
