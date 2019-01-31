@@ -35,7 +35,32 @@ class FeedBackList extends Component {
 		return (
 			<Screen header tabLabel="反馈记录">
 				<DivisionLine height={5} />
-				<Query query={feedbacksQuery} variables={{ user_id: filter }}>
+				<View style={styles.header}>
+					<TouchableOpacity
+						style={[styles.tab, { borderBottomColor: filter == null ? Colors.white : Colors.theme }]}
+						onPress={() => {
+							this.setState({
+								filter: user.id
+							});
+							// refetch();
+						}}
+					>
+						<Text>我的反馈</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={[{ borderBottomColor: filter == null ? Colors.theme : Colors.white }, styles.tab]}
+						onPress={() => {
+							this.setState({
+								filter: null
+							});
+							// refetch();
+						}}
+					>
+						<Text>反馈列表</Text>
+					</TouchableOpacity>
+				</View>
+
+				<Query query={feedbacksQuery} variables={{ user_id: filter }} fetchPolicy="network-only">
 					{({ data, loading, error, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
@@ -43,37 +68,6 @@ class FeedBackList extends Component {
 							return <BlankContent text={'暂无反馈'} fontSize={14} />;
 						return (
 							<View>
-								<View style={styles.header}>
-									<TouchableOpacity
-										style={[
-											styles.tab,
-											{ borderBottomColor: filter == null ? Colors.white : Colors.theme }
-										]}
-										onPress={() => {
-											this.setState({
-												filter: user.id
-											});
-											refetch();
-										}}
-									>
-										<Text>我的反馈</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										style={[
-											{ borderBottomColor: filter == null ? Colors.theme : Colors.white },
-											styles.tab
-										]}
-										onPress={() => {
-											this.setState({
-												filter: null
-											});
-											refetch();
-										}}
-									>
-										<Text>反馈列表</Text>
-									</TouchableOpacity>
-								</View>
-
 								<FlatList
 									data={data.feedbacks}
 									keyExtractor={(item, index) => index.toString()}
@@ -115,7 +109,7 @@ class FeedBackList extends Component {
 										return this.state.fetchingMore ? (
 											<LoadingMore />
 										) : (
-											<ContentEnd content={'没有更多记录了~'} />
+											<ContentEnd content={'没有更多反馈了~'} />
 										);
 									}}
 								/>

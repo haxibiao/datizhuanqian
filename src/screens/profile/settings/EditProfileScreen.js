@@ -149,8 +149,6 @@ class EditProfileScreen extends Component {
 		const { navigation, user } = this.props;
 		const { pay_info_change_count } = navigation.state.params.user;
 		let { modalVisible, nickname, gender } = this.state;
-
-		console.log('gender', gender);
 		return (
 			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
 				<View style={styles.container}>

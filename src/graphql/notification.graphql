@@ -1,6 +1,6 @@
 #通知
 query notificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
-	notifications(filter: $filter, limit: $limit, offset: $offset, is_read: null) {
+	notifications(filter: $filter, limit: $limit, offset: $offset, is_read: false) {
 		type
 		created_at
 		withdraw {
@@ -20,6 +20,7 @@ query notificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int)
 				id
 				name
 				avatar
+				is_admin
 				level {
 					id
 					level

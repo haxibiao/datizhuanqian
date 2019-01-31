@@ -126,7 +126,6 @@ class FeedBackDetailsScreen extends Component {
 												offset: data.comments.length
 											},
 											updateQuery: (prev, { fetchMoreResult }) => {
-												console.log('update', fetchMoreResult);
 												if (!(fetchMoreResult && fetchMoreResult.comments.length > 0)) {
 													this.setState({
 														fetchingMore: false
@@ -145,7 +144,7 @@ class FeedBackDetailsScreen extends Component {
 									}
 								}}
 								ListFooterComponent={() => {
-									return this.state.fetchingMore ? (
+									return data && data.comments.length > 0 && this.state.fetchingMore ? (
 										<LoadingMore />
 									) : (
 										<ContentEnd content={'没有更多记录了~'} />
@@ -220,7 +219,7 @@ class FeedBackDetailsScreen extends Component {
 					if (!(data && data.feedback))
 						return <View style={{ height: Divice.height / 2, backgroundColor: Colors.white }} />;
 					let feedback = data.feedback;
-
+					console.log('');
 					return (
 						<View>
 							<View style={styles.header}>
