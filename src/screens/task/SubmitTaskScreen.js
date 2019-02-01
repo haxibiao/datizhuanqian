@@ -62,7 +62,7 @@ class SubmitTaskScreen extends Component {
 				}
 			}),
 			new Promise(function(resolve, reject) {
-				setTimeout(() => reject(new Error('网络超时')), 8000);
+				setTimeout(() => reject(new Error('网络超时')), 30000);
 			})
 		];
 		//超时检测
@@ -84,7 +84,7 @@ class SubmitTaskScreen extends Component {
 	//提交任务
 	async submitTask(images) {
 		const { navigation } = this.props;
-		const { task_id } = navigation.state.params;
+		const { task_id, again } = navigation.state.params;
 		let { pictures, waitingVisible } = this.state;
 		let result = {};
 
@@ -117,7 +117,11 @@ class SubmitTaskScreen extends Component {
 				waitingVisible: false
 			});
 			Methods.toast('提交成功,工作人员会尽快审核您的答复信息', -100);
-			this.props.navigation.goBack();
+			if (again) {
+				this.props.navigation.pop(2);
+			} else {
+				this.props.navigation.goBack();
+			}
 		}
 	}
 	render() {

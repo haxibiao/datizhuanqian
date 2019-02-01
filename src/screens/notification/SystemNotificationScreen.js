@@ -31,7 +31,11 @@ class SystemNotificationScreen extends Component {
 		const { navigation } = this.props;
 		return (
 			<Screen>
-				<Query query={notificationsQuery} variables={{ filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE'] }}>
+				<Query
+					query={notificationsQuery}
+					variables={{ filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE'] }}
+					fetchPolicy="network-only"
+				>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;

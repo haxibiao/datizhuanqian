@@ -118,6 +118,7 @@ class TaskItem extends Component {
 						) : null}
 					</View>
 				</View>
+
 				{task.taskStatus == -1 && (
 					<Button
 						name={'任务失败'}

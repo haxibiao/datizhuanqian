@@ -18,7 +18,7 @@ class TaskType extends Component {
 	doTask(task) {
 		const { navigation, user } = this.props;
 		if (task.type == 2) {
-			navigation.navigate('提交任务', { task_id: task.id });
+			navigation.navigate('提交任务', { task_id: task.id, again: false });
 		} else if (task.type == 1) {
 			navigation.goBack();
 		} else {

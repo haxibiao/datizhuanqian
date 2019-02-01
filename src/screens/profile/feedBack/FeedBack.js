@@ -57,14 +57,13 @@ class FeedBack extends Component {
 				}
 			}),
 			new Promise(function(resolve, reject) {
-				setTimeout(() => reject(new Error('网络超时')), 10000);
+				setTimeout(() => reject(new Error('网络超时')), 30000);
 			})
 		];
 		//超时检测
 
 		Promise.race(promises)
 			.then(result => {
-				console.log('result', result);
 				this.setState({
 					waitingVisible: false
 				});
@@ -93,7 +92,6 @@ class FeedBack extends Component {
 		return (
 			<Screen header tabLabel="意见反馈">
 				<View style={styles.container}>
-					{/*<Text style={{ paddingHorizontal: 15, paddingVertical: 10, color: Colors.gery }}>反馈内容</Text>*/}
 					<DivisionLine height={5} />
 					<View style={styles.main}>
 						<Input

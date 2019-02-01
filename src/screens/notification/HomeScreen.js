@@ -56,7 +56,7 @@ class HomeScreen extends Component {
 						}}
 					>
 						<Text style={{ fontSize: 15, color: Colors.black }}>答题赚钱</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={1000}>
+						<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;
@@ -110,7 +110,7 @@ class HomeScreen extends Component {
 						}}
 					>
 						<Text style={{ fontSize: 15, color: Colors.black }}>评论</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={1000}>
+						<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;

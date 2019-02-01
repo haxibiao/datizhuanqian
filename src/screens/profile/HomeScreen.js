@@ -66,7 +66,7 @@ class HomeScreen extends Component {
 							IconStyle={{ paddingBottom: 3 }}
 							size={17}
 							right={
-								<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={300000}>
+								<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={60000}>
 									{({ data, error }) => {
 										if (error) return null;
 										if (!(data && data.user)) return null;

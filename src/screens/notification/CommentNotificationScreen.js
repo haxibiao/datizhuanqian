@@ -33,7 +33,11 @@ class CommentNotificationScreen extends Component {
 		return (
 			<Screen>
 				<DivisionLine height={5} />
-				<Query query={notificationsQuery} variables={{ filter: ['FEEDBACK_COMMENT', 'REPLY_COMMENT'] }}>
+				<Query
+					query={notificationsQuery}
+					variables={{ filter: ['FEEDBACK_COMMENT', 'REPLY_COMMENT'] }}
+					fetchPolicy="network-only"
+				>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
