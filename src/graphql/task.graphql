@@ -31,12 +31,9 @@ query TaskQuery($task_id: Int!) {
 		id
 		name
 		details
-		type
 		gold
 		ticket
 		count
-		merchant_id
-		status
 		end_at
 	}
 }
@@ -49,4 +46,14 @@ mutation ReplyTaskMutation($task_id: Int!, $content: ReplyContent) {
 #上传图片
 mutation UploadImage($image: [String]!) {
 	uploadImage(image: $image)
+}
+
+#用户任务详情
+query UserTaskQuery($id: Int) {
+	userTask(id: $id) {
+		id
+		remark
+		reply_content
+		screenshots
+	}
 }

@@ -178,14 +178,16 @@ const autoCheckUpdate = async (
 	if (local < online && versionInfo.is_force) {
 		handForceUpdateModal();
 		// 如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
+	} else if (online - local > 0.1) {
+		handForceUpdateModal();
+		//大版本迭代
+		// 如果线上版领先本地2个版本，则强制更新
 	} else if (local < online && !versionInfo.is_force && updateTipsVersion < online) {
 		// 线上版本大于本地版本并且更新提示的版本小于线上版本则弹出选择更新Modal
 		handleUpdateModalVisible();
 	} else {
 		codePush.sync({
 			updateDialog: {
-				// mandatoryContinueButtonLabel: "更新",
-				// mandatoryUpdateMessage: "有新版本了，请您及时更新",
 				optionalIgnoreButtonLabel: '取消',
 				optionalInstallButtonLabel: '后台更新',
 				optionalUpdateMessage: '发现新版本',
@@ -264,6 +266,17 @@ function imgsLayoutSize(imgCount, images, space = 5, maxWidth = Divice.width - 3
 	return imgSize;
 }
 
+function imageSize({ width, height }) {
+	var size = {};
+	if (width > Divice.width) {
+		size.width = Divice.width - 30;
+		size.height = ((Divice.width - 30) * height) / width;
+	} else {
+		size = { width, height };
+	}
+	return size;
+}
+
 export {
 	navigationAction,
 	operationMiddleware,
@@ -272,5 +285,6 @@ export {
 	regular,
 	imagePicker,
 	numberVersion,
-	imgsLayoutSize
+	imgsLayoutSize,
+	imageSize
 };

@@ -7,6 +7,7 @@ import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
+import { UserTaskQuery } from '../../graphql/task.graphql';
 import { Query, Mutation } from 'react-apollo';
 
 class TaskFailScreen extends Component {
@@ -35,31 +36,54 @@ class TaskFailScreen extends Component {
 						</TouchableOpacity>
 					}
 				/>
+				<Query query={UserTaskQuery} variables={{ id: 10 }}>
+					{({ data, error, loading }) => {
+						if (error) return null;
+						if (loading) return null;
+						if (!(data && data.userTask)) return null;
+						let screenshots = JSON.parse(data.userTask[0].screenshots);
 
-				<View style={{ height: 150 }}>
-					<View style={styles.header}>
-						<View style={styles.headerLeft} />
-						<Text style={{ color: Colors.themeRed, fontSize: 18 }}>失败原因</Text>
-					</View>
-					<View style={{ marginLeft: 25, marginTop: 20 }}>
-						<Text style={{ fontSize: 16, color: Colors.black }}>未按要求上传图片</Text>
-					</View>
-				</View>
-				<View style={{}}>
-					<View style={styles.header}>
-						<View style={styles.headerLeft} />
-						<Text style={styles.headerContent}>提交内容</Text>
-					</View>
-					<View style={{ marginHorizontal: 25 }}>
-						<Text style={{ fontSize: 16, color: Colors.black }}>小米评论</Text>
-						<View style={{ marginTop: 10 }}>
-							<Image
-								source={{ uri: 'http://staging.datizhuanqian.cn/storage/images/5c513f60d996c.png' }}
-								style={{ width: Divice.width - 50, height: Divice.width - 50 }}
-							/>
-						</View>
-					</View>
-				</View>
+						return (
+							<View>
+								<View style={{ height: 150 }}>
+									<View style={styles.header}>
+										<View style={styles.headerLeft} />
+										<Text style={{ color: Colors.themeRed, fontSize: 18 }}>失败原因</Text>
+									</View>
+									<View style={{ marginLeft: 25, marginTop: 20 }}>
+										<Text style={{ fontSize: 16, color: Colors.black }}>
+											{data.userTask[0].remark}
+										</Text>
+									</View>
+								</View>
+								<View style={{}}>
+									<View style={styles.header}>
+										<View style={styles.headerLeft} />
+										<Text style={styles.headerContent}>提交内容</Text>
+									</View>
+									<View style={{ marginHorizontal: 25 }}>
+										<Text style={{ fontSize: 16, color: Colors.black }}>
+											{data.userTask[0].reply_content}
+										</Text>
+										<View style={{ marginTop: 10 }}>
+											{screenshots.map((image, index) => {
+												return (
+													<Image
+														key={index}
+														source={{
+															uri: image.url
+														}}
+														style={{ width: Divice.width - 50, height: Divice.width - 50 }}
+													/>
+												);
+											})}
+										</View>
+									</View>
+								</View>
+							</View>
+						);
+					}}
+				</Query>
 			</ScrollView>
 		);
 	}

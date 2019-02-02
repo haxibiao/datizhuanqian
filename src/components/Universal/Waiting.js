@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get('window');
 
 class Waiting extends Component {
 	render() {
-		let { size = 50, color = Colors.theme, type = 'FadingCircleAlt', isVisible } = this.props;
+		let { size = 50, color = Colors.theme, type = 'FadingCircleAlt', isVisible, customStyle = {} } = this.props;
 		if (!isVisible) {
 			return null;
 		}

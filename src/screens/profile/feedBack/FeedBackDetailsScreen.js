@@ -23,7 +23,8 @@ import {
 	Loading,
 	LoadingError,
 	LoadingMore,
-	ContentEnd
+	ContentEnd,
+	Waiting
 } from '../../../components';
 
 import { Colors, Divice } from '../../../constants';
@@ -46,7 +47,8 @@ class FeedBackDetailsScreen extends Component {
 			autoFocus: false,
 			comment_id: null,
 			reply: null,
-			fetchingMore: true
+			fetchingMore: true,
+			waitingVisible: false
 		};
 	}
 
@@ -55,6 +57,9 @@ class FeedBackDetailsScreen extends Component {
 		const { navigation } = this.props;
 		const { feedback_id } = navigation.state.params;
 		let { comment_id, content } = this.state;
+		this.setState({
+			waitingVisible: true
+		});
 		try {
 			result = await this.props.createCommentMutation({
 				variables: {
@@ -79,7 +84,13 @@ class FeedBackDetailsScreen extends Component {
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, -100);
+			this.setState({
+				waitingVisible: false
+			});
 		} else {
+			this.setState({
+				waitingVisible: false
+			});
 			Methods.toast('评论成功', -100);
 			Keyboard.dismiss();
 		}
@@ -91,7 +102,8 @@ class FeedBackDetailsScreen extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		let { feedback_id } = navigation.state.params;
-		let { autoFocus, reply } = this.state;
+		let { autoFocus, reply, content, waitingVisible } = this.state;
+		console.log('autoFocus', autoFocus);
 		return (
 			<Screen
 				headerRight={
@@ -168,7 +180,7 @@ class FeedBackDetailsScreen extends Component {
 					}}
 				</Query>
 
-				<TouchableOpacity style={styles.footer} onPress={this.switchKeybord}>
+				<View style={styles.footer}>
 					{autoFocus ? (
 						<View>
 							{reply && (
@@ -195,7 +207,7 @@ class FeedBackDetailsScreen extends Component {
 								underline
 								autoFocus
 								onEndEditing={this.switchKeybord}
-								defaultValue={this.state.content}
+								defaultValue={content}
 								changeValue={value => {
 									this.setState({
 										content: value
@@ -204,12 +216,14 @@ class FeedBackDetailsScreen extends Component {
 							/>
 						</View>
 					) : (
-						<Text style={{ color: Colors.grey, fontSize: 15 }}>说说你的意见</Text>
+						<TouchableOpacity onPress={this.switchKeybord}>
+							<Text style={{ color: Colors.grey, fontSize: 15 }}>说说你的意见</Text>
+						</TouchableOpacity>
 					)}
-					<TouchableOpacity onPress={this.submitComment}>
+					<TouchableOpacity onPress={this.submitComment} disabled={content.length < 1}>
 						<Text style={styles.commentText}>发布</Text>
 					</TouchableOpacity>
-				</TouchableOpacity>
+				</View>
 				<FeedbackCommentModal
 					visible={this.state.feedbackCommentVisible}
 					handleVisible={() => {
@@ -217,6 +231,7 @@ class FeedBackDetailsScreen extends Component {
 					}}
 					feedback
 				/>
+				<Waiting isVisible={waitingVisible} customStyle={{ backgroundColor: 'transparent' }} />
 			</Screen>
 		);
 	}
@@ -232,7 +247,7 @@ class FeedBackDetailsScreen extends Component {
 					if (!(data && data.feedback))
 						return <View style={{ height: Divice.height / 2, backgroundColor: Colors.white }} />;
 					let feedback = data.feedback;
-					console.log('');
+
 					return (
 						<View>
 							<View style={styles.header}>
@@ -254,15 +269,7 @@ class FeedBackDetailsScreen extends Component {
 													style={{ height: 13, width: 13, marginLeft: 5 }}
 												/>
 											) : (
-												<View
-													style={{
-														backgroundColor: Colors.theme,
-														paddingHorizontal: 2,
-														marginLeft: 5,
-														marginTop: 1,
-														borderRadius: 1
-													}}
-												>
+												<View style={styles.level}>
 													<Text style={{ fontSize: 8, color: Colors.white }}>
 														Lv.{feedback.user.level.level}
 													</Text>
@@ -278,7 +285,7 @@ class FeedBackDetailsScreen extends Component {
 								{feedback.images.map((image, index) => {
 									let width = image.width;
 									let height = image.height;
-									let size = imageSize({ width, height });
+									let size = Methods.imageSize({ width, height });
 									return (
 										<Image
 											source={{ uri: image.path }}
@@ -293,15 +300,10 @@ class FeedBackDetailsScreen extends Component {
 								})}
 							</View>
 							<DivisionLine height={5} />
-							<View
-								style={{
-									paddingHorizontal: 15,
-									paddingVertical: 10,
-									borderBottomWidth: 0.5,
-									borderBottomColor: Colors.lightBorder
-								}}
-							>
-								<Text style={{ fontSize: 16, color: Colors.black }}>评论 {comment.length}</Text>
+							<View style={styles.commentsTab}>
+								<Text style={{ fontSize: 16, color: Colors.black }}>
+									评论 {feedback.publish_comments_count}
+								</Text>
 							</View>
 						</View>
 					);
@@ -330,17 +332,6 @@ class FeedBackDetailsScreen extends Component {
 			feedbackCommentVisible: !prevState.feedbackCommentVisible
 		}));
 	}
-}
-
-function imageSize({ width, height }) {
-	var size = {};
-	if (width > Divice.width) {
-		size.width = Divice.width - 30;
-		size.height = ((Divice.width - 30) * height) / width;
-	} else {
-		size = { width, height };
-	}
-	return size;
 }
 
 const styles = StyleSheet.create({
@@ -374,6 +365,19 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		paddingHorizontal: 15,
 		paddingBottom: 20
+	},
+	commentsTab: {
+		paddingHorizontal: 15,
+		paddingVertical: 10,
+		borderBottomWidth: 0.5,
+		borderBottomColor: Colors.lightBorder
+	},
+	levle: {
+		backgroundColor: Colors.theme,
+		paddingHorizontal: 2,
+		marginLeft: 5,
+		marginTop: 1,
+		borderRadius: 1
 	},
 	body: {
 		color: Colors.black,

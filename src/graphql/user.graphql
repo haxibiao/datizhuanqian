@@ -200,30 +200,6 @@ query feedbackQuery($id: Int!) {
 				level
 			}
 		}
-		comments {
-			id
-			content
-			time_ago
-			parent_comment {
-				id
-				content
-				user {
-					id
-					name
-					is_admin
-				}
-			}
-			user {
-				id
-				name
-				avatar
-				is_admin
-				level {
-					id
-					level
-				}
-			}
-		}
 	}
 }
 

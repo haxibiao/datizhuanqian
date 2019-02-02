@@ -70,7 +70,6 @@ class HomeScreen extends Component {
 									{({ data, error }) => {
 										if (error) return null;
 										if (!(data && data.user)) return null;
-										console.log('Data user', data.user);
 										if (data.user.unread_notifications_count) {
 											return (
 												<View

@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, RefreshControl } from 'react-native';
-import {
-	Header,
-	BlankContent,
-	Loading,
-	LoadingError,
-	LoadingMore,
-	ContentEnd,
-	Iconfont,
-	Screen,
-	Avatar
-} from '../../components';
+import { StyleSheet, View, FlatList, RefreshControl } from 'react-native';
+import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods } from '../../helpers';
 
 import { Query } from 'react-apollo';
 import { notificationsQuery } from '../../graphql/notification.graphql';

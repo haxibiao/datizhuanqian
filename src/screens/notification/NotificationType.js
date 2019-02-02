@@ -16,6 +16,7 @@ class NotificationType extends Component {
 		return (
 			<View>
 				{notification.type == 'WITHDRAW_SUCCESS' && (
+					//提现成功
 					<View>
 						<View style={styles.timeInfo}>
 							<View style={styles.time}>
@@ -64,6 +65,7 @@ class NotificationType extends Component {
 					</View>
 				)}
 				{notification.type == 'WITHDRAW_FAILURE' && (
+					//提现失败
 					<View>
 						<View style={styles.timeInfo}>
 							<View style={styles.time}>
@@ -111,6 +113,7 @@ class NotificationType extends Component {
 				)}
 
 				{notification.type == 'FEEDBACK_COMMENT' && (
+					//反馈评论
 					<TouchableOpacity
 						style={{
 							paddingVertical: 15,
@@ -173,6 +176,7 @@ class NotificationType extends Component {
 				)}
 
 				{notification.type == 'REPLY_COMMENT' && (
+					//引用评论
 					<TouchableOpacity
 						style={{
 							paddingVertical: 15,

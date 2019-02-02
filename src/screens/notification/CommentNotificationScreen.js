@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, RefreshControl } from 'react-native';
-import {
-	Header,
-	BlankContent,
-	Loading,
-	LoadingError,
-	LoadingMore,
-	ContentEnd,
-	Iconfont,
-	Screen,
-	Avatar,
-	DivisionLine
-} from '../../components';
+import { StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen, DivisionLine } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods } from '../../helpers';
 
 import { Query } from 'react-apollo';
 import { notificationsQuery } from '../../graphql/notification.graphql';
@@ -43,7 +31,6 @@ class CommentNotificationScreen extends Component {
 						if (loading) return <Loading />;
 						if (!(data && data.notifications.length > 0))
 							return <BlankContent text={'还没有通知哦'} fontSize={14} />;
-						console.log('comment', data.notifications);
 						return (
 							<FlatList
 								style={{ backgroundColor: Colors.lightBorder }}
