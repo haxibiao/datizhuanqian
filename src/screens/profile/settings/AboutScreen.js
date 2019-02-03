@@ -51,12 +51,14 @@ class AboutScreen extends Component {
 							<Text style={{ fontSize: 15, color: Colors.black }}>联系我们</Text>
 							{/*<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15 }}>QQ交流群: 4337413</Text>*/}
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
-								官网地址: datizhuanqian.com datizhuanqian.cn
+								官网地址： datizhuanqian.com datizhuanqian.cn
 							</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
-								官方邮箱: dtzq@haxibiao.com
+								官方邮箱： dtzq@haxibiao.com
 							</Text>
-							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>官方QQ群: 629879388</Text>
+							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
+								官方QQ群： 735220029
+							</Text>
 						</View>
 					</View>
 				</View>

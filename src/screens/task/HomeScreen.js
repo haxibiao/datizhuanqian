@@ -20,7 +20,7 @@ class HomeScreen extends Component {
 
 	render() {
 		const { navigation, user, login } = this.props;
-		console.log('login', login);
+
 		return (
 			<Screen header>
 				<Header

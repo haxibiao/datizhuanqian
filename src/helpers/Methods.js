@@ -175,11 +175,9 @@ const autoCheckUpdate = async (
 
 	changeVersionInfo(versionInfo.apk, online); //为提示框 link  取消更新赋值
 
-	if (local < online && versionInfo.is_force) {
+	if ((local < online && versionInfo.is_force) || online - local > 0.1) {
 		handForceUpdateModal();
-		// 如果线上版本大于本地版本并且是强制更新，则弹出强制更新MODAL
-	} else if (online - local > 0.1) {
-		handForceUpdateModal();
+		// 如果线上版本大于本地版本并且是强制更新，则强制
 		//大版本迭代
 		// 如果线上版领先本地2个版本，则强制更新
 	} else if (local < online && !versionInfo.is_force && updateTipsVersion < online) {
