@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { DivisionLine, Button, Iconfont, Screen, Input, Waiting } from '../../../components';
+import { DivisionLine, Button, Iconfont, Screen, Input, Waiting, ImagePickerView } from '../../components';
 
-import { Colors, Divice } from '../../../constants';
-import { Methods } from '../../../helpers';
+import { Colors, Divice } from '../../constants';
+import { Methods } from '../../helpers';
 
-import { CreateFeedbackMutation } from '../../../graphql/user.graphql';
+import { CreateFeedbackMutation } from '../../graphql/feedback.graphql';
 import { Mutation, graphql, compose, withApollo } from 'react-apollo';
 
-class FeedBack extends Component {
+class Feedback extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -69,7 +69,7 @@ class FeedBack extends Component {
 				});
 				Methods.toast('反馈成功', -180);
 				navigation.navigate('反馈详情', {
-					feedback_id: result.data.createFeedback.id
+					feedback: result.data.createFeedback
 				});
 				this.setState({
 					pictures: [],
@@ -109,32 +109,11 @@ class FeedBack extends Component {
 							}}
 						/>
 
-						<View style={styles.images}>
-							{pictures.map((image, index) => {
-								return (
-									<View key={index}>
-										<Image source={{ uri: image }} style={styles.image} />
-										<TouchableOpacity
-											style={styles.delete}
-											onPress={() => {
-												pictures.splice(index, 1);
-												this.setState({
-													pictures
-												});
-											}}
-										>
-											<Iconfont name={'close'} size={12} color={Colors.white} />
-										</TouchableOpacity>
-									</View>
-								);
-							})}
-
-							{!(pictures.length > 5) && (
-								<TouchableOpacity style={styles.add} onPress={this.openPhotos}>
-									<Iconfont name={'add'} size={26} color={Colors.tintGray} />
-								</TouchableOpacity>
-							)}
-						</View>
+						<ImagePickerView
+							onResponse={images => {
+								this.setState({ pictures: images });
+							}}
+						/>
 						<View style={styles.mainBottom} />
 					</View>
 					<Button
@@ -206,4 +185,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default withApollo(FeedBack);
+export default withApollo(Feedback);

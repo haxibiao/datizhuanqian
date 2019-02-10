@@ -36,7 +36,7 @@ class Input extends Component {
 					autoCapitalize={'none'}
 					secureTextEntry={password}
 					defaultValue={defaultValue}
-					maxLength={maxLength ? maxLength : 16}
+					maxLength={maxLength ? maxLength : 24}
 					multiline={multiline}
 					editable={editable}
 					onEndEditing={onEndEditing}

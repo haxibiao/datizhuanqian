@@ -10,6 +10,7 @@ import ProfileItem from './ListItem/ProfileItem';
 import SettingItem from './ListItem/SettingItem';
 import WithdrawsLogItem from './ListItem/WithdrawsLogItem';
 import CommentItem from './ListItem/CommentItem';
+import FeedbackItem from './ListItem/FeedbackItem';
 
 import Button from './Control/Button';
 import Radio from './Control/Radio';
@@ -51,6 +52,7 @@ import Banner from './Universal/Banner';
 import WithdrawsTips from './Universal/WithdrawsTips';
 import AppIntro from './Universal/AppIntro';
 import Waiting from './Universal/Waiting';
+import ImagePickerView from './Universal/ImagePickerView';
 
 import { Iconfont } from './utils/Fonts';
 
@@ -67,6 +69,7 @@ export {
 	SettingItem,
 	WithdrawsLogItem,
 	CommentItem,
+	FeedbackItem,
 	//
 	Button,
 	Radio,
@@ -108,6 +111,7 @@ export {
 	WithdrawsTips,
 	AppIntro,
 	Waiting,
+	ImagePickerView,
 	//
 	Iconfont
 };

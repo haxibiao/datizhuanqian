@@ -22,8 +22,8 @@ import MyPropScreen from '../screens/profile/MyPropScreen';
 import TestScreen from '../screens/profile/TestScreen';
 import BusinessScreen from '../screens/profile/BusinessScreen';
 
-import FeedBackScreen from '../screens/profile/feedBack/HomeScreen';
-import FeedBackDetailsScreen from '../screens/profile/feedBack/FeedBackDetailsScreen';
+import FeedbackScreen from '../screens/feedback/HomeScreen';
+import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
 
 import NotificationScreen from '../screens/notification/HomeScreen';
 import SystemNotificationScreen from '../screens/notification/SystemNotificationScreen';
@@ -98,13 +98,13 @@ export default {
 	},
 	//我的
 	意见反馈: {
-		screen: FeedBackScreen
+		screen: FeedbackScreen
 	},
 	问题反馈: {
 		screen: GoFeedBackScreen
 	},
 	反馈详情: {
-		screen: FeedBackDetailsScreen
+		screen: FeedbackDetailsScreen
 	},
 	//反馈
 	通知: {
