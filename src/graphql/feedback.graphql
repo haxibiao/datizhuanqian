@@ -30,26 +30,6 @@ mutation CreateFeedbackMutation($title: String, $content: String, $images: [Stri
 	createFeedback(title: $title, content: $content, images: $images) {
 		id
 		title
-		content
-		hot
-		publish_comments_count
-		time_ago
-		images {
-			id
-			path
-			width
-			height
-		}
-		user {
-			id
-			name
-			avatar
-			is_admin
-			level {
-				id
-				level
-			}
-		}
 	}
 }
 

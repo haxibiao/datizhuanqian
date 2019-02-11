@@ -53,6 +53,7 @@ import WithdrawsTips from './Universal/WithdrawsTips';
 import AppIntro from './Universal/AppIntro';
 import Waiting from './Universal/Waiting';
 import ImagePickerView from './Universal/ImagePickerView';
+import UserTitle from './Universal/UserTitle';
 
 import { Iconfont } from './utils/Fonts';
 
@@ -112,6 +113,7 @@ export {
 	AppIntro,
 	Waiting,
 	ImagePickerView,
+	UserTitle,
 	//
 	Iconfont
 };

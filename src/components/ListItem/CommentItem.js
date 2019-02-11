@@ -7,6 +7,7 @@ import { Iconfont } from '../utils/Fonts';
 import Avatar from '../Universal/Avatar';
 import FeedbackCommentModal from '../Modal/FeedbackCommentModal';
 import PropDetailsModal from '../Modal/PropDetailsModal';
+import UserTitle from '../Universal/UserTitle';
 
 class CommentItem extends Component {
 	constructor(props) {
@@ -36,26 +37,7 @@ class CommentItem extends Component {
 								>
 									{item.user.name}
 								</Text>
-								{item.user.is_admin ? (
-									<Image
-										source={require('../../../assets/images/admin.png')}
-										style={{ height: 13, width: 13, marginLeft: 5 }}
-									/>
-								) : (
-									<View
-										style={{
-											backgroundColor: Colors.theme,
-											paddingHorizontal: 2,
-											marginLeft: 5,
-											marginTop: 1,
-											borderRadius: 1
-										}}
-									>
-										<Text style={{ fontSize: 8, color: Colors.white }}>
-											Lv.{item.user.level.level}
-										</Text>
-									</View>
-								)}
+								<UserTitle user={item.user} />
 							</View>
 
 							<Text style={styles.time}>

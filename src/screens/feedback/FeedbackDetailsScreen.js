@@ -47,7 +47,7 @@ class FeedbackDetailsScreen extends Component {
 	submitComment = async () => {
 		let result = {};
 		const { navigation } = this.props;
-		const { feedback } = navigation.state.params;
+		const { feedback_id } = navigation.state.params;
 		let { comment_id, content } = this.state;
 		this.setState({
 			waitingVisible: true
@@ -57,7 +57,7 @@ class FeedbackDetailsScreen extends Component {
 				variables: {
 					content: this.state.content,
 					commentable_type: 'feedbacks',
-					commentable_id: feedback.id,
+					commentable_id: feedback_id,
 					comment_id: comment_id
 				},
 				refetchQueries: () => [
@@ -96,9 +96,9 @@ class FeedbackDetailsScreen extends Component {
 
 	render() {
 		const { navigation, user } = this.props;
-		let { feedback } = navigation.state.params;
+		let { feedback_id } = navigation.state.params;
 		let { autoFocus, reply, content, waitingVisible } = this.state;
-		console.log('content', content);
+
 		return (
 			<Screen
 				headerRight={
@@ -109,7 +109,7 @@ class FeedbackDetailsScreen extends Component {
 			>
 				<Query
 					query={feedbackCommentsQuery}
-					variables={{ commentable_id: feedback.id, commentable_type: 'feedbacks' }}
+					variables={{ commentable_id: feedback_id, commentable_type: 'feedbacks' }}
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
@@ -129,14 +129,14 @@ class FeedbackDetailsScreen extends Component {
 									<CommentItem
 										item={item}
 										user={user}
-										feedback_id={feedback.id}
+										feedback_id={feedback_id}
 										navigation={navigation}
 										switchKeybord={this.switchKeybord}
 										replyComment={this.replyComment}
 									/>
 								)}
 								ListHeaderComponent={() => {
-									return <FeedbackBody navigation={navigation} feedback={feedback} />;
+									return <FeedbackBody navigation={navigation} feedback_id={feedback_id} />;
 								}}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {

@@ -4,7 +4,10 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image }
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 
-import { Avatar, Iconfont, Screen, DivisionLine, FeedbackCommentModal } from '../../components';
+import { Avatar, Iconfont, Screen, DivisionLine, Loading, LoadingError, UserTitle } from '../../components';
+
+import { Query } from 'react-apollo';
+import { feedbackQuery } from '../../graphql/feedback.graphql';
 
 class FeedbackBody extends Component {
 	constructor(props) {
@@ -13,64 +16,67 @@ class FeedbackBody extends Component {
 	}
 
 	render() {
-		const { navigation, feedback } = this.props;
+		const { navigation, feedback_id } = this.props;
 
 		return (
-			<View>
-				<View style={styles.header}>
-					<Text style={styles.title}>{feedback.title}</Text>
-					<View style={styles.user}>
-						<Avatar uri={feedback.user.avatar} size={34} />
-						<View style={styles.userRight}>
-							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-								<Text
-									style={{
-										color: feedback.user.is_admin ? Colors.themeRed : Colors.black
-									}}
-								>
-									{feedback.user.name}
-								</Text>
-								{feedback.user.is_admin ? (
-									<Image
-										source={require('../../../assets/images/admin.png')}
-										style={{ height: 13, width: 13, marginLeft: 5 }}
-									/>
-								) : (
-									<View style={styles.level}>
-										<Text style={{ fontSize: 8, color: Colors.white }}>
-											Lv.{feedback.user.level.level}
-										</Text>
+			<Query query={feedbackQuery} variables={{ id: feedback_id }}>
+				{({ data, error, loading }) => {
+					if (error) return <LoadingError reload={() => refetch()} />;
+					if (loading) return <Loading />;
+					if (!(data && data.feedback))
+						return <View style={{ height: Divice.height / 2, backgroundColor: Colors.white }} />;
+					let feedback = data.feedback;
+					console.log('feedback', feedback);
+					return (
+						<View>
+							<View style={styles.header}>
+								<Text style={styles.title}>{feedback.title}</Text>
+								<View style={styles.user}>
+									<Avatar uri={feedback.user.avatar} size={34} />
+									<View style={styles.userRight}>
+										<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+											<Text
+												style={{
+													color: feedback.user.is_admin ? Colors.themeRed : Colors.black
+												}}
+											>
+												{feedback.user.name}
+											</Text>
+											<UserTitle user={feedback.user} />
+										</View>
+										<Text style={styles.time}>发布于{feedback.time_ago}</Text>
 									</View>
-								)}
+								</View>
 							</View>
-							<Text style={styles.time}>发布于{feedback.time_ago}</Text>
+							<View style={styles.center}>
+								<Text style={styles.body}>{feedback.content}</Text>
+								{feedback.images.map((image, index) => {
+									let width = image.width;
+									let height = image.height;
+									let size = Methods.imageSize({ width, height });
+									return (
+										<Image
+											source={{ uri: image.path }}
+											style={{
+												width: size.width,
+												height: size.height,
+												marginTop: 10
+											}}
+											key={index}
+										/>
+									);
+								})}
+							</View>
+							<DivisionLine height={5} />
+							<View style={styles.commentsTab}>
+								<Text style={{ fontSize: 16, color: Colors.black }}>
+									评论 {feedback.publish_comments_count}
+								</Text>
+							</View>
 						</View>
-					</View>
-				</View>
-				<View style={styles.center}>
-					<Text style={styles.body}>{feedback.content}</Text>
-					{feedback.images.map((image, index) => {
-						let width = image.width;
-						let height = image.height;
-						let size = Methods.imageSize({ width, height });
-						return (
-							<Image
-								source={{ uri: image.path }}
-								style={{
-									width: size.width,
-									height: size.height,
-									marginTop: 10
-								}}
-								key={index}
-							/>
-						);
-					})}
-				</View>
-				<DivisionLine height={5} />
-				<View style={styles.commentsTab}>
-					<Text style={{ fontSize: 16, color: Colors.black }}>评论 {feedback.publish_comments_count}</Text>
-				</View>
-			</View>
+					);
+				}}
+			</Query>
 		);
 	}
 }

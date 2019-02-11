@@ -11,6 +11,7 @@ import Banner from './Banner';
 import WithdrawsTips from './WithdrawsTips';
 import AppIntro from './AppIntro';
 import Waiting from './Waiting';
+import UserTitle from './UserTitle';
 
 export {
 	Avatar,
@@ -25,5 +26,6 @@ export {
 	Banner,
 	WithdrawsTips,
 	AppIntro,
-	Waiting
+	Waiting,
+	UserTitle
 };

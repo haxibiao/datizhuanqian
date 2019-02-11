@@ -101,13 +101,7 @@ class HomeScreen extends Component {
 							icon={'task2'}
 							right
 							navigation={navigation}
-							handler={() =>
-								login
-									? navigation.navigate('任务日志', {
-											user: user
-									  })
-									: navigation.navigate('登录注册')
-							}
+							handler={() => Linking.openURL('market://details?id=com.datizhuanqian')}
 						/>*/}
 						<DivisionLine height={10} />
 						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />

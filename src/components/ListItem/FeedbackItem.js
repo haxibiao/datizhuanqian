@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'rea
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 import { Iconfont } from '../utils/Fonts';
-import { Avatar, DivisionLine } from '../Universal';
+import { Avatar, DivisionLine, UserTitle } from '../Universal';
 
 class FeedbackItem extends Component {
 	constructor(props) {
@@ -16,7 +16,7 @@ class FeedbackItem extends Component {
 		return (
 			<TouchableOpacity
 				onPress={() => {
-					navigation.navigate('反馈详情', { feedback: item });
+					navigation.navigate('反馈详情', { feedback_id: item.id });
 				}}
 			>
 				<View style={styles.top}>
@@ -33,24 +33,7 @@ class FeedbackItem extends Component {
 									{item.user.name}
 								</Text>
 							</View>
-							{item.user.is_admin ? (
-								<Image
-									source={require('../../../assets/images/admin.png')}
-									style={{ height: 13, width: 13, marginLeft: 5 }}
-								/>
-							) : (
-								<View
-									style={{
-										backgroundColor: Colors.theme,
-										paddingHorizontal: 2,
-										marginLeft: 5,
-										marginTop: 1,
-										borderRadius: 1
-									}}
-								>
-									<Text style={{ fontSize: 8, color: Colors.white }}>Lv.{item.user.level.level}</Text>
-								</View>
-							)}
+							<UserTitle user={item.user} />
 						</View>
 					</View>
 				</View>

@@ -69,7 +69,7 @@ class Feedback extends Component {
 				});
 				Methods.toast('反馈成功', -180);
 				navigation.navigate('反馈详情', {
-					feedback: result.data.createFeedback
+					feedback_id: result.data.createFeedback.id
 				});
 				this.setState({
 					pictures: [],

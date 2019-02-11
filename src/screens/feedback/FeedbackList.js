@@ -63,7 +63,6 @@ class FeedbackList extends Component {
 					{({ data, loading, error, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
-						console.log('data.feedback', data);
 						if (!(data && data.feedbacks && data.feedbacks.length > 0))
 							return <BlankContent text={'暂无反馈'} fontSize={14} />;
 						return (
