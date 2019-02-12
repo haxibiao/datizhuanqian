@@ -6,7 +6,7 @@ import { Colors, Config, Divice } from '../../constants';
 import { Query } from 'react-apollo';
 import { notificationsQuery } from '../../graphql/notification.graphql';
 
-import NotificationType from './NotificationType';
+import CommentNotification from './type/CommentNotification';
 
 class CommentNotificationScreen extends Component {
 	constructor(props) {
@@ -37,7 +37,7 @@ class CommentNotificationScreen extends Component {
 								data={data.notifications}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
-									<NotificationType notification={item} navigation={navigation} />
+									<CommentNotification notification={item} navigation={navigation} />
 								)}
 								refreshControl={
 									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />

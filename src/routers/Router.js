@@ -113,7 +113,7 @@ export default {
 	系统通知: {
 		screen: SystemNotificationScreen
 	},
-	评论: {
+	评论通知: {
 		screen: CommentNotificationScreen
 	},
 	//通知

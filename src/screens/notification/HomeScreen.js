@@ -10,7 +10,8 @@ import {
 	Iconfont,
 	Screen,
 	Avatar,
-	DivisionLine
+	DivisionLine,
+	RedDot
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -23,7 +24,8 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			fetchingMore: true
+			fetchingMore: true,
+			logo: require('../../../assets/images/logo.png')
 		};
 	}
 
@@ -38,21 +40,15 @@ class HomeScreen extends Component {
 						navigation.navigate('系统通知');
 					}}
 				>
-					<Avatar uri={'http://cos.datizhuanqian.cn/storage/app/avatars/avatar.png'} size={48} />
+					<Avatar isLocal={this.state.logo} size={48} />
 					<View style={styles.itemRight}>
-						<Text style={{ fontSize: 15, color: Colors.black }}>答题赚钱</Text>
+						<Text style={styles.name}>系统通知</Text>
 						<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;
 								if (data.user.unread_withdraw_notifications_count) {
-									return (
-										<View style={styles.redDot}>
-											<Text style={{ fontSize: 10, color: Colors.white }}>
-												{data.user.unread_withdraw_notifications_count}
-											</Text>
-										</View>
-									);
+									return <RedDot count={data.user.unread_withdraw_notifications_count} />;
 								} else {
 									return <Iconfont name={'right'} size={16} />;
 								}
@@ -63,26 +59,20 @@ class HomeScreen extends Component {
 				<TouchableOpacity
 					style={styles.item}
 					onPress={() => {
-						navigation.navigate('评论');
+						navigation.navigate('评论通知');
 					}}
 				>
-					<View style={{ backgroundColor: Colors.weixin, padding: 12, borderRadius: 30 }}>
+					<View style={styles.icon}>
 						<Iconfont name={'notification'} size={23} color={Colors.white} />
 					</View>
 					<View style={styles.itemRight}>
-						<Text style={{ fontSize: 15, color: Colors.black }}>评论</Text>
+						<Text style={styles.name}>评论</Text>
 						<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;
 								if (data.user.unread_comment_notifications_count) {
-									return (
-										<View style={styles.redDot}>
-											<Text style={{ fontSize: 10, color: Colors.white }}>
-												{data.user.unread_comment_notifications_count}
-											</Text>
-										</View>
-									);
+									return <RedDot count={data.user.unread_comment_notifications_count} />;
 								} else {
 									return <Iconfont name={'right'} size={16} />;
 								}
@@ -100,6 +90,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.lightBorder
 	},
+	name: {
+		fontSize: 16,
+		color: Colors.black
+	},
 	itemRight: {
 		marginLeft: 10,
 		borderBottomWidth: 0.5,
@@ -115,13 +109,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		alignItems: 'center'
 	},
-	redDot: {
-		height: 16,
-		borderRadius: 8,
-		paddingHorizontal: 5,
-		backgroundColor: Colors.themeRed,
-		justifyContent: 'center',
-		alignItems: 'center'
+	icon: {
+		backgroundColor: Colors.weixin,
+		padding: 12,
+		borderRadius: 30
 	}
 });
 

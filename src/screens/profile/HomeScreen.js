@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
-import { DivisionLine, ErrorBoundary, Header, Screen, ProfileItem, ProfileNotLogin, Iconfont } from '../../components';
+import {
+	DivisionLine,
+	ErrorBoundary,
+	Header,
+	Screen,
+	ProfileItem,
+	ProfileNotLogin,
+	Iconfont,
+	RedDot
+} from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import TopUserInfo from './user/TopUserInfo';
@@ -66,27 +75,15 @@ class HomeScreen extends Component {
 							IconStyle={{ paddingBottom: 3 }}
 							size={17}
 							right={
-								<Query query={userUnreadQuery} variables={{ id: user.id }} pollInterval={60000}>
-									{({ data, error }) => {
+								<Query query={userUnreadQuery} variables={{ id: user.id }}>
+									{({ data, error, refetch }) => {
+										navigation.addListener('didFocus', payload => {
+											refetch();
+										});
 										if (error) return null;
 										if (!(data && data.user)) return null;
 										if (data.user.unread_notifications_count) {
-											return (
-												<View
-													style={{
-														height: 16,
-														borderRadius: 8,
-														paddingHorizontal: 5,
-														backgroundColor: Colors.themeRed,
-														justifyContent: 'center',
-														alignItems: 'center'
-													}}
-												>
-													<Text style={{ fontSize: 10, color: Colors.white }}>
-														{data.user.unread_notifications_count}
-													</Text>
-												</View>
-											);
+											return <RedDot count={data.user.unread_notifications_count} />;
 										} else {
 											return <Iconfont name={'right'} size={15} />;
 										}

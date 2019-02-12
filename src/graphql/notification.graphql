@@ -16,6 +16,10 @@ query notificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int)
 			id
 			content
 			time_ago
+			parent_comment {
+				id
+				content
+			}
 			user {
 				id
 				name

@@ -3,6 +3,7 @@ query feedbackCommentsQuery($commentable_type: CommentTableEnum!, $commentable_i
 		id
 		content
 		time_ago
+		rank
 		parent_comment {
 			id
 			content

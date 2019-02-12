@@ -41,7 +41,7 @@ class CommentItem extends Component {
 							</View>
 
 							<Text style={styles.time}>
-								#{item.id} {item.time_ago}
+								#{item.rank} {item.time_ago}
 							</Text>
 						</View>
 					</View>

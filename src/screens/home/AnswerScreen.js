@@ -99,11 +99,7 @@ class AnswerScreen extends Component {
 		let { value, isMethod, isShow, pickColor, name, buttonColor, rightColor } = this.state;
 		const { category } = navigation.state.params;
 		return (
-			<Screen
-				routeName={'答题'}
-				customStyle={{ backgroundColor: Colors.theme }}
-				// headerRight={<Iconfont name={"more-vertical"} size={18} color={Colors.primaryFont} />}  隐藏功能
-			>
+			<Screen routeName={'答题'} customStyle={{ backgroundColor: Colors.theme }}>
 				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) {

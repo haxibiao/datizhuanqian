@@ -54,6 +54,7 @@ import AppIntro from './Universal/AppIntro';
 import Waiting from './Universal/Waiting';
 import ImagePickerView from './Universal/ImagePickerView';
 import UserTitle from './Universal/UserTitle';
+import RedDot from './Universal/RedDot';
 
 import { Iconfont } from './utils/Fonts';
 
@@ -114,6 +115,7 @@ export {
 	Waiting,
 	ImagePickerView,
 	UserTitle,
+	RedDot,
 	//
 	Iconfont
 };
