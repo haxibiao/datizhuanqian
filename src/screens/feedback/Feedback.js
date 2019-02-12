@@ -119,9 +119,10 @@ class Feedback extends Component {
 					<Button
 						name={'提交'}
 						style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
-						theme={content ? Colors.theme : Colors.tintGray}
 						textColor={content ? Colors.white : Colors.grey}
 						handler={this.submitFeedback}
+						disabled={!content}
+						disabledColor={Colors.tintGray}
 					/>
 				</View>
 				<Waiting isVisible={waitingVisible} />

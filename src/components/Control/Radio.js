@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
-import Colors from "../../constants/Colors";
+import Colors from '../../constants/Colors';
 
 class Radio extends Component {
 	render() {
-		let { value, check, onCheck } = this.props;
+		let { value, type, onCheck } = this.props;
 		return (
 			<TouchableOpacity
 				style={{
 					height: 20,
 					width: 20,
 					borderRadius: 10,
-					borderColor: check == value ? Colors.theme : Colors.tintGray,
+					borderColor: type == value ? Colors.theme : Colors.tintGray,
 					borderWidth: 1,
-					justifyContent: "center",
-					alignItems: "center"
+					justifyContent: 'center',
+					alignItems: 'center'
 				}}
 				value={1}
 				onPress={() => {
@@ -27,7 +27,7 @@ class Radio extends Component {
 						height: 10,
 						width: 10,
 						borderRadius: 5,
-						backgroundColor: check == value ? Colors.theme : Colors.white
+						backgroundColor: type == value ? Colors.theme : Colors.white
 					}}
 				/>
 			</TouchableOpacity>

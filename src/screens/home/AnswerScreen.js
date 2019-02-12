@@ -106,10 +106,10 @@ class AnswerScreen extends Component {
 			>
 				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
-						console.log('exc', error);
 						if (error) {
 							let info = error.toString().indexOf('维护');
 							if (info > -1) {
+								//维护处理
 								return (
 									<View
 										style={{
@@ -162,82 +162,67 @@ class AnswerScreen extends Component {
 						}
 
 						return (
-							<ErrorBoundary>
-								<ScrollView style={styles.container}>
-									<View>
-										<TabTop user={user} isShow={isShow} isAnswer={true} />
-										<Banner />
-										<View style={styles.content}>
-											<ErrorBoundary reload={() => refetch()}>
-												<Question
-													question={question}
-													option={option}
-													changeValue={this.changeValue}
-													value={value}
-													isMethod={isMethod}
-													pickColor={pickColor}
-													rightColor={rightColor}
-												/>
-											</ErrorBoundary>
-											{
-												//因为题目库 选择项中产生了很多脏数据,所以对渲染做异常处理,防止release版本不会crash
-											}
-											<View style={styles.submit}>
-												<Button
-													name={name}
-													disabled={value ? false : true}
-													handler={() => {
-														this.submitAnswer(question, refetch);
-													}}
-													style={{ height: 38 }}
-													theme={buttonColor}
-													fontSize={14}
-													disabledColor={'rgba(64,127,207,0.7)'}
-												/>
-
-												{
-													// <TouchableOpacity
-													// 	style={{ alignItems: "flex-end", paddingTop: 15 }}
-													// 	onPress={() =>
-													// 		navigation.navigate("题目纠错", { id: question.id })
-													// 	}
-													// >
-													// 	<Text
-													// 		style={{
-													// 			color: Colors.orange,
-													// 			fontSize: 12,
-													// 			fontWeight: "200"
-													// 		}}
-													// 	>
-													// 		题目纠错
-													// 	</Text>
-													// </TouchableOpacity>
-													//隐藏功能
-												}
-											</View>
+							<ScrollView style={styles.container}>
+								<View>
+									<TabTop user={user} isShow={isShow} isAnswer={true} />
+									<Banner />
+									<View style={styles.content}>
+										<ErrorBoundary reload={() => refetch()}>
+											<Question
+												question={question}
+												option={option}
+												changeValue={this.changeValue}
+												value={value}
+												isMethod={isMethod}
+												pickColor={pickColor}
+												rightColor={rightColor}
+											/>
+										</ErrorBoundary>
+										{
+											//因为题目库 选择项中产生了很多脏数据,所以对渲染做异常处理,防止release版本不会crash
+										}
+										<View style={styles.submit}>
+											<TouchableOpacity
+												style={styles.correction}
+												disabled={!isMethod}
+												onPress={() => navigation.navigate('题目纠错', { question: question })}
+											>
+												<Text style={styles.correctionText}>{isMethod ? '题目纠错' : ''}</Text>
+											</TouchableOpacity>
+											<Button
+												name={name}
+												disabled={value ? false : true}
+												handler={() => {
+													this.submitAnswer(question, refetch);
+												}}
+												style={{ height: 38 }}
+												theme={buttonColor}
+												fontSize={14}
+												disabledColor={'rgba(64,127,207,0.7)'}
+											/>
 										</View>
 									</View>
-									<Query query={UserQuery} variables={{ id: user.id }}>
-										{({ data, loading, error, refetch }) => {
-											if (error) return null;
-											if (!(data && data.user)) return null;
-											let user = data.user;
-											return (
-												<CorrectModal
-													visible={isShow}
-													gold={question.gold}
-													user={data.user}
-													noTicketTips={noTicketTips}
-													handleVisible={this.handleCorrectModal.bind(this)}
-													CloseModal={this.CloseModal.bind(this)}
-													title={question.answer.indexOf(value) > -1}
-													answer={question.answer}
-												/>
-											);
-										}}
-									</Query>
-								</ScrollView>
-							</ErrorBoundary>
+								</View>
+								<Query query={UserQuery} variables={{ id: user.id }}>
+									{({ data, loading, error, refetch }) => {
+										if (error) return null;
+										if (!(data && data.user)) return null;
+										let user = data.user;
+										return (
+											<CorrectModal
+												visible={isShow}
+												gold={question.gold}
+												user={data.user}
+												noTicketTips={noTicketTips}
+												handleVisible={this.handleCorrectModal.bind(this)}
+												CloseModal={this.CloseModal.bind(this)}
+												title={question.answer.indexOf(value) > -1}
+												answer={question.answer}
+											/>
+										);
+									}}
+								</Query>
+							</ScrollView>
 						);
 					}}
 				</Query>
@@ -282,6 +267,15 @@ const styles = StyleSheet.create({
 	submit: {
 		marginTop: 50,
 		marginBottom: 30
+	},
+	correction: {
+		alignItems: 'flex-end',
+		paddingBottom: 15
+	},
+	correctionText: {
+		color: Colors.orange,
+		fontSize: 12,
+		fontWeight: '200'
 	}
 });
 

@@ -82,3 +82,7 @@ query BannersQuery {
 		url
 	}
 }
+
+mutation createQuestionRedressMutation($question_id: Int!, $type: Int, $content: String) {
+	createQuestionRedress(question_id: $question_id, type: $type, content: $content)
+}

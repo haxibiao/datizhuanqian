@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, Dimensions, TextInput } from 'react-native';
-import { Button, Radio, Screen } from '../../components';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, TextInput } from 'react-native';
+import { Button, Radio, Screen, Input } from '../../components';
 
 import { Colors, Config, Divice } from '../../constants';
+import { Methods } from '../../helpers';
 
 import { connect } from 'react-redux';
-
-const { width, height } = Dimensions.get('window');
+import { createQuestionRedressMutation } from '../../graphql/question.graphql';
+import { graphql, compose } from 'react-apollo';
 
 class ErrorCorrectionScreen extends Component {
 	constructor(props) {
@@ -14,67 +15,103 @@ class ErrorCorrectionScreen extends Component {
 		this.onCheck = this.onCheck.bind(this);
 		this.state = {
 			color: Colors.theme,
-			check: 1
+			content: '',
+			type: 1
 		};
 	}
-	onCheck(value) {
-		this.setState({ check: value });
-	}
+
+	submitError = async () => {
+		const { navigation } = this.props;
+		const { question } = navigation.state.params;
+		let { content, type } = this.state;
+		let result = {};
+		try {
+			result = await this.props.createQuestionRedressMutation({
+				variables: {
+					question_id: question.id,
+					type,
+					content
+				}
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -100);
+		} else {
+			Methods.toast('提交成功', -100);
+			navigation.goBack();
+		}
+	};
 
 	render() {
 		let { user, navigation, login, prop } = this.props;
-		let { color, check } = this.state;
-		const { id } = navigation.state.params;
+		let { content, type } = this.state;
 		return (
 			<Screen>
 				<View style={styles.container}>
-					<View style={{ paddingHorizontal: 15, backgroundColor: Colors.white }}>
-						<Text style={{ fontSize: 17, paddingTop: 25 }}>错误类型</Text>
-						<View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingVertical: 10 }}>
+					<View style={styles.header}>
+						<Text style={styles.type}>错误类型</Text>
+						<View style={styles.radios}>
 							<View style={styles.row}>
-								<Radio value={1} check={check} onCheck={this.onCheck} />
+								<Radio value={1} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>题干有误</Text>
 							</View>
 							<View style={styles.row}>
-								<Radio value={2} check={check} onCheck={this.onCheck} />
+								<Radio value={2} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>答案有误</Text>
 							</View>
 							<View style={styles.row}>
-								<Radio value={3} check={check} onCheck={this.onCheck} />
-								<Text style={styles.text}>图片不清晰</Text>
+								<Radio value={3} type={type} onCheck={this.onCheck} />
+								<Text style={styles.text}>图片缺少或不清晰</Text>
 							</View>
 							<View style={styles.row}>
-								<Radio value={4} check={check} onCheck={this.onCheck} />
+								<Radio value={4} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>其他</Text>
 							</View>
 						</View>
 					</View>
-					<View style={{ marginTop: 15, backgroundColor: Colors.white, padding: 15 }}>
-						<TextInput
-							ref="textInput"
-							style={styles.input}
-							placeholder="您的耐心指点,是我们前进的动力！"
-							underlineColorAndroid="transparent"
-							selectionColor="#000"
-							multiline={true}
-							textAlignVertical={'top'}
-							onChangeText={content => {
-								this.setState({ content: content });
-							}}
-							maxLength={200}
-						/>
-					</View>
+
+					<Input
+						viewStyle={{
+							paddingHorizontal: 15,
+							paddingVertical: 10,
+							backgroundColor: Colors.white,
+							marginTop: 15
+						}}
+						customStyle={styles.input}
+						placeholder={'您的耐心指点,是我们前进的动力！'}
+						multiline
+						underline
+						maxLength={200}
+						textAlignVertical={'top'}
+						changeValue={value => {
+							this.setState({
+								content: value
+							});
+						}}
+					/>
+
 					<View style={{ marginTop: 40, marginBottom: 20 }}>
 						<Button
 							name={'提交'}
 							style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
-							theme={Colors.blue}
+							theme={Colors.theme}
+							textColor={content ? Colors.white : Colors.grey}
+							disabled={!content}
+							disabledColor={Colors.tintGray}
 							fontSize={14}
+							handler={this.submitError}
 						/>
 					</View>
 				</View>
 			</Screen>
 		);
+	}
+
+	onCheck(value) {
+		this.setState({ type: value });
 	}
 }
 
@@ -83,10 +120,23 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.lightGray
 	},
+	header: {
+		paddingHorizontal: 15,
+		backgroundColor: Colors.white
+	},
+	type: {
+		fontSize: 17,
+		paddingTop: 25
+	},
+	radios: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		paddingVertical: 10
+	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		width: (width - 30) / 2,
+		width: (Divice.width - 30) / 2,
 		paddingVertical: 10
 	},
 	text: {
@@ -105,4 +155,4 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return { user: store.users.user };
-})(ErrorCorrectionScreen);
+})(compose(graphql(createQuestionRedressMutation, { name: 'createQuestionRedressMutation' }))(ErrorCorrectionScreen));
