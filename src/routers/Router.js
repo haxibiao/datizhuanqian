@@ -36,6 +36,7 @@ import WithdrawApplyScreen from '../screens/withdraws/WithdrawApplyScreen';
 import SubmitTaskScreen from '../screens/task/SubmitTaskScreen';
 import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
 import TaskFailScreen from '../screens/task/TaskFailScreen';
+import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
 
 import PropScreen from '../screens/prop/HomeScreen';
 
@@ -138,6 +139,9 @@ export default {
 	},
 	失败详情: {
 		screen: TaskFailScreen
+	},
+	问题创建: {
+		screen: MakeQuestionScreen
 	},
 	//
 	道具: {

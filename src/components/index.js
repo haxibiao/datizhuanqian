@@ -17,6 +17,8 @@ import Radio from './Control/Radio';
 import Input from './Control/Input';
 import LoginInput from './Control/LoginInput';
 import Select from './Control/Select';
+import DropdownMenu from './Control/DropdownMenu';
+import CustomTextInput from './Control/CustomTextInput';
 
 import Header from './Header/Header';
 import TabBarHeader from './Header/TabBarHeader';
@@ -78,6 +80,8 @@ export {
 	Input,
 	LoginInput,
 	Select,
+	DropdownMenu,
+	CustomTextInput,
 	//
 	Header,
 	TabBarHeader,
