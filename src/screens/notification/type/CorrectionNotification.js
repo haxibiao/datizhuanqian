@@ -11,41 +11,24 @@ class RedDot extends Component {
 	render() {
 		const { navigation, notification } = this.props;
 		return (
-			<TouchableOpacity
-				style={styles.item}
-				onPress={() => {
-					navigation.dispatch(
-						Methods.navigationAction({
-							routeName: '主页',
-							action: Methods.navigationAction({ routeName: '我的' })
-						})
-					);
-				}}
-			>
+			<View style={styles.item}>
 				<View style={styles.titleInfo}>
 					<Iconfont name={'answer'} size={18} color={Colors.theme} />
 					<Text style={styles.title}>题目纠错</Text>
 				</View>
 				<View style={styles.bottomInfo}>
-					<Text style={styles.text}>纠错成功</Text>
-					<Text style={styles.infoItem}>奖励：20智慧点 </Text>
-					<Text style={styles.infoItem}>题目名：小米应用商店评论 </Text>
-					<Text style={styles.infoItem}>提交时间：2019-02-11 16:40 </Text>
+					<Text style={styles.text}>已被采纳</Text>
+					<Text style={styles.infoItem}>奖励：{`${notification.question_redress.gold_awarded}智慧点`} </Text>
+					{notification.question_redress.type == 0 && <Text style={styles.infoItem}>类型：题干有误</Text>}
+					{notification.question_redress.type == 1 && <Text style={styles.infoItem}>类型：答案有误</Text>}
+					{notification.question_redress.type == 2 && (
+						<Text style={styles.infoItem}>类型：图片缺少或不清晰</Text>
+					)}
+					{notification.question_redress.type == 3 && <Text style={styles.infoItem}>类型：其他</Text>}
+					<Text style={styles.infoItem}>时间：{notification.question_redress.created_at}</Text>
+					<Text style={styles.infoItem}>题目名：{notification.question_redress.question.description}</Text>
 				</View>
-				<TouchableOpacity
-					style={styles.footer}
-					onPress={() => {
-						navigation.navigate('提现详情', {
-							withdraws: {
-								amount: 10
-							}
-						});
-					}}
-				>
-					<Text>查看详情</Text>
-					<Iconfont name={'right'} size={14} />
-				</TouchableOpacity>
-			</TouchableOpacity>
+			</View>
 		);
 	}
 }
@@ -77,7 +60,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 17,
 		paddingBottom: 15,
-		color: Colors.primaryFont,
+		color: Colors.weixin,
 		fontWeight: '500'
 	},
 	infoItem: {

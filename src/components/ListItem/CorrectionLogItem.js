@@ -29,7 +29,13 @@ class CorrectionItem extends Component {
 					);
 				}}
 			>
-				<Text stlye={styles.content}>{item.question.description}</Text>
+				<Text style={styles.content}>{item.question.description}</Text>
+				{item.content && (
+					<View style={{ paddingTop: 6 }}>
+						<Text style={{ fontSize: 13, color: Colors.black }}>{item.content}</Text>
+					</View>
+				)}
+
 				<View style={styles.footer}>
 					<View style={styles.left}>
 						{item.status == 1 && <Text style={{ color: Colors.weixin, fontSize: 12 }}>已采纳</Text>}
@@ -40,7 +46,7 @@ class CorrectionItem extends Component {
 						{item.type == 2 && <Text style={styles.greyText}>·图片缺少或不清晰</Text>}
 						{item.type == 3 && <Text style={styles.greyText}>·其他</Text>}
 					</View>
-					<Text style={styles.greyText}>2019-02-13 09:40</Text>
+					<Text style={styles.greyText}>{item.created_at}</Text>
 				</View>
 			</TouchableOpacity>
 		);
@@ -56,14 +62,14 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 0.5
 	},
 	content: {
-		fontSize: 16,
+		fontSize: 15,
 		color: Colors.black
 	},
 	footer: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingTop: 10
+		paddingTop: 6
 	},
 	left: {
 		flexDirection: 'row',

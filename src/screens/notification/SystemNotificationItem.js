@@ -32,7 +32,7 @@ class NotificationItem extends Component {
 					<TaskNotification notification={notification} navigation={notification} />
 					//任务
 				)}
-				{notification.type == 'Correction' && (
+				{notification.question_redress && (
 					<CorrectionNotification notification={notification} navigation={notification} />
 					//纠错
 				)}

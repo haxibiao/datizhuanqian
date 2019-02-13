@@ -26,7 +26,7 @@ class FeedbackBody extends Component {
 					if (!(data && data.feedback))
 						return <View style={{ height: Divice.height / 2, backgroundColor: Colors.white }} />;
 					let feedback = data.feedback;
-					console.log('feedback', feedback);
+
 					return (
 						<View>
 							<View style={styles.header}>

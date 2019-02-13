@@ -4,7 +4,7 @@ import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen } 
 import { Colors, Config, Divice } from '../../constants';
 
 import { Query } from 'react-apollo';
-import { notificationsQuery } from '../../graphql/notification.graphql';
+import { systemNotificationsQuery } from '../../graphql/notification.graphql';
 
 import SystemNotificationItem from './SystemNotificationItem';
 
@@ -21,8 +21,8 @@ class SystemNotificationScreen extends Component {
 		return (
 			<Screen>
 				<Query
-					query={notificationsQuery}
-					variables={{ filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE'] }}
+					query={systemNotificationsQuery}
+					variables={{ filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE', 'QUESTION_REDRESS_REWARD'] }}
 					fetchPolicy="network-only"
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {

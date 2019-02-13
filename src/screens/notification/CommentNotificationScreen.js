@@ -4,7 +4,7 @@ import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen, D
 import { Colors, Config, Divice } from '../../constants';
 
 import { Query } from 'react-apollo';
-import { notificationsQuery } from '../../graphql/notification.graphql';
+import { commentNotificationsQuery } from '../../graphql/notification.graphql';
 
 import CommentNotification from './type/CommentNotification';
 
@@ -22,7 +22,7 @@ class CommentNotificationScreen extends Component {
 			<Screen>
 				<DivisionLine height={5} />
 				<Query
-					query={notificationsQuery}
+					query={commentNotificationsQuery}
 					variables={{ filter: ['FEEDBACK_COMMENT', 'REPLY_COMMENT'] }}
 					fetchPolicy="network-only"
 				>

@@ -152,5 +152,6 @@ query questionRedressesQuery($offset: Int, $limit: Int) {
 		gold_awarded
 		remark
 		status
+		created_at
 	}
 }

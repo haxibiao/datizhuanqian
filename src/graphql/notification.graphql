@@ -1,17 +1,8 @@
-#通知
-query notificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
+#评论通知
+query commentNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
 	notifications(filter: $filter, limit: $limit, offset: $offset, is_read: false) {
 		type
 		created_at
-		withdraw {
-			id
-			status
-			amount
-			to_account
-			updated_at
-			biz_no
-			remark
-		}
 		comment {
 			id
 			content
@@ -34,6 +25,34 @@ query notificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int)
 				id
 				title
 			}
+		}
+	}
+}
+
+#系统通知
+query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
+	notifications(filter: $filter, limit: $limit, offset: $offset, is_read: false) {
+		type
+		created_at
+		withdraw {
+			id
+			status
+			amount
+			to_account
+			updated_at
+			biz_no
+			remark
+		}
+		question_redress {
+			id
+			created_at
+			type
+			question {
+				id
+				description
+			}
+			remark
+			gold_awarded
 		}
 	}
 }

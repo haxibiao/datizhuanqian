@@ -42,7 +42,7 @@ class CorrectionLogScreen extends Component {
 								data={data.questionRedresses}
 								keyExtractor={(item, index) => index.toString()}
 								refreshControl={
-									<RefreshControl refreshing={loading} onRefresh={refetch} colors={Colors.theme} />
+									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
 								}
 								renderItem={({ item, index }) => (
 									<CorrectionLogItem navigation={navigation} item={item} />
