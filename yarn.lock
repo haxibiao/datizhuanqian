@@ -4670,6 +4670,11 @@ react-native-spinkit@^1.1.1:
   dependencies:
     prop-types "^15.5.8"
 
+react-native-splash-screen@^3.2.0:
+  version "3.2.0"
+  resolved "http://registry.npm.taobao.org/react-native-splash-screen/download/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
+  integrity sha1-1H7IVXsbqYjuPqmNAUYwgbYP/0U=
+
 react-native-svg@^8.0.8:
   version "8.0.8"
   resolved "http://registry.npm.taobao.org/react-native-svg/download/react-native-svg-8.0.8.tgz#5d4c636751d9db2d98a9b3cfc4ef45c4eac65d60"

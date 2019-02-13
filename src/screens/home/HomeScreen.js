@@ -20,8 +20,11 @@ import { Methods } from '../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
+import { UserQuery } from '../../graphql/user.graphql';
 import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { Query, withApollo, compose, graphql } from 'react-apollo';
+
+import SplashScreen from 'react-native-splash-screen';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -38,8 +41,21 @@ class HomeScreen extends Component {
 		};
 	}
 
+	componentWillUpdate(nextProps, nextState) {}
+
 	componentDidMount() {
-		const { navigation, login, isUpdate, client, dispatch } = this.props;
+		const { navigation, login, isUpdate, client, dispatch, user } = this.props;
+
+		let { query } = client;
+		let promises = [query({ query: CategoriesQuery }), query({ query: UserQuery, variables: { id: user.id } })];
+		Promise.all(promises)
+			.then(loaded => {
+				SplashScreen.hide();
+				//等待数据返回之后关闭加载页
+			})
+			.catch(rejected => {
+				return null;
+			});
 
 		let auto = true;
 		this.timer = setTimeout(() => {
@@ -51,6 +67,7 @@ class HomeScreen extends Component {
 				this.props.login,
 				auto
 			);
+			SplashScreen.hide();
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
 
@@ -86,20 +103,7 @@ class HomeScreen extends Component {
 		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
 		return (
 			<View style={styles.container}>
-				<Header
-					headerLeft
-					customStyle={{ backgroundColor: Colors.theme }}
-					routeName={'答题赚钱'}
-					// headerRight={
-					// 	<TouchableOpacity
-					// 		onPress={() => {
-					// 			navigation.navigate("通知");
-					// 		}}
-					// 	>
-					// 		<Iconfont name={"more-horizontal"} size={18} />
-					// 	</TouchableOpacity>
-					// } //上线隐藏功能
-				/>
+				<Header headerLeft customStyle={{ backgroundColor: Colors.theme }} routeName={'答题赚钱'} />
 				{this._renderCategoryList()}
 				<CheckUpdateModal
 					visible={updateVisible}

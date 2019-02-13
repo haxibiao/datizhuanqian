@@ -20,23 +20,23 @@ class App extends Component {
       showHome: false,
       appIntroVersion: '',
       introImages: '',
-      isConnected: true
+      isConnect: false
     };
   }
 
   componentWillMount() {
     this.loadUserState();
     //用户状态加载
-    NetInfo.isConnected.fetch().done(isConnected => {
-      if (isConnected) {
-        this.getAppIntro();
-        //获取介绍页图片
-      } else {
-        this.setState({
-          isConnected: false
-        });
-      }
-    });
+    // NetInfo.isConnected.fetch().done(isConnected => {
+    //   if (isConnected) {
+    //     this.getAppIntro();
+    //     //获取介绍页图片
+    //   } else {
+    //     this.setState({
+    //       isConnect: false
+    //     });
+    //   }
+    // });
   }
 
   loadUserState = async () => {
@@ -91,14 +91,14 @@ class App extends Component {
   };
 
   render() {
-    let { isLoadingComplete, showHome, introImages, appIntroVersion, isConnected } = this.state;
+    let { isLoadingComplete, showHome, introImages, appIntroVersion, isConnect } = this.state;
 
     return (
       <View style={styles.container}>
         <Provider store={store}>
           <Apollo onReady={this.handleFinishLoading} />
         </Provider>
-        {isConnected ? (
+        {isConnect ? (
           //判断是否联网 有网就需要判断是否介绍图 以及版本号  无网不请求数据
           appIntroVersion && introImages ? (
             //判断异步加载的 storgeVersion introImages 值是否拿到  没有值得时候拿白底渲染，防止UI跳动。
@@ -122,9 +122,8 @@ class App extends Component {
           ) : (
             <View style={styles.appLaunch} /> //预留底色
           )
-        ) : (
-          !isLoadingComplete && <AppIntro loading={true} /> //启动页
-        )}
+        ) : // !isLoadingComplete && <AppIntro loading={true} /> //启动页
+        null}
       </View>
     );
   }
