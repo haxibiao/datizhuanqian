@@ -33,7 +33,7 @@ class HomeScreen extends Component {
 			fetchingMore: true,
 			updateVisible: false,
 			mustUpdateVisible: false,
-			url: 'https://datizhuanqian.com',
+			url: 'https://datizhuanqian.com?from=app',
 			onlineVersion: '1.1.0'
 		};
 	}

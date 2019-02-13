@@ -20,7 +20,10 @@ class PlateItem extends Component {
 				onPress={() =>
 					login
 						? navigation.dispatch(
-								Methods.navigationAction({ routeName: '回答', params: { category: category } })
+								Methods.navigationAction({
+									routeName: '回答',
+									params: { category: category, question_id: null }
+								})
 						  )
 						: navigation.dispatch(Methods.navigationAction({ routeName: '登录注册' }))
 				}

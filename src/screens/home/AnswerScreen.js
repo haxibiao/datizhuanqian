@@ -97,10 +97,14 @@ class AnswerScreen extends Component {
 	render() {
 		const { navigation, user, noTicketTips } = this.props;
 		let { value, isMethod, isShow, pickColor, name, buttonColor, rightColor } = this.state;
-		const { category } = navigation.state.params;
+		const { category, question_id } = navigation.state.params;
 		return (
 			<Screen routeName={'答题'} customStyle={{ backgroundColor: Colors.theme }}>
-				<Query query={QuestionQuery} variables={{ category_id: category.id }} fetchPolicy="network-only">
+				<Query
+					query={QuestionQuery}
+					variables={{ category_id: category.id, id: question_id }}
+					fetchPolicy="network-only"
+				>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) {
 							let info = error.toString().indexOf('维护');
@@ -185,17 +189,19 @@ class AnswerScreen extends Component {
 											>
 												<Text style={styles.correctionText}>{isMethod ? '题目纠错' : ''}</Text>
 											</TouchableOpacity>
-											<Button
-												name={name}
-												disabled={value ? false : true}
-												handler={() => {
-													this.submitAnswer(question, refetch);
-												}}
-												style={{ height: 38 }}
-												theme={buttonColor}
-												fontSize={14}
-												disabledColor={'rgba(64,127,207,0.7)'}
-											/>
+											{!question_id && (
+												<Button
+													name={name}
+													disabled={value ? false : true}
+													handler={() => {
+														this.submitAnswer(question, refetch);
+													}}
+													style={{ height: 38 }}
+													theme={buttonColor}
+													fontSize={14}
+													disabledColor={'rgba(64,127,207,0.7)'}
+												/>
+											)}
 										</View>
 									</View>
 								</View>

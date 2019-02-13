@@ -20,7 +20,6 @@ class UserWithdrawsCache extends Component {
 		this.setState({
 			userCache: await Storage.getItem(ItemKeys.userCache)
 		});
-		console.log('userCache', await Storage.getItem(ItemKeys.userCache));
 	}
 
 	render() {

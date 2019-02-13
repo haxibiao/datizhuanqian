@@ -11,6 +11,7 @@ import SettingItem from './ListItem/SettingItem';
 import WithdrawsLogItem from './ListItem/WithdrawsLogItem';
 import CommentItem from './ListItem/CommentItem';
 import FeedbackItem from './ListItem/FeedbackItem';
+import CorrectionLogItem from './ListItem/CorrectionLogItem';
 
 import Button from './Control/Button';
 import Radio from './Control/Radio';
@@ -74,6 +75,7 @@ export {
 	WithdrawsLogItem,
 	CommentItem,
 	FeedbackItem,
+	CorrectionLogItem,
 	//
 	Button,
 	Radio,

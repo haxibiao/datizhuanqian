@@ -37,14 +37,7 @@ class HomeScreen extends Component {
 						{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
 
 						<DivisionLine height={10} />
-						{/*<ProfileItem
-							name={'我的道具'}
-							icon={'box'}
-							size={19}
-							right
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('道具') : navigation.navigate('登录注册'))}
-						/>*/}
+
 						{/*
 						<ProfileItem
 							name={'分享邀请'}
@@ -70,25 +63,36 @@ class HomeScreen extends Component {
 							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
 						/>
 						<ProfileItem
+							name={'纠错记录'}
+							icon={'correction'}
+							size={19}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
+						/>
+						<ProfileItem
 							name={'通知消息'}
 							icon={'message'}
 							IconStyle={{ paddingBottom: 3 }}
 							size={17}
 							right={
-								<Query query={userUnreadQuery} variables={{ id: user.id }}>
-									{({ data, error, refetch }) => {
-										navigation.addListener('didFocus', payload => {
-											refetch();
-										});
-										if (error) return null;
-										if (!(data && data.user)) return null;
-										if (data.user.unread_notifications_count) {
-											return <RedDot count={data.user.unread_notifications_count} />;
-										} else {
-											return <Iconfont name={'right'} size={15} />;
-										}
-									}}
-								</Query>
+								login ? (
+									<Query query={userUnreadQuery} variables={{ id: user.id }}>
+										{({ data, error, refetch }) => {
+											navigation.addListener('didFocus', payload => {
+												refetch();
+											});
+											if (error) return null;
+											if (!(data && data.user)) return null;
+											if (data.user.unread_notifications_count) {
+												return <RedDot count={data.user.unread_notifications_count} />;
+											} else {
+												return <Iconfont name={'right'} size={15} />;
+											}
+										}}
+									</Query>
+								) : (
+									<Iconfont name={'right'} size={15} />
+								)
 							}
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}

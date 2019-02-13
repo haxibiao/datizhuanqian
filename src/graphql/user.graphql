@@ -138,3 +138,19 @@ mutation setUserInfoMutation($data: UserInfo) {
 		gender
 	}
 }
+
+#纠错记录
+query questionRedressesQuery($offset: Int, $limit: Int) {
+	questionRedresses(offset: $offset, limit: $limit) {
+		id
+		question {
+			id
+			description
+		}
+		content
+		type
+		gold_awarded
+		remark
+		status
+	}
+}

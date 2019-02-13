@@ -21,6 +21,7 @@ import CommonIssueScreen from '../screens/profile/CommonIssueScreen';
 import MyPropScreen from '../screens/profile/MyPropScreen';
 import TestScreen from '../screens/profile/TestScreen';
 import BusinessScreen from '../screens/profile/BusinessScreen';
+import CorrectionLogScreen from '../screens/profile/CorrectionLogScreen';
 
 import FeedbackScreen from '../screens/feedback/HomeScreen';
 import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
@@ -107,6 +108,9 @@ export default {
 	反馈详情: {
 		screen: FeedbackDetailsScreen
 	},
+	纠错记录: {
+		screen: CorrectionLogScreen
+	},
 	//反馈
 	通知: {
 		screen: NotificationScreen
@@ -143,7 +147,7 @@ export default {
 	问题创建: {
 		screen: MakeQuestionScreen
 	},
-	//
+	//任务
 	道具: {
 		screen: PropScreen
 	}
