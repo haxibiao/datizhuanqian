@@ -38,6 +38,7 @@ import SubmitTaskScreen from '../screens/task/SubmitTaskScreen';
 import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
 import TaskFailScreen from '../screens/task/TaskFailScreen';
 import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
+import MakeQuestionHistoryScreen from '../screens/task/MakeQuestionHistoryScreen';
 
 import PropScreen from '../screens/prop/HomeScreen';
 
@@ -146,6 +147,9 @@ export default {
 	},
 	问题创建: {
 		screen: MakeQuestionScreen
+	},
+	出题记录: {
+		screen: MakeQuestionHistoryScreen
 	},
 	//任务
 	道具: {

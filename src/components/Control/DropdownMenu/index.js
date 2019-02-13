@@ -70,18 +70,13 @@ class DropdownMenu extends Component {
 
       var currentTitles = this.props.data[this.state.activityIndex];
 
-      var heightStyle = {};
-      if (this.props.maxHeight && this.props.maxHeight < currentTitles.length * 44) {
-        heightStyle.height = this.props.maxHeight;
-      }
-
       return (
         <View style={{position: 'absolute', left: 0, right: 0, top: 40, bottom: 0}}>
     <TouchableOpacity onPress={() => this.openOrClosePanel(this.state.activityIndex)} activeOpacity={1} style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}>
     <View style={{opacity: 0.4, backgroundColor: 'black', flex: 1 }} />
     </TouchableOpacity>
 
-      <ScrollView style={[{position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: 'white'}, heightStyle]} >
+      <ScrollView style={[{position: 'absolute', top: 0, left: 0, right: 0, bottom:0,backgroundColor: 'white'}]} >
       {
         currentTitles.map((title, index) =>
         <TouchableOpacity key={index} activeOpacity={1} style={{flex: 1, height: 44}} onPress={this.itemOnPress.bind(this, index)} >
@@ -90,6 +85,7 @@ class DropdownMenu extends Component {
       </TouchableOpacity>
       )
       }
+      <View style={{flex: 1, height: 44,justifyContent: 'center' }}><Text style={{fontSize: 14,color:'#999',textAlign: 'center'}}>--end--</Text></View>
     </ScrollView>
       </View>
     );
@@ -243,7 +239,6 @@ DropdownMenu.propTypes = {
   bannerAction: PropTypes.func,
   optionTextStyle: PropTypes.object,
   titleStyle: PropTypes.object,
-  maxHeight: PropTypes.number
 }
 
 const styles = StyleSheet.create({

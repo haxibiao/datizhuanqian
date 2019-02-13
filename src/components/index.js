@@ -20,6 +20,7 @@ import LoginInput from './Control/LoginInput';
 import Select from './Control/Select';
 import DropdownMenu from './Control/DropdownMenu';
 import CustomTextInput from './Control/CustomTextInput';
+import AnimationButton from './Control/AnimationButton';
 
 import Header from './Header/Header';
 import TabBarHeader from './Header/TabBarHeader';
@@ -84,6 +85,7 @@ export {
 	Select,
 	DropdownMenu,
 	CustomTextInput,
+	AnimationButton,
 	//
 	Header,
 	TabBarHeader,

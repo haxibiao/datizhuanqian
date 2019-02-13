@@ -57,3 +57,29 @@ query UserTaskQuery($id: Int) {
 		screenshots
 	}
 }
+
+# 用户出题
+mutation createQuestionMutation($data:CreateQuestionInputType){
+  createQuestion(data:$data){
+    id
+    description
+    answer
+    selections
+  }
+}
+
+# 出题记录
+query mySubmitQuestionHistoryQuery($offset:Int,$limit:Int){
+  user{
+    questions(offset:$offset,limit:$limit){
+      id
+      subject
+      count
+      created_at
+      category {
+        name
+        id
+      }
+    }
+  }
+}
