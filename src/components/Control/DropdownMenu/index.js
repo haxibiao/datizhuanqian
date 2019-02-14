@@ -15,7 +15,7 @@ class DropdownMenu extends Component {
 
     var selectIndex = new Array(this.props.data.length);
     for (var i = 0; i < selectIndex.length; i++) {
-      selectIndex[i] = 0;
+      selectIndex[i] = -1;
     }
     this.state = {
       activityIndex: -1,
@@ -209,7 +209,7 @@ class DropdownMenu extends Component {
                         :
                         (this.props.tintColor ? this.props.tintColor : this.defaultConfig.tintColor)}
                   ]} >
-                    {rows[this.state.selectIndex[index]]}
+                    {rows[this.state.selectIndex[index]]?rows[this.state.selectIndex[index]]:this.props.lables?this.props.lables[index]:rows[0]}
                   </Text>
                   {this.renderDropDownArrow(index)}
                 </View>

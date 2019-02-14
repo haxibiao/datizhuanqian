@@ -52,7 +52,7 @@ class AnimationButton extends Component<Props,State> {
 
 	onError = (error)=> {
 		if(this.props.onError instanceof Function){
-			this.props.onError();
+			this.props.onError(error);
 		}else {
 			Methods.toast('哎呀，出问题啦');
 		}

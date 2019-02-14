@@ -132,7 +132,7 @@ class MakeQuestionScreen extends Component {
 					description,
 					image:picture,
 					selections,
-					answers
+					answers:[...answers]
 				}
 			}
 		}	
@@ -144,6 +144,7 @@ class MakeQuestionScreen extends Component {
 	};
 
 	onError = (error) => {
+		alert(error);
 		Methods.toast('提交失败',150);
 	};
 
@@ -167,14 +168,15 @@ class MakeQuestionScreen extends Component {
 								customStyle={styles.header}
 								headerRight={
 				      	          <AnimationButton
-				      	          		style={{width: 50,height: 25,backgroundColor: 'transparent'}}
+				      	          		style={styles.submitButton}
 				      	          		disabled={!variables}
 				      	          		mutation={createQuestionMutation} 
 				      	          		variables={variables}
 				      	          		onCompleted={this.onCompleted}
 				      	          		onError={this.onError}
 				      	          >
-				      	          	<Text style={{fontSize: 17}}>提交</Text>
+				      	          	<Iconfont name='book2' color='#212121' size={17} style={{marginRight: 4}}/>
+				      	          	<Text style={{fontSize: 17,color:'#212121'}}>提交</Text>
 				      	          </AnimationButton>
 							}
 							/>
@@ -182,6 +184,7 @@ class MakeQuestionScreen extends Component {
 								<DropdownMenu
 								  dropStyle={{paddingHorizontal: 15}}
 						          dropItemStyle={{alignItems: 'flex-end'}}
+						          lables={['请选择题库']}
 						          lable={<Text style={styles.lableText}>题目分类</Text>}
 						          bgColor={'white'}
 						          tintColor={'#666666'}
@@ -268,6 +271,13 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.theme,
 		borderBottomWidth: 0,
 		borderBottomColor: 'transparent'
+	},
+	submitButton:{
+		width: 60,
+		height: 25,
+		backgroundColor: 'transparent',
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	lableText: {
 		fontSize: 14,

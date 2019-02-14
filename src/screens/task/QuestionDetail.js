@@ -15,7 +15,7 @@ class QuestionDetail extends Component {
 
   render() {
   	let { navigation } = this.props;
-	let { description, image, selections, category, answer=[] } = navigation.getParam('question',{});
+	let { description, image, selections, category, answer } = navigation.getParam('question',{});
 	selections = selections.replace(/\\/g, '');
 	let options = [];
 	try {
@@ -56,7 +56,7 @@ class QuestionDetail extends Component {
 	  				<View style={styles.options}>
 	  					{options.map((option, index) => {
 	  						return (
-								<OptionItem key={index} style={{paddingVertical: 12}} option={option} isAnswer={answer.includes(option.Value)}></OptionItem>
+								<OptionItem key={index} style={{paddingVertical: 12}} option={option} isAnswer={answer&&answer.includes(option.Value)}></OptionItem>
 	  						);
 	  					})}
 	  				</View>
