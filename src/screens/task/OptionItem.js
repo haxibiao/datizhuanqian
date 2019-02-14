@@ -22,8 +22,8 @@ class OptionItem extends Component {
 		if(!reduceAnswer || !remove){
 			return (
 				<View style={[styles.optionItem,style]} >
-					<View style={[styles.optionLabel,{borderColor: isAnswer ? Colors.theme: Colors.tintGray}]}>
-						<Text style={[styles.optionLabelText,{color:isAnswer ? Colors.theme: Colors.tintGray}]}>{option.Value}</Text>
+					<View style={[styles.optionLabel,isAnswer&&{backgroundColor: '#68afff',borderWidth:0}]}>
+						<Text style={[styles.optionLabelText,isAnswer&&{color:'#fff'}]}>{option.Value}</Text>
 					</View>
 					<View style={styles.optionContent}>
 						<Text style={styles.optionContentText}>{option.Text}</Text>
@@ -33,8 +33,8 @@ class OptionItem extends Component {
 		}
 		return (
 			<TouchableOpacity style={[styles.optionItem,style]} onPress={() => reduceAnswer(option)}>
-				<View style={[styles.optionLabel,{borderColor: isAnswer ? Colors.theme: Colors.tintGray}]}>
-					<Text style={[styles.optionLabelText,{color:isAnswer ? Colors.theme: Colors.tintGray}]}>{option.Value}</Text>
+				<View style={[styles.optionLabel,isAnswer&&{backgroundColor: '#68afff',borderWidth:0}]}>
+					<Text style={[styles.optionLabelText,isAnswer&&{color:'#fff'}]}>{option.Value}</Text>
 				</View>
 				<View style={styles.optionContent}>
 					<Text style={styles.optionContentText}>{option.Text}</Text>
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
 		height: 36,
 		borderRadius: 18,
 		borderWidth: 2,
-		borderColor: Colors.blue,
+		borderColor: '#68afff',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	optionLabelText:{
 		fontSize: 17,
 		fontWeight: '500',
-		color: Colors.blue
+		color: '#68afff'
 	},
 	optionContent:{
 		flex:1,

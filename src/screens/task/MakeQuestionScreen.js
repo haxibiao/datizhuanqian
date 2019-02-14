@@ -29,7 +29,6 @@ class MakeQuestionScreen extends Component {
 		this.categories = [];
 		this.dropData = null;
 		this.state = {
-			submiting:false,
 			category_id:null,
 			description:null,
 			picture:null,
@@ -37,6 +36,14 @@ class MakeQuestionScreen extends Component {
 			answers:new Set(),
 			options:new Map()
 		};
+	}
+
+	onOptionInputFocus = ()=> {
+		this._ScrollView.scrollTo({
+			x: 0,
+			y: 300,
+			animated: true
+		});
 	}
 
 	buildDropData = (data)=> {
@@ -131,27 +138,21 @@ class MakeQuestionScreen extends Component {
 		}	
 	}
 
-	createQuestion = (createQuestion)=> {
-		this.setState({submiting:true});
-		createQuestion();
-	}
-
 	onCompleted = () => {
-		Methods.toast('提交成功');
-		this.setState({submiting:false});
+		Methods.toast('提交成功',150);
 		this.props.navigation.goBack();
 	};
 
-	onError = () => {
-		Methods.toast('提交失败,请检查操作是否有误');
-		this.setState({submiting:false});
+	onError = (error) => {
+		Methods.toast('提交失败',150);
 	};
 
 	render() {
 		let { navigation, user, login } = this.props;
-		let { submiting, category_id, description, picture, options, optionValue, answers } = this.state;
+		let { category_id, description, picture, options, optionValue, answers } = this.state;
 		let disableAddButton = options.size>=4 || !optionValue;
 		let variables = this.buildVariables();
+		console.log('variables',variables);
 		return (
 			<Query query={CategoriesQuery} variables={{ limit: 100 }}>
 				{({ data, loading, error }) => {
@@ -165,20 +166,16 @@ class MakeQuestionScreen extends Component {
 							<Header
 								customStyle={styles.header}
 								headerRight={
-									<Mutation
-										mutation={createQuestionMutation} 
-										variables={variables}
-										onCompleted={this.onCompleted}
-										onError={this.onError}
-									>
-										{mutate=>{
-											return (
-												<TouchableOpacity onPress={()=>this.createQuestion(mutate)} disabled={submiting||!variables}>
-													<Text style={{fontSize: 16}}>提交</Text>
-												</TouchableOpacity>
-											)
-										}}
-									</Mutation>
+				      	          <AnimationButton
+				      	          		style={{width: 50,height: 25,backgroundColor: 'transparent'}}
+				      	          		disabled={!variables}
+				      	          		mutation={createQuestionMutation} 
+				      	          		variables={variables}
+				      	          		onCompleted={this.onCompleted}
+				      	          		onError={this.onError}
+				      	          >
+				      	          	<Text style={{fontSize: 17}}>提交</Text>
+				      	          </AnimationButton>
 							}
 							/>
 							<View style={styles.container}>
@@ -197,12 +194,12 @@ class MakeQuestionScreen extends Component {
 						          handler={(selection, row) => this.dropHandler(this.dropData[selection][row])}
 						          data={this.dropData}
 						        >
-						          <ScrollView keyboardDismissMode={'none'} style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom: HOME_INDICATOR+50}} >
+						          <ScrollView keyboardDismissMode={'none'} style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom: HOME_INDICATOR+50}} ref={ref=>this._ScrollView=ref}>
 						          	<DivisionLine />
 						          	<View style={{marginBottom: 15}}>
 						          	  <CustomTextInput 
 						          	  		style={styles.questionInput}
-						          	  		onChangeText={text => this.setState({ description: text })}
+						          	  		onChangeText={text => this.setState({ description: text.trim() })}
 						          	  		multiline
 						          	  		maxLength={300}
 						          	  		textAlignVertical="top"
@@ -234,6 +231,7 @@ class MakeQuestionScreen extends Component {
 							          		})}
 							          	</View>
 						          	</View>
+						          	{!Divice.isIos&&<KeyboardSpacer topSpacing={-HOME_INDICATOR}/>}
 						          </ScrollView>
 				                  <View style={styles.bottom}>
               				          <View style={styles.inputContainer}>
@@ -241,8 +239,9 @@ class MakeQuestionScreen extends Component {
               				          		style={styles.optionInput}
               				          		maxLength={80}
               				          		value={optionValue}
-              				          	  	onChangeText={text => this.setState({ optionValue: text })}
+              				          	  	onChangeText={text => this.setState({ optionValue: text.trim() })}
               				          		placeholder="请添加答案选项(2~4个)"
+              				          		onFocus={this.onOptionInputFocus}
               				          	/>
               				          	<TouchableOpacity disabled={disableAddButton} style={[styles.button,!disableAddButton&&{backgroundColor: '#68afff'}]} onPress={this.addOption}>
               				          		<Text style={styles.addText}>添 加</Text>
