@@ -39,6 +39,7 @@ import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
 import ImageViewModal from './Modal/ImageViewModal';
 import FeedbackCommentModal from './Modal/FeedbackCommentModal';
+import LoginWaiting from './Modal/LoginWaiting';
 
 import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
 import ProfileNotLogin from './StatusView/ProfileNotLogin';
@@ -105,6 +106,7 @@ export {
 	WithdrawsTipsModal,
 	ImageViewModal,
 	FeedbackCommentModal,
+	LoginWaiting,
 	//
 	WithdrawsNotLogin,
 	ProfileNotLogin,
