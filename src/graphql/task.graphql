@@ -73,13 +73,21 @@ query mySubmitQuestionHistoryQuery($offset:Int,$limit:Int){
   user{
     questions(offset:$offset,limit:$limit){
       id
-      subject
+      description
       count
       created_at
       category {
         name
         id
       }
+      image {
+	    id
+	    path
+	    width
+	    height
+	  }
+      answer
+      selections
     }
   }
 }

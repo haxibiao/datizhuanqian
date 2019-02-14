@@ -70,6 +70,14 @@ class HomeScreen extends Component {
 							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
 						/>
 						<ProfileItem
+							name={'我的提问'}
+							icon={'task3'}
+							IconStyle={{ paddingBottom: 3 }}
+							size={18}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('出题记录') : navigation.navigate('登录注册'))}
+						/>
+						<ProfileItem
 							name={'通知消息'}
 							icon={'message'}
 							IconStyle={{ paddingBottom: 3 }}

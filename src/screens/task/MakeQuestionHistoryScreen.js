@@ -3,17 +3,43 @@
 * created by wyk made in 2019-02-13 10:33:52
 */
 import React, { Component } from 'react';
-import { StyleSheet, Platform,View, FlatList, Image, Text, TouchableOpacity, Keyboard,RefreshControl } from 'react-native';
-import { DivisionLine, Header, Screen, CustomTextInput, DropdownMenu,ImagePickerView,Iconfont,LoadingError,
-Loading,
-BlankContent,
-LoadingMore,
-ContentEnd } from '../../components';
+import { StyleSheet, Platform,View, FlatList, Image, Text, TouchableOpacity,TouchableWithoutFeedback,RefreshControl } from 'react-native';
+import { DivisionLine, Header, Screen,Iconfont,LoadingError,Loading,BlankContent,LoadingMore,ContentEnd } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { mySubmitQuestionHistoryQuery } from '../../graphql/task.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
+
+class QuestionItem  extends Component {
+	static defaultProps = {
+	  question: {}
+	}
+
+	render() {
+		let { question,navigation }  = this.props;
+		let {category,image,description,created_at,count} = question;
+		console.log('image',image);
+		return (
+			<TouchableWithoutFeedback onPress={()=>navigation.navigate('题目详情',{question})}>
+				<View style={styles.questionItem}>
+					<View style={{flexDirection: 'row' }}>
+						<Text style={styles.categoryLabel}>{category.name}</Text>
+					</View>
+					<View style={{flexDirection: 'row',alignItems: 'center',marginVertical: 10}}>
+						<View style={{ flex: 1}}>
+							<Text style={styles.subjectText} numberOfLines={3}>{description}</Text>
+						</View>
+						{
+							image&&<Image source={{uri:image.path}} style={styles.image} />
+						}
+					</View>
+					<View style={styles.meta}><Text style={styles.metaText}>{created_at}</Text><Text style={styles.metaText}>{'  共'+count+'人答过'}</Text></View>			
+				</View>
+			</TouchableWithoutFeedback>
+		)
+	}
+}
 
 class MakeQuestionHistoryScreen extends Component {
 	constructor(props) {
@@ -21,19 +47,6 @@ class MakeQuestionHistoryScreen extends Component {
 		this.state = {
 			fetchingMore:true
 		};
-	}
-
-	renderQuestionItem = ({ item, index })=> {
-		let {category,subject,created_at,count} = item;
-		return (
-			<View style={styles.questionItem}>
-				<View style={{flexDirection: 'row' }}>
-					<Text style={styles.categoryLabel}>{category.name}</Text>
-				</View>
-				<Text style={styles.subjectText} numberOfLines={3}>{subject}</Text>
-				<View style={styles.meta}><Text style={styles.metaText}>{created_at}</Text><Text style={styles.metaText}>{'  共'+count+'人答过'}</Text></View>			
-			</View>
-		)
 	}
 
 	render() {
@@ -59,7 +72,7 @@ class MakeQuestionHistoryScreen extends Component {
 								<FlatList
 									data={data.user.questions}
 									keyExtractor={(item, index) => index.toString()}
-									renderItem={this.renderQuestionItem}
+									renderItem={({item,index})=><QuestionItem question={item} navigation={navigation}/>}
 									refreshControl={
 										<RefreshControl
 											refreshing={loading}
@@ -139,10 +152,16 @@ const styles = StyleSheet.create({
 		borderColor: Colors.theme,
 	},
 	subjectText:{
-		marginVertical: 10,
 		fontSize: 16,
 		lineHeight: 20,
 		color: Colors.primaryFont
+	},
+	image:{
+		width: 60,
+		height: 60,
+		borderRadius: 5,
+		resizeMode: 'cover',
+		marginLeft: 12
 	},
 	meta:{
 		flexDirection: 'row', 

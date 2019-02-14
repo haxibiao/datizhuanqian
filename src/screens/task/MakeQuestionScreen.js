@@ -3,8 +3,8 @@
 * created by wyk made in 2019-02-12 10:29:25
 */
 import React, { Component } from 'react';
-import { StyleSheet, Platform,View, ScrollView, Image, Text, TouchableOpacity, Keyboard,Animated } from 'react-native';
-import { DivisionLine, Header, Screen, LoadingError,CustomTextInput, DropdownMenu,ImagePickerView,Iconfont,AnimationButton } from '../../components';
+import { StyleSheet, TouchableWithoutFeedback,View, ScrollView, Image, Text, TouchableOpacity, Keyboard,Animated } from 'react-native';
+import { DivisionLine, Header, Screen, LoadingError,CustomTextInput, DropdownMenu,Iconfont,AnimationButton } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
@@ -12,60 +12,35 @@ import actions from '../../store/actions';
 import { createQuestionMutation } from '../../graphql/task.graphql';
 import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
-
-import TaskType from './TaskType';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+import ImagePicker from 'react-native-image-crop-picker';
+
+import OptionItem from './OptionItem';
 
 let HOME_INDICATOR = 0;
 if(Divice.isIos&&Divice.height>=Divice.width*2){
 	HOME_INDICATOR = 30;
 }
-
 const ANSWERS = ['A','B','C','D'];
-
-class ChooseItem extends Component {
-
-	render() {
-		const { option,isAnswer,reduceAnswer,remove } = this.props;
-		return (
-			<TouchableOpacity style={styles.option} onPress={() => reduceAnswer(option)}>
-				<View style={[styles.chooseLabel,{borderColor: isAnswer ? Colors.theme: Colors.tintGray}]}>
-					<Text style={[styles.chooseLabelText,{color:isAnswer ? Colors.theme: Colors.tintGray}]}>{option.Value}</Text>
-				</View>
-				<View style={styles.optionContent}>
-					<Text style={styles.optionContentText}>{option.Text}</Text>
-				</View>
-				<TouchableOpacity style={{marginTop: 8}} onPress={()=>remove(option)}>
-					<Iconfont name='close' size={16} color={"#696482"}/>
-				</TouchableOpacity>
-			</TouchableOpacity>
-		);
-	}
-}
 
 class MakeQuestionScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.categories = [];
 		this.dropData = null;
 		this.state = {
+			submiting:false,
 			category_id:null,
 			description:null,
-			pictures:[],
+			picture:null,
 			optionValue:null,
 			answers:new Set(),
 			options:new Map()
 		};
 	}
 
-	onChooseInputFocus = ()=> {
-		this._ScrollView.scrollTo({
-			x: 0,
-			y: 300,
-			animated: true
-		});
-	}
-
 	buildDropData = (data)=> {
+		this.categories = data;
 		data = data.map((elem, index)=> {
 			return elem.name
 		});
@@ -115,8 +90,7 @@ class MakeQuestionScreen extends Component {
 	}
 
 	dropHandler = (name)=> {
-		const {data: { loading, error, categories, refetch, fetchMore }} = this.props;
-		categories.some((elem, i)=> {
+		this.categories.some((elem, i)=> {
 			if(elem.name===name){
 				this.setState({category_id: elem.id});
 				return true;
@@ -124,18 +98,32 @@ class MakeQuestionScreen extends Component {
 		});
 	}
 
+	imagePicke = () => {
+		ImagePicker.openPicker({
+			mediaType: 'photo',
+			includeBase64: true
+		})
+			.then(image => {
+				image=`data:${image.mime};base64,${image.data}`;
+				this.setState({picture:image})
+			})
+			.catch(error => {
+			});
+	};
+
 	buildVariables = ()=> {
-		let { category_id, description, pictures, options, answers } = this.state;
+		let { category_id, description,picture, options, answers } = this.state;
 		let selections = [...options].map((option,index) => {
 			if(option){
 				return {Value:ANSWERS[index],Text:option[0]}
 			}
 		})
-		if(category_id&&description&&selections.length>0&&answers.size>0){
+		if(category_id&&description&&selections.length>1&&answers.size>0){
 			return {
 				data:{
 					category_id,
 					description,
+					image:picture,
 					selections,
 					answers
 				}
@@ -143,18 +131,25 @@ class MakeQuestionScreen extends Component {
 		}	
 	}
 
+	createQuestion = (createQuestion)=> {
+		this.setState({submiting:true});
+		createQuestion();
+	}
+
 	onCompleted = () => {
 		Methods.toast('提交成功');
+		this.setState({submiting:false});
 		this.props.navigation.goBack();
 	};
 
 	onError = () => {
 		Methods.toast('提交失败,请检查操作是否有误');
+		this.setState({submiting:false});
 	};
 
 	render() {
 		let { navigation, user, login } = this.props;
-		let { category_id, description, pictures, options, optionValue, answers } = this.state;
+		let { submiting, category_id, description, picture, options, optionValue, answers } = this.state;
 		let disableAddButton = options.size>=4 || !optionValue;
 		let variables = this.buildVariables();
 		return (
@@ -170,9 +165,20 @@ class MakeQuestionScreen extends Component {
 							<Header
 								customStyle={styles.header}
 								headerRight={
-									<TouchableOpacity onPress={()=>navigation.navigate('出题记录')}>
-										<Text>出题记录</Text>
-									</TouchableOpacity>
+									<Mutation
+										mutation={createQuestionMutation} 
+										variables={variables}
+										onCompleted={this.onCompleted}
+										onError={this.onError}
+									>
+										{mutate=>{
+											return (
+												<TouchableOpacity onPress={()=>this.createQuestion(mutate)} disabled={submiting||!variables}>
+													<Text style={{fontSize: 16}}>提交</Text>
+												</TouchableOpacity>
+											)
+										}}
+									</Mutation>
 							}
 							/>
 							<View style={styles.container}>
@@ -191,7 +197,7 @@ class MakeQuestionScreen extends Component {
 						          handler={(selection, row) => this.dropHandler(this.dropData[selection][row])}
 						          data={this.dropData}
 						        >
-						          <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom: HOME_INDICATOR+50}} ref={ref=>this._ScrollView=ref}>
+						          <ScrollView keyboardDismissMode={'none'} style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom: HOME_INDICATOR+50}} >
 						          	<DivisionLine />
 						          	<View style={{marginBottom: 15}}>
 						          	  <CustomTextInput 
@@ -202,29 +208,17 @@ class MakeQuestionScreen extends Component {
 						          	  		textAlignVertical="top"
 						          	  		placeholder="请添加问题描述"
 						          	  />
-				      	              <View style={{marginLeft: -10,marginTop: 10}}>
-				      	  	          	<ImagePickerView
-				      	  	          		onResponse={images => {
-				      	  	          			this.setState({ pictures: images });
-				      	  	          		}}
-				      	  	          	/>
+				      	              <View style={{marginTop: 10,marginLeft: 15}}>
+				      	              	{
+					      	              	picture?<TouchableWithoutFeedback onPress={this.imagePicke}>
+					      	              		<Image source={{ uri: picture }} style={styles.addImage} />
+					      	              	</TouchableWithoutFeedback>:
+					      	  	          	<TouchableOpacity style={styles.addImage} onPress={this.imagePicke}>
+					      	  	          		<Iconfont name={'add'} size={26} color='#fff' />
+					      	  	          	</TouchableOpacity>
+				      	              	}
 				      	              </View>
 						          	</View>
-						          	<DivisionLine />
-			      		          	<View style={styles.chooseInputContainer}>
-				      		          	<CustomTextInput 
-				      		          		style={styles.chooseInput}
-				      		          		multiline
-				      		          		maxLength={80}
-				      		          		value={optionValue}
-				      		          	  	onChangeText={text => this.setState({ optionValue: text })}
-				      		          		placeholder="请添加(2~4个)答案选项"
-				      		          		onFocus={this.onChooseInputFocus}
-				      		          	/>
-				      		          	<TouchableOpacity disabled={disableAddButton} style={[styles.button,!disableAddButton&&{backgroundColor: Colors.blue}]} onPress={this.addOption}>
-				      		          		<Text style={styles.addText}>添加选项</Text>
-				      		          	</TouchableOpacity>
-			      		          	</View>
 						          	<DivisionLine />
 						          	<View style={styles.answer}>
 						          		<View style={styles.answers}>
@@ -236,24 +230,26 @@ class MakeQuestionScreen extends Component {
 						          	<View>
 							          	<View style={styles.options}>
 							          		{[...options].map((option,index) => {
-							          			return <ChooseItem key={index} option={{Value:ANSWERS[index],Text:option[0]}}  isAnswer={option[1]} reduceAnswer={this.reduceAnswer} remove={this.removeOption}></ChooseItem>
+							          			return (<OptionItem key={index} style={{padding: 12}} option={{Value:ANSWERS[index],Text:option[0]}}  isAnswer={option[1]} reduceAnswer={this.reduceAnswer} remove={this.removeOption}></OptionItem>)
 							          		})}
 							          	</View>
 						          	</View>
 						          </ScrollView>
-				                  <View style={styles.submitButtonWrap}>
-					      	          <AnimationButton
-					      	          		style={styles.submitButton}
-					      	          		disabled={!variables}
-					      	          		mutation={createQuestionMutation} 
-					      	          		variables={variables}
-					      	          		onCompleted={this.onCompleted}
-					      	          		onError={this.onError}
-					      	          >
-					      	          	<Text style={styles.submitText}>创建题目</Text>
-					      	          </AnimationButton>
-				                  </View>
-						          <KeyboardSpacer topSpacing={HOME_INDICATOR>0?-20:0}/>
+				                  <View style={styles.bottom}>
+              				          <View style={styles.inputContainer}>
+              				          	<CustomTextInput 
+              				          		style={styles.optionInput}
+              				          		maxLength={80}
+              				          		value={optionValue}
+              				          	  	onChangeText={text => this.setState({ optionValue: text })}
+              				          		placeholder="请添加答案选项(2~4个)"
+              				          	/>
+              				          	<TouchableOpacity disabled={disableAddButton} style={[styles.button,!disableAddButton&&{backgroundColor: '#68afff'}]} onPress={this.addOption}>
+              				          		<Text style={styles.addText}>添 加</Text>
+              				          	</TouchableOpacity>
+              				          </View>
+              			          </View>
+						          {Divice.isIos&&<KeyboardSpacer topSpacing={-HOME_INDICATOR}/>}
 						        </DropdownMenu>
 							</View>
 						</Screen>
@@ -287,6 +283,14 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		backgroundColor: '#fff'
 	},
+	addImage: {
+		width: 80,
+		height: 80,
+		borderRadius: 3,
+		backgroundColor: '#f0f0f0',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	answer:{
 		padding: 15,
 	},
@@ -306,70 +310,24 @@ const styles = StyleSheet.create({
 	options: {
 		paddingHorizontal: 10
 	},
-	option:{
-		flexDirection: 'row',
-		padding: 12,
+	bottom:{
+		paddingBottom: HOME_INDICATOR,
+		backgroundColor: '#f7f7f7',
 	},
-	chooseLabel:{
-		marginRight: 15,
-		width: 36,
-		height: 36,
-		borderRadius: 18,
-		borderWidth: 2,
-		borderColor: Colors.blue,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	chooseLabelText:{
-		fontSize: 17,
-		fontWeight: '500',
-		color: Colors.blue
-	},
-	optionContent:{
-		flex:1,
-		minHeight: 36,
-		justifyContent: 'center'
-	},
-	optionContentText: {
-		fontSize: 16,
-		lineHeight: 18,
-		color: Colors.tintFont
-	},
-	submitButtonWrap:{
-		flexDirection: 'row', 
-		marginHorizontal: 15,
-		paddingTop: 10,
-		paddingBottom: HOME_INDICATOR||10,
-	},
-	submitButton:{
-		height:42,
-		borderRadius: 6,
-		backgroundColor: Colors.theme
-	},
-	submitText:{
-		fontSize: 16,
-		color:'#fff'
-	},
-	chooseInputContainer:{ 
-		height: 120,
+	inputContainer:{ 
+		height: 50,
 		flexDirection: 'row',
 		alignItems: 'center',
-		padding: 15 
+		paddingHorizontal: 15 
 	},
-	chooseInput:{
+	optionInput:{
 		flex: 1,
 		alignSelf: 'stretch',
 		justifyContent: 'center',
-		fontSize: 15,
-		lineHeight: 19,
 		marginRight: 15,
-		paddingBottom: 15
 	},
 	button:{
-		position: 'absolute',
-		bottom: 10,
-		right: 15,
-		width: 70,
+		width: 50,
 		height: 30,
 		borderRadius: 5,
 		backgroundColor: '#A0A0A0',

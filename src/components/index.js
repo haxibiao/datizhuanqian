@@ -59,6 +59,7 @@ import Waiting from './Universal/Waiting';
 import ImagePickerView from './Universal/ImagePickerView';
 import UserTitle from './Universal/UserTitle';
 import RedDot from './Universal/RedDot';
+import UploadingImage from './Universal/UploadingImage';
 
 import { Iconfont } from './utils/Fonts';
 
@@ -124,6 +125,7 @@ export {
 	ImagePickerView,
 	UserTitle,
 	RedDot,
+	UploadingImage,
 	//
 	Iconfont
 };
