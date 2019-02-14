@@ -38,7 +38,7 @@ class QuestionDetail extends Component {
 	  			<View>
 	  				<View style={{justifyContent: 'center',paddingHorizontal: 20}}>
 	  					<View style={{marginVertical: 20}}>
-	  						<Text style={styles.description}>{description}</Text>
+	  						<Text style={styles.description}><Text style={styles.subject}>{'题目:  '}</Text>{description}</Text>
 	  					</View>
 		  				{image && (
 		  					<Image
@@ -68,6 +68,12 @@ class QuestionDetail extends Component {
 }
 
 const styles = StyleSheet.create({
+	subject:{
+		color: '#68afff',
+		fontSize: 18,
+		lineHeight: 22,
+		fontWeight: '500'
+	},
 	description: {
 		color: Colors.primaryFont,
 		fontSize: 16,

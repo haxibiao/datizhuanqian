@@ -94,12 +94,12 @@ class MakeQuestionHistoryScreen extends Component {
 														});
 														return prev;
 													}
-													return {
-														user:{
-															...prev.user.questions,
-															...fetchMoreResult.user.questions
-														}
-													}
+													return Object.assign({}, prev, {
+														user: Object.assign({}, prev.user, {
+															questions: [...prev.user.questions, ...fetchMoreResult.user.questions]
+														})
+													});
+
 												}
 											});
 										} else {
