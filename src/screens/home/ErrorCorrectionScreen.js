@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, TextInput } from 'react-native';
-import { Button, Radio, Screen, Input } from '../../components';
+import {
+	StyleSheet,
+	View,
+	TouchableOpacity,
+	Text,
+	FlatList,
+	Image,
+	TextInput,
+	ScrollView,
+	Keyboard
+} from 'react-native';
+import { Button, Radio, Screen, Input, Header } from '../../components';
 
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -13,11 +23,31 @@ class ErrorCorrectionScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.onCheck = this.onCheck.bind(this);
+		this.keyboardDidShowListener = null;
+		this.keyboardDidHideListener = null;
 		this.state = {
 			color: Colors.theme,
 			content: '',
-			type: 1
+			type: 1,
+			inputHeight: 220
 		};
+	}
+
+	componentWillMount() {
+		//监听键盘弹出事件
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShowHandler.bind(this));
+		//监听键盘隐藏事件
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHideHandler.bind(this));
+	}
+
+	keyboardDidShowHandler(event) {
+		this.setState({ inputHeight: 140 });
+		console.log(event.endCoordinates.height);
+	}
+
+	//键盘隐藏事件响应
+	keyboardDidHideHandler(event) {
+		this.setState({ inputHeight: 220 });
 	}
 
 	submitError = async () => {
@@ -50,7 +80,7 @@ class ErrorCorrectionScreen extends Component {
 		let { content, type } = this.state;
 		return (
 			<Screen>
-				<View style={styles.container}>
+				<ScrollView style={styles.container} ref={ref => (this.ScrollTo = ref)}>
 					<View style={styles.header}>
 						<Text style={styles.type}>错误类型</Text>
 						<View style={styles.radios}>
@@ -72,31 +102,30 @@ class ErrorCorrectionScreen extends Component {
 							</View>
 						</View>
 					</View>
+					<View style={{ flex: 1, marginBottom: 20 }}>
+						<Input
+							viewStyle={{
+								paddingHorizontal: 15,
+								paddingVertical: 10,
+								backgroundColor: Colors.white,
+								marginTop: 15
+							}}
+							customStyle={[styles.input, { minHeight: this.state.inputHeight, height: null }]}
+							placeholder={'您的耐心指点,是我们前进的动力！'}
+							multiline
+							underline
+							maxLength={200}
+							textAlignVertical={'top'}
+							changeValue={value => {
+								this.setState({
+									content: value
+								});
+							}}
+						/>
 
-					<Input
-						viewStyle={{
-							paddingHorizontal: 15,
-							paddingVertical: 10,
-							backgroundColor: Colors.white,
-							marginTop: 15
-						}}
-						customStyle={styles.input}
-						placeholder={'您的耐心指点,是我们前进的动力！'}
-						multiline
-						underline
-						maxLength={200}
-						textAlignVertical={'top'}
-						changeValue={value => {
-							this.setState({
-								content: value
-							});
-						}}
-					/>
-
-					<View style={{ marginTop: 40, marginBottom: 20 }}>
 						<Button
 							name={'提交'}
-							style={{ height: 42, marginHorizontal: 20, marginBottom: 20 }}
+							style={{ height: 42, marginHorizontal: 20, marginTop: 15 }}
 							theme={Colors.theme}
 							textColor={content ? Colors.white : Colors.grey}
 							disabled={!content}
@@ -105,7 +134,7 @@ class ErrorCorrectionScreen extends Component {
 							handler={this.submitError}
 						/>
 					</View>
-				</View>
+				</ScrollView>
 			</Screen>
 		);
 	}
@@ -147,7 +176,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		fontSize: 15,
 		padding: 0,
-		height: 220,
 		justifyContent: 'flex-start'
 		// marginTop:10,
 	}

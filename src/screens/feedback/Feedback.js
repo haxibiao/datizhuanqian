@@ -91,7 +91,7 @@ class Feedback extends Component {
 
 		return (
 			<Screen header tabLabel="意见反馈">
-				<View style={styles.container}>
+				<ScrollView style={styles.container}>
 					<DivisionLine height={5} />
 					<View style={styles.main}>
 						<Input
@@ -124,7 +124,7 @@ class Feedback extends Component {
 						disabled={!content}
 						disabledColor={Colors.tintGray}
 					/>
-				</View>
+				</ScrollView>
 				<Waiting isVisible={waitingVisible} />
 			</Screen>
 		);

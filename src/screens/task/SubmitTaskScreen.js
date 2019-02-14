@@ -129,7 +129,7 @@ class SubmitTaskScreen extends Component {
 		const { navigation } = this.props;
 		return (
 			<Screen>
-				<View style={styles.container}>
+				<ScrollView style={styles.container}>
 					<DivisionLine height={5} />
 					<View style={styles.header}>
 						<View style={styles.headerLeft} />
@@ -191,7 +191,7 @@ class SubmitTaskScreen extends Component {
 						handler={this.startUploadImage}
 						//提交的时候再上传图片
 					/>
-				</View>
+				</ScrollView>
 				<Waiting isVisible={waitingVisible} />
 			</Screen>
 		);

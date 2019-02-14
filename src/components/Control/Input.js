@@ -17,7 +17,8 @@ class Input extends Component {
 			multiline,
 			underline,
 			textAlignVertical,
-			autoFocus
+			autoFocus,
+			onFocus
 		} = this.props;
 		return (
 			<View
@@ -44,6 +45,7 @@ class Input extends Component {
 					placeholderText={Colors.tintFont}
 					selectionColor={Colors.grey}
 					autoFocus={autoFocus}
+					onFocus={onFocus}
 					style={[styles.textInput, customStyle]}
 					onChangeText={value => {
 						changeValue(value);

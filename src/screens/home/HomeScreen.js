@@ -45,9 +45,8 @@ class HomeScreen extends Component {
 
 	componentDidMount() {
 		const { navigation, login, isUpdate, client, dispatch, user } = this.props;
-
 		let { query } = client;
-		let promises = [query({ query: CategoriesQuery }), query({ query: UserQuery, variables: { id: user.id } })];
+		let promises = [query({ query: CategoriesQuery })];
 		Promise.all(promises)
 			.then(loaded => {
 				SplashScreen.hide();
