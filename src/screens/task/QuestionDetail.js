@@ -34,7 +34,7 @@ class QuestionDetail extends Component {
 	  				borderBottomColor: 'transparent'
 	  			}}
 	  		/>
-	  		<View style={styles.container}>
+	  		<ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom:Divice.bottom_height }}>
 	  			<View>
 	  				<View style={{justifyContent: 'center',paddingHorizontal: 20}}>
 	  					<View style={{marginVertical: 20}}>
@@ -61,7 +61,7 @@ class QuestionDetail extends Component {
 	  					})}
 	  				</View>
 	  			</View>
-	  		</View>
+	  		</ScrollView>
 	  	</Screen>
     );
   }

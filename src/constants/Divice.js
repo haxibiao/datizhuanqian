@@ -5,10 +5,10 @@ const { width, height } = Dimensions.get('window');
 
 const isIos = Platform.OS == 'ios';
 let STATUSBAR_HEIGHT = isIos ? 20 : StatusBar.currentHeight;
-let bottom_height = isIos ? 0 : 0;
+let bottom_height = 0;
 
 //适配iPhone X
-if (isIos && ((width === 375 && height === 812) || (height === 375 && width === 812))) {
+if (isIos && height>=width*2) {
 	STATUSBAR_HEIGHT = 35;
 	bottom_height = 20;
 }

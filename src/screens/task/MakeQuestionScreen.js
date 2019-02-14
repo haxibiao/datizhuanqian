@@ -17,10 +17,6 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 import OptionItem from './OptionItem';
 
-let HOME_INDICATOR = 0;
-if(Divice.isIos&&Divice.height>=Divice.width*2){
-	HOME_INDICATOR = 30;
-}
 const ANSWERS = ['A','B','C','D'];
 
 class MakeQuestionScreen extends Component {
@@ -197,7 +193,7 @@ class MakeQuestionScreen extends Component {
 						          handler={(selection, row) => this.dropHandler(this.dropData[selection][row])}
 						          data={this.dropData}
 						        >
-						          <ScrollView keyboardDismissMode={'none'} style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom: HOME_INDICATOR+50}} ref={ref=>this._ScrollView=ref}>
+						          <ScrollView keyboardDismissMode={'none'} style={styles.container} contentContainerStyle={{flexGrow: 1,paddingBottom: Divice.bottom_height+50}} ref={ref=>this._ScrollView=ref}>
 						          	<DivisionLine />
 						          	<View style={{marginBottom: 15}}>
 						          	  <CustomTextInput 
@@ -234,7 +230,7 @@ class MakeQuestionScreen extends Component {
 							          		})}
 							          	</View>
 						          	</View>
-						          	{!Divice.isIos&&<KeyboardSpacer topSpacing={-HOME_INDICATOR}/>}
+						          	{!Divice.isIos&&<KeyboardSpacer topSpacing={-Divice.bottom_height}/>}
 						          </ScrollView>
 				                  <View style={styles.bottom}>
               				          <View style={styles.inputContainer}>
@@ -251,7 +247,7 @@ class MakeQuestionScreen extends Component {
               				          	</TouchableOpacity>
               				          </View>
               			          </View>
-						          {Divice.isIos&&<KeyboardSpacer topSpacing={-HOME_INDICATOR}/>}
+						          {Divice.isIos&&<KeyboardSpacer topSpacing={-Divice.bottom_height}/>}
 						        </DropdownMenu>
 							</View>
 						</Screen>
@@ -320,7 +316,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10
 	},
 	bottom:{
-		paddingBottom: HOME_INDICATOR,
+		paddingBottom: Divice.bottom_height,
 		backgroundColor: '#f7f7f7',
 	},
 	inputContainer:{ 
