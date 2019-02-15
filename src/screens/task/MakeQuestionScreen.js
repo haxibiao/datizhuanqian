@@ -4,7 +4,7 @@
 */
 import React, { Component } from 'react';
 import { StyleSheet, TouchableWithoutFeedback,View, ScrollView, Image, Text, TouchableOpacity, Keyboard,Animated } from 'react-native';
-import { DivisionLine, Header, Screen, LoadingError,CustomTextInput, DropdownMenu,Iconfont,AnimationButton } from '../../components';
+import { DivisionLine, Header, Screen, LoadingError,CustomTextInput, DropdownMenu,Iconfont,AnimationButton,OptionItem } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
@@ -14,8 +14,6 @@ import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ImagePicker from 'react-native-image-crop-picker';
-
-import OptionItem from './OptionItem';
 
 const ANSWERS = ['A','B','C','D'];
 
@@ -239,10 +237,10 @@ class MakeQuestionScreen extends Component {
               				          		maxLength={80}
               				          		value={optionValue}
               				          	  	onChangeText={text => this.setState({ optionValue: text.trim() })}
-              				          		placeholder="请添加答案选项(2~4个)"
+              				          		placeholder="请填写答案选项(2~4个)"
               				          		onFocus={this.onOptionInputFocus}
               				          	/>
-              				          	<TouchableOpacity disabled={disableAddButton} style={[styles.button,!disableAddButton&&{backgroundColor: '#68afff'}]} onPress={this.addOption}>
+              				          	<TouchableOpacity disabled={disableAddButton} style={[styles.button,!disableAddButton&&{backgroundColor: Colors.skyBlue}]} onPress={this.addOption}>
               				          		<Text style={styles.addText}>添 加</Text>
               				          	</TouchableOpacity>
               				          </View>
@@ -309,8 +307,8 @@ const styles = StyleSheet.create({
 	},
 	answerTip:{
 		marginTop: 5,
-		fontSize: 13,
-		color:'#FF6330',
+		fontSize: 12,
+		color:Colors.red,
 	},
 	options: {
 		paddingHorizontal: 10

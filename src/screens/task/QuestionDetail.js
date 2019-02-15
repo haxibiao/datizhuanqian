@@ -5,11 +5,9 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
-import { DivisionLine, Header, Screen, LoadingError, Iconfont } from '../../components';
+import { DivisionLine, Header, Screen, LoadingError, Iconfont, OptionItem } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-
-import OptionItem from './OptionItem';
 
 class QuestionDetail extends Component {
 
@@ -69,7 +67,7 @@ class QuestionDetail extends Component {
 
 const styles = StyleSheet.create({
 	subject:{
-		color: '#68afff',
+		color: Colors.skyBlue,
 		fontSize: 18,
 		lineHeight: 22,
 		fontWeight: '500'

@@ -6,6 +6,7 @@ const orange = "#CD6839";
 const red = "#FF0000";
 const black = "#000";
 const blue = "#407FCF";
+const skyBlue = "#68afff";
 
 const primaryFont = "#363636";
 const tintFont = "#8a8a8a";
@@ -35,6 +36,7 @@ export default {
 	lightGray,
 	tintGray,
 	blue,
+	skyBlue,
 	weixin,
 
 	lightBorder,

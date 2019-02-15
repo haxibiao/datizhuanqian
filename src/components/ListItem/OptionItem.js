@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Text
 } from 'react-native';
-import { Iconfont } from '../../components';
+import Iconfont from '../utils/Iconfont';
 import { Colors } from '../../constants';
 
 
@@ -22,7 +22,7 @@ class OptionItem extends Component {
 		if(!reduceAnswer || !remove){
 			return (
 				<View style={[styles.optionItem,style]} >
-					<View style={[styles.optionLabel,isAnswer&&{backgroundColor: '#68afff',borderWidth:0}]}>
+					<View style={[styles.optionLabel,isAnswer&&{backgroundColor: Colors.skyBlue,borderWidth:0}]}>
 						<Text style={[styles.optionLabelText,isAnswer&&{color:'#fff'}]}>{option.Value}</Text>
 					</View>
 					<View style={styles.optionContent}>
@@ -33,7 +33,7 @@ class OptionItem extends Component {
 		}
 		return (
 			<TouchableOpacity style={[styles.optionItem,style]} onPress={() => reduceAnswer(option)}>
-				<View style={[styles.optionLabel,isAnswer&&{backgroundColor: '#68afff',borderWidth:0}]}>
+				<View style={[styles.optionLabel,isAnswer&&{backgroundColor: Colors.skyBlue,borderWidth:0}]}>
 					<Text style={[styles.optionLabelText,isAnswer&&{color:'#fff'}]}>{option.Value}</Text>
 				</View>
 				<View style={styles.optionContent}>
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
 		height: 36,
 		borderRadius: 18,
 		borderWidth: 2,
-		borderColor: '#68afff',
+		borderColor: Colors.skyBlue,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	optionLabelText:{
 		fontSize: 17,
 		fontWeight: '500',
-		color: '#68afff'
+		color: Colors.skyBlue
 	},
 	optionContent:{
 		flex:1,

@@ -22,6 +22,7 @@ import MyPropScreen from '../screens/profile/MyPropScreen';
 import TestScreen from '../screens/profile/TestScreen';
 import BusinessScreen from '../screens/profile/BusinessScreen';
 import CorrectionLogScreen from '../screens/profile/CorrectionLogScreen';
+import AnswerLogScreen from '../screens/profile/AnswerLogScreen';
 
 import FeedbackScreen from '../screens/feedback/HomeScreen';
 import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
@@ -112,6 +113,9 @@ export default {
 	},
 	纠错记录: {
 		screen: CorrectionLogScreen
+	},
+	答题记录: {
+		screen: AnswerLogScreen
 	},
 	//反馈
 	通知: {

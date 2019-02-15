@@ -44,5 +44,9 @@
   "withdraw": 58903,
   "down": 58941,
   "up": 58940,
-  "correction": 59237
+  "correction": 59237,
+  "correct": 58905,
+  "answerLog": 59183,
+  "collection-fill": 59114,
+  "collection": 59115
 }
