@@ -41,6 +41,7 @@ import TaskFailScreen from '../screens/task/TaskFailScreen';
 import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
 import MakeQuestionHistoryScreen from '../screens/task/MakeQuestionHistoryScreen';
 import QuestionDetail from '../screens/task/QuestionDetail';
+import MakeQuestionRule from '../screens/task/MakeQuestionRule';
 
 import PropScreen from '../screens/prop/HomeScreen';
 
@@ -158,6 +159,9 @@ export default {
 	},
 	题目详情: {
 		screen: QuestionDetail
+	},
+	出题规则: {
+		screen: MakeQuestionRule
 	},
 	//任务
 	道具: {

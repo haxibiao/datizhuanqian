@@ -35,7 +35,7 @@ class SignUp extends Component {
 
 	render() {
 		let { focusItem, modalVisible, disableSubmit, img } = this.state;
-		let { switchView, handleSubmit } = this.props;
+		let { switchView, handleSubmit, navigation } = this.props;
 		return (
 			<View style={styles.container}>
 				<View style={styles.top}>
@@ -77,11 +77,19 @@ class SignUp extends Component {
 						// 	borderBottomRightRadius: 3
 						// }}
 					/>*/}
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('用户协议');
+						}}
+						style={{ alignItems: 'flex-end', marginTop: 15 }}
+					>
+						<Text style={{ fontSize: 14, color: Colors.grey }}>用户协议</Text>
+					</TouchableOpacity>
 					<Button
 						name={'同意协议并注册'}
 						disabled={disableSubmit}
 						handler={this.signUp}
-						style={{ height: 42, marginTop: 30 }}
+						style={{ height: 42, marginTop: 15 }}
 						theme={Colors.theme}
 						fontSize={17}
 						disabledColor={'rgba(255,177,0,0.7)'}
