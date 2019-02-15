@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, Screen } from '../../components';
+import { Button, Screen, LoginWaiting } from '../../components';
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 
@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
 import { ForgotPasswordMutation } from '../../graphql/user.graphql';
-import { Mutation, compose } from 'react-apollo';
+import { Mutation, compose, graphql } from 'react-apollo';
 
 class VerificationEmailScreen extends Component {
 	constructor(props) {
@@ -17,22 +17,60 @@ class VerificationEmailScreen extends Component {
 			account: '',
 			isOnpress: true,
 			second: 5000,
-			buttonColor: Colors.theme
+			buttonColor: Colors.theme,
+			isVisible: false
 		};
 	}
 
+	sendVerificationCode = async () => {
+		const { navigation } = this.props;
+		let { account, second } = this.state;
+		let result = {};
+
+		this.setState({
+			isOnpress: false,
+			isVisible: true
+		});
+
+		try {
+			result = await this.props.ForgotPasswordMutation({
+				variables: {
+					account: account
+				}
+			});
+		} catch (error) {
+			result.errors = error;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -100); //打印错误信息
+			this.setState({ isVisible: false });
+		} else {
+			navigation.navigate('重置密码', {
+				account: account
+			});
+			this.setState({ isVisible: false });
+		}
+		setTimeout(() => {
+			this.setState({ isOnpress: true });
+		}, second);
+	};
+
 	render() {
 		const { navigation } = this.props;
-		let { account, isOnpress, second, buttonColor } = this.state;
+		let { account, isOnpress, second, buttonColor, isVisible } = this.state;
 
 		return (
 			<Screen>
 				<View style={styles.container}>
+					<View style={{ marginTop: 50, paddingHorizontal: 25 }}>
+						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>获取验证码</Text>
+					</View>
 					<View style={styles.textWrap}>
 						<TextInput
 							textAlignVertical="center"
 							underlineColorAndroid="transparent"
-							placeholder="请输入注册时的邮箱地址"
+							placeholder="请输入手机号或邮箱"
 							placeholderText={Colors.tintFont}
 							selectionColor={Colors.theme}
 							style={styles.textInput}
@@ -41,46 +79,18 @@ class VerificationEmailScreen extends Component {
 							}}
 						/>
 					</View>
-					<View style={{ margin: 20, height: 48 }}>
-						<Mutation mutation={ForgotPasswordMutation}>
-							{ForgotPasswordMutation => {
-								return (
-									<Button
-										name="发送验证码"
-										handler={async () => {
-											this.setState({ isOnpress: false });
-											let result = {};
-											try {
-												result = await ForgotPasswordMutation({
-													variables: {
-														account: account
-													}
-												});
-											} catch (error) {
-												result.errors = error;
-											}
-											if (result && result.errors) {
-												Methods.toast('请输入正确的内容', -200);
-											} else {
-												navigation.navigate('找回密码', {
-													result: result.data.forgotPassword,
-													account: account
-												});
-											}
-											setTimeout(() => {
-												this.setState({ isOnpress: true });
-											}, second);
-										}}
-										theme={buttonColor}
-										style={{ height: 38, fontSize: 16 }}
-										disabled={account && isOnpress ? false : true}
-										disabledColor={Colors.tintGray}
-									/>
-								);
-							}}
-						</Mutation>
+					<View style={{ marginHorizontal: 25, marginTop: 35, height: 48 }}>
+						<Button
+							name="获取验证码"
+							handler={this.sendVerificationCode}
+							theme={buttonColor}
+							style={{ height: 38, fontSize: 16 }}
+							disabled={account && isOnpress ? false : true}
+							disabledColor={Colors.tintGray}
+						/>
 					</View>
 				</View>
+				<LoginWaiting isVisible={isVisible} tips={'发送中...'} />
 			</Screen>
 		);
 	}
@@ -91,10 +101,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white
 	},
 	textWrap: {
-		marginTop: 20,
-		paddingHorizontal: 20,
-		borderTopWidth: 1,
-		borderTopColor: Colors.lightBorder,
+		marginTop: 40,
+		marginHorizontal: 25,
 		borderBottomWidth: 1,
 		borderBottomColor: Colors.lightBorder
 	},
@@ -106,4 +114,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => store)(VerificationEmailScreen);
+export default connect(store => store)(
+	compose(graphql(ForgotPasswordMutation, { name: 'ForgotPasswordMutation' }))(VerificationEmailScreen)
+);

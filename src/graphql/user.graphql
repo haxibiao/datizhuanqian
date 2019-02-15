@@ -42,8 +42,8 @@ mutation ForgotPasswordMutation($account: String!) {
 }
 
 #重置密码
-mutation ResetPasswordMutation($account: String!, $password: String!, $token: String!) {
-	resetPassword(account: $account, password: $password, token: $token) {
+mutation ResetPasswordMutation($account: String!, $password: String!, $authentication_code: String!) {
+	resetPassword(account: $account, password: $password, authentication_code: $authentication_code) {
 		id
 		account
 	}

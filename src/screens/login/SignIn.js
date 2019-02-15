@@ -68,7 +68,7 @@ class SignIn extends Component {
 					<View style={styles.centerRight}>
 						<TouchableOpacity
 							onPress={() => {
-								navigation.navigate('验证');
+								navigation.navigate('忘记密码');
 							}}
 						>
 							<Text style={styles.rightText}>忘记密码？</Text>

@@ -51,10 +51,10 @@ export default {
 	登录注册: {
 		screen: LoginScreen
 	},
-	找回密码: {
+	重置密码: {
 		screen: RetrievePasswordScreen
 	},
-	验证: {
+	忘记密码: {
 		screen: VerificationScreen
 	},
 	//登录注册
@@ -86,7 +86,7 @@ export default {
 	等级说明: {
 		screen: LevelDescriptionScreen
 	},
-	重置密码: {
+	修改密码: {
 		screen: ChangePasswordScreen
 	},
 	//设置页

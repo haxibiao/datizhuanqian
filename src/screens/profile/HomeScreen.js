@@ -65,7 +65,7 @@ class HomeScreen extends Component {
 						<ProfileItem
 							name={'纠错记录'}
 							icon={'correction'}
-							size={19}
+							size={18}
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
 						/>

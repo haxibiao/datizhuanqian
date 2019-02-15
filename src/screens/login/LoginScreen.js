@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-import { Screen, Iconfont } from '../../components';
+import { Screen, Iconfont, LoginWaiting } from '../../components';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -20,13 +20,17 @@ class LoginScreen extends Component {
 		super(props);
 		let login = props.navigation.getParam('login', false);
 		this.state = {
-			login
+			login,
+			isVisible: false
 		};
 	}
 
 	//处理表单提交
 	handleSubmit = async childState => {
 		const { account, password } = childState;
+		this.setState({
+			isVisible: true
+		});
 		if (!this.state.login) {
 			//登录
 			let result = {};
@@ -47,6 +51,9 @@ class LoginScreen extends Component {
 				const user = result.data.signIn;
 				this._saveUserData(user);
 			}
+			this.setState({
+				isVisible: false
+			});
 		} else {
 			//注册
 			let result = {};
@@ -67,6 +74,9 @@ class LoginScreen extends Component {
 				const user = result.data.signUp;
 				this._saveUserData(user);
 			}
+			this.setState({
+				isVisible: false
+			});
 		}
 	};
 
@@ -79,7 +89,7 @@ class LoginScreen extends Component {
 		this.setState(prevState => ({ login: !prevState.login }));
 	}
 	render() {
-		const { login } = this.state;
+		const { login, isVisible } = this.state;
 		const { navigation } = this.props;
 		return (
 			<Screen header>
@@ -102,6 +112,7 @@ class LoginScreen extends Component {
 					/>
 				)}
 				{Divice.isIos && <KeyboardSpacer />}
+				<LoginWaiting isVisible={isVisible} />
 			</Screen>
 		);
 	}

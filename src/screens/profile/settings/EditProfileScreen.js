@@ -186,10 +186,10 @@ class EditProfileScreen extends Component {
 						/>
 						<SettingItem itemName="账号信息" rightSize={15} rightContent={user.account} />
 						<SettingItem
-							itemName="重置密码"
+							itemName="修改密码"
 							rightSize={15}
 							handler={() => {
-								navigation.navigate('重置密码');
+								navigation.navigate('修改密码');
 							}}
 						/>
 					</ScrollView>
