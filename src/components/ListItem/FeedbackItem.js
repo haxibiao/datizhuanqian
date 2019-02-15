@@ -38,7 +38,9 @@ class FeedbackItem extends Component {
 					</View>
 				</View>
 				<View style={{ marginLeft: 15, marginRight: 15, paddingBottom: 10 }}>
-					<Text style={styles.body}>{item.content}</Text>
+					<Text style={styles.body} numberOfLines={3}>
+						{item.content}
+					</Text>
 					{this.renderImage(item.images.slice(0, 3))}
 				</View>
 				<View

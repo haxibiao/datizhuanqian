@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-import { Screen, Iconfont, LoginWaiting } from '../../components';
+import { Screen, Iconfont, SubmitLoading } from '../../components';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -112,7 +112,7 @@ class LoginScreen extends Component {
 					/>
 				)}
 				{Divice.isIos && <KeyboardSpacer />}
-				<LoginWaiting isVisible={isVisible} />
+				<SubmitLoading isVisible={isVisible} />
 			</Screen>
 		);
 	}

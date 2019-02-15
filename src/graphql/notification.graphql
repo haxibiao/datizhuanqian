@@ -54,6 +54,16 @@ query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset
 			remark
 			gold_awarded
 		}
+		question {
+			id
+			submit
+			description
+			created_at
+			category {
+				id
+				name
+			}
+		}
 	}
 }
 

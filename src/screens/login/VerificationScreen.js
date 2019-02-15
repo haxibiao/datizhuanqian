@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, Screen, LoginWaiting } from '../../components';
+import { Button, Screen, SubmitLoading } from '../../components';
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 
@@ -90,7 +90,7 @@ class VerificationEmailScreen extends Component {
 						/>
 					</View>
 				</View>
-				<LoginWaiting isVisible={isVisible} tips={'发送中...'} />
+				<SubmitLoading isVisible={isVisible} tips={'发送中...'} />
 			</Screen>
 		);
 	}

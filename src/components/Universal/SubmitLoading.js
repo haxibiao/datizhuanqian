@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Dimensions, ActivityIndicator, Text } from 'react-native';
-import Colors from '../../constants/Colors';
-
-const { width, height } = Dimensions.get('window');
+import { Colors, Divice } from '../../constants';
 
 class LoginWaiting extends Component {
 	render() {
@@ -16,8 +14,8 @@ class LoginWaiting extends Component {
 					position: 'absolute',
 					top: 0,
 					left: 0,
-					width,
-					height,
+					width: Divice.width,
+					height: Divice.height,
 					alignItems: 'center',
 					justifyContent: 'center',
 					backgroundColor: 'rgba(255,255,255, 0.6)'
@@ -36,8 +34,8 @@ class LoginWaiting extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		width: width / 3,
-		height: width / 3
+		width: Divice.width / 3,
+		height: Divice.width / 3
 	}
 });
 

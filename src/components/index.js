@@ -40,7 +40,6 @@ import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
 import ImageViewModal from './Modal/ImageViewModal';
 import FeedbackCommentModal from './Modal/FeedbackCommentModal';
-import LoginWaiting from './Modal/LoginWaiting';
 
 import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
 import ProfileNotLogin from './StatusView/ProfileNotLogin';
@@ -62,6 +61,7 @@ import ImagePickerView from './Universal/ImagePickerView';
 import UserTitle from './Universal/UserTitle';
 import RedDot from './Universal/RedDot';
 import UploadingImage from './Universal/UploadingImage';
+import SubmitLoading from './Universal/SubmitLoading';
 
 import { Iconfont } from './utils/Fonts';
 
@@ -108,7 +108,6 @@ export {
 	WithdrawsTipsModal,
 	ImageViewModal,
 	FeedbackCommentModal,
-	LoginWaiting,
 	//
 	WithdrawsNotLogin,
 	ProfileNotLogin,
@@ -130,6 +129,7 @@ export {
 	UserTitle,
 	RedDot,
 	UploadingImage,
+	SubmitLoading,
 	//
 	Iconfont
 };

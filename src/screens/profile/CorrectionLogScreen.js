@@ -34,7 +34,7 @@ class CorrectionLogScreen extends Component {
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
-						if (!(data && data.questionRedresses))
+						if (!(data && data && data.questionRedresses && data.questionRedresses.length > 0))
 							return <BlankContent text={'暂无纠错记录哦,快去纠错吧~'} fontSize={14} />;
 
 						return (

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Iconfont } from '../../../components';
-import Colors from '../../../constants/Colors';
+import { Iconfont, UserTitle, Avatar } from '../../../components';
+import { Colors } from '../../../constants';
 
-class RedDot extends Component {
+class TaskNotification extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -13,21 +13,16 @@ class RedDot extends Component {
 		return (
 			<View style={styles.item}>
 				<View style={styles.titleInfo}>
-					<Iconfont name={'answer'} size={18} color={Colors.theme} />
-					<Text style={styles.title}>题目纠错</Text>
+					<Iconfont name={'task'} size={18} color={Colors.theme} />
+					<Text style={styles.title}>出题任务</Text>
 				</View>
 				<View style={styles.bottomInfo}>
 					<Text style={styles.text}>已被采纳</Text>
-					<Text style={styles.infoItem}>奖励：{`${notification.question_redress.gold_awarded}智慧点`} </Text>
-					{notification.question_redress.type == 0 && <Text style={styles.infoItem}>类型：题干有误</Text>}
-					{notification.question_redress.type == 1 && <Text style={styles.infoItem}>类型：答案有误</Text>}
-					{notification.question_redress.type == 2 && (
-						<Text style={styles.infoItem}>类型：图片缺少或不清晰</Text>
-					)}
-					{notification.question_redress.type == 3 && <Text style={styles.infoItem}>类型：其他</Text>}
-					<Text style={styles.infoItem}>时间：{notification.question_redress.created_at}</Text>
+					<Text style={styles.infoItem}>奖励：10智慧点 </Text>
+					<Text style={styles.infoItem}>专题：{notification.question.category.name} </Text>
+					<Text style={styles.infoItem}>时间：{notification.question.created_at}</Text>
 					<Text style={[styles.infoItem, { lineHeight: 22 }]}>
-						题目名：{notification.question_redress.question.description}
+						题目名：{notification.question.description}
 					</Text>
 				</View>
 			</View>
@@ -62,8 +57,8 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 17,
 		paddingBottom: 15,
-		color: Colors.weixin,
-		fontWeight: '500'
+		fontWeight: '500',
+		color: Colors.weixin
 	},
 	infoItem: {
 		fontSize: 14,
@@ -81,4 +76,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default RedDot;
+export default TaskNotification;

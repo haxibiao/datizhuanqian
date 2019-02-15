@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { DivisionLine, Button, Iconfont, Screen, Input, Waiting, ImagePickerView } from '../../components';
+import {
+	DivisionLine,
+	Button,
+	Iconfont,
+	Screen,
+	Input,
+	Waiting,
+	ImagePickerView,
+	SubmitLoading
+} from '../../components';
 
 import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -125,7 +134,7 @@ class Feedback extends Component {
 						disabledColor={Colors.tintGray}
 					/>
 				</ScrollView>
-				<Waiting isVisible={waitingVisible} />
+				<SubmitLoading isVisible={waitingVisible} tips={'提交反馈中'} />
 			</Screen>
 		);
 	}

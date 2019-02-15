@@ -59,36 +59,37 @@ query UserTaskQuery($id: Int) {
 }
 
 # 用户出题
-mutation createQuestionMutation($data:CreateQuestionInputType){
-  createQuestion(data:$data){
-    id
-    description
-    answer
-    selections
-  }
+mutation createQuestionMutation($data: CreateQuestionInputType) {
+	createQuestion(data: $data) {
+		id
+		description
+		answer
+		selections
+	}
 }
 
 # 出题记录
-query mySubmitQuestionHistoryQuery($offset:Int,$limit:Int){
-  user{
-    questions(offset:$offset,limit:$limit){
-      id
-      description
-      count
-      created_at
-      category {
-        name
-        id
-      }
-      image {
-	    id
-	    path
-	    width
-	    height
-	  }
-      answer
-      selections
-      status
-    }
-  }
+query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
+	user {
+		questions(offset: $offset, limit: $limit) {
+			id
+			description
+			count
+			created_at
+			category {
+				name
+				id
+			}
+			image {
+				id
+				path
+				width
+				height
+			}
+			answer
+			selections
+			status
+			submit
+		}
+	}
 }

@@ -22,7 +22,9 @@ class SystemNotificationScreen extends Component {
 			<Screen>
 				<Query
 					query={systemNotificationsQuery}
-					variables={{ filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE', 'QUESTION_REDRESS_REWARD'] }}
+					variables={{
+						filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE', 'QUESTION_REDRESS_REWARD', 'QUESTION_AUDIT']
+					}}
 					fetchPolicy="network-only"
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {

@@ -6,7 +6,7 @@ import { Button, Header, Screen, Iconfont, Avatar } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import WithdrawNotification from './type/WithdrawNotification';
-import TaskNotification from './type/TaskNotification';
+import MakeQuestionNotification from './type/MakeQuestionNotification';
 import CorrectionNotification from './type/CorrectionNotification';
 
 class NotificationItem extends Component {
@@ -28,8 +28,8 @@ class NotificationItem extends Component {
 					<WithdrawNotification notification={notification} navigation={notification} />
 					//提现
 				)}
-				{notification.type == 'Task' && (
-					<TaskNotification notification={notification} navigation={notification} />
+				{notification.type == 'QUESTION_AUDIT' && (
+					<MakeQuestionNotification notification={notification} navigation={notification} />
 					//任务
 				)}
 				{notification.question_redress && (

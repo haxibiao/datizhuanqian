@@ -12,6 +12,7 @@ class CorrectionItem extends Component {
 	}
 	render() {
 		const { navigation, item } = this.props;
+		const { type } = item;
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -31,7 +32,7 @@ class CorrectionItem extends Component {
 			>
 				<Text style={styles.content}>{item.question.description}</Text>
 				{item.content && (
-					<View style={{ paddingTop: 6 }}>
+					<View style={{ paddingTop: 10 }}>
 						<Text style={{ fontSize: 13, color: Colors.black }}>{item.content}</Text>
 					</View>
 				)}
@@ -41,10 +42,11 @@ class CorrectionItem extends Component {
 						{item.status == 1 && <Text style={{ color: Colors.weixin, fontSize: 12 }}>已采纳</Text>}
 						{item.status == 0 && <Text style={{ color: Colors.theme, fontSize: 12 }}>审核中</Text>}
 						{item.status == -1 && <Text style={{ color: Colors.themeRed, fontSize: 12 }}>未采纳</Text>}
-						{item.type == 0 && <Text style={styles.greyText}>·题干有误</Text>}
-						{item.type == 1 && <Text style={styles.greyText}>·答案有误</Text>}
-						{item.type == 2 && <Text style={styles.greyText}>·图片缺少或不清晰</Text>}
-						{item.type == 3 && <Text style={styles.greyText}>·其他</Text>}
+						{item.remark && <Text style={styles.greyText}>·{item.remark}</Text>}
+						{item.type == 1 && !item.remark && <Text style={styles.greyText}>·题干有误</Text>}
+						{item.type == 2 && !item.remark && <Text style={styles.greyText}>·答案有误</Text>}
+						{item.type == 3 && !item.remark && <Text style={styles.greyText}>·图片缺少或不清晰</Text>}
+						{item.type == 4 && !item.remark && <Text style={styles.greyText}>·其他</Text>}
 					</View>
 					<Text style={styles.greyText}>{item.created_at}</Text>
 				</View>
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingTop: 6
+		paddingTop: 10
 	},
 	left: {
 		flexDirection: 'row',
