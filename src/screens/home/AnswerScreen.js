@@ -23,7 +23,7 @@ import actions from '../../store/actions';
 
 import { QuestionQuery, QuestionAnswerMutation } from '../../graphql/question.graphql';
 import { UserQuery } from '../../graphql/user.graphql';
-import { Query, Mutation, compose, graphql } from 'react-apollo';
+import { Query, Mutation, compose, graphql, withApollo } from 'react-apollo';
 
 class AnswerScreen extends Component {
 	constructor(props) {
@@ -68,9 +68,19 @@ class AnswerScreen extends Component {
 					refetchQueries: () => [
 						{
 							query: UserQuery,
-							variables: { id: user.id }
+							variables: { id: user.id },
+							fetchPolicy: 'network-only'
 						}
-					]
+					],
+					update: (cache, result) => {
+						console.log('强制全局更新这个query的缓存');
+						//强制全局更新这个query的缓存
+						this.props.client.query({
+							query: UserQuery,
+							variables: { id: user.id },
+							fetchPolicy: 'network-only'
+						});
+					}
 				});
 			} catch (ex) {
 				result.errors = ex;
@@ -286,4 +296,4 @@ export default connect(store => {
 		user: store.users.user,
 		noTicketTips: store.users.noTicketTips
 	};
-})(compose(graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }))(AnswerScreen));
+})(compose(graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }))(withApollo(AnswerScreen)));

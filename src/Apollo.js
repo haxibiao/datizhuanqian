@@ -43,38 +43,18 @@ class Apollo extends Component {
 					}
 				});
 			},
-			cache: this.cache
+			cache: new InMemoryCache()
 		});
 	}
 
 	componentWillMount() {
 		let { user = {} } = this.props;
+		this._makeClient(user);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.user !== this.props.user) {
 			this._makeClient(nextProps.user);
-
-			this.timer = setTimeout(() => {
-				this.props.onReady();
-			}, 6000);
-			//最多6秒之后都关闭加载页
-
-			let { query } = this.client;
-			let promises = [query({ query: CategoriesQuery })];
-			if (nextProps.user.token) {
-				promises.concat([query({ query: UserQuery, variables: { id: nextProps.user.id } })]);
-			}
-			Promise.all(promises)
-				.then(loaded => {
-					this.promiseTimer = setTimeout(() => {
-						this.props.onReady();
-					}, 1000);
-					//等待数据返回之后关闭加载页
-				})
-				.catch(rejected => {
-					return null;
-				});
 		}
 	}
 
@@ -84,7 +64,7 @@ class Apollo extends Component {
 	}
 
 	render() {
-		if (!this.client) return null;
+		// if (!this.client) return null;
 		return (
 			<ApolloProvider client={this.client}>
 				<MainRouter />
