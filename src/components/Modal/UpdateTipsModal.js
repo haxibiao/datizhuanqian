@@ -8,24 +8,30 @@ const { width, height } = Dimensions.get('window');
 
 class UpdateTipsModal extends Component {
 	render() {
-		const { visible, handleVisible, confirm, title = '提示', tips, openUrl } = this.props;
+		const { visible, handleVisible, confirm, title = '提示', tips, openUrl, version, description } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
 				customStyle={{
-					width: width - 100,
-					borderRadius: 10,
+					width: width - 60,
+					borderRadius: 15,
 					backgroundColor: Colors.white,
 					padding: 0
 				}}
 				handleVisible={() => {}}
 			>
-				<View style={{ alignItems: 'center' }}>
-					<View style={{ height: 80, justifyContent: 'center' }}>
+				<View>
+					<View style={{ justifyContent: 'center', paddingTop: 25 }}>
 						<Text style={styles.modalRemindContent}>{tips}</Text>
-						<Text style={{ fontSize: 12, color: Colors.grey, paddingTop: 10 }}>
-							如遇无法安装，请先卸载老版本
+						<Text style={{ color: Colors.grey, fontSize: 13, textAlign: 'center', paddingTop: 3 }}>
+							版本号：V{version}
 						</Text>
+					</View>
+					<View style={{ paddingBottom: 20, paddingHorizontal: 20 }}>
+						<Text style={{ fontSize: 14, color: Colors.primaryFont, paddingTop: 10, lineHeight: 22 }}>
+							更新提示：
+						</Text>
+						<Text style={{ fontSize: 14, color: Colors.primaryFont, lineHeight: 22 }}>{description}</Text>
 					</View>
 
 					<View style={styles.modalFooter}>

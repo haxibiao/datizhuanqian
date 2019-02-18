@@ -7,32 +7,51 @@ const { width, height } = Dimensions.get('window');
 
 class CheckUpdateModal extends Component {
 	render() {
-		const { visible, handleVisible, confirm, title = '提示', tips, openUrl, cancel } = this.props;
+		const {
+			visible,
+			handleVisible,
+			confirm,
+			title = '提示',
+			tips,
+			openUrl,
+			cancel,
+			version,
+			description
+		} = this.props;
 		return (
 			<BasicModal
 				visible={visible}
 				handleVisible={cancel}
 				// header={<Text style={styles.modalHeader}>{title}</Text>}
 				customStyle={{
-					width: width - 100,
-					borderRadius: 10,
+					width: width - 60,
+					borderRadius: 15,
 					backgroundColor: Colors.white,
 					padding: 0
 				}}
 			>
-				<View style={{ alignItems: 'center' }}>
-					<View style={{ height: 80, justifyContent: 'center' }}>
+				<View>
+					<View style={{ justifyContent: 'center', paddingTop: 25 }}>
 						<Text style={styles.modalRemindContent}>{tips}</Text>
-						<Text style={{ fontSize: 12, color: Colors.grey, paddingTop: 10 }}>
-							如遇无法安装，请先卸载老版本
+						<Text style={{ color: Colors.grey, fontSize: 13, textAlign: 'center', paddingTop: 3 }}>
+							版本号：V{version}
 						</Text>
+					</View>
+					<View style={{ paddingBottom: 20, paddingHorizontal: 20 }}>
+						<Text style={{ fontSize: 14, color: Colors.primaryFont, paddingTop: 10, lineHeight: 22 }}>
+							更新提示：
+						</Text>
+						<Text style={{ fontSize: 14, color: Colors.primaryFont, lineHeight: 22 }}>{description}</Text>
 					</View>
 
 					<View style={styles.modalFooter}>
 						<TouchableOpacity style={styles.operation} onPress={cancel}>
-							<Text style={styles.operationText}>取消</Text>
+							<Text style={styles.operationText}>以后再说</Text>
 						</TouchableOpacity>
-						<TouchableOpacity style={[styles.operation]} onPress={confirm}>
+						<TouchableOpacity
+							style={[styles.operation, { borderLeftColor: Colors.lightBorder, borderLeftWidth: 0.5 }]}
+							onPress={confirm}
+						>
 							<Text style={[styles.operationText, { color: Colors.theme }]}>立即更新</Text>
 						</TouchableOpacity>
 					</View>
@@ -49,14 +68,15 @@ const styles = StyleSheet.create({
 		color: Colors.primaryFont
 	},
 	modalRemindContent: {
-		fontSize: 16,
+		fontSize: 18,
 		color: Colors.black,
 		paddingHorizontal: 15,
 		textAlign: 'center',
-		lineHeight: 20
+		lineHeight: 20,
+		fontWeight: '500'
 	},
 	modalFooter: {
-		borderTopWidth: 1,
+		borderTopWidth: 0.5,
 		borderTopColor: Colors.tintGray,
 		flexDirection: 'row'
 	},
@@ -70,7 +90,7 @@ const styles = StyleSheet.create({
 	operationText: {
 		fontSize: 15,
 		fontWeight: '400',
-		color: Colors.primaryFont
+		color: Colors.grey
 	}
 });
 

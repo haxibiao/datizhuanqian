@@ -173,7 +173,7 @@ const autoCheckUpdate = async (
 	let local = Config.AppVersionNumber; //本地版本
 	let online = numberVersion(versionInfo.version); //线上版本
 
-	changeVersionInfo(versionInfo.apk, online); //为提示框 link  取消更新赋值
+	changeVersionInfo(versionInfo.apk, online, description); //为提示框 link  取消更新赋值
 
 	if ((local < online && versionInfo.is_force) || online - local > 0.1) {
 		handForceUpdateModal();

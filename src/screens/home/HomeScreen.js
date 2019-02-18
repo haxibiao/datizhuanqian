@@ -37,7 +37,8 @@ class HomeScreen extends Component {
 			updateVisible: false,
 			mustUpdateVisible: false,
 			url: 'https://datizhuanqian.com?from=app',
-			onlineVersion: '1.1.0'
+			onlineVersion: '1.1.0',
+			description: ''
 		};
 	}
 
@@ -101,9 +102,8 @@ class HomeScreen extends Component {
 	}
 
 	render() {
-		console.log('homescreen reredner with client:', this.props.client);
 		const { navigation, user, login } = this.props;
-		let { updateVisible, isUpdate, mustUpdateVisible } = this.state;
+		let { updateVisible, isUpdate, mustUpdateVisible, description, onlineVersion } = this.state;
 		return (
 			<View style={styles.container}>
 				<Header headerLeft customStyle={{ backgroundColor: Colors.theme }} routeName={'答题赚钱'} />
@@ -116,6 +116,8 @@ class HomeScreen extends Component {
 					}}
 					handleVisible={this.handleUpdateModalVisible}
 					tips={'发现新版本'}
+					description={description}
+					version={onlineVersion}
 					confirm={() => {
 						this.handleUpdateModalVisible();
 						this.openUrl(this.state.url);
@@ -123,6 +125,8 @@ class HomeScreen extends Component {
 				/>
 				<UpdateTipsModal
 					visible={mustUpdateVisible}
+					description={description}
+					version={onlineVersion}
 					openUrl={() => {
 						this.openUrl(this.state.url);
 					}}
@@ -244,7 +248,8 @@ class HomeScreen extends Component {
 	changeVersionInfo(url, version) {
 		this.setState({
 			url: url,
-			onlineVersion: version
+			onlineVersion: version,
+			description: description
 		});
 	}
 }

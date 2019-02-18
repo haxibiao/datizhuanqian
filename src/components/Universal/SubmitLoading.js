@@ -22,8 +22,8 @@ class LoginWaiting extends Component {
 				}}
 			>
 				<View style={styles.container}>
-					<ActivityIndicator size="small" color={Colors.theme} />
-					<Text style={{ fontSize: 13, color: Colors.gery, textAlign: 'center', paddingTop: 8 }}>
+					<ActivityIndicator size="small" color={Colors.white} />
+					<Text style={{ fontSize: 13, color: Colors.white, textAlign: 'center', paddingTop: 8 }}>
 						{tips ? tips : '登录中...'}
 					</Text>
 				</View>
@@ -34,8 +34,12 @@ class LoginWaiting extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		width: Divice.width / 3,
-		height: Divice.width / 3
+		width: Divice.width / 4,
+		height: Divice.width / 4,
+		backgroundColor: 'rgba(48,48,48,0.6)',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 5
 	}
 });
 
