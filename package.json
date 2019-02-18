@@ -20,6 +20,7 @@
     "react-native-code-push": "^5.4.2",
     "react-native-config": "^0.11.7",
     "react-native-device-info": "^0.24.3",
+    "react-native-gesture-handler": "^1.0.15",
     "react-native-image-crop-picker": "^0.21.3",
     "react-native-image-zoom-viewer": "^2.2.25",
     "react-native-keyboard-spacer": "^0.4.1",
@@ -34,7 +35,7 @@
     "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^6.1.0",
     "react-native-webview": "^3.2.1",
-    "react-navigation": "^1.5.7",
+    "react-navigation": "^3.3.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-effex": "^1.1.2"

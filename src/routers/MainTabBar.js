@@ -16,26 +16,28 @@ import { Iconfont } from '../components';
 
 class MainTabBar extends React.Component {
     renderItem = (route, index) => {
-        const { navigation, jumpToIndex, renderIcon, getLabel, activeTintColor, inactiveTintColor } = this.props;
+        const {
+            navigation,
+            onTabPress,
+            renderIcon,
+            title,
+            login,
+            activeTintColor,
+            inactiveTintColor,
+            getLabel
+        } = this.props;
         const focused = index === navigation.state.index;
         const color = focused ? activeTintColor : inactiveTintColor;
         const scene = {
-            index: index,
-            focused: focused,
-            route: route,
-            tintColor: color
+            index,
+            focused,
+            route
         };
         return (
-            <TouchableWithoutFeedback
-                key={route.key}
-                style={styles.tabItem}
-                onPress={() => {
-                    jumpToIndex(index);
-                }}
-            >
+            <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
                 <View style={styles.tabItem}>
                     {renderIcon(scene)}
-                    <Text style={{ fontSize: 10, color }}>{getLabel(scene)}</Text>
+                    <Text style={{ fontSize: 10, color }}>{route.key}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );

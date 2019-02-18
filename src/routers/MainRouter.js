@@ -1,14 +1,18 @@
 import React from 'react';
 import { Animated, Easing } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 import router from './Router';
 
-const MainStack = StackNavigator(router, {
+const MainStack = createStackNavigator(router, {
   navigationOptions: ({ navigation }) => {
     return {
       header: null
     };
   },
+  defaultNavigationOptions: () => ({
+    header: null,
+    gesturesEnabled: true
+  }),
   transitionConfig: () => ({
     transitionSpec: {
       duration: 300,
@@ -35,8 +39,6 @@ const MainStack = StackNavigator(router, {
   })
 });
 
-export default class MainRouter extends React.Component {
-  render() {
-    return <MainStack ref="rootStackNavigator" />;
-  }
-}
+const AppContainer = createAppContainer(MainStack);
+
+export default AppContainer;
