@@ -8,7 +8,7 @@ let STATUSBAR_HEIGHT = isIos ? 20 : StatusBar.currentHeight;
 let bottom_height = 0;
 
 //适配iPhone X
-if (isIos && height>=width*2) {
+if (isIos && height >= width * 2) {
 	STATUSBAR_HEIGHT = 35;
 	bottom_height = 20;
 }

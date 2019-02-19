@@ -13,7 +13,8 @@ import {
 	Loading,
 	PlateItem,
 	CategoryCache,
-	Iconfont
+	Iconfont,
+	Screen
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -91,8 +92,12 @@ class HomeScreen extends Component {
 		const { navigation, user, login } = this.props;
 		let { updateVisible, isUpdate, mustUpdateVisible, description, onlineVersion } = this.state;
 		return (
-			<View style={styles.container}>
-				<Header headerLeft customStyle={{ backgroundColor: Colors.theme }} routeName={'答题赚钱'} />
+			<Screen
+				style={styles.container}
+				customStyle={{ backgroundColor: Colors.theme }}
+				routeName={'答题赚钱'}
+				headerLeft
+			>
 				{this._renderCategoryList()}
 				<CheckUpdateModal
 					visible={updateVisible}
@@ -118,7 +123,7 @@ class HomeScreen extends Component {
 					}}
 					tips={'发现新版本'}
 				/>
-			</View>
+			</Screen>
 		);
 	}
 

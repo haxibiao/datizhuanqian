@@ -21,6 +21,8 @@ import actions from '../../store/actions';
 import { userUnreadQuery } from '../../graphql/notification.graphql';
 import { Query } from 'react-apollo';
 
+import { NativeModules } from 'react-native';
+
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -114,13 +116,18 @@ class HomeScreen extends Component {
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}
 						/>
-						{/*<ProfileItem
+						<ProfileItem
 							name={'任务日志'}
 							icon={'task2'}
 							right
 							navigation={navigation}
-							handler={() => Linking.openURL('market://details?id=com.datizhuanqian')}
-						/>*/}
+							handler={() => {
+								NativeModules.DownloadApk.downloading(
+									'http://cos.datizhuanqian.cn/apks/datizhuanqian.apk',
+									'datizhuanqian.apk'
+								);
+							}}
+						/>
 						<DivisionLine height={10} />
 						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
 						<ProfileItem
