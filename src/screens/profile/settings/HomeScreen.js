@@ -41,10 +41,14 @@ class HomeScreen extends Component {
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
 						{login ? <SeetingPageUser navigation={navigation} id={user.id} /> : null}
-						<SettingItem itemName="关于答题赚钱" handler={() => navigation.navigate('关于答题赚钱')} />
-						<SettingItem itemName="等级说明" handler={() => navigation.navigate('等级说明')} />
-						<SettingItem itemName="用户协议" handler={() => navigation.navigate('用户协议')} />
-						<SettingItem itemName="分享给好友" handler={() => navigation.navigate('分享给好友')} endItem />
+						<SettingItem itemName={'关于答题赚钱'} handler={() => navigation.navigate('关于答题赚钱')} />
+						<SettingItem itemName={'等级说明'} handler={() => navigation.navigate('等级说明')} />
+						<SettingItem itemName={'用户协议'} handler={() => navigation.navigate('用户协议')} />
+						<SettingItem
+							itemName={'分享给好友'}
+							handler={() => navigation.navigate('分享给好友')}
+							endItem
+						/>
 						<DivisionLine height={10} />
 						<SettingItem
 							rightSize={15}

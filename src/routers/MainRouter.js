@@ -9,7 +9,8 @@ const MainStack = createStackNavigator(router, {
       header: null
     };
   },
-  defaultNavigationOptions: () => ({
+
+  defaultNavigationOptions: ({ navigation }) => ({
     header: null,
     gesturesEnabled: true
   }),

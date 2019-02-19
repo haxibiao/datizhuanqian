@@ -121,7 +121,7 @@ class EditProfileScreen extends Component {
 						handler={this.setPaymentInfo.bind(this)}
 					/>
 					<View style={{ paddingHorizontal: 15 }}>
-						<Text style={styles.footer}>注意:每个用户最多修改3次支付宝！</Text>
+						<Text style={styles.footer}>注意:每个账号只能绑定一个支付宝账号，并且最多修改3次支付宝！</Text>
 					</View>
 				</View>
 			</Screen>

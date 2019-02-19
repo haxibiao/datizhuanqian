@@ -12,7 +12,8 @@ import {
 	Screen,
 	WithdrawsNotLogin,
 	UserWithdrawsCache,
-	Iconfont
+	Iconfont,
+	SubmitLoading
 } from '../../components';
 
 import { Colors, Divice } from '../../constants';
@@ -39,6 +40,7 @@ class HomeScreen extends Component {
 			WithdrawsTipsVisible: false,
 			EXCHANGE_RATE: 600, //汇率
 			clickControl: false,
+			isVisible: false,
 			withdrawTips: '智慧点不足，快去答题赚钱吧~'
 		};
 	}
@@ -77,6 +79,11 @@ class HomeScreen extends Component {
 	async _withdrawsRequest(amount) {
 		const user_id = this.props.user.id;
 		let result = {};
+
+		this.setState({
+			isVisible: true
+		});
+
 		try {
 			result = await this.props.CreateWithdrawMutation({
 				variables: {
@@ -121,6 +128,9 @@ class HomeScreen extends Component {
 			this.setState({
 				clickControl: false
 			});
+			this.setState({
+				isVisible: false
+			});
 		} else {
 			this.props.navigation.dispatch(
 				Methods.navigationAction({ routeName: '提现申请', params: { amount: amount } })
@@ -129,11 +139,14 @@ class HomeScreen extends Component {
 			this.setState({
 				clickControl: false
 			});
+			this.setState({
+				isVisible: false
+			});
 		}
 	}
 
 	render() {
-		let { EXCHANGE_RATE, RuleDescriptioVisible, WithdrawsTipsVisible, clickControl } = this.state;
+		let { EXCHANGE_RATE, RuleDescriptioVisible, WithdrawsTipsVisible, clickControl, isVisible } = this.state;
 		const { user, login, navigation, luckyMoney } = this.props;
 		return (
 			<Screen header>
@@ -201,7 +214,8 @@ class HomeScreen extends Component {
 														key={index}
 													>
 														<Text style={styles.content}>
-															提现<Text style={{ color: Colors.themeRed }}>
+															提现
+															<Text style={{ color: Colors.themeRed }}>
 																{luckyMoney.value}元
 															</Text>
 														</Text>
@@ -247,6 +261,7 @@ class HomeScreen extends Component {
 					handleVisible={this.WithdrawsTipsModalVisible}
 					text={this.state.withdrawTips}
 				/>
+				<SubmitLoading isVisible={isVisible} tips={'加载中...'} bgc={'rgba(255,255,255, 0)'} />
 			</Screen>
 		);
 	}

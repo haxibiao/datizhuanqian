@@ -42,7 +42,7 @@ class CorrectionItem extends Component {
 						{item.status == 1 && <Text style={{ color: Colors.weixin, fontSize: 12 }}>已采纳</Text>}
 						{item.status == 0 && <Text style={{ color: Colors.theme, fontSize: 12 }}>审核中</Text>}
 						{item.status == -1 && <Text style={{ color: Colors.themeRed, fontSize: 12 }}>未采纳</Text>}
-						{item.remark && <Text style={styles.greyText}>·{item.remark}</Text>}
+						{item.remark && <Text style={{ fontSize: 12, color: Colors.themeRed }}>·{item.remark}</Text>}
 						{item.type == 1 && !item.remark && <Text style={styles.greyText}>·题干有误</Text>}
 						{item.type == 2 && !item.remark && <Text style={styles.greyText}>·答案有误</Text>}
 						{item.type == 3 && !item.remark && <Text style={styles.greyText}>·图片缺少或不清晰</Text>}

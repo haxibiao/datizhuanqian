@@ -4,7 +4,7 @@ import { Colors, Divice } from '../../constants';
 
 class LoginWaiting extends Component {
 	render() {
-		let { isVisible, customStyle = {}, tips } = this.props;
+		let { isVisible, customStyle = {}, tips, bgc } = this.props;
 		if (!isVisible) {
 			return null;
 		}
@@ -18,7 +18,7 @@ class LoginWaiting extends Component {
 					height: Divice.height,
 					alignItems: 'center',
 					justifyContent: 'center',
-					backgroundColor: 'rgba(255,255,255, 0.6)'
+					backgroundColor: bgc ? bgc : 'rgba(255,255,255, 0.6)'
 				}}
 			>
 				<View style={styles.container}>

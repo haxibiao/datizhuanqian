@@ -24,7 +24,10 @@ query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int) {
 		status
 		gold
 		ticket
-		image
+		image {
+			id
+			path
+		}
 		category {
 			id
 			name
