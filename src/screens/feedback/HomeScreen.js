@@ -23,8 +23,8 @@ class HomeScreen extends Component {
 			<Screen header>
 				<View style={styles.container}>
 					<ScrollableTabView renderTabBar={props => <TabBarHeader {...props} width={300} />}>
-						<Feedback navigation={navigation} tabLabel="意见反馈" />
 						<FeedbackList navigation={navigation} tabLabel="反馈记录" />
+						<Feedback navigation={navigation} tabLabel="提交反馈" />
 					</ScrollableTabView>
 				</View>
 			</Screen>

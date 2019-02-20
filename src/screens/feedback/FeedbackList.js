@@ -27,7 +27,7 @@ class FeedbackList extends Component {
 		this.state = {
 			onPress: 'LATEST',
 			fetchingMore: true,
-			filter: this.props.user.id
+			filter: null
 		};
 	}
 	render() {
@@ -38,6 +38,16 @@ class FeedbackList extends Component {
 				<DivisionLine height={5} />
 				<View style={styles.header}>
 					<TouchableOpacity
+						style={[{ borderBottomColor: filter == null ? Colors.theme : Colors.white }, styles.tab]}
+						onPress={() => {
+							this.setState({
+								filter: null
+							});
+						}}
+					>
+						<Text>热门问题</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
 						style={[styles.tab, { borderBottomColor: filter == null ? Colors.white : Colors.theme }]}
 						onPress={() => {
 							this.setState({
@@ -46,16 +56,6 @@ class FeedbackList extends Component {
 						}}
 					>
 						<Text>我的反馈</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={[{ borderBottomColor: filter == null ? Colors.theme : Colors.white }, styles.tab]}
-						onPress={() => {
-							this.setState({
-								filter: null
-							});
-						}}
-					>
-						<Text>反馈列表</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -66,7 +66,7 @@ class FeedbackList extends Component {
 						if (!(data && data.feedbacks && data.feedbacks.length > 0))
 							return <BlankContent text={'暂无反馈'} fontSize={14} />;
 						return (
-							<View>
+							<View style={{ flex: 1 }}>
 								<FlatList
 									data={data.feedbacks}
 									keyExtractor={(item, index) => index.toString()}
