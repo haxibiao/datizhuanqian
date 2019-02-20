@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, View, TouchableOpacity, FlatList, RefreshControl, Linking } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, RefreshControl, Linking, NativeModules } from 'react-native';
 
 import {
 	Header,
@@ -111,7 +111,7 @@ class HomeScreen extends Component {
 					version={onlineVersion}
 					confirm={() => {
 						this.handleUpdateModalVisible();
-						this.openUrl(this.state.url);
+						NativeModules.DownloadApk.downloading(this.state.url, 'datizhuanqian.apk');
 					}}
 				/>
 				<UpdateTipsModal
@@ -119,7 +119,7 @@ class HomeScreen extends Component {
 					description={description}
 					version={onlineVersion}
 					openUrl={() => {
-						this.openUrl(this.state.url);
+						NativeModules.DownloadApk.downloading(this.state.url, 'datizhuanqian.apk');
 					}}
 					tips={'发现新版本'}
 				/>
@@ -236,7 +236,7 @@ class HomeScreen extends Component {
 		Linking.openURL(url);
 	}
 
-	changeVersionInfo(url, version) {
+	changeVersionInfo(url, version, description) {
 		this.setState({
 			url: url,
 			onlineVersion: version,

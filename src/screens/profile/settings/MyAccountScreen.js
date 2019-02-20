@@ -104,7 +104,7 @@ class EditProfileScreen extends Component {
 					/>
 					<Input
 						password
-						placeholder="请输入APP登录密码"
+						placeholder="请输入答题赚钱登录密码"
 						defaultValue={this.state.password}
 						changeValue={value => {
 							this.setState({
@@ -121,7 +121,9 @@ class EditProfileScreen extends Component {
 						handler={this.setPaymentInfo.bind(this)}
 					/>
 					<View style={{ paddingHorizontal: 15 }}>
-						<Text style={styles.footer}>注意:每个账号只能绑定一个支付宝账号，并且最多修改3次支付宝！</Text>
+						<Text style={styles.footer}>
+							注意:每个账号只能绑定一个支付宝账号，一人多个账号无法享受提现功能,并且最多修改3次支付宝账号！
+						</Text>
 					</View>
 				</View>
 			</Screen>

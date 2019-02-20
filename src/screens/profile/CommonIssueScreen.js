@@ -20,10 +20,13 @@ class CommonIssueScreen extends Component {
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：提现不了，怎么办？</Text>
 							<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 15, lineHeight: 15 }}>
-								A：请先检查您的网络是否正常以及APP是否是最新版本或尝试重新登录，若还不能提现，请联系我们的官方微信或在意见反馈里提交，我们会在第一时间为您解决。
+								A：1.请先检查您的网络是否正常以及APP是否是最新版本或尝试重新登录。
+								2.一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现系统将判定涉嫌恶意刷取智慧点，答题赚钱官方有权限制提现功能。
+								3.若还不能提现，请联系我们的官方QQ群，或在意见反馈里提交，我们会在第一时间为您解决。
 							</Text>
 						</View>
 					</View>
+
 					<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：提现多久到账？</Text>
@@ -64,7 +67,6 @@ class CommonIssueScreen extends Component {
 							</Text>
 						</View>
 					</View>
-
 					{/*<View style={{ paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: Colors.lightBorder }}>
 						<View style={{ paddingHorizontal: 20 }}>
 							<Text style={{ fontSize: 15, color: Colors.black }}>Q：怎么获得道具？</Text>

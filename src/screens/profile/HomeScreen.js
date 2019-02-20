@@ -117,7 +117,7 @@ class HomeScreen extends Component {
 							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}
 						/>
 						<ProfileItem
-							name={'任务日志'}
+							name={'测试下载APK'}
 							icon={'task2'}
 							right
 							navigation={navigation}
