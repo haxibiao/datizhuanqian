@@ -55,6 +55,12 @@ class HomeScreen extends Component {
 							});
 							return (
 								<ScrollView style={{ flex: 1 }}>
+									<TaskType
+										tasks={[{ name: '用户出题', taskStatus: 4, gold: 20, type: 3 }]}
+										user={user}
+										navigation={navigation}
+										name={'出题任务'}
+									/>
 									{newUserTask.length > 0 && (
 										<TaskType
 											tasks={newUserTask}
@@ -63,6 +69,7 @@ class HomeScreen extends Component {
 											name={'新人任务'}
 										/>
 									)}
+
 									{dailyTask.length > 0 && (
 										<TaskType
 											tasks={dailyTask}

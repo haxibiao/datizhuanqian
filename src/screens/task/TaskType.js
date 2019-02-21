@@ -17,10 +17,13 @@ class TaskType extends Component {
 
 	doTask(task) {
 		const { navigation, user } = this.props;
+		console.log('task', task);
 		if (task.type == 2) {
-			navigation.navigate('问题创建', { task_id: task.id, again: false });
+			navigation.navigate('提交任务', { task_id: task.id, again: false });
 		} else if (task.type == 1) {
 			navigation.goBack();
+		} else if (task.type == 3) {
+			navigation.navigate('问题创建');
 		} else {
 			navigation.navigate('编辑个人资料', { user: user });
 		}

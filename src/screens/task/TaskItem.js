@@ -178,6 +178,16 @@ class TaskItem extends Component {
 						fontSize={13}
 					/>
 				)}
+				{task.taskStatus == 4 && (
+					<Button
+						name={'去出题'}
+						outline
+						style={styles.themeButton}
+						textColor={Colors.theme}
+						fontSize={13}
+						handler={handler}
+					/>
+				)}
 
 				<TaskRewardModal visible={RewarVisible} handleVisible={this.handleRewardModalVisible} />
 			</TouchableOpacity>
