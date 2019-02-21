@@ -81,7 +81,7 @@ class HomeScreen extends Component {
 							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
 						/>
 						<ProfileItem
-							name={'我的提问'}
+							name={'我的出题'}
 							icon={'task3'}
 							IconStyle={{ paddingBottom: 3 }}
 							size={18}
@@ -116,7 +116,7 @@ class HomeScreen extends Component {
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}
 						/>
-						<ProfileItem
+						{/*<ProfileItem
 							name={'测试下载APK'}
 							icon={'task2'}
 							right
@@ -127,7 +127,7 @@ class HomeScreen extends Component {
 									'datizhuanqian.apk'
 								);
 							}}
-						/>
+						/>*/}
 						<DivisionLine height={10} />
 						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
 						<ProfileItem

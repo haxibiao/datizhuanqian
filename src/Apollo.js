@@ -27,6 +27,11 @@ class Apollo extends Component {
 			deviceHeaders.version = DeviceInfo.getVersion(); //版本号
 			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion(); //系统版本
 			deviceHeaders.uniqueId = DeviceInfo.getUniqueID(); //uniqueId
+			DeviceInfo.getIPAddress()
+				.then(response => response.toString())
+				.then(data => {
+					deviceHeaders.ip = data;
+				}); //ip地址
 		}
 
 		if (!this.cache) {

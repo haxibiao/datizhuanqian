@@ -64,7 +64,7 @@ class FeedbackDetailsScreen extends Component {
 					{
 						query: feedbackCommentsQuery,
 						variables: {
-							commentable_id: feedback.id,
+							commentable_id: feedback_id,
 							commentable_type: 'feedbacks'
 						}
 					},

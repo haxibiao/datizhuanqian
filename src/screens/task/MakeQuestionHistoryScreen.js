@@ -179,7 +179,7 @@ class MakeQuestionHistoryScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#f7f7f7'
+		backgroundColor: Colors.white
 	},
 	questionItem: {
 		backgroundColor: '#fff',

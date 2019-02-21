@@ -18,9 +18,15 @@ class UserTopInfo extends Component {
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.data && nextProps.data.user) {
 			nextProps.dispatch(actions.userCache(nextProps.data.user));
+
+			nextProps.navigation.addListener('didFocus', payload => {
+				nextProps.data.refetch();
+			});
 		}
 		//props更新时存入用户信息
 	}
+
+	componentDidMount() {}
 
 	render() {
 		const {
@@ -28,10 +34,6 @@ class UserTopInfo extends Component {
 			navigation,
 			data: { loading, error, user, refetch }
 		} = this.props;
-
-		navigation.addListener('didFocus', payload => {
-			refetch();
-		});
 
 		if (error) return <UserProfileCache navigation={navigation} />;
 		if (loading) return <ProfileNotLogin navigation={navigation} />;
