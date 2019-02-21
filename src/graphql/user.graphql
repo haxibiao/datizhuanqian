@@ -155,3 +155,26 @@ query questionRedressesQuery($offset: Int, $limit: Int) {
 		created_at
 	}
 }
+
+# 答题记录
+query answerHistoriesQuery($offset: Int, $limit: Int) {
+	user {
+		answerHistories(offset: $offset, limit: $limit) {
+			correct_count
+			question {
+				id
+				description
+				answer
+				image {
+					id
+					path
+				}
+				selections
+				answers {
+					Text
+					Value
+				}
+			}
+		}
+	}
+}

@@ -9,7 +9,11 @@ class Question extends Component {
 		this.state = {};
 	}
 	render() {
-		const { question, option, isMethod, value, changeValue, pickColor, rightColor } = this.props;
+		let { question, option, isMethod, value, changeValue, pickColor, rightColor } = this.props;
+		// 修复数据问题
+		if (!(option && option.Selection)) {
+			option = { Selection: [] };
+		}
 		return (
 			<View>
 				<Text style={styles.title}>{question.description}</Text>
@@ -39,8 +43,8 @@ class Question extends Component {
 											value == option.Value
 												? pickColor
 												: option.Value == question.answer
-													? rightColor
-													: Colors.tintGray
+												? rightColor
+												: Colors.tintGray
 									}
 								]}
 								onPress={() => changeValue(option.Value)}

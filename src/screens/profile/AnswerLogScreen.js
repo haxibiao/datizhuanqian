@@ -1,49 +1,80 @@
 /*
-* @flow
-* created by wyk made in 2019-02-15 10:14:12
-*/
+ * @flow
+ * created by wyk made in 2019-02-15 10:14:12
+ */
 import React, { Component } from 'react';
-import { StyleSheet, Platform,View, FlatList, Image, Text, TouchableOpacity,TouchableWithoutFeedback,RefreshControl } from 'react-native';
-import { DivisionLine, Header, Screen,Iconfont,LoadingError,Loading,BlankContent,LoadingMore,ContentEnd } from '../../components';
+import {
+	StyleSheet,
+	Platform,
+	View,
+	FlatList,
+	Image,
+	Text,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	RefreshControl
+} from 'react-native';
+import {
+	DivisionLine,
+	Header,
+	Screen,
+	Iconfont,
+	LoadingError,
+	Loading,
+	BlankContent,
+	LoadingMore,
+	ContentEnd
+} from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-import { mySubmitQuestionHistoryQuery } from '../../graphql/task.graphql';
+import { answerHistoriesQuery } from '../../graphql/user.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
 
-class AnswerItem  extends Component {
+class AnswerItem extends Component {
 	static defaultProps = {
-	  answer: {}
-	}
+		answer: {}
+	};
 
 	render() {
-		let { answer,navigation }  = this.props;
-		let {category,image,description,correct} = answer;
-		correct=Math.random(0,1)>0.5;
-		console.log('image',image);
+		let {
+			answer: { question, correct_count },
+			navigation
+		} = this.props;
+		let { category, image, description } = question;
+		console.log('image', image);
 		return (
-			<TouchableWithoutFeedback onPress={()=>navigation.navigate('题目详情',{question:answer})}>
+			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
 				<View style={styles.answerItem}>
 					<View style={styles.content}>
-						<View style={{ flex: 1}}>
-							<Text style={styles.subjectText} numberOfLines={3}>{description}</Text>
+						<View style={{ flex: 1 }}>
+							<Text style={styles.subjectText} numberOfLines={3}>
+								{description}
+							</Text>
 						</View>
-						<View style={{alignItems: 'flex-end',marginTop: 20,paddingBottom: 10 }}>
-							<TouchableOpacity onPress={()=>navigation.navigate('题目纠错',{question:answer})}>
-								<Text style={{fontSize: 13,color:Colors.skyBlue}}>反馈</Text>
+						<View style={{ alignItems: 'flex-end', marginTop: 20, paddingBottom: 10 }}>
+							<TouchableOpacity onPress={() => navigation.navigate('题目纠错', { question })}>
+								<Text style={{ fontSize: 13, color: Colors.skyBlue }}>反馈</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 					<View>
-						<View><Text style={styles.answerText}>正确答案:《蜀道难》</Text></View>
 						<View style={styles.answer}>
-							<Text style={[styles.answerText,{color:correct?Colors.skyBlue:Colors.red}]}>您的答案:《忆江南》</Text>
-							<Iconfont name={correct?'correct':'close'} size={20} color={correct?Colors.skyBlue:Colors.red}/>
+							<Text
+								style={[styles.answerText, { color: correct_count > 0 ? Colors.skyBlue : Colors.red }]}
+							>
+								{correct_count > 0 ? '您答对了' : '您答错了'}
+							</Text>
+							<Iconfont
+								name={correct_count > 0 ? 'correct' : 'close'}
+								size={20}
+								color={correct_count > 0 ? Colors.skyBlue : Colors.red}
+							/>
 						</View>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
-		)
+		);
 	}
 }
 
@@ -51,7 +82,7 @@ class AnswerLogScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			fetchingMore:true
+			fetchingMore: true
 		};
 	}
 
@@ -67,18 +98,27 @@ class AnswerLogScreen extends Component {
 					}}
 				/>
 				<View style={styles.container}>
-					<Query query={mySubmitQuestionHistoryQuery} fetchPolicy="network-only">
+					<Query query={answerHistoriesQuery} fetchPolicy="network-only">
 						{({ data, loading, error, refetch, fetchMore }) => {
 							if (error) return <LoadingError reload={() => refetch()} />;
 							if (loading) return <Loading />;
-							if (!(data && data.user && data.user.questions && data.user.questions.length > 0)) {
-								return <BlankContent />
+							if (
+								!(
+									data &&
+									data.user &&
+									data.user.answerHistories &&
+									data.user.answerHistories.length > 0
+								)
+							) {
+								return <BlankContent />;
 							}
 							return (
 								<FlatList
-									data={data.user.questions}
+									data={data.user.answerHistories}
 									keyExtractor={(item, index) => index.toString()}
-									renderItem={({item,index})=><AnswerItem answer={item} navigation={navigation}/>}
+									renderItem={({ item, index }) => (
+										<AnswerItem answer={item} navigation={navigation} />
+									)}
 									refreshControl={
 										<RefreshControl
 											refreshing={loading}
@@ -88,13 +128,20 @@ class AnswerLogScreen extends Component {
 									}
 									onEndReachedThreshold={0.3}
 									onEndReached={() => {
-										if (data.user.questions) {
+										if (data.user.answerHistories) {
 											fetchMore({
 												variables: {
-													offset: data.user.questions.length
+													offset: data.user.answerHistories.length
 												},
 												updateQuery: (prev, { fetchMoreResult }) => {
-													if (!(fetchMoreResult && fetchMoreResult.user && fetchMoreResult.user.questions &&fetchMoreResult.user.questions.length > 0)) {
+													if (
+														!(
+															fetchMoreResult &&
+															fetchMoreResult.user &&
+															fetchMoreResult.user.answerHistories &&
+															fetchMoreResult.user.answerHistories.length > 0
+														)
+													) {
 														this.setState({
 															fetchingMore: false
 														});
@@ -102,10 +149,12 @@ class AnswerLogScreen extends Component {
 													}
 													return Object.assign({}, prev, {
 														user: Object.assign({}, prev.user, {
-															questions: [...prev.user.questions, ...fetchMoreResult.user.questions]
+															answerHistories: [
+																...prev.user.answerHistories,
+																...fetchMoreResult.user.answerHistories
+															]
 														})
 													});
-
 												}
 											});
 										} else {
@@ -116,16 +165,10 @@ class AnswerLogScreen extends Component {
 									}}
 									ListFooterComponent={() => {
 										return (
-											<View style={{marginTop: -10}}>
-												{
-													this.state.fetchingMore ? (
-														<LoadingMore />
-													) : (
-														<ContentEnd />
-													)
-												}
+											<View style={{ marginTop: -10 }}>
+												{this.state.fetchingMore ? <LoadingMore /> : <ContentEnd />}
 											</View>
-										)
+										);
 									}}
 								/>
 							);
@@ -142,12 +185,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#f7f7f7'
 	},
-	answerItem:{
+	answerItem: {
 		padding: 15,
 		backgroundColor: '#fff',
 		marginBottom: 10
 	},
-	categoryLabel:{
+	categoryLabel: {
 		alignSelf: 'auto',
 		paddingHorizontal: 4,
 		paddingVertical: 2,
@@ -155,31 +198,31 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 		fontSize: 14,
 		color: Colors.theme,
-		borderColor: Colors.theme,
+		borderColor: Colors.theme
 	},
-	content:{
+	content: {
 		borderBottomWidth: 0.5,
 		marginBottom: 10,
 		borderColor: '#f0f0f0'
 	},
-	subjectText:{
+	subjectText: {
 		fontSize: 16,
 		lineHeight: 20,
 		color: Colors.primaryFont
 	},
-	image:{
+	image: {
 		width: 60,
 		height: 60,
 		borderRadius: 5,
-		resizeMode: 'cover',
+		resizeMode: 'cover'
 	},
-	answer:{
+	answer: {
 		marginTop: 5,
-		flexDirection: 'row', 
-		justifyContent: 'space-between', 
-		alignItems: 'center' 
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
-	answerText:{
+	answerText: {
 		fontSize: 13,
 		color: Colors.primaryFont
 	}

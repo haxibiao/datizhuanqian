@@ -64,15 +64,13 @@ class HomeScreen extends Component {
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
 						/>
-						{
-							// <ProfileItem
-							// 	name={'答题记录'}
-							// 	icon={'answerLog'}
-							// 	size={20}
-							// 	navigation={navigation}
-							// 	handler={() => (login ? navigation.navigate('答题记录') : navigation.navigate('登录注册'))}
-							// />
-						}
+						<ProfileItem
+							name={'答题记录'}
+							icon={'answerLog'}
+							size={20}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('答题记录') : navigation.navigate('登录注册'))}
+						/>
 						<ProfileItem
 							name={'纠错记录'}
 							icon={'correction'}
