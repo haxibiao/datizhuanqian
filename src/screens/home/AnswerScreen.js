@@ -21,9 +21,51 @@ import Question from './Question';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { QuestionQuery, QuestionAnswerMutation } from '../../graphql/question.graphql';
+import { QuestionQuery, QuestionAnswerMutation, toggleFavoriteMutation } from '../../graphql/question.graphql';
 import { UserQuery } from '../../graphql/user.graphql';
 import { Query, Mutation, compose, graphql, withApollo } from 'react-apollo';
+
+class FavoriteQuestion extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			favorite: false
+		};
+	}
+
+	favoriteQuestion = async toggleFavorite => {
+		await toggleFavorite({ variables: { data: { favorable_id: this.props.getQuestionId() } } });
+		this.setState({ favorite: !this.state.favorite });
+	};
+
+	onCompleted = () => {
+		Methods.toast(this.state.favorite ? '取消收藏' : '收藏成功', 200);
+	};
+
+	onError = err => {
+		console.log('err', err);
+		Methods.toast('收藏失败', 200);
+	};
+
+	render() {
+		return (
+			<Mutation mutation={toggleFavoriteMutation} onCompleted={this.onCompleted} onError={this.onError}>
+				{toggleFavorite => {
+					return (
+						<TouchableOpacity onPress={() => this.favoriteQuestion(toggleFavorite)}>
+							<Iconfont
+								name={this.state.favorite ? 'collection-fill' : 'collection'}
+								color="#262626"
+								size={22}
+							/>
+						</TouchableOpacity>
+					);
+				}}
+			</Mutation>
+		);
+	}
+}
 
 class AnswerScreen extends Component {
 	constructor(props) {
@@ -104,12 +146,20 @@ class AnswerScreen extends Component {
 		}
 	}
 
+	getQuestionId = () => {
+		return this.questionId;
+	};
+
 	render() {
 		const { navigation, user, noTicketTips } = this.props;
 		let { value, isMethod, isShow, pickColor, name, buttonColor, rightColor } = this.state;
 		const { category, question_id } = navigation.state.params;
 		return (
-			<Screen routeName={'答题'} customStyle={{ backgroundColor: Colors.theme }}>
+			<Screen
+				routeName={'答题'}
+				customStyle={{ backgroundColor: Colors.theme }}
+				headerRight={<FavoriteQuestion getQuestionId={this.getQuestionId} />}
+			>
 				<Query
 					query={QuestionQuery}
 					variables={{ category_id: category.id, id: question_id }}
@@ -161,7 +211,7 @@ class AnswerScreen extends Component {
 								/>
 							);
 						let question = data.question;
-
+						this.questionId = question.id;
 						//转义 防止后端数据错误
 						let selections = data.question.selections.replace(/\\/g, '');
 						let option = '';

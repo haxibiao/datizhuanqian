@@ -50,6 +50,7 @@ query QuestionQuery($id: Int, $category_id: Int) {
 		selections
 		answer
 		status
+		favorite_status
 		gold
 		ticket
 		image {
@@ -89,4 +90,11 @@ query BannersQuery {
 #问题纠错
 mutation createQuestionRedressMutation($question_id: Int!, $type: Int, $content: String) {
 	createQuestionRedress(question_id: $question_id, type: $type, content: $content)
+}
+
+# 收藏
+mutation toggleFavoriteMutation($data: ToggleFavoriteInputType) {
+	toggleFavorite(data: $data) {
+		id
+	}
 }
