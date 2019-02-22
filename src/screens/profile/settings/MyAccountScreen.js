@@ -101,6 +101,7 @@ class EditProfileScreen extends Component {
 								pay_account: value
 							});
 						}}
+						maxLength={50}
 					/>
 					<Input
 						password

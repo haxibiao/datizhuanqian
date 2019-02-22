@@ -28,48 +28,35 @@ import {
 import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-import { answerHistoriesQuery } from '../../graphql/user.graphql';
+import { FavoritesQuery } from '../../graphql/user.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
 
-class AnswerItem extends Component {
+class FavoritesItem extends Component {
 	static defaultProps = {
-		answer: {}
+		favorites: {}
 	};
 
 	render() {
 		let {
-			answer: { question, correct_count },
+			favorites: { question, created_at },
 			navigation
 		} = this.props;
-		let { category, image, description } = question;
-		console.log('image', image);
+		let { category, description } = question;
+
 		return (
 			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
-				<View style={styles.answerItem}>
+				<View style={styles.favoritesItem}>
 					<View style={styles.content}>
 						<View style={{ flex: 1 }}>
 							<Text style={styles.subjectText} numberOfLines={3}>
 								{description}
 							</Text>
 						</View>
-						<View style={{ alignItems: 'flex-end', marginTop: 20, paddingBottom: 10 }}>
-							<TouchableOpacity onPress={() => navigation.navigate('题目纠错', { question })}>
-								<Text style={{ fontSize: 13, color: Colors.skyBlue }}>反馈</Text>
-							</TouchableOpacity>
-						</View>
 					</View>
 					<View>
-						<View style={styles.answer}>
-							<Text
-								style={[styles.answerText, { color: correct_count > 0 ? Colors.skyBlue : Colors.red }]}
-							>
-								{correct_count > 0 ? '您答对了' : '您答错了'}
-							</Text>
-							<Iconfont
-								name={correct_count > 0 ? 'correct' : 'close'}
-								size={20}
-								color={correct_count > 0 ? Colors.skyBlue : Colors.red}
-							/>
+						<View style={styles.favorites}>
+							<Text style={styles.favoritesText}>#{category.name}</Text>
+							<Text style={styles.time}>{created_at}</Text>
 						</View>
 					</View>
 				</View>
@@ -78,7 +65,7 @@ class AnswerItem extends Component {
 	}
 }
 
-class AnswerLogScreen extends Component {
+class MyFavoritesScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -98,26 +85,20 @@ class AnswerLogScreen extends Component {
 					}}
 				/>
 				<View style={styles.container}>
-					<Query query={answerHistoriesQuery} fetchPolicy="network-only">
+					<Query query={FavoritesQuery} fetchPolicy="network-only">
 						{({ data, loading, error, refetch, fetchMore }) => {
 							if (error) return <LoadingError reload={() => refetch()} />;
 							if (loading) return <Loading />;
-							if (
-								!(
-									data &&
-									data.user &&
-									data.user.answerHistories &&
-									data.user.answerHistories.length > 0
-								)
-							) {
+							console.log('data', data);
+							if (!(data && data.favorites && data.favorites.length > 0)) {
 								return <BlankContent />;
 							}
 							return (
 								<FlatList
-									data={data.user.answerHistories}
+									data={data.favorites}
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => (
-										<AnswerItem answer={item} navigation={navigation} />
+										<FavoritesItem favorites={item} navigation={navigation} />
 									)}
 									refreshControl={
 										<RefreshControl
@@ -128,18 +109,18 @@ class AnswerLogScreen extends Component {
 									}
 									onEndReachedThreshold={0.3}
 									onEndReached={() => {
-										if (data.user.answerHistories) {
+										if (data.favorites) {
 											fetchMore({
 												variables: {
-													offset: data.user.answerHistories.length
+													offset: data.favorites.length
 												},
 												updateQuery: (prev, { fetchMoreResult }) => {
 													if (
 														!(
 															fetchMoreResult &&
-															fetchMoreResult.user &&
-															fetchMoreResult.user.answerHistories &&
-															fetchMoreResult.user.answerHistories.length > 0
+															fetchMoreResult &&
+															fetchMoreResult.favorites &&
+															fetchMoreResult.favorites.length > 0
 														)
 													) {
 														this.setState({
@@ -148,11 +129,8 @@ class AnswerLogScreen extends Component {
 														return prev;
 													}
 													return Object.assign({}, prev, {
-														user: Object.assign({}, prev.user, {
-															answerHistories: [
-																...prev.user.answerHistories,
-																...fetchMoreResult.user.answerHistories
-															]
+														user: Object.assign({}, prev, {
+															favorites: [...prev.favorites, ...fetchMoreResult.favorites]
 														})
 													});
 												}
@@ -185,10 +163,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.white
 	},
-	answerItem: {
+	favoritesItem: {
 		padding: 15,
 		backgroundColor: '#fff',
-		marginBottom: 10
+		paddingBottom: 10,
+		borderBottomWidth: 0.5,
+		borderColor: '#f0f0f0'
 	},
 	categoryLabel: {
 		alignSelf: 'auto',
@@ -201,9 +181,7 @@ const styles = StyleSheet.create({
 		borderColor: Colors.theme
 	},
 	content: {
-		borderBottomWidth: 0.5,
-		marginBottom: 10,
-		borderColor: '#f0f0f0'
+		marginBottom: 10
 	},
 	subjectText: {
 		fontSize: 16,
@@ -216,15 +194,19 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		resizeMode: 'cover'
 	},
-	answer: {
+	favorites: {
 		marginTop: 5,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
-	answerText: {
+	favoritesText: {
 		fontSize: 13,
-		color: Colors.primaryFont
+		color: Colors.theme
+	},
+	time: {
+		fontSize: 13,
+		color: Colors.grey
 	}
 });
 
@@ -233,4 +215,4 @@ export default connect(store => {
 		user: store.users.user,
 		login: store.users.login
 	};
-})(AnswerLogScreen);
+})(MyFavoritesScreen);

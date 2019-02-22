@@ -23,6 +23,7 @@ import TestScreen from '../screens/profile/TestScreen';
 import BusinessScreen from '../screens/profile/BusinessScreen';
 import CorrectionLogScreen from '../screens/profile/CorrectionLogScreen';
 import AnswerLogScreen from '../screens/profile/AnswerLogScreen';
+import MyFavoritesScreen from '../screens/profile/MyFavoritesScreen';
 
 import FeedbackScreen from '../screens/feedback/HomeScreen';
 import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
@@ -117,6 +118,9 @@ export default {
 	},
 	答题记录: {
 		screen: AnswerLogScreen
+	},
+	我的收藏: {
+		screen: MyFavoritesScreen
 	},
 	//反馈
 	通知: {

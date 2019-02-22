@@ -68,6 +68,7 @@ class CommentItem extends Component {
 									paddingLeft: 10,
 									height: 20
 								}}
+								numberOfLines={1}
 							>
 								{`引用  #${item.parent_comment.id}  ${item.parent_comment.user.name}的评论\n`}
 							</Text>

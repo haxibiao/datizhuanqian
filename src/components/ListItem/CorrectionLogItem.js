@@ -17,22 +17,12 @@ class CorrectionItem extends Component {
 			<TouchableOpacity
 				style={styles.container}
 				onPress={() => {
-					navigation.dispatch(
-						Methods.navigationAction({
-							routeName: '回答',
-							params: {
-								category: {
-									id: null
-								},
-								question_id: item.question.id
-							}
-						})
-					);
+					navigation.navigate('题目详情', { question: item.question });
 				}}
 			>
 				<Text style={styles.content}>{item.question.description}</Text>
 				{item.content && (
-					<View style={{ paddingTop: 10 }}>
+					<View style={{ paddingTop: 20 }}>
 						<Text style={{ fontSize: 13, color: Colors.black }}>{item.content}</Text>
 					</View>
 				)}

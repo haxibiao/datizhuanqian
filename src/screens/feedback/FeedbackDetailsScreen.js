@@ -114,6 +114,7 @@ class FeedbackDetailsScreen extends Component {
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
+
 						return (
 							<FlatList
 								ref={flatList => (this._flatList = flatList)}
@@ -167,7 +168,7 @@ class FeedbackDetailsScreen extends Component {
 									return data && data.comments.length > 0 && this.state.fetchingMore ? (
 										<LoadingMore />
 									) : (
-										<ContentEnd content={'还没有评论'} />
+										<ContentEnd content={'没有更多评论了'} />
 									);
 								}}
 							/>

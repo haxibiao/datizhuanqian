@@ -146,6 +146,16 @@ query questionRedressesQuery($offset: Int, $limit: Int) {
 		question {
 			id
 			description
+			answer
+			image {
+				id
+				path
+			}
+			selections
+			answers {
+				Text
+				Value
+			}
 		}
 		content
 		type
@@ -174,6 +184,32 @@ query answerHistoriesQuery($offset: Int, $limit: Int) {
 					Text
 					Value
 				}
+			}
+		}
+	}
+}
+
+#我的收藏
+query FavoritesQuery($offset: Int, $limit: Int) {
+	favorites(offset: $offset, limit: $limit) {
+		id
+		created_at
+		question {
+			id
+			description
+			answer
+			image {
+				id
+				path
+			}
+			selections
+			answers {
+				Text
+				Value
+			}
+			category {
+				id
+				name
 			}
 		}
 	}

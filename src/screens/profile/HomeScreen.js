@@ -48,44 +48,7 @@ class HomeScreen extends Component {
 							right
 							navigation={navigation}
 							handler={() => (login ? this.openUrl() : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem
-							name={'我要出题'}
-							icon={'book2'}
-							size={19}
-							right
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('我要出题') : navigation.navigate('登录注册'))}
 						/>*/}
-						<ProfileItem
-							name={'提现日志'}
-							icon={'book'}
-							IconStyle={{ paddingBottom: 3 }}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem
-							name={'答题记录'}
-							icon={'answerLog'}
-							size={20}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('答题记录') : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem
-							name={'纠错记录'}
-							icon={'correction'}
-							size={18}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem
-							name={'我的出题'}
-							icon={'task3'}
-							IconStyle={{ paddingBottom: 3 }}
-							size={18}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('出题记录') : navigation.navigate('登录注册'))}
-						/>
 						<ProfileItem
 							name={'通知消息'}
 							icon={'message'}
@@ -114,6 +77,45 @@ class HomeScreen extends Component {
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('通知') : navigation.navigate('登录注册'))}
 						/>
+						<ProfileItem
+							name={'提现日志'}
+							icon={'book'}
+							IconStyle={{ paddingBottom: 3 }}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
+						/>
+						<ProfileItem
+							name={'我的收藏'}
+							icon={'collection'}
+							size={22}
+							IconStyle={{ marginLeft: -3 }}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('我的收藏') : navigation.navigate('登录注册'))}
+						/>
+						<ProfileItem
+							name={'答题记录'}
+							icon={'answerLog'}
+							size={20}
+							IconStyle={{ marginLeft: -2 }}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('答题记录') : navigation.navigate('登录注册'))}
+						/>
+						<ProfileItem
+							name={'纠错记录'}
+							icon={'correction'}
+							size={18}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
+						/>
+						<ProfileItem
+							name={'我的出题'}
+							icon={'task3'}
+							IconStyle={{ paddingBottom: 3 }}
+							size={18}
+							navigation={navigation}
+							handler={() => (login ? navigation.navigate('出题记录') : navigation.navigate('登录注册'))}
+						/>
+
 						{/*<ProfileItem
 							name={'测试下载APK'}
 							icon={'task2'}
@@ -127,13 +129,13 @@ class HomeScreen extends Component {
 							}}
 						/>*/}
 						<DivisionLine height={10} />
-						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
 						<ProfileItem
 							name={'反馈中心'}
 							icon={'feedback2'}
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('意见反馈') : navigation.navigate('登录注册'))}
 						/>
+						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
 						{/*
 						<ProfileItem name={'商务合作'} icon={'business'} size={20} right navigation={navigation} />*/}
 						<DivisionLine height={10} />

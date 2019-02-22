@@ -28,8 +28,13 @@ class CorrectionLogScreen extends Component {
 		const { user, navigation } = this.props;
 
 		return (
-			<Screen>
-				<DivisionLine height={10} />
+			<Screen
+				customStyle={{
+					backgroundColor: Colors.theme,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
+			>
 				<Query query={questionRedressesQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
