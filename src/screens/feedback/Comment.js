@@ -24,7 +24,7 @@ class Comment extends Component {
 		} = this.props;
 
 		return (
-			<View style={styles.footer}>
+			<View style={[styles.footer, !autoFocus && { paddingVertical: 0 }]}>
 				{autoFocus ? (
 					<View>
 						{reply && (
@@ -56,8 +56,16 @@ class Comment extends Component {
 						/>
 					</View>
 				) : (
-					<TouchableOpacity onPress={switchKeybord}>
-						<Text style={{ color: Colors.grey, fontSize: 15 }}>说说你的意见</Text>
+					<TouchableOpacity
+						onPress={switchKeybord}
+						style={{
+							paddingVertical: 10,
+							width: Divice.width - 100,
+							flexDirection: 'row',
+							alignItems: 'center'
+						}}
+					>
+						<Text style={{ color: Colors.grey, fontSize: 16 }}>说说你的意见...</Text>
 					</TouchableOpacity>
 				)}
 				<TouchableOpacity onPress={submitComment} disabled={content.length < 1}>
