@@ -48,13 +48,13 @@ class HomeScreen extends Component {
 								if (error) return null;
 								if (!(data && data.user)) return null;
 								if (
-									data.user.unread_notifications_count - data.user.unread_withdraw_notifications_count
+									data.user.unread_notifications_count - data.user.unread_comment_notifications_count
 								) {
 									return (
 										<RedDot
 											count={
 												data.user.unread_notifications_count -
-												data.user.unread_withdraw_notifications_count
+												data.user.unread_comment_notifications_count
 											}
 										/>
 									);
@@ -76,7 +76,7 @@ class HomeScreen extends Component {
 					</View>
 					<View style={styles.itemRight}>
 						<Text style={styles.name}>评论</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
+						<Query query={userUnreadQuery} variables={{ id: user.id }}>
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, RefreshControl } from 'react-native';
-import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen } from '../../components';
+import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen, DivisionLine } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import { Query } from 'react-apollo';
@@ -20,6 +20,7 @@ class SystemNotificationScreen extends Component {
 		const { navigation } = this.props;
 		return (
 			<Screen>
+				<DivisionLine height={5} />
 				<Query
 					query={systemNotificationsQuery}
 					variables={{
