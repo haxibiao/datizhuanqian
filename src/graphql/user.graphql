@@ -178,6 +178,8 @@ query answerHistoriesQuery($offset: Int, $limit: Int) {
 				image {
 					id
 					path
+					width
+					height
 				}
 				selections
 				answers {
@@ -201,6 +203,8 @@ query FavoritesQuery($offset: Int, $limit: Int) {
 			image {
 				id
 				path
+				width
+				height
 			}
 			selections
 			answers {
