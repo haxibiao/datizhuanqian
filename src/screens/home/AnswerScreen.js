@@ -34,13 +34,14 @@ class FavoriteQuestion extends Component {
 		};
 	}
 
-	favoriteQuestion = async toggleFavorite => {
-		await toggleFavorite({ variables: { data: { favorable_id: this.props.getQuestionId() } } });
-		this.setState({ favorite: !this.state.favorite });
+	favoriteQuestion = toggleFavorite => {
+		toggleFavorite({ variables: { data: { favorable_id: this.props.getQuestionId() } } });
 	};
 
 	onCompleted = () => {
-		Methods.toast(this.state.favorite ? '取消收藏' : '收藏成功', 200);
+		this.setState({ favorite: !this.state.favorite }, () => {
+			Methods.toast(this.state.favorite ? '收藏成功' : '取消收藏', 200);
+		});
 	};
 
 	onError = err => {
