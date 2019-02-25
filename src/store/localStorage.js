@@ -5,7 +5,8 @@ export const ItemKeys = {
   updateTipsVersion: 'updateTipsVersion',
   appIntroVersion: 'appIntroVersion',
   userCache: 'userCache',
-  categoryCache: 'categoryCache'
+  categoryCache: 'categoryCache',
+  server: 'server'
 };
 
 async function removeItem(key) {

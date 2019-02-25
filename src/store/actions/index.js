@@ -86,6 +86,18 @@ export default {
       type: types.CATEGORY_CACHE,
       categories
     };
-  }
+  },
   //本地网络缓存
+  updateServer(server) {
+    return {
+      type: types.UPDATE_SERVER,
+      server
+    };
+  },
+  setServer(server) {
+    return {
+      type: types.SET_SERVER,
+      server
+    };
+  }
 };

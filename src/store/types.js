@@ -19,6 +19,8 @@ export default defineActionConstants([
 	'WIDTH_DRAWS',
 	'CHANGE_UPDATE_TIPS_VERSION',
 	'UPDATE_APP_INTRO_VERSION',
+	'UPDATE_SERVER',
+	'SET_SERVER',
 
 	// 本地缓存
 	'USER_CACHE',

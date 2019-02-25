@@ -5,7 +5,8 @@ import {
 	appIntroVersion,
 	updateTipsVersion,
 	rememberUserCache,
-	rememberCategoryCache
+	rememberCategoryCache,
+	rememberServer
 } from './StorageActions';
 
 function genericErrorHandler({ action, dispatch, error }) {
@@ -67,6 +68,11 @@ export default [
 	{
 		action: types.CATEGORY_CACHE,
 		effect: rememberCategoryCache,
+		error: genericErrorHandler
+	},
+	{
+		action: types.UPDATE_SERVER,
+		effect: rememberServer,
 		error: genericErrorHandler
 	}
 ];

@@ -27,6 +27,11 @@ export async function rememberCategoryCache({ action, getState, dispatch }) {
 	await Storage.setItem(ItemKeys.categoryCache, categories);
 }
 
+export async function rememberServer({ action, getState, dispatch }) {
+	let { server } = action;
+	await Storage.setItem(ItemKeys.server, server);
+}
+
 export async function forgetUser({ action, getState, dispatch }) {
 	await Storage.removeItem(ItemKeys.user);
 	await Storage.removeItem(ItemKeys.userCache);

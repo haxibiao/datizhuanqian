@@ -7,6 +7,7 @@ import { AppIntro } from './components';
 import { Provider, connect } from 'react-redux';
 import store from './store';
 import actions from './store/actions';
+import { users } from './store/state/users';
 import { Storage, ItemKeys } from './store/localStorage';
 
 import codePush from 'react-native-code-push';
@@ -20,23 +21,14 @@ class App extends Component {
       showHome: false,
       appIntroVersion: '',
       introImages: '',
-      isConnect: false
+      isConnect: false,
+      ServerRoot: 'https://datizhuanqian.com'
     };
   }
 
   componentWillMount() {
     this.loadUserState();
-    //用户状态加载
-    // NetInfo.isConnected.fetch().done(isConnected => {
-    //   if (isConnected) {
-    //     this.getAppIntro();
-    //     //获取介绍页图片
-    //   } else {
-    //     this.setState({
-    //       isConnect: false
-    //     });
-    //   }
-    // });
+    this.loadServerRootState();
   }
 
   loadUserState = async () => {
@@ -48,39 +40,68 @@ class App extends Component {
     }
   };
 
-  getAppIntro = async () => {
-    this.setState({
-      appIntroVersion: (await Storage.getItem(ItemKeys.appIntroVersion))
-        ? await Storage.getItem(ItemKeys.appIntroVersion)
-        : 1
-    });
-    //获取localstorage version 第一次启动APP设置初始值1
-    if (this.state.appIntroVersion < Config.AppVersionNumber) {
-      //减少请求次数  如果appIntroVersion小于当前app的version   证明没有浏览过新版本app介绍页 发起获取介绍页请求
-      //大于等于则跳过显示原始启动页
-      Promise.race([
-        fetch(Config.ServerRoot + '/api/app-loading-image'),
-        new Promise(function(resolve, reject) {
-          setTimeout(() => reject(new Error('request timeout')), 2000);
-        })
-      ])
-        .then(response => response.json())
+  loadServerRootState = async () => {
+    let server = await Storage.getItem(ItemKeys.server);
+    let serverJson = {};
+    serverJson.mainApi = Config.ServerRoot;
+
+    //如果第一次启动app 服务器就无法连接，则会取不到备用服务器地址
+
+    if (server && server.mainApi) {
+      fetch(server.mainApi)
+        //检查redux中主域名(Config.SERVER_ROOT)
         .then(data => {
-          this.setState({
-            introImages: data
-          });
+          serverJson.spareApi = 'https://datizhuanqian.cn';
+          //应替换为data返回json中的备用域名
+          store.dispatch(actions.setServer(serverJson));
         })
         .catch(err => {
-          this.setState({
-            introImages: []
-          });
+          let info = err.toString().indexOf('failed');
+          if (info > -1) {
+            serverJson.mainApi = 'https://datizhuanqian.cn';
+            //应替换为storage json 中的备用域名
+            store.dispatch(actions.updateServer(serverJson));
+            //存在备用域名  则将redux 中主域名更新
+          }
         });
     } else {
-      this.setState({
-        isConnected: false
-      });
+      store.dispatch(actions.updateServer(serverJson));
     }
   };
+
+  // getAppIntro = async () => {
+  //   this.setState({
+  //     appIntroVersion: (await Storage.getItem(ItemKeys.appIntroVersion))
+  //       ? await Storage.getItem(ItemKeys.appIntroVersion)
+  //       : 1
+  //   });
+  //   //获取localstorage version 第一次启动APP设置初始值1
+  //   if (this.state.appIntroVersion < Config.AppVersionNumber) {
+  //     //减少请求次数  如果appIntroVersion小于当前app的version   证明没有浏览过新版本app介绍页 发起获取介绍页请求
+  //     //大于等于则跳过显示原始启动页
+  //     Promise.race([
+  //       fetch(Config.ServerRoot + '/api/app-loading-image'),
+  //       new Promise(function(resolve, reject) {
+  //         setTimeout(() => reject(new Error('request timeout')), 2000);
+  //       })
+  //     ])
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         this.setState({
+  //           introImages: data
+  //         });
+  //       })
+  //       .catch(err => {
+  //         this.setState({
+  //           introImages: []
+  //         });
+  //       });
+  //   } else {
+  //     this.setState({
+  //       isConnected: false
+  //     });
+  //   }
+  // };
 
   handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
@@ -98,32 +119,16 @@ class App extends Component {
         <Provider store={store}>
           <Apollo onReady={this.handleFinishLoading} />
         </Provider>
-        {isConnect ? (
-          //判断是否联网 有网就需要判断是否介绍图 以及版本号  无网不请求数据
-          appIntroVersion && introImages ? (
-            //判断异步加载的 storgeVersion introImages 值是否拿到  没有值得时候拿白底渲染，防止UI跳动。
-            introImages.length > 1 ? (
-              //判断介绍图的数量
-              !showHome && (
-                <AppIntro
-                  showHome={showHome}
-                  method={this.handleIntro}
-                  introImages={introImages}
-                  actions={() => {
-                    store.dispatch(actions.updateAppIntroVersion(Config.AppVersionNumber));
-                  }}
-                />
-                //浏览完介绍页之后会将版本号保存到storage中，只要不卸载APP，当前版本的介绍页就只渲染一次
-                //介绍页
-              )
-            ) : (
-              !isLoadingComplete && <AppIntro loading={true} /> //启动页
-            )
-          ) : (
-            <View style={styles.appLaunch} /> //预留底色
-          )
-        ) : // !isLoadingComplete && <AppIntro loading={true} /> //启动页
-        null}
+        {
+          // <AppIntro
+          //   showHome={showHome}
+          //   method={this.handleIntro}
+          //   introImages={introImages}
+          //   actions={() => {
+          //     store.dispatch(actions.updateAppIntroVersion(Config.AppVersionNumber));
+          //   }}
+          // />
+        }
       </View>
     );
   }

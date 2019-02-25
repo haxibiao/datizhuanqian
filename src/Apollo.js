@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 
 import { Config } from './constants';
 import { connect } from 'react-redux';
+import { Storage, ItemKeys } from './store/localStorage';
 
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
@@ -14,8 +15,12 @@ import DeviceInfo from 'react-native-device-info';
 import MainRouter from './routers/MainRouter';
 
 class Apollo extends Component {
-	_makeClient(user) {
+	async _makeClient(user) {
 		let { token } = user;
+
+		let server = await Storage.getItem(ItemKeys.server);
+		console.log('ApolloserverRoot', server);
+
 		let deviceHeaders = {};
 		const isEmulator = DeviceInfo.isEmulator();
 		if (!isEmulator) {
@@ -39,7 +44,7 @@ class Apollo extends Component {
 		}
 
 		this.client = new ApolloClient({
-			uri: Config.ServerRoot + '/graphql',
+			uri: server.mainApi + '/graphql',
 			request: async operation => {
 				operation.setContext({
 					headers: {
@@ -69,7 +74,7 @@ class Apollo extends Component {
 	}
 
 	render() {
-		// if (!this.client) return null;
+		if (!this.client) return null;
 		return (
 			<ApolloProvider client={this.client}>
 				<MainRouter />
@@ -79,5 +84,5 @@ class Apollo extends Component {
 }
 
 export default connect(store => {
-	return { user: store.users.user };
+	return { user: store.users.user, server: store.users.server };
 })(Apollo);

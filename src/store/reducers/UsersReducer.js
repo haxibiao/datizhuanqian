@@ -82,6 +82,16 @@ class UsersReducer {
 		let { isUpdate } = action;
 		return state.set('isUpdate', isUpdate);
 	}
+
+	static [types.UPDATE_SERVER](state, action) {
+		let { server } = action;
+		return state.set('server', server);
+	}
+
+	static [types.SET_SERVER](state, action) {
+		let { server } = action;
+		return state.set('server', server);
+	}
 }
 
 export default UsersReducer.reduce;
