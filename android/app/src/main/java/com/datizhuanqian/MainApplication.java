@@ -3,6 +3,7 @@ package com.datizhuanqian;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cn.jpush.reactnativejpush.JPushPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -30,10 +31,15 @@ public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-        @Override
-        protected String getJSBundleFile() {
-        return CodePush.getJSBundleFile();
-        }
+    // 设置为 true 将不会弹出 toast
+    private boolean SHUTDOWN_TOAST = false;
+    // 设置为 true 将不会打印 log
+    private boolean SHUTDOWN_LOG = false;
+
+    @Override
+    protected String getJSBundleFile() {
+    return CodePush.getJSBundleFile();
+    }
     
     @Override
     public boolean getUseDeveloperSupport() {
@@ -44,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new RNGestureHandlerPackage(),
             new SplashScreenReactPackage(),
             new RNCWebViewPackage(),

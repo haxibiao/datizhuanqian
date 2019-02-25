@@ -37,13 +37,13 @@ mutation signInMutation($account: String!, $password: String!) {
 }
 
 #找回密码  （邮箱查找）
-mutation ForgotPasswordMutation($account: String!) {
-	forgotPassword(account: $account)
+mutation ForgetPasswordMutation($account: String!) {
+	forgetPassword(account: $account)
 }
 
 #重置密码
-mutation ResetPasswordMutation($account: String!, $password: String!, $authentication_code: String!) {
-	resetPassword(account: $account, password: $password, authentication_code: $authentication_code) {
+mutation ResetPasswordMutation($account: String!, $password: String!, $code: String!) {
+	resetPassword(account: $account, password: $password, code: $code) {
 		id
 		account
 	}

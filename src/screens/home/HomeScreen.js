@@ -26,6 +26,7 @@ import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { Query, withApollo, compose, graphql } from 'react-apollo';
 
 import SplashScreen from 'react-native-splash-screen';
+import JPushModule from 'jpush-react-native';
 
 class HomeScreen extends Component {
 	constructor(props) {
@@ -86,6 +87,18 @@ class HomeScreen extends Component {
 
 		//当有用户seesion 过期时 ,清空redux 强制登录。
 		//删除此段代码后 更换账号登录后无法fetchQuery的BUG会再出现。预计还是未真正的解决apollo cache的bug
+
+		// JPushModule.initPush();
+		// JPushModule.notifyJSDidLoad(() => {
+		// 	JPushModule.addReceiveNotificationListener(this.onJPushReceiveNotification);
+		// });
+
+		// var callback = message => {
+		// 	console.log('alertContent: ' + JSON.stringify(message));
+		// };
+		// JPushModule.addReceiveCustomMsgListener(map => {
+		// 	console.log('extras: ' + map.extras);
+		// });
 	}
 
 	render() {

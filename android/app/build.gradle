@@ -48,14 +48,20 @@ android {
     defaultConfig {
         applicationId rootProject.ext.applicationId 
         minSdkVersion rootProject.ext.minSdkVersion
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 4
         versionName "1.4.0"
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "3357861c9b5026f97afe2219", //在此替换你的APPKey
+                APP_CHANNEL: "developer-default"    //应用渠道号
+        ]
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
         resValue "string", "build_config_package", "com.datizhuanqian"
+
     }
     signingConfigs {
         release {
@@ -125,6 +131,8 @@ android {
 }
 
 dependencies {
+    compile project(':jpush-react-native')
+    compile project(':jcore-react-native')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-splash-screen')
     compile project(':react-native-webview')
@@ -140,6 +148,7 @@ dependencies {
     compile project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation 'com.android.support:multidex:1.0.3'
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 
