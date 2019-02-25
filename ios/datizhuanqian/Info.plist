@@ -67,7 +67,6 @@
 	<string>答题赚钱在您发布含图片或视频的内容时，需要访问您的相册</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>iconfont.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
@@ -83,6 +82,7 @@
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
+		<string>iconfont.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

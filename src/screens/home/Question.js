@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
-
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
+import { Player } from '../../components';
 import { Colors, Divice } from '../../constants';
 
 class Question extends Component {
@@ -30,6 +30,20 @@ class Question extends Component {
 						}}
 					/>
 				)}
+				{
+					// question.video &&
+					// <ImageBackground
+					// 	style={{ width: Divice.width - 60, height: Divice.width - 60, marginTop: 30 }}
+					// 	blurRadius={12}
+					// 	source={{
+					// 		uri: question.video.cover
+					// 	}}
+					// >
+					// 	<Player
+					// 		source={question.video.path}
+					// 	/>
+					// </ImageBackground>
+				}
 				<View style={styles.options}>
 					{option.Selection.map((option, index) => {
 						return (

@@ -23,7 +23,9 @@ import {
 	DropdownMenu,
 	Iconfont,
 	AnimationButton,
-	OptionItem
+	OptionItem,
+	Select,
+	ProgressCover
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -34,6 +36,7 @@ import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ImagePicker from 'react-native-image-crop-picker';
+import Video from 'react-native-video';
 
 const ANSWERS = ['A', 'B', 'C', 'D'];
 
@@ -46,6 +49,7 @@ class MakeQuestionScreen extends Component {
 			category_id: null,
 			description: null,
 			picture: null,
+			video_path: null,
 			optionValue: null,
 			answers: new Set(),
 			options: new Map()
@@ -119,6 +123,22 @@ class MakeQuestionScreen extends Component {
 		});
 	};
 
+	showSelected = () => {
+		this.dialog.show('请选择资源类型', ['图片', '视频'], '#333333', this.callbackSelected);
+	};
+
+	callbackSelected = i => {
+		switch (i) {
+			case 0: // 图库
+				this.imagePicke();
+
+				break;
+			case 1: // 视频
+				this.videoPicker({ gender: 1 });
+				break;
+		}
+	};
+
 	imagePicke = () => {
 		ImagePicker.openPicker({
 			mediaType: 'photo',
@@ -129,6 +149,27 @@ class MakeQuestionScreen extends Component {
 				this.setState({ picture: image });
 			})
 			.catch(error => {});
+	};
+
+	videoPicker = () => {
+		ImagePicker.openPicker({
+			multiple: false,
+			mediaType: 'video'
+		})
+			.then(video => {
+				let videoPath = video.path.substr(7);
+				this.setState({ video_path: video.path });
+				console.log('video_path', this.state.video_path);
+				// onPickered && onPickered(video);
+				// videoUpload(options);
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	};
+
+	closeMedia = () => {
+		this.setState({ video_path: null, picture: null });
 	};
 
 	buildVariables = () => {
@@ -163,7 +204,7 @@ class MakeQuestionScreen extends Component {
 
 	render() {
 		let { navigation, user, login } = this.props;
-		let { category_id, description, picture, options, optionValue, answers } = this.state;
+		let { category_id, description, picture, video_path, options, optionValue, answers } = this.state;
 		let disableAddButton = options.size >= 4 || !optionValue;
 		let variables = this.buildVariables();
 		console.log('variables', variables);
@@ -202,11 +243,6 @@ class MakeQuestionScreen extends Component {
 									bgColor={'white'}
 									tintColor={'#666666'}
 									activityTintColor={Colors.theme}
-									// arrowImg={}
-									// checkImage={}
-									// optionTextStyle={{color: '#333333'}}
-									// titleStyle={{color: '#333333'}}
-									// maxHeight={300}
 									handler={(selection, row) => this.dropHandler(this.dropData[selection][row])}
 									data={this.dropData}
 								>
@@ -227,7 +263,7 @@ class MakeQuestionScreen extends Component {
 												multiline
 												maxLength={300}
 												textAlignVertical="top"
-												placeholder="请添加问题描述"
+												placeholder="填写题目题干"
 											/>
 											<View
 												style={{
@@ -239,9 +275,32 @@ class MakeQuestionScreen extends Component {
 												}}
 											>
 												{picture ? (
-													<TouchableWithoutFeedback onPress={this.imagePicke}>
+													<View>
 														<Image source={{ uri: picture }} style={styles.addImage} />
-													</TouchableWithoutFeedback>
+														<TouchableOpacity
+															style={styles.closeBtn}
+															onPress={this.closeMedia}
+														>
+															<Iconfont name={'close'} size={20} color="#fff" />
+														</TouchableOpacity>
+													</View>
+												) : video_path ? (
+													<ProgressCover>
+														<View>
+															<Video
+																muted={false}
+																source={{ uri: video_path }}
+																style={styles.addImage}
+																resizeMode="cover"
+															/>
+															<TouchableOpacity
+																style={styles.closeBtn}
+																onPress={this.closeMedia}
+															>
+																<Iconfont name={'close'} size={20} color="#fff" />
+															</TouchableOpacity>
+														</View>
+													</ProgressCover>
 												) : (
 													<TouchableOpacity style={styles.addImage} onPress={this.imagePicke}>
 														<Iconfont name={'add'} size={26} color="#fff" />
@@ -309,6 +368,11 @@ class MakeQuestionScreen extends Component {
 									{Divice.isIos && <KeyboardSpacer topSpacing={-Divice.bottom_height} />}
 								</DropdownMenu>
 							</View>
+							<Select
+								ref={dialog => {
+									this.dialog = dialog;
+								}}
+							/>
 						</Screen>
 					);
 				}}
@@ -339,19 +403,28 @@ const styles = StyleSheet.create({
 		color: '#A0A0A0'
 	},
 	questionInput: {
-		fontSize: 16,
-		lineHeight: 22,
+		fontSize: 15,
+		lineHeight: 20,
 		color: '#212121',
-		height: 160,
+		height: 120,
 		paddingHorizontal: 15,
 		marginTop: 10,
 		backgroundColor: '#fff'
 	},
 	addImage: {
-		width: 80,
-		height: 80,
-		borderRadius: 3,
+		width: 100,
+		height: 100,
 		backgroundColor: '#f0f0f0',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	closeBtn: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		width: 20,
+		height: 20,
+		backgroundColor: 'rgba(0,0,0,0.2)',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},

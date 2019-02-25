@@ -22,6 +22,7 @@ import Select from './Control/Select';
 import DropdownMenu from './Control/DropdownMenu';
 import CustomTextInput from './Control/CustomTextInput';
 import AnimationButton from './Control/AnimationButton';
+import Player from './Control/Player';
 
 import Header from './Header/Header';
 import TabBarHeader from './Header/TabBarHeader';
@@ -40,6 +41,7 @@ import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
 import ImageViewModal from './Modal/ImageViewModal';
 import FeedbackCommentModal from './Modal/FeedbackCommentModal';
+import ProgressCover from './Modal/ProgressCover';
 
 import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
 import ProfileNotLogin from './StatusView/ProfileNotLogin';
@@ -90,6 +92,7 @@ export {
 	DropdownMenu,
 	CustomTextInput,
 	AnimationButton,
+	Player,
 	//
 	Header,
 	TabBarHeader,
@@ -108,6 +111,7 @@ export {
 	WithdrawsTipsModal,
 	ImageViewModal,
 	FeedbackCommentModal,
+	ProgressCover,
 	//
 	WithdrawsNotLogin,
 	ProfileNotLogin,

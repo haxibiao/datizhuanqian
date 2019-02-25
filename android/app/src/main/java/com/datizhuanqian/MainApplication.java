@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import cn.jpush.reactnativejpush.JPushPackage;
+import com.brentvatne.react.ReactVideoPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -51,6 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
+            new ReactVideoPackage(),
             new RNGestureHandlerPackage(),
             new SplashScreenReactPackage(),
             new RNCWebViewPackage(),

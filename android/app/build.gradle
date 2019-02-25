@@ -57,6 +57,7 @@ android {
                 JPUSH_APPKEY: "3357861c9b5026f97afe2219", //在此替换你的APPKey
                 APP_CHANNEL: "developer-default"    //应用渠道号
         ]
+        multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -70,7 +71,10 @@ android {
             keyAlias MYAPP_RELEASE_KEY_ALIAS 
             keyPassword MYAPP_RELEASE_KEY_PASSWORD 
         } 
-    } 
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     splits {
         abi {
             reset()
@@ -133,6 +137,7 @@ android {
 dependencies {
     compile project(':jpush-react-native')
     compile project(':jcore-react-native')
+    compile project(':react-native-video')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-splash-screen')
     compile project(':react-native-webview')
