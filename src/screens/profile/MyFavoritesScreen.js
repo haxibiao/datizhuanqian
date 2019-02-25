@@ -1,6 +1,6 @@
 /*
  * @flow
- * created by wyk made in 2019-02-15 10:14:12
+ * created by gaoxuan made in 2019-02-22 10:14:12
  */
 import React, { Component } from 'react';
 import {
@@ -89,7 +89,6 @@ class MyFavoritesScreen extends Component {
 						{({ data, loading, error, refetch, fetchMore }) => {
 							if (error) return <LoadingError reload={() => refetch()} />;
 							if (loading) return <Loading />;
-							console.log('data', data);
 							if (!(data && data.favorites && data.favorites.length > 0)) {
 								return <BlankContent />;
 							}

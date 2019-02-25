@@ -199,7 +199,6 @@ query FavoritesQuery($offset: Int, $limit: Int) {
 		question {
 			id
 			description
-			answer
 			image {
 				id
 				path
@@ -207,10 +206,6 @@ query FavoritesQuery($offset: Int, $limit: Int) {
 				height
 			}
 			selections
-			answers {
-				Text
-				Value
-			}
 			category {
 				id
 				name

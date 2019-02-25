@@ -28,6 +28,8 @@ import { compose, graphql, Query } from 'react-apollo';
 import FeedbackBody from './FeedbackBody';
 import Comment from './Comment';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 class FeedbackDetailsScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -183,6 +185,7 @@ class FeedbackDetailsScreen extends Component {
 					switchKeybord={this.switchKeybord}
 					submitComment={this.submitComment}
 				/>
+				{Divice.isIos && <KeyboardSpacer />}
 				<FeedbackCommentModal
 					visible={this.state.feedbackCommentVisible}
 					handleVisible={() => {
