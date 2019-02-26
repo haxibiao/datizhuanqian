@@ -21,7 +21,7 @@ class ImagePickerView extends Component {
 				pictures.push(`data:${image.mime};base64,${image.data}`);
 			});
 			this.saveImages(pictures);
-		});
+		}, true);
 	};
 
 	saveImages = images => {

@@ -54,6 +54,11 @@ android {
         versionCode 4
         versionName "1.4.0"
         manifestPlaceholders = [
+                JPUSH_APPKEY: "",
+                APP_CHANNEL : "default"
+        ]
+
+        manifestPlaceholders = [
                 JPUSH_APPKEY: "3357861c9b5026f97afe2219", //在此替换你的APPKey
                 APP_CHANNEL: "developer-default"    //应用渠道号
         ]
@@ -135,6 +140,8 @@ android {
 }
 
 dependencies {
+    implementation project(':jcore-react-native')
+    implementation project(':jpush-react-native')
     compile project(':jpush-react-native')
     compile project(':jcore-react-native')
     compile project(':react-native-video')

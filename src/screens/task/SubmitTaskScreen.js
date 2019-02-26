@@ -39,7 +39,7 @@ class SubmitTaskScreen extends Component {
 					pictures
 				});
 			}
-		});
+		}, true);
 	};
 
 	//先上传图片，等返回图片地址后再提交

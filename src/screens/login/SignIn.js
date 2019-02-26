@@ -62,7 +62,7 @@ class SignIn extends Component {
 							focusKey={this.focusKey}
 							placeholder={'密码'}
 							changeValue={this.changeValue}
-							maxLength={16}
+							maxLength={32}
 						/>
 					</View>
 					<View style={styles.centerRight}>

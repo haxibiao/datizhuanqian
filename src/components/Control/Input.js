@@ -18,7 +18,8 @@ class Input extends Component {
 			underline,
 			textAlignVertical,
 			autoFocus,
-			onFocus
+			onFocus,
+			selectionColor
 		} = this.props;
 		return (
 			<View
@@ -43,7 +44,7 @@ class Input extends Component {
 					onEndEditing={onEndEditing}
 					placeholder={placeholder}
 					placeholderText={Colors.tintFont}
-					selectionColor={Colors.grey}
+					selectionColor={selectionColor ? selectionColor : Colors.grey}
 					autoFocus={autoFocus}
 					onFocus={onFocus}
 					style={[styles.textInput, customStyle]}

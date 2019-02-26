@@ -71,10 +71,12 @@ class Apollo extends Component {
 	}
 
 	componentDidMount() {
-		JPushModule.notifyJSDidLoad(resultCode => {
-			if (resultCode === 0) {
-			}
-		});
+		if (Platform.OS === 'android') {
+			JPushModule.notifyJSDidLoad(resultCode => {
+				if (resultCode === 0) {
+				}
+			});
+		}
 
 		// 增加tag
 		JPushModule.addTags([Config.AppStore], success => {

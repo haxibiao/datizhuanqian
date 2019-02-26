@@ -28,26 +28,6 @@ class Feedback extends Component {
 		};
 	}
 
-	//打开相册
-	openPhotos = () => {
-		Methods.imagePicker(images => {
-			let { pictures } = this.state;
-			images.map(image => {
-				pictures.push(`data:${image.mime};base64,${image.data}`);
-			});
-			if (pictures.length > 6) {
-				this.setState({
-					pictures: pictures.slice(0, 6)
-				});
-				Methods.toast('最大上传不超过6张图片');
-			} else {
-				this.setState({
-					pictures
-				});
-			}
-		});
-	};
-
 	submitFeedback = async () => {
 		const { navigation, client } = this.props;
 		let { title, pictures, content, waitingVisible } = this.state;
@@ -175,17 +155,6 @@ const styles = StyleSheet.create({
 		height: (Divice.width - 60) / 3,
 		marginRight: 5,
 		marginBottom: 5
-	},
-	delete: {
-		backgroundColor: 'rgba(150,150,150,0.5)',
-		borderRadius: 8,
-		position: 'absolute',
-		right: 8,
-		top: 2,
-		width: 16,
-		height: 16,
-		justifyContent: 'center',
-		alignItems: 'center'
 	},
 	mainBottom: {
 		borderBottomWidth: 1,

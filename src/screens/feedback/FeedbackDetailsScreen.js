@@ -10,7 +10,7 @@ import {
 	LoadingError,
 	LoadingMore,
 	ContentEnd,
-	Waiting
+	SubmitLoading
 } from '../../components';
 
 import { Colors, Divice } from '../../constants';
@@ -41,7 +41,8 @@ class FeedbackDetailsScreen extends Component {
 			comment_id: null,
 			reply: null,
 			fetchingMore: true,
-			waitingVisible: false
+			waitingVisible: false,
+			image: ''
 		};
 	}
 
@@ -60,7 +61,8 @@ class FeedbackDetailsScreen extends Component {
 					content: this.state.content,
 					commentable_type: 'feedbacks',
 					commentable_id: feedback_id,
-					comment_id: comment_id
+					comment_id: comment_id,
+					images: [this.state.image]
 				},
 				refetchQueries: () => [
 					{
@@ -100,7 +102,6 @@ class FeedbackDetailsScreen extends Component {
 		const { navigation, user } = this.props;
 		let { feedback_id } = navigation.state.params;
 		let { autoFocus, reply, content, waitingVisible } = this.state;
-
 		return (
 			<Screen
 				headerRight={
@@ -184,6 +185,9 @@ class FeedbackDetailsScreen extends Component {
 					changeValue={this.changeValue}
 					switchKeybord={this.switchKeybord}
 					submitComment={this.submitComment}
+					openPhotos={this.openPhotos}
+					image={this.state.image}
+					deleteImage={this.deleteImage}
 				/>
 				{Divice.isIos && <KeyboardSpacer />}
 				<FeedbackCommentModal
@@ -193,7 +197,7 @@ class FeedbackDetailsScreen extends Component {
 					}}
 					feedback
 				/>
-				<Waiting isVisible={waitingVisible} customStyle={{ backgroundColor: 'transparent' }} />
+				<SubmitLoading isVisible={waitingVisible} tips={'发送中'} />
 			</Screen>
 		);
 	}
@@ -201,7 +205,7 @@ class FeedbackDetailsScreen extends Component {
 	switchKeybord = () => {
 		this.setState({
 			autoFocus: !this.state.autoFocus,
-			content: '',
+			// content: '',
 			reply: null,
 			comment_id: null
 		});
@@ -209,7 +213,7 @@ class FeedbackDetailsScreen extends Component {
 
 	replyComment = comment => {
 		this.setState({
-			reply: `引用  #${comment.id}  ${comment.user.name}的评论\n`,
+			reply: `引用  #${comment.rank}  ${comment.user.name}的评论\n`,
 			// content: `引用  #${comment.id}  ${comment.user.name}的评论\n`,
 			comment_id: comment.id
 		});
@@ -218,6 +222,23 @@ class FeedbackDetailsScreen extends Component {
 	changeValue = value => {
 		this.setState({
 			content: value
+		});
+	};
+
+	openPhotos = () => {
+		console.log('dianji image base64');
+		Methods.imagePicker(image => {
+			console.log('image base64', image);
+			this.setState({
+				image: `data:${image.mime};base64,${image.data}`,
+				autoFocus: true
+			});
+		}, false);
+	};
+
+	deleteImage = () => {
+		this.setState({
+			image: ''
 		});
 	};
 

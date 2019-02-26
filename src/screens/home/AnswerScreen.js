@@ -45,8 +45,8 @@ class FavoriteQuestion extends Component {
 	};
 
 	onError = err => {
-		console.log('err', err);
-		Methods.toast('收藏失败', 200);
+		let str = err.toString().replace(/Error: GraphQL error: /, '');
+		Methods.toast(str, -100); //Toast错误信息  后端暂停服务需求
 	};
 
 	render() {

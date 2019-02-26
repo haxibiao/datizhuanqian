@@ -68,6 +68,7 @@ class ChangePasswordScreen extends Component {
 							oldPassword: value
 						});
 					}}
+					maxLength={32}
 				/>
 				<Input
 					placeholder={'请输入新密码,不少于6位'}
@@ -77,6 +78,7 @@ class ChangePasswordScreen extends Component {
 							password: value
 						});
 					}}
+					maxLength={16}
 				/>
 				<Input
 					placeholder={'请再次输入新密码,不少于6位'}
@@ -86,6 +88,7 @@ class ChangePasswordScreen extends Component {
 							againpassword: value
 						});
 					}}
+					maxLength={16}
 				/>
 				<View style={{ margin: 20, height: 48 }}>
 					<Button

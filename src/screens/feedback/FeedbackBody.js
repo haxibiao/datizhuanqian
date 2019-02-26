@@ -53,7 +53,8 @@ class FeedbackBody extends Component {
 								{feedback.images.map((image, index) => {
 									let width = image.width;
 									let height = image.height;
-									let size = Methods.imageSize({ width, height });
+									let padding = 30;
+									let size = Methods.imageSize({ width, height, padding });
 									return (
 										<Image
 											source={{ uri: image.path }}

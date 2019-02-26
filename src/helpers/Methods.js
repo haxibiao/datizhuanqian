@@ -78,9 +78,9 @@ function regular(account) {
 }
 
 //选择图片
-function imagePicker(callback: Function) {
+function imagePicker(callback: Function, multiple: Boolean) {
 	ImagePicker.openPicker({
-		multiple: true,
+		multiple: multiple,
 		mediaType: 'photo',
 		includeBase64: true
 	})
@@ -265,11 +265,11 @@ function imgsLayoutSize(imgCount, images, space = 5, maxWidth = Divice.width - 3
 	return imgSize;
 }
 
-function imageSize({ width, height }) {
+function imageSize({ width, height, padding }) {
 	var size = {};
 	if (width > Divice.width) {
-		size.width = Divice.width - 30;
-		size.height = ((Divice.width - 30) * height) / width;
+		size.width = Divice.width - padding;
+		size.height = ((Divice.width - padding) * height) / width;
 	} else {
 		size = { width, height };
 	}

@@ -73,18 +73,18 @@ class EditProfileScreen extends Component {
 		const { real_name, pay_account, password } = this.state;
 		return (
 			<Screen>
-				<DivisionLine height={10} />
 				<View style={styles.container}>
+					<View style={{ marginTop: 25, paddingHorizontal: 25 }}>
+						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>支付宝信息</Text>
+					</View>
 					<View style={styles.header}>
 						<Text style={styles.tips}>
 							支付宝账号为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
 						</Text>
 					</View>
+
 					<Input
-						customStyle={{
-							borderTopWidth: 1,
-							borderTopColor: Colors.lightBorder
-						}}
+						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
 						placeholder={user.real_name ? user.real_name : '请输入支付宝姓名'}
 						editable={user.real_name ? false : true}
 						changeValue={value => {
@@ -93,8 +93,10 @@ class EditProfileScreen extends Component {
 							});
 						}}
 					/>
+
 					<Input
 						placeholder="请输入支付宝账号"
+						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
 						defaultValue={this.state.pay_account}
 						changeValue={value => {
 							this.setState({
@@ -103,9 +105,14 @@ class EditProfileScreen extends Component {
 						}}
 						maxLength={50}
 					/>
+
+					<View style={{ marginTop: 25, paddingHorizontal: 25, marginBottom: 10 }}>
+						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>答题赚钱信息</Text>
+					</View>
 					<Input
 						password
 						placeholder="请输入答题赚钱登录密码"
+						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
 						defaultValue={this.state.password}
 						changeValue={value => {
 							this.setState({
@@ -121,7 +128,8 @@ class EditProfileScreen extends Component {
 						theme={real_name && pay_account ? Colors.theme : 'rgba(64,127,207,0.7)'}
 						handler={this.setPaymentInfo.bind(this)}
 					/>
-					<View style={{ paddingHorizontal: 15 }}>
+
+					<View style={{ paddingHorizontal: 25 }}>
 						<Text style={styles.footer}>
 							注意:每个账号只能绑定一个支付宝账号，一人多个账号无法享受提现功能,并且最多修改3次支付宝账号！
 						</Text>
@@ -138,7 +146,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white
 	},
 	header: {
-		paddingHorizontal: 15,
+		paddingHorizontal: 25,
 		marginVertical: 15
 	},
 	tips: {
@@ -147,12 +155,12 @@ const styles = StyleSheet.create({
 		lineHeight: 20
 	},
 	button: {
-		height: 40,
-		marginHorizontal: 15,
-		marginTop: 20
+		height: 38,
+		marginHorizontal: 25,
+		marginTop: 35
 	},
 	footer: {
-		fontSize: 14,
+		fontSize: 13,
 		color: Colors.themeRed,
 		paddingTop: 15
 	}
