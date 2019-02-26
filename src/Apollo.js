@@ -14,6 +14,8 @@ import { UserQuery } from './graphql/User.graphql';
 import DeviceInfo from 'react-native-device-info';
 import MainRouter from './routers/MainRouter';
 
+import JPushModule from 'jpush-react-native';
+
 class Apollo extends Component {
 	async _makeClient(user) {
 		let { token } = user;
@@ -66,6 +68,43 @@ class Apollo extends Component {
 		if (nextProps.user !== this.props.user) {
 			this._makeClient(nextProps.user);
 		}
+	}
+
+	componentDidMount() {
+		JPushModule.notifyJSDidLoad(resultCode => {
+			if (resultCode === 0) {
+			}
+		});
+
+		// 增加tag
+		JPushModule.addTags([Config.AppStore], success => {
+			console.log('success', success);
+		});
+
+		// 获取id
+		// JPushModule.getRegistrationID(registrationId => {
+		// 	console.log('registrationId', registrationId);
+		// });
+
+		// 接收自定义消息
+		// JPushModule.addReceiveCustomMsgListener(message => {
+		// 	this.setState({ pushMsg: message });
+		// 	console.log('receive pushMsg: ', message);
+		// });
+
+		// 接收推送通知
+		// JPushModule.addReceiveNotificationListener(message => {
+		// 	console.log('receive notification: ', message);
+		// });
+
+		// 打开通知
+		// JPushModule.addReceiveOpenNotificationListener(map => {
+		// 	console.log('Opening notification!');
+		// 	console.log('map.extra: ' + map.extras);
+		// 	if (Platform.OS === 'android') {
+		// 		JPushModule.notifyJSDidLoad(resultCode => console.log(resultCode));
+		// 	}
+		// });
 	}
 
 	componentWillUnmount() {

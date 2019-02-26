@@ -4,7 +4,7 @@ import { ServerRoot, AppName, AppVersion, AppDisplayName, AppSlogan, Build } fro
 import DeviceInfo from 'react-native-device-info';
 import Config from 'react-native-config';
 
-let AppStore = Config ? Config.APP_STORE : null; //应用商店名称
+let AppStore = Config && Config.APP_STORE ? Config.APP_STORE : 'haxibiao'; //应用商店名称
 
 let AppVersionNumber = DeviceInfo.getVersion().split('');
 AppVersionNumber.splice(3, 1);
