@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 		height: 34
 	},
 	time: {
-		fontSize: 12,
+		fontSize: 11,
 		color: Colors.grey
 	},
 	center: {

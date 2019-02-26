@@ -30,7 +30,7 @@ class TaskType extends Component {
 	}
 
 	render() {
-		const { navigation, tasks, user, name } = this.props;
+		const { navigation, tasks, user, name, handlerLoading } = this.props;
 		let { itemHeight, headerHeight } = this.state;
 
 		return (
@@ -66,6 +66,7 @@ class TaskType extends Component {
 										itemHeight: height
 									});
 								}}
+								handlerLoading={handlerLoading}
 							/>
 						);
 					})}

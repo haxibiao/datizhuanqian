@@ -20,8 +20,9 @@ class TaskItem extends Component {
 
 	//领取奖励
 	taskReward = async () => {
-		const { task, user } = this.props;
+		const { task, user, handlerLoading } = this.props;
 		let result = {};
+		handlerLoading();
 		try {
 			result = await this.props.TaskRewardMutation({
 				variables: {
@@ -41,9 +42,11 @@ class TaskItem extends Component {
 			result.errors = error;
 		}
 		if (result && result.errors) {
+			handlerLoading();
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, -100);
 		} else {
+			handlerLoading();
 			if (result.data.taskReward == 1) {
 				Methods.toast('领取成功', -80);
 			} else {
@@ -54,8 +57,9 @@ class TaskItem extends Component {
 
 	//领取任务
 	receiveTask = async () => {
-		const { task, user } = this.props;
+		const { task, user, handlerLoading } = this.props;
 		let result = {};
+		handlerLoading();
 		try {
 			result = await this.props.ReceiveTaskMutation({
 				variables: {
@@ -75,9 +79,11 @@ class TaskItem extends Component {
 			result.errors = error;
 		}
 		if (result && result.errors) {
+			handlerLoading();
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, -100);
 		} else {
+			handlerLoading();
 			if (result.data.receiveTask == 1) {
 				Methods.toast('领取成功', -80);
 			} else {

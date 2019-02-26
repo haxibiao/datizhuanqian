@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image } from 'react-native';
 
-import { TabTop, BlankContent, Header, Screen, LoadingError, Loading } from '../../components';
+import { TabTop, BlankContent, Header, Screen, LoadingError, Loading, SubmitLoading } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
 import { connect } from 'react-redux';
@@ -15,7 +15,9 @@ import TaskType from './TaskType';
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			isVisible: false
+		};
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -77,17 +79,42 @@ class HomeScreen extends Component {
 					name={'出题任务'}
 				/>
 				{newUserTask.length > 0 && (
-					<TaskType tasks={newUserTask} user={user} navigation={navigation} name={'新人任务'} />
+					<TaskType
+						tasks={newUserTask}
+						user={user}
+						navigation={navigation}
+						name={'新人任务'}
+						handlerLoading={this.handlerLoading}
+					/>
 				)}
 
 				{dailyTask.length > 0 && (
-					<TaskType tasks={dailyTask} user={user} navigation={navigation} name={'每日任务'} />
+					<TaskType
+						tasks={dailyTask}
+						user={user}
+						navigation={navigation}
+						name={'每日任务'}
+						handlerLoading={this.handlerLoading}
+					/>
 				)}
 				{growUpTask.length > 0 && (
-					<TaskType tasks={growUpTask} user={user} navigation={navigation} name={'成长任务'} />
+					<TaskType
+						tasks={growUpTask}
+						user={user}
+						navigation={navigation}
+						name={'成长任务'}
+						handlerLoading={this.handlerLoading}
+					/>
 				)}
+				<SubmitLoading isVisible={this.state.isVisible} tips={'领取中'} />
 			</ScrollView>
 		);
+	};
+
+	handlerLoading = () => {
+		this.setState({
+			isVisible: !this.state.isVisible
+		});
 	};
 }
 
