@@ -28,7 +28,7 @@ import {
 	ProgressCover
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods } from '../../helpers';
+import { Methods, videoUpload } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { createQuestionMutation } from '../../graphql/task.graphql';
@@ -159,9 +159,21 @@ class MakeQuestionScreen extends Component {
 			.then(video => {
 				let videoPath = video.path.substr(7);
 				this.setState({ video_path: video.path });
-				console.log('video_path', this.state.video_path);
-				// onPickered && onPickered(video);
-				// videoUpload(options);
+				videoUpload({
+					token: this.props.user.token,
+					videoPath,
+					onStarted: () => {
+						console.log('onStarted');
+					},
+					onProcess: progress => {
+						console.log('onStarted');
+					},
+					onCompleted: video => {
+						console.log('video_id', video.id);
+						this.setState({ video_id: video.id });
+					},
+					onError: video => this.setState({ video_path: null })
+				});
 			})
 			.catch(err => {
 				console.log(err);
