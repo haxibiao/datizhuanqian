@@ -20,10 +20,13 @@ function saveVideo(token, data, onSuccessed) {
 			videoUrl: data.videoUrl
 		})
 	})
-		.then(response => response.json())
+		.then(response => {
+			console.log('response', response);
+			return response.json();
+		})
 		.then(video => {
 			console.log('savedVideo', video);
-			Methods.toast('视频上传成功', 150);
+			// Methods.toast('视频上传成功', 150);
 			onSuccessed && onSuccessed(video);
 		})
 		.catch(err => {

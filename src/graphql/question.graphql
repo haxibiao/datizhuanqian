@@ -58,6 +58,13 @@ query QuestionQuery($id: Int, $category_id: Int) {
 			width
 			height
 		}
+		video {
+			height
+			width
+			path
+			rotate
+			duration
+		}
 		category {
 			id
 			name

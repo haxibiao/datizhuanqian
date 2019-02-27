@@ -46,6 +46,7 @@ class MakeQuestionScreen extends Component {
 		this.categories = [];
 		this.dropData = null;
 		this.state = {
+			progress: 0,
 			category_id: null,
 			description: null,
 			picture: null,
@@ -166,13 +167,14 @@ class MakeQuestionScreen extends Component {
 						console.log('onStarted');
 					},
 					onProcess: progress => {
-						console.log('onStarted');
+						this.setState({ progress });
 					},
 					onCompleted: video => {
-						console.log('video_id', video.id);
-						this.setState({ video_id: video.id });
+						console.log('video', video);
+						this.video_id = video.id;
+						this.setState({ progress: 100 });
 					},
-					onError: video => this.setState({ video_path: null })
+					onError: video => this.setState({ progress: 0, video_path: null })
 				});
 			})
 			.catch(err => {
@@ -196,8 +198,9 @@ class MakeQuestionScreen extends Component {
 				data: {
 					category_id,
 					description,
-					image: picture,
 					selections,
+					video_id: this.video_id,
+					image: picture,
 					answers: [...answers]
 				}
 			};
@@ -210,16 +213,15 @@ class MakeQuestionScreen extends Component {
 	};
 
 	onError = error => {
-		alert(error);
+		console.log(error);
 		Methods.toast('提交失败', 150);
 	};
 
 	render() {
 		let { navigation, user, login } = this.props;
-		let { category_id, description, picture, video_path, options, optionValue, answers } = this.state;
+		let { category_id, description, picture, video_path, options, optionValue, answers, progress } = this.state;
 		let disableAddButton = options.size >= 4 || !optionValue;
 		let variables = this.buildVariables();
-		console.log('variables', variables);
 		return (
 			<Query query={CategoriesQuery} variables={{ limit: 100 }}>
 				{({ data, loading, error }) => {
@@ -297,13 +299,14 @@ class MakeQuestionScreen extends Component {
 														</TouchableOpacity>
 													</View>
 												) : video_path ? (
-													<ProgressCover>
+													<ProgressCover progress={progress}>
 														<View>
 															<Video
-																muted={false}
+																muted
 																source={{ uri: video_path }}
 																style={styles.addImage}
 																resizeMode="cover"
+																repeat
 															/>
 															<TouchableOpacity
 																style={styles.closeBtn}
@@ -314,7 +317,10 @@ class MakeQuestionScreen extends Component {
 														</View>
 													</ProgressCover>
 												) : (
-													<TouchableOpacity style={styles.addImage} onPress={this.imagePicke}>
+													<TouchableOpacity
+														style={styles.addImage}
+														onPress={this.showSelected}
+													>
 														<Iconfont name={'add'} size={26} color="#fff" />
 													</TouchableOpacity>
 												)}

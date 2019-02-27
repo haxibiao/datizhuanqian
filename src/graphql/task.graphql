@@ -65,6 +65,13 @@ mutation createQuestionMutation($data: CreateQuestionInputType) {
 		description
 		answer
 		selections
+		video {
+			height
+			width
+			path
+			rotate
+			duration
+		}
 	}
 }
 
@@ -85,6 +92,13 @@ query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
 				path
 				width
 				height
+			}
+			video {
+				height
+				width
+				path
+				rotate
+				duration
 			}
 			answer
 			selections

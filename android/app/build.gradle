@@ -142,6 +142,7 @@ android {
 dependencies {
     implementation project(':jcore-react-native')
     implementation project(':jpush-react-native')
+    implementation project(':rnpackages')
     compile project(':jpush-react-native')
     compile project(':jcore-react-native')
     compile project(':react-native-video')

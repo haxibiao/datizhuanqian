@@ -23,6 +23,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.datizhuanqian.apkdownload.DownloadApkPackage;
+import com.haxibiao.rnpackages.RCTVodUploaderReactPackage;
 
 
 import java.util.Arrays;
@@ -50,7 +51,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage(),
+            new RCTVodUploaderReactPackage(),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new ReactVideoPackage(),
             new RNGestureHandlerPackage(),

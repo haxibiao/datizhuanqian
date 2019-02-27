@@ -71,7 +71,7 @@ class Player extends React.PureComponent {
 
 	render() {
 		let { paused, loaded } = this.state;
-		let { source, active, video } = this.props;
+		let { source, muted } = this.props;
 		return (
 			<TouchableOpacity style={styles.playContainer} activeOpacity={1} onPress={this.control}>
 				<Video
@@ -83,7 +83,7 @@ class Player extends React.PureComponent {
 					rate={1} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
 					paused={paused}
 					volume={1} // 声音的放大倍数，0 代表没有声音，就是静音muted, 1 代表正常音量 normal，更大的数字表示放大的倍数
-					muted={false} // true代表静音，默认为false.
+					muted={muted} // true代表静音，默认为false.
 					resizeMode={'contain'} // 视频的自适应伸缩铺放行为，
 					onLoad={this._onLoaded} // 当视频加载完毕时的回调函数
 					onLoadStart={this._loadStart} // 当视频开始加载时的回调函数

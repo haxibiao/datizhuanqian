@@ -12,7 +12,8 @@ import {
 	Text,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
-	RefreshControl
+	RefreshControl,
+	ImageBackground
 } from 'react-native';
 import {
 	DivisionLine,
@@ -23,7 +24,8 @@ import {
 	Loading,
 	BlankContent,
 	LoadingMore,
-	ContentEnd
+	ContentEnd,
+	Player
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
@@ -52,7 +54,7 @@ class QuestionItem extends Component {
 
 	render() {
 		let { question, navigation } = this.props;
-		let { category, image, description, created_at, count, submit } = question;
+		let { category, image, description, created_at, count, submit, video } = question;
 		this.submitStatus(submit);
 		return (
 			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
@@ -69,6 +71,11 @@ class QuestionItem extends Component {
 								</Text>
 							</View>
 							{image && <Image source={{ uri: image.path }} style={styles.image} />}
+							{question.video && (
+								<View style={[styles.image, { width: 80, height: 80, backgroundColor: '#f0f0f0' }]}>
+									<Player source={question.video.path} muted />
+								</View>
+							)}
 						</View>
 						<View style={styles.meta}>
 							<Text style={styles.metaText}>{created_at}</Text>

@@ -8,21 +8,8 @@ import * as Progress from 'react-native-progress';
 import { Colors } from '../../constants';
 
 class ProgressCover extends Component {
-	state = {
-		progress: 0
-	};
-
-	progress = progress => {
-		this.setState({ progress });
-	};
-
-	hide = () => {
-		this.setState({ progress: 100 });
-	};
-
 	render() {
-		let { message, children } = this.props;
-		let { progress } = this.state;
+		let { progress, message, children } = this.props;
 		return (
 			<View>
 				{children}

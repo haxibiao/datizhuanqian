@@ -5,14 +5,14 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
-import { DivisionLine, Header, Screen, LoadingError, Iconfont, OptionItem } from '../../components';
+import { DivisionLine, Header, Screen, LoadingError, Iconfont, OptionItem, Player } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 class QuestionDetail extends Component {
 	render() {
 		let { navigation } = this.props;
-		let { description, image, selections, category, answer } = navigation.getParam('question', {});
+		let { description, image, selections, category, answer, video } = navigation.getParam('question', {});
 		selections = selections.replace(/\\/g, '');
 		let options = [];
 		try {
@@ -59,6 +59,17 @@ class QuestionDetail extends Component {
 										borderRadius: 5
 									}}
 								/>
+							)}
+							{video && (
+								<View
+									style={{
+										width: Divice.width - 40,
+										height: (video.height / video.width) * (Divice.width - 40),
+										borderRadius: 5
+									}}
+								>
+									<Player source={video.path} />
+								</View>
 							)}
 						</View>
 						<View style={styles.options}>
