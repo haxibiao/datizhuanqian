@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
 
-import { Colors } from '../../constants';
-import { Methods } from '../../helpers';
+import { Colors, Divice } from '../../../constants';
+import { Methods } from '../../../helpers';
 
-import { Avatar, Iconfont, Screen, DivisionLine, Loading, LoadingError, UserTitle } from '../../components';
+import { Avatar, Iconfont, Screen, DivisionLine, LoadingError, UserTitle } from '../../../components';
 
 import { Query } from 'react-apollo';
-import { feedbackQuery } from '../../graphql/feedback.graphql';
+import { feedbackQuery } from '../../../graphql/feedback.graphql';
+
+import Loading from './Loading';
 
 class FeedbackBody extends Component {
 	constructor(props) {
@@ -16,7 +18,7 @@ class FeedbackBody extends Component {
 	}
 
 	render() {
-		const { navigation, feedback_id } = this.props;
+		const { navigation, feedback_id, getHeight } = this.props;
 
 		return (
 			<Query query={feedbackQuery} variables={{ id: feedback_id }}>

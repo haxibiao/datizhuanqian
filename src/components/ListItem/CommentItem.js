@@ -15,8 +15,8 @@ class CommentItem extends Component {
 		this.state = {
 			feedbackCommentVisible: false,
 			images: [
-				{ url: 'http://cos.qunyige.com/storage/image/14976.jpg', width: 900, height: 568 },
-				{ url: 'https://ww2.sinaimg.cn/bmiddle/9bbc284bgy1g0c5aaqm9sj20ia0rf125.jpg', width: 400, height: 660 }
+				// { url: 'http://cos.qunyige.com/storage/image/14976.jpg', width: 900, height: 568 },
+				// { url: 'https://ww2.sinaimg.cn/bmiddle/9bbc284bgy1g0c5aaqm9sj20ia0rf125.jpg', width: 400, height: 660 }
 			]
 		};
 	}

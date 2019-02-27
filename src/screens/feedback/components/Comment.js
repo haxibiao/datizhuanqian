@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
-import { Input, Iconfont, DivisionLine } from '../../components';
+import { Input, Iconfont, DivisionLine } from '../../../components';
 
-import { Colors, Divice } from '../../constants';
-import { Methods } from '../../helpers';
+import { Colors, Divice } from '../../../constants';
+import { Methods } from '../../../helpers';
 
 class Comment extends Component {
 	constructor(props) {
