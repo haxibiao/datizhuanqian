@@ -43,7 +43,7 @@ class HomeScreen extends Component {
 					<Avatar isLocal={this.state.logo} size={48} />
 					<View style={styles.itemRight}>
 						<Text style={styles.name}>系统通知</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
+						<Query query={userUnreadQuery} variables={{ id: user.id }}>
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;

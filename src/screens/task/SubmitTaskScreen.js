@@ -129,7 +129,7 @@ class SubmitTaskScreen extends Component {
 		const { navigation } = this.props;
 		return (
 			<Screen>
-				<ScrollView style={styles.container}>
+				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
 					<DivisionLine height={5} />
 					<View style={styles.header}>
 						<View style={styles.headerLeft} />

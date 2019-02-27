@@ -10,7 +10,7 @@ import {
 	ScrollView,
 	Keyboard
 } from 'react-native';
-import { Button, Radio, Screen, Input, Header } from '../../components';
+import { Button, Radio, Screen, Input, Header, SubmitLoading } from '../../components';
 
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -29,7 +29,8 @@ class ErrorCorrectionScreen extends Component {
 			color: Colors.theme,
 			content: '',
 			type: 1,
-			inputHeight: 220
+			inputHeight: 220,
+			isVisible: false
 		};
 	}
 
@@ -38,6 +39,11 @@ class ErrorCorrectionScreen extends Component {
 		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShowHandler.bind(this));
 		//监听键盘隐藏事件
 		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHideHandler.bind(this));
+	}
+
+	componentWillUnmount() {
+		this.keyboardDidShowListener.remove();
+		this.keyboardDidHideListener.remove();
 	}
 
 	keyboardDidShowHandler(event) {
@@ -53,8 +59,11 @@ class ErrorCorrectionScreen extends Component {
 	submitError = async () => {
 		const { navigation } = this.props;
 		const { question } = navigation.state.params;
-		let { content, type } = this.state;
+		let { content, type, isVisible } = this.state;
 		let result = {};
+		this.setState({
+			isVisible: !isVisible
+		});
 		try {
 			result = await this.props.createQuestionRedressMutation({
 				variables: {
@@ -67,9 +76,15 @@ class ErrorCorrectionScreen extends Component {
 			result.errors = ex;
 		}
 		if (result && result.errors) {
+			this.setState({
+				isVisible: false
+			});
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, -100);
 		} else {
+			this.setState({
+				isVisible: false
+			});
 			Methods.toast('提交成功', -100);
 			navigation.goBack();
 		}
@@ -80,7 +95,11 @@ class ErrorCorrectionScreen extends Component {
 		let { content, type } = this.state;
 		return (
 			<Screen>
-				<ScrollView style={styles.container} ref={ref => (this.ScrollTo = ref)}>
+				<ScrollView
+					style={styles.container}
+					ref={ref => (this.ScrollTo = ref)}
+					keyboardShouldPersistTaps={'always'}
+				>
 					<View style={styles.header}>
 						<Text style={styles.type}>错误类型</Text>
 						<View style={styles.radios}>
@@ -135,6 +154,7 @@ class ErrorCorrectionScreen extends Component {
 						/>
 					</View>
 				</ScrollView>
+				<SubmitLoading isVisible={this.state.isVisible} tips={'提交中...'} />
 			</Screen>
 		);
 	}

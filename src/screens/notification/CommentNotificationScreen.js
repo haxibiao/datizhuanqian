@@ -17,9 +17,8 @@ class CommentNotificationScreen extends Component {
 		};
 	}
 
-	componentDidMount() {
+	componentWillUnmount() {
 		const { client, user } = this.props;
-
 		client.query({
 			query: userUnreadQuery,
 			variable: {

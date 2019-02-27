@@ -80,7 +80,7 @@ class Feedback extends Component {
 
 		return (
 			<Screen header tabLabel="意见反馈">
-				<ScrollView style={styles.container}>
+				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
 					<DivisionLine height={5} />
 					<View style={styles.main}>
 						<Input

@@ -3,8 +3,9 @@ import { StyleSheet, View, FlatList, RefreshControl } from 'react-native';
 import { BlankContent, Loading, LoadingError, LoadingMore, ContentEnd, Screen, DivisionLine } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 
-import { Query } from 'react-apollo';
-import { systemNotificationsQuery } from '../../graphql/notification.graphql';
+import { Query, withApollo } from 'react-apollo';
+import { connect } from 'react-redux';
+import { systemNotificationsQuery, userUnreadQuery } from '../../graphql/notification.graphql';
 
 import SystemNotificationItem from './SystemNotificationItem';
 
@@ -14,6 +15,18 @@ class SystemNotificationScreen extends Component {
 		this.state = {
 			fetchingMore: true
 		};
+	}
+
+	componentWillUnmount() {
+		const { client, user } = this.props;
+
+		client.query({
+			query: userUnreadQuery,
+			variable: {
+				id: user.id
+			},
+			fetchPolicy: 'network-only'
+		});
 	}
 
 	render() {
@@ -90,4 +103,6 @@ class SystemNotificationScreen extends Component {
 
 const styles = StyleSheet.create({});
 
-export default SystemNotificationScreen;
+export default connect(store => {
+	return { user: store.users.user };
+})(withApollo(SystemNotificationScreen));
