@@ -23,6 +23,7 @@ class CommentItem extends Component {
 	render() {
 		const { navigation, item, replyComment, switchKeybord, user, feedback_id } = this.props;
 		let { feedbackCommentVisible } = this.state;
+
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -83,14 +84,14 @@ class CommentItem extends Component {
 					)}
 
 					<Text style={{ color: Colors.black, fontSize: 15 }}>{item.content}</Text>
-					{this.state.images.map((image, index) => {
+					{item.images.map((image, index) => {
 						let width = image.width;
 						let height = image.height;
 						let padding = 103;
 						let size = Methods.imageSize({ width, height, padding });
 						return (
 							<Image
-								source={{ uri: image.url }}
+								source={{ uri: image.path }}
 								style={{
 									width: size.width,
 									height: size.height,

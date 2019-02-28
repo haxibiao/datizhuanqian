@@ -42,17 +42,17 @@ class FeedbackDetailsScreen extends Component {
 			reply: null,
 			fetchingMore: true,
 			waitingVisible: false,
-			image: '',
+			image: null,
 			feedbackHeight: 50
 		};
 	}
 
 	//评论
-	submitComment = async () => {
+	submitComment = async length => {
 		let result = {};
 		const { navigation } = this.props;
 		const { feedback_id } = navigation.state.params;
-		let { comment_id, content } = this.state;
+		let { comment_id, content, image } = this.state;
 		this.setState({
 			waitingVisible: true
 		});
@@ -63,7 +63,7 @@ class FeedbackDetailsScreen extends Component {
 					commentable_type: 'feedbacks',
 					commentable_id: feedback_id,
 					comment_id: comment_id,
-					images: [this.state.image]
+					images: image ? [image] : null
 				},
 				refetchQueries: () => [
 					{
@@ -75,6 +75,12 @@ class FeedbackDetailsScreen extends Component {
 					},
 					{
 						query: feedbacksQuery
+					},
+					{
+						query: feedbackQuery,
+						variables: {
+							id: feedback_id
+						}
 					}
 				]
 			});
@@ -93,11 +99,13 @@ class FeedbackDetailsScreen extends Component {
 			});
 			Methods.toast('评论成功', -100);
 			Keyboard.dismiss();
-			this.scrollRef.scrollToIndex({ index: 1, animated: true });
+			this.setState({
+				content: '',
+				image: null
+			});
+
+			this.scrollRef.scrollToIndex({ index: 0 + length, animated: true });
 		}
-		this.setState({
-			content: ''
-		});
 	};
 
 	render() {
@@ -140,18 +148,17 @@ class FeedbackDetailsScreen extends Component {
 									}
 									data={data.comments}
 									keyExtractor={(item, index) => index.toString()}
-									renderItem={({ item, index }) =>
-										item.user.is_admin ? null : (
-											<CommentItem
-												item={item}
-												user={user}
-												feedback_id={feedback_id}
-												navigation={navigation}
-												switchKeybord={this.switchKeybord}
-												replyComment={this.replyComment}
-											/>
-										)
-									}
+									renderItem={({ item, index }) => (
+										<CommentItem
+											item={item}
+											user={user}
+											index={index}
+											feedback_id={feedback_id}
+											navigation={navigation}
+											switchKeybord={this.switchKeybord}
+											replyComment={this.replyComment}
+										/>
+									)}
 									onEndReachedThreshold={0.3}
 									onEndReached={() => {
 										if (data.comments) {
@@ -178,24 +185,7 @@ class FeedbackDetailsScreen extends Component {
 										}
 									}}
 									ListHeaderComponent={() => {
-										return (
-											<View>
-												<FeedbackBody navigation={navigation} feedback_id={feedback_id} />
-												{adminComment.map((comment, index) => {
-													return (
-														<CommentItem
-															item={comment}
-															user={user}
-															feedback_id={feedback_id}
-															navigation={navigation}
-															switchKeybord={this.switchKeybord}
-															replyComment={this.replyComment}
-															key={index}
-														/>
-													);
-												})}
-											</View>
-										);
+										return <FeedbackBody navigation={navigation} feedback_id={feedback_id} />;
 									}}
 									ListFooterComponent={() => {
 										return data && data.comments.length > 0 && this.state.fetchingMore ? (
@@ -211,7 +201,9 @@ class FeedbackDetailsScreen extends Component {
 									content={content}
 									changeValue={this.changeValue}
 									switchKeybord={this.switchKeybord}
-									submitComment={this.submitComment}
+									submitComment={() => {
+										this.submitComment(adminComment.length);
+									}}
 									openPhotos={this.openPhotos}
 									image={this.state.image}
 									deleteImage={this.deleteImage}

@@ -62,7 +62,6 @@ android {
                 JPUSH_APPKEY: "3357861c9b5026f97afe2219", //在此替换你的APPKey
                 APP_CHANNEL: "developer-default"    //应用渠道号
         ]
-        multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

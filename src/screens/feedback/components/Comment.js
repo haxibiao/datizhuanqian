@@ -95,7 +95,7 @@ class Comment extends Component {
 					</TouchableWithoutFeedback>
 					<TouchableOpacity
 						onPress={submitComment}
-						disabled={content.length < 1}
+						disabled={!(content.length > 0 || image)}
 						style={{ paddingHorizontal: 10 }}
 					>
 						<Iconfont
