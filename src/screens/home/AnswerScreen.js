@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 
 import {
 	TabTop,
@@ -11,7 +11,8 @@ import {
 	Button,
 	CorrectModal,
 	Screen,
-	Iconfont
+	Iconfont,
+	Avatar
 } from '../../components';
 
 import { Colors, Divice } from '../../constants';
@@ -227,7 +228,23 @@ class AnswerScreen extends Component {
 								<View>
 									<TabTop user={user} isShow={isShow} isAnswer={true} />
 									<Banner />
+
 									<View style={styles.content}>
+										<View
+											style={{
+												flexDirection: 'row',
+												alignItems: 'center',
+												paddingBottom: 15
+											}}
+										>
+											<Image
+												source={{ uri: question.user.avatar }}
+												style={{ width: 20, height: 20, borderRadius: 3 }}
+											/>
+											<Text style={{ fontSize: 14, color: '#222', paddingLeft: 6 }}>
+												{question.user.name}
+											</Text>
+										</View>
 										<ErrorBoundary reload={() => refetch()}>
 											<Question
 												question={question}
@@ -324,7 +341,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white
 	},
 	content: {
-		paddingTop: 30,
+		paddingTop: 20,
 		paddingHorizontal: 30
 	},
 	submit: {

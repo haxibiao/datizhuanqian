@@ -75,6 +75,7 @@ query QuestionQuery($id: Int, $category_id: Int) {
 		user {
 			id
 			name
+			avatar
 		}
 		submit
 	}

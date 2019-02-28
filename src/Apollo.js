@@ -70,9 +70,10 @@ class Apollo extends Component {
 		this._makeClient(user, server);
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	async componentWillUpdate(nextProps, nextState) {
+		let server = await Storage.getItem(ItemKeys.server);
 		if (nextProps.user !== this.props.user) {
-			this._makeClient(nextProps.user);
+			this._makeClient(nextProps.user, server);
 		}
 	}
 

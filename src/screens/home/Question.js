@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
-import { Player } from '../../components';
+import { Player, Avatar } from '../../components';
 import { Colors, Divice } from '../../constants';
 
 class Question extends Component {
@@ -17,6 +17,7 @@ class Question extends Component {
 		return (
 			<View>
 				<Text style={styles.title}>{question.description}</Text>
+
 				{question.image && (
 					<Image
 						source={{
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
 	title: {
 		color: Colors.primaryFont,
 		fontSize: 16,
+		fontWeight: '500',
 		lineHeight: 22
 	},
 	options: {
