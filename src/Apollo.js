@@ -17,11 +17,16 @@ import MainRouter from './routers/MainRouter';
 import JPushModule from 'jpush-react-native';
 
 class Apollo extends Component {
-	async _makeClient(user) {
+	_makeClient(user, server) {
 		let { token } = user;
 
-		let server = await Storage.getItem(ItemKeys.server);
+		ServerRoot = Config.ServerRoot;
+		if (server && server.mainApi) {
+			ServerRoot = server.mainApi;
+		}
 		console.log('ApolloserverRoot', server);
+
+		console.log('ServerRoot', ServerRoot);
 
 		let deviceHeaders = {};
 		const isEmulator = DeviceInfo.isEmulator();
@@ -46,7 +51,7 @@ class Apollo extends Component {
 		}
 
 		this.client = new ApolloClient({
-			uri: server.mainApi + '/graphql',
+			uri: ServerRoot + '/graphql',
 			request: async operation => {
 				operation.setContext({
 					headers: {
@@ -59,9 +64,10 @@ class Apollo extends Component {
 		});
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
 		let { user = {} } = this.props;
-		this._makeClient(user);
+		let server = await Storage.getItem(ItemKeys.server);
+		this._makeClient(user, server);
 	}
 
 	componentWillUpdate(nextProps, nextState) {

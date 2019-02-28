@@ -46,6 +46,7 @@ class App extends Component {
     serverJson.mainApi = Config.ServerRoot;
 
     //如果第一次启动app 服务器就无法连接，则会取不到备用服务器地址
+    console.log('server', server);
 
     if (server && server.mainApi) {
       fetch(server.mainApi)

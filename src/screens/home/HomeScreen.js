@@ -68,6 +68,7 @@ class HomeScreen extends Component {
 				auto
 			);
 			SplashScreen.hide();
+			console.log('hide');
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
 
