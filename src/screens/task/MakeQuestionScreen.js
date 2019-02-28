@@ -163,6 +163,13 @@ class MakeQuestionScreen extends Component {
 				videoUpload({
 					token: this.props.user.token,
 					videoPath,
+					onBeforeUpload: metadata => {
+						if (metadata.duration > 15) {
+							this.setState({ video_path: null });
+							Methods.toast('抱歉，视频时长需在15秒以内', 150);
+							throw '视频时长需在15秒以内';
+						}
+					},
 					onStarted: () => {
 						console.log('onStarted');
 					},

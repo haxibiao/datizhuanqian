@@ -22,7 +22,6 @@ import Select from './Control/Select';
 import DropdownMenu from './Control/DropdownMenu';
 import CustomTextInput from './Control/CustomTextInput';
 import AnimationButton from './Control/AnimationButton';
-import Player from './Control/Player';
 
 import Header from './Header/Header';
 import TabBarHeader from './Header/TabBarHeader';
@@ -65,6 +64,8 @@ import RedDot from './Universal/RedDot';
 import UploadingImage from './Universal/UploadingImage';
 import SubmitLoading from './Universal/SubmitLoading';
 
+import Player from './Video/Player';
+
 import { Iconfont } from './utils/Fonts';
 
 export {
@@ -92,7 +93,6 @@ export {
 	DropdownMenu,
 	CustomTextInput,
 	AnimationButton,
-	Player,
 	//
 	Header,
 	TabBarHeader,
@@ -134,6 +134,7 @@ export {
 	RedDot,
 	UploadingImage,
 	SubmitLoading,
+	Player,
 	//
 	Iconfont
 };

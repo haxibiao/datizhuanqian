@@ -4,7 +4,7 @@
  */
 import VodUploader from '../../native/VodUploader';
 import Config from '../constants/Config';
-import Methods from './Methods';
+import { toast } from './Methods';
 
 function saveVideo(token, data, onSuccessed) {
 	console.log('be_save_video', data);
@@ -26,7 +26,7 @@ function saveVideo(token, data, onSuccessed) {
 		})
 		.then(video => {
 			console.log('savedVideo', video);
-			// Methods.toast('视频上传成功', 150);
+			toast('视频上传成功', 150);
 			onSuccessed && onSuccessed(video);
 		})
 		.catch(err => {
@@ -67,11 +67,11 @@ export default function(params) {
 					onCompleted && saveVideo(token, data, onCompleted); //将腾讯云的视频地址保存到服务器
 				});
 				VodUploader.addListener('error', uploadId, data => {
-					onError ? onError(data) : Methods.toast('视频上传失败', 150);
+					onError ? onError(data) : toast('视频上传失败', 150);
 				});
 			})
 			.catch(err => {
-				onError ? onError(data) : Methods.toast('视频上传失败', 150);
+				onError ? onError(data) : toast('视频上传失败', 150);
 			});
 	});
 }

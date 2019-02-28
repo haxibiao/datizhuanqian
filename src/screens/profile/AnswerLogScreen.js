@@ -119,6 +119,7 @@ class AnswerLogScreen extends Component {
 									renderItem={({ item, index }) => (
 										<AnswerItem answer={item} navigation={navigation} />
 									)}
+									ItemSeparatorComponent={() => <DivisionLine />}
 									refreshControl={
 										<RefreshControl
 											refreshing={loading}
@@ -164,11 +165,7 @@ class AnswerLogScreen extends Component {
 										}
 									}}
 									ListFooterComponent={() => {
-										return (
-											<View style={{ marginTop: -10 }}>
-												{this.state.fetchingMore ? <LoadingMore /> : <ContentEnd />}
-											</View>
-										);
+										return this.state.fetchingMore ? <LoadingMore /> : <ContentEnd />;
 									}}
 								/>
 							);
@@ -183,12 +180,11 @@ class AnswerLogScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.white
+		backgroundColor: '#fff'
 	},
 	answerItem: {
 		padding: 15,
-		backgroundColor: '#fff',
-		marginBottom: 10
+		backgroundColor: '#fff'
 	},
 	categoryLabel: {
 		alignSelf: 'auto',

@@ -60,17 +60,7 @@ class QuestionDetail extends Component {
 									}}
 								/>
 							)}
-							{video && (
-								<View
-									style={{
-										width: Divice.width - 40,
-										height: (video.height / video.width) * (Divice.width - 40),
-										borderRadius: 5
-									}}
-								>
-									<Player source={video.path} />
-								</View>
-							)}
+							{video && <Player source={video.path} />}
 						</View>
 						<View style={styles.options}>
 							{options.map((option, index) => {

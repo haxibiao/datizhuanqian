@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Animated, Easing, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Video from 'react-native-video';
-import { Colors } from '../../constants';
+import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 import { Iconfont } from '../utils/Fonts';
 
@@ -71,9 +71,13 @@ class Player extends React.PureComponent {
 
 	render() {
 		let { paused, loaded } = this.state;
-		let { source, muted } = this.props;
+		let { source, muted, width = Divice.width - 40 } = this.props;
 		return (
-			<TouchableOpacity style={styles.playContainer} activeOpacity={1} onPress={this.control}>
+			<TouchableOpacity
+				style={[styles.playContainer, { width, height: width * 0.7 }]}
+				activeOpacity={1}
+				onPress={this.control}
+			>
 				<Video
 					ref={ref => {
 						this.video = ref;
@@ -107,9 +111,9 @@ class Player extends React.PureComponent {
 
 const styles = StyleSheet.create({
 	playContainer: {
-		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		backgroundColor: '#000000'
 	},
 	fullScreen: {
 		position: 'absolute',

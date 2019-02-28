@@ -24,14 +24,14 @@ import {
 	Loading,
 	BlankContent,
 	LoadingMore,
-	ContentEnd,
-	Player
+	ContentEnd
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { mySubmitQuestionHistoryQuery } from '../../graphql/task.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
+import Video from 'react-native-video';
 
 class QuestionItem extends Component {
 	static defaultProps = {
@@ -71,9 +71,18 @@ class QuestionItem extends Component {
 								</Text>
 							</View>
 							{image && <Image source={{ uri: image.path }} style={styles.image} />}
-							{question.video && (
-								<View style={[styles.image, { width: 80, height: 80, backgroundColor: '#f0f0f0' }]}>
-									<Player source={question.video.path} muted />
+							{video && (
+								<View style={styles.image}>
+									<Video
+										source={{ uri: video.path }}
+										style={styles.fullScreen}
+										resizeMode="cover"
+										paused
+										muted
+									/>
+									<View style={styles.fullScreen}>
+										<Iconfont name="paused" size={24} color="#fff" style={{ opacity: 0.8 }} />
+									</View>
 								</View>
 							)}
 						</View>
@@ -122,6 +131,7 @@ class MakeQuestionHistoryScreen extends Component {
 									renderItem={({ item, index }) => (
 										<QuestionItem question={item} navigation={navigation} />
 									)}
+									ItemSeparatorComponent={() => <DivisionLine />}
 									refreshControl={
 										<RefreshControl
 											refreshing={loading}
@@ -167,11 +177,7 @@ class MakeQuestionHistoryScreen extends Component {
 										}
 									}}
 									ListFooterComponent={() => {
-										return (
-											<View style={{ marginTop: -10 }}>
-												{this.state.fetchingMore ? <LoadingMore /> : <ContentEnd />}
-											</View>
-										);
+										return this.state.fetchingMore ? <LoadingMore /> : <ContentEnd />;
 									}}
 								/>
 							);
@@ -186,11 +192,10 @@ class MakeQuestionHistoryScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Colors.white
+		backgroundColor: '#fff'
 	},
 	questionItem: {
-		backgroundColor: '#fff',
-		marginBottom: 10
+		backgroundColor: '#fff'
 	},
 	questionStatus: {
 		flexDirection: 'row',
@@ -216,6 +221,16 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		resizeMode: 'cover',
 		marginLeft: 12
+	},
+	fullScreen: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		bottom: 0,
+		right: 0,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'rgba(0,0,0,0.2)'
 	},
 	meta: {
 		marginBottom: 10,

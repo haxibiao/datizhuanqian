@@ -181,6 +181,13 @@ query answerHistoriesQuery($offset: Int, $limit: Int) {
 					width
 					height
 				}
+				video {
+					height
+					width
+					path
+					rotate
+					duration
+				}
 				selections
 				answers {
 					Text
@@ -204,6 +211,13 @@ query FavoritesQuery($offset: Int, $limit: Int) {
 				path
 				width
 				height
+			}
+			video {
+				height
+				width
+				path
+				rotate
+				duration
 			}
 			selections
 			category {
