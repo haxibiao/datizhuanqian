@@ -17,16 +17,17 @@ import MainRouter from './routers/MainRouter';
 import JPushModule from 'jpush-react-native';
 
 class Apollo extends Component {
-	_makeClient(user, server) {
+	async _makeClient(user) {
 		let { token } = user;
 
-		ServerRoot = Config.ServerRoot;
+		let server = await Storage.getItem(ItemKeys.server);
+		console.log('ApolloserverRoot', server);
+		// console.log('ServerRoot', ServerRoot);
+
+		let ServerRoot = Config.ServerRoot;
 		if (server && server.mainApi) {
 			ServerRoot = server.mainApi;
 		}
-		console.log('ApolloserverRoot', server);
-
-		console.log('ServerRoot', ServerRoot);
 
 		let deviceHeaders = {};
 		const isEmulator = DeviceInfo.isEmulator();
@@ -64,17 +65,20 @@ class Apollo extends Component {
 		});
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
 		let { user = {} } = this.props;
-		let server = await Storage.getItem(ItemKeys.server);
-		this._makeClient(user, server);
+		this._makeClient(user);
 	}
 
-	async componentWillUpdate(nextProps, nextState) {
-		let server = await Storage.getItem(ItemKeys.server);
+	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.user !== this.props.user) {
-			this._makeClient(nextProps.user, server);
+			console.log('b1', nextProps.user);
+			this._makeClient(nextProps.user);
 		}
+		// if (nextProps.server !== this.props.server) {
+		// 	console.log('c1', nextProps.user, nextProps.server);
+		// 	this._makeClient(nextProps.user, nextProps.server);
+		// }
 	}
 
 	componentDidMount() {
@@ -123,6 +127,7 @@ class Apollo extends Component {
 
 	render() {
 		if (!this.client) return null;
+		console.log('render');
 		return (
 			<ApolloProvider client={this.client}>
 				<MainRouter />

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Dimensions, NetInfo, YellowBox } from 'react-native';
 
 import { Config, Colors, Divice } from './constants';
+import { Methods } from './helpers';
 import { AppIntro } from './components';
 //redux
 import { Provider, connect } from 'react-redux';
@@ -44,6 +45,7 @@ class App extends Component {
     let server = await Storage.getItem(ItemKeys.server);
     let serverJson = {};
     serverJson.mainApi = Config.ServerRoot;
+    serverJson.spareApi = '';
 
     //如果第一次启动app 服务器就无法连接，则会取不到备用服务器地址
     console.log('server', server);
@@ -52,21 +54,46 @@ class App extends Component {
       fetch(server.mainApi)
         //检查redux中主域名(Config.SERVER_ROOT)
         .then(data => {
+          console.log('chufa');
+          serverJson.mainApi = server.mainApi;
           serverJson.spareApi = 'https://datizhuanqian.cn';
           //应替换为data返回json中的备用域名
-          store.dispatch(actions.setServer(serverJson));
+          store.dispatch(actions.updateServer(serverJson));
         })
         .catch(err => {
           let info = err.toString().indexOf('failed');
           if (info > -1) {
             serverJson.mainApi = 'https://datizhuanqian.cn';
+            serverJson.spareApi = 'https://datizhuanqian.com';
             //应替换为storage json 中的备用域名
             store.dispatch(actions.updateServer(serverJson));
             //存在备用域名  则将redux 中主域名更新
           }
         });
     } else {
-      store.dispatch(actions.updateServer(serverJson));
+      fetch(serverJson.mainApi)
+        //检查redux中主域名(Config.SERVER_ROOT)
+        .then(data => {
+          // Methods.Toast('触发');
+          serverJson.spareApi = 'https://datizhuanqian.cn';
+          //应替换为data返回json中的备用域名
+          store.dispatch(actions.updateServer(serverJson));
+          // store.dispatch(actions.setServer(serverJson));
+        })
+        .catch(err => {
+          this.timer = setTimeout(() => {
+            Methods.toast('网络异常，请检查网络或重启APP', -90);
+          }, 6000);
+          let info = err.toString().indexOf('failed');
+          // Methods.Toast('连接服务器好像出了点问题，请重启APP');
+          if (info > -1) {
+            serverJson.mainApi = 'https://datizhuanqian.cn';
+            serverJson.spareApi = 'https://datizhuanqian.com';
+            //应替换为storage json 中的备用域名
+            store.dispatch(actions.updateServer(serverJson));
+            //存在备用域名  则将redux 中主域名更新
+          }
+        });
     }
   };
 

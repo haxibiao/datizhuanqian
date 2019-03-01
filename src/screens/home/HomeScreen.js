@@ -45,6 +45,7 @@ class HomeScreen extends Component {
 	}
 
 	componentDidMount() {
+		console.log('diddata', this.props.data);
 		const { navigation, login, isUpdate, client, dispatch, user } = this.props;
 		let { query } = client;
 		let promises = [query({ query: CategoriesQuery })];
@@ -68,7 +69,6 @@ class HomeScreen extends Component {
 				auto
 			);
 			SplashScreen.hide();
-			console.log('hide');
 		}, 5000);
 		//等待APP 启动页加载完再开始执行更新提示
 
@@ -145,6 +145,7 @@ class HomeScreen extends Component {
 			login,
 			data: { loading, error, categories, refetch, fetchMore }
 		} = this.props;
+
 		if (error)
 			return (
 				<CategoryCache
@@ -221,6 +222,10 @@ class HomeScreen extends Component {
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.data && nextProps.data.categories) {
 			nextProps.dispatch(actions.categoryCache(nextProps.data.categories));
+		}
+
+		if (nextProps.data.error) {
+			console.log('data', nextProps.data);
 		}
 		//启动APP的时候存入分类数据
 	}

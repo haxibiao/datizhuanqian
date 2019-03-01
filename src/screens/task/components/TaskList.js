@@ -31,7 +31,6 @@ class TaskList extends Component {
 				nextProps.data.refetch();
 			});
 		}
-		//props更新时存入用户信息
 	}
 
 	render() {

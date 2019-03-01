@@ -1,5 +1,5 @@
 import { Record, List } from 'immutable';
-import Config from 'react-native-config';
+import { Config, Colors, Divice } from '../../constants';
 
 export const users = Record({
 	login: false,
@@ -16,7 +16,6 @@ export const users = Record({
 		// exp: 1368
 	},
 	server: {
-		mainApi: Config.SERVER_ROOT,
-		spareApi: 'https://datizhuanqian.cn'
+		mainApi: Config.ServerRoot
 	}
 });

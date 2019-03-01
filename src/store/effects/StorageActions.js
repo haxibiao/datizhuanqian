@@ -36,5 +36,5 @@ export async function forgetUser({ action, getState, dispatch }) {
 	await Storage.removeItem(ItemKeys.user);
 	await Storage.removeItem(ItemKeys.userCache);
 
-	// await Storage.removeItem(ItemKeys.server);
+	await Storage.removeItem(ItemKeys.server);
 }
