@@ -27,8 +27,7 @@ class EditProfileScreen extends Component {
 		this.state = {
 			modalVisible: false,
 			nickname: '',
-			gender: this.props.user.gender,
-			backgroundColor: Colors.white
+			gender: this.props.user.gender
 		};
 	}
 
@@ -153,7 +152,7 @@ class EditProfileScreen extends Component {
 		return (
 			<Screen
 				customStyle={{
-					backgroundColor: modalVisible ? 'rgba(48,48,48,0.5)' : this.state.backgroundColor,
+					backgroundColor: modalVisible ? 'rgba(48,48,48,0.5)' : Colors.white,
 					borderBottomWidth: 0,
 					borderBottomColor: 'transparent'
 				}}

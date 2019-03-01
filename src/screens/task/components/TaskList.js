@@ -37,7 +37,7 @@ class TaskList extends Component {
 		const { login, user, navigation, data } = this.props;
 		const { error, loading, refecth } = data;
 
-		if (error) return <LoadingError />;
+		if (error) return <LoadingError reload={() => refetch()} />;
 		if (loading) return <Loading />;
 		if (!(data && !data.tasks == [])) return <BlankContent text={'暂时还没有任务哦~'} fontSize={14} />;
 

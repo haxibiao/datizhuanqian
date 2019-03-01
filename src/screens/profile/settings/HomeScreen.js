@@ -27,8 +27,7 @@ class HomeScreen extends Component {
 		this.state = {
 			signOutModalVisible: false,
 			promotModalVisible: false,
-			storageSize: '1MB',
-			backgroundColor: Colors.white
+			storageSize: '1MB'
 		};
 	}
 
@@ -39,8 +38,7 @@ class HomeScreen extends Component {
 		return (
 			<Screen
 				customStyle={{
-					backgroundColor:
-						promotModalVisible || signOutModalVisible ? 'rgba(48,48,48,0.5)' : this.state.backgroundColor,
+					backgroundColor: promotModalVisible || signOutModalVisible ? 'rgba(48,48,48,0.5)' : Colors.white,
 					borderBottomWidth: 0,
 					borderBottomColor: 'transparent'
 				}}

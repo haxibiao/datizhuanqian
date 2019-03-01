@@ -40,8 +40,7 @@ class HomeScreen extends Component {
 			mustUpdateVisible: false,
 			url: 'https://datizhuanqian.com?from=app',
 			onlineVersion: '1.1.0',
-			description: '',
-			backgroundColor: Colors.theme
+			description: ''
 		};
 	}
 
@@ -105,7 +104,7 @@ class HomeScreen extends Component {
 			<Screen
 				style={styles.container}
 				customStyle={{
-					backgroundColor: mustUpdateVisible || updateVisible ? '#977018' : this.state.backgroundColor,
+					backgroundColor: mustUpdateVisible || updateVisible ? '#977018' : Colors.theme,
 					borderBottomWidth: 0,
 					borderBottomColor: 'transparent'
 				}}

@@ -9,7 +9,8 @@ import {
 	LoadingError,
 	LoadingMore,
 	ContentEnd,
-	SubmitLoading
+	SubmitLoading,
+	DivisionLine
 } from '../../components';
 
 import { Colors, Divice } from '../../constants';
@@ -44,7 +45,7 @@ class FeedbackDetailsScreen extends Component {
 			waitingVisible: false,
 			image: null,
 			feedbackHeight: 50,
-			backgroundColor: Colors.theme
+			backgroundColor: Colors.white
 		};
 	}
 
@@ -121,11 +122,12 @@ class FeedbackDetailsScreen extends Component {
 					</TouchableOpacity>
 				}
 				customStyle={{
-					backgroundColor: feedbackCommentVisible ? '#977018' : this.state.backgroundColor,
+					backgroundColor: feedbackCommentVisible ? 'rgba(48,48,48,0.5)' : Colors.white,
 					borderBottomWidth: 0,
 					borderBottomColor: 'transparent'
 				}}
 			>
+				<DivisionLine height={1} />
 				<Query
 					query={feedbackCommentsQuery}
 					variables={{ commentable_id: feedback_id, commentable_type: 'feedbacks' }}
@@ -218,7 +220,6 @@ class FeedbackDetailsScreen extends Component {
 						);
 					}}
 				</Query>
-
 				<KeyboardSpacer />
 				<FeedbackCommentModal
 					visible={feedbackCommentVisible}
