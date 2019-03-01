@@ -17,6 +17,8 @@ import { Methods } from '../../helpers';
 import { CreateFeedbackMutation } from '../../graphql/feedback.graphql';
 import { Mutation, graphql, compose, withApollo } from 'react-apollo';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 class Feedback extends Component {
 	constructor(props) {
 		super(props);
@@ -115,6 +117,7 @@ class Feedback extends Component {
 					/>
 				</ScrollView>
 				<SubmitLoading isVisible={waitingVisible} tips={'提交反馈中'} />
+				<KeyboardSpacer />
 			</Screen>
 		);
 	}

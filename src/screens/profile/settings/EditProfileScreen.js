@@ -27,7 +27,8 @@ class EditProfileScreen extends Component {
 		this.state = {
 			modalVisible: false,
 			nickname: '',
-			gender: this.props.user.gender
+			gender: this.props.user.gender,
+			backgroundColor: Colors.white
 		};
 	}
 
@@ -150,7 +151,13 @@ class EditProfileScreen extends Component {
 		const { pay_info_change_count } = navigation.state.params.user;
 		let { modalVisible, nickname, gender } = this.state;
 		return (
-			<Screen customStyle={{ borderBottomColor: 'transparent' }}>
+			<Screen
+				customStyle={{
+					backgroundColor: modalVisible ? 'rgba(48,48,48,0.5)' : this.state.backgroundColor,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
+			>
 				<View style={styles.container}>
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>
 						<DivisionLine height={10} />

@@ -10,6 +10,7 @@ import actions from '../../store/actions';
 
 import { ResetPasswordMutation, ForgotPasswordMutation } from '../../graphql/user.graphql';
 import { compose, graphql } from 'react-apollo';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 let countDown = 59;
 
@@ -129,7 +130,6 @@ class RetrievePasswordScreen extends Component {
 						});
 					}}
 				/>
-
 				<TouchableOpacity
 					style={{ marginHorizontal: 25, marginTop: 15 }}
 					onPress={this.resendVerificationCode}
@@ -137,7 +137,6 @@ class RetrievePasswordScreen extends Component {
 				>
 					<Text style={{ color: countDown == 60 ? Colors.theme : Colors.grey }}>{this.state.tips}</Text>
 				</TouchableOpacity>
-
 				<View style={{ marginHorizontal: 25, marginTop: 30, height: 48 }}>
 					<Button
 						name="完成"
@@ -146,6 +145,7 @@ class RetrievePasswordScreen extends Component {
 						disabled={verification && password ? false : true}
 					/>
 				</View>
+				<KeyboardSpacer />
 			</Screen>
 		);
 	}

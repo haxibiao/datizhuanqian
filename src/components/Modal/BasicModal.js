@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Modal, Text, Dimensions, Platform, BackHandler, StatusBar, Keyboard } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+import { Divice } from '../../constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: Platform.OS == 'ios' ? Divice.STATUSBAR_HEIGHT + 46 : 46,
 		backgroundColor: 'rgba(48,48,48,0.5)'
 	},
 	modalInner: {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Screen } from '../../../components';
+import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
+import { Screen, Header } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 
 class LevelDescriptionScreen extends Component {
@@ -13,7 +13,8 @@ class LevelDescriptionScreen extends Component {
 	render() {
 		const { counts } = this.state;
 		return (
-			<Screen>
+			<ScrollView>
+				<Header />
 				<View style={styles.container}>
 					<View style={{ paddingVertical: 15 }}>
 						<View style={{ paddingHorizontal: 20 }}>
@@ -88,7 +89,7 @@ class LevelDescriptionScreen extends Component {
 						</View>
 					</View>
 				</View>
-			</Screen>
+			</ScrollView>
 		);
 	}
 }

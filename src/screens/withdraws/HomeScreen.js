@@ -36,6 +36,7 @@ class HomeScreen extends Component {
 		this.handleWithdraws = this.handleWithdraws.bind(this);
 		this.state = {
 			promotModalVisible: false,
+			backgroundColor: Colors.theme,
 			RuleDescriptioVisible: false,
 			WithdrawsTipsVisible: false,
 			EXCHANGE_RATE: 600, //汇率
@@ -153,7 +154,8 @@ class HomeScreen extends Component {
 				<Header
 					headerLeft
 					customStyle={{
-						backgroundColor: Colors.theme,
+						backgroundColor:
+							RuleDescriptioVisible || WithdrawsTipsVisible ? '#977018' : this.state.backgroundColor,
 						borderBottomWidth: 0,
 						borderBottomColor: 'transparent'
 					}}

@@ -54,7 +54,6 @@ class App extends Component {
       fetch(server.mainApi)
         //检查redux中主域名(Config.SERVER_ROOT)
         .then(data => {
-          console.log('chufa');
           serverJson.mainApi = server.mainApi;
           serverJson.spareApi = 'https://datizhuanqian.cn';
           //应替换为data返回json中的备用域名

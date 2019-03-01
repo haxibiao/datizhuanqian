@@ -10,6 +10,8 @@ import actions from '../../store/actions';
 import { ForgotPasswordMutation } from '../../graphql/user.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 class VerificationEmailScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -91,6 +93,7 @@ class VerificationEmailScreen extends Component {
 					</View>
 				</View>
 				<SubmitLoading isVisible={isVisible} tips={'发送中...'} />
+				<KeyboardSpacer />
 			</Screen>
 		);
 	}

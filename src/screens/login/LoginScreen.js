@@ -111,7 +111,7 @@ class LoginScreen extends Component {
 						handleSubmit={this.handleSubmit}
 					/>
 				)}
-				{Divice.isIos && <KeyboardSpacer />}
+				<KeyboardSpacer />
 				<SubmitLoading isVisible={isVisible} />
 			</Screen>
 		);

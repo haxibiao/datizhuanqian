@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Screen } from '../../../components';
+import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
+import { Header } from '../../../components';
 import { Colors, Config, Divice } from '../../../constants';
 
 import { connect } from 'react-redux';
@@ -16,7 +16,8 @@ class AboutScreen extends Component {
 	render() {
 		const { counts } = this.state;
 		return (
-			<Screen>
+			<ScrollView>
+				<Header />
 				<View style={styles.container}>
 					<View style={{ alignItems: 'center', marginTop: 15 }}>
 						<Image
@@ -69,7 +70,7 @@ class AboutScreen extends Component {
 					<Text>哈希表网络科技(深圳)有限公司</Text>
 					<Text>www.datizhuanqian.com</Text>
 				</View>
-			</Screen>
+			</ScrollView>
 		);
 	}
 }

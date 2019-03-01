@@ -21,8 +21,6 @@ class Apollo extends Component {
 		let { token } = user;
 
 		let server = await Storage.getItem(ItemKeys.server);
-		console.log('ApolloserverRoot', server);
-		// console.log('ServerRoot', ServerRoot);
 
 		let ServerRoot = Config.ServerRoot;
 		if (server && server.mainApi) {
@@ -72,7 +70,6 @@ class Apollo extends Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.user !== this.props.user) {
-			console.log('b1', nextProps.user);
 			this._makeClient(nextProps.user);
 		}
 		// if (nextProps.server !== this.props.server) {
@@ -127,7 +124,7 @@ class Apollo extends Component {
 
 	render() {
 		if (!this.client) return null;
-		console.log('render');
+
 		return (
 			<ApolloProvider client={this.client}>
 				<MainRouter />

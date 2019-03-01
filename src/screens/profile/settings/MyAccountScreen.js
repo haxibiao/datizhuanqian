@@ -11,6 +11,8 @@ import actions from '../../../store/actions';
 import { SetUserPaymentInfoMutation } from '../../../graphql/withdraws.graphql';
 import { compose, graphql } from 'react-apollo';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -135,6 +137,7 @@ class EditProfileScreen extends Component {
 						</Text>
 					</View>
 				</View>
+				<KeyboardSpacer />
 			</Screen>
 		);
 	}

@@ -10,6 +10,7 @@ import actions from '../../../store/actions';
 
 import { UpdateUserPasswordMutation } from '../../../graphql/user.graphql';
 import { compose, graphql } from 'react-apollo';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class ChangePasswordScreen extends Component {
 	constructor(props) {
@@ -99,6 +100,7 @@ class ChangePasswordScreen extends Component {
 						disabledColor={'rgba(255,177,0,0.7)'}
 					/>
 				</View>
+				<KeyboardSpacer />
 			</Screen>
 		);
 	}

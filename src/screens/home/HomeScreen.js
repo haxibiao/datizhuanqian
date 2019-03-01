@@ -40,12 +40,12 @@ class HomeScreen extends Component {
 			mustUpdateVisible: false,
 			url: 'https://datizhuanqian.com?from=app',
 			onlineVersion: '1.1.0',
-			description: ''
+			description: '',
+			backgroundColor: Colors.theme
 		};
 	}
 
 	componentDidMount() {
-		console.log('diddata', this.props.data);
 		const { navigation, login, isUpdate, client, dispatch, user } = this.props;
 		let { query } = client;
 		let promises = [query({ query: CategoriesQuery })];
@@ -104,7 +104,11 @@ class HomeScreen extends Component {
 		return (
 			<Screen
 				style={styles.container}
-				customStyle={{ backgroundColor: Colors.theme }}
+				customStyle={{
+					backgroundColor: mustUpdateVisible || updateVisible ? '#977018' : this.state.backgroundColor,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
 				routeName={'答题赚钱'}
 				headerLeft
 			>
@@ -166,7 +170,14 @@ class HomeScreen extends Component {
 					<FlatList
 						data={data.categories}
 						refreshControl={
-							<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
+							<RefreshControl
+								refreshing={loading}
+								onRefresh={() => {
+									refetch();
+									this.setState({ fetchingMore: true });
+								}}
+								colors={[Colors.theme]}
+							/>
 						}
 						keyExtractor={(item, index) => index.toString()}
 						renderItem={({ item, index }) => (
@@ -223,11 +234,6 @@ class HomeScreen extends Component {
 		if (nextProps.data && nextProps.data.categories) {
 			nextProps.dispatch(actions.categoryCache(nextProps.data.categories));
 		}
-
-		if (nextProps.data.error) {
-			console.log('data', nextProps.data);
-		}
-		//启动APP的时候存入分类数据
 	}
 
 	componentWillUnmount() {

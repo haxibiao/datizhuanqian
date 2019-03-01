@@ -8,6 +8,8 @@ import { Methods } from '../../helpers';
 import { ReplyTaskMutation, TasksQuery, UploadImage } from '../../graphql/task.graphql';
 import { graphql, compose, withApollo } from 'react-apollo';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 let arry = {};
 
 class SubmitTaskScreen extends Component {
@@ -192,6 +194,7 @@ class SubmitTaskScreen extends Component {
 						//提交的时候再上传图片
 					/>
 				</ScrollView>
+				<KeyboardSpacer />
 				<Waiting isVisible={waitingVisible} />
 			</Screen>
 		);

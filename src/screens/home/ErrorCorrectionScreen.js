@@ -18,6 +18,7 @@ import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
 import { createQuestionRedressMutation } from '../../graphql/question.graphql';
 import { graphql, compose } from 'react-apollo';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class ErrorCorrectionScreen extends Component {
 	constructor(props) {
@@ -155,6 +156,7 @@ class ErrorCorrectionScreen extends Component {
 					</View>
 				</ScrollView>
 				<SubmitLoading isVisible={this.state.isVisible} tips={'提交中...'} />
+				<KeyboardSpacer />
 			</Screen>
 		);
 	}

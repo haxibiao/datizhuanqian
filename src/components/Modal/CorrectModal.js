@@ -40,7 +40,7 @@ class CorrectModal extends Component {
 					</Text>
 				}
 			>
-				<TouchableOpacity
+				{/*<TouchableOpacity
 					style={{
 						backgroundColor: '#FDEC85',
 						borderRadius: 90,
@@ -55,7 +55,7 @@ class CorrectModal extends Component {
 					onPress={handleVisible}
 				>
 					<Iconfont name={'close'} size={16} color={'rgba(48,48,48,0.8)'} />
-				</TouchableOpacity>
+				</TouchableOpacity>*/}
 				<Image
 					source={
 						title

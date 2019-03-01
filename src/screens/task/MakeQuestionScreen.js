@@ -391,7 +391,7 @@ class MakeQuestionScreen extends Component {
 											</TouchableOpacity>
 										</View>
 									</View>
-									{Divice.isIos && <KeyboardSpacer topSpacing={-Divice.bottom_height} />}
+									<KeyboardSpacer topSpacing={-Divice.bottom_height} />
 								</DropdownMenu>
 							</View>
 							<Select

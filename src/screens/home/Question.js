@@ -71,7 +71,9 @@ const styles = StyleSheet.create({
 	title: {
 		color: Colors.primaryFont,
 		fontSize: 16,
-		fontWeight: '500',
+		fontWeight: '400',
+		fontFamily: 'Courier',
+		letterSpacing: 0.5,
 		lineHeight: 22
 	},
 	options: {

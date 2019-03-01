@@ -43,7 +43,8 @@ class FeedbackDetailsScreen extends Component {
 			fetchingMore: true,
 			waitingVisible: false,
 			image: null,
-			feedbackHeight: 50
+			feedbackHeight: 50,
+			backgroundColor: Colors.theme
 		};
 	}
 
@@ -111,7 +112,7 @@ class FeedbackDetailsScreen extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		let { feedback_id } = navigation.state.params;
-		let { autoFocus, reply, content, waitingVisible } = this.state;
+		let { autoFocus, reply, content, waitingVisible, feedbackCommentVisible } = this.state;
 		return (
 			<Screen
 				headerRight={
@@ -119,6 +120,11 @@ class FeedbackDetailsScreen extends Component {
 						<Iconfont name={'more-horizontal'} size={18} color={Colors.primaryFont} />
 					</TouchableOpacity>
 				}
+				customStyle={{
+					backgroundColor: feedbackCommentVisible ? '#977018' : this.state.backgroundColor,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
 			>
 				<Query
 					query={feedbackCommentsQuery}
@@ -213,9 +219,9 @@ class FeedbackDetailsScreen extends Component {
 					}}
 				</Query>
 
-				{Divice.isIos && <KeyboardSpacer />}
+				<KeyboardSpacer />
 				<FeedbackCommentModal
-					visible={this.state.feedbackCommentVisible}
+					visible={feedbackCommentVisible}
 					handleVisible={() => {
 						this.FeedbackCommentModalVisible();
 					}}

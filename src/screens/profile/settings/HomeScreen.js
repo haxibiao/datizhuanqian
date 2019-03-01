@@ -27,7 +27,8 @@ class HomeScreen extends Component {
 		this.state = {
 			signOutModalVisible: false,
 			promotModalVisible: false,
-			storageSize: '1MB'
+			storageSize: '1MB',
+			backgroundColor: Colors.white
 		};
 	}
 
@@ -36,7 +37,14 @@ class HomeScreen extends Component {
 		const { navigation, users, client } = this.props;
 		const { login, user } = users;
 		return (
-			<Screen>
+			<Screen
+				customStyle={{
+					backgroundColor:
+						promotModalVisible || signOutModalVisible ? 'rgba(48,48,48,0.5)' : this.state.backgroundColor,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
+			>
 				<View style={styles.container}>
 					<DivisionLine height={10} />
 					<ScrollView style={styles.container} bounces={false} removeClippedSubviews={true}>

@@ -60,7 +60,8 @@ class AnswerScreen extends Component {
 			favorite: false, //收藏状态
 			pickColor: Colors.theme, //选中的颜色
 			buttonColor: Colors.blue, //按钮颜色
-			rightColor: Colors.tintGray //正确答案颜色
+			rightColor: Colors.tintGray, //正确答案颜色,
+			backgroundColor: Colors.theme
 		};
 	}
 
@@ -72,7 +73,7 @@ class AnswerScreen extends Component {
 
 	onFavoriteError = err => {
 		let str = err.toString().replace(/Error: GraphQL error: /, '');
-		Methods.toast(str, -100); //Toast错误信息  后端暂停服务需求
+		Methods.toast(str, -100);
 	};
 
 	//提交答案 下一题
@@ -150,7 +151,11 @@ class AnswerScreen extends Component {
 		return (
 			<Screen
 				routeName={'答题'}
-				customStyle={{ backgroundColor: Colors.theme }}
+				customStyle={{
+					backgroundColor: isShow ? '#977018' : this.state.backgroundColor,
+					borderBottomWidth: 0,
+					borderBottomColor: 'transparent'
+				}}
 				headerRight={
 					<FavoriteQuestion
 						favorite={favorite}
