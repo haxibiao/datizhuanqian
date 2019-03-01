@@ -45,10 +45,10 @@ class MakeQuestionScreen extends Component {
 		super(props);
 		this.categories = [];
 		this.dropData = null;
-		this.video_id = null;
 		this.state = {
 			progress: 0,
 			category_id: null,
+			video_id: null,
 			description: null,
 			picture: null,
 			video_path: null,
@@ -179,8 +179,7 @@ class MakeQuestionScreen extends Component {
 					},
 					onCompleted: video => {
 						console.log('video', video);
-						this.video_id = video.id;
-						this.setState({ progress: 100 });
+						this.setState({ progress: 100, video_id: video.id });
 					},
 					onError: video => this.setState({ progress: 0, video_path: null })
 				});
@@ -191,11 +190,11 @@ class MakeQuestionScreen extends Component {
 	};
 
 	closeMedia = () => {
-		this.setState({ video_path: null, picture: null });
+		this.setState({ video_path: null, picture: null, video_id: null });
 	};
 
 	buildVariables = () => {
-		let { category_id, description, picture, options, answers } = this.state;
+		let { category_id, video_id, description, picture, options, answers } = this.state;
 		let selections = [...options].map((option, index) => {
 			if (option) {
 				return { Value: ANSWERS[index], Text: option[0] };
@@ -207,7 +206,7 @@ class MakeQuestionScreen extends Component {
 					category_id,
 					description,
 					selections,
-					video_id: this.video_id,
+					video_id,
 					image: picture,
 					answers: [...answers]
 				}

@@ -9,37 +9,28 @@ class Question extends Component {
 		this.state = {};
 	}
 	render() {
-		let { question, option, isMethod, value, changeValue, pickColor, rightColor } = this.props;
-		// 修复数据问题
-		if (!(option && option.Selection)) {
-			option = { Selection: [] };
-		}
+		let { question, option = {}, isMethod, value, changeValue, pickColor, rightColor } = this.props;
+		let selection = option.Selection || option.Section || [];
 		return (
 			<View>
 				<Text style={styles.title}>{question.description}</Text>
-
-				{question.image && (
-					<Image
-						source={{
-							uri: question.image.path
-						}}
-						style={{
-							width: Divice.width - 60,
-							height: (question.image.height / question.image.width) * (Divice.width - 60),
-							marginTop: 10,
-							borderRadius: 5
-						}}
-					/>
-				)}
-				{
-					// question.video &&
-					// 	<Player
-					// 		width={Divice.width - 60}
-					// 		source={question.video.path}
-					// 	/>
-				}
+				<View style={{ marginTop: 10 }}>
+					{question.image && (
+						<Image
+							source={{
+								uri: question.image.path
+							}}
+							style={{
+								width: Divice.width - 60,
+								height: (question.image.height / question.image.width) * (Divice.width - 60),
+								borderRadius: 5
+							}}
+						/>
+					)}
+					{question.video && <Player width={Divice.width - 60} source={question.video.path} />}
+				</View>
 				<View style={styles.options}>
-					{option.Selection.map((option, index) => {
+					{selection.map((option, index) => {
 						return (
 							<TouchableOpacity
 								disabled={isMethod}
