@@ -45,6 +45,7 @@ class MakeQuestionScreen extends Component {
 		super(props);
 		this.categories = [];
 		this.dropData = null;
+		this.video_id = null;
 		this.state = {
 			progress: 0,
 			category_id: null,
