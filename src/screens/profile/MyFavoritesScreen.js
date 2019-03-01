@@ -23,12 +23,14 @@ import {
 	Loading,
 	BlankContent,
 	LoadingMore,
-	ContentEnd
+	ContentEnd,
+	BasicModal
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { FavoritesQuery } from '../../graphql/user.graphql';
+import { toggleFavoriteMutation } from '../../graphql/question.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
 
 class FavoritesItem extends Component {
@@ -39,12 +41,16 @@ class FavoritesItem extends Component {
 	render() {
 		let {
 			favorites: { question, created_at },
-			navigation
+			navigation,
+			openModal
 		} = this.props;
 		let { category, description } = question;
 
 		return (
-			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
+			<TouchableOpacity
+				onPress={() => navigation.navigate('题目详情', { question })}
+				onLongPress={() => openModal(question.id)}
+			>
 				<View style={styles.favoritesItem}>
 					<View style={styles.content}>
 						<View style={{ flex: 1 }}>
@@ -60,7 +66,7 @@ class FavoritesItem extends Component {
 						</View>
 					</View>
 				</View>
-			</TouchableWithoutFeedback>
+			</TouchableOpacity>
 		);
 	}
 }
@@ -69,9 +75,32 @@ class MyFavoritesScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			fetchingMore: true
+			fetchingMore: true,
+			modalVisible: false,
+			question_id: null
 		};
 	}
+
+	openFavoriteModal = id => {
+		this.setState({ modalVisible: true, question_id: id });
+	};
+
+	closeFavoriteModal = () => {
+		this.setState({ modalVisible: false, question_id: null });
+	};
+
+	favoriteQuestion = (toggleFavorite, id) => {
+		toggleFavorite({ variables: { data: { favorable_id: id } } });
+	};
+
+	onCompleted = () => {
+		this.closeFavoriteModal();
+	};
+
+	onError = err => {
+		let str = err.toString().replace(/Error: GraphQL error: /, '');
+		Methods.toast('操作失败', -100); //Toast错误信息  后端暂停服务需求
+	};
 
 	render() {
 		let { navigation } = this.props;
@@ -97,7 +126,11 @@ class MyFavoritesScreen extends Component {
 									data={data.favorites}
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => (
-										<FavoritesItem favorites={item} navigation={navigation} />
+										<FavoritesItem
+											favorites={item}
+											navigation={navigation}
+											openModal={this.openFavoriteModal}
+										/>
 									)}
 									refreshControl={
 										<RefreshControl
@@ -151,6 +184,59 @@ class MyFavoritesScreen extends Component {
 							);
 						}}
 					</Query>
+					<Mutation
+						mutation={toggleFavoriteMutation}
+						onCompleted={this.onCompleted}
+						onError={this.onError}
+						refetchQueries={result => {
+							return [{ query: FavoritesQuery }];
+						}}
+					>
+						{toggleFavorite => {
+							return (
+								<BasicModal
+									visible={this.state.modalVisible}
+									handleVisible={this.closeFavoriteModal}
+									customStyle={{
+										width: 240,
+										padding: 0,
+										paddingTop: 20,
+										borderRadius: 20,
+										alignItems: 'center'
+									}}
+									header={<Text style={{ color: Colors.black, fontSize: 17 }}>确认取消收藏吗？</Text>}
+								>
+									<View style={styles.modalBody}>
+										<TouchableOpacity style={styles.closeBtn} onPress={this.closeFavoriteModal}>
+											<Text
+												style={{
+													fontSize: 15,
+													color: Colors.grey
+												}}
+											>
+												取消
+											</Text>
+										</TouchableOpacity>
+										<TouchableOpacity
+											style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+											onPress={() =>
+												this.favoriteQuestion(toggleFavorite, this.state.question_id)
+											}
+										>
+											<Text
+												style={{
+													fontSize: 15,
+													color: Colors.theme
+												}}
+											>
+												确认
+											</Text>
+										</TouchableOpacity>
+									</View>
+								</BasicModal>
+							);
+						}}
+					</Mutation>
 				</View>
 			</Screen>
 		);
@@ -206,6 +292,20 @@ const styles = StyleSheet.create({
 	time: {
 		fontSize: 13,
 		color: Colors.grey
+	},
+	modalBody: {
+		flexDirection: 'row',
+		alignItems: 'stretch',
+		height: 40,
+		borderTopWidth: 1,
+		borderTopColor: '#f0f0f0'
+	},
+	closeBtn: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRightWidth: 1,
+		borderRightColor: '#f0f0f0'
 	}
 });
 

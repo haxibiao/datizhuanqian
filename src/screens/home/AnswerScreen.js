@@ -27,40 +27,18 @@ import { UserQuery } from '../../graphql/user.graphql';
 import { Query, Mutation, compose, graphql, withApollo } from 'react-apollo';
 
 class FavoriteQuestion extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			favorite: false
-		};
-	}
-
 	favoriteQuestion = toggleFavorite => {
 		toggleFavorite({ variables: { data: { favorable_id: this.props.getQuestionId() } } });
 	};
 
-	onCompleted = () => {
-		this.setState({ favorite: !this.state.favorite }, () => {
-			Methods.toast(this.state.favorite ? '收藏成功' : '取消收藏', 200);
-		});
-	};
-
-	onError = err => {
-		let str = err.toString().replace(/Error: GraphQL error: /, '');
-		Methods.toast(str, -100); //Toast错误信息  后端暂停服务需求
-	};
-
 	render() {
+		let { favorite, onCompleted, onError } = this.props;
 		return (
-			<Mutation mutation={toggleFavoriteMutation} onCompleted={this.onCompleted} onError={this.onError}>
+			<Mutation mutation={toggleFavoriteMutation} onCompleted={onCompleted} onError={onError}>
 				{toggleFavorite => {
 					return (
 						<TouchableOpacity onPress={() => this.favoriteQuestion(toggleFavorite)}>
-							<Iconfont
-								name={this.state.favorite ? 'collection-fill' : 'collection'}
-								color="#262626"
-								size={22}
-							/>
+							<Iconfont name={favorite ? 'collection-fill' : 'collection'} color="#262626" size={22} />
 						</TouchableOpacity>
 					);
 				}}
@@ -79,11 +57,23 @@ class AnswerScreen extends Component {
 			value: '',
 			isShow: false,
 			name: '提交答案',
+			favorite: false, //收藏状态
 			pickColor: Colors.theme, //选中的颜色
 			buttonColor: Colors.blue, //按钮颜色
 			rightColor: Colors.tintGray //正确答案颜色
 		};
 	}
+
+	onFavoriteCompleted = () => {
+		this.setState({ favorite: !this.state.favorite }, () => {
+			Methods.toast(this.state.favorite ? '收藏成功' : '取消收藏', 200);
+		});
+	};
+
+	onFavoriteError = err => {
+		let str = err.toString().replace(/Error: GraphQL error: /, '');
+		Methods.toast(str, -100); //Toast错误信息  后端暂停服务需求
+	};
 
 	//提交答案 下一题
 	async submitAnswer(question, refetch) {
@@ -137,6 +127,7 @@ class AnswerScreen extends Component {
 		} else {
 			//下一题
 			this.setState({
+				favorite: false,
 				isMethod: false,
 				value: '',
 				name: '提交答案',
@@ -154,13 +145,20 @@ class AnswerScreen extends Component {
 
 	render() {
 		const { navigation, user, noTicketTips } = this.props;
-		let { value, isMethod, isShow, pickColor, name, buttonColor, rightColor } = this.state;
+		let { value, isMethod, isShow, pickColor, name, favorite, buttonColor, rightColor } = this.state;
 		const { category, question_id } = navigation.state.params;
 		return (
 			<Screen
 				routeName={'答题'}
 				customStyle={{ backgroundColor: Colors.theme }}
-				headerRight={<FavoriteQuestion getQuestionId={this.getQuestionId} />}
+				headerRight={
+					<FavoriteQuestion
+						favorite={favorite}
+						getQuestionId={this.getQuestionId}
+						onCompleted={this.onFavoriteCompleted}
+						onError={this.onFavoriteError}
+					/>
+				}
 			>
 				<Query
 					query={QuestionQuery}
