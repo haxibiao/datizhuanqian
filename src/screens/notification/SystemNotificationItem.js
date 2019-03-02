@@ -25,15 +25,15 @@ class NotificationItem extends Component {
 					</View>
 				</View>
 				{notification.withdraw && (
-					<WithdrawNotification notification={notification} navigation={notification} />
+					<WithdrawNotification notification={notification} navigation={navigation} />
 					//提现
 				)}
 				{notification.type == 'QUESTION_AUDIT' && (
-					<MakeQuestionNotification notification={notification} navigation={notification} />
+					<MakeQuestionNotification notification={notification} navigation={navigation} />
 					//任务
 				)}
 				{notification.question_redress && (
-					<CorrectionNotification notification={notification} navigation={notification} />
+					<CorrectionNotification notification={notification} navigation={navigation} />
 					//纠错
 				)}
 

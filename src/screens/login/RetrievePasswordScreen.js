@@ -8,7 +8,7 @@ import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { ResetPasswordMutation, ForgotPasswordMutation } from '../../graphql/user.graphql';
+import { ResetPasswordMutation, ForgetPasswordMutation } from '../../graphql/user.graphql';
 import { compose, graphql } from 'react-apollo';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
@@ -64,7 +64,7 @@ class RetrievePasswordScreen extends Component {
 				variables: {
 					account: account,
 					password: password,
-					authentication_code: verification
+					code: verification
 				}
 			});
 		} catch (ex) {
@@ -87,7 +87,7 @@ class RetrievePasswordScreen extends Component {
 		this.countDown();
 
 		try {
-			result = await this.props.ForgotPasswordMutation({
+			result = await this.props.ForgetPasswordMutation({
 				variables: {
 					account: account
 				}
@@ -158,6 +158,6 @@ export default connect(store => ({
 }))(
 	compose(
 		graphql(ResetPasswordMutation, { name: 'ResetPasswordMutation' }),
-		graphql(ForgotPasswordMutation, { name: 'ForgotPasswordMutation' })
+		graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' })
 	)(RetrievePasswordScreen)
 );

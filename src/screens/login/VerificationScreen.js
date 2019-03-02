@@ -7,7 +7,7 @@ import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { ForgotPasswordMutation } from '../../graphql/user.graphql';
+import { ForgetPasswordMutation } from '../../graphql/user.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -35,7 +35,7 @@ class VerificationEmailScreen extends Component {
 		});
 
 		try {
-			result = await this.props.ForgotPasswordMutation({
+			result = await this.props.ForgetPasswordMutation({
 				variables: {
 					account: account
 				}
@@ -45,7 +45,7 @@ class VerificationEmailScreen extends Component {
 		}
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Methods.toast(str, -100); //打印错误信息
+			Methods.toast(str, 100); //打印错误信息
 			this.setState({ isVisible: false });
 		} else {
 			navigation.navigate('重置密码', {
@@ -118,5 +118,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => store)(
-	compose(graphql(ForgotPasswordMutation, { name: 'ForgotPasswordMutation' }))(VerificationEmailScreen)
+	compose(graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' }))(VerificationEmailScreen)
 );
