@@ -161,9 +161,7 @@ class MyFavoritesScreen extends Component {
 														return prev;
 													}
 													return Object.assign({}, prev, {
-														user: Object.assign({}, prev, {
-															favorites: [...prev.favorites, ...fetchMoreResult.favorites]
-														})
+														favorites: [...prev.favorites, ...fetchMoreResult.favorites]
 													});
 												}
 											});
