@@ -40,7 +40,7 @@ import RuleDescriptionModal from './Modal/RuleDescriptionModal';
 import WithdrawsTipsModal from './Modal/WithdrawsTipsModal';
 import ImageViewModal from './Modal/ImageViewModal';
 import FeedbackCommentModal from './Modal/FeedbackCommentModal';
-import ProgressCover from './Modal/ProgressCover';
+import OverlayProgress from './Modal/OverlayProgress';
 
 import WithdrawsNotLogin from './StatusView/WithdrawsNotLogin';
 import ProfileNotLogin from './StatusView/ProfileNotLogin';
@@ -111,7 +111,7 @@ export {
 	WithdrawsTipsModal,
 	ImageViewModal,
 	FeedbackCommentModal,
-	ProgressCover,
+	OverlayProgress,
 	//
 	WithdrawsNotLogin,
 	ProfileNotLogin,

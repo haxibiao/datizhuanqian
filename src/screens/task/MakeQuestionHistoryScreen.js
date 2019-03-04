@@ -54,13 +54,20 @@ class QuestionItem extends Component {
 
 	render() {
 		let { question, navigation } = this.props;
-		let { category, image, description, created_at, count, submit, video } = question;
+		let { category, image, description, created_at, count, submit, remark, video } = question;
 		this.submitStatus(submit);
 		return (
 			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
 				<View style={styles.questionItem}>
 					<View style={styles.questionStatus}>
-						<Text style={{ fontSize: 14, color: this.Submit.color }}>{this.Submit.text}</Text>
+						<View style={{ flex: 1, marginRight: 15 }}>
+							<Text style={{ fontSize: 14, color: this.Submit.color }}>{this.Submit.text}</Text>
+							{remark && (
+								<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 5 }} numberOfLines={1}>
+									提示:{remark}
+								</Text>
+							)}
+						</View>
 						<Text style={styles.categoryText}>#{category.name}</Text>
 					</View>
 					<View style={{ paddingHorizontal: 15 }}>

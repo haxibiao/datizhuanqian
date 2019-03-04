@@ -25,10 +25,10 @@ import {
 	AnimationButton,
 	OptionItem,
 	Select,
-	ProgressCover
+	OverlayProgress
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods, videoUpload } from '../../helpers';
+import { Methods, videoUpload, cancelUpload } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { createQuestionMutation } from '../../graphql/task.graphql';
@@ -46,6 +46,7 @@ class MakeQuestionScreen extends Component {
 		this.categories = [];
 		this.dropData = null;
 		this.state = {
+			uploading: false,
 			progress: 0,
 			category_id: null,
 			video_id: null,
@@ -171,17 +172,17 @@ class MakeQuestionScreen extends Component {
 							throw '视频时长需在15秒以内';
 						}
 					},
-					onStarted: () => {
-						console.log('onStarted');
+					onStarted: uploadId => {
+						this.setState({ uploading: true, progress: 0 });
 					},
 					onProcess: progress => {
 						this.setState({ progress });
 					},
 					onCompleted: video => {
 						console.log('video', video);
-						this.setState({ progress: 100, video_id: video.id });
+						this.setState({ progress: 100, video_id: video.id, uploading: false });
 					},
-					onError: video => this.setState({ progress: 0, video_path: null })
+					onError: video => this.setState({ progress: 0, uploading: false, video_path: null })
 				});
 			})
 			.catch(err => {
@@ -233,7 +234,17 @@ class MakeQuestionScreen extends Component {
 
 	render() {
 		let { navigation, user, login } = this.props;
-		let { category_id, description, picture, video_path, options, optionValue, answers, progress } = this.state;
+		let {
+			category_id,
+			description,
+			picture,
+			video_path,
+			options,
+			optionValue,
+			answers,
+			progress,
+			uploading
+		} = this.state;
 		let disableAddButton = options.size >= 4 || !optionValue;
 		let variables = this.buildVariables();
 		return (
@@ -313,23 +324,21 @@ class MakeQuestionScreen extends Component {
 														</TouchableOpacity>
 													</View>
 												) : video_path ? (
-													<ProgressCover progress={progress}>
-														<View>
-															<Video
-																muted
-																source={{ uri: video_path }}
-																style={styles.addImage}
-																resizeMode="cover"
-																repeat
-															/>
-															<TouchableOpacity
-																style={styles.closeBtn}
-																onPress={this.closeMedia}
-															>
-																<Iconfont name={'close'} size={20} color="#fff" />
-															</TouchableOpacity>
-														</View>
-													</ProgressCover>
+													<View>
+														<Video
+															muted
+															source={{ uri: video_path }}
+															style={styles.addImage}
+															resizeMode="cover"
+															repeat
+														/>
+														<TouchableOpacity
+															style={styles.closeBtn}
+															onPress={this.closeMedia}
+														>
+															<Iconfont name={'close'} size={20} color="#fff" />
+														</TouchableOpacity>
+													</View>
 												) : (
 													<TouchableOpacity
 														style={styles.addImage}
@@ -405,6 +414,7 @@ class MakeQuestionScreen extends Component {
 									this.dialog = dialog;
 								}}
 							/>
+							<OverlayProgress progress={progress} visible={uploading} />
 						</Screen>
 					);
 				}}

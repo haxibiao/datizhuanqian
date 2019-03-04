@@ -40,11 +40,12 @@ function saveVideo(token, data, onSuccessed) {
 // 	onBeforeUpload,
 // 	onStarted,
 // 	onProcess,
+//  onCancelled,
 // 	onCompleted,
 // 	onError
 // }
 export default function(params) {
-	let { token, videoPath, onBeforeUpload, onStarted, onProcess, onCompleted, onError } = params;
+	let { token, videoPath, onBeforeUpload, onStarted, onProcess, onCancelled, onCompleted, onError } = params;
 	VodUploader.getFileInfo(videoPath).then(metadata => {
 		const options = Object.assign(
 			{
@@ -57,11 +58,15 @@ export default function(params) {
 			{ path: videoPath }
 		);
 		onBeforeUpload && onBeforeUpload(metadata);
+		onProcess ? onProcess : () => null;
 		VodUploader.startUpload(options) //上传
 			.then(uploadId => {
 				onStarted && onStarted(uploadId);
 				VodUploader.addListener('progress', uploadId, data => {
-					onProcess && onProcess(parseInt(data.progress)); //上传进度
+					onProcess(parseInt(data.progress));
+				});
+				VodUploader.addListener('cancelled', uploadId, data => {
+					onCancelled && onCancelled();
 				});
 				VodUploader.addListener('completed', uploadId, data => {
 					onCompleted && saveVideo(token, data, onCompleted); //将腾讯云的视频地址保存到服务器
@@ -75,3 +80,5 @@ export default function(params) {
 			});
 	});
 }
+
+export const cancelUpload = VodUploader.cancelUpload;
