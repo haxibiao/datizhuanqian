@@ -190,11 +190,18 @@ class MakeQuestionScreen extends Component {
 	};
 
 	closeMedia = () => {
-		this.setState({ video_path: null, picture: null, video_id: null });
+		if (this.state.video_path) {
+			this.setState({ video_path: null, video_id: null });
+		} else {
+			this.setState({ picture: null });
+		}
 	};
 
 	buildVariables = () => {
-		let { category_id, video_id, description, picture, options, answers } = this.state;
+		let { video_path, category_id, video_id, description, picture, options, answers } = this.state;
+		if (video_path && !video_id) {
+			return;
+		}
 		let selections = [...options].map((option, index) => {
 			if (option) {
 				return { Value: ANSWERS[index], Text: option[0] };
