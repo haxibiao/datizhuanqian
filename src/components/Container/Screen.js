@@ -12,7 +12,8 @@ class Screen extends Component {
 			headerLeft = false,
 			routeName,
 			headerRight,
-			backHandler
+			backHandler,
+			iconColor
 		} = this.props;
 		return (
 			<View
@@ -35,6 +36,7 @@ class Screen extends Component {
 						routeName={routeName}
 						headerRight={headerRight}
 						backHandler={backHandler}
+						iconColor={iconColor}
 					/>
 				)}
 				{this.props.children}

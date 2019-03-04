@@ -39,7 +39,8 @@ class VerificationEmailScreen extends Component {
 				result = await this.props.ForgetPasswordMutation({
 					variables: {
 						account: account
-					}
+					},
+					errorPolicy: 'all'
 				});
 			} catch (error) {
 				result.errors = error;

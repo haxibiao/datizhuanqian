@@ -46,6 +46,8 @@ import MakeQuestionRule from '../screens/task/MakeQuestionRule';
 
 import PropScreen from '../screens/prop/HomeScreen';
 
+import User from '../screens/user';
+
 export default {
 	主页: {
 		screen: MainTabNavigator
@@ -170,5 +172,8 @@ export default {
 	//任务
 	道具: {
 		screen: PropScreen
+	},
+	用户资料: {
+		screen: User
 	}
 };

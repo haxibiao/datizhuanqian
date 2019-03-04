@@ -35,9 +35,8 @@ class HomeScreen extends Component {
 		return (
 			<Screen header>
 				<View style={styles.container}>
+					{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
 					<ScrollView bounces={false}>
-						{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
-
 						<DivisionLine height={10} />
 
 						{/*

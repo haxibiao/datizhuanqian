@@ -95,7 +95,7 @@ class RetrievePasswordScreen extends Component {
 		} catch (error) {
 			result.errors = error;
 		}
-		console.log('result', result);
+
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, 80); //打印错误信息

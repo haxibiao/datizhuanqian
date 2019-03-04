@@ -7,7 +7,7 @@ import { Iconfont } from '../utils/Fonts';
 
 class Header extends React.Component {
 	render() {
-		let { routeName, headerLeft, headerRight, navigation, customStyle = {}, backHandler } = this.props;
+		let { routeName, headerLeft, headerRight, navigation, customStyle = {}, backHandler, iconColor } = this.props;
 		return (
 			<View style={[styles.header, customStyle]}>
 				{headerLeft ? (
@@ -24,7 +24,7 @@ class Header extends React.Component {
 							}
 						}}
 					>
-						<Iconfont name={'left'} size={19} color={Colors.primaryFont} />
+						<Iconfont name={'left'} size={19} color={iconColor ? iconColor : Colors.primaryFont} />
 					</TouchableOpacity>
 				)}
 
