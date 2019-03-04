@@ -29,33 +29,37 @@ class VerificationEmailScreen extends Component {
 		let { account, second } = this.state;
 		let result = {};
 
-		this.setState({
-			isOnpress: false,
-			isVisible: true
-		});
+		if (Methods.regular(account)) {
+			this.setState({
+				isOnpress: false,
+				isVisible: true
+			});
 
-		try {
-			result = await this.props.ForgetPasswordMutation({
-				variables: {
+			try {
+				result = await this.props.ForgetPasswordMutation({
+					variables: {
+						account: account
+					}
+				});
+			} catch (error) {
+				result.errors = error;
+			}
+			if (result && result.errors) {
+				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, 100);
+				this.setState({ isVisible: false });
+			} else {
+				navigation.navigate('重置密码', {
 					account: account
-				}
-			});
-		} catch (error) {
-			result.errors = error;
-		}
-		if (result && result.errors) {
-			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Methods.toast(str, 100); //打印错误信息
-			this.setState({ isVisible: false });
+				});
+				this.setState({ isVisible: false });
+			}
+			setTimeout(() => {
+				this.setState({ isOnpress: true });
+			}, second);
 		} else {
-			navigation.navigate('重置密码', {
-				account: account
-			});
-			this.setState({ isVisible: false });
+			Methods.toast('账号格式错误', 100);
 		}
-		setTimeout(() => {
-			this.setState({ isOnpress: true });
-		}, second);
 	};
 
 	render() {

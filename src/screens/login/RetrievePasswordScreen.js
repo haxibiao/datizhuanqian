@@ -72,7 +72,7 @@ class RetrievePasswordScreen extends Component {
 		}
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Methods.toast(str, -100); //打印错误信息
+			Methods.toast(str, 80); //打印错误信息
 		} else {
 			Methods.toast('新密码设置成功');
 			navigation.pop(2);
@@ -98,7 +98,7 @@ class RetrievePasswordScreen extends Component {
 		console.log('result', result);
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Methods.toast(str, -100); //打印错误信息
+			Methods.toast(str, 80); //打印错误信息
 		}
 	};
 

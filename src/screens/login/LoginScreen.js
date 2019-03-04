@@ -46,7 +46,7 @@ class LoginScreen extends Component {
 			}
 			if (result && result.errors) {
 				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, -100); //Toast错误信息
+				Methods.toast(str, 80); //Toast错误信息
 			} else {
 				const user = result.data.signIn;
 				this._saveUserData(user);
@@ -69,7 +69,7 @@ class LoginScreen extends Component {
 			}
 			if (result && result.errors) {
 				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, -100); //Toast错误信息
+				Methods.toast(str, 80); //Toast错误信息
 			} else {
 				const user = result.data.signUp;
 				this._saveUserData(user);

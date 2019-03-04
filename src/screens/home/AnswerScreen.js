@@ -122,7 +122,7 @@ class AnswerScreen extends Component {
 			//发起请求
 			if (result && result.errors) {
 				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, -100); //Toast错误信息  后端暂停服务需求
+				Methods.toast(str, -100);
 			}
 		} else {
 			//下一题

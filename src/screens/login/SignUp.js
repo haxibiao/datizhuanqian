@@ -29,7 +29,7 @@ class SignUp extends Component {
 		if (Methods.regular(this.accountState.account) && this.accountState.password.indexOf(' ') < 0) {
 			handleSubmit(this.accountState);
 		} else {
-			Methods.toast('账号或密码错误', 80);
+			Methods.toast('账号或密码格式错误', 80);
 		}
 	};
 

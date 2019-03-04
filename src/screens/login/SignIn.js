@@ -25,7 +25,6 @@ class SignIn extends Component {
 	//登录
 	signIn = () => {
 		let { handleSubmit } = this.props;
-
 		if (Methods.regular(this.accountState.account) && this.accountState.password.indexOf(' ') < 0) {
 			handleSubmit(this.accountState);
 		} else {
