@@ -52,11 +52,12 @@ class AnswerItem extends Component {
 								{description}
 							</Text>
 						</View>
-						<View style={{ alignItems: 'flex-end', marginTop: 20, paddingBottom: 10 }}>
-							<TouchableOpacity onPress={() => navigation.navigate('题目纠错', { question })}>
-								<Text style={{ fontSize: 13, color: Colors.skyBlue }}>反馈</Text>
-							</TouchableOpacity>
-						</View>
+						<TouchableOpacity
+							style={{ alignItems: 'flex-end', marginTop: 20, paddingBottom: 10 }}
+							onPress={() => navigation.navigate('题目纠错', { question })}
+						>
+							<Text style={{ fontSize: 13, color: Colors.skyBlue }}>题目纠错</Text>
+						</TouchableOpacity>
 					</View>
 					<View>
 						<View style={styles.answer}>
