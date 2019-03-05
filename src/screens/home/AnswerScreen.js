@@ -232,12 +232,15 @@ class AnswerScreen extends Component {
 									<Banner />
 
 									<View style={styles.content}>
-										<View
+										<TouchableOpacity
 											style={{
 												flexDirection: 'row',
 												alignItems: 'center',
 												paddingBottom: 15
 											}}
+											onPress={() =>
+												navigation.navigate('用户资料', { user_id: question.user.id })
+											}
 										>
 											<Image
 												source={{ uri: question.user.avatar }}
@@ -246,7 +249,7 @@ class AnswerScreen extends Component {
 											<Text style={{ fontSize: 14, color: '#222', paddingLeft: 6 }}>
 												{question.user.name}
 											</Text>
-										</View>
+										</TouchableOpacity>
 										<ErrorBoundary reload={() => refetch()}>
 											<Question
 												question={question}
