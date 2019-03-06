@@ -19,7 +19,8 @@ class Input extends Component {
 			textAlignVertical,
 			autoFocus,
 			onFocus,
-			selectionColor
+			selectionColor,
+			keyboardType
 		} = this.props;
 		return (
 			<View
@@ -47,6 +48,7 @@ class Input extends Component {
 					selectionColor={selectionColor ? selectionColor : Colors.grey}
 					autoFocus={autoFocus}
 					onFocus={onFocus}
+					keyboardType={keyboardType}
 					style={[styles.textInput, customStyle]}
 					onChangeText={value => {
 						changeValue(value);

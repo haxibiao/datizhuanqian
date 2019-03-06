@@ -17,10 +17,11 @@ let countDown = 59;
 class RetrievePasswordScreen extends Component {
 	constructor(props) {
 		super(props);
+		let { time } = this.props.navigation.state.params;
 		this.state = {
 			verification: '',
 			password: '',
-			tips: '60s后重新发送',
+			tips: `${time ? time : '60'}s后重新发送`,
 			disabled: true
 		};
 	}
@@ -33,7 +34,7 @@ class RetrievePasswordScreen extends Component {
 		if (countDown == 0) {
 			countDown = 60;
 			this.setState({
-				tips: '重新发送'
+				tips: '重新获取验证码'
 			});
 			this.timer && clearInterval(this.timer);
 		}
@@ -44,7 +45,8 @@ class RetrievePasswordScreen extends Component {
 	}
 
 	countDown = () => {
-		countDown = 60;
+		let { time } = this.props.navigation.state.params;
+		countDown = time ? time : 60;
 		this.timer = setInterval(() => {
 			countDown--;
 			this.setState({
@@ -113,7 +115,9 @@ class RetrievePasswordScreen extends Component {
 				</View>
 				<Input
 					placeholder={'请输入验证码'}
+					autoFocus
 					viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
+					keyboardType={keyboardType}
 					changeValue={value => {
 						this.setState({
 							verification: value

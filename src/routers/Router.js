@@ -10,6 +10,7 @@ import ErrorCorrectionScreen from '../screens/home/ErrorCorrectionScreen';
 import SettingScreen from '../screens/profile/settings/HomeScreen';
 import EditProfileScreen from '../screens/profile/settings/EditProfileScreen';
 import MyAccountScreen from '../screens/profile/settings/MyAccountScreen';
+import VerificationCodeScreen from '../screens/profile/settings/VerificationCodeScreen';
 import AboutScreen from '../screens/profile/settings/AboutScreen';
 import UserAgreenmentScreen from '../screens/profile/settings/UserAgreenmentScreen';
 import ShareScreen from '../screens/profile/settings/ShareScreen';
@@ -78,6 +79,9 @@ export default {
 	},
 	我的账户: {
 		screen: MyAccountScreen
+	},
+	验证: {
+		screen: VerificationCodeScreen
 	},
 	关于答题赚钱: {
 		screen: AboutScreen

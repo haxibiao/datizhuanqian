@@ -18,8 +18,7 @@ class EditProfileScreen extends Component {
 		super(props);
 		this.state = {
 			real_name: this.props.user.real_name,
-			pay_account: '',
-			password: ''
+			pay_account: ''
 		};
 	}
 
@@ -28,7 +27,7 @@ class EditProfileScreen extends Component {
 		const phoneReg = /^1[3-9]\d{9}$/;
 		const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
 		//手机号限制11位   第一位为1  第二位不为2  后9位随机   邮箱为标准地址
-		let { pay_account, real_name, password } = this.state;
+		let { pay_account, real_name } = this.state;
 		const { navigation } = this.props;
 		let result = {};
 
@@ -37,42 +36,40 @@ class EditProfileScreen extends Component {
 				result = await this.props.SetUserPaymentInfoMutation({
 					variables: {
 						real_name,
-						pay_account,
-						password
-					}
+						pay_account
+					},
+					errorPolicy: 'all'
 				});
 			} catch (ex) {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, -100); //打印错误信息
+				let str = result.errors[0].message;
+				Methods.toast(str, 100);
+				navigation.navigate('验证', { time: 50 });
 			} else {
-				Methods.toast('绑定成功', -200);
 				this.props.dispatch(
 					actions.updateAlipay({
 						real_name: real_name,
 						pay_account: pay_account
 					})
 				);
-				navigation.goBack();
+				navigation.navigate('验证', { time: 0 });
 			}
 			this.setState({
-				pay_account: '',
-				password: ''
+				pay_account: ''
 			});
 		} else {
-			Methods.toast('账号格式错误', 80);
+			Methods.toast('支付宝格式错误', 100);
 		}
 		this.setState({
-			pay_account: '',
-			password: ''
+			pay_account: ''
 		});
 	}
 
 	render() {
 		let { navigation, user } = this.props;
-		const { real_name, pay_account, password } = this.state;
+		const { real_name, pay_account } = this.state;
 		return (
 			<Screen>
 				<View style={styles.container}>
@@ -108,25 +105,10 @@ class EditProfileScreen extends Component {
 						maxLength={50}
 					/>
 
-					<View style={{ marginTop: 25, paddingHorizontal: 25, marginBottom: 10 }}>
-						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>答题赚钱信息</Text>
-					</View>
-					<Input
-						password
-						placeholder="请输入答题赚钱登录密码"
-						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
-						defaultValue={this.state.password}
-						changeValue={value => {
-							this.setState({
-								password: value
-							});
-						}}
-					/>
-
 					<Button
 						name={'提交'}
 						style={styles.button}
-						disabled={!(real_name && pay_account && password)}
+						disabled={!(real_name && pay_account)}
 						theme={real_name && pay_account ? Colors.theme : 'rgba(64,127,207,0.7)'}
 						handler={this.setPaymentInfo.bind(this)}
 					/>

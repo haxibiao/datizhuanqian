@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, Screen, SubmitLoading } from '../../components';
+import { Button, Screen, SubmitLoading, Input } from '../../components';
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 
@@ -12,7 +12,7 @@ import { Mutation, compose, graphql } from 'react-apollo';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-class VerificationEmailScreen extends Component {
+class VerificationScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -46,7 +46,7 @@ class VerificationEmailScreen extends Component {
 				result.errors = error;
 			}
 			if (result && result.errors) {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				let str = result.errors[0].message;
 				Methods.toast(str, 100);
 				this.setState({ isVisible: false });
 			} else {
@@ -74,15 +74,15 @@ class VerificationEmailScreen extends Component {
 						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>获取验证码</Text>
 					</View>
 					<View style={styles.textWrap}>
-						<TextInput
-							textAlignVertical="center"
-							underlineColorAndroid="transparent"
-							placeholder="请输入手机号或邮箱"
-							placeholderText={Colors.tintFont}
+						<Input
+							textAlignVertical={'center'}
+							placeholder={'请输入手机号或邮箱'}
 							selectionColor={Colors.theme}
-							style={styles.textInput}
-							onChangeText={account => {
-								this.setState({ account });
+							customStyle={styles.textInput}
+							changeValue={value => {
+								this.setState({
+									account: value
+								});
 							}}
 						/>
 					</View>
@@ -123,5 +123,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => store)(
-	compose(graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' }))(VerificationEmailScreen)
+	compose(graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' }))(VerificationScreen)
 );
