@@ -25,6 +25,7 @@ import BusinessScreen from '../screens/profile/BusinessScreen';
 import CorrectionLogScreen from '../screens/profile/CorrectionLogScreen';
 import AnswerLogScreen from '../screens/profile/AnswerLogScreen';
 import MyFavoritesScreen from '../screens/profile/MyFavoritesScreen';
+import FollowFans from '../screens/profile/followFans';
 
 import FeedbackScreen from '../screens/feedback/HomeScreen';
 import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
@@ -128,6 +129,9 @@ export default {
 	我的收藏: {
 		screen: MyFavoritesScreen
 	},
+	关注粉丝: {
+		screen: FollowFans
+	},
 	//反馈
 	通知: {
 		screen: NotificationScreen
@@ -164,7 +168,7 @@ export default {
 	问题创建: {
 		screen: MakeQuestionScreen
 	},
-	出题记录: {
+	我的出题: {
 		screen: MakeQuestionHistoryScreen
 	},
 	题目详情: {

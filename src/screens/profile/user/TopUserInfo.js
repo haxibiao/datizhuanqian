@@ -83,12 +83,23 @@ class UserTopInfo extends Component {
 						</View>
 					</View>
 					<View style={styles.footer}>
-						<View style={styles.ticket}>
+						<TouchableOpacity
+							style={styles.ticket}
+							onPress={() => {
+								navigation.navigate('关注粉丝');
+							}}
+						>
 							<Text style={{ color: Colors.orange }}>精力点: {user.ticket ? user.ticket : '0'}</Text>
-						</View>
-						<Text style={{ paddingLeft: 20, color: Colors.orange }}>
-							智慧点: {user.gold ? user.gold : '0'}
-						</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate('关注粉丝');
+							}}
+						>
+							<Text style={{ paddingLeft: 20, color: Colors.orange }}>
+								智慧点: {user.gold ? user.gold : '0'}
+							</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</TouchableOpacity>

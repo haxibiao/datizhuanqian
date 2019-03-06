@@ -13,6 +13,7 @@ import CommentItem from './ListItem/CommentItem';
 import FeedbackItem from './ListItem/FeedbackItem';
 import CorrectionLogItem from './ListItem/CorrectionLogItem';
 import OptionItem from './ListItem/OptionItem';
+import UserItem from './ListItem/UserItem';
 
 import Button from './Control/Button';
 import Radio from './Control/Radio';
@@ -84,6 +85,7 @@ export {
 	FeedbackItem,
 	CorrectionLogItem,
 	OptionItem,
+	UserItem,
 	//
 	Button,
 	Radio,
