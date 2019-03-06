@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -48,6 +47,7 @@
 		52FDCCABBC244E9ABAEE025F /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F782571C5422419183D5A353 /* Foundation.ttf */; };
 		56915299465343C6915DAC24 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E2793A739F4E9BA6DA85DC /* libRNSVG.a */; };
 		5DDDD700D6F44576A2C4CBC4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D86008AFE9741E4B53C501A /* CFNetwork.framework */; };
+		627959BFB528DA4BCAC2AEB8 /* libPods-datizhuanqian-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A1C640EAD2EB38D35999312 /* libPods-datizhuanqian-tvOSTests.a */; };
 		634F61D4463549B7BC0A639F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1841CCDB1D44CEB30A3193 /* Security.framework */; };
 		64F253255BCA4858AA2A65F9 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE9F87E064E46E79739A17C /* FontAwesome5_Brands.ttf */; };
 		6F3849C26BB44586A08C2D01 /* libRCTJCoreModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4055CDFAF3534F698542851A /* libRCTJCoreModule.a */; };
@@ -59,6 +59,7 @@
 		859D6BACF19A4DFCA7368EBC /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E41B2A5F42B945B08CE01980 /* libRNGestureHandler.a */; };
 		86FAC89DDBE141B380826E76 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D03E84F9AA49E9BB54B772 /* libz.tbd */; };
 		92DA387368C44FEBBFB65D36 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 959BD65D5E934844A228D310 /* AntDesign.ttf */; };
+		A4E2E8FF6807FBD7AD74617A /* libPods-datizhuanqian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F303155543AA92AE42A683B1 /* libPods-datizhuanqian.a */; };
 		A61C379E62CC4AB0B6A8C996 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95C313C33FD841679A3B6105 /* Octicons.ttf */; };
 		A75085F32223D4E60047D4E5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A750859A2223BE8E0047D4E5 /* libRCTVideo.a */; };
 		A75086532223DC9D0047D4E5 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A75086192223DC870047D4E5 /* libART.a */; };
@@ -83,9 +84,11 @@
 		B77A57EB21DB9DD900BDA97F /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B77A57E021DB9DA200BDA97F /* libReactNativeConfig.a */; };
 		BCFEDBA8D3974DC6862CEBB7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8769C54E071418F9AD64823 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C5A4A5D525CA4FEC8C992F9F /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EC95FCF464484A040B0F4 /* libAppCenterReactNativeAnalytics.a */; };
+		C71053BC32574A29433EA060 /* libPods-datizhuanqianTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F0E15D633DA821A768BD10C /* libPods-datizhuanqianTests.a */; };
 		C8D8CAFCBD084E8A8FDF518E /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EB588ED2A42494EA541E4B6 /* FontAwesome5_Regular.ttf */; };
 		CBAEFBCB53134FFFBCC564C2 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 605A622EDFB144AC9DE7FB38 /* libCodePush.a */; };
 		CC559E29768043B185283F64 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DF1AFA545AD454A9ADD49E8 /* CoreTelephony.framework */; };
+		CC5BC87A3607D15168036CAC /* libPods-datizhuanqian-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4C9BC7A7FD5AB6A5E45D389 /* libPods-datizhuanqian-tvOS.a */; };
 		D38843BFDDED472EB9818207 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BDF63A43BEB40B1B9701A2B /* libRNDeviceInfo.a */; };
 		D46D954AA3E043F193009A2D /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAC78C759AC44A6AA5D12E8E /* AppCenter-Config.plist */; };
 		DAED7D35CA7046378ACDC746 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 125C72499B774B6789DA7980 /* FontAwesome.ttf */; };
@@ -621,6 +624,7 @@
 		6B66E572EA434DEBB0110D28 /* UIKit.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6D3BE87B25A8419A94E55CC1 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7A1C640EAD2EB38D35999312 /* libPods-datizhuanqian-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8396F2C443B741F4BB7E45FD /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		853C460C91074A27BD35D3F8 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -629,6 +633,7 @@
 		959BD65D5E934844A228D310 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		95C313C33FD841679A3B6105 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		984B94E5BEF54FA588468C37 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
+		9F0E15D633DA821A768BD10C /* libPods-datizhuanqianTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqianTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1795F3AD9EC44AFA4715824 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		A4B0536156E6454787A510A7 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		A5EE28D701E4457F9A0A511B /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
@@ -668,6 +673,7 @@
 		C760D7FD1FFC45028CE0DD53 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CA18853DCDDE4CE8805B0440 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
 		CFD0E8B11A81498EA3A8D4C5 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
+		D4C9BC7A7FD5AB6A5E45D389 /* libPods-datizhuanqian-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55FFC59E063499D8EBF2064 /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeCrashes.xcodeproj; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; };
 		D6A34487C5089DB28A96CBC4 /* Pods-datizhuanqian-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DD1841CCDB1D44CEB30A3193 /* Security.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -681,6 +687,7 @@
 		ECE9F87E064E46E79739A17C /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ED3007B802DE48C394860A04 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F2B67FF3CBDD4E03A4734FAC /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
+		F303155543AA92AE42A683B1 /* libPods-datizhuanqian.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F782571C5422419183D5A353 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		F935334A41004CEBBFF4ED33 /* RCTJPushModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTJPushModule.xcodeproj; path = "../node_modules/jpush-react-native/ios/RCTJPushModule.xcodeproj"; sourceTree = "<group>"; };
 		FAC78C759AC44A6AA5D12E8E /* AppCenter-Config.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "datizhuanqian/AppCenter-Config.plist"; sourceTree = "<group>"; };
@@ -692,6 +699,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
+				C71053BC32574A29433EA060 /* libPods-datizhuanqianTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,6 +751,7 @@
 				7EC50015E8C543C29F2B1B57 /* libresolv.tbd in Frameworks */,
 				AA72BFFCBB774AF682F26FA5 /* CoreGraphics.framework in Frameworks */,
 				6F3849C26BB44586A08C2D01 /* libRCTJCoreModule.a in Frameworks */,
+				A4E2E8FF6807FBD7AD74617A /* libPods-datizhuanqian.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,6 +769,7 @@
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				1A67DD79A42D4CECB493FCB0 /* libRNSVG-tvOS.a in Frameworks */,
 				1CFE746EC3BB4B3DA88479F6 /* libRNDeviceInfo-tvOS.a in Frameworks */,
+				CC5BC87A3607D15168036CAC /* libPods-datizhuanqian-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,6 +778,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */,
+				627959BFB528DA4BCAC2AEB8 /* libPods-datizhuanqian-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +916,10 @@
 				6B66E572EA434DEBB0110D28 /* UIKit.framework */,
 				5D48BFE4237D4435BA38326C /* libresolv.tbd */,
 				18160DCD78054638B3A50BCC /* CoreGraphics.framework */,
+				F303155543AA92AE42A683B1 /* libPods-datizhuanqian.a */,
+				D4C9BC7A7FD5AB6A5E45D389 /* libPods-datizhuanqian-tvOS.a */,
+				7A1C640EAD2EB38D35999312 /* libPods-datizhuanqian-tvOSTests.a */,
+				9F0E15D633DA821A768BD10C /* libPods-datizhuanqianTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

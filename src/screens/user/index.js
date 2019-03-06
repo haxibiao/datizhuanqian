@@ -6,8 +6,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 
-import { Colors } from '../../constants';
-import { Screen, Avatar, DivisionLine, Button, LoadingMore, ContentEnd, BlankContent } from '../../components';
+import { Colors, Divice } from '../../constants';
+import {
+	Screen,
+	Avatar,
+	DivisionLine,
+	Button,
+	LoadingMore,
+	ContentEnd,
+	BlankContent,
+	Iconfont
+} from '../../components';
 
 import { UserInfoQuery } from '../../graphql/user.graphql';
 import { Query } from 'react-apollo';
@@ -40,16 +49,26 @@ class Default extends Component {
 									<View style={styles.row}>
 										<Avatar
 											uri={data.user.avatar}
-											size={68}
+											size={64}
 											borderStyle={{
 												borderWidth: 2,
 												borderColor: Colors.white
 											}}
 										/>
 										<View style={{ marginLeft: 15 }}>
-											<Text style={styles.nameText}>{data.user.name}</Text>
+											<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+												<Text style={styles.nameText} numberOfLines={1}>
+													{data.user.name}
+												</Text>
+												<Iconfont
+													name={data.user.gender ? 'woman' : 'man'}
+													style={{ marginBottom: 3 }}
+													size={16}
+													color={data.user.gender ? '#FF6EB4' : Colors.blue}
+												/>
+											</View>
 											<Text style={styles.levelText}>
-												等级Lv.{data.user.level.level} | 粉丝233
+												等级 Lv.{data.user.level.level} | 粉丝 233
 											</Text>
 										</View>
 									</View>
@@ -78,24 +97,28 @@ class Default extends Component {
 										renderItem={({ item, index }) => (
 											<View
 												style={{
-													paddingVertical: 10,
+													paddingVertical: 12,
 													paddingHorizontal: 15,
 													borderBottomWidth: 0.5,
 													borderBottomColor: Colors.lightBorder
 												}}
 											>
-												<Text style={{ fontSize: 15, color: Colors.black }}>
+												<Text style={{ fontSize: 14, color: Colors.black }}>
 													{item.description}
 												</Text>
 												<View
 													style={{
 														flexDirection: 'row',
 														justifyContent: 'space-between',
-														paddingTop: 10
+														paddingTop: 16
 													}}
 												>
-													<Text style={{ color: Colors.theme }}>#{item.category.name}</Text>
-													<Text style={{ color: Colors.grey }}>共{item.count}人答过</Text>
+													<Text style={{ color: Colors.theme, fontSize: 13 }}>
+														#{item.category.name}
+													</Text>
+													<Text style={{ color: Colors.grey, fontSize: 13 }}>
+														{item.count}人答过
+													</Text>
 												</View>
 											</View>
 										)}
@@ -163,28 +186,31 @@ const styles = StyleSheet.create({
 	button: {
 		borderRadius: 5,
 		borderWidth: 1,
-		height: 28,
+		height: 26,
 		width: 68,
 		borderColor: Colors.white
 	},
 	headerUser: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		paddingTop: 5
 	},
 	row: {
+		width: (Divice.width * 4) / 11 - 10,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	levelText: {
 		color: Colors.white,
-		fontWeight: '500',
-		fontSize: 13
+		// fontWeight: '500',
+		fontSize: 12
 	},
 	nameText: {
-		fontSize: 16,
+		fontSize: 15,
 		fontWeight: '200',
-		paddingBottom: 10,
+		paddingBottom: 5,
+		paddingRight: 3,
 		color: Colors.orange
 	},
 	count: {

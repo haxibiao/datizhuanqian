@@ -38,5 +38,4 @@ project(':react-native-vector-icons').projectDir = new File(rootProject.projectD
 include ':rnpackages'
 project(':rnpackages').projectDir = new File(rootProject.projectDir, '../../libs/android/rnpackages')
 
-
 include ':app'

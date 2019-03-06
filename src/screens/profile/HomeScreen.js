@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Linking, Image } from 'react-native';
 import {
 	DivisionLine,
 	ErrorBoundary,
@@ -23,6 +23,8 @@ import { Query } from 'react-apollo';
 
 import { NativeModules } from 'react-native';
 
+import ProfileColumnItem from './components/ProfileColumnItem';
+
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -38,16 +40,37 @@ class HomeScreen extends Component {
 					{login ? <TopUserInfo navigation={navigation} /> : <ProfileNotLogin navigation={navigation} />}
 					<ScrollView bounces={false}>
 						<DivisionLine height={10} />
-
-						{/*
-						<ProfileItem
-							name={'分享邀请'}
-							icon={'invitation'}
-							size={19}
-							right
-							navigation={navigation}
-							handler={() => (login ? this.openUrl() : navigation.navigate('登录注册'))}
-						/>*/}
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<ProfileColumnItem
+								title={'我的收藏'}
+								path={require('../../../assets/images/favorites.png')}
+								handler={() =>
+									login ? navigation.navigate('我的收藏') : navigation.navigate('登录注册')
+								}
+							/>
+							<ProfileColumnItem
+								title={'我的出题'}
+								path={require('../../../assets/images/question-log.png')}
+								handler={() =>
+									login ? navigation.navigate('我的出题') : navigation.navigate('登录注册')
+								}
+							/>
+							<ProfileColumnItem
+								title={'答题记录'}
+								path={require('../../../assets/images/answer-log.png')}
+								handler={() =>
+									login ? navigation.navigate('我的出题') : navigation.navigate('登录注册')
+								}
+							/>
+							<ProfileColumnItem
+								title={'纠题记录'}
+								path={require('../../../assets/images/curation.png')}
+								handler={() =>
+									login ? navigation.navigate('纠题记录') : navigation.navigate('登录注册')
+								}
+							/>
+						</View>
+						<DivisionLine height={10} />
 						<ProfileItem
 							name={'通知消息'}
 							icon={'message'}
@@ -83,38 +106,14 @@ class HomeScreen extends Component {
 							navigation={navigation}
 							handler={() => (login ? navigation.navigate('提现日志') : navigation.navigate('登录注册'))}
 						/>
+						<DivisionLine height={10} />
 						<ProfileItem
-							name={'我的收藏'}
-							icon={'collection'}
-							size={22}
-							IconStyle={{ marginLeft: -3 }}
+							name={'反馈中心'}
+							icon={'feedback2'}
 							navigation={navigation}
-							handler={() => (login ? navigation.navigate('我的收藏') : navigation.navigate('登录注册'))}
+							handler={() => (login ? navigation.navigate('意见反馈') : navigation.navigate('登录注册'))}
 						/>
-						<ProfileItem
-							name={'答题记录'}
-							icon={'answerLog'}
-							size={20}
-							IconStyle={{ marginLeft: -2 }}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('答题记录') : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem
-							name={'纠错记录'}
-							icon={'correction'}
-							size={18}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('纠错记录') : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem
-							name={'我的出题'}
-							icon={'task3'}
-							IconStyle={{ paddingBottom: 3 }}
-							size={18}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('出题记录') : navigation.navigate('登录注册'))}
-						/>
-
+						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
 						{/*<ProfileItem
 							name={'测试下载APK'}
 							icon={'task2'}
@@ -127,16 +126,6 @@ class HomeScreen extends Component {
 								);
 							}}
 						/>*/}
-						<DivisionLine height={10} />
-						<ProfileItem
-							name={'反馈中心'}
-							icon={'feedback2'}
-							navigation={navigation}
-							handler={() => (login ? navigation.navigate('意见反馈') : navigation.navigate('登录注册'))}
-						/>
-						<ProfileItem name={'常见问题'} icon={'question'} navigation={navigation} />
-						{/*
-						<ProfileItem name={'商务合作'} icon={'business'} size={20} right navigation={navigation} />*/}
 						<DivisionLine height={10} />
 						<ProfileItem name={'设置'} icon={'setting1'} navigation={navigation} />
 					</ScrollView>
