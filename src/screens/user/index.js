@@ -36,33 +36,35 @@ class Default extends Component {
 							iconColor={Colors.white}
 						>
 							<View style={styles.header}>
-								<Button
-									name={'关 注'}
-									outline
-									style={styles.button}
-									textColor={Colors.white}
-									fontSize={15}
-									handler={() => {}}
-								/>
-							</View>
-							<View style={styles.headerUser}>
-								<View style={styles.row}>
-									<Avatar
-										uri={data.user.avatar}
-										size={68}
-										borderStyle={{
-											borderWidth: 2,
-											borderColor: Colors.white
-										}}
+								<View style={styles.headerUser}>
+									<View style={styles.row}>
+										<Avatar
+											uri={data.user.avatar}
+											size={68}
+											borderStyle={{
+												borderWidth: 2,
+												borderColor: Colors.white
+											}}
+										/>
+										<View style={{ marginLeft: 15 }}>
+											<Text style={styles.nameText}>{data.user.name}</Text>
+											<Text style={styles.levelText}>
+												等级Lv.{data.user.level.level} | 粉丝233
+											</Text>
+										</View>
+									</View>
+									<Button
+										name={'关 注'}
+										outline
+										style={styles.button}
+										textColor={Colors.white}
+										fontSize={15}
+										handler={() => {}}
 									/>
-									<Text style={styles.levelText}>
-										<Text style={{ fontSize: 12 }}>LV.</Text>
-										{data.user.level.level}
-									</Text>
 								</View>
-								<Text style={styles.nameText}>{data.user.name}</Text>
-								<Text style={styles.countText}>答题共99999次/出题被答88888次</Text>
+								<Text style={{ paddingVertical: 20, paddingLeft: 20 }}>知识就是财富，知识就是金钱</Text>
 							</View>
+
 							<DivisionLine height={10} />
 							<View style={{ flex: 1 }}>
 								<View style={styles.footer}>
@@ -156,23 +158,19 @@ class Default extends Component {
 const styles = StyleSheet.create({
 	header: {
 		backgroundColor: Colors.theme,
-		height: 80,
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end'
+		paddingHorizontal: 35
 	},
 	button: {
 		borderRadius: 5,
-		paddingVertical: 3,
-		paddingHorizontal: 15,
 		borderWidth: 1,
-		marginRight: 10,
-		marginBottom: 5,
+		height: 28,
+		width: 68,
 		borderColor: Colors.white
 	},
 	headerUser: {
-		marginTop: -48,
-		marginLeft: 30,
-		paddingBottom: 15
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
 	},
 	row: {
 		flexDirection: 'row',
@@ -180,14 +178,14 @@ const styles = StyleSheet.create({
 	},
 	levelText: {
 		color: Colors.white,
-		paddingHorizontal: 10,
-		fontWeight: '600'
+		fontWeight: '500',
+		fontSize: 13
 	},
 	nameText: {
 		fontSize: 16,
 		fontWeight: '200',
-		paddingVertical: 10,
-		color: Colors.primaryFont
+		paddingBottom: 10,
+		color: Colors.orange
 	},
 	count: {
 		color: Colors.grey,
