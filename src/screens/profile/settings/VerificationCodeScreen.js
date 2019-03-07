@@ -12,7 +12,7 @@ import { Methods } from '../../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
-import { ForgetPasswordMutation } from '../../../graphql/user.graphql';
+import { SetUserPaymentInfoMutation } from '../../../graphql/withdraws.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -25,12 +25,11 @@ class VerificationCodeScreen extends Component {
 		let { time } = this.props.navigation.state.params;
 		this.state = {
 			tips: `${time ? time : '60'}s后重新发送`,
-			verification: null,
+			verificationCode: null,
 			isVisible: false
 		};
 	}
 	componentDidMount() {
-		console.log('this.tmer', this.timer);
 		this.countDown();
 	}
 
@@ -58,9 +57,63 @@ class VerificationCodeScreen extends Component {
 			});
 		}, 1000);
 	};
+
+	//设置提现账号
+	setPaymentInfo = async () => {
+		let { verificationCode } = this.state;
+		const { navigation } = this.props;
+		const { code, accountInfo } = navigation.state.params;
+		let result = {};
+
+		if (code == verificationCode) {
+			this.setState({
+				isVisible: true
+			});
+			try {
+				result = await this.props.SetUserPaymentInfoMutation({
+					variables: {
+						real_name: accountInfo.real_name,
+						pay_account: accountInfo.pay_account
+					},
+					errorPolicy: 'all'
+				});
+			} catch (ex) {
+				result.errors = ex;
+			}
+			console.log('result', result);
+			if (result && result.errors) {
+				this.setState({
+					isVisible: false
+				});
+				let str = result.errors[0].message;
+				Methods.toast(str, 100);
+			} else {
+				this.setState({
+					isVisible: false
+				});
+				this.props.dispatch(
+					actions.updateAlipay({
+						real_name: accountInfo.real_name,
+						pay_account: accountInfo.pay_account
+					})
+				);
+				navigation.pop(2);
+				Methods.toast('修改成功', 100);
+			}
+			this.setState({
+				pay_account: ''
+			});
+		} else {
+			Methods.toast('验证码错误', 100);
+		}
+		this.setState({
+			verificationCode: ''
+		});
+	};
+
 	render() {
 		const { navigation } = this.props;
-		let { verification, tips, isVisible } = this.state;
+		let { verificationCode, tips, isVisible } = this.state;
 
 		return (
 			<Screen>
@@ -74,22 +127,22 @@ class VerificationCodeScreen extends Component {
 					<Input
 						placeholder="请输入收到的哈希表科技验证码"
 						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0, marginTop: 30 }}
-						defaultValue={this.state.verification}
+						defaultValue={this.state.verificationCode}
 						autoFocus
 						keyboardType={'numeric'}
 						changeValue={value => {
 							this.setState({
-								verification: value
+								verificationCode: value
 							});
 						}}
 					/>
 					<View style={{ marginHorizontal: 25, marginTop: 35, height: 48 }}>
 						<Button
 							name="确认"
-							handler={this.sendVerificationCode}
+							handler={this.setPaymentInfo}
 							theme={Colors.theme}
 							style={{ height: 38, fontSize: 16 }}
-							disabled={verification ? false : true}
+							disabled={verificationCode ? false : true}
 							disabledColor={Colors.tintGray}
 						/>
 					</View>
@@ -112,7 +165,7 @@ class VerificationCodeScreen extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-				<SubmitLoading isVisible={isVisible} tips={'提交中...'} />
+				<SubmitLoading isVisible={isVisible} tips={'验证中...'} />
 				<KeyboardSpacer />
 			</Screen>
 		);
@@ -138,5 +191,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => store)(
-	compose(graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' }))(VerificationCodeScreen)
+	compose(graphql(SetUserPaymentInfoMutation, { name: 'SetUserPaymentInfoMutation' }))(VerificationCodeScreen)
 );

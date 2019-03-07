@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { DivisionLine, Button, Input, Screen } from '../../../components';
+import { DivisionLine, Button, Input, Screen, SubmitLoading } from '../../../components';
 
 import { Colors } from '../../../constants';
 import { Methods } from '../../../helpers';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
-import { SetUserPaymentInfoMutation } from '../../../graphql/withdraws.graphql';
+import { SendVerificationCodeMutation } from '../../../graphql/user.graphql';
+
 import { compose, graphql } from 'react-apollo';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -18,58 +19,56 @@ class EditProfileScreen extends Component {
 		super(props);
 		this.state = {
 			real_name: this.props.user.real_name,
-			pay_account: ''
+			pay_account: '',
+			isVisible: false
 		};
 	}
 
-	//设置提现账号
-	async setPaymentInfo() {
-		const phoneReg = /^1[3-9]\d{9}$/;
-		const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-		//手机号限制11位   第一位为1  第二位不为2  后9位随机   邮箱为标准地址
-		let { pay_account, real_name } = this.state;
+	sendVerificationCode = async () => {
 		const { navigation } = this.props;
 		let result = {};
 
-		if (phoneReg.test(pay_account) || mailReg.test(pay_account)) {
+		if (Methods.regular(this.state.pay_account)) {
+			this.setState({
+				isVisible: true
+			});
 			try {
-				result = await this.props.SetUserPaymentInfoMutation({
+				result = await this.props.SendVerificationCodeMutation({
 					variables: {
-						real_name,
-						pay_account
-					},
-					errorPolicy: 'all'
+						account: this.props.user.account,
+						action: 'USER_INFO_CHANGE'
+					}
 				});
 			} catch (ex) {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
+				this.setState({
+					isVisible: false
+				});
 				let str = result.errors[0].message;
 				Methods.toast(str, 100);
-				navigation.navigate('验证', { time: 50 });
 			} else {
-				this.props.dispatch(
-					actions.updateAlipay({
-						real_name: real_name,
-						pay_account: pay_account
-					})
-				);
-				navigation.navigate('验证', { time: 0 });
+				this.setState({
+					isVisible: false
+				});
+				navigation.navigate('验证', {
+					code: result.data.sendVerificationCode.code,
+					time: result.data.sendVerificationCode.surplusSecond,
+					accountInfo: {
+						real_name: this.state.real_name,
+						pay_account: this.state.pay_account
+					}
+				});
 			}
-			this.setState({
-				pay_account: ''
-			});
 		} else {
 			Methods.toast('支付宝格式错误', 100);
 		}
-		this.setState({
-			pay_account: ''
-		});
-	}
+	};
 
 	render() {
 		let { navigation, user } = this.props;
-		const { real_name, pay_account } = this.state;
+		const { real_name, pay_account, isVisible } = this.state;
 		return (
 			<Screen>
 				<View style={styles.container}>
@@ -92,7 +91,6 @@ class EditProfileScreen extends Component {
 							});
 						}}
 					/>
-
 					<Input
 						placeholder="请输入支付宝账号"
 						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
@@ -110,7 +108,7 @@ class EditProfileScreen extends Component {
 						style={styles.button}
 						disabled={!(real_name && pay_account)}
 						theme={real_name && pay_account ? Colors.theme : 'rgba(64,127,207,0.7)'}
-						handler={this.setPaymentInfo.bind(this)}
+						handler={this.sendVerificationCode}
 					/>
 
 					<View style={{ paddingHorizontal: 25 }}>
@@ -119,6 +117,7 @@ class EditProfileScreen extends Component {
 						</Text>
 					</View>
 				</View>
+				<SubmitLoading isVisible={isVisible} tips={'提交中...'} />
 				<KeyboardSpacer />
 			</Screen>
 		);
@@ -152,5 +151,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => ({ user: store.users.user }))(
-	compose(graphql(SetUserPaymentInfoMutation, { name: 'SetUserPaymentInfoMutation' }))(EditProfileScreen)
+	compose(graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(EditProfileScreen)
 );

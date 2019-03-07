@@ -6,6 +6,7 @@ mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!, 
 		pay_account
 	}
 }
+
 #智慧点兑换到钱包
 mutation ExchangeCash($gold: Int!) {
 	exchangeCash(gold: $gold)

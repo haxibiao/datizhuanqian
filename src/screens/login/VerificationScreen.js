@@ -7,7 +7,7 @@ import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { ForgetPasswordMutation } from '../../graphql/user.graphql';
+import { SendVerificationCodeMutation } from '../../graphql/user.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -36,9 +36,10 @@ class VerificationScreen extends Component {
 			});
 
 			try {
-				result = await this.props.ForgetPasswordMutation({
+				result = await this.props.SendVerificationCodeMutation({
 					variables: {
-						account: account
+						account: account,
+						action: 'RESET_PASSWORD'
 					},
 					errorPolicy: 'all'
 				});
@@ -51,7 +52,8 @@ class VerificationScreen extends Component {
 				this.setState({ isVisible: false });
 			} else {
 				navigation.navigate('重置密码', {
-					account: account
+					account: account,
+					time: result.data.sendVerificationCode.surplusSecond
 				});
 				this.setState({ isVisible: false });
 			}
@@ -76,6 +78,7 @@ class VerificationScreen extends Component {
 					<View style={styles.textWrap}>
 						<Input
 							textAlignVertical={'center'}
+							viewStyle={{ paddingHorizontal: 0 }}
 							placeholder={'请输入手机号或邮箱'}
 							selectionColor={Colors.theme}
 							customStyle={styles.textInput}
@@ -110,9 +113,7 @@ const styles = StyleSheet.create({
 	},
 	textWrap: {
 		marginTop: 40,
-		marginHorizontal: 25,
-		borderBottomWidth: 1,
-		borderBottomColor: Colors.lightBorder
+		marginHorizontal: 25
 	},
 	textInput: {
 		fontSize: 16,
@@ -123,5 +124,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => store)(
-	compose(graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' }))(VerificationScreen)
+	compose(graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(VerificationScreen)
 );

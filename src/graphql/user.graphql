@@ -250,3 +250,16 @@ query FavoritesQuery($offset: Int, $limit: Int) {
 		}
 	}
 }
+
+#绑定支付宝验证
+mutation SendVerificationCodeMutation($account: String!, $action: VerificationActionEnum!) {
+	sendVerificationCode(account: $account, action: $action) {
+		id
+		user {
+			name
+		}
+		code
+		channel
+		surplusSecond
+	}
+}

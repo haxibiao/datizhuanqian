@@ -117,7 +117,7 @@ class RetrievePasswordScreen extends Component {
 					placeholder={'请输入验证码'}
 					autoFocus
 					viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
-					keyboardType={keyboardType}
+					keyboardType={'numeric'}
 					changeValue={value => {
 						this.setState({
 							verification: value
