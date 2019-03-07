@@ -28,38 +28,48 @@ class EditProfileScreen extends Component {
 		const { navigation } = this.props;
 		let result = {};
 
+		console.log('name', this.state.real_name);
+		var reg = /^[\u4E00-\u9FA5]{1,8}$/;
+
+		// alert(/[\u4e00-\u9fa5]{4}/.test('司正美'));
+		console.log('yanzheng', reg.test(this.state.real_name));
+
 		if (Methods.regular(this.state.pay_account)) {
-			this.setState({
-				isVisible: true
-			});
-			try {
-				result = await this.props.SendVerificationCodeMutation({
-					variables: {
-						account: this.props.user.account,
-						action: 'USER_INFO_CHANGE'
-					}
-				});
-			} catch (ex) {
-				result.errors = ex;
-			}
-			if (result && result.errors) {
+			if (reg.test(this.state.real_name)) {
 				this.setState({
-					isVisible: false
+					isVisible: true
 				});
-				let str = result.errors[0].message;
-				Methods.toast(str, 100);
+				try {
+					result = await this.props.SendVerificationCodeMutation({
+						variables: {
+							account: this.props.user.account,
+							action: 'USER_INFO_CHANGE'
+						}
+					});
+				} catch (ex) {
+					result.errors = ex;
+				}
+				if (result && result.errors) {
+					this.setState({
+						isVisible: false
+					});
+					let str = result.errors[0].message;
+					Methods.toast(str, 100);
+				} else {
+					this.setState({
+						isVisible: false
+					});
+					navigation.navigate('验证', {
+						code: result.data.sendVerificationCode.code,
+						time: result.data.sendVerificationCode.surplusSecond,
+						accountInfo: {
+							real_name: this.state.real_name,
+							pay_account: this.state.pay_account
+						}
+					});
+				}
 			} else {
-				this.setState({
-					isVisible: false
-				});
-				navigation.navigate('验证', {
-					code: result.data.sendVerificationCode.code,
-					time: result.data.sendVerificationCode.surplusSecond,
-					accountInfo: {
-						real_name: this.state.real_name,
-						pay_account: this.state.pay_account
-					}
-				});
+				Methods.toast('姓名格式错误', 100);
 			}
 		} else {
 			Methods.toast('支付宝格式错误', 100);
