@@ -3,13 +3,14 @@
  * created by wyk made in 2019-02-25 13:56:04
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Colors, Divice } from '../../constants';
+import { Iconfont } from '../utils/Fonts';
 
 class OverlayProgress extends Component {
 	render() {
-		let { visible, progress, message } = this.props;
+		let { visible, progress, cancelUpload, message } = this.props;
 		if (!visible) {
 			return null;
 		}
@@ -17,13 +18,29 @@ class OverlayProgress extends Component {
 			<View style={styles.container}>
 				<View style={styles.progress}>
 					<Progress.Circle
-						size={80}
+						size={70}
 						progress={progress / 100}
 						color={Colors.theme}
 						unfilledColor={'#fff'}
 						borderColor="rgba(255,255,255,0)"
 						showsText
 					/>
+					{cancelUpload && !Divice.isIos && (
+						<TouchableOpacity
+							style={{
+								position: 'absolute',
+								top: 2,
+								right: 2,
+								width: 30,
+								height: 30,
+								justifyContent: 'center',
+								alignItems: 'center'
+							}}
+							onPress={cancelUpload}
+						>
+							<Iconfont name={'close'} size={22} color="#fff" />
+						</TouchableOpacity>
+					)}
 					{message && <Text style={styles.message}>{message}</Text>}
 				</View>
 			</View>

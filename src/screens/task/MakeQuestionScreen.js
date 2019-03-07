@@ -46,6 +46,7 @@ class MakeQuestionScreen extends Component {
 		this.categories = [];
 		this.dropData = null;
 		this.state = {
+			uploadId: null,
 			uploading: false,
 			progress: 0,
 			category_id: null,
@@ -173,10 +174,13 @@ class MakeQuestionScreen extends Component {
 						}
 					},
 					onStarted: uploadId => {
-						this.setState({ uploading: true, progress: 0 });
+						this.setState({ uploading: true, progress: 0, uploadId });
 					},
 					onProcess: progress => {
 						this.setState({ progress });
+					},
+					onCancelled: () => {
+						console.log('onCancelled');
 					},
 					onCompleted: video => {
 						console.log('video', video);
@@ -192,10 +196,15 @@ class MakeQuestionScreen extends Component {
 
 	closeMedia = () => {
 		if (this.state.video_path) {
-			this.setState({ video_path: null, video_id: null });
+			this.setState({ uploadId: null, video_path: null, video_id: null });
 		} else {
 			this.setState({ picture: null });
 		}
+	};
+
+	cancelUpload = () => {
+		cancelUpload(this.state.uploadId);
+		this.setState({ uploadId: null, video_path: null, progress: 0, uploading: false });
 	};
 
 	buildVariables = () => {
@@ -414,7 +423,7 @@ class MakeQuestionScreen extends Component {
 									this.dialog = dialog;
 								}}
 							/>
-							<OverlayProgress progress={progress} visible={uploading} />
+							<OverlayProgress progress={progress} visible={uploading} cancelUpload={this.cancelUpload} />
 						</Screen>
 					);
 				}}
