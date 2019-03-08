@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
-import { DivisionLine, Avatar, Header, ModifyNameModal, SettingItem, Screen, Select } from '../../../components';
+import {
+	DivisionLine,
+	Avatar,
+	Header,
+	ModifyNameModal,
+	ModifyDescriptionModal,
+	SettingItem,
+	Screen,
+	Select
+} from '../../../components';
 
 import { Colors, Config } from '../../../constants';
 import { Methods } from '../../../helpers';
@@ -23,10 +32,13 @@ class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
+		this.descriptionModalVisible = this.descriptionModalVisible.bind(this);
 		this.callbackSelected = this.callbackSelected.bind(this);
 		this.state = {
 			modalVisible: false,
+			modifyDescripitonVisible: false,
 			nickname: '',
+			description: '',
 			gender: this.props.user.gender
 		};
 	}
@@ -116,11 +128,11 @@ class EditProfileScreen extends Component {
 	// 回调
 	async callbackSelected(i) {
 		switch (i) {
-			case 0: // 拍照
+			case 0:
 				this.setState({ gender: 0 });
 
 				break;
-			case 1: // 图库
+			case 1:
 				this.setState({ gender: 1 });
 				break;
 		}
@@ -145,14 +157,20 @@ class EditProfileScreen extends Component {
 		}
 	}
 
+	descriptionModalVisible() {
+		this.setState(prevState => ({
+			modifyDescripitonVisible: !prevState.modifyDescripitonVisible
+		}));
+	}
+
 	render() {
 		const { navigation, user } = this.props;
 		const { pay_info_change_count } = navigation.state.params.user;
-		let { modalVisible, nickname, gender } = this.state;
+		let { modalVisible, nickname, gender, modifyDescripitonVisible, description } = this.state;
 		return (
 			<Screen
 				customStyle={{
-					backgroundColor: modalVisible ? 'rgba(48,48,48,0.5)' : Colors.white,
+					backgroundColor: modalVisible || modifyDescripitonVisible ? 'rgba(48,48,48,0.5)' : Colors.white,
 					borderBottomWidth: 0,
 					borderBottomColor: 'transparent'
 				}}
@@ -182,6 +200,12 @@ class EditProfileScreen extends Component {
 							}}
 						/>
 						<SettingItem
+							itemName="个人介绍"
+							rightSize={15}
+							rightContent={user.description}
+							handler={this.descriptionModalVisible}
+						/>
+						<SettingItem
 							itemName="支付宝账号"
 							rightSize={15}
 							rightContent={
@@ -199,25 +223,32 @@ class EditProfileScreen extends Component {
 							}}
 						/>
 					</ScrollView>
-					<Mutation mutation={updateUserNameMutation}>
-						{updateUserName => {
-							return (
-								<ModifyNameModal
-									modalName="修改昵称"
-									placeholder={user.name}
-									visible={modalVisible}
-									value={nickname}
-									handleVisible={this.toggleModalVisible}
-									changeValue={val => {
-										this.setState({
-											nickname: val
-										});
-									}}
-									submit={this.changeName.bind(this)}
-								/>
-							);
+					<ModifyNameModal
+						modalName="修改昵称"
+						placeholder={user.name}
+						visible={modalVisible}
+						value={nickname}
+						handleVisible={this.toggleModalVisible}
+						changeValue={val => {
+							this.setState({
+								nickname: val
+							});
 						}}
-					</Mutation>
+						submit={this.changeName.bind(this)}
+					/>
+					<ModifyDescriptionModal
+						modalName="修改个人介绍"
+						placeholder={user.description}
+						visible={modifyDescripitonVisible}
+						value={description}
+						handleVisible={this.descriptionModalVisible}
+						changeValue={val => {
+							this.setState({
+								description: val
+							});
+						}}
+						submit={() => {}}
+					/>
 				</View>
 				<Select
 					ref={dialog => {

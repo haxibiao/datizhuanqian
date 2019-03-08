@@ -77,7 +77,9 @@ class HeaderUser extends Component {
 										color={user.gender ? '#FF6EB4' : Colors.blue}
 									/>
 								</View>
-								<Text style={styles.levelText}>等级 Lv.{user.level.level} | 粉丝 233</Text>
+								<Text style={styles.levelText}>
+									等级 Lv.{user.level.level} | 粉丝 {user.followersCount}
+								</Text>
 							</View>
 						</View>
 						<Button

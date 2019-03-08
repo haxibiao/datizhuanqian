@@ -31,6 +31,7 @@ import CustomTabBar from './Header/CustomTabBar';
 import BasicModal from './Modal/BasicModal';
 import CorrectModal from './Modal/CorrectModal';
 import ModifyNameModal from './Modal/ModifyNameModal';
+import ModifyDescriptionModal from './Modal/ModifyDescriptionModal';
 import SignOutModal from './Modal/SignOutModal';
 import NoTicketTipsModal from './Modal/NoTicketTipsModal';
 import PropDetailsModal from './Modal/PropDetailsModal';
@@ -103,6 +104,7 @@ export {
 	CorrectModal,
 	BasicModal,
 	ModifyNameModal,
+	ModifyDescriptionModal,
 	SignOutModal,
 	NoTicketTipsModal,
 	PropDetailsModal,

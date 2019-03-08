@@ -1,6 +1,6 @@
 #设置提现信息
-mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!, $password: String) {
-	setUserPaymentInfo(pay_account: $pay_account, real_name: $real_name, password: $password) {
+mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!, $code: String) {
+	setUserPaymentInfo(pay_account: $pay_account, real_name: $real_name, code: $code) {
 		id
 		real_name
 		pay_account

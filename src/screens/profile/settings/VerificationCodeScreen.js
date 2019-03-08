@@ -73,7 +73,8 @@ class VerificationCodeScreen extends Component {
 				result = await this.props.SetUserPaymentInfoMutation({
 					variables: {
 						real_name: accountInfo.real_name,
-						pay_account: accountInfo.pay_account
+						pay_account: accountInfo.pay_account,
+						code: code
 					},
 					errorPolicy: 'all'
 				});
