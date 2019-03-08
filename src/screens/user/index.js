@@ -32,7 +32,6 @@ class Default extends Component {
 					if (error) return null;
 					if (loading) return null;
 					if (!(data && data.user)) return null;
-					console.log('data', data.user);
 					return (
 						<Screen
 							customStyle={{ backgroundColor: Colors.theme, borderBottomWidth: 0 }}

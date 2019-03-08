@@ -89,14 +89,14 @@ class UserTopInfo extends Component {
 								navigation.navigate('关注粉丝', { initialPage: 0 });
 							}}
 						>
-							<Text style={{ color: Colors.orange }}>关注: {user.followUsersCount}</Text>
+							<Text style={{ color: Colors.orange }}>关注: {user.follow_users_count}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
 								navigation.navigate('关注粉丝', { initialPage: 1 });
 							}}
 						>
-							<Text style={{ paddingLeft: 20, color: Colors.orange }}>粉丝: {user.followersCount}</Text>
+							<Text style={{ paddingLeft: 20, color: Colors.orange }}>粉丝: {user.followers_count}</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

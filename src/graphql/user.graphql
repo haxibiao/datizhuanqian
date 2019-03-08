@@ -89,8 +89,8 @@ query UserQuery($id: Int!) {
 		pay_account
 		pay_info_change_count
 		available_withdraw_count
-		followUsersCount
-		followersCount
+		follow_users_count
+		followers_count
 		level {
 			id
 			name
@@ -113,8 +113,9 @@ query UserInfoQuery($id: Int!, $limit: Int, $offset: Int) {
 		name
 		avatar
 		gender
-		followUsersCount
-		followersCount
+		follow_users_count
+		followers_count
+		followed_user_status
 		level {
 			id
 			level

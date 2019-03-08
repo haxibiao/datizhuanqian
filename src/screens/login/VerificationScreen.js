@@ -87,6 +87,7 @@ class VerificationScreen extends Component {
 									account: value
 								});
 							}}
+							autoFocus
 						/>
 					</View>
 					<View style={{ marginHorizontal: 25, marginTop: 35, height: 48 }}>

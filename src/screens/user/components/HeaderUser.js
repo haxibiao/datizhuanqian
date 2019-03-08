@@ -11,7 +11,7 @@ import { Colors, Divice } from '../../../constants';
 import { Methods } from '../../../helpers';
 
 import { compose, graphql } from 'react-apollo';
-import { FollowToggbleMutation, UserInfoQuery } from '../../../graphql/user.graphql';
+import { FollowToggbleMutation, UserQuery, FollowsQuery, UserInfoQuery } from '../../../graphql/user.graphql';
 
 class HeaderUser extends Component {
 	constructor(props) {
@@ -33,6 +33,14 @@ class HeaderUser extends Component {
 				},
 				refetchQueries: () => [
 					{
+						query: UserQuery,
+						variables: { id: user.id }
+					},
+					{
+						query: FollowsQuery,
+						variables: { filter: 'users' }
+					},
+					{
 						query: UserInfoQuery,
 						variables: { id: user.id }
 					}
@@ -46,7 +54,7 @@ class HeaderUser extends Component {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, 80); //Toast错误信息
 		} else {
-			Methods.toast('关注成功', 80);
+			// Methods.toast('关注成功', 80);
 		}
 	};
 
@@ -78,12 +86,12 @@ class HeaderUser extends Component {
 									/>
 								</View>
 								<Text style={styles.levelText}>
-									等级 Lv.{user.level.level} | 粉丝 {user.followersCount}
+									等级 Lv.{user.level.level} | 粉丝 {user.followers_count}
 								</Text>
 							</View>
 						</View>
 						<Button
-							name={this.state.is_follow ? '已关注' : '关 注'}
+							name={user.followed_user_status ? '已关注' : '关 注'}
 							outline
 							style={styles.button}
 							textColor={Colors.white}
