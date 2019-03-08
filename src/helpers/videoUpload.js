@@ -6,7 +6,9 @@ import VodUploader from '../../native/VodUploader';
 import Config from '../constants/Config';
 import { toast } from './Methods';
 
-function saveVideo(token, data, onSuccessed) {
+export const cancelUpload = VodUploader.cancelUpload;
+
+export function saveVideo(token, data, onSuccessed) {
 	console.log('be_save_video', data);
 	console.log('Config', Config.ServerRoot + '/api/video?from=qcvod&api_token=' + token);
 	fetch(Config.ServerRoot + '/api/video?from=qcvod&api_token=' + token, {
@@ -35,7 +37,6 @@ function saveVideo(token, data, onSuccessed) {
 }
 
 // {
-// token
 // 	videoPath,
 // 	onBeforeUpload,
 // 	onStarted,
@@ -45,7 +46,8 @@ function saveVideo(token, data, onSuccessed) {
 // 	onError
 // }
 export default function(params) {
-	let { token, videoPath, onBeforeUpload, onStarted, onProcess, onCancelled, onCompleted, onError } = params;
+	let { videoPath, onBeforeUpload, onStarted, onProcess, onCancelled, onCompleted, onError } = params;
+	let timer = null;
 	VodUploader.getFileInfo(videoPath).then(metadata => {
 		const options = Object.assign(
 			{
@@ -63,13 +65,16 @@ export default function(params) {
 			.then(uploadId => {
 				onStarted && onStarted(uploadId);
 				VodUploader.addListener('progress', uploadId, data => {
-					onProcess(parseInt(data.progress));
+					timer && clearInterval(timer);
+					timer = setTimeout(() => {
+						onProcess(parseInt(data.progress));
+					}, 100);
 				});
 				VodUploader.addListener('cancelled', uploadId, data => {
 					onCancelled && onCancelled();
 				});
 				VodUploader.addListener('completed', uploadId, data => {
-					onCompleted && saveVideo(token, data, onCompleted); //将腾讯云的视频地址保存到服务器
+					onCompleted && onCompleted(data); //将腾讯云的视频地址保存到服务器
 				});
 				VodUploader.addListener('error', uploadId, data => {
 					onError ? onError(data) : toast('视频上传失败', 150);
@@ -80,5 +85,3 @@ export default function(params) {
 			});
 	});
 }
-
-export const cancelUpload = VodUploader.cancelUpload;

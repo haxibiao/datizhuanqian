@@ -12,7 +12,9 @@ import {
 	Text,
 	TouchableOpacity,
 	Keyboard,
-	Animated
+	Animated,
+	BackHandler,
+	Platform
 } from 'react-native';
 import {
 	DivisionLine,
@@ -28,7 +30,7 @@ import {
 	OverlayProgress
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
-import { Methods, videoUpload, cancelUpload } from '../../helpers';
+import { Methods, videoUpload, cancelUpload, saveVideo } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { createQuestionMutation } from '../../graphql/task.graphql';
@@ -37,6 +39,7 @@ import { compose, Query, Mutation, graphql } from 'react-apollo';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ImagePicker from 'react-native-image-crop-picker';
 import Video from 'react-native-video';
+import { NavigationEvents } from 'react-navigation';
 
 const ANSWERS = ['A', 'B', 'C', 'D'];
 
@@ -58,6 +61,33 @@ class MakeQuestionScreen extends Component {
 			answers: new Set(),
 			options: new Map()
 		};
+	}
+
+	//组件初始渲染执行完毕后调用
+	componentDidMount() {
+		//如果当前是Android系统，则添加back键按下事件监听
+		if (Platform.OS === 'android') {
+			BackHandler.addEventListener('hardwareBackPress', () => {
+				return this.handleBackAndroid();
+			});
+		}
+	}
+
+	//组件被卸载前会执行
+	componentWillUnmount() {
+		//如果当前是Android系统，则移除back键按下事件监听
+		if (Platform.OS === 'android') {
+			BackHandler.removeEventListener('hardwareBackPress', () => {});
+		}
+	}
+
+	//back键按下事件响应
+	handleBackAndroid() {
+		// 如果存在上一页则后退;
+		if (this.state.uploading) {
+			return true; //接管默认行为
+		}
+		return false; //使用默认行为（直接退出应用）
 	}
 
 	onOptionInputFocus = () => {
@@ -164,7 +194,6 @@ class MakeQuestionScreen extends Component {
 				let videoPath = video.path.substr(7);
 				this.setState({ video_path: video.path });
 				videoUpload({
-					token: this.props.user.token,
 					videoPath,
 					onBeforeUpload: metadata => {
 						if (metadata.duration > 15) {
@@ -182,9 +211,13 @@ class MakeQuestionScreen extends Component {
 					onCancelled: () => {
 						console.log('onCancelled');
 					},
-					onCompleted: video => {
-						console.log('video', video);
-						this.setState({ progress: 100, video_id: video.id, uploading: false });
+					onCompleted: async video => {
+						if (this.state.uploading) {
+							console.log('video', video);
+							await saveVideo(this.props.user.token, video, video => {
+								this.setState({ progress: 100, video_id: video.id, uploading: false });
+							});
+						}
 					},
 					onError: video => this.setState({ progress: 0, uploading: false, video_path: null })
 				});
@@ -203,8 +236,10 @@ class MakeQuestionScreen extends Component {
 	};
 
 	cancelUpload = () => {
-		cancelUpload(this.state.uploadId);
-		this.setState({ uploadId: null, video_path: null, progress: 0, uploading: false });
+		if (this.state.uploading) {
+			!Divice.isIos && cancelUpload(this.state.uploadId);
+			this.setState({ uploadId: null, video_path: null, progress: 0, uploading: false });
+		}
 	};
 
 	buildVariables = () => {

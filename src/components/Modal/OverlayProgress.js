@@ -25,7 +25,8 @@ class OverlayProgress extends Component {
 						borderColor="rgba(255,255,255,0)"
 						showsText
 					/>
-					{cancelUpload && !Divice.isIos && (
+					{message && <Text style={styles.message}>{message}</Text>}
+					{cancelUpload && (
 						<TouchableOpacity
 							style={{
 								position: 'absolute',
@@ -33,6 +34,7 @@ class OverlayProgress extends Component {
 								right: 2,
 								width: 30,
 								height: 30,
+								zIndex: 1,
 								justifyContent: 'center',
 								alignItems: 'center'
 							}}
@@ -41,7 +43,6 @@ class OverlayProgress extends Component {
 							<Iconfont name={'close'} size={22} color="#fff" />
 						</TouchableOpacity>
 					)}
-					{message && <Text style={styles.message}>{message}</Text>}
 				</View>
 			</View>
 		);
