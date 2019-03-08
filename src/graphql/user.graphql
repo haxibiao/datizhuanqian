@@ -122,6 +122,20 @@ query UserInfoQuery($id: Int!, $limit: Int, $offset: Int) {
 		questions(limit: $limit, offset: $offset) {
 			id
 			description
+			image {
+				id
+				path
+				width
+				height
+			}
+			video {
+				height
+				width
+				path
+				rotate
+				duration
+			}
+			selections
 			category {
 				id
 				name
@@ -279,7 +293,7 @@ mutation FollowToggbleMutation($followed_type: FollowedEnumType!, $followed_id: 
 	}
 }
 
-#关注
+#关注列表
 query FollowsQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 	follows(filter: $filter, offset: $offset, limit: $limit) {
 		id

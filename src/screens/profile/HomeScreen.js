@@ -59,7 +59,7 @@ class HomeScreen extends Component {
 								title={'答题记录'}
 								path={require('../../../assets/images/answer-log.png')}
 								handler={() =>
-									login ? navigation.navigate('我的出题') : navigation.navigate('登录注册')
+									login ? navigation.navigate('答题记录') : navigation.navigate('登录注册')
 								}
 							/>
 							<ProfileColumnItem

@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Colors } from '../../../constants';
 
 class Default extends Component {
@@ -13,15 +13,20 @@ class Default extends Component {
 		this.state = {};
 	}
 	render() {
-		const { question } = this.props;
+		const { question, navigation } = this.props;
 		return (
-			<View style={styles.container}>
+			<TouchableOpacity
+				style={styles.container}
+				onPress={() => {
+					navigation.navigate('题目详情', { question: question });
+				}}
+			>
 				<Text style={{ fontSize: 14, color: Colors.black }}>{question.description}</Text>
 				<View style={styles.footer}>
 					<Text style={{ color: Colors.theme, fontSize: 13 }}>#{question.category.name}</Text>
 					<Text style={{ color: Colors.grey, fontSize: 13 }}>{question.count}人答过</Text>
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }

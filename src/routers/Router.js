@@ -120,7 +120,7 @@ export default {
 	反馈详情: {
 		screen: FeedbackDetailsScreen
 	},
-	纠错记录: {
+	纠题记录: {
 		screen: CorrectionLogScreen
 	},
 	答题记录: {
