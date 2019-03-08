@@ -18,28 +18,28 @@ class UserItem extends Component {
 		this.state = {};
 	}
 	render() {
-		const { item, navigation, follow } = this.props;
+		const { user, navigation, follow } = this.props;
 		return (
 			<View style={styles.container}>
 				<View style={styles.left}>
-					<Avatar uri={item.user.avatar} size={48} />
+					<Avatar uri={user.avatar} size={48} />
 					<View style={styles.leftUserInfo}>
 						<View style={styles.userInfoTop}>
-							<Text style={{ color: Colors.black }}>{item.user.name}</Text>
-							<UserTitle user={item.user} />
+							<Text style={{ color: Colors.black }}>{user.name}</Text>
+							<UserTitle user={user} />
 							<Iconfont
 								style={{ paddingLeft: 5 }}
-								name={item.user.gender ? 'woman' : 'man'}
+								name={user.gender ? 'woman' : 'man'}
 								size={16}
-								color={item.user.gender ? '#FF6EB4' : Colors.blue}
+								color={user.gender ? '#FF6EB4' : Colors.blue}
 							/>
 						</View>
-						<Text style={styles.userIntro}>{item.user.description}</Text>
+						<Text style={styles.userIntro}>{user.description ? user.description : '没有介绍'}</Text>
 					</View>
 				</View>
 				{follow ? (
 					<Button
-						name={item.user.is_follow ? '已关注' : '互相关注'}
+						name={user.is_follow ? '已关注' : '互相关注'}
 						outline
 						style={[
 							styles.button,
@@ -53,10 +53,10 @@ class UserItem extends Component {
 					/>
 				) : (
 					<Button
-						name={item.user.is_follow ? '互相关注' : '关注'}
+						name={user.is_follow ? '互相关注' : '关注'}
 						outline
-						style={[styles.button, { borderColor: item.user.is_follow ? Colors.grey : Colors.theme }]}
-						textColor={item.user.is_follow ? Colors.grey : Colors.theme}
+						style={[styles.button, { borderColor: user.is_follow ? Colors.grey : Colors.theme }]}
+						textColor={user.is_follow ? Colors.grey : Colors.theme}
 						fontSize={13}
 						// handler={this.receiveTask}
 					/>

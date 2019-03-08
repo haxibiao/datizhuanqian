@@ -21,10 +21,14 @@ class index extends Component {
 	}
 	render() {
 		const { navigation } = this.props;
+		const { initialPage } = navigation.state.params;
 		return (
 			<Screen header>
 				<View style={styles.container}>
-					<ScrollableTabView renderTabBar={props => <TabBarHeader {...props} width={300} />}>
+					<ScrollableTabView
+						renderTabBar={props => <TabBarHeader {...props} width={300} />}
+						initialPage={initialPage}
+					>
 						<Follow navigation={navigation} tabLabel="关注" />
 						<Fans navigation={navigation} tabLabel="粉丝" />
 					</ScrollableTabView>

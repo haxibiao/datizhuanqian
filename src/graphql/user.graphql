@@ -263,3 +263,48 @@ mutation SendVerificationCodeMutation($account: String!, $action: VerificationAc
 		surplusSecond
 	}
 }
+
+#关注
+mutation FollowToggbleMutation($followed_type: FollowedEnumType!, $followed_id: Int!) {
+	followToggle(followed_type: $followed_type, followed_id: $followed_id) {
+		id
+		follow_user {
+			id
+		}
+		created_at
+	}
+}
+
+#关注
+query FollowsQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
+	follows(filter: $filter, offset: $offset, limit: $limit) {
+		id
+		follow_user {
+			id
+			name
+			avatar
+			gender
+			level {
+				id
+				level
+			}
+		}
+	}
+}
+
+#粉丝
+query FollowersQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
+	followers(filter: $filter, offset: $offset, limit: $limit) {
+		id
+		follow_user {
+			id
+			name
+			avatar
+			gender
+			level {
+				id
+				level
+			}
+		}
+	}
+}

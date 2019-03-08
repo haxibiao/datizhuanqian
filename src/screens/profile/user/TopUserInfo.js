@@ -86,14 +86,14 @@ class UserTopInfo extends Component {
 						<TouchableOpacity
 							style={styles.ticket}
 							onPress={() => {
-								navigation.navigate('关注粉丝');
+								navigation.navigate('关注粉丝', { initialPage: 0 });
 							}}
 						>
 							<Text style={{ color: Colors.orange }}>精力点: {user.ticket ? user.ticket : '0'}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
-								navigation.navigate('关注粉丝');
+								navigation.navigate('关注粉丝', { initialPage: 1 });
 							}}
 						>
 							<Text style={{ paddingLeft: 20, color: Colors.orange }}>

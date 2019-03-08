@@ -35,7 +35,7 @@ class TaskList extends Component {
 
 	render() {
 		const { login, user, navigation, data } = this.props;
-		const { error, loading, refecth } = data;
+		const { error, loading, refetch } = data;
 
 		if (error) return <LoadingError reload={() => refetch()} />;
 		if (loading) return <Loading />;

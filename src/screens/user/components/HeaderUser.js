@@ -8,14 +8,48 @@ import { StyleSheet, View, Text } from 'react-native';
 
 import { Screen, Avatar, Button, Iconfont, DivisionLine } from '../../../components';
 import { Colors, Divice } from '../../../constants';
+import { Methods } from '../../../helpers';
+
+import { compose, graphql } from 'react-apollo';
+import { FollowToggbleMutation, UserInfoQuery } from '../../../graphql/user.graphql';
 
 class HeaderUser extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			is_follow: true
+			is_follow: false
 		};
 	}
+
+	followUser = async () => {
+		const { user } = this.props;
+		let result = {};
+
+		try {
+			result = await this.props.FollowToggble({
+				variables: {
+					followed_type: 'users',
+					followed_id: user.id
+				},
+				refetchQueries: () => [
+					{
+						query: UserInfoQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, 80); //Toast错误信息
+		} else {
+			Methods.toast('关注成功', 80);
+		}
+	};
+
 	render() {
 		const { user } = this.props;
 		return (
@@ -52,7 +86,7 @@ class HeaderUser extends Component {
 							style={styles.button}
 							textColor={Colors.white}
 							fontSize={15}
-							handler={() => {}}
+							handler={this.followUser}
 						/>
 					</View>
 					<Text style={{ paddingVertical: 20, paddingLeft: 20 }}>知识就是财富，知识就是金钱</Text>
@@ -121,4 +155,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default HeaderUser;
+export default compose(graphql(FollowToggbleMutation, { name: 'FollowToggble' }))(HeaderUser);

@@ -4,110 +4,90 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
-import { Screen, DivisionLine, LoadingMore, ContentEnd, UserItem } from '../../../components';
+import { StyleSheet, View, Text, FlatList, RefreshControl } from 'react-native';
+import {
+	Screen,
+	DivisionLine,
+	LoadingMore,
+	ContentEnd,
+	UserItem,
+	LoadingError,
+	Loading,
+	BlankContent
+} from '../../../components';
 import { Colors, Divice } from '../../../constants';
+
+import { Query } from 'react-apollo';
+import { FollowsQuery } from '../../../graphql/user.graphql';
 
 class Follow extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			follows: [
-				{
-					id: 1,
-					user: {
-						id: 1,
-						name: '风清扬',
-						avatar: 'http://cos.ainicheng.com/storage/avatar/270_1543393851.jpg',
-						gender: 1,
-						level: {
-							id: 1,
-							level: 1
-						},
-						is_follow: 1,
-						description: '没有介绍'
-					}
-				},
-				{
-					id: 1,
-					user: {
-						id: 1,
-						name: '风清扬',
-						avatar: 'http://cos.ainicheng.com/storage/avatar/270_1543393851.jpg',
-						gender: 0,
-						level: {
-							id: 1,
-							level: 1
-						},
-						is_follow: 0,
-						description: '没有介绍'
-					}
-				},
-				{
-					id: 1,
-					user: {
-						id: 1,
-						name: '风清扬',
-						avatar: 'http://cos.ainicheng.com/storage/avatar/270_1543393851.jpg',
-						gender: 1,
-						level: {
-							id: 1,
-							level: 1
-						},
-						is_follow: 1,
-						description: '没有介绍'
-					}
-				}
-			],
-			fetchingMore: false
-		};
+		this.state = {};
 	}
 	render() {
 		const { navigation } = this.props;
 		return (
 			<Screen tabLabel="关注" header>
 				<DivisionLine height={5} />
-				<FlatList
-					data={this.state.follows}
-					keyExtractor={(item, index) => index.toString()}
-					// refreshControl={<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />}
-					renderItem={({ item, index }) => <UserItem navigation={navigation} item={item} follow />}
-					onEndReachedThreshold={0.3}
-					onEndReached={() => {
-						if (false) {
-							fetchMore({
-								variables: {
-									offset: data.withdraws.length
-								},
-								updateQuery: (prev, { fetchMoreResult }) => {
-									console.log('fetchMoreResult', fetchMoreResult, fetchMoreResult.withdraws);
-									if (
-										!(
-											fetchMoreResult &&
-											fetchMoreResult.withdraws &&
-											fetchMoreResult.withdraws.length > 0
-										)
-									) {
+				<Query query={FollowsQuery} variables={{ filter: 'users' }}>
+					{({ data, error, loading, refetch, fetchMore }) => {
+						if (error) return <LoadingError reload={() => refetch()} />;
+						if (loading) return <Loading />;
+						if (!(data && data.follows.length > 0))
+							return <BlankContent text={'还没有关注的人哦'} fontSize={14} />;
+						return (
+							<FlatList
+								data={data.follows}
+								keyExtractor={(item, index) => index.toString()}
+								refreshControl={
+									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
+								}
+								renderItem={({ item, index }) => (
+									<UserItem navigation={navigation} user={item.follow_user} follow />
+								)}
+								onEndReachedThreshold={0.3}
+								onEndReached={() => {
+									if (data.follows) {
+										fetchMore({
+											variables: {
+												offset: data.follows.length
+											},
+											updateQuery: (prev, { fetchMoreResult }) => {
+												if (
+													!(
+														fetchMoreResult &&
+														fetchMoreResult.follows &&
+														fetchMoreResult.follows.length > 0
+													)
+												) {
+													this.setState({
+														fetchingMore: false
+													});
+													return prev;
+												}
+												return Object.assign({}, prev, {
+													follows: [...prev.follows, ...fetchMoreResult.follows]
+												});
+											}
+										});
+									} else {
 										this.setState({
 											fetchingMore: false
 										});
-										return prev;
 									}
-									return Object.assign({}, prev, {
-										withdraws: [...prev.withdraws, ...fetchMoreResult.withdraws]
-									});
-								}
-							});
-						} else {
-							this.setState({
-								fetchingMore: false
-							});
-						}
+								}}
+								ListFooterComponent={() => {
+									return this.state.fetchingMore ? (
+										<LoadingMore />
+									) : (
+										<ContentEnd content={'没有更多了~'} />
+									);
+								}}
+							/>
+						);
 					}}
-					ListFooterComponent={() => {
-						return this.state.fetchingMore ? <LoadingMore /> : <ContentEnd content={'没有更多记录了~'} />;
-					}}
-				/>
+				</Query>
 			</Screen>
 		);
 	}
