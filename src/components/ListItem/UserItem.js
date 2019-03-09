@@ -4,13 +4,22 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import { Colors, Divice } from '../../constants';
 
 import { UserTitle, Avatar } from '../Universal';
 import Button from '../Control/Button';
 import { Iconfont } from '../utils/Fonts';
+
+import { compose, graphql } from 'react-apollo';
+import {
+	FollowToggbleMutation,
+	UserQuery,
+	FollowsQuery,
+	UserInfoQuery,
+	FollowersQuery
+} from '../../graphql/user.graphql';
 
 class UserItem extends Component {
 	constructor(props) {
@@ -20,7 +29,11 @@ class UserItem extends Component {
 	render() {
 		const { user, navigation, follow } = this.props;
 		return (
-			<View style={styles.container}>
+			<TouchableOpacity
+				style={styles.container}
+				activeOpacity={1}
+				onPress={() => navigation.navigate('用户资料', { user_id: user.id })}
+			>
 				<View style={styles.left}>
 					<Avatar uri={user.avatar} size={48} />
 					<View style={styles.leftUserInfo}>
@@ -39,7 +52,7 @@ class UserItem extends Component {
 				</View>
 				{follow ? (
 					<Button
-						name={user.is_follow ? '已关注' : '互相关注'}
+						name={'已关注'}
 						outline
 						style={[
 							styles.button,
@@ -49,7 +62,7 @@ class UserItem extends Component {
 						]}
 						textColor={Colors.grey}
 						fontSize={13}
-						// handler={this.receiveTask}
+						handler={this.followUser}
 					/>
 				) : (
 					<Button
@@ -58,12 +71,53 @@ class UserItem extends Component {
 						style={[styles.button, { borderColor: user.is_follow ? Colors.grey : Colors.theme }]}
 						textColor={user.is_follow ? Colors.grey : Colors.theme}
 						fontSize={13}
-						// handler={this.receiveTask}
+						handler={this.followUser}
 					/>
 				)}
-			</View>
+			</TouchableOpacity>
 		);
 	}
+
+	followUser = async () => {
+		const { user } = this.props;
+		let result = {};
+
+		try {
+			result = await this.props.FollowToggble({
+				variables: {
+					followed_type: 'users',
+					followed_id: user.id
+				},
+				refetchQueries: () => [
+					{
+						query: UserQuery,
+						variables: { id: user.id }
+					},
+					{
+						query: FollowsQuery,
+						variables: { filter: 'users' }
+					},
+					{
+						query: FollowersQuery,
+						variables: { filter: 'users' }
+					},
+					{
+						query: UserInfoQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, 80); //Toast错误信息
+		} else {
+			// Methods.toast('关注成功', 80);
+		}
+	};
 }
 
 const styles = StyleSheet.create({
@@ -100,4 +154,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default UserItem;
+export default compose(graphql(FollowToggbleMutation, { name: 'FollowToggble' }))(UserItem);
