@@ -103,7 +103,7 @@ class Player extends React.PureComponent {
 					ignoreSilentSwitch="obey"
 				/>
 				{!loaded && <ActivityIndicator color={'#fff'} size={'large'} />}
-				{paused && <Iconfont name="paused" size={60} color="#fff" style={{ opacity: 0.8 }} />}
+				{loaded && paused && <Iconfont name="paused" size={60} color="#fff" style={{ opacity: 0.8 }} />}
 			</TouchableOpacity>
 		);
 	}
