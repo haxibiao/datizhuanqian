@@ -34,6 +34,14 @@ export default {
       name
     };
   },
+
+  updateIntroduction(introduction) {
+    return {
+      type: types.UPDATE_INTRODUCTION,
+      introduction
+    };
+  },
+
   updateAlipay(account) {
     return {
       type: types.UPDATE_ALIPAY,

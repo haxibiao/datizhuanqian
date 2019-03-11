@@ -19,12 +19,14 @@ class UsersReducer {
 		let { user } = action;
 		return state.set('user', user).set('login', true);
 	}
+
 	static [types.SIGN_OUT](state, action) {
 		return state
 			.set('user', {})
 			.set('login', false)
 			.set('noTicketTips', true);
 	}
+
 	static [types.UPDATE_NAME](state, action) {
 		let { user } = state;
 		let { name } = action;
@@ -41,6 +43,16 @@ class UsersReducer {
 		user = {
 			...user,
 			avatar: avatar
+		};
+		return state.set('user', user);
+	}
+
+	static [types.UPDATE_INTRODUCTION](state, action) {
+		let { user } = state;
+		let { introduction } = action;
+		user = {
+			...user,
+			introduction
 		};
 		return state.set('user', user);
 	}

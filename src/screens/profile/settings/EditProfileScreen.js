@@ -17,6 +17,7 @@ import { Methods } from '../../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 import {
+	updateUserIntroductionMutation,
 	updateUserNameMutation,
 	updateUserAvatarMutation,
 	UserQuery,
@@ -32,13 +33,13 @@ class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.toggleModalVisible = this.toggleModalVisible.bind(this);
-		this.descriptionModalVisible = this.descriptionModalVisible.bind(this);
+		this.introductionModalVisible = this.introductionModalVisible.bind(this);
 		this.callbackSelected = this.callbackSelected.bind(this);
 		this.state = {
 			modalVisible: false,
 			modifyDescripitonVisible: false,
 			nickname: '',
-			description: '',
+			introduction: '',
 			gender: this.props.user.gender
 		};
 	}
@@ -116,6 +117,42 @@ class EditProfileScreen extends Component {
 		}
 	}
 
+	// 修改个人介绍
+	async editIntroduction() {
+		return;
+		let result = {};
+		let { introduction } = this.state;
+		const { navigation, user } = this.props;
+		if (!introduction) {
+			this.introductionModalVisible();
+			return;
+		}
+
+		try {
+			result = await this.props.updateUserIntroductionMutation({
+				variables: {
+					name: introduction
+				},
+				refetchQueries: updateUserIntroduction => [
+					{
+						query: UserQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -180); //Toast错误信息
+		} else {
+			this.introductionModalVisible();
+			this.props.dispatch(actions.updateIntroduction(introduction));
+			Methods.toast('修改成功', -180);
+		}
+	}
+
 	toggleModalVisible() {
 		this.setState(prevState => ({
 			modalVisible: !prevState.modalVisible
@@ -157,7 +194,7 @@ class EditProfileScreen extends Component {
 		}
 	}
 
-	descriptionModalVisible() {
+	introductionModalVisible() {
 		this.setState(prevState => ({
 			modifyDescripitonVisible: !prevState.modifyDescripitonVisible
 		}));
@@ -166,7 +203,7 @@ class EditProfileScreen extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		const { pay_info_change_count } = navigation.state.params.user;
-		let { modalVisible, nickname, gender, modifyDescripitonVisible, description } = this.state;
+		let { modalVisible, nickname, gender, modifyDescripitonVisible, introduction } = this.state;
 		return (
 			<Screen
 				customStyle={{
@@ -202,8 +239,8 @@ class EditProfileScreen extends Component {
 						<SettingItem
 							itemName="个人介绍"
 							rightSize={15}
-							rightContent={user.description}
-							handler={this.descriptionModalVisible}
+							rightContent={user.introduction}
+							handler={this.introductionModalVisible}
 						/>
 						<SettingItem
 							itemName="支付宝账号"
@@ -238,16 +275,16 @@ class EditProfileScreen extends Component {
 					/>
 					<ModifyDescriptionModal
 						modalName="修改个人介绍"
-						placeholder={user.description}
+						placeholder={user.introduction}
 						visible={modifyDescripitonVisible}
-						value={description}
-						handleVisible={this.descriptionModalVisible}
+						value={introduction}
+						handleVisible={this.introductionModalVisible}
 						changeValue={val => {
 							this.setState({
-								description: val
+								introduction: val
 							});
 						}}
-						submit={() => {}}
+						submit={this.editIntroduction}
 					/>
 				</View>
 				<Select
@@ -269,6 +306,7 @@ const styles = StyleSheet.create({
 
 export default connect(store => ({ user: store.users.user }))(
 	compose(
+		graphql(updateUserIntroductionMutation, { name: 'updateUserIntroductionMutation' }),
 		graphql(updateUserAvatarMutation, { name: 'updateUserAvatarMutation' }),
 		graphql(updateUserNameMutation, { name: 'updateUserNameMutation' }),
 		graphql(setUserInfoMutation, { name: 'setUserInfoMutation' })

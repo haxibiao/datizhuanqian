@@ -165,6 +165,15 @@ mutation updateUserNameMutation($name: String!) {
 	}
 }
 
+# 修改介绍
+mutation updateUserIntroductionMutation($introduction: String!) {
+	updateIntroduction(introduction: $introduction) {
+		id
+		name
+		introduction
+	}
+}
+
 #修改头像
 mutation updateUserAvatarMutation($avatar: String!) {
 	updateUserAvatar(avatar: $avatar) {
