@@ -38,7 +38,11 @@ class UserItem extends Component {
 					<Avatar uri={user.avatar} size={48} />
 					<View style={styles.leftUserInfo}>
 						<View style={styles.userInfoTop}>
-							<Text style={{ color: Colors.black }}>{user.name}</Text>
+							<View style={{ flexShrink: 1 }}>
+								<Text style={{ color: Colors.black }} numberOfLines={1}>
+									{user.name}
+								</Text>
+							</View>
 							<UserTitle user={user} />
 							<Iconfont
 								style={{ paddingLeft: 5 }}
@@ -131,11 +135,13 @@ const styles = StyleSheet.create({
 		borderBottomColor: Colors.lightBorder
 	},
 	left: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	leftUserInfo: {
-		marginLeft: 15
+		flex: 1,
+		marginHorizontal: 15
 	},
 	userInfoTop: {
 		flexDirection: 'row',
