@@ -13,18 +13,18 @@ import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
 import { SetUserPaymentInfoMutation } from '../../../graphql/withdraws.graphql';
+import { SendVerificationCodeMutation } from '../../../graphql/user.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-
-let countDown = 59;
 
 class VerificationCodeScreen extends Component {
 	constructor(props) {
 		super(props);
 		let { time } = this.props.navigation.state.params;
+		this.time_remaining = time ? time : 60;
 		this.state = {
-			tips: `${time ? time : '60'}s后重新发送`,
+			tips: this.time_remaining + 's后重新发送',
 			verificationCode: null,
 			isVisible: false
 		};
@@ -34,11 +34,7 @@ class VerificationCodeScreen extends Component {
 	}
 
 	componentWillUpdate(nextProps, nextState) {
-		if (countDown == 0) {
-			countDown = 60;
-			this.setState({
-				tips: '重新获取验证码'
-			});
+		if (this.time_remaining == 60) {
 			this.timer && clearInterval(this.timer);
 		}
 	}
@@ -48,14 +44,42 @@ class VerificationCodeScreen extends Component {
 	}
 
 	countDown = () => {
-		let { time } = this.props.navigation.state.params;
-		countDown = time ? time : 60;
 		this.timer = setInterval(() => {
-			countDown--;
+			--this.time_remaining;
+			if (this.time_remaining == 0) {
+				this.time_remaining = 60;
+				this.setState({
+					tips: '重新获取验证码'
+				});
+				return;
+			}
 			this.setState({
-				tips: `${countDown}s后重新发送`
+				tips: this.time_remaining + 's后重新发送'
 			});
 		}, 1000);
+	};
+
+	resendVerificationCode = async () => {
+		let result = {};
+		try {
+			result = await this.props.SendVerificationCodeMutation({
+				variables: {
+					account: this.props.users.user.account,
+					action: 'USER_INFO_CHANGE'
+				}
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors[0].message;
+			Methods.toast(str, 100);
+		} else {
+			this.props.navigation.setParams({
+				code: result.data.sendVerificationCode.code
+			});
+			this.countDown();
+		}
 	};
 
 	//设置提现账号
@@ -156,9 +180,11 @@ class VerificationCodeScreen extends Component {
 							marginTop: 15
 						}}
 					>
-						<TouchableOpacity onPress={this.resendVerificationCode} disabled={!(countDown == 60)}>
-							<Text style={{ color: countDown == 60 ? Colors.theme : Colors.grey, fontSize: 13 }}>
-								{this.state.tips}
+						<TouchableOpacity onPress={this.resendVerificationCode} disabled={!(this.time_remaining == 60)}>
+							<Text
+								style={{ color: this.time_remaining == 60 ? Colors.theme : Colors.grey, fontSize: 13 }}
+							>
+								{tips}
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity>
@@ -192,5 +218,8 @@ const styles = StyleSheet.create({
 });
 
 export default connect(store => store)(
-	compose(graphql(SetUserPaymentInfoMutation, { name: 'SetUserPaymentInfoMutation' }))(VerificationCodeScreen)
+	compose(
+		graphql(SetUserPaymentInfoMutation, { name: 'SetUserPaymentInfoMutation' }),
+		graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
+	)(VerificationCodeScreen)
 );

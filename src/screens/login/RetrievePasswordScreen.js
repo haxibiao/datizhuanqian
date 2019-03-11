@@ -8,7 +8,7 @@ import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { ResetPasswordMutation, ForgetPasswordMutation } from '../../graphql/user.graphql';
+import { ResetPasswordMutation, SendVerificationCodeMutation } from '../../graphql/user.graphql';
 import { compose, graphql } from 'react-apollo';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
@@ -18,10 +18,11 @@ class RetrievePasswordScreen extends Component {
 	constructor(props) {
 		super(props);
 		let { time } = this.props.navigation.state.params;
+		this.time_remaining = time ? time : 60;
 		this.state = {
-			verification: '',
+			verificationCode: '',
 			password: '',
-			tips: `${time ? time : '60'}s后重新发送`,
+			tips: `${this.time_remaining}s后重新发送`,
 			disabled: true
 		};
 	}
@@ -31,11 +32,7 @@ class RetrievePasswordScreen extends Component {
 	}
 
 	componentWillUpdate(nextProps, nextState) {
-		if (countDown == 0) {
-			countDown = 60;
-			this.setState({
-				tips: '重新获取验证码'
-			});
+		if (this.time_remaining == 60) {
 			this.timer && clearInterval(this.timer);
 		}
 	}
@@ -45,28 +42,56 @@ class RetrievePasswordScreen extends Component {
 	}
 
 	countDown = () => {
-		let { time } = this.props.navigation.state.params;
-		countDown = time ? time : 60;
 		this.timer = setInterval(() => {
-			countDown--;
+			--this.time_remaining;
+			if (this.time_remaining == 0) {
+				this.time_remaining = 60;
+				this.setState({
+					tips: '重新获取验证码'
+				});
+				return;
+			}
 			this.setState({
-				tips: `${countDown}s后重新发送`
+				tips: this.time_remaining + 's后重新发送'
 			});
 		}, 1000);
 	};
+
+	resendVerificationCode = async () => {
+		let result = {};
+		const { navigation } = this.props;
+		const { account } = navigation.state.params;
+		try {
+			result = await this.props.SendVerificationCodeMutation({
+				variables: {
+					account,
+					action: 'RESET_PASSWORD'
+				},
+				errorPolicy: 'all'
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors[0].message;
+			Methods.toast(str, 100);
+		} else {
+			this.countDown();
+		}
+	};
+
 	//重置密码
 	async resetPassword() {
 		const { navigation } = this.props;
-		let { verification, password, disabled } = this.state;
+		let { verificationCode, password, disabled } = this.state;
 		const { account } = navigation.state.params;
-
 		let result = {};
 		try {
 			result = await this.props.ResetPasswordMutation({
 				variables: {
 					account: account,
 					password: password,
-					code: verification
+					code: verificationCode
 				}
 			});
 		} catch (ex) {
@@ -81,32 +106,9 @@ class RetrievePasswordScreen extends Component {
 		}
 	}
 
-	resendVerificationCode = async () => {
-		const { navigation } = this.props;
-		const { account } = navigation.state.params;
-		let result = {};
-
-		this.countDown();
-
-		try {
-			result = await this.props.ForgetPasswordMutation({
-				variables: {
-					account: account
-				}
-			});
-		} catch (error) {
-			result.errors = error;
-		}
-
-		if (result && result.errors) {
-			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Methods.toast(str, 80); //打印错误信息
-		}
-	};
-
 	render() {
 		const { navigation } = this.props;
-		let { verification, password, disabled, tips } = this.state;
+		let { verificationCode, password, disabled, tips } = this.state;
 
 		return (
 			<Screen>
@@ -120,7 +122,7 @@ class RetrievePasswordScreen extends Component {
 					keyboardType={'numeric'}
 					changeValue={value => {
 						this.setState({
-							verification: value
+							verificationCode: value
 						});
 					}}
 				/>
@@ -137,16 +139,16 @@ class RetrievePasswordScreen extends Component {
 				<TouchableOpacity
 					style={{ marginHorizontal: 25, marginTop: 15 }}
 					onPress={this.resendVerificationCode}
-					disabled={!(countDown == 60)}
+					disabled={!(this.time_remaining == 60)}
 				>
-					<Text style={{ color: countDown == 60 ? Colors.theme : Colors.grey }}>{this.state.tips}</Text>
+					<Text style={{ color: this.time_remaining == 60 ? Colors.theme : Colors.grey }}>{tips}</Text>
 				</TouchableOpacity>
 				<View style={{ marginHorizontal: 25, marginTop: 30, height: 48 }}>
 					<Button
 						name="完成"
 						handler={this.resetPassword.bind(this)}
 						style={{ height: 38, fontSize: 16 }}
-						disabled={verification && password ? false : true}
+						disabled={verificationCode && password ? false : true}
 					/>
 				</View>
 				<KeyboardSpacer />
@@ -162,6 +164,6 @@ export default connect(store => ({
 }))(
 	compose(
 		graphql(ResetPasswordMutation, { name: 'ResetPasswordMutation' }),
-		graphql(ForgetPasswordMutation, { name: 'ForgetPasswordMutation' })
+		graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
 	)(RetrievePasswordScreen)
 );
