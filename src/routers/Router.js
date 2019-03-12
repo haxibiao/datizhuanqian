@@ -33,6 +33,7 @@ import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
 import NotificationScreen from '../screens/notification/HomeScreen';
 import SystemNotificationScreen from '../screens/notification/SystemNotificationScreen';
 import CommentNotificationScreen from '../screens/notification/CommentNotificationScreen';
+import FansNotificationScreen from '../screens/notification/FansNotificationScreen';
 
 import WithdrawsLogScreen from '../screens/withdraws/WithdrawsLogScreen';
 import WithdrawDetailsScreen from '../screens/withdraws/WithdrawDetailsScreen';
@@ -141,6 +142,9 @@ export default {
 	},
 	评论通知: {
 		screen: CommentNotificationScreen
+	},
+	粉丝通知: {
+		screen: FansNotificationScreen
 	},
 	//通知
 	提现日志: {

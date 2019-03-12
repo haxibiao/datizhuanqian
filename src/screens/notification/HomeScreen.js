@@ -71,11 +71,35 @@ class HomeScreen extends Component {
 						navigation.navigate('评论通知');
 					}}
 				>
-					<View style={styles.icon}>
+					<View style={styles.CommentIcon}>
 						<Iconfont name={'notification'} size={23} color={Colors.white} />
 					</View>
 					<View style={styles.itemRight}>
 						<Text style={styles.name}>评论</Text>
+						<Query query={userUnreadQuery} variables={{ id: user.id }}>
+							{({ data, error }) => {
+								if (error) return null;
+								if (!(data && data.user)) return null;
+								if (data.user.unread_comment_notifications_count) {
+									return <RedDot count={data.user.unread_comment_notifications_count} />;
+								} else {
+									return <Iconfont name={'right'} size={16} />;
+								}
+							}}
+						</Query>
+					</View>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.item}
+					onPress={() => {
+						navigation.navigate('粉丝通知');
+					}}
+				>
+					<View style={styles.FansIcon}>
+						<Iconfont name={'fans'} size={23} color={Colors.white} />
+					</View>
+					<View style={styles.itemRight}>
+						<Text style={styles.name}>粉丝</Text>
 						<Query query={userUnreadQuery} variables={{ id: user.id }}>
 							{({ data, error }) => {
 								if (error) return null;
@@ -118,8 +142,13 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		alignItems: 'center'
 	},
-	icon: {
+	CommentIcon: {
 		backgroundColor: Colors.weixin,
+		padding: 12,
+		borderRadius: 30
+	},
+	FansIcon: {
+		backgroundColor: Colors.skyBlue,
 		padding: 12,
 		borderRadius: 30
 	}
