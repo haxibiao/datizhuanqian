@@ -5,6 +5,7 @@ mutation signUpMutation($account: String!, $password: String!) {
 		account
 		name
 		real_name
+		introduction
 		gender
 		avatar
 		gold
@@ -24,6 +25,7 @@ mutation signInMutation($account: String!, $password: String!) {
 		account
 		name
 		real_name
+		introduction
 		gender
 		avatar
 		gold
@@ -80,6 +82,7 @@ query UserQuery($id: Int!) {
 		id
 		name
 		real_name
+		introduction
 		gold
 		ticket
 		avatar
@@ -165,15 +168,6 @@ mutation updateUserNameMutation($name: String!) {
 	}
 }
 
-# 修改介绍
-mutation updateUserIntroductionMutation($introduction: String!) {
-	updateIntroduction(introduction: $introduction) {
-		id
-		name
-		introduction
-	}
-}
-
 #修改头像
 mutation updateUserAvatarMutation($avatar: String!) {
 	updateUserAvatar(avatar: $avatar) {
@@ -182,11 +176,12 @@ mutation updateUserAvatarMutation($avatar: String!) {
 	}
 }
 
-#设置性别
+#设置性别/介绍
 mutation setUserInfoMutation($data: UserInfo) {
 	setUserInfo(data: $data) {
 		id
 		gender
+		introduction
 	}
 }
 

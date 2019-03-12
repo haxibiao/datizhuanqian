@@ -17,7 +17,6 @@ import { Methods } from '../../../helpers';
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 import {
-	updateUserIntroductionMutation,
 	updateUserNameMutation,
 	updateUserAvatarMutation,
 	UserQuery,
@@ -118,8 +117,7 @@ class EditProfileScreen extends Component {
 	}
 
 	// 修改个人介绍
-	async editIntroduction() {
-		return;
+	editIntroduction = async () => {
 		let result = {};
 		let { introduction } = this.state;
 		const { navigation, user } = this.props;
@@ -129,9 +127,11 @@ class EditProfileScreen extends Component {
 		}
 
 		try {
-			result = await this.props.updateUserIntroductionMutation({
+			result = await this.props.setUserInfoMutation({
 				variables: {
-					name: introduction
+					data: {
+						introduction
+					}
 				},
 				refetchQueries: updateUserIntroduction => [
 					{
@@ -151,7 +151,7 @@ class EditProfileScreen extends Component {
 			this.props.dispatch(actions.updateIntroduction(introduction));
 			Methods.toast('修改成功', -180);
 		}
-	}
+	};
 
 	toggleModalVisible() {
 		this.setState(prevState => ({
@@ -306,7 +306,6 @@ const styles = StyleSheet.create({
 
 export default connect(store => ({ user: store.users.user }))(
 	compose(
-		graphql(updateUserIntroductionMutation, { name: 'updateUserIntroductionMutation' }),
 		graphql(updateUserAvatarMutation, { name: 'updateUserAvatarMutation' }),
 		graphql(updateUserNameMutation, { name: 'updateUserNameMutation' }),
 		graphql(setUserInfoMutation, { name: 'setUserInfoMutation' })

@@ -30,6 +30,13 @@ export default [
 		effect: rememberUser,
 		error: genericErrorHandler
 	},
+
+	{
+		action: types.UPDATE_INTRODUCTION,
+		effect: rememberUser,
+		error: genericErrorHandler
+	},
+
 	{
 		action: types.UPDATE_ALIPAY,
 		effect: rememberUser,
