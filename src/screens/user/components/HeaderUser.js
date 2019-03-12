@@ -99,7 +99,9 @@ class HeaderUser extends Component {
 							handler={this.followUser}
 						/>
 					</View>
-					<Text style={{ paddingVertical: 20, paddingLeft: 20 }}>知识就是财富，知识就是金钱</Text>
+					<Text style={{ paddingVertical: 20, paddingLeft: 20 }}>
+						{user.introduction ? user.introduction : '还没有介绍'}
+					</Text>
 				</View>
 				<DivisionLine height={10} />
 

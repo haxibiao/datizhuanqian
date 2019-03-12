@@ -51,7 +51,7 @@ class UserItem extends Component {
 								color={user.gender ? '#FF6EB4' : Colors.blue}
 							/>
 						</View>
-						<Text style={styles.userIntro}>{user.description ? user.description : '没有介绍'}</Text>
+						<Text style={styles.userIntro}>{user.introduction ? user.introduction : '还没有介绍'}</Text>
 					</View>
 				</View>
 				{follow ? (

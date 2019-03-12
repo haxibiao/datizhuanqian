@@ -116,6 +116,7 @@ query UserInfoQuery($id: Int!, $limit: Int, $offset: Int) {
 		name
 		avatar
 		gender
+		introduction
 		follow_users_count
 		followers_count
 		followed_user_status
@@ -307,6 +308,7 @@ query FollowsQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 			name
 			avatar
 			gender
+			introduction
 			level {
 				id
 				level
@@ -324,6 +326,7 @@ query FollowersQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 			name
 			avatar
 			gender
+			introduction
 			level {
 				id
 				level
