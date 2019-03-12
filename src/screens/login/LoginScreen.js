@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-import { Screen, Iconfont, SubmitLoading } from '../../components';
-
+import { Screen, Iconfont, SubmitLoading, KeyboardSpacer } from '../../components';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
@@ -12,8 +11,6 @@ import actions from '../../store/actions';
 
 import { signUpMutation, signInMutation, UserQuery } from '../../graphql/user.graphql';
 import { graphql, compose } from 'react-apollo';
-
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class LoginScreen extends Component {
 	constructor(props) {

@@ -10,7 +10,8 @@ import {
 	LoadingMore,
 	ContentEnd,
 	SubmitLoading,
-	DivisionLine
+	DivisionLine,
+	KeyboardSpacer
 } from '../../components';
 
 import { Colors, Divice } from '../../constants';
@@ -28,8 +29,6 @@ import { compose, graphql, Query } from 'react-apollo';
 import FeedbackBody from './components/FeedbackBody';
 import Comment from './components/Comment';
 import Loading from './components/Loading';
-
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class FeedbackDetailsScreen extends Component {
 	constructor(props) {

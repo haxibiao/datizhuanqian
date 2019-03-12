@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { Button, Input, Screen, DivisionLine } from '../../../components';
+import { Button, Input, Screen, DivisionLine, KeyboardSpacer } from '../../../components';
 import { Colors } from '../../../constants';
 import { Methods } from '../../../helpers';
 
@@ -10,7 +10,6 @@ import actions from '../../../store/actions';
 
 import { UpdateUserPasswordMutation } from '../../../graphql/user.graphql';
 import { compose, graphql } from 'react-apollo';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class ChangePasswordScreen extends Component {
 	constructor(props) {

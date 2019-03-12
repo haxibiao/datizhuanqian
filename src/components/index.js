@@ -69,6 +69,7 @@ import SubmitLoading from './Universal/SubmitLoading';
 import Player from './Video/Player';
 
 import { Iconfont } from './utils/Fonts';
+import KeyboardSpacer from './utils/KeyboardSpacer';
 
 export {
 	CategoryCache,
@@ -140,5 +141,6 @@ export {
 	SubmitLoading,
 	Player,
 	//
-	Iconfont
+	Iconfont,
+	KeyboardSpacer
 };

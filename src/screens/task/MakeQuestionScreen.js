@@ -27,7 +27,8 @@ import {
 	AnimationButton,
 	OptionItem,
 	Select,
-	OverlayProgress
+	OverlayProgress,
+	KeyboardSpacer
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods, videoUpload, cancelUpload, saveVideo } from '../../helpers';
@@ -36,7 +37,6 @@ import actions from '../../store/actions';
 import { createQuestionMutation } from '../../graphql/task.graphql';
 import { CategoriesQuery, QuestionQuery } from '../../graphql/question.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ImagePicker from 'react-native-image-crop-picker';
 import Video from 'react-native-video';
 import { NavigationEvents } from 'react-navigation';

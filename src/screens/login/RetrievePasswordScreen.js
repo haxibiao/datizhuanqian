@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, Screen, Input } from '../../components';
-
+import { Button, Screen, Input, KeyboardSpacer } from '../../components';
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 
@@ -10,7 +9,6 @@ import actions from '../../store/actions';
 
 import { ResetPasswordMutation, SendVerificationCodeMutation } from '../../graphql/user.graphql';
 import { compose, graphql } from 'react-apollo';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 let countDown = 59;
 

@@ -8,16 +8,13 @@ import {
 	Input,
 	Waiting,
 	ImagePickerView,
-	SubmitLoading
+	SubmitLoading,
+	KeyboardSpacer
 } from '../../components';
-
 import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-
 import { CreateFeedbackMutation } from '../../graphql/feedback.graphql';
 import { Mutation, graphql, compose, withApollo } from 'react-apollo';
-
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class Feedback extends Component {
 	constructor(props) {

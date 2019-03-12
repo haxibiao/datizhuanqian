@@ -10,15 +10,12 @@ import {
 	ScrollView,
 	Keyboard
 } from 'react-native';
-import { Button, Radio, Screen, Input, Header, SubmitLoading } from '../../components';
-
+import { Button, Radio, Screen, Input, Header, SubmitLoading, KeyboardSpacer } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
-
 import { connect } from 'react-redux';
 import { createQuestionRedressMutation } from '../../graphql/question.graphql';
 import { graphql, compose } from 'react-apollo';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class ErrorCorrectionScreen extends Component {
 	constructor(props) {

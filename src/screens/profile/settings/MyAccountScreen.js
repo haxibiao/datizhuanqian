@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-
-import { DivisionLine, Button, Input, Screen, SubmitLoading } from '../../../components';
+import { DivisionLine, Button, Input, Screen, SubmitLoading, KeyboardSpacer } from '../../../components';
 
 import { Colors } from '../../../constants';
 import { Methods } from '../../../helpers';
@@ -11,8 +10,6 @@ import actions from '../../../store/actions';
 import { SendVerificationCodeMutation } from '../../../graphql/user.graphql';
 
 import { compose, graphql } from 'react-apollo';
-
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class EditProfileScreen extends Component {
 	constructor(props) {

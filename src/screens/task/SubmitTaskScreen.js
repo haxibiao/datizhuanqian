@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image, Keyboard } from 'react-native';
-import { DivisionLine, Button, Iconfont, Screen, Input, Waiting } from '../../components';
+import { DivisionLine, Button, Iconfont, Screen, Input, Waiting, KeyboardSpacer } from '../../components';
 
 import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 
 import { ReplyTaskMutation, TasksQuery, UploadImage } from '../../graphql/task.graphql';
 import { graphql, compose, withApollo } from 'react-apollo';
-
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 let arry = {};
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, Screen, SubmitLoading, Input } from '../../components';
+import { Button, Screen, SubmitLoading, Input, KeyboardSpacer } from '../../components';
 import { Colors } from '../../constants';
 import { Methods } from '../../helpers';
 
@@ -9,8 +9,6 @@ import actions from '../../store/actions';
 
 import { SendVerificationCodeMutation } from '../../graphql/user.graphql';
 import { Mutation, compose, graphql } from 'react-apollo';
-
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class VerificationScreen extends Component {
 	constructor(props) {
