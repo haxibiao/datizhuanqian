@@ -67,11 +67,35 @@ query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset
 	}
 }
 
+#粉丝通知
+query FansNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
+	notifications(filter: $filter, limit: $limit, offset: $offset, is_read: false) {
+		type
+		created_at
+		follow {
+			id
+			created_at
+			user {
+				id
+				name
+				avatar
+				gender
+				followed_user_status
+				level {
+					id
+					level
+				}
+			}
+		}
+	}
+}
+
 query userUnreadQuery($id: Int) {
 	user(id: $id) {
 		id
 		unread_comment_notifications_count
 		unread_withdraw_notifications_count
 		unread_notifications_count
+		unread_user_follow_notifications_count
 	}
 }

@@ -20,7 +20,7 @@ cd ./android
 # cd ..
 # bash ./bash/apk_upload.sh
 
-echo "开始上传正式包到cdn ..."
+echo "开始上传内测包到cdn ..."
 if [ ! -d /data/www/datizhuanqian.com ]; then
 	echo "datizhuanqian.com的源码 !!"
 	exit

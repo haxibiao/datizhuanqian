@@ -28,7 +28,7 @@ class ChangePasswordScreen extends Component {
 		const { navigation } = this.props;
 
 		if (password.indexOf(' ') >= 0) {
-			Methods.toast('密码格式错误', 70);
+			Methods.toast('密码格式错误', 80);
 		} else {
 			let result = {};
 			if (password == againpassword) {
@@ -44,9 +44,9 @@ class ChangePasswordScreen extends Component {
 				}
 				if (result && result.errors) {
 					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-					Methods.toast(str, -100); //打印错误信息
+					Methods.toast(str, 80); //打印错误信息
 				} else {
-					Methods.toast('新密码设置成功', -180);
+					Methods.toast('新密码设置成功', 80);
 					navigation.goBack();
 				}
 			} else {

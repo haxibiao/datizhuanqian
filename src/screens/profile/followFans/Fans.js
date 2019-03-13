@@ -48,9 +48,7 @@ class Fans extends Component {
 								refreshControl={
 									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
 								}
-								renderItem={({ item, index }) => (
-									<UserItem navigation={navigation} user={item.follow_user} />
-								)}
+								renderItem={({ item, index }) => <UserItem navigation={navigation} user={item.user} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									if (data.followers) {

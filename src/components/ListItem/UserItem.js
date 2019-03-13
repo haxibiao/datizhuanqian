@@ -70,10 +70,10 @@ class UserItem extends Component {
 					/>
 				) : (
 					<Button
-						name={user.is_follow ? '互相关注' : '关注'}
+						name={user.followed_user_status ? '互相关注' : '关注'}
 						outline
-						style={[styles.button, { borderColor: user.is_follow ? Colors.grey : Colors.theme }]}
-						textColor={user.is_follow ? Colors.grey : Colors.theme}
+						style={[styles.button, { borderColor: user.followed_user_status ? Colors.grey : Colors.theme }]}
+						textColor={user.followed_user_status ? Colors.grey : Colors.theme}
 						fontSize={13}
 						handler={this.followUser}
 					/>

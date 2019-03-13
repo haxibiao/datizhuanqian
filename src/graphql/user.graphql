@@ -321,12 +321,13 @@ query FollowsQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 query FollowersQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 	followers(filter: $filter, offset: $offset, limit: $limit) {
 		id
-		follow_user {
+		user {
 			id
 			name
 			avatar
 			gender
 			introduction
+			followed_user_status
 			level {
 				id
 				level

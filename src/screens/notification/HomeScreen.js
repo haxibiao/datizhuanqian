@@ -48,7 +48,9 @@ class HomeScreen extends Component {
 								if (error) return null;
 								if (!(data && data.user)) return null;
 								if (
-									data.user.unread_notifications_count - data.user.unread_comment_notifications_count
+									data.user.unread_notifications_count -
+									data.user.unread_comment_notifications_count -
+									data.user.unread_user_follow_notifications_count
 								) {
 									return (
 										<RedDot
@@ -104,8 +106,8 @@ class HomeScreen extends Component {
 							{({ data, error }) => {
 								if (error) return null;
 								if (!(data && data.user)) return null;
-								if (data.user.unread_comment_notifications_count) {
-									return <RedDot count={data.user.unread_comment_notifications_count} />;
+								if (data.user.unread_user_follow_notifications_count) {
+									return <RedDot count={data.user.unread_user_follow_notifications_count} />;
 								} else {
 									return <Iconfont name={'right'} size={16} />;
 								}

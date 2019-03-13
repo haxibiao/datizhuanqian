@@ -10,7 +10,7 @@ import { Colors, Config, Divice } from '../../constants';
 
 import { Query, withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
-import { commentNotificationsQuery, userUnreadQuery } from '../../graphql/notification.graphql';
+import { FansNotificationsQuery, userUnreadQuery } from '../../graphql/notification.graphql';
 
 import FansNotification from './type/FansNotification';
 
@@ -62,62 +62,67 @@ class FansNotificationScreen extends Component {
 		return (
 			<Screen>
 				<DivisionLine height={5} />
-				{/*<Query
-					query={commentNotificationsQuery}
-					variables={{ filter: ['FEEDBACK_COMMENT', 'REPLY_COMMENT'] }}
+				<Query
+					query={FansNotificationsQuery}
+					variables={{ filter: ['USER_FOLLOW'] }}
 					fetchPolicy="network-only"
 				>
-					{
-						// {({ data, error, loading, refetch, fetchMore }) => {
-						// 	if (error) return <LoadingError reload={() => refetch()} />;
-						// 	if (loading) return <Loading />;
-						// 	if (!(data && data.notifications.length > 0))
-						// 		return <BlankContent text={'还没有通知哦'} fontSize={14} />;
-						// 	return (
-						// 	);
-						// }}
-					}
-				</Query>*/}
-				<FlatList
-					data={this.state.notifications}
-					keyExtractor={(item, index) => index.toString()}
-					renderItem={({ item, index }) => <FansNotification user={item} navigation={navigation} />}
-					// refreshControl={
-					// 	<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
-					// }
-					// onEndReachedThreshold={0.3}
-					// onEndReached={() => {
-					// 	if (data.notifications) {
-					// 		fetchMore({
-					// 			variables: {
-					// 				offset: data.notifications.length
-					// 			},
-					// 			updateQuery: (prev, { fetchMoreResult }) => {
-					// 				if (!(fetchMoreResult && fetchMoreResult.notifications.length > 0)) {
-					// 					this.setState({
-					// 						fetchingMore: false
-					// 					});
-					// 					return prev;
-					// 				}
-					// 				return Object.assign({}, prev, {
-					// 					notifications: [...prev.notifications, ...fetchMoreResult.notifications]
-					// 				});
-					// 			}
-					// 		});
-					// 	} else {
-					// 		this.setState({
-					// 			fetchingMore: false
-					// 		});
-					// 	}
-					// }}
-					// ListFooterComponent={() => {
-					// 	return this.state.fetchingMore ? (
-					// 		<LoadingMore />
-					// 	) : (
-					// 		<ContentEnd content={'没有更多记录了~'} />
-					// 	);
-					// }}
-				/>
+					{({ data, error, loading, refetch, fetchMore }) => {
+						if (error) return <LoadingError reload={() => refetch()} />;
+						if (loading) return <Loading />;
+						if (!(data && data.notifications.length > 0))
+							return <BlankContent text={'还没有通知哦'} fontSize={14} />;
+
+						console.log('data.notifications', data.notifications);
+						return (
+							<FlatList
+								data={data.notifications}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={({ item, index }) => (
+									<FansNotification follow={item.follow} navigation={navigation} />
+								)}
+								refreshControl={
+									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
+								}
+								onEndReachedThreshold={0.3}
+								onEndReached={() => {
+									if (data.notifications) {
+										fetchMore({
+											variables: {
+												offset: data.notifications.length
+											},
+											updateQuery: (prev, { fetchMoreResult }) => {
+												if (!(fetchMoreResult && fetchMoreResult.notifications.length > 0)) {
+													this.setState({
+														fetchingMore: false
+													});
+													return prev;
+												}
+												return Object.assign({}, prev, {
+													notifications: [
+														...prev.notifications,
+														...fetchMoreResult.notifications
+													]
+												});
+											}
+										});
+									} else {
+										this.setState({
+											fetchingMore: false
+										});
+									}
+								}}
+								ListFooterComponent={() => {
+									return this.state.fetchingMore ? (
+										<LoadingMore />
+									) : (
+										<ContentEnd content={'没有更多记录了~'} />
+									);
+								}}
+							/>
+						);
+					}}
+				</Query>
 			</Screen>
 		);
 	}

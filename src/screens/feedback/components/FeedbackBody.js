@@ -34,7 +34,12 @@ class FeedbackBody extends Component {
 							<View style={styles.header}>
 								<Text style={styles.title}>{feedback.title}</Text>
 								<View style={styles.user}>
-									<Avatar uri={feedback.user.avatar} size={34} />
+									<TouchableOpacity
+										onPress={() => navigation.navigate('用户资料', { user_id: feedback.user.id })}
+									>
+										<Avatar uri={feedback.user.avatar} size={34} />
+									</TouchableOpacity>
+
 									<View style={styles.userRight}>
 										<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 											<Text

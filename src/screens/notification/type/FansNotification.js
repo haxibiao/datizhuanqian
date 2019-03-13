@@ -25,44 +25,47 @@ class FansNotification extends Component {
 		this.state = {};
 	}
 	render() {
-		const { user } = this.props;
+		const { follow } = this.props;
+
+		let created_at = follow.created_at.substr(5, 5);
+		console.log('created_at', created_at);
 		return (
 			<TouchableOpacity
 				style={styles.container}
 				activeOpacity={1}
-				onPress={() => navigation.navigate('用户资料', { user_id: user.id })}
+				onPress={() => navigation.navigate('用户资料', { user_id: follow.user.id })}
 			>
 				<View style={styles.left}>
-					<Avatar uri={user.avatar} size={48} />
+					<Avatar uri={follow.user.avatar} size={48} />
 					<View style={styles.leftUserInfo}>
 						<View style={styles.userInfoTop}>
 							<View style={{ flexShrink: 1 }}>
 								<Text style={{ color: Colors.black }} numberOfLines={1}>
-									{user.name}
+									{follow.user.name}
 								</Text>
 							</View>
-							<UserTitle user={user} />
+							<UserTitle user={follow.user} />
 							<Iconfont
 								style={{ paddingLeft: 5 }}
-								name={user.gender ? 'woman' : 'man'}
+								name={follow.user.gender ? 'woman' : 'man'}
 								size={16}
-								color={user.gender ? '#FF6EB4' : Colors.blue}
+								color={follow.user.gender ? '#FF6EB4' : Colors.blue}
 							/>
 						</View>
-						<Text style={styles.userIntro}>{'关注了你  02-04'}</Text>
+						<Text style={styles.userIntro}>{'关注了你  ' + created_at}</Text>
 					</View>
 				</View>
 
 				<Button
-					name={user.followed_user_status ? '互相关注' : '关注'}
+					name={follow.user.followed_user_status ? '互相关注' : '关注'}
 					outline
 					style={[
 						styles.button,
 						{
-							borderColor: user.followed_user_status ? Colors.grey : Colors.theme
+							borderColor: follow.user.followed_user_status ? Colors.grey : Colors.theme
 						}
 					]}
-					textColor={user.followed_user_status ? Colors.grey : Colors.theme}
+					textColor={follow.user.followed_user_status ? Colors.grey : Colors.theme}
 					fontSize={13}
 					handler={this.followUser}
 				/>
@@ -71,19 +74,19 @@ class FansNotification extends Component {
 	}
 
 	followUser = async () => {
-		const { user } = this.props;
+		const { follow } = this.props;
 		let result = {};
 
 		try {
 			result = await this.props.FollowToggble({
 				variables: {
 					followed_type: 'users',
-					followed_id: user.id
+					followed_id: follow.user.id
 				},
 				refetchQueries: () => [
 					{
 						query: UserQuery,
-						variables: { id: user.id }
+						variables: { id: follow.user.id }
 					},
 					{
 						query: FollowsQuery,
@@ -95,7 +98,7 @@ class FansNotification extends Component {
 					},
 					{
 						query: UserInfoQuery,
-						variables: { id: user.id }
+						variables: { id: follow.user.id }
 					}
 				]
 			});

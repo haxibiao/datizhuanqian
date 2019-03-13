@@ -35,7 +35,9 @@ class CommentItem extends Component {
 			>
 				<View style={styles.top}>
 					<View style={styles.topLeft}>
-						<Avatar uri={item.user.avatar} size={34} borderStyle={{}} />
+						<TouchableOpacity onPress={() => navigation.navigate('用户资料', { user_id: item.user.id })}>
+							<Avatar uri={item.user.avatar} size={34} borderStyle={{}} />
+						</TouchableOpacity>
 						<View style={styles.user}>
 							<View style={styles.row}>
 								<Text
