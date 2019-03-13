@@ -110,7 +110,7 @@ query UserQuery($id: Int!) {
 }
 
 #其他用户资料
-query UserInfoQuery($id: Int!, $limit: Int, $offset: Int) {
+query UserInfoQuery($id: Int!, $limit: Int, $offset: Int, $order: QuestionOrderEnum) {
 	user(id: $id) {
 		id
 		name
@@ -124,7 +124,7 @@ query UserInfoQuery($id: Int!, $limit: Int, $offset: Int) {
 			id
 			level
 		}
-		questions(limit: $limit, offset: $offset) {
+		questions(limit: $limit, offset: $offset, order: $order) {
 			id
 			description
 			image {

@@ -44,7 +44,7 @@ import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
 import TaskFailScreen from '../screens/task/TaskFailScreen';
 import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
 import MakeQuestionHistoryScreen from '../screens/task/MakeQuestionHistoryScreen';
-import QuestionDetail from '../screens/task/QuestionDetail';
+import QuestionDetail from '../screens/home/QuestionDetaiList';
 import MakeQuestionRule from '../screens/task/MakeQuestionRule';
 import QuestionReviewScreen from '../screens/task/QuestionReviewScreen';
 

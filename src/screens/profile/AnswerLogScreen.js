@@ -39,12 +39,14 @@ class AnswerItem extends Component {
 	render() {
 		let {
 			answer: { question, correct_count },
-			navigation
+			navigation,
+			answerLog,
+			index
 		} = this.props;
 		let { category, image, description } = question;
-		console.log('image', image);
+
 		return (
-			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
+			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { answerLog, index })}>
 				<View style={styles.answerItem}>
 					<View style={styles.content}>
 						<View style={{ flex: 1 }}>
@@ -120,7 +122,12 @@ class AnswerLogScreen extends Component {
 									data={data.user.answerHistories}
 									keyExtractor={(item, index) => index.toString()}
 									renderItem={({ item, index }) => (
-										<AnswerItem answer={item} navigation={navigation} />
+										<AnswerItem
+											answer={item}
+											navigation={navigation}
+											answerLog={data.user.answerHistories}
+											index={index}
+										/>
 									)}
 									ItemSeparatorComponent={() => <DivisionLine />}
 									refreshControl={

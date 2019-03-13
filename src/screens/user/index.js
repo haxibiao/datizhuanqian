@@ -27,7 +27,7 @@ class index extends Component {
 		const { user_id } = navigation.state.params;
 		let { fetchingMore } = this.state;
 		return (
-			<Query query={UserInfoQuery} variables={{ id: user_id }}>
+			<Query query={UserInfoQuery} variables={{ id: user_id, order: 'ANSWERS_COUNT' }}>
 				{({ data, loading, error, refetch, fetchMore }) => {
 					if (error) return null;
 					if (loading) return null;

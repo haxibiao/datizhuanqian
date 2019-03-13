@@ -15,7 +15,7 @@ class Player extends React.PureComponent {
 		this.waveValue = new Animated.Value(0);
 		this.state = {
 			// 初始化播放状态
-			paused: false,
+			paused: this.props.paused,
 			loaded: false
 		};
 	}
