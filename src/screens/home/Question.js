@@ -8,9 +8,21 @@ class Question extends Component {
 		super(props);
 		this.state = {};
 	}
+
+	// question.selections 结构不统一
+	selectionAdapter(data) {
+		let selection;
+		if (Array.isArray(data)) {
+			selection = data;
+		} else if (typeof data === 'object') {
+			selection = data.Selection || data.Section || [];
+		}
+		return selection;
+	}
+
 	render() {
 		let { question, option = {}, isMethod, value, changeValue, pickColor, rightColor } = this.props;
-		let selection = option.Selection || option.Section || [];
+		let selection = this.selectionAdapter(option);
 		return (
 			<View>
 				<Text style={styles.title}>{question.description}</Text>
