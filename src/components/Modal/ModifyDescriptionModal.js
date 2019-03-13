@@ -26,6 +26,7 @@ class ModifyDescriptionModal extends Component {
 				<View style={{ marginTop: 10 }}>
 					<TextInput
 						words={false}
+						placeholder={'介绍不超过16个字哦~'}
 						underlineColorAndroid="transparent"
 						selectionColor={Colors.themeColor}
 						style={styles.textInput}
@@ -34,7 +35,7 @@ class ModifyDescriptionModal extends Component {
 						placeholderText={Colors.tintFontColor}
 						onChangeText={changeValue}
 						defaultValue={value + ''}
-						maxLength={8}
+						maxLength={16}
 					/>
 					<View style={styles.modalFooter}>
 						<Text style={styles.modalFooterText} onPress={handleVisible}>

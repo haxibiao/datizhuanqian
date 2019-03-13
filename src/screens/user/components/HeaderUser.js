@@ -10,6 +10,7 @@ import { Screen, Avatar, Button, Iconfont, DivisionLine } from '../../../compone
 import { Colors, Divice } from '../../../constants';
 import { Methods } from '../../../helpers';
 
+import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { FollowToggbleMutation, UserQuery, FollowsQuery, UserInfoQuery } from '../../../graphql/user.graphql';
 
@@ -59,7 +60,7 @@ class HeaderUser extends Component {
 	};
 
 	render() {
-		const { user } = this.props;
+		const { user, userInfo } = this.props;
 		return (
 			<View>
 				<View style={styles.header}>
@@ -90,16 +91,18 @@ class HeaderUser extends Component {
 								</Text>
 							</View>
 						</View>
-						<Button
-							name={user.followed_user_status ? '已关注' : '关 注'}
-							outline
-							style={styles.button}
-							textColor={Colors.white}
-							fontSize={15}
-							handler={this.followUser}
-						/>
+						{user.id !== userInfo.id && (
+							<Button
+								name={user.followed_user_status ? '已关注' : '关 注'}
+								outline
+								style={styles.button}
+								textColor={Colors.white}
+								fontSize={15}
+								handler={this.followUser}
+							/>
+						)}
 					</View>
-					<Text style={{ paddingVertical: 20, paddingLeft: 20 }}>
+					<Text style={{ paddingVertical: 20, paddingLeft: 20 }} numberOfLines={1}>
 						{user.introduction ? user.introduction : '还没有介绍'}
 					</Text>
 				</View>
@@ -167,4 +170,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(graphql(FollowToggbleMutation, { name: 'FollowToggble' }))(HeaderUser);
+export default connect(store => {
+	return { userInfo: store.users.user };
+})(compose(graphql(FollowToggbleMutation, { name: 'FollowToggble' }))(HeaderUser));

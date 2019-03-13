@@ -15,7 +15,7 @@ import { Query } from 'react-apollo';
 import QuestionItem from './components/QuestionItem';
 import HeaderUser from './components/HeaderUser';
 
-class Default extends Component {
+class index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -93,7 +93,7 @@ class Default extends Component {
 									}}
 								/>
 							) : (
-								<BlankContent text={'Ta还没有出过题哦，快去叫他出题吧'} fontSize={14} />
+								<BlankContent text={'Ta还没有出过题哦'} fontSize={14} />
 							)}
 						</Screen>
 					);
@@ -105,4 +105,4 @@ class Default extends Component {
 
 const styles = StyleSheet.create({});
 
-export default Default;
+export default index;
