@@ -28,7 +28,8 @@ import {
 	OptionItem,
 	Select,
 	OverlayProgress,
-	KeyboardSpacer
+	KeyboardSpacer,
+	SubmitLoading
 } from '../../components';
 import { Colors, Config, Divice } from '../../constants';
 import { Methods, videoUpload, cancelUpload, saveVideo } from '../../helpers';
@@ -48,9 +49,9 @@ class MakeQuestionScreen extends Component {
 		super(props);
 		this.categories = [];
 		this.dropData = null;
+		this.variables = null;
 		this.state = {
 			uploadId: null,
-			uploading: false,
 			progress: 0,
 			category_id: null,
 			video_id: null,
@@ -59,7 +60,9 @@ class MakeQuestionScreen extends Component {
 			video_path: null,
 			optionValue: null,
 			answers: new Set(),
-			options: new Map()
+			options: new Map(),
+			uploading: false,
+			submitLoading: false
 		};
 	}
 
@@ -245,7 +248,7 @@ class MakeQuestionScreen extends Component {
 	buildVariables = () => {
 		let { video_path, category_id, video_id, description, picture, options, answers } = this.state;
 		if (video_path && !video_id) {
-			return;
+			return null;
 		}
 		let selections = [...options].map((option, index) => {
 			if (option) {
@@ -266,14 +269,24 @@ class MakeQuestionScreen extends Component {
 		}
 	};
 
+	onSubmit = mutate => {
+		if (this.variables) {
+			this.setState({ submitLoading: true });
+			mutate && mutate();
+			return;
+		}
+		Methods.toast('请确保分类/题干/答案填写完整', 150);
+	};
+
 	onCompleted = () => {
-		Methods.toast('提交成功', 150);
-		this.props.navigation.goBack();
+		this.setState({ submitLoading: false });
+		this.props.navigation.replace('出题审核');
 	};
 
 	onError = error => {
 		console.log(error);
-		Methods.toast('提交失败', 150);
+		this.setState({ submitLoading: false });
+		Methods.toast('提交出错', 150);
 	};
 
 	render() {
@@ -287,10 +300,11 @@ class MakeQuestionScreen extends Component {
 			optionValue,
 			answers,
 			progress,
-			uploading
+			uploading,
+			submitLoading
 		} = this.state;
 		let disableAddButton = options.size >= 4 || !optionValue;
-		let variables = this.buildVariables();
+		this.variables = this.buildVariables();
 		return (
 			<Query query={CategoriesQuery} variables={{ limit: 100 }}>
 				{({ data, loading, error }) => {
@@ -306,9 +320,9 @@ class MakeQuestionScreen extends Component {
 								headerRight={
 									<AnimationButton
 										style={styles.submitButton}
-										disabled={!variables}
+										handler={this.onSubmit}
 										mutation={createQuestionMutation}
-										variables={variables}
+										variables={this.variables}
 										onCompleted={this.onCompleted}
 										onError={this.onError}
 									>
@@ -426,7 +440,7 @@ class MakeQuestionScreen extends Component {
 												})}
 											</View>
 										</View>
-										{!Divice.isIos && <KeyboardSpacer topSpacing={-Divice.bottom_height} />}
+										{!Divice.isIos && <KeyboardSpacer topInsets={-Divice.bottom_height} />}
 									</ScrollView>
 									<View style={styles.bottom}>
 										<View style={styles.inputContainer}>
@@ -450,7 +464,7 @@ class MakeQuestionScreen extends Component {
 											</TouchableOpacity>
 										</View>
 									</View>
-									<KeyboardSpacer topSpacing={-Divice.bottom_height} />
+									<KeyboardSpacer topInsets={-Divice.bottom_height} />
 								</DropdownMenu>
 							</View>
 							<Select
@@ -459,6 +473,7 @@ class MakeQuestionScreen extends Component {
 								}}
 							/>
 							<OverlayProgress progress={progress} visible={uploading} cancelUpload={this.cancelUpload} />
+							<SubmitLoading isVisible={submitLoading} tips="正在提交" />
 						</Screen>
 					);
 				}}

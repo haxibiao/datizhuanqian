@@ -46,6 +46,7 @@ import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
 import MakeQuestionHistoryScreen from '../screens/task/MakeQuestionHistoryScreen';
 import QuestionDetail from '../screens/task/QuestionDetail';
 import MakeQuestionRule from '../screens/task/MakeQuestionRule';
+import QuestionReviewScreen from '../screens/task/QuestionReviewScreen';
 
 import PropScreen from '../screens/prop/HomeScreen';
 
@@ -180,6 +181,9 @@ export default {
 	},
 	出题规则: {
 		screen: MakeQuestionRule
+	},
+	出题审核: {
+		screen: QuestionReviewScreen
 	},
 	//任务
 	道具: {
