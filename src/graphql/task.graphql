@@ -103,6 +103,7 @@ query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
 			answer
 			selections
 			status
+			remark
 			submit
 		}
 	}
