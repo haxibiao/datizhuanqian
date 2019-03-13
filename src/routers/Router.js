@@ -6,6 +6,7 @@ import VerificationScreen from '../screens/login/VerificationScreen';
 
 import AnswerScreen from '../screens/home/AnswerScreen';
 import ErrorCorrectionScreen from '../screens/home/ErrorCorrectionScreen';
+import QuestionDetaiList from '../screens/home/QuestionDetaiList';
 
 import SettingScreen from '../screens/profile/settings/HomeScreen';
 import EditProfileScreen from '../screens/profile/settings/EditProfileScreen';
@@ -44,7 +45,7 @@ import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
 import TaskFailScreen from '../screens/task/TaskFailScreen';
 import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
 import MakeQuestionHistoryScreen from '../screens/task/MakeQuestionHistoryScreen';
-import QuestionDetail from '../screens/home/QuestionDetaiList';
+import QuestionDetail from '../screens/task/QuestionDetail';
 import MakeQuestionRule from '../screens/task/MakeQuestionRule';
 import QuestionReviewScreen from '../screens/task/QuestionReviewScreen';
 
@@ -72,6 +73,9 @@ export default {
 	},
 	题目纠错: {
 		screen: ErrorCorrectionScreen
+	},
+	题目详情列表: {
+		screen: QuestionDetaiList
 	},
 	//答题
 	设置: {

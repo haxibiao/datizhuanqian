@@ -36,7 +36,6 @@ class QuestionDetail extends Component {
 	render() {
 		let { navigation } = this.props;
 
-		const answerLog = navigation.getParam('answerLog');
 		let index = navigation.getParam('index');
 
 		let page = Math.floor(index / 10);
@@ -53,6 +52,7 @@ class QuestionDetail extends Component {
 						borderBottomWidth: 0,
 						borderBottomColor: 'transparent'
 					}}
+					routeName={'题目详情'}
 				/>
 				<Query query={answerHistoriesQuery} fetchPolicy="network-only" variables={{ offset: page * 10 }}>
 					{({ data, loading, error, refetch, fetchMore }) => {
