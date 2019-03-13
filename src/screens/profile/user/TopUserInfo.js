@@ -61,7 +61,7 @@ class UserTopInfo extends Component {
 							<View style={styles.headerInfo}>
 								<Text style={styles.userName}>{user.name}</Text>
 								<Text style={styles.userIntroduction} numberOfLines={1}>
-									{user.introduction}
+									{user.introduction || '去完善个人介绍吧'}
 								</Text>
 								<View
 									style={{
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
 	userIntroduction: {
 		fontSize: 14,
 		color: Colors.primaryFont,
-		marginVertical: 5
+		marginVertical: 6
 	},
 	level: {
 		color: Colors.white,
