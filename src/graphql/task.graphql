@@ -78,7 +78,7 @@ mutation createQuestionMutation($data: CreateQuestionInputType) {
 # 出题记录
 query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
 	user {
-		questions(offset: $offset, limit: $limit) {
+		questions(offset: $offset, limit: $limit, order: CREATED_AT) {
 			id
 			description
 			count

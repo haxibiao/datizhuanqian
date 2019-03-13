@@ -275,7 +275,8 @@ class EditProfileScreen extends Component {
 					/>
 					<ModifyDescriptionModal
 						modalName="修改个人介绍"
-						placeholder={user.introduction}
+						placeholder={user.introduction || '介绍不能超过16字哦'}
+						maxLength={16}
 						visible={modifyDescripitonVisible}
 						value={introduction}
 						handleVisible={this.introductionModalVisible}

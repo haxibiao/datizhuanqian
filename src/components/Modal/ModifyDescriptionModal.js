@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get('window');
 
 class ModifyDescriptionModal extends Component {
 	render() {
-		const { modalName, visible, value, handleVisible, changeValue, submit, placeholder } = this.props;
+		const { modalName, visible, value, handleVisible, changeValue, submit, placeholder, maxLength } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -26,7 +26,6 @@ class ModifyDescriptionModal extends Component {
 				<View style={{ marginTop: 10 }}>
 					<TextInput
 						words={false}
-						placeholder={'介绍不超过16个字哦~'}
 						underlineColorAndroid="transparent"
 						selectionColor={Colors.themeColor}
 						style={styles.textInput}
@@ -35,7 +34,7 @@ class ModifyDescriptionModal extends Component {
 						placeholderText={Colors.tintFontColor}
 						onChangeText={changeValue}
 						defaultValue={value + ''}
-						maxLength={16}
+						maxLength={maxLength}
 					/>
 					<View style={styles.modalFooter}>
 						<Text style={styles.modalFooterText} onPress={handleVisible}>

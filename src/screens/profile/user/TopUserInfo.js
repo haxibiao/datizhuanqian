@@ -48,20 +48,21 @@ class UserTopInfo extends Component {
 				activeOpacity={1}
 			>
 				<View style={styles.userInfo}>
-					<View style={{ flexDirection: 'row', marginLeft: 30 }}>
-						<View style={{}}>
-							<Avatar
-								uri={avatar}
-								size={68}
-								borderStyle={{
-									borderWidth: 1,
-									borderColor: Colors.white
-								}}
-							/>
-						</View>
-						<View style={{ marginLeft: 20 }}>
+					<View style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}>
+						<Avatar
+							uri={avatar}
+							size={68}
+							borderStyle={{
+								borderWidth: 1,
+								borderColor: Colors.white
+							}}
+						/>
+						<View style={{ marginLeft: 20, flex: 1 }}>
 							<View style={styles.headerInfo}>
 								<Text style={styles.userName}>{user.name}</Text>
+								<Text style={styles.userIntroduction} numberOfLines={1}>
+									{user.introduction}
+								</Text>
 								<View
 									style={{
 										flexDirection: 'row',
@@ -82,6 +83,7 @@ class UserTopInfo extends Component {
 							</View>
 						</View>
 					</View>
+
 					<View style={styles.footer}>
 						<TouchableOpacity
 							style={styles.ticket}
@@ -117,14 +119,17 @@ const styles = StyleSheet.create({
 		marginTop: 65
 	},
 	headerInfo: {
-		marginTop: 10,
-		height: 50,
 		justifyContent: 'space-between'
 	},
 	userName: {
 		fontSize: 18,
 		fontWeight: '500',
 		color: Colors.darkFont
+	},
+	userIntroduction: {
+		fontSize: 14,
+		color: Colors.primaryFont,
+		marginVertical: 5
 	},
 	level: {
 		color: Colors.white,
