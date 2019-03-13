@@ -18,31 +18,7 @@ class FansNotificationScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			fetchingMore: true,
-			notifications: [
-				{
-					id: 1,
-					name: '高璇',
-					avatar: 'http://cos.ainicheng.com/storage/avatar/270_1543393851.jpg',
-					gender: 1,
-					followed_user_status: 1,
-					level: {
-						id: 1,
-						level: 1
-					}
-				},
-				{
-					id: 2,
-					name: '高璇',
-					avatar: 'http://cos.ainicheng.com/storage/avatar/270_1543393851.jpg',
-					gender: 0,
-					followed_user_status: 0,
-					level: {
-						id: 1,
-						level: 1
-					}
-				}
-			]
+			fetchingMore: true
 		};
 	}
 
@@ -72,8 +48,6 @@ class FansNotificationScreen extends Component {
 						if (loading) return <Loading />;
 						if (!(data && data.notifications.length > 0))
 							return <BlankContent text={'还没有通知哦'} fontSize={14} />;
-
-						console.log('data.notifications', data.notifications);
 						return (
 							<FlatList
 								data={data.notifications}

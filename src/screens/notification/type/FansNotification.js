@@ -25,7 +25,9 @@ class FansNotification extends Component {
 		this.state = {};
 	}
 	render() {
-		const { follow } = this.props;
+		const { follow, navigation } = this.props;
+
+		if (!follow) return null;
 
 		let created_at = follow.created_at.substr(5, 5);
 		console.log('created_at', created_at);
