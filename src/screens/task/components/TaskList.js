@@ -55,7 +55,7 @@ class TaskList extends Component {
 		return (
 			<ScrollView style={{ flex: 1 }}>
 				<TaskType
-					tasks={[{ name: '我来出题', taskStatus: 4, gold: 20, type: 3 }]}
+					tasks={[{ name: '我来出题', taskStatus: 4, gold: 10, type: 3 }]}
 					user={user}
 					navigation={navigation}
 					name={'出题任务'}

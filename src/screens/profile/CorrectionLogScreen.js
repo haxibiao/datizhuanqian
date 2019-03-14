@@ -13,7 +13,7 @@ import {
 import { Colors } from '../../constants';
 
 import { connect } from 'react-redux';
-import { questionRedressesQuery } from '../../graphql/user.graphql';
+import { curationsQuery } from '../../graphql/user.graphql';
 import { Query } from 'react-apollo';
 
 class CorrectionLogScreen extends Component {
@@ -35,7 +35,7 @@ class CorrectionLogScreen extends Component {
 					borderBottomColor: 'transparent'
 				}}
 			>
-				<Query query={questionRedressesQuery} fetchPolicy="network-only">
+				<Query query={curationsQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;

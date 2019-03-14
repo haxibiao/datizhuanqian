@@ -51,30 +51,31 @@ class App extends Component {
     console.log('server', server);
 
     if (server && server.mainApi) {
-      fetch(server.mainApi)
+      fetch(server.mainApi + '/server.json')
         //检查redux中主域名(Config.SERVER_ROOT)
+        .then(response => response.json())
         .then(data => {
           serverJson.mainApi = server.mainApi;
-          serverJson.spareApi = 'https://datizhuanqian.cn';
+          serverJson.spareApi = data.domain[1];
           //应替换为data返回json中的备用域名
           store.dispatch(actions.updateServer(serverJson));
         })
         .catch(err => {
           let info = err.toString().indexOf('failed');
           if (info > -1) {
-            serverJson.mainApi = 'https://datizhuanqian.cn';
-            serverJson.spareApi = 'https://datizhuanqian.com';
+            serverJson.mainApi = server.spareApi;
+            serverJson.spareApi = server.mainApi;
             //应替换为storage json 中的备用域名
             store.dispatch(actions.updateServer(serverJson));
             //存在备用域名  则将redux 中主域名更新
           }
         });
     } else {
-      fetch(serverJson.mainApi)
-        //检查redux中主域名(Config.SERVER_ROOT)
+      fetch(serverJson.mainApi + '/server.json')
+        //检查主域名(Config.SERVER_ROOT)
+        .then(response => response.json())
         .then(data => {
-          // Methods.Toast('触发');
-          serverJson.spareApi = 'https://datizhuanqian.cn';
+          serverJson.spareApi = data.domain[1];
           //应替换为data返回json中的备用域名
           store.dispatch(actions.updateServer(serverJson));
           // store.dispatch(actions.setServer(serverJson));
@@ -86,6 +87,7 @@ class App extends Component {
           let info = err.toString().indexOf('failed');
           // Methods.Toast('连接服务器好像出了点问题，请重启APP');
           if (info > -1) {
+            //如何第一次启动就网络异常，为防止启动异常，暂时写死api地址
             serverJson.mainApi = 'https://datizhuanqian.cn';
             serverJson.spareApi = 'https://datizhuanqian.com';
             //应替换为storage json 中的备用域名

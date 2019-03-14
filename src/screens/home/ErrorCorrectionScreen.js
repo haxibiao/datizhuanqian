@@ -14,7 +14,7 @@ import { Button, Radio, Screen, Input, Header, SubmitLoading, KeyboardSpacer } f
 import { Colors, Config, Divice } from '../../constants';
 import { Methods } from '../../helpers';
 import { connect } from 'react-redux';
-import { createQuestionRedressMutation } from '../../graphql/question.graphql';
+import { createCurationMutation } from '../../graphql/question.graphql';
 import { graphql, compose } from 'react-apollo';
 
 class ErrorCorrectionScreen extends Component {
@@ -63,7 +63,7 @@ class ErrorCorrectionScreen extends Component {
 			isVisible: !isVisible
 		});
 		try {
-			result = await this.props.createQuestionRedressMutation({
+			result = await this.props.createCurationMutation({
 				variables: {
 					question_id: question.id,
 					type,
@@ -202,4 +202,4 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
 	return { user: store.users.user };
-})(compose(graphql(createQuestionRedressMutation, { name: 'createQuestionRedressMutation' }))(ErrorCorrectionScreen));
+})(compose(graphql(createCurationMutation, { name: 'createCurationMutation' }))(ErrorCorrectionScreen));

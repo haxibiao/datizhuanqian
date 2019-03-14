@@ -187,8 +187,8 @@ mutation setUserInfoMutation($data: UserInfo) {
 }
 
 #纠错记录
-query questionRedressesQuery($offset: Int, $limit: Int) {
-	questionRedresses(offset: $offset, limit: $limit) {
+query curationsQuery($offset: Int, $limit: Int) {
+	curations(offset: $offset, limit: $limit) {
 		id
 		question {
 			id
