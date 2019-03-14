@@ -18,16 +18,14 @@ class RedDot extends Component {
 				</View>
 				<View style={styles.bottomInfo}>
 					<Text style={styles.text}>已被采纳</Text>
-					<Text style={styles.infoItem}>奖励：{`${notification.question_redress.gold_awarded}智慧点`} </Text>
-					{notification.question_redress.type == 0 && <Text style={styles.infoItem}>类型：题干有误</Text>}
-					{notification.question_redress.type == 1 && <Text style={styles.infoItem}>类型：答案有误</Text>}
-					{notification.question_redress.type == 2 && (
-						<Text style={styles.infoItem}>类型：图片缺少或不清晰</Text>
-					)}
-					{notification.question_redress.type == 3 && <Text style={styles.infoItem}>类型：其他</Text>}
-					<Text style={styles.infoItem}>时间：{notification.question_redress.created_at}</Text>
+					<Text style={styles.infoItem}>奖励：{`${notification.curation.gold_awarded}智慧点`} </Text>
+					{notification.curation.type == 0 && <Text style={styles.infoItem}>类型：题干有误</Text>}
+					{notification.curation.type == 1 && <Text style={styles.infoItem}>类型：答案有误</Text>}
+					{notification.curation.type == 2 && <Text style={styles.infoItem}>类型：图片缺少或不清晰</Text>}
+					{notification.curation.type == 3 && <Text style={styles.infoItem}>类型：其他</Text>}
+					<Text style={styles.infoItem}>时间：{notification.curation.created_at}</Text>
 					<Text style={[styles.infoItem, { lineHeight: 22 }]}>
-						题目名：{notification.question_redress.question.description}
+						题目名：{notification.curation.question.description}
 					</Text>
 				</View>
 			</View>

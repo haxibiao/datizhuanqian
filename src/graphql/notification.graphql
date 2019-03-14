@@ -43,7 +43,7 @@ query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset
 			biz_no
 			remark
 		}
-		question_redress {
+		curation {
 			id
 			created_at
 			type
