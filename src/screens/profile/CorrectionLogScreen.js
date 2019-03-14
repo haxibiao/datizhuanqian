@@ -39,12 +39,12 @@ class CorrectionLogScreen extends Component {
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
-						if (!(data && data && data.questionRedresses && data.questionRedresses.length > 0))
+						if (!(data && data && data.curations && data.curations.length > 0))
 							return <BlankContent text={'暂无纠错记录哦,快去纠错吧~'} fontSize={14} />;
 
 						return (
 							<FlatList
-								data={data.questionRedresses}
+								data={data.curations}
 								keyExtractor={(item, index) => index.toString()}
 								refreshControl={
 									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Colors.theme]} />
@@ -55,17 +55,17 @@ class CorrectionLogScreen extends Component {
 								ListHeaderComponent={this._userWithdrawInfo}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
-									if (data.questionRedresses) {
+									if (data.curations) {
 										fetchMore({
 											variables: {
-												offset: data.questionRedresses.length
+												offset: data.curations.length
 											},
 											updateQuery: (prev, { fetchMoreResult }) => {
 												if (
 													!(
 														fetchMoreResult &&
-														fetchMoreResult.questionRedresses &&
-														fetchMoreResult.questionRedresses.length > 0
+														fetchMoreResult.curations &&
+														fetchMoreResult.curations.length > 0
 													)
 												) {
 													this.setState({
@@ -74,10 +74,7 @@ class CorrectionLogScreen extends Component {
 													return prev;
 												}
 												return Object.assign({}, prev, {
-													questionRedresses: [
-														...prev.questionRedresses,
-														...fetchMoreResult.questionRedresses
-													]
+													curations: [...prev.curations, ...fetchMoreResult.curations]
 												});
 											}
 										});
