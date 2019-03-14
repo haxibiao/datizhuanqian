@@ -51,12 +51,13 @@ class App extends Component {
     console.log('server', server);
 
     if (server && server.mainApi) {
-      fetch(server.mainApi + '/server.json')
+      fetch(server.mainApi + '/server')
         //检查redux中主域名(Config.SERVER_ROOT)
         .then(response => response.json())
         .then(data => {
+          console.log('data', data.domain[data.domain.length - 1]);
           serverJson.mainApi = server.mainApi;
-          serverJson.spareApi = data.domain[1];
+          serverJson.spareApi = data.domain[data.domain.length - 1];
           //应替换为data返回json中的备用域名
           store.dispatch(actions.updateServer(serverJson));
         })
@@ -71,11 +72,11 @@ class App extends Component {
           }
         });
     } else {
-      fetch(serverJson.mainApi + '/server.json')
+      fetch(serverJson.mainApi + '/server')
         //检查主域名(Config.SERVER_ROOT)
         .then(response => response.json())
         .then(data => {
-          serverJson.spareApi = data.domain[1];
+          serverJson.spareApi = data.domain[data.domain.length - 1];
           //应替换为data返回json中的备用域名
           store.dispatch(actions.updateServer(serverJson));
           // store.dispatch(actions.setServer(serverJson));
