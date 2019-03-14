@@ -42,13 +42,14 @@ class FavoritesItem extends Component {
 		let {
 			favorites: { question, created_at },
 			navigation,
-			openModal
+			openModal,
+			index
 		} = this.props;
 		let { category, description } = question;
 
 		return (
 			<TouchableOpacity
-				onPress={() => navigation.navigate('题目详情', { question })}
+				onPress={() => navigation.navigate('收藏详情列表', { index })}
 				onLongPress={() => openModal(question.id)}
 			>
 				<View style={styles.favoritesItem}>
@@ -130,6 +131,7 @@ class MyFavoritesScreen extends Component {
 											favorites={item}
 											navigation={navigation}
 											openModal={this.openFavoriteModal}
+											index={index}
 										/>
 									)}
 									refreshControl={

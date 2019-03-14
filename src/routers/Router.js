@@ -7,6 +7,7 @@ import VerificationScreen from '../screens/login/VerificationScreen';
 import AnswerScreen from '../screens/home/AnswerScreen';
 import ErrorCorrectionScreen from '../screens/home/ErrorCorrectionScreen';
 import QuestionDetaiList from '../screens/home/QuestionDetaiList';
+import FavoritesDetaiList from '../screens/home/FavoritesDetaiList';
 
 import SettingScreen from '../screens/profile/settings/HomeScreen';
 import EditProfileScreen from '../screens/profile/settings/EditProfileScreen';
@@ -76,6 +77,9 @@ export default {
 	},
 	题目详情列表: {
 		screen: QuestionDetaiList
+	},
+	收藏详情列表: {
+		screen: FavoritesDetaiList
 	},
 	//答题
 	设置: {
