@@ -19,6 +19,8 @@ class QuestionDetail extends Component {
 			options = JSON.parse(selections);
 			if (options.Selection) {
 				options = options.Selection;
+			} else if (options.Section) {
+				options = options.Section;
 			}
 		} catch (error) {
 			Methods.toast('数据出错');
