@@ -127,6 +127,9 @@ class UserItem extends Component {
 
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			this.setState({
+				is_follow: !is_follow
+			});
 			Methods.toast(str, 80); //Toast错误信息
 		} else {
 			// Methods.toast('关注成功', 80);

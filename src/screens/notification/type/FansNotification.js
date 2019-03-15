@@ -22,15 +22,18 @@ import {
 class FansNotification extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		const { follow } = this.props;
+		this.state = {
+			is_follow: follow ? follow.user.followed_user_status : null
+		};
 	}
 	render() {
 		const { follow, navigation } = this.props;
-
+		let { is_follow } = this.state;
 		if (!follow) return null;
 
 		let created_at = follow.created_at.substr(5, 5);
-		console.log('created_at', created_at);
+		console.log('follow', follow, is_follow);
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -59,15 +62,15 @@ class FansNotification extends Component {
 				</View>
 
 				<Button
-					name={follow.user.followed_user_status ? '互相关注' : '关注'}
+					name={is_follow ? '互相关注' : '关注'}
 					outline
 					style={[
 						styles.button,
 						{
-							borderColor: follow.user.followed_user_status ? Colors.grey : Colors.theme
+							borderColor: is_follow ? Colors.grey : Colors.theme
 						}
 					]}
-					textColor={follow.user.followed_user_status ? Colors.grey : Colors.theme}
+					textColor={is_follow ? Colors.grey : Colors.theme}
 					fontSize={13}
 					handler={this.followUser}
 				/>
@@ -77,7 +80,12 @@ class FansNotification extends Component {
 
 	followUser = async () => {
 		const { follow } = this.props;
+		let { is_follow } = this.state;
 		let result = {};
+
+		this.setState({
+			is_follow: !is_follow
+		});
 
 		try {
 			result = await this.props.FollowToggble({
@@ -109,6 +117,9 @@ class FansNotification extends Component {
 		}
 
 		if (result && result.errors) {
+			this.setState({
+				is_follow: !is_follow
+			});
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Methods.toast(str, 80); //Toast错误信息
 		} else {
