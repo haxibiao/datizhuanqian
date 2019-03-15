@@ -53,6 +53,7 @@ query UserTaskQuery($id: Int) {
 	userTask(id: $id) {
 		id
 		remark
+		content
 		reply_content
 		screenshots
 	}

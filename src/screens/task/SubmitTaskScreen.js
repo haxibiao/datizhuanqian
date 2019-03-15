@@ -15,7 +15,7 @@ class SubmitTaskScreen extends Component {
 		super(props);
 		this.submit = false;
 		this.state = {
-			content: '',
+			content: null,
 			pictures: [],
 			images: [],
 			waitingVisible: false
@@ -186,9 +186,11 @@ class SubmitTaskScreen extends Component {
 					<Button
 						name={'提交'}
 						style={styles.button}
-						theme={pictures.length > 0 ? Colors.theme : Colors.tintGray}
-						textColor={pictures.length > 0 ? Colors.white : Colors.grey}
+						theme={Colors.theme}
+						disabledColor={Colors.tintGray}
+						textColor={pictures.length > 0 && content ? Colors.white : Colors.grey}
 						handler={this.startUploadImage}
+						disabled={!(pictures.length > 0 && content)}
 						//提交的时候再上传图片
 					/>
 				</ScrollView>

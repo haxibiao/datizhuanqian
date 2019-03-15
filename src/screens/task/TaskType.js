@@ -21,7 +21,7 @@ class TaskType extends Component {
 		if (task.type == 2) {
 			navigation.navigate('提交任务', { task_id: task.id, again: false });
 		} else if (task.type == 1) {
-			navigation.goBack();
+			navigation.navigate('答题');
 		} else if (task.type == 3) {
 			navigation.navigate('问题创建');
 		} else {

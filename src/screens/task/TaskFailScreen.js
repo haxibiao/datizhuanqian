@@ -52,7 +52,7 @@ class TaskFailScreen extends Component {
 									</View>
 									<View style={{ marginLeft: 25, marginTop: 20 }}>
 										<Text style={{ fontSize: 16, color: Colors.black }}>
-											{data.userTask[0].remark}
+											{data.userTask[0].remark ? data.userTask[0].remark : '请阅读任务详情'}
 										</Text>
 									</View>
 								</View>
