@@ -15,7 +15,7 @@ class Question extends Component {
 		if (Array.isArray(data)) {
 			selection = data;
 		} else if (typeof data === 'object') {
-			selection = data.Selection || data.Section || [];
+			selection = data.Selection || [];
 		}
 		return selection;
 	}

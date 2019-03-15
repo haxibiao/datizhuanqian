@@ -86,6 +86,7 @@ class AnswerItem extends Component {
 class AnswerLogScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.fetching = false;
 		this.state = {
 			fetchingMore: true
 		};
@@ -135,11 +136,14 @@ class AnswerLogScreen extends Component {
 									onEndReachedThreshold={0.3}
 									onEndReached={() => {
 										if (data.user.answerHistories) {
+											if (this.fetching) return;
+											this.fetching = true;
 											fetchMore({
 												variables: {
 													offset: data.user.answerHistories.length
 												},
 												updateQuery: (prev, { fetchMoreResult }) => {
+													this.fetching = false;
 													if (
 														!(
 															fetchMoreResult &&

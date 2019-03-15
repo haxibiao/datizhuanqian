@@ -217,6 +217,7 @@ query curationsQuery($offset: Int, $limit: Int) {
 query answerHistoriesQuery($offset: Int, $limit: Int) {
 	user {
 		answerHistories(offset: $offset, limit: $limit) {
+			id
 			correct_count
 			question {
 				id

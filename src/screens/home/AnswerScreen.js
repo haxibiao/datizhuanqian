@@ -97,7 +97,6 @@ class AnswerScreen extends Component {
 	//提交答案 下一题
 	async submitAnswer(question, refetch) {
 		const { user, navigation } = this.props;
-		const { category } = navigation.state.params;
 		let { value, isMethod, isShow, pickColor, name, buttonColor, rightColor } = this.state;
 		let result = {};
 
@@ -145,18 +144,23 @@ class AnswerScreen extends Component {
 			}
 		} else {
 			//下一题
-			this.favoriteButton.resetFavorite();
-			this.setState({
-				isMethod: false,
-				value: '',
-				name: '提交答案',
-				pickColor: Colors.theme,
-				buttonColor: Colors.blue,
-				rightColor: Colors.tintGray
-			});
-			refetch({ category_id: category.id });
+			this.nextQuestion(refetch);
 		}
 	}
+
+	nextQuestion = refetch => {
+		const { category } = this.props.navigation.state.params;
+		this.favoriteButton.resetFavorite();
+		this.setState({
+			isMethod: false,
+			value: '',
+			name: '提交答案',
+			pickColor: Colors.theme,
+			buttonColor: Colors.blue,
+			rightColor: Colors.tintGray
+		});
+		refetch({ category_id: category.id });
+	};
 
 	getQuestionId = () => {
 		return this.questionId;
