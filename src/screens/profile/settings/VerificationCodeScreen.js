@@ -185,9 +185,9 @@ class VerificationCodeScreen extends Component {
 								{tips}
 							</Text>
 						</TouchableOpacity>
-						<TouchableOpacity>
+						{/*<TouchableOpacity>
 							<Text style={{ color: Colors.grey, fontSize: 13 }}>账号有误?</Text>
-						</TouchableOpacity>
+						</TouchableOpacity>*/}
 					</View>
 				</View>
 				<SubmitLoading isVisible={isVisible} tips={'验证中...'} />
