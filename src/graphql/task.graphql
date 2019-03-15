@@ -49,8 +49,8 @@ mutation UploadImage($image: [String]!) {
 }
 
 #用户任务详情
-query UserTaskQuery($id: Int) {
-	userTask(id: $id) {
+query UserTaskQuery {
+	userTask(filter: TASK_FAILED) {
 		id
 		remark
 		content

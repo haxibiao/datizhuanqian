@@ -59,6 +59,7 @@ class TaskType extends Component {
 								handler={() => {
 									this.doTask(task);
 								}}
+								type={task.type}
 								navigation={navigation}
 								task={task}
 								handleHeight={height => {

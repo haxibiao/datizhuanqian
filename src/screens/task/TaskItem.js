@@ -57,7 +57,7 @@ class TaskItem extends Component {
 
 	//领取任务
 	receiveTask = async () => {
-		const { task, user, handlerLoading } = this.props;
+		const { task, user, handlerLoading, type, navigation } = this.props;
 		let result = {};
 		handlerLoading();
 		try {
@@ -86,6 +86,9 @@ class TaskItem extends Component {
 			handlerLoading();
 			if (result.data.receiveTask == 1) {
 				Methods.toast('领取成功', -80);
+				if (type == 2) {
+					navigation.navigate('任务详情', { task_id: task.id });
+				}
 			} else {
 				Methods.toast('已经领取该任务了哦~', -80);
 			}
