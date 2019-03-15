@@ -157,29 +157,31 @@ class FavoritesDetaiList extends Component {
 
 		let offset = questions.length - 1;
 
-		if (offset < activeIndex + 2) {
+		if (offset == activeIndex + 2) {
 			this.onLoadMore(fetchMore, questions, page);
 		}
 	};
 
 	onLoadMore = (fetchMore, questions, page) => {
 		const { navigation } = this.props;
-		fetchMore({
-			variables: {
-				offset: questions.length + page * 10
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!(fetchMoreResult && fetchMoreResult.favorites && fetchMoreResult.favorites.length > 0)) {
-					this.setState({
-						fetchingMore: false
+		if (this.state.fetchingMore) {
+			fetchMore({
+				variables: {
+					offset: questions.length + page * 10
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (!(fetchMoreResult && fetchMoreResult.favorites && fetchMoreResult.favorites.length > 0)) {
+						this.setState({
+							fetchingMore: false
+						});
+						return prev;
+					}
+					return Object.assign({}, prev, {
+						favorites: [...prev.favorites, ...fetchMoreResult.favorites]
 					});
-					return prev;
 				}
-				return Object.assign({}, prev, {
-					favorites: [...prev.favorites, ...fetchMoreResult.favorites]
-				});
-			}
-		});
+			});
+		}
 	};
 }
 

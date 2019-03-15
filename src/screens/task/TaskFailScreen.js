@@ -42,7 +42,6 @@ class TaskFailScreen extends Component {
 						if (loading) return null;
 						if (!(data && data.userTask)) return null;
 						let screenshots = JSON.parse(data.userTask[0].screenshots);
-
 						return (
 							<View>
 								<View style={{ height: 150 }}>

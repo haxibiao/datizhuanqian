@@ -29,7 +29,8 @@ class QuestionDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeIndex: 0
+			activeIndex: 0,
+			fetchingMore: true
 		};
 	}
 
@@ -160,38 +161,40 @@ class QuestionDetail extends Component {
 
 		let offset = questions.length - 1;
 
-		if (offset < activeIndex + 2) {
+		if (offset == activeIndex + 2) {
 			this.onLoadMore(fetchMore, questions, page);
 		}
 	};
 
 	onLoadMore = (fetchMore, questions, page) => {
 		const { navigation } = this.props;
-		fetchMore({
-			variables: {
-				offset: questions.length + page * 10
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (
-					!(
-						fetchMoreResult &&
-						fetchMoreResult.user &&
-						fetchMoreResult.user.answerHistories &&
-						fetchMoreResult.user.answerHistories.length > 0
-					)
-				) {
-					this.setState({
-						fetchingMore: false
+		if (this.state.fetchingMore) {
+			fetchMore({
+				variables: {
+					offset: questions.length + page * 10
+				},
+				updateQuery: (prev, { fetchMoreResult }) => {
+					if (
+						!(
+							fetchMoreResult &&
+							fetchMoreResult.user &&
+							fetchMoreResult.user.answerHistories &&
+							fetchMoreResult.user.answerHistories.length > 0
+						)
+					) {
+						this.setState({
+							fetchingMore: false
+						});
+						return prev;
+					}
+					return Object.assign({}, prev, {
+						user: Object.assign({}, prev.user, {
+							answerHistories: [...prev.user.answerHistories, ...fetchMoreResult.user.answerHistories]
+						})
 					});
-					return prev;
 				}
-				return Object.assign({}, prev, {
-					user: Object.assign({}, prev.user, {
-						answerHistories: [...prev.user.answerHistories, ...fetchMoreResult.user.answerHistories]
-					})
-				});
-			}
-		});
+			});
+		}
 	};
 }
 
