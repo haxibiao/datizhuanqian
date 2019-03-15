@@ -35,7 +35,7 @@ class Fans extends Component {
 		return (
 			<Screen tabLabel="粉丝" header>
 				<DivisionLine height={5} />
-				<Query query={FollowersQuery} variables={{ filter: 'users' }}>
+				<Query query={FollowersQuery} variables={{ filter: 'users' }} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <LoadingError reload={() => refetch()} />;
 						if (loading) return <Loading />;
