@@ -24,10 +24,13 @@ import {
 class UserItem extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			is_follow: this.props.user.followed_user_status
+		};
 	}
 	render() {
 		const { user, navigation, follow } = this.props;
+		let { is_follow } = this.state;
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -72,10 +75,10 @@ class UserItem extends Component {
 					/>
 				) : (
 					<Button
-						name={user.followed_user_status ? '互相关注' : '关注'}
+						name={is_follow ? '互相关注' : '关注'}
 						outline
-						style={[styles.button, { borderColor: user.followed_user_status ? Colors.grey : Colors.theme }]}
-						textColor={user.followed_user_status ? Colors.grey : Colors.theme}
+						style={[styles.button, { borderColor: is_follow ? Colors.grey : Colors.theme }]}
+						textColor={is_follow ? Colors.grey : Colors.theme}
 						fontSize={13}
 						handler={this.followUser}
 					/>
@@ -86,7 +89,12 @@ class UserItem extends Component {
 
 	followUser = async () => {
 		const { user } = this.props;
+		let { is_follow } = this.state;
 		let result = {};
+
+		this.setState({
+			is_follow: !is_follow
+		});
 
 		try {
 			result = await this.props.FollowToggble({

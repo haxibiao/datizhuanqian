@@ -17,14 +17,20 @@ import { FollowToggbleMutation, UserQuery, FollowsQuery, UserInfoQuery } from '.
 class HeaderUser extends Component {
 	constructor(props) {
 		super(props);
+		const { user } = this.props;
 		this.state = {
-			is_follow: false
+			is_follow: user.followed_user_status
 		};
 	}
 
 	followUser = async () => {
 		const { user } = this.props;
+		let { is_follow } = this.state;
 		let result = {};
+
+		this.setState({
+			is_follow: !is_follow
+		});
 
 		try {
 			result = await this.props.FollowToggble({
@@ -53,6 +59,9 @@ class HeaderUser extends Component {
 
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			this.setState({
+				is_follow: !is_follow
+			});
 			Methods.toast(str, 80); //Toast错误信息
 		} else {
 			// Methods.toast('关注成功', 80);
@@ -61,6 +70,8 @@ class HeaderUser extends Component {
 
 	render() {
 		const { user, userInfo } = this.props;
+		let { is_follow } = this.state;
+		console.log('is_follow', is_follow, user);
 		return (
 			<View>
 				<View style={styles.header}>
@@ -93,7 +104,7 @@ class HeaderUser extends Component {
 						</View>
 						{user.id !== userInfo.id && (
 							<Button
-								name={user.followed_user_status ? '已关注' : '关 注'}
+								name={is_follow ? '已关注' : '关 注'}
 								outline
 								style={styles.button}
 								textColor={Colors.white}
