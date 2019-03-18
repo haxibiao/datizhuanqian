@@ -20,7 +20,7 @@ class VerificationCodeScreen extends Component {
 	constructor(props) {
 		super(props);
 		let { time } = this.props.navigation.state.params;
-		this.time_remaining = time ? time : 60;
+		this.time_remaining = time ? time - 1 : 60;
 		this.state = {
 			tips: this.time_remaining + 's后重新发送',
 			verificationCode: null,
@@ -59,12 +59,17 @@ class VerificationCodeScreen extends Component {
 
 	resendVerificationCode = async () => {
 		let result = {};
+		this.time_remaining = 59;
+		this.setState({
+			tips: '59s后重新发送'
+		});
 		try {
 			result = await this.props.SendVerificationCodeMutation({
 				variables: {
 					account: this.props.users.user.account,
 					action: 'USER_INFO_CHANGE'
-				}
+				},
+				errorPolicy: 'all'
 			});
 		} catch (ex) {
 			result.errors = ex;
@@ -137,7 +142,7 @@ class VerificationCodeScreen extends Component {
 	render() {
 		const { navigation } = this.props;
 		let { verificationCode, tips, isVisible } = this.state;
-
+		console.log('time_remaining', this.time_remaining);
 		return (
 			<Screen>
 				<View style={styles.container}>

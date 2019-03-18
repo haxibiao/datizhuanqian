@@ -25,11 +25,7 @@ class EditProfileScreen extends Component {
 		const { navigation } = this.props;
 		let result = {};
 
-		console.log('name', this.state.real_name);
 		var reg = /^[\u4E00-\u9FA5]{1,8}$/;
-
-		// alert(/[\u4e00-\u9fa5]{4}/.test('司正美'));
-		console.log('yanzheng', reg.test(this.state.real_name));
 
 		if (Methods.regular(this.state.pay_account)) {
 			if (reg.test(this.state.real_name)) {
@@ -41,7 +37,8 @@ class EditProfileScreen extends Component {
 						variables: {
 							account: this.props.user.account,
 							action: 'USER_INFO_CHANGE'
-						}
+						},
+						errorPolicy: 'all'
 					});
 				} catch (ex) {
 					result.errors = ex;
@@ -80,18 +77,20 @@ class EditProfileScreen extends Component {
 			<Screen>
 				<View style={styles.container}>
 					<View style={{ marginTop: 25, paddingHorizontal: 25 }}>
-						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>支付宝信息</Text>
+						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>支付宝信息绑定</Text>
 					</View>
 					<View style={styles.header}>
 						<Text style={styles.tips}>
-							支付宝账号为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
+							<Text style={{ color: Colors.themeRed }}>支付宝账号</Text>
+							以及
+							<Text style={{ color: Colors.themeRed }}>真实姓名</Text>
+							为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
 						</Text>
 					</View>
 
 					<Input
 						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0 }}
-						placeholder={user.real_name ? user.real_name : '请输入支付宝姓名'}
-						editable={user.real_name ? false : true}
+						placeholder={user.real_name ? user.real_name : '请输入真实姓名'}
 						changeValue={value => {
 							this.setState({
 								real_name: value
