@@ -1,18 +1,21 @@
+/*
+ * @flow
+ * created by wangyukun made in 2019-03-18 11:06:25
+ */
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
-
-import { Config } from './constants';
+import { Config } from './utils';
 import { connect } from 'react-redux';
 import { Storage, ItemKeys } from './store/localStorage';
 
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { CategoriesQuery, QuestionQuery } from './graphql/question.graphql';
-import { UserQuery } from './graphql/User.graphql';
+import { CategoriesQuery, QuestionQuery } from './assets/graphql/question.graphql';
+import { UserQuery } from './assets/graphql/User.graphql';
 
 import DeviceInfo from 'react-native-device-info';
-import MainRouter from './routers/MainRouter';
+import AppRouter from './routers';
 
 import JPushModule from 'jpush-react-native';
 
@@ -127,7 +130,7 @@ class Apollo extends Component {
 
 		return (
 			<ApolloProvider client={this.client}>
-				<MainRouter />
+				<AppRouter />
 			</ApolloProvider>
 		);
 	}

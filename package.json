@@ -25,11 +25,9 @@
     "react-native-gesture-handler": "^1.0.15",
     "react-native-image-crop-picker": "^0.21.3",
     "react-native-image-zoom-viewer": "^2.2.25",
-    "react-native-keyboard-spacer": "^0.4.1",
     "react-native-modal": "^6.5.0",
     "react-native-progress": "^3.5.0",
     "react-native-render-html": "^3.10.0",
-    "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.10.0",
     "react-native-shadow": "^1.2.2",
     "react-native-spinkit": "^1.1.1",
@@ -42,7 +40,8 @@
     "react-navigation": "^3.3.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "redux-effex": "^1.1.2"
+    "redux-effex": "^1.1.2",
+    "teaset": "^0.6.3"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
@@ -53,7 +52,7 @@
   },
   "rnpm": {
     "assets": [
-      "./assets/fonts/"
+      "./src/components/Iconfont/fonts/"
     ]
   },
   "jest": {

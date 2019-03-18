@@ -1,6 +1,5 @@
 import { Record, List } from 'immutable';
-import { Config, Colors, Divice } from '../../constants';
-
+import { Config } from '../../utils';
 export const users = Record({
 	login: false,
 	noTicketTips: true,
@@ -16,6 +15,6 @@ export const users = Record({
 		// exp: 1368
 	},
 	server: {
-		mainApi: Config.ServerRoot
+		// mainApi: Config.ServerRoot
 	}
 });
