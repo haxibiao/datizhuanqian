@@ -30,9 +30,12 @@
             <category android:name="android.intent.category.DEFAULT"/>
             <category android:name="android.intent.category.BROWSABLE"/> 
             <data android:scheme="dtzq"
-                  android:host="datizhuanqian"
-                  android:path="/main" />      
+                
+                   />      
         </intent-filter>
+        <!-- 使用方法  dtzq:// -->
+        <!-- 跳转指定页面  dtzq://***     ***需要在navigation router中配置路径-->
+        <!-- 传递参数  dtzq://***/:**   **变量名  示例  dtzq://question/10    {**:10} 可以在question 页面通过params获取到 -->
       </activity>
     <meta-data
         android:name="JPUSH_APPKEY"

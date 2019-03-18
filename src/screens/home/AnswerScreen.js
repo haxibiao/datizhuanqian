@@ -170,6 +170,8 @@ class AnswerScreen extends Component {
 		const { navigation, user, noTicketTips } = this.props;
 		let { value, isMethod, isShow, pickColor, name, buttonColor, rightColor } = this.state;
 		const { category, question_id } = navigation.state.params;
+
+		console.log('navigation.state.params', navigation.state.params);
 		return (
 			<Screen
 				routeName={'答题'}
@@ -184,7 +186,7 @@ class AnswerScreen extends Component {
 			>
 				<Query
 					query={QuestionQuery}
-					variables={{ category_id: category.id, id: question_id }}
+					variables={{ category_id: category ? category.id : null, id: question_id }}
 					fetchPolicy="network-only"
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {

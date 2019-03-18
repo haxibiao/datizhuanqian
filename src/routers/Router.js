@@ -70,8 +70,11 @@ export default {
 	},
 	//登录注册
 	回答: {
-		screen: AnswerScreen
+		screen: AnswerScreen,
+		path: 'question/:question_id'
 	},
+	//scheme question 路径    question_id 参数
+	//示例  dtzq://question/10    {question_id:10} 可以在answerScreen 页面通过params获取到
 	题目纠错: {
 		screen: ErrorCorrectionScreen
 	},
@@ -115,7 +118,7 @@ export default {
 	},
 	常见问题: {
 		screen: CommonIssueScreen,
-		path: 'demo/problem'
+		path: 'app/CommonIssue'
 	},
 	商务合作: {
 		screen: BusinessScreen
