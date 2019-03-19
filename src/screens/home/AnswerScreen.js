@@ -246,8 +246,8 @@ class AnswerScreen extends Component {
 						}
 
 						return (
-							<ScrollView style={styles.container}>
-								<View>
+							<View style={{ flex: 1, minheight: Divice.height }}>
+								<ScrollView style={styles.container}>
 									<TabTop user={user} isShow={isShow} isAnswer={true} />
 									<Banner />
 
@@ -308,27 +308,48 @@ class AnswerScreen extends Component {
 											)}
 										</View>
 									</View>
-								</View>
-								<Query query={UserQuery} variables={{ id: user.id }}>
-									{({ data, loading, error, refetch }) => {
-										if (error) return null;
-										if (!(data && data.user)) return null;
-										let user = data.user;
-										return (
-											<CorrectModal
-												visible={isShow}
-												gold={question.gold}
-												user={data.user}
-												noTicketTips={noTicketTips}
-												handleVisible={this.handleCorrectModal.bind(this)}
-												CloseModal={this.CloseModal.bind(this)}
-												title={question.answer.indexOf(value) > -1}
-												answer={question.answer}
-											/>
-										);
+
+									<Query query={UserQuery} variables={{ id: user.id }}>
+										{({ data, loading, error, refetch }) => {
+											if (error) return null;
+											if (!(data && data.user)) return null;
+											let user = data.user;
+											return (
+												<CorrectModal
+													visible={isShow}
+													gold={question.gold}
+													user={data.user}
+													noTicketTips={noTicketTips}
+													handleVisible={this.handleCorrectModal.bind(this)}
+													CloseModal={this.CloseModal.bind(this)}
+													title={question.answer.indexOf(value) > -1}
+													answer={question.answer}
+												/>
+											);
+										}}
+									</Query>
+								</ScrollView>
+								<View
+									style={{
+										backgroundColor: 'transparent',
+										position: 'absolute',
+										bottom: 0,
+										width: 40,
+										left: Divice.width / 2 - 20
 									}}
-								</Query>
-							</ScrollView>
+								>
+									<Text
+										style={{
+											backgroundColor: 'transparent',
+											color: '#CFCFCF',
+											fontSize: 11,
+											textAlign: 'center'
+										}}
+									>
+										#{question.id}
+									</Text>
+								</View>
+							</View>
 						);
 					}}
 				</Query>
