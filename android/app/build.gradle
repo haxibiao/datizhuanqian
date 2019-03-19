@@ -4,22 +4,43 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
+    devDisabledInDev: true,
     devDisabledInStaging: true,
     devDisabledInXiaomi: true,
     devDisabledInBaidu: true,
+    devDisabledInWandoujia:true,
+    devDisabledInVivo:true,
+    devDisabledInOppo:true,
+    devDisabledInHuawei:true,
+    devDisabledInMeizu:true,
+    devDisabledInQihoo:true,
+    bundleInDev:true,
     bundleInStaging: true,
     bundleInXiaomi: true,
     bundleInBaidu: true,
+    bundleInWandoujia:true,
+    bundleInVivo:true,
+    bundleInOppo:true,
+    bundleInHuawei:true,
+    bundleInMeizu:true,
+    bundleInQihoo:true
 ]
 
 //要为每个应用商店生成带有不同的.env内容的APK
 
 project.ext.envConfigFiles = [
     debug: ".env",
+    dev:".env.dev",
     release: ".env.prod",
     staging: ".env.staging",
     xiaomi: ".env.xiaomi",
     baidu: ".env.baidu",
+    wandoujia:".env.wandoujia",
+    vivo:".env.vivo",
+    oppo:".env.oppo",
+    huawei:".env.huawei",
+    meizu:".env.meizu",
+    qihoo:".env.qihoo"
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -92,12 +113,25 @@ android {
             // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
             buildConfigField "String", "CODEPUSH_KEY", '""'
         }
+        dev {
+            initWith release
+            applicationIdSuffix '.dev'
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+        }
         staging {
             initWith release
             applicationIdSuffix '.staging'
             matchingFallbacks = ['release']
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+        }
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
         xiaomi {
             initWith release
@@ -115,13 +149,54 @@ android {
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
-        release {
+        wandoujia {
+            initWith release
+            matchingFallbacks = ['release']
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
-
+        vivo {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+        oppo {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+        huawei {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+        meizu {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        } 
+        qihoo {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
