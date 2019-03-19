@@ -174,7 +174,7 @@ class AnswerScreen extends Component {
 		console.log('navigation.state.params', navigation.state.params);
 		return (
 			<Screen
-				routeName={'答题'}
+				routeName={category.name}
 				customStyle={{
 					backgroundColor: isShow ? '#977018' : Colors.theme,
 					borderBottomWidth: 0,
@@ -270,7 +270,8 @@ class AnswerScreen extends Component {
 												{question.user.name}
 											</Text>
 										</TouchableOpacity>
-										<ErrorBoundary reload={() => refetch()}>
+										<Text style={styles.title}>{question.description}</Text>
+										<ErrorBoundary reload={() => refetch()} question={question}>
 											<Question
 												question={question}
 												option={option}
@@ -364,6 +365,14 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white
+	},
+	title: {
+		color: Colors.primaryFont,
+		fontSize: 16,
+		fontWeight: '400',
+		fontFamily: 'Courier',
+		letterSpacing: 0.5,
+		lineHeight: 22
 	},
 	content: {
 		paddingTop: 20,

@@ -25,7 +25,6 @@ class Question extends Component {
 		let selection = this.selectionAdapter(option);
 		return (
 			<View>
-				<Text style={styles.title}>{question.description}</Text>
 				<View style={{ marginTop: 10 }}>
 					{question.image && (
 						<Image
@@ -71,14 +70,6 @@ class Question extends Component {
 }
 
 const styles = StyleSheet.create({
-	title: {
-		color: Colors.primaryFont,
-		fontSize: 16,
-		fontWeight: '400',
-		fontFamily: 'Courier',
-		letterSpacing: 0.5,
-		lineHeight: 22
-	},
 	options: {
 		paddingTop: 30,
 		paddingHorizontal: 10

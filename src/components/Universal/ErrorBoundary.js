@@ -21,12 +21,15 @@ class ErrorBoundary extends React.Component {
 
 	render() {
 		if (this.state.hasError) {
-			let { size = 70, fontSize = 16, reload = () => null, text } = this.props;
+			let { size = 70, fontSize = 16, reload = () => null, text, question } = this.props;
 			return (
 				<View style={styles.container}>
 					<Image style={styles.image} source={require('../../../assets/images/network.jpg')} />
 					<Text style={{ fontSize: 16, color: Colors.tintFont, marginVertical: 15, fontWeight: '300' }}>
 						{'哎呀，好像出了点问题'}
+					</Text>
+					<Text style={{ fontSize: 16, color: Colors.tintFont, fontWeight: '300', marginBottom: 15 }}>
+						{'编号：' + question.id}
 					</Text>
 					<TouchableOpacity onPress={reload}>
 						<Text style={styles.reload}>重新加载</Text>
