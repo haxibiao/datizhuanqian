@@ -9,7 +9,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation';
 import router from './router';
 
 let AppRouter = createStackNavigator(router, {
-	initialRouteName: '主页',
+	initialRouteName: 'Main',
 	// 使用自定义导航，所以要隐藏默认导航
 	defaultNavigationOptions: () => ({
 		header: null,

@@ -20,7 +20,7 @@ class TabBarComponent extends React.Component {
 			<TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
 				<View style={styles.tabItem}>
 					{renderIcon(scene)}
-					<Text style={{ fontSize: PxFit(10), color }}>{route.key}</Text>
+					<Text style={{ fontSize: PxFit(10), color, marginTop: PxFit(4) }}>{route.key}</Text>
 				</View>
 			</TouchableWithoutFeedback>
 		);
@@ -53,7 +53,7 @@ const styles = {
 		alignItems: 'stretch',
 		height: Theme.HOME_INDICATOR_HEIGHT + PxFit(50),
 		borderTopWidth: PxFit(0.5),
-		borderTopColor: Theme.defaultBorderColor,
+		borderTopColor: Theme.borderColor,
 		backgroundColor: '#fff',
 		paddingBottom: Theme.HOME_INDICATOR_HEIGHT
 	},

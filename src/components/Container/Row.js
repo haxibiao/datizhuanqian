@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-12 09:12:50
-*/
+ * @flow
+ * created by wyk made in 2018-12-12 09:12:50
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -15,12 +15,12 @@ class Row extends Component {
 
 	render() {
 		let { style, ...options } = this.props;
-		return <View style={[styles.button, style]} {...options} />;
+		return <View style={[styles.row, style]} {...options} />;
 	}
 }
 
 const styles = StyleSheet.create({
-	button: {
+	row: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	}

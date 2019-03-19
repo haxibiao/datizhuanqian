@@ -1,8 +1,8 @@
 /*
-* @flow
-* wyk created it in 2018-12-04 15:46:29
-* tip: default statusBar is transparent
-*/
+ * @flow
+ * wyk created it in 2018-12-04 15:46:29
+ * tip: default statusBar is transparent
+ */
 'use strict';
 
 import { Platform, Dimensions, StatusBar } from 'react-native';
@@ -16,7 +16,7 @@ let HOME_INDICATOR_HEIGHT = 0;
 
 if (Platform.OS === 'ios' && HAS_NOTCH) {
   HAS_HOME_INDICATOR = true;
-  HOME_INDICATOR_HEIGHT = 30;
+  HOME_INDICATOR_HEIGHT = 26;
 }
 
 const Theme = {
@@ -32,10 +32,9 @@ const Theme = {
 
   get statusBarHeight() {
     if (Platform.OS === 'ios') {
-      return this.isLandscape ? 0 : HAS_NOTCH ? HOME_INDICATOR_HEIGHT + 10 : 20;
+      return this.isLandscape ? 0 : HAS_NOTCH ? 34 : 20;
     } else if (Platform.OS === 'android') {
-      let statusBar_height = StatusBar.currentHeight;
-      return HAS_NOTCH ? statusBar_height + 20 : statusBar_height;
+      return StatusBar.currentHeight;
     }
     return this.isLandscape ? 0 : 20;
   }

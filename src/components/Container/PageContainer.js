@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-05 20:53:57
-*/
+ * @flow
+ * created by wyk made in 2018-12-05 20:53:57
+ */
 'use strict';
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
@@ -10,7 +10,6 @@ import { KeyboardSpace } from 'teaset';
 import { Theme, PxFit, ISIOS, NAVBAR_HEIGHT } from '../../utils';
 import StatusView from '../StatusView';
 import NavigatorBar from '../Header/NavigatorBar';
-import Placeholder from '../Content/Placeholder';
 
 type Props = {
 	store?: Object, // redux screen state
@@ -18,10 +17,9 @@ type Props = {
 	error?: boolean,
 	onErrorPress?: Function,
 	loading?: boolean,
-	placeholder?: boolean,
 	children?: any,
 	autoKeyboardInsets?: boolean, //键盘占位
-	topInsets?:number,
+	topInsets?: number,
 
 	style?: any, // 外层View样式
 	navBarStyle?: any, // 导航条样式
@@ -46,12 +44,9 @@ class PageContainer extends Component<Props> {
 		topInsets: -Theme.HOME_INDICATOR_HEIGHT
 	};
 	renderContent() {
-		const { error, loading, placeholder, children, onErrorPress } = this.props;
+		const { error, loading, children, onErrorPress } = this.props;
 		if (error) return <StatusView.ErrorView onPress={onErrorPress} />;
 		if (loading) {
-			if (placeholder) {
-				return <Placeholder />;
-			}
 			return <StatusView.LoadingSpinner />;
 		}
 		return children;
@@ -88,7 +83,7 @@ class PageContainer extends Component<Props> {
 			<View style={[styles.container, style]} {...props}>
 				{!hiddenNavBar && this.renderNavBar()}
 				<View style={[styles.contentView, { marginTop }, contentViewStyle]}>{this.renderContent()}</View>
-				{ISIOS && autoKeyboardInsets ? <KeyboardSpace topInsets={topInsets}/> : null}
+				{ISIOS && autoKeyboardInsets ? <KeyboardSpace topInsets={topInsets} /> : null}
 				<NavigationEvents
 					onWillFocus={onWillFocus}
 					onDidFocus={onDidFocus}

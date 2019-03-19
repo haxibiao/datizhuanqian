@@ -130,7 +130,7 @@ class NavigatorBar extends Component {
 		} else {
 			left = (
 				<TouchableOpacity activeOpacity={1} onPress={this.backButtonPress}>
-					<Iconfont name="back" color={Theme.navBarTitleColor} size={PxFit(24)} />
+					<Iconfont name="left" color={Theme.navBarTitleColor} size={PxFit(21)} />
 				</TouchableOpacity>
 			);
 		}
@@ -181,8 +181,7 @@ class NavigatorBar extends Component {
 
 const styles = StyleSheet.create({
 	titleText: {
-		fontSize: PxFit(18),
-		fontWeight: '500',
+		fontSize: PxFit(17),
 		textAlign: 'center',
 		color: Theme.navBarTitleColor
 	}

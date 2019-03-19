@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-11 16:16:04
-*/
+ * @flow
+ * created by wyk made in 2018-12-11 16:16:04
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -23,8 +23,8 @@ class CustomRefreshControl extends Component<Props> {
 	static defaultProps = {
 		title: '',
 		size: undefined,
-		tintColor: Theme.secondaryColor,
-		colors: [Theme.primaryColor, Theme.secondaryColor],
+		tintColor: '#FFCC80',
+		colors: [Theme.primaryColor, '#FFCC80'],
 		progressBackgroundColor: '#fff'
 	};
 

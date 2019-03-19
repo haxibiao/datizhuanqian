@@ -2,8 +2,12 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/fonts/iconfont.ttf",
-      "sha1": "d39003cedb137e1035b19825a3dc74e2609867a8"
+      "path": "src/components/Iconfont/fonts/.DS_Store",
+      "sha1": "df2fbeb1400acda0909a32c1cf6bf492f1121e07"
+    },
+    {
+      "path": "src/components/Iconfont/fonts/iconfont.ttf",
+      "sha1": "6068e5ffbf297ce1fd88761fe160acb8728c8a9b"
     }
   ]
 }

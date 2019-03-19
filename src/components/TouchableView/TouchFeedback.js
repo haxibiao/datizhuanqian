@@ -25,7 +25,7 @@ class TouchFeedback extends Component {
 			if (TOKEN) {
 				callback();
 			} else {
-				navigation.navigate('Login');
+				navigation.navigate('Register');
 			}
 		};
 	}

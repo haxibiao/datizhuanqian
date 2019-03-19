@@ -1,23 +1,28 @@
 /*
-* @flow
-* created by wyk made in 2019-01-06 21:58:37
-*/
+ * @flow
+ * created by wyk made in 2019-01-06 21:58:37
+ */
 'use strict';
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { Theme, PxFit } from '../../utils';
 
-class ListFooter extends Component {
+type Props = {
+	hidden: boolean,
+	finished: boolean,
+	text: string
+};
+class ListFooter extends Component<Props> {
 	render() {
-		let { finished, hidden } = this.props;
+		let { hidden, finished, text } = this.props;
 		if (hidden) {
 			return null;
 		}
 		if (finished) {
 			return (
-				<View style={[styles.footerView, { backgroundColor: '#fff' }]}>
-					<Text style={styles.footerViewText}>已经到底了</Text>
+				<View style={styles.footerView}>
+					<Text style={styles.footerViewText}>{text || '-- end --'}</Text>
 				</View>
 			);
 		} else {
@@ -41,7 +46,7 @@ const styles = StyleSheet.create({
 	footerViewText: {
 		fontSize: PxFit(14),
 		color: '#a0a0a0',
-		paddingHorizontal: PxFit(10)
+		marginHorizontal: PxFit(10)
 	}
 });
 

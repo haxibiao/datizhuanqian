@@ -15,6 +15,6 @@ export const users = Record({
 		// exp: 1368
 	},
 	server: {
-		// mainApi: Config.ServerRoot
+		mainApi: Config.ServerRoot
 	}
 });

@@ -4,12 +4,16 @@
  */
 import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/login';
+import AnswerScreen from '../screens/answer';
 
 export default {
-	主页: {
+	Main: {
 		screen: MainTabNavigator
 	},
-	登录注册: {
+	Register: {
 		screen: LoginScreen
+	},
+	Answer: {
+		screen: AnswerScreen
 	}
 };
