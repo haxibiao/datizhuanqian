@@ -333,6 +333,7 @@ class AnswerScreen extends Component {
 									style={{
 										backgroundColor: 'transparent',
 										position: 'absolute',
+										alignItems: 'center',
 										bottom: 0,
 										width: 40,
 										left: Divice.width / 2 - 20
