@@ -1,17 +1,14 @@
 /*
-* @flow
-* created by wyk made in 2019-01-14 21:26:46
-*/
+ * @flow
+ * created by wyk made in 2019-01-14 21:26:46
+ */
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Image, VirtualizedListProps, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, WPercent, Api } from '../../utils';
 import Iconfont from '../Iconfont';
-import PlaceholderImage from '../Basics/PlaceholderImage';
-import Center from '../Container/Center';
 import TouchFeedback from '../TouchableView/TouchFeedback';
-import Uploading from '../Overlay/Uploading';
 import OverlayViewer from '../Overlay/OverlayViewer';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
@@ -32,10 +29,8 @@ class ImagePickedViewer extends Component<Props> {
 
 	constructor(props: Props) {
 		super(props);
-		this.imageLength = 0;
 		this.state = {
-			pictures: [],
-			uploading: false
+			pictures: []
 		};
 	}
 
@@ -44,40 +39,30 @@ class ImagePickedViewer extends Component<Props> {
 	openImagePicker = () => {
 		Api.imagePicker(images => {
 			let imagesPath;
-			imagesPath = images.map(image => image.path);
+			imagesPath = images.map(image => `data:${image.mime};base64,${image.data}`);
 			this.saveImages(imagesPath);
 		});
 	};
 
 	saveImages = imagesPath => {
 		let { pictures } = this.state;
-		let newPictures = pictures.concat(imagesPath).splice(0, this.props.maximum);
-		this.setState({ pictures: newPictures, uploading: true });
-		Api.saveImages(imagesPath, this.onSaveSuccessed, () => this.onSaveFailed(pictures));
-	};
-
-	onSaveSuccessed = result => {
-		this.savedImages = this.savedImages.concat(result);
-		this.onResponse(this.savedImages);
-		this.imageLength = this.state.pictures.length;
-		this.setState({
-			uploading: false
-		});
-	};
-
-	onSaveFailed = pictures => {
-		this.setState({
-			pictures,
-			uploading: false
+		let { maximum } = this.props;
+		let newPictures = pictures.concat(imagesPath);
+		if (newPictures.length > maximum) {
+			newPictures.splice(0, maximum);
+			Toast.show('最多上传6张图片');
+		}
+		this.setState({ pictures: newPictures }, () => {
+			this.onResponse(this.state.pictures);
 		});
 	};
 
 	removePicture = pictureIndex => {
 		let { pictures } = this.state;
 		pictures.splice(pictureIndex, 1);
-		this.savedImages.splice(pictureIndex, 1);
-		this.onResponse(this.savedImages);
-		this.setState({ pictures });
+		this.setState({ pictures }, () => {
+			this.onResponse(this.state.pictures);
+		});
 	};
 
 	// 把上传的图片暴露出去
@@ -99,41 +84,26 @@ class ImagePickedViewer extends Component<Props> {
 	};
 
 	renderPicture = (item, index) => {
-		console.log('item',item);
-		let { uploading } = this.state;
 		let { pickerStyle } = this.props;
-		let isUploading = uploading && index >= this.imageLength;
 		return (
-			<TouchFeedback
-				disabled={isUploading}
-				key={index}
-				onPress={() => this.showPicture(item)}
-				style={[styles.itemWrap, pickerStyle]}
-			>
+			<TouchFeedback key={index} onPress={() => this.showPicture(item)} style={[styles.itemWrap, pickerStyle]}>
 				<Image source={{ uri: item }} style={styles.imageItem} />
-				<TouchFeedback disabled={isUploading} style={styles.close} onPress={() => this.removePicture(index)}>
+				<TouchFeedback style={styles.close} onPress={() => this.removePicture(index)}>
 					<Iconfont name="chacha" size={PxFit(10)} color="#fff" />
 				</TouchFeedback>
-				{isUploading && <Uploading />}
 			</TouchFeedback>
 		);
 	};
 
 	renderFooter = pictureQuantity => {
-		let { uploading } = this.state;
 		let { pickerStyle, PickerView, maximum } = this.props;
 		if (!PickerView) {
 			PickerView = <Iconfont name="add" size={PxFit(30)} color="#696482" />;
 		}
 		if (pictureQuantity < maximum) {
 			return (
-				<TouchFeedback
-					disabled={uploading}
-					style={[styles.itemWrap, pickerStyle]}
-					onPress={this.openImagePicker}
-				>
+				<TouchFeedback style={[styles.itemWrap, pickerStyle]} onPress={this.openImagePicker}>
 					{PickerView}
-					{uploading && <Uploading />}
 				</TouchFeedback>
 			);
 		} else {

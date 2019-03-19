@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2019-01-08 13:06:22
-*/
+ * @flow
+ * created by wyk made in 2019-01-08 13:06:22
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'stretch',
 		borderTopWidth: PxFit(1),
-		borderTopColor: Theme.defaultBorderColor
+		borderTopColor: Theme.borderColor
 	},
 	cancel: {
 		flex: 1,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 		fontSize: PxFit(16),
 		color: Theme.subTextColor,
 		borderRightWidth: PxFit(1),
-		borderRightColor: Theme.defaultBorderColor
+		borderRightColor: Theme.borderColor
 	},
 	confirmText: {
 		textAlign: 'center',

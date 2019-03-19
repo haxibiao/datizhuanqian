@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		borderBottomWidth: PxFit(1),
-		borderBottomColor: Theme.defaultBorderColor
+		borderBottomColor: Theme.borderColor
 	},
 	info: {
 		flex: 1,

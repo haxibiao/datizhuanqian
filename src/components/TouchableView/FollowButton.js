@@ -9,7 +9,6 @@ import { StyleSheet, View, Text, TouchableWithoutFeedback, TouchableOpacity } fr
 import { withNavigation } from 'react-navigation';
 import { PxFit, Theme } from '../../utils';
 import Iconfont from '../Iconfont';
-import PopOverlay from '../Overlay/PopOverlay';
 
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';

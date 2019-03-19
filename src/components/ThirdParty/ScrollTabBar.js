@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-12 15:27:15
-*/
+ * @flow
+ * created by wyk made in 2018-12-12 15:27:15
+ */
 // custuom scroll-tab-view header
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
@@ -69,7 +69,11 @@ export default class ScrollTabBar extends Component<Props> {
 			scrollValue
 		} = this.props;
 		let numberOfTabs = tabs.length;
-		let underlineWidth = tabUnderlineWidth ? tabUnderlineWidth : tabWidth ? tabWidth * 0.6 : containerWidth / (numberOfTabs * 2);
+		let underlineWidth = tabUnderlineWidth
+			? tabUnderlineWidth
+			: tabWidth
+			? tabWidth * 0.6
+			: containerWidth / (numberOfTabs * 2);
 		let scale = tabUnderlineScaleX ? tabUnderlineScaleX : 2;
 		let deLen = tabWidth ? tabWidth * 0.2 : (containerWidth / numberOfTabs - underlineWidth) / 2;
 		let tabUnderlineStyle = {
@@ -144,6 +148,6 @@ const styles = StyleSheet.create({
 		borderTopWidth: 0,
 		borderLeftWidth: 0,
 		borderRightWidth: 0,
-		borderColor: Theme.defaultBorderColor
+		borderColor: Theme.borderColor
 	}
 });
