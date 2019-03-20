@@ -32,8 +32,12 @@ class Avatar extends Component<Props> {
 
 	render() {
 		let { source, size, style } = this.props;
-		let avatar = { width: size, height: size, borderRadius: PixelRatio.roundToNearestPixel(size / 2) };
-		source = this.state.loading ? source : { uri: `https://tuimeizi.cn/random?w=${size}&h=${size}` };
+		let avatar = {
+			width: size,
+			height: size,
+			borderRadius: PixelRatio.roundToNearestPixel(size / 2),
+			backgroundColor: '#f9f9f9'
+		};
 		return <Image source={source} resizeMode="cover" style={[avatar, style]} onError={this._onError} />;
 	}
 

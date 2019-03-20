@@ -51,5 +51,5 @@ export default {
 	linkColor: '#3E65E8',
 	cancelColor: '#b6c2e1',
 	confirmColor: '#3E65E8',
-	itemSpace: 12
+	itemSpace: 15
 };

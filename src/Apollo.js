@@ -23,12 +23,12 @@ class Apollo extends Component {
 	async _makeClient(user) {
 		let { token } = user;
 
-		let server = await Storage.getItem(ItemKeys.server);
+		// let server = await Storage.getItem(ItemKeys.server);
 
-		let ServerRoot = Config.ServerRoot;
-		if (server && server.mainApi) {
-			ServerRoot = server.mainApi;
-		}
+		// let ServerRoot = Config.ServerRoot;
+		// if (server && server.mainApi) {
+		// 	ServerRoot = server.mainApi;
+		// }
 
 		let deviceHeaders = {};
 		const isEmulator = DeviceInfo.isEmulator();
@@ -38,7 +38,7 @@ class Apollo extends Component {
 			deviceHeaders.build = Config.Build; //手动修改的build版本号
 			deviceHeaders.deviceCountry = DeviceInfo.getDeviceCountry(); //国家
 			deviceHeaders.referrer = Config.AppStore; //根据不同的.env文件打包不同的apk，方便追踪应用商店流量
-			deviceHeaders.version = DeviceInfo.getVersion(); //版本号
+
 			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion(); //系统版本
 			deviceHeaders.uniqueId = DeviceInfo.getUniqueID(); //uniqueId
 			DeviceInfo.getIPAddress()
@@ -47,7 +47,7 @@ class Apollo extends Component {
 					deviceHeaders.ip = data;
 				}); //ip地址
 		}
-
+		deviceHeaders.version = '1.4.0'; //版本号
 		if (!this.cache) {
 			this.cache = new InMemoryCache();
 		}
@@ -126,7 +126,7 @@ class Apollo extends Component {
 	}
 
 	render() {
-		if (!this.client) return null;
+		// if (!this.client) return null;
 
 		return (
 			<ApolloProvider client={this.client}>

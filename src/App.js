@@ -44,8 +44,10 @@ class App extends Component {
 	loadUserState = async () => {
 		let user = await Storage.getItem(ItemKeys.user);
 		store.dispatch(actions.setUser(user));
+		console.log('useruser', user);
 		if (user && user.token) {
 			global.TOKEN = user.token;
+
 			store.dispatch(actions.signIn(user));
 		} else {
 			global.TOKEN = null;

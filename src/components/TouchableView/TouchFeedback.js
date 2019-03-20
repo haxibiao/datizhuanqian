@@ -23,7 +23,7 @@ class TouchFeedback extends Component {
 	middleware(callback, navigation) {
 		return () => {
 			if (TOKEN) {
-				callback();
+				callback && callback();
 			} else {
 				navigation.navigate('Register');
 			}
