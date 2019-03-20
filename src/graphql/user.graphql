@@ -197,6 +197,15 @@ query curationsQuery($offset: Int, $limit: Int) {
 			image {
 				id
 				path
+				width
+				height
+			}
+			video {
+				height
+				width
+				path
+				rotate
+				duration
 			}
 			selections
 			answers {

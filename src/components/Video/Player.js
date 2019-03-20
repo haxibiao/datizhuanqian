@@ -4,6 +4,7 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Animated, Easing, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import { Colors, Divice } from '../../constants';
 import { Methods } from '../../helpers';
@@ -18,6 +19,16 @@ class Player extends React.PureComponent {
 			paused: this.props.paused,
 			loaded: false
 		};
+	}
+
+	componentDidMount() {
+		this.willBlurSubscription = this.props.navigation.addListener('willBlur', payload => {
+			this.setState({ paused: true });
+		});
+	}
+
+	componentWillUnmount() {
+		this.willBlurSubscription.remove();
 	}
 
 	//有异常，应该暂停播放
@@ -124,4 +135,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Player;
+export default withNavigation(Player);
