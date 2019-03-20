@@ -40,14 +40,21 @@ class Question extends Component {
 					)}
 					{question.video && <Player width={Divice.width - 60} source={question.video.path} />}
 				</View>
-				<View style={styles.options}>
+				<View
+					style={[
+						styles.options,
+						question.video
+							? { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }
+							: {}
+					]}
+				>
 					{selection.map((option, index) => {
 						return (
 							<TouchableOpacity
 								disabled={isMethod}
 								key={index}
 								style={[
-									styles.option,
+									question.video ? styles.valueOption : styles.option,
 									{
 										borderColor:
 											value == option.Value
@@ -59,7 +66,7 @@ class Question extends Component {
 								]}
 								onPress={() => changeValue(option.Value)}
 							>
-								<Text>{option.Text}</Text>
+								<Text numberOfLines={1}>{option.Text}</Text>
 							</TouchableOpacity>
 						);
 					})}
@@ -71,8 +78,7 @@ class Question extends Component {
 
 const styles = StyleSheet.create({
 	options: {
-		paddingTop: 30,
-		paddingHorizontal: 10
+		paddingTop: 20
 	},
 	option: {
 		marginTop: 13,
@@ -83,6 +89,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingVertical: 12,
 		paddingHorizontal: 15
+	},
+	valueOption: {
+		marginTop: 13,
+		borderWidth: 1,
+		borderRadius: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingVertical: 12,
+		width: (Divice.width - 80) / 2
 	}
 });
 

@@ -285,7 +285,7 @@ class AnswerScreen extends Component {
 										{
 											//因为题目库 选择项中产生了很多脏数据,所以对渲染做异常处理,防止release版本不会crash
 										}
-										<View style={styles.submit}>
+										<View style={[styles.submit, { marginTop: question.video ? 20 : 40 }]}>
 											<TouchableOpacity
 												style={styles.correction}
 												disabled={!isMethod}
@@ -401,12 +401,11 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 30
 	},
 	submit: {
-		marginTop: 50,
 		marginBottom: 30
 	},
 	correction: {
 		alignItems: 'flex-end',
-		paddingBottom: 15
+		paddingBottom: 10
 	},
 	correctionText: {
 		color: Colors.orange,

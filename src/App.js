@@ -29,7 +29,7 @@ class App extends Component {
 
   componentWillMount() {
     this.loadUserState();
-    this.loadServerRootState();
+    // this.loadServerRootState();
   }
 
   loadUserState = async () => {
