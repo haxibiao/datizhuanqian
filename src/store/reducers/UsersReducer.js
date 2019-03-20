@@ -17,10 +17,12 @@ class UsersReducer {
 
 	static [types.SIGN_IN](state, action) {
 		let { user } = action;
+		global.TOKEN = user.token;
 		return state.set('user', user).set('login', true);
 	}
 
 	static [types.SIGN_OUT](state, action) {
+		global.TOKEN = null;
 		return state
 			.set('user', {})
 			.set('login', false)
