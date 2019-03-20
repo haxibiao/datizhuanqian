@@ -46,7 +46,7 @@ class Button extends Component {
 				borderRadius = PxFit(4);
 				paddingVertical = PxFit(6);
 				paddingHorizontal = PxFit(12);
-				textFontSize = PxFit(16);
+				textFontSize = PxFit(14);
 		}
 		style = {
 			borderColor,

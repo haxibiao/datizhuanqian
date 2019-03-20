@@ -2,6 +2,9 @@
  * @flow
  * wyk created it in 2018-12-04 15:27:58
  */
+
+const theme = '#FFB100';
+const themeRed = '#EF514A';
 //primary color
 const primaryColor = '#FFBB04';
 const primaryColorRgb = '255,187,4';
@@ -28,6 +31,8 @@ const navBarSeparatorColor = 'transparent';
 
 //sheet
 export default {
+	theme,
+	themeRed,
 	primaryColor,
 	primaryColorRgb,
 	secondaryColor,

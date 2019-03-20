@@ -24,7 +24,6 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoadingComplete: false,
 			showHome: false,
 			appIntroVersion: '',
 			introImages: '',
@@ -145,22 +144,18 @@ class App extends Component {
 	//   }
 	// };
 
-	handleFinishLoading = () => {
-		this.setState({ isLoadingComplete: true });
-	};
-
 	handleIntro = () => {
 		this.setState({ showHome: true });
 	};
 
 	render() {
-		let { isLoadingComplete, showHome, introImages, appIntroVersion, isConnect } = this.state;
+		let { showHome, introImages, appIntroVersion, isConnect } = this.state;
 
 		return (
 			<View style={styles.container}>
 				<Provider store={store}>
 					<ErrorBoundary>
-						<Apollo onReady={this.handleFinishLoading} />
+						<Apollo />
 					</ErrorBoundary>
 				</Provider>
 				<Toast ref={ref => (this.toast = ref)} />

@@ -5370,11 +5370,6 @@ react-native-image-zoom-viewer@^2.2.25:
   dependencies:
     react-native-image-pan-zoom "^2.1.9"
 
-react-native-keyboard-spacer@^0.4.1:
-  version "0.4.1"
-  resolved "http://registry.npm.taobao.org/react-native-keyboard-spacer/download/react-native-keyboard-spacer-0.4.1.tgz#46f18a320432098a25ea9fa89f5143dd254d332d"
-  integrity sha1-RvGKMgQyCYol6p+on1FD3SVNMy0=
-
 react-native-modal@^6.5.0:
   version "6.5.0"
   resolved "http://registry.npm.taobao.org/react-native-modal/download/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
