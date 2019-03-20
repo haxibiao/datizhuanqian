@@ -252,24 +252,27 @@ class AnswerScreen extends Component {
 									<Banner />
 
 									<View style={styles.content}>
-										<TouchableOpacity
-											style={{
-												flexDirection: 'row',
-												alignItems: 'center',
-												paddingBottom: 15
-											}}
-											onPress={() =>
-												navigation.navigate('用户资料', { user_id: question.user.id })
-											}
-										>
-											<Image
-												source={{ uri: question.user.avatar }}
-												style={{ width: 20, height: 20, borderRadius: 3 }}
-											/>
-											<Text style={{ fontSize: 14, color: '#222', paddingLeft: 6 }}>
-												{question.user.name}
-											</Text>
-										</TouchableOpacity>
+										{question.user.id == 1 ? null : (
+											<TouchableOpacity
+												style={{
+													flexDirection: 'row',
+													alignItems: 'center',
+													paddingBottom: 15
+												}}
+												onPress={() =>
+													navigation.navigate('用户资料', { user_id: question.user.id })
+												}
+											>
+												<Image
+													source={{ uri: question.user.avatar }}
+													style={{ width: 20, height: 20, borderRadius: 3 }}
+												/>
+												<Text style={{ fontSize: 14, color: '#222', paddingLeft: 6 }}>
+													{question.user.name}
+												</Text>
+											</TouchableOpacity>
+										)}
+
 										<Text style={styles.title}>{question.description}</Text>
 										<ErrorBoundary reload={() => refetch()} question={question}>
 											<Question
