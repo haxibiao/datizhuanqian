@@ -14,6 +14,8 @@ project.ext.react = [
     devDisabledInHuawei:true,
     devDisabledInMeizu:true,
     devDisabledInQihoo:true,
+    devDisabledInTencent:true,
+
     bundleInDev:true,
     bundleInStaging: true,
     bundleInXiaomi: true,
@@ -23,7 +25,8 @@ project.ext.react = [
     bundleInOppo:true,
     bundleInHuawei:true,
     bundleInMeizu:true,
-    bundleInQihoo:true
+    bundleInQihoo:true,
+    bundleInTencent:true
 ]
 
 //要为每个应用商店生成带有不同的.env内容的APK
@@ -40,7 +43,8 @@ project.ext.envConfigFiles = [
     oppo:".env.oppo",
     huawei:".env.huawei",
     meizu:".env.meizu",
-    qihoo:".env.qihoo"
+    qihoo:".env.qihoo",
+    tencent:".env.tencent"
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -197,6 +201,15 @@ android {
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
+        tencent {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
