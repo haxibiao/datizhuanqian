@@ -10,18 +10,16 @@ import {
 	PageContainer,
 	TouchFeedback,
 	Iconfont,
-	Row,
-	ListItem,
-	CustomSwitch,
 	ItemSeparator,
 	PopOverlay,
 	SubmitLoading,
-	Button
+	Button,
+	TabBar
 } from '../../components';
 
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
-// import { Methods } from '../../helpers';
 
+import QuestionError from './components/QuestionError';
 import QuestionOption from './components/QuestionOption';
 import QuestionBody from './components/QuestionBody';
 import FavoriteQuestion from './components/FavoriteQuestion';
@@ -75,6 +73,7 @@ class index extends Component {
 						id: question.id,
 						answer: value
 					},
+					errorPolicy: 'all',
 					refetchQueries: () => [
 						{
 							query: UserQuery,
@@ -87,7 +86,7 @@ class index extends Component {
 				result.errors = ex;
 			}
 			if (result && result.errors) {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				let str = result.errors[0].message;
 				Methods.toast(str, -100);
 			}
 		}
@@ -105,10 +104,15 @@ class index extends Component {
 			rightColor: Theme.tintGray
 		});
 		//重置state
-
 		refetch({ category_id: category.id });
 		//更换题目
 	};
+
+	changeValue(Value) {
+		this.setState({
+			value: Value
+		});
+	}
 
 	getQuestionId = () => {
 		return this.questionId;
@@ -119,10 +123,10 @@ class index extends Component {
 		const { question, navigation } = this.props;
 		return (
 			<TouchFeedback
-				style={styles.correction}
+				style={styles.curation}
 				onPress={() => navigation.navigate('题目纠错', { question: question })}
 			>
-				<Text style={styles.correctionText}>{swithMethod ? '题目纠错' : ''}</Text>
+				<Text style={styles.curationText}>{swithMethod ? '题目纠错' : ''}</Text>
 			</TouchFeedback>
 		);
 	};
@@ -166,7 +170,7 @@ class index extends Component {
 							<View style={{ flex: 1, minheight: SCREEN_HEIGHT }}>
 								<ScrollView style={styles.container}>
 									{/*<TabTop user={user} isShow={isShow} isAnswer={true} />*/}
-
+									<TabBar />
 									<View style={styles.content}>
 										<UserInfo user={question.user} />
 										<QuestionBody question={question} />
@@ -192,27 +196,6 @@ class index extends Component {
 											/>
 										</View>
 									</View>
-
-									<Query query={UserQuery} variables={{ id: user.id }}>
-										{({ data, loading, error, refetch }) => {
-											if (error) return null;
-											if (!(data && data.user)) return null;
-											let user = data.user;
-											return (
-												/*<CorrectModal
-													visible={isShow}
-													gold={question.gold}
-													user={data.user}
-													noTicketTips={noTicketTips}
-													handleVisible={this.handleCorrectModal.bind(this)}
-													CloseModal={this.CloseModal.bind(this)}
-													title={question.answer.indexOf(value) > -1}
-													answer={question.answer}
-												/>*/
-												null
-											);
-										}}
-									</Query>
 								</ScrollView>
 								<FiexdFooter question={question.id} />
 							</View>
@@ -221,30 +204,6 @@ class index extends Component {
 				</Query>
 			</PageContainer>
 		);
-	}
-
-	handleCorrectModal() {
-		this.setState(prevState => ({
-			isShow: !prevState.isShow
-		}));
-	}
-
-	CloseModal() {
-		let { isShow } = this.state;
-		this.timer = setTimeout(() => {
-			this.setState(prevState => ({
-				isShow: false
-			}));
-		}, 800);
-		if (!isShow) {
-			clearTimeout(this.timer);
-		}
-	}
-
-	changeValue(Value) {
-		this.setState({
-			value: Value
-		});
 	}
 }
 
@@ -262,11 +221,11 @@ const styles = StyleSheet.create({
 		marginTop: 50,
 		marginBottom: 30
 	},
-	correction: {
+	curation: {
 		alignItems: 'flex-end',
 		paddingBottom: 15
 	},
-	correctionText: {
+	curationText: {
 		color: Theme.orange,
 		fontSize: 12,
 		fontWeight: '200'

@@ -17,7 +17,8 @@ import {
 	PopOverlay,
 	CustomRefreshControl,
 	ListFooter,
-	Placeholder
+	Placeholder,
+	TabBar
 } from '../../components';
 import PlateItem from './components/PlateItem';
 
@@ -87,6 +88,7 @@ class index extends Component {
 		}
 		return (
 			<View style={styles.container}>
+				<TabBar />
 				<FlatList
 					data={categories}
 					refreshControl={<CustomRefreshControl refreshing={loading} onRefresh={refetch} />}

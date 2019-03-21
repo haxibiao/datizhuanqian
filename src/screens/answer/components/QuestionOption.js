@@ -26,7 +26,7 @@ class QuestionOption extends Component {
 	}
 
 	render() {
-		let { question, option = {}, swithMethod, value, changeValue, pickColor, rightColor } = this.props;
+		let { question, option = {}, swithMethod, value, changeValue, optionColor, rightColor } = this.props;
 		let selection = this.selectionAdapter(option);
 		return (
 			<View>
@@ -48,7 +48,7 @@ class QuestionOption extends Component {
 									{
 										borderColor:
 											value == option.Value
-												? pickColor
+												? optionColor
 												: option.Value == question.answer
 												? rightColor
 												: '#F0F0F0'

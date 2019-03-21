@@ -196,11 +196,7 @@ class index extends Component {
 														backgroundColor: Theme.theme,
 														width: SCREEN_WIDTH - 80
 													}}
-													handler={() =>
-														navigation.navigate('提现日志', {
-															user: user
-														})
-													}
+													onPress={() => navigation.navigate('WithdrawLog')}
 												/>
 											</View>
 										)}

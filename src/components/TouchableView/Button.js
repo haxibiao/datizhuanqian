@@ -25,10 +25,10 @@ class Button extends Component {
 	};
 
 	buildProps() {
-		let { size, style, disabled, title, children, ...others } = this.props;
+		let { size, style, disabled, title, children, textColor, ...others } = this.props;
 		let borderRadius, paddingVertical, paddingHorizontal, textFontSize, titleStyle;
 		let borderColor = Theme.primaryColor;
-		let textColor = '#fff';
+		// let textColor = '#fff';
 		switch (size) {
 			case 'large':
 				borderRadius = PxFit(6);
@@ -64,7 +64,7 @@ class Button extends Component {
 		}
 		if (!React.isValidElement(title)) {
 			titleStyle = {
-				color: textColor,
+				color: textColor ? textColor : '#FFF',
 				fontSize: textFontSize,
 				overflow: 'hidden'
 			};

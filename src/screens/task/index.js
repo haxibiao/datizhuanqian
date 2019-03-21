@@ -7,13 +7,27 @@
 import React, { Component } from 'react';
 
 import { StyleSheet, View } from 'react-native';
+import { PageContainer, TabBar } from '../../components';
+
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
+
+import TaskList from './components/TaskList';
 
 class index extends Component {
 	render() {
-		return <View />;
+		const { login, navigation } = this.props;
+		return (
+			<PageContainer isTopNavigator title="任务">
+				<TabBar />
+				{login ? <TaskList navigation={navigation} /> : null}
+			</PageContainer>
+		);
 	}
 }
 
 const styles = StyleSheet.create({});
 
-export default index;
+export default connect(store => {
+	return { login: store.users.login };
+})(index);

@@ -82,7 +82,6 @@ class NotLogin extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-				{/*<WithdrawsTips tips={'还没有登录账号哦'} method={'登录后绑定支付宝账户即可进行提现'} />*/}
 			</View>
 		);
 	}

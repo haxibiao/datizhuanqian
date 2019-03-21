@@ -55,6 +55,7 @@ import ImagePickerViewer from './Utils/ImagePickerViewer';
 import KeyboardSpacer from './Utils/KeyboardSpacer';
 import DropdownMenu from './Utils/DropdownMenu';
 import Appintroduction from './Utils/Appintroduction';
+import TabBar from './Utils/TabBar';
 
 export {
 	Iconfont,
@@ -97,5 +98,6 @@ export {
 	ImagePickerViewer,
 	KeyboardSpacer,
 	DropdownMenu,
-	Appintroduction
+	Appintroduction,
+	TabBar
 };
