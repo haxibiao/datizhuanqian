@@ -6,6 +6,10 @@ import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/login';
 import AnswerScreen from '../screens/answer';
 import SettingScreen from '../screens/setting';
+import GradeDescriptionScreen from '../screens/setting/GradeDescription';
+import UserProtocolScreen from '../screens/setting/UserProtocol';
+import ShareAppScreen from '../screens/setting/ShareApp';
+import AboutUsScreen from '../screens/setting/AboutUs';
 
 export default {
 	Main: {
@@ -19,5 +23,17 @@ export default {
 	},
 	Setting: {
 		screen: SettingScreen
+	},
+	GradeDescription: {
+		screen: GradeDescriptionScreen
+	},
+	UserProtocol: {
+		screen: UserProtocolScreen
+	},
+	ShareApp: {
+		screen: ShareAppScreen
+	},
+	AboutUs: {
+		screen: AboutUsScreen
 	}
 };

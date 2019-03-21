@@ -61,7 +61,11 @@ class PageContainer extends Component<Props> {
 				navView = (
 					<NavigatorBar
 						{...navBarProps}
-						style={{ backgroundColor: '#fff' }}
+						style={{
+							backgroundColor: '#fff',
+							borderBottomWidth: PxFit(0.5),
+							borderBottomColor: Theme.borderColor
+						}}
 						titleStyle={{ color: Theme.defaultTextColor }}
 						backButtonColor={Theme.defaultTextColor}
 						isTopNavigator={isTopNavigator}

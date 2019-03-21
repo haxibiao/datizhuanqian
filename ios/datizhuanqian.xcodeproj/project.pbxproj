@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -582,7 +583,6 @@
 		00E356F21AD99517003FC87E /* datizhuanqianTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = datizhuanqianTests.m; sourceTree = "<group>"; };
 		08219685445D4A2FA5D47876 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		0A003B21353A4D80AE908BE7 /* RCTJCoreModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTJCoreModule.xcodeproj; path = "../node_modules/jcore-react-native/ios/RCTJCoreModule.xcodeproj"; sourceTree = "<group>"; };
-		0A2C2D0EE4F0125BE0749E74 /* Pods-datizhuanqian-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOSTests/Pods-datizhuanqian-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		0D1A5EBA413A47F3AA6994C1 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		125C72499B774B6789DA7980 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -596,16 +596,13 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		16FAC371249E4100A9E194EB /* libRCTJPushModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTJPushModule.a; sourceTree = "<group>"; };
 		18160DCD78054638B3A50BCC /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		19ABEEBC382AA1C0A2027735 /* Pods-datizhuanqian-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		1A77FFF681729CC4B6ACC1B8 /* Pods-datizhuanqianTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.release.xcconfig"; sourceTree = "<group>"; };
 		1A8DD4D6057E4A3886510485 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		233FE9B130D844FBC7AE98F7 /* Pods-datizhuanqian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.release.xcconfig"; sourceTree = "<group>"; };
+		1AF5A7D4810D9DAA29397F25 /* Pods-datizhuanqianTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.debug.xcconfig"; sourceTree = "<group>"; };
 		274EC95FCF464484A040B0F4 /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* datizhuanqian-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "datizhuanqian-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* datizhuanqian-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "datizhuanqian-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D03E84F9AA49E9BB54B772 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		3BDA3722BFCFC37A29832693 /* Pods-datizhuanqianTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.debug.xcconfig"; sourceTree = "<group>"; };
 		401F4315CCD94C82955032B2 /* AppCenterReactNativeAnalytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeAnalytics.xcodeproj; path = "../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics.xcodeproj"; sourceTree = "<group>"; };
 		4055CDFAF3534F698542851A /* libRCTJCoreModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTJCoreModule.a; sourceTree = "<group>"; };
 		42E2793A739F4E9BA6DA85DC /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
@@ -613,7 +610,6 @@
 		4B4CE1ECE4404E6BA78828C4 /* AppCenterReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNative.xcodeproj; path = ../node_modules/appcenter/ios/AppCenterReactNative.xcodeproj; sourceTree = "<group>"; };
 		4BDF63A43BEB40B1B9701A2B /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		4EB588ED2A42494EA541E4B6 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		5244A93CB9ED0A69C5567D80 /* Pods-datizhuanqian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.debug.xcconfig"; sourceTree = "<group>"; };
 		52DA7BA378204DED9E369AB9 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		5D48BFE4237D4435BA38326C /* libresolv.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		5DF1AFA545AD454A9ADD49E8 /* CoreTelephony.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -625,6 +621,8 @@
 		6D3BE87B25A8419A94E55CC1 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7A1C640EAD2EB38D35999312 /* libPods-datizhuanqian-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7221BCE7016304CF375FA0 /* Pods-datizhuanqian-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		7C3B39C922F27D71A264CFD6 /* Pods-datizhuanqian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.debug.xcconfig"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8396F2C443B741F4BB7E45FD /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		853C460C91074A27BD35D3F8 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -659,6 +657,8 @@
 		A76338E622258570008F7905 /* QCloudCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QCloudCore.framework; sourceTree = "<group>"; };
 		A7633900222586C5008F7905 /* RCTVodUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVodUploader.m; sourceTree = "<group>"; };
 		A8769C54E071418F9AD64823 /* UserNotifications.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		A937B37FFD3B5FFE3D65A48B /* Pods-datizhuanqianTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.release.xcconfig"; sourceTree = "<group>"; };
+		AA4030BA37FB2DE9280E8796 /* Pods-datizhuanqian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.release.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B07CD1CC79B747DCA1B4F990 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
 		B1E48B14906044E9BD9F030D /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
@@ -673,9 +673,9 @@
 		C760D7FD1FFC45028CE0DD53 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CA18853DCDDE4CE8805B0440 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
 		CFD0E8B11A81498EA3A8D4C5 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
+		D23A1873879DE44EA66B84AF /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOSTests/Pods-datizhuanqian-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D4C9BC7A7FD5AB6A5E45D389 /* libPods-datizhuanqian-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55FFC59E063499D8EBF2064 /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeCrashes.xcodeproj; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; };
-		D6A34487C5089DB28A96CBC4 /* Pods-datizhuanqian-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DD1841CCDB1D44CEB30A3193 /* Security.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E241535229B34BDBA1A01326 /* SystemConfiguration.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3163C0EA8724978A6984B77 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
@@ -685,6 +685,8 @@
 		ECC07886D2294E52B7F12C22 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		ECE9F87E064E46E79739A17C /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ED3007B802DE48C394860A04 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EE18A89121A9626F29B92C1E /* Pods-datizhuanqian-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOSTests/Pods-datizhuanqian-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		EF00D33CFDC794C712F26A29 /* Pods-datizhuanqian-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		F2B67FF3CBDD4E03A4734FAC /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
 		F303155543AA92AE42A683B1 /* libPods-datizhuanqian.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F782571C5422419183D5A353 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -1275,14 +1277,14 @@
 		D757785C70EBE3736D3814CC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5244A93CB9ED0A69C5567D80 /* Pods-datizhuanqian.debug.xcconfig */,
-				233FE9B130D844FBC7AE98F7 /* Pods-datizhuanqian.release.xcconfig */,
-				D6A34487C5089DB28A96CBC4 /* Pods-datizhuanqian-tvOS.debug.xcconfig */,
-				19ABEEBC382AA1C0A2027735 /* Pods-datizhuanqian-tvOS.release.xcconfig */,
-				EB920DEDB30C8EED8CE4D954 /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */,
-				0A2C2D0EE4F0125BE0749E74 /* Pods-datizhuanqian-tvOSTests.release.xcconfig */,
-				3BDA3722BFCFC37A29832693 /* Pods-datizhuanqianTests.debug.xcconfig */,
-				1A77FFF681729CC4B6ACC1B8 /* Pods-datizhuanqianTests.release.xcconfig */,
+				7C3B39C922F27D71A264CFD6 /* Pods-datizhuanqian.debug.xcconfig */,
+				AA4030BA37FB2DE9280E8796 /* Pods-datizhuanqian.release.xcconfig */,
+				7B7221BCE7016304CF375FA0 /* Pods-datizhuanqian-tvOS.debug.xcconfig */,
+				EF00D33CFDC794C712F26A29 /* Pods-datizhuanqian-tvOS.release.xcconfig */,
+				D23A1873879DE44EA66B84AF /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */,
+				EE18A89121A9626F29B92C1E /* Pods-datizhuanqian-tvOSTests.release.xcconfig */,
+				1AF5A7D4810D9DAA29397F25 /* Pods-datizhuanqianTests.debug.xcconfig */,
+				A937B37FFD3B5FFE3D65A48B /* Pods-datizhuanqianTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2046,15 +2048,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-datizhuanqian-tvOS-checkManifestLockResult.txt",
 			);
@@ -2082,15 +2080,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-datizhuanqianTests-checkManifestLockResult.txt",
 			);
@@ -2104,15 +2098,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-datizhuanqian-checkManifestLockResult.txt",
 			);
@@ -2126,15 +2116,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-datizhuanqian-tvOSTests-checkManifestLockResult.txt",
 			);
@@ -2206,7 +2192,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3BDA3722BFCFC37A29832693 /* Pods-datizhuanqianTests.debug.xcconfig */;
+			baseConfigurationReference = 1AF5A7D4810D9DAA29397F25 /* Pods-datizhuanqianTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2264,7 +2250,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A77FFF681729CC4B6ACC1B8 /* Pods-datizhuanqianTests.release.xcconfig */;
+			baseConfigurationReference = A937B37FFD3B5FFE3D65A48B /* Pods-datizhuanqianTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -2319,7 +2305,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5244A93CB9ED0A69C5567D80 /* Pods-datizhuanqian.debug.xcconfig */;
+			baseConfigurationReference = 7C3B39C922F27D71A264CFD6 /* Pods-datizhuanqian.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2372,7 +2358,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 233FE9B130D844FBC7AE98F7 /* Pods-datizhuanqian.release.xcconfig */;
+			baseConfigurationReference = AA4030BA37FB2DE9280E8796 /* Pods-datizhuanqian.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2424,7 +2410,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6A34487C5089DB28A96CBC4 /* Pods-datizhuanqian-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 7B7221BCE7016304CF375FA0 /* Pods-datizhuanqian-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2487,7 +2473,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19ABEEBC382AA1C0A2027735 /* Pods-datizhuanqian-tvOS.release.xcconfig */;
+			baseConfigurationReference = EF00D33CFDC794C712F26A29 /* Pods-datizhuanqian-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2550,7 +2536,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EB920DEDB30C8EED8CE4D954 /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = D23A1873879DE44EA66B84AF /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2612,7 +2598,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A2C2D0EE4F0125BE0749E74 /* Pods-datizhuanqian-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = EE18A89121A9626F29B92C1E /* Pods-datizhuanqian-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
