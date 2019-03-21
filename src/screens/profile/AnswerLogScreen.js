@@ -46,7 +46,7 @@ class AnswerItem extends Component {
 		let { category, image, description } = question;
 
 		return (
-			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情列表', { index })}>
+			<TouchableWithoutFeedback onPress={() => navigation.navigate('题目详情', { question })}>
 				<View style={styles.answerItem}>
 					<View style={styles.content}>
 						<View style={{ flex: 1 }}>

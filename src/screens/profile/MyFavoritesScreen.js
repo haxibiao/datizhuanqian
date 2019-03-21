@@ -49,7 +49,7 @@ class FavoritesItem extends Component {
 
 		return (
 			<TouchableOpacity
-				onPress={() => navigation.navigate('收藏详情列表', { index })}
+				onPress={() => navigation.navigate('题目详情', { question })}
 				onLongPress={() => openModal(question.id)}
 			>
 				<View style={styles.favoritesItem}>

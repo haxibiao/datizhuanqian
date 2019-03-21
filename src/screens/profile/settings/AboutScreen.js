@@ -55,7 +55,7 @@ class AboutScreen extends Component {
 									官网地址： datizhuanqian.com datizhuanqian.cn
 								</Text>
 								<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
-									商务合作： db@datizhuanqian.com
+									商务合作： bd@datizhuanqian.com
 								</Text>
 								<Text style={{ fontSize: 13, color: Colors.grey, marginTop: 10 }}>
 									官方邮箱： dtzq@haxibiao.com
