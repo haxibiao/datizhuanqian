@@ -13,6 +13,7 @@ import AboutUsScreen from '../screens/setting/AboutUs';
 import WithdrawLogScreen from '../screens/withdraws/WithdrawLog';
 import WithdrawLogDetailScreen from '../screens/withdraws/WithdrawLogDetails';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
+import EditProfileScreen from '../screens/profile/Edit';
 
 export default {
 	Main: {
@@ -47,6 +48,9 @@ export default {
 	},
 	SubmitTask: {
 		screen: SubmitTaskScreen
+	},
+	EditProfile: {
+		screen: EditProfileScreen
 	}
 };
 

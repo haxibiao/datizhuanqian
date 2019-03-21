@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-06 16:01:26
-*/
+ * @flow
+ * created by wyk made in 2018-12-06 16:01:26
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		bottom: 0,
 		right: 0,
+		backgroundColor: 'rgba(255,255,255,0.8)',
 		justifyContent: 'center',
 		alignItems: 'center'
 	}

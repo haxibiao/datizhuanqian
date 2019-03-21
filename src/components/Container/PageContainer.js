@@ -44,11 +44,8 @@ class PageContainer extends Component<Props> {
 		topInsets: -Theme.HOME_INDICATOR_HEIGHT
 	};
 	renderContent() {
-		const { error, loading, children, onErrorPress } = this.props;
+		const { error, children, onErrorPress } = this.props;
 		if (error) return <StatusView.ErrorView onPress={onErrorPress} />;
-		if (loading) {
-			return <StatusView.LoadingSpinner />;
-		}
 		return children;
 	}
 
@@ -90,6 +87,7 @@ class PageContainer extends Component<Props> {
 			onDidFocus,
 			onWillBlur,
 			onDidBlur,
+			loading,
 			...props
 		} = this.props;
 		const marginTop = !hiddenNavBar ? PxFit(NAVBAR_HEIGHT) : 0;
@@ -105,6 +103,7 @@ class PageContainer extends Component<Props> {
 					onWillBlur={onWillBlur}
 					onDidBlur={onDidBlur}
 				/>
+				{loading && <StatusView.LoadingSpinner />}
 			</View>
 		);
 	}

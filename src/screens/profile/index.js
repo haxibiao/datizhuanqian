@@ -27,7 +27,6 @@ import actions from '../../store/actions';
 import { Storage, ItemKeys } from '../../store/localStorage';
 import { Query, withApollo, compose, graphql } from 'react-apollo';
 import { UserQuery } from '../../assets/graphql/user.graphql';
-import { CategoriesQuery, QuestionQuery } from '../../assets/graphql/question.graphql';
 
 import { BoxShadow } from 'react-native-shadow';
 
@@ -47,14 +46,42 @@ const shadowOpt = {
 class index extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			userCache: null
+		};
+	}
+
+	async componentWillMount() {
+		this.setState({
+			userCache: await Storage.getItem(ItemKeys.userCache)
+		});
+	}
+
+	userAdapter(data: Object = {}) {
+		let user = {
+			id: -1,
+			...data,
+			name: data.name || '学子',
+			avatar: data.avatar + '?t=' + Date.now() || require('../../assets/images/default_avatar.png'),
+			level: data.level || { level: 1, name: '初来乍到' },
+			exp: data.exp || 0,
+			next_level_exp: data.next_level_exp || 50
+		};
+		return user;
 	}
 
 	render() {
-		let { navigation, user, login = false } = this.props;
-		console.log('useruseruseruser', user);
+		let {
+			login,
+			navigation,
+			data: { error, user, refetch }
+		} = this.props;
+		if (error) {
+			user = this.state.userCache;
+		}
+		user = this.userAdapter(user);
 		return (
-			<PageContainer hiddenNavBar>
+			<PageContainer hiddenNavBar onWillFocus={refetch}>
 				<ScrollView style={styles.container} bounces={false}>
 					<View style={{ marginBottom: -Theme.itemSpace }}>
 						<View style={styles.userInfoContainer}>
@@ -63,18 +90,15 @@ class index extends Component {
 								authenticated
 								activeOpacity={1}
 								style={styles.userInfo}
+								onPress={() => navigation.navigate('EditProfile', { user })}
 							>
-								<Avatar
-									source={user.avatar || require('../../assets/images/default_avatar.png')}
-									size={PxFit(60)}
-									style={styles.userAvatar}
-								/>
+								<Avatar source={user.avatar} size={PxFit(60)} style={styles.userAvatar} />
 								<View style={styles.textInfo}>
 									<Text style={styles.userName} numberOfLines={1}>
-										{user.name || '登录/注册'}
+										{login ? user.name : '登录/注册'}
 									</Text>
 									<Text style={styles.introduction} numberOfLines={1}>
-										{user.introduction || '欢迎来到答题赚钱'}
+										{login ? user.introduction || '快去完善个人资料吧' : '欢迎来到答题赚钱'}
 									</Text>
 								</View>
 								<Iconfont name={'right'} size={PxFit(20)} color={'#fff'} />
@@ -335,9 +359,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => {
-	return {
-		user: store.users.user,
-		login: store.users.login
-	};
-})(index);
+export default compose(
+	connect(store => ({ user: store.users.user, login: store.users.login })),
+	graphql(UserQuery, {
+		options: props => ({ variables: { id: props.user.id } })
+	})
+)(index);

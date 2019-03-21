@@ -94,6 +94,7 @@ query UserQuery($id: Int!) {
 		available_withdraw_count
 		follow_users_count
 		followers_count
+		gender
 		level {
 			id
 			name
