@@ -5,7 +5,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, Linking } from 'react-native';
-import { PageContainer, Iconfont, TouchFeedback, Button, Loading } from '../../components';
+import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, OverlayViewer } from '../../components';
 
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
@@ -16,15 +16,14 @@ import { CreateWithdrawMutation, WithdrawsQuery } from '../../assets/graphql/wit
 import { UserQuery } from '../../assets/graphql/User.graphql';
 import { Mutation, Query, compose, graphql } from 'react-apollo';
 
-import codePush from 'react-native-code-push';
+import RuleDescription from './components/RuleDescription';
+import NotLogin from './components/NotLogin';
 
 const EXCHANGE_RATE = 600; //汇率
 
-class HomeScreen extends Component {
+class index extends Component {
 	constructor(props) {
 		super(props);
-		this.RuleDescriptionModalVisible = this.RuleDescriptionModalVisible.bind(this);
-		this.WithdrawsTipsModalVisible = this.WithdrawsTipsModalVisible.bind(this);
 		this.handleWithdraws = this.handleWithdraws.bind(this);
 		this.state = {
 			promotModalVisible: false,
@@ -53,7 +52,7 @@ class HomeScreen extends Component {
 		}
 	}
 
-	//判断余额
+	//检查余额
 	_checkBalance(user, amount, wallet) {
 		let { clickControl } = this.state;
 		if (checkAmount(user, amount, wallet)) {
@@ -106,7 +105,6 @@ class HomeScreen extends Component {
 			this.props.navigation.dispatch(
 				Methods.navigationAction({ routeName: '提现申请', params: { amount: amount } })
 			);
-
 			this.setState({
 				clickControl: false
 			});
@@ -116,29 +114,23 @@ class HomeScreen extends Component {
 		}
 	}
 
+	showRule = () => {
+		OverlayViewer.show(<RuleDescription />);
+	};
+
 	render() {
 		let { RuleDescriptioVisible, WithdrawsTipsVisible, clickControl, isVisible } = this.state;
 		const { user, login, navigation, luckyMoney } = this.props;
 		return (
-			<PageContainer title="提现" isTopNavigator>
-				{/*<Header
-					headerLeft
-					customStyle={{
-						backgroundColor: RuleDescriptioVisible || WithdrawsTipsVisible ? '#977018' : Theme.theme,
-						borderBottomWidth: 0,
-						borderBottomColor: 'transparent'
-					}}
-					headerRight={
-						<TouchFeedback
-							onPress={() => {
-								this.RuleDescriptionModalVisible();
-							}}
-							style={{ padding: 5 }}
-						>
-							<Iconfont name={'question'} size={18} />
-						</TouchFeedback>
-					}
-				/>*/}
+			<PageContainer
+				title="提现"
+				isTopNavigator
+				rightView={
+					<TouchFeedback onPress={this.showRule} style={{ padding: 5 }}>
+						<Iconfont name={'question'} size={18} color={'#fff'} />
+					</TouchFeedback>
+				}
+			>
 				{login ? (
 					<Query query={UserQuery} variables={{ id: user.id }}>
 						{({ data, loading, error, refetch }) => {
@@ -221,36 +213,11 @@ class HomeScreen extends Component {
 						}}
 					</Query>
 				) : (
-					<WithdrawsNotLogin navigation={navigation} />
+					<NotLogin navigation={navigation} />
 				)}
-				{/*<RuleDescriptionModal
-					visible={RuleDescriptioVisible}
-					handleVisible={this.RuleDescriptionModalVisible}
-				/>
-				<WithdrawsTipsModal
-					visible={WithdrawsTipsVisible}
-					handleVisible={this.WithdrawsTipsModalVisible}
-					text={this.state.withdrawTips}
-				/>*/}
-				<Loading isVisible={isVisible} content={'加载中...'} />
+				<SubmitLoading isVisible={isVisible} content={'加载中...'} />
 			</PageContainer>
 		);
-	}
-
-	RuleDescriptionModalVisible() {
-		this.setState(prevState => ({
-			RuleDescriptioVisible: !prevState.RuleDescriptioVisible
-		}));
-	}
-
-	WithdrawsTipsModalVisible() {
-		this.setState(prevState => ({
-			WithdrawsTipsVisible: !prevState.WithdrawsTipsVisible
-		}));
-	}
-
-	openUrl(url) {
-		Linking.openURL(url);
 	}
 }
 
@@ -325,4 +292,4 @@ export default connect(store => {
 		login: store.users.login,
 		luckyMoney: store.withdraws.luckyMoney
 	};
-})(compose(graphql(CreateWithdrawMutation, { name: 'CreateWithdrawMutation' }))(HomeScreen));
+})(compose(graphql(CreateWithdrawMutation, { name: 'CreateWithdrawMutation' }))(index));

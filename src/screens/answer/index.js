@@ -5,7 +5,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import {
 	PageContainer,
 	TouchFeedback,
@@ -14,24 +14,268 @@ import {
 	ListItem,
 	CustomSwitch,
 	ItemSeparator,
-	PopOverlay
+	PopOverlay,
+	SubmitLoading,
+	Button
 } from '../../components';
 
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
+// import { Methods } from '../../helpers';
+
+import QuestionOption from './components/QuestionOption';
+import QuestionBody from './components/QuestionBody';
+import FavoriteQuestion from './components/FavoriteQuestion';
+import UserInfo from './components/UserInfo';
+import FiexdFooter from './components/FiexdFooter';
+
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
+
+import { QuestionQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
+import { UserQuery } from '../../assets/graphql/user.graphql';
+import { Query, compose, graphql, withApollo } from 'react-apollo';
+
 class index extends Component {
-	render() {
+	constructor(props) {
+		super(props);
+		this.state = {
+			swithMethod: false,
+			value: '',
+			isShow: false,
+			name: '提交答案',
+			optionColor: Theme.theme, //选项颜色
+			buttonColor: Theme.theme, //按钮颜色
+			rightColor: Theme.tintGray //正确答案颜色,
+		};
+	}
+
+	//提交答案 下一题
+	submitAnswer = async (question, refetch) => {
+		const { user } = this.props;
+		let { swithMethod, name, isShow, optionColor, buttonColor, rightColor, value } = this.state;
+		let result = {};
+
+		if (swithMethod) {
+			//下一题
+			this.nextQuestion(refetch);
+		} else {
+			//提交答案
+			this.setState({
+				swithMethod: true,
+				name: '下一题',
+				isShow: true,
+				buttonColor: question.answer.indexOf(value) > -1 ? Theme.weixin : Theme.themeRed,
+				optionColor: question.answer.indexOf(value) > -1 ? Theme.weixin : Theme.themeRed,
+				rightColor: Theme.weixin
+			});
+			//UI状态改变
+			try {
+				result = await this.props.QuestionAnswerMutation({
+					variables: {
+						id: question.id,
+						answer: value
+					},
+					refetchQueries: () => [
+						{
+							query: UserQuery,
+							variables: { id: user.id },
+							fetchPolicy: 'network-only'
+						}
+					]
+				});
+			} catch (ex) {
+				result.errors = ex;
+			}
+			if (result && result.errors) {
+				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				Methods.toast(str, -100);
+			}
+		}
+	};
+
+	nextQuestion = refetch => {
+		const { category } = this.props.navigation.state.params;
+		this.favoriteButton.resetFavorite();
+		this.setState({
+			swithMethod: false,
+			value: '',
+			name: '提交答案',
+			optionColor: Theme.theme,
+			buttonColor: Theme.blue,
+			rightColor: Theme.tintGray
+		});
+		//重置state
+
+		refetch({ category_id: category.id });
+		//更换题目
+	};
+
+	getQuestionId = () => {
+		return this.questionId;
+	};
+
+	_showCuration = () => {
+		let { swithMethod } = this.state;
+		const { question, navigation } = this.props;
 		return (
-			<PageContainer title="答题">
-				<ScrollView contentContainerStyle={styles.container} />
+			<TouchFeedback
+				style={styles.correction}
+				onPress={() => navigation.navigate('题目纠错', { question: question })}
+			>
+				<Text style={styles.correctionText}>{swithMethod ? '题目纠错' : ''}</Text>
+			</TouchFeedback>
+		);
+	};
+
+	render() {
+		const { navigation, user, noTicketTips } = this.props;
+		let { value, swithMethod, isShow, optionColor, name, buttonColor, rightColor } = this.state;
+		const { category, question_id } = navigation.state.params;
+
+		return (
+			<PageContainer
+				title="答题"
+				rightView={
+					<FavoriteQuestion ref={ref => (this.favoriteButton = ref)} getQuestionId={this.getQuestionId} />
+				}
+			>
+				<Query
+					query={QuestionQuery}
+					variables={{ category_id: category ? category.id : null, id: question_id }}
+					fetchPolicy="network-only"
+				>
+					{({ data, error, loading, refetch, fetchMore }) => {
+						if (error) {
+							return <QuestionError />;
+						}
+						if (loading) return null;
+						if (!(data && data.question)) return null;
+
+						let question = data.question;
+						this.questionId = question.id;
+
+						let selections = data.question.selections.replace(/\\/g, '');
+						let option = [];
+						try {
+							option = JSON.parse(selections);
+						} catch (error) {
+							<LoadingError reload={() => refetch()} />;
+						}
+
+						return (
+							<View style={{ flex: 1, minheight: SCREEN_HEIGHT }}>
+								<ScrollView style={styles.container}>
+									{/*<TabTop user={user} isShow={isShow} isAnswer={true} />*/}
+
+									<View style={styles.content}>
+										<UserInfo user={question.user} />
+										<QuestionBody question={question} />
+										<QuestionOption
+											question={question}
+											option={option}
+											changeValue={this.changeValue.bind(this)}
+											value={value}
+											swithMethod={swithMethod}
+											optionColor={optionColor}
+											rightColor={rightColor}
+										/>
+										<View style={styles.submitWrap}>
+											{this._showCuration(question)}
+											<Button
+												title={name}
+												disabled={value ? false : true}
+												onPress={() => {
+													this.submitAnswer(question, refetch);
+												}}
+												style={{ height: 38, backgroundColor: buttonColor }}
+												fontSize={14}
+											/>
+										</View>
+									</View>
+
+									<Query query={UserQuery} variables={{ id: user.id }}>
+										{({ data, loading, error, refetch }) => {
+											if (error) return null;
+											if (!(data && data.user)) return null;
+											let user = data.user;
+											return (
+												/*<CorrectModal
+													visible={isShow}
+													gold={question.gold}
+													user={data.user}
+													noTicketTips={noTicketTips}
+													handleVisible={this.handleCorrectModal.bind(this)}
+													CloseModal={this.CloseModal.bind(this)}
+													title={question.answer.indexOf(value) > -1}
+													answer={question.answer}
+												/>*/
+												null
+											);
+										}}
+									</Query>
+								</ScrollView>
+								<FiexdFooter question={question.id} />
+							</View>
+						);
+					}}
+				</Query>
 			</PageContainer>
 		);
+	}
+
+	handleCorrectModal() {
+		this.setState(prevState => ({
+			isShow: !prevState.isShow
+		}));
+	}
+
+	CloseModal() {
+		let { isShow } = this.state;
+		this.timer = setTimeout(() => {
+			this.setState(prevState => ({
+				isShow: false
+			}));
+		}, 800);
+		if (!isShow) {
+			clearTimeout(this.timer);
+		}
+	}
+
+	changeValue(Value) {
+		this.setState({
+			value: Value
+		});
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flexGrow: 1,
-		backgroundColor: '#000'
+		flex: 1,
+		backgroundColor: Theme.white
+	},
+
+	content: {
+		paddingTop: 20,
+		paddingHorizontal: 30
+	},
+	submitWrap: {
+		marginTop: 50,
+		marginBottom: 30
+	},
+	correction: {
+		alignItems: 'flex-end',
+		paddingBottom: 15
+	},
+	correctionText: {
+		color: Theme.orange,
+		fontSize: 12,
+		fontWeight: '200'
 	}
 });
 
-export default index;
+export default connect(store => {
+	return {
+		user: store.users.user,
+		noTicketTips: store.users.noTicketTips
+	};
+})(compose(graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }))(withApollo(index)));

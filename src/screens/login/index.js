@@ -16,7 +16,7 @@ import { Query, withApollo, compose, graphql } from 'react-apollo';
 import { signUpMutation, signInMutation, UserQuery } from '../../assets/graphql/user.graphql';
 
 import SignIn from './SignIn';
-import SignUp from './SignUp';
+// import SignUp from './SignUp';
 
 var showThumbType = ['accpunt', 'password'];
 class index extends Component {

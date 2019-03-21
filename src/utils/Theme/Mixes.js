@@ -29,6 +29,20 @@ const navBarBackground = '#FFBB04';
 const navBarTitleColor = '#fff';
 const navBarSeparatorColor = 'transparent';
 
+//old
+const white = '#fff';
+const orange = '#CD6839';
+const black = '#000';
+const blue = '#407FCF';
+const pink = '#FF9DC6';
+
+const primaryFont = '#363636';
+const tintGray = '#F0F0F0';
+
+const lightBorder = '#F4F4F4';
+
+const grey = '#969696';
+const weixin = '#42c02e';
 //sheet
 export default {
 	theme,
@@ -51,5 +65,17 @@ export default {
 	linkColor: '#3E65E8',
 	cancelColor: '#b6c2e1',
 	confirmColor: '#3E65E8',
-	itemSpace: 15
+	itemSpace: 15,
+
+	//old
+	white,
+	orange,
+	black,
+	pink,
+	blue,
+	primaryFont,
+	tintGray,
+	lightBorder,
+	grey,
+	weixin
 };

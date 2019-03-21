@@ -6,8 +6,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 
-import { DivisionLine, WithdrawsTips } from '../Universal';
-import { Colors, Config, Divice } from '../../constants';
+// import { DivisionLine, WithdrawsTips } from '../Universal';
+import { Theme, SCREEN_WIDTH } from '../../../utils';
 
 class NotLogin extends Component {
 	constructor(props) {
@@ -28,17 +28,17 @@ class NotLogin extends Component {
 							paddingBottom: 30
 						}}
 					>
-						<View style={{ width: Divice.width / 2 }}>
+						<View style={{ width: SCREEN_WIDTH / 2 }}>
 							<Text style={styles.gold}>0</Text>
 							<Text style={styles.type}>智慧点</Text>
 						</View>
-						<View style={{ width: Divice.width / 2 }}>
+						<View style={{ width: SCREEN_WIDTH / 2 }}>
 							<Text style={styles.gold}>0.00</Text>
 							<Text style={styles.type}>余额（元）</Text>
 						</View>
 					</View>
 
-					<DivisionLine height={10} />
+					{/*<DivisionLine height={10} />*/}
 					<View style={styles.center}>
 						<TouchableOpacity
 							style={styles.item}
@@ -47,7 +47,7 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: Colors.themeRed }}>1元</Text>
+								提现<Text style={{ color: Theme.themeRed }}>1元</Text>
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -57,7 +57,7 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: Colors.themeRed }}>2元</Text>
+								提现<Text style={{ color: Theme.themeRed }}>2元</Text>
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -67,7 +67,7 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: Colors.themeRed }}>5元</Text>
+								提现<Text style={{ color: Theme.themeRed }}>5元</Text>
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -77,12 +77,12 @@ class NotLogin extends Component {
 							}}
 						>
 							<Text style={styles.content}>
-								提现<Text style={{ color: Colors.themeRed }}>10元</Text>
+								提现<Text style={{ color: Theme.themeRed }}>10元</Text>
 							</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
-				<WithdrawsTips tips={'还没有登录账号哦'} method={'登录后绑定支付宝账户即可进行提现'} />
+				{/*<WithdrawsTips tips={'还没有登录账号哦'} method={'登录后绑定支付宝账户即可进行提现'} />*/}
 			</View>
 		);
 	}
@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	gold: {
-		color: Colors.themeRed,
+		color: Theme.themeRed,
 		fontSize: 44,
 		paddingBottom: 2,
 		textAlign: 'center'
 	},
 	type: {
-		color: Colors.grey,
+		color: Theme.grey,
 		fontSize: 13,
 		textAlign: 'center'
 	},
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		paddingVertical: 25,
-		width: (Divice.width - 44) / 2,
+		width: (SCREEN_WIDTH - 44) / 2,
 		borderColor: '#E0E0E0',
 		borderWidth: 0.5,
 		alignItems: 'center',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		fontSize: 16,
-		color: Colors.black
+		color: Theme.black
 	},
 	footer: {
 		justifyContent: 'center',

@@ -32,7 +32,7 @@ import Toast from './Overlay/Toast';
 import PullChooser from './Overlay/PullChooser';
 import PopOverlay from './Overlay/PopOverlay';
 import ProgressOverlay from './Overlay/ProgressOverlay';
-import Loading from './Overlay/Loading';
+import SubmitLoading from './Overlay/SubmitLoading';
 import OverlayViewer from './Overlay/OverlayViewer';
 // Layout
 import MasonryList from './Layout/MasonryList';
@@ -80,7 +80,7 @@ export {
 	PullChooser,
 	PopOverlay,
 	ProgressOverlay,
-	Loading,
+	SubmitLoading,
 	OverlayViewer,
 	MasonryList,
 	PullList,
