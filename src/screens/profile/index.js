@@ -52,6 +52,7 @@ class index extends Component {
 
 	render() {
 		let { navigation, user, login = false } = this.props;
+		console.log('useruseruseruser', user);
 		return (
 			<PageContainer hiddenNavBar>
 				<ScrollView style={styles.container} bounces={false}>
@@ -136,6 +137,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
+									onPress={() => navigation.navigate('xxx')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -150,6 +152,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
+									onPress={() => navigation.navigate('xxx')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -164,6 +167,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
+									onPress={() => navigation.navigate('xxx')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -178,6 +182,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
+									onPress={() => navigation.navigate('xxx')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -194,7 +199,7 @@ class index extends Component {
 						style={styles.columnItem}
 						authenticated
 						navigation={navigation}
-						onPress={() => navigation.navigate('Setting')}
+						onPress={() => navigation.navigate('Wallet')}
 					>
 						<Row>
 							<Iconfont name={'withdraw'} size={PxFit(20)} style={styles.itemType} color={'#FFBB04'} />
@@ -206,7 +211,7 @@ class index extends Component {
 						style={styles.columnItem}
 						authenticated
 						navigation={navigation}
-						onPress={() => navigation.navigate('Setting')}
+						onPress={() => navigation.navigate('Feedback')}
 					>
 						<Row>
 							<Iconfont name={'feedback2'} size={PxFit(22)} style={styles.itemType} color={'#BB8DF3'} />
@@ -219,7 +224,7 @@ class index extends Component {
 						style={styles.columnItem}
 						authenticated
 						navigation={navigation}
-						onPress={() => navigation.navigate('Setting')}
+						onPress={() => navigation.navigate('Helps')}
 					>
 						<Row>
 							<Iconfont name={'question'} size={PxFit(24)} style={styles.itemType} color={'#FF5E7D'} />
@@ -227,12 +232,7 @@ class index extends Component {
 						</Row>
 						<Iconfont name="right" size={17} color={Theme.subTextColor} />
 					</TouchFeedback>
-					<TouchFeedback
-						style={styles.columnItem}
-						authenticated
-						navigation={navigation}
-						onPress={() => navigation.navigate('Setting')}
-					>
+					<TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Setting', { user })}>
 						<Row>
 							<Iconfont name={'setting1'} size={PxFit(24)} style={styles.itemType} color={'#7971F3'} />
 							<Text style={styles.itemTypeText}>设置</Text>

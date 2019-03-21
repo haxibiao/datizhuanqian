@@ -2,6 +2,8 @@
  * @flow
  * created by wyk made in 2019-03-19 12:59:55
  */
+'use strict';
+
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
 import { Iconfont, Row, TouchFeedback } from '../../../components';

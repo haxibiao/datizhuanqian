@@ -53,10 +53,21 @@ class PageContainer extends Component<Props> {
 	}
 
 	renderNavBar() {
-		const { navBar, isTopNavigator, navBarStyle, ...navBarProps } = this.props;
+		const { navBar, isTopNavigator, navBarStyle, white, ...navBarProps } = this.props;
 		let navView = null;
 		if (typeof navBar === 'undefined') {
 			navView = <NavigatorBar {...navBarProps} style={navBarStyle} isTopNavigator={isTopNavigator} />;
+			if (white) {
+				navView = (
+					<NavigatorBar
+						{...navBarProps}
+						style={{ backgroundColor: '#fff' }}
+						titleStyle={{ color: Theme.defaultTextColor }}
+						backButtonColor={Theme.defaultTextColor}
+						isTopNavigator={isTopNavigator}
+					/>
+				);
+			}
 		} else {
 			navView = navBar;
 		}

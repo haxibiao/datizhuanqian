@@ -5,6 +5,7 @@
 import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/login';
 import AnswerScreen from '../screens/answer';
+import SettingScreen from '../screens/setting';
 
 export default {
 	Main: {
@@ -15,5 +16,8 @@ export default {
 	},
 	Answer: {
 		screen: AnswerScreen
+	},
+	Setting: {
+		screen: SettingScreen
 	}
 };

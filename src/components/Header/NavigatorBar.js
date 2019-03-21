@@ -28,6 +28,7 @@ class NavigatorBar extends Component {
 		titleStyle: PropTypes.object,
 		titleViewStyle: PropTypes.object,
 		backButtonPress: PropTypes.func,
+		backButtonColor: PropTypes.string,
 		leftView: PropTypes.element,
 		rightView: PropTypes.element,
 		sideViewStyle: PropTypes.object,
@@ -123,14 +124,14 @@ class NavigatorBar extends Component {
 	};
 
 	renderLeftView = () => {
-		const { isTopNavigator, leftView } = this.props;
+		const { isTopNavigator, leftView, backButtonColor } = this.props;
 		let left;
 		if (isTopNavigator || leftView) {
 			left = leftView;
 		} else {
 			left = (
 				<TouchableOpacity activeOpacity={1} onPress={this.backButtonPress}>
-					<Iconfont name="left" color={Theme.navBarTitleColor} size={PxFit(21)} />
+					<Iconfont name="left" color={backButtonColor || Theme.navBarTitleColor} size={PxFit(21)} />
 				</TouchableOpacity>
 			);
 		}
