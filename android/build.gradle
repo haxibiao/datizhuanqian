@@ -3,6 +3,7 @@
 buildscript {
     ext {
         applicationId = 'com.datizhuanqian'
+        //应用宝 魅族  包名需改为com.dtzq
         buildToolsVersion = "27.0.3"
         minSdkVersion = 16
         compileSdkVersion = 27

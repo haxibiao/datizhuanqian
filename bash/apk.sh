@@ -87,11 +87,12 @@ cd /data/app/datizhuanqian
 cd ./android
 ./gradlew assembleHuawei
 
-echo "${grn}开始生成魅族正式包 ...${end}"
-cd /data/app/datizhuanqian
+# echo "${grn}开始生成魅族正式包 ...${end}"
+# cd /data/app/datizhuanqian
 
-cd ./android
-./gradlew assembleMeizu
+# cd ./android
+# ./gradlew assembleMeizu
+
 
 echo "${grn}开始生成360正式包 ...${end}"
 cd /data/app/datizhuanqian
@@ -99,11 +100,11 @@ cd /data/app/datizhuanqian
 cd ./android
 ./gradlew assembleQihoo
 
-echo "${grn}开始生成应用宝正式包 ...${end}"
-cd /data/app/datizhuanqian
+# echo "${grn}开始生成应用宝正式包 ...${end}"
+# cd /data/app/datizhuanqian
 
-cd ./android
-./gradlew assembleTencent
+# cd ./android
+# ./gradlew assembleTencent
 
 
 echo "${grn}开始生成其他小应用商店正式包 ...${end}"
