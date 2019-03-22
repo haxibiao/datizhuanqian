@@ -96,7 +96,7 @@ class PageContainer extends Component<Props> {
 			<View style={[styles.container, style]} {...props}>
 				{!hiddenNavBar && this.renderNavBar()}
 				<View style={[styles.contentView, { marginTop }, contentViewStyle]}>{this.renderContent()}</View>
-				{ISIOS && autoKeyboardInsets ? <KeyboardSpace topInsets={topInsets} /> : null}
+				<KeyboardSpace topInsets={topInsets} />
 				<NavigationEvents
 					onWillFocus={onWillFocus}
 					onDidFocus={onDidFocus}

@@ -65,6 +65,7 @@ class index extends Component {
 	render() {
 		let { user, login, navigation, data } = this.props;
 		if (data && data.user) {
+			user = data.user;
 			user.avatar += '?t=' + Date.now();
 		} else {
 			user = this.userAdapter(user);
