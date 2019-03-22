@@ -46,24 +46,16 @@ const shadowOpt = {
 class index extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			userCache: null
-		};
-	}
-
-	async componentWillMount() {
-		this.setState({
-			userCache: await Storage.getItem(ItemKeys.userCache)
-		});
+		this.state = {};
 	}
 
 	userAdapter(data: Object = {}) {
 		let user = {
 			id: -1,
 			...data,
-			name: data.name || '学子',
-			avatar: data.avatar + '?t=' + Date.now() || require('../../assets/images/default_avatar.png'),
-			level: data.level || { level: 1, name: '初来乍到' },
+			name: data.name || '求学好问',
+			avatar: data.avatar ? data.avatar + '?t=' + Date.now() : require('../../assets/images/default_avatar.png'),
+			level: data.level || { level: 0, name: '初来乍到' },
 			exp: data.exp || 0,
 			next_level_exp: data.next_level_exp || 50
 		};
@@ -71,17 +63,15 @@ class index extends Component {
 	}
 
 	render() {
-		let {
-			login,
-			navigation,
-			data: { error, user, refetch }
-		} = this.props;
-		if (error) {
-			user = this.state.userCache;
+		let { user, login, navigation, data } = this.props;
+		if (data && data.user) {
+			user.avatar += '?t=' + Date.now();
+		} else {
+			user = this.userAdapter(user);
 		}
-		user = this.userAdapter(user);
+		console.log('test user', user);
 		return (
-			<PageContainer hiddenNavBar onWillFocus={refetch}>
+			<PageContainer hiddenNavBar onWillFocus={login && data.refetch}>
 				<ScrollView style={styles.container} bounces={false}>
 					<View style={{ marginBottom: -Theme.itemSpace }}>
 						<View style={styles.userInfoContainer}>
