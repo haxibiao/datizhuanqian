@@ -99,5 +99,19 @@ cd /data/app/datizhuanqian
 cd ./android
 ./gradlew assembleQihoo
 
+echo "${grn}开始生成应用宝正式包 ...${end}"
+cd /data/app/datizhuanqian
+
+cd ./android
+./gradlew assembleTencent
+
+
+echo "${grn}开始生成其他小应用商店正式包 ...${end}"
+cd /data/app/datizhuanqian
+
+cd ./android
+./gradlew assembleOther
+
+
 
 #单独生成某个包的话手动去生成比较方便

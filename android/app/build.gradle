@@ -15,6 +15,7 @@ project.ext.react = [
     devDisabledInMeizu:true,
     devDisabledInQihoo:true,
     devDisabledInTencent:true,
+    devDisabledInOther:true,
 
     bundleInDev:true,
     bundleInStaging: true,
@@ -26,7 +27,8 @@ project.ext.react = [
     bundleInHuawei:true,
     bundleInMeizu:true,
     bundleInQihoo:true,
-    bundleInTencent:true
+    bundleInTencent:true,
+    bundleInOther:true
 ]
 
 //要为每个应用商店生成带有不同的.env内容的APK
@@ -202,6 +204,14 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
         tencent {
+            initWith release
+            matchingFallbacks = ['release']
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
+        }
+        other {
             initWith release
             matchingFallbacks = ['release']
             minifyEnabled enableProguardInReleaseBuilds
