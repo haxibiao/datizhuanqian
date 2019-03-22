@@ -127,6 +127,7 @@ class index extends Component {
 		let disabled = signIn ? !(account && password) : !(account && password && agreement);
 		return (
 			<PageContainer
+				login={modalShow}
 				contentViewStyle={{ marginTop: 0 }}
 				navBarStyle={{ zIndex: 1, backgroundColor: 'transparent' }}
 				leftView={

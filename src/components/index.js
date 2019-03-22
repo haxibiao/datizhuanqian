@@ -57,6 +57,7 @@ import KeyboardSpacer from './Utils/KeyboardSpacer';
 import DropdownMenu from './Utils/DropdownMenu';
 import Appintroduction from './Utils/Appintroduction';
 import TabBar from './Utils/TabBar';
+import GenderLabel from './Utils/GenderLabel';
 
 export {
 	Iconfont,
@@ -101,5 +102,6 @@ export {
 	KeyboardSpacer,
 	DropdownMenu,
 	Appintroduction,
-	TabBar
+	TabBar,
+	GenderLabel
 };

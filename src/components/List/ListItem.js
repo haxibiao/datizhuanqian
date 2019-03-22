@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-14 16:06:39
-*/
+ * @flow
+ * created by wyk made in 2018-12-14 16:06:39
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -12,6 +12,7 @@ import SafeText from '../Basics/SafeText';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 
 type Props = {
+	disabled: ?boolean,
 	style?: style,
 	leftComponent?: any,
 	onPress?: Function,
@@ -30,6 +31,7 @@ class ListItem extends Component<Props> {
 
 	render() {
 		let {
+			disabled,
 			style,
 			leftComponent,
 			rightComponent,
@@ -62,7 +64,7 @@ class ListItem extends Component<Props> {
 			...subTitleStyle
 		};
 		return (
-			<TouchFeedback onPress={onPress}>
+			<TouchFeedback onPress={onPress} disabled={disabled}>
 				<View style={style}>
 					<View>{leftComponent}</View>
 					<View style={middleStyle}>

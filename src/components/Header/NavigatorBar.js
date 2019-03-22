@@ -93,7 +93,11 @@ class NavigatorBar extends Component {
 		};
 
 		//build leftView and rightView style
-		sideViewStyle = { opacity: this.state.barOpacity, ...sideViewStyle };
+		sideViewStyle = {
+			opacity: this.state.barOpacity,
+			alignSelf: 'stretch',
+			...sideViewStyle
+		};
 
 		//convert string title to NavigatorBar.Title
 		if (typeof title === 'string') {
@@ -130,7 +134,15 @@ class NavigatorBar extends Component {
 			left = leftView;
 		} else {
 			left = (
-				<TouchableOpacity activeOpacity={1} onPress={this.backButtonPress}>
+				<TouchableOpacity
+					activeOpacity={1}
+					onPress={this.backButtonPress}
+					style={{
+						flex: 1,
+						width: Theme.navBarContentHeight,
+						justifyContent: 'center'
+					}}
+				>
 					<Iconfont name="left" color={backButtonColor || Theme.navBarTitleColor} size={PxFit(21)} />
 				</TouchableOpacity>
 			);

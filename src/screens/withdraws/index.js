@@ -198,7 +198,8 @@ class index extends Component {
 										)}
 									</View>
 									{user.pay_account ? null : (
-										<WithdrawsTips navigation={navigation} isVisible={isVisible} />
+										<View />
+										// <WithdrawsTips navigation={navigation} isVisible={isVisible} />
 									)}
 								</View>
 							);

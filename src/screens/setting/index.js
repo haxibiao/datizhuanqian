@@ -21,8 +21,6 @@ import actions from '../../store/actions';
 import { connect } from 'react-redux';
 import { Query, compose, withApollo, graphql, Mutation } from 'react-apollo';
 
-import UserPanel from './components/UserPanel';
-
 class index extends Component {
 	constructor(props) {
 		super(props);
@@ -48,7 +46,21 @@ class index extends Component {
 					removeClippedSubviews={true}
 					showsVerticalScrollIndicator={false}
 				>
-					{login ? <UserPanel navigation={navigation} user={user} /> : null}
+					{login && (
+						<ListItem
+							onPress={() => {
+								if (login) {
+									navigation.navigate('AccountSecurity', { user });
+								} else {
+									navigation.navigate('Register');
+								}
+							}}
+							style={styles.listItem}
+							leftComponent={<Text style={styles.itemText}>账号安全</Text>}
+							rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+						/>
+					)}
+					{login && <ItemSeparator />}
 					<ListItem
 						onPress={() => navigation.navigate('GradeDescription')}
 						style={styles.listItem}
@@ -127,6 +139,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Theme.groundColour
 	},
+	listItem: {
+		paddingHorizontal: PxFit(16),
+		height: PxFit(50),
+		backgroundColor: '#fff'
+	},
 	itemText: {
 		fontSize: PxFit(15),
 		color: Theme.defaultTextColor,
@@ -135,11 +152,6 @@ const styles = StyleSheet.create({
 	rigthText: {
 		fontSize: PxFit(14),
 		color: Theme.subTextColor
-	},
-	listItem: {
-		paddingHorizontal: PxFit(16),
-		height: PxFit(50),
-		backgroundColor: '#fff'
 	},
 	logout: {
 		fontSize: PxFit(14),

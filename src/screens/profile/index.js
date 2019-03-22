@@ -70,12 +70,17 @@ class index extends Component {
 		} else {
 			user = this.userAdapter(user);
 		}
-		console.log('test user', user);
 		return (
-			<PageContainer hiddenNavBar onWillFocus={login && data.refetch}>
+			<PageContainer hiddenNavBar>
 				<ScrollView style={styles.container} bounces={false}>
 					<View style={{ marginBottom: -Theme.itemSpace }}>
 						<View style={styles.userInfoContainer}>
+							<View style={styles.userCoverContainer}>
+								<Image
+									source={require('../../assets/images/user_cover.png')}
+									style={styles.userCover}
+								/>
+							</View>
 							<TouchFeedback
 								navigation={navigation}
 								authenticated
@@ -105,19 +110,7 @@ class index extends Component {
 								</View>
 								<TouchFeedback
 									navigation={navigation}
-									authenticated
-									activeOpacity={1}
-									style={styles.metaItem}
-								>
-									<Text style={styles.metaCount} numberOfLines={1}>
-										{user.followers_count || 0}
-									</Text>
-									<Text style={styles.metaLabel} numberOfLines={1}>
-										粉丝
-									</Text>
-								</TouchFeedback>
-								<TouchFeedback
-									navigation={navigation}
+									onPress={() => navigation.navigate('Society')}
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
@@ -127,6 +120,20 @@ class index extends Component {
 									</Text>
 									<Text style={styles.metaLabel} numberOfLines={1}>
 										关注
+									</Text>
+								</TouchFeedback>
+								<TouchFeedback
+									navigation={navigation}
+									onPress={() => navigation.navigate('Society', { follower: true })}
+									authenticated
+									activeOpacity={1}
+									style={styles.metaItem}
+								>
+									<Text style={styles.metaCount} numberOfLines={1}>
+										{user.followers_count || 0}
+									</Text>
+									<Text style={styles.metaLabel} numberOfLines={1}>
+										粉丝
 									</Text>
 								</TouchFeedback>
 								<View style={styles.metaItem}>
@@ -269,6 +276,20 @@ const styles = StyleSheet.create({
 		padding: Theme.itemSpace,
 		paddingTop: PxFit(Theme.statusBarHeight + 20),
 		backgroundColor: Theme.primaryColor
+	},
+	userCoverContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0
+	},
+	userCover: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: null,
+		height: null
 	},
 	userInfo: {
 		flexDirection: 'row',

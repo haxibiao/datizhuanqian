@@ -28,8 +28,8 @@ type Props = {
 export default class ScrollTabBar extends Component<Props> {
 	static defaultProps = {
 		activeTextStyle: { color: Theme.defaultTextColor },
-		tintTextStyle: { color: Theme.highlightBorderColor },
-		underLineColor: Theme.primaryAuxiliaryColor,
+		tintTextStyle: { color: Theme.subTextColor },
+		underLineColor: Theme.secondaryColor,
 		tabUnderlineHeight: 2,
 		hiddenUnderLine: false
 	};

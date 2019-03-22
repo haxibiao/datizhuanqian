@@ -19,26 +19,18 @@ class UserPanel extends Component {
 	render() {
 		let { navigation, user = {} } = this.props;
 		return (
-			<View style={{ backgroundColor: '#fff' }}>
-				<TouchFeedback style={styles.container} onPress={() => navigation.navigate('EditProfile', { user })}>
-					<View style={styles.left}>
-						<Avatar
-							source={user.avatar}
-							size={52}
-							borderStyle={{ borderWidth: 1, borderColor: '#ffffff' }}
-						/>
-						<View style={styles.content}>
-							<Text style={{ color: Theme.defaultTextColor, fontSize: 15 }}>{user.name}</Text>
-							<Text style={styles.user}>
-								LV.{user.level ? user.level.level : '1'} {'  '}
-								{user.level.name} {'  '}
-								{user.exp}/{user.next_level_exp}
-							</Text>
-						</View>
+			<View style={styles.container}>
+				<View style={styles.left}>
+					<Avatar source={user.avatar} size={52} borderStyle={{ borderWidth: 1, borderColor: '#ffffff' }} />
+					<View style={styles.content}>
+						<Text style={{ color: Theme.defaultTextColor, fontSize: 15 }}>{user.name}</Text>
+						<Text style={styles.user}>
+							LV.{user.level ? user.level.level : '1'} {'  '}
+							{user.level.name} {'  '}
+							{user.exp}/{user.next_level_exp}
+						</Text>
 					</View>
-					<Iconfont name={'right'} size={PxFit(14)} color={Theme.subTextColor} />
-				</TouchFeedback>
-				<ItemSeparator />
+				</View>
 			</View>
 		);
 	}
@@ -49,8 +41,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		height: 80,
-		paddingHorizontal: 15
+		height: PxFit(80),
+		paddingHorizontal: PxFit(15),
+		borderBottomWidth: PxFit(1),
+		borderBottomColor: Theme.borderColor
 	},
 	left: {
 		flexDirection: 'row',

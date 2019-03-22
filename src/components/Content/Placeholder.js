@@ -100,14 +100,18 @@ const AnimatedView = ({ children }) => {
 };
 
 type args = {
+	quantity?: number,
 	color?: any,
 	type?: 'question' | 'comment' | 'list'
 };
 
 export default function Placeholder(props: args) {
+	let quantity = props.quantity || 1;
 	let color = props.color || Theme.groundColour;
 	let type = props.type || 'question';
-	return <AnimatedView>{render[type](color)}</AnimatedView>;
+	return new Array(quantity).fill(0).map(function(elem, index) {
+		return <AnimatedView key={index}>{render[type](color)}</AnimatedView>;
+	});
 }
 
 const styles = StyleSheet.create({

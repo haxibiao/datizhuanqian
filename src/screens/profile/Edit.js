@@ -14,7 +14,8 @@ import {
 	PopOverlay,
 	CustomTextInput,
 	Avatar,
-	ImagePickerViewer
+	ImagePickerViewer,
+	ItemSeparator
 } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH, Api } from '../../utils';
 import { connect } from 'react-redux';
@@ -147,8 +148,10 @@ class index extends Component {
 						<TouchableOpacity onPress={this.changeAvatar}>
 							<Avatar source={avatar} size={PxFit(76)} />
 						</TouchableOpacity>
+						<Text style={styles.avatarTip}>点击上传头像</Text>
 					</View>
-					<View style={styles.fieldGroup}>
+					<ItemSeparator />
+					<View style={[styles.fieldGroup, { marginTop: PxFit(30) }]}>
 						<Text style={styles.field}>昵称:</Text>
 						<View style={styles.inputWrap}>
 							<CustomTextInput
@@ -240,16 +243,21 @@ class index extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff',
-		paddingHorizontal: Theme.itemSpace
+		backgroundColor: '#fff'
 	},
 	saveText: { fontSize: PxFit(15), textAlign: 'center', color: Theme.secondaryColor },
 	avatarItem: {
 		marginTop: PxFit(50),
 		alignItems: 'center'
 	},
+	avatarTip: {
+		marginVertical: PxFit(15),
+		fontSize: PxFit(13),
+		color: Theme.subTextColor
+	},
 	fieldGroup: {
-		marginTop: PxFit(30)
+		marginBottom: PxFit(30),
+		paddingHorizontal: Theme.itemSpace
 	},
 	field: {
 		fontSize: PxFit(14),

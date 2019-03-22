@@ -84,7 +84,7 @@ class FollowButton extends Component<Props> {
 	}
 
 	render() {
-		if (this.props.me.id === this.props.id) {
+		if (this.props.user.id === this.props.id) {
 			return null;
 		}
 		let { children, style, ...others } = this.buildProps();
@@ -116,7 +116,7 @@ class FollowButton extends Component<Props> {
 	};
 
 	follow = followed => {
-		let { id, me, followUser } = this.props;
+		let { id, user, followUser } = this.props;
 		followUser({
 			variables: {
 				followed_type: 'users',
@@ -145,5 +145,5 @@ const styles = StyleSheet.create({});
 export default compose(
 	withNavigation,
 	graphql(FollowToggbleMutation, { name: 'followUser' }),
-	connect(store => ({ login: store.personal.login, me: store.personal.user }))
+	connect(store => ({ login: store.users.login, user: store.users.user }))
 )(FollowButton);

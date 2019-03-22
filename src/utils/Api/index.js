@@ -5,7 +5,7 @@
 import imagePicker from './imagePicker';
 import saveVideo from './saveVideo';
 import videoPicker from './videoPicker';
-import videoUpload from './videoUpload';
+import videoUpload, { cancelUpload } from './videoUpload';
 import checkUpdate from './checkUpdate';
 
 export default {
@@ -13,5 +13,6 @@ export default {
 	saveVideo,
 	videoPicker,
 	videoUpload,
+	cancelUpload,
 	checkUpdate
 };

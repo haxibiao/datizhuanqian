@@ -15,14 +15,15 @@ import SafeText from '../Basics/SafeText';
 import Row from '../Container/Row';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import FollowButton from '../TouchableView/FollowButton';
+import GenderLabel from '../Utils/GenderLabel';
 
 type User = {
 	id: number,
 	avatar: any,
 	name: string,
 	gender: string,
-	followed_status: number,
-	signature?: string
+	followed_user_status: number,
+	introduction?: string
 };
 
 type Props = {
@@ -32,8 +33,7 @@ type Props = {
 class UserItem extends Component<Props> {
 	render() {
 		let { user, style, navigation } = this.props;
-		let { id, avatar, name, gender, followed_status, signature } = user;
-		let genderObj = Tools.generateGenderLable(gender);
+		let { id = 1, avatar, name, followed_user_status, introduction } = user;
 		return (
 			<TouchFeedback style={[styles.item, style]} onPress={() => navigation.navigate('User', { user })}>
 				<Avatar source={{ uri: avatar }} size={PxFit(50)} />
@@ -41,19 +41,19 @@ class UserItem extends Component<Props> {
 					<View style={styles.info}>
 						<Row>
 							<SafeText style={styles.nameText}>{name}</SafeText>
+							<GenderLabel user={user} />
 						</Row>
-						{signature && (
+						{introduction && (
 							<View style={{ flex: 1 }}>
-								<SafeText style={styles.signature} numberOfLines={1}>
-									{signature}
+								<SafeText style={styles.introduction} numberOfLines={1}>
+									{introduction}
 								</SafeText>
 							</View>
 						)}
 					</View>
 					<FollowButton
 						id={id}
-						followedStatus={followed_status}
-						followedTarget={'user'}
+						followedStatus={followed_user_status}
 						style={{
 							width: PxFit(70),
 							height: PxFit(30),
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 		color: Theme.defaultTextColor,
 		marginRight: PxFit(6)
 	},
-	signature: {
+	introduction: {
 		marginTop: PxFit(8),
 		fontSize: PxFit(12),
 		color: '#696482'

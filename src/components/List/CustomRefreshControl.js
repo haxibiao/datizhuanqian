@@ -11,7 +11,6 @@ import { Theme } from '../../utils';
 
 type Props = {
 	onRefresh: Function,
-	refreshing: boolean,
 	title?: string,
 	size?: ?string,
 	tintColor?: ?string,
@@ -28,8 +27,25 @@ class CustomRefreshControl extends Component<Props> {
 		progressBackgroundColor: '#fff'
 	};
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isRefreshing: false
+		};
+	}
+
+	onRefresh = () => {
+		if (!this.props.onRefresh) return;
+		this.setState({ isRefreshing: true }, async () => {
+			await this.props.onRefresh();
+			this.setState({ isRefreshing: false });
+		});
+	};
+
 	render() {
-		return <RefreshControl {...this.props} />;
+		let { refreshing, onRefresh, ...props } = this.props;
+		return <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.onRefresh} {...props} />;
 	}
 }
 
