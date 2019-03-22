@@ -191,7 +191,7 @@ class index extends Component {
 												onPress={() => {
 													this.submitAnswer(question, refetch);
 												}}
-												style={{ height: 38, backgroundColor: buttonColor }}
+												style={{ height: PxFit(38), backgroundColor: PxFit(buttonColor) }}
 												fontSize={14}
 											/>
 										</View>
@@ -214,20 +214,20 @@ const styles = StyleSheet.create({
 	},
 
 	content: {
-		paddingTop: 20,
-		paddingHorizontal: 30
+		paddingTop: PxFit(20),
+		paddingHorizontal: PxFit(30)
 	},
 	submitWrap: {
-		marginTop: 50,
-		marginBottom: 30
+		marginTop: PxFit(50),
+		marginBottom: PxFit(30)
 	},
 	curation: {
 		alignItems: 'flex-end',
-		paddingBottom: 15
+		paddingBottom: PxFit(15)
 	},
 	curationText: {
 		color: Theme.orange,
-		fontSize: 12,
+		fontSize: PxFit(12),
 		fontWeight: '200'
 	}
 });

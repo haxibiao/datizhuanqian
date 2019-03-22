@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 
 import { TabTop, BlankContent, Header, Screen, DivisionLine, Iconfont } from '../../components';
-import { Theme, SCREEN_WIDTH } from '../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -37,7 +37,7 @@ class TaskFail extends Component {
 								});
 							}}
 						>
-							<Text style={{ fontSize: 15, color: Theme.black }}>继续提交</Text>
+							<Text style={{ fontSize: PxFit(15), color: Theme.black }}>继续提交</Text>
 						</TouchableOpacity>
 					}
 				/>
@@ -49,13 +49,13 @@ class TaskFail extends Component {
 						let screenshots = JSON.parse(data.userTask[0].screenshots);
 						return (
 							<View>
-								<View style={{ height: 150 }}>
+								<View style={{ height: PxFit(150) }}>
 									<View style={styles.header}>
 										<View style={styles.headerLeft} />
-										<Text style={{ color: Theme.themeRed, fontSize: 18 }}>失败原因</Text>
+										<Text style={{ color: Theme.themeRed, fontSize: PxFit(18) }}>失败原因</Text>
 									</View>
-									<View style={{ marginLeft: 25, marginTop: 20 }}>
-										<Text style={{ fontSize: 16, color: Theme.black }}>
+									<View style={{ marginLeft: PxFit(25), marginTop: PxFit(20) }}>
+										<Text style={{ fontSize: PxFit(16), color: Theme.black }}>
 											{data.userTask[0].remark ? data.userTask[0].remark : '请阅读任务详情'}
 										</Text>
 									</View>
@@ -65,11 +65,11 @@ class TaskFail extends Component {
 										<View style={styles.headerLeft} />
 										<Text style={styles.headerContent}>提交内容</Text>
 									</View>
-									<View style={{ marginHorizontal: 25 }}>
-										<Text style={{ fontSize: 16, color: Theme.black }}>
+									<View style={{ marginHorizontal: PxFit(25) }}>
+										<Text style={{ fontSize: PxFit(16), color: Theme.black }}>
 											{data.userTask[0].reply_content}
 										</Text>
-										<View style={{ marginTop: 10 }}>
+										<View style={{ marginTop: PxFit(10) }}>
 											{screenshots.map((image, index) => {
 												return (
 													<Image
@@ -77,7 +77,10 @@ class TaskFail extends Component {
 														source={{
 															uri: image.url
 														}}
-														style={{ width: SCREEN_WIDTH - 50, height: SCREEN_WIDTH - 50 }}
+														style={{
+															width: SCREEN_WIDTH - PxFit(50),
+															height: SCREEN_WIDTH - PxFit(50)
+														}}
 													/>
 												);
 											})}
@@ -101,18 +104,18 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingTop: 20,
-		paddingBottom: 10
+		paddingTop: PxFit(20),
+		paddingBottom: PxFit(10)
 	},
 	headerLeft: {
-		height: 22,
-		width: 10,
+		height: PxFit(22),
+		width: PxFit(10),
 		backgroundColor: Theme.theme,
-		marginRight: 15
+		marginRight: PxFit(15)
 	},
 	headerContent: {
 		color: Theme.primaryFont,
-		fontSize: 18
+		fontSize: PxFit(18)
 	}
 });
 

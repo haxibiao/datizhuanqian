@@ -26,12 +26,8 @@ class index extends Component {
 		super(props);
 		this.handleWithdraws = this.handleWithdraws.bind(this);
 		this.state = {
-			promotModalVisible: false,
-			RuleDescriptioVisible: false,
-			WithdrawsTipsVisible: false,
 			clickControl: false,
-			isVisible: false,
-			withdrawTips: '智慧点不足，快去答题赚钱吧~'
+			isVisible: false
 		};
 	}
 
@@ -119,14 +115,14 @@ class index extends Component {
 	};
 
 	render() {
-		let { RuleDescriptioVisible, WithdrawsTipsVisible, clickControl, isVisible } = this.state;
+		let { clickControl, isVisible } = this.state;
 		const { user, login, navigation, luckyMoney } = this.props;
 		return (
 			<PageContainer
 				title="提现"
 				isTopNavigator
 				rightView={
-					<TouchFeedback onPress={this.showRule} style={{ padding: 5 }}>
+					<TouchFeedback onPress={this.showRule} style={{ padding: PxFit(5) }}>
 						<Iconfont name={'question'} size={18} color={'#fff'} />
 					</TouchFeedback>
 				}
@@ -191,10 +187,10 @@ class index extends Component {
 												<Button
 													title={'查看提现日志'}
 													style={{
-														height: 38,
-														borderRadius: 19,
+														height: PxFit(38),
+														borderRadius: PxFit(19),
 														backgroundColor: Theme.theme,
-														width: SCREEN_WIDTH - 80
+														width: SCREEN_WIDTH - PxFit(80)
 													}}
 													onPress={() => navigation.navigate('WithdrawLog')}
 												/>
@@ -231,20 +227,20 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingTop: 20,
-		paddingBottom: 30,
-		borderBottomWidth: 10,
+		paddingTop: PxFit(20),
+		paddingBottom: PxFit(30),
+		borderBottomWidth: PxFit(10),
 		borderBottomColor: '#F0F0F0'
 	},
 	gold: {
 		color: Theme.themeRed,
-		fontSize: 44,
-		paddingBottom: 2,
+		fontSize: PxFit(44),
+		paddingBottom: PxFit(2),
 		textAlign: 'center'
 	},
 	type: {
 		color: Theme.grey,
-		fontSize: 13,
+		fontSize: PxFit(13),
 		textAlign: 'center'
 	},
 	main: {
@@ -254,17 +250,17 @@ const styles = StyleSheet.create({
 	center: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		paddingHorizontal: 15,
+		paddingHorizontal: PxFit(15),
 		justifyContent: 'space-between'
 	},
 	item: {
 		paddingVertical: 25,
-		width: (SCREEN_WIDTH - 44) / 2,
+		width: (SCREEN_WIDTH - PxFit(44)) / 2,
 		borderColor: '#E0E0E0',
-		borderWidth: 0.5,
+		borderWidth: PxFit(0.5),
 		alignItems: 'center',
-		marginTop: 20,
-		borderRadius: 5
+		marginTop: PxFit(20),
+		borderRadius: PxFit(5)
 	},
 	content: {
 		fontSize: 16,
@@ -272,13 +268,13 @@ const styles = StyleSheet.create({
 	},
 	footer: {
 		alignItems: 'center',
-		paddingBottom: 30
+		paddingBottom: PxFit(30)
 	},
 	tips: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: '#363636',
-		paddingVertical: 10,
-		lineHeight: 18
+		paddingVertical: PxFit(10),
+		lineHeight: PxFit(18)
 	}
 });
 

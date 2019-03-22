@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import {} from '../../../components';
-import { Theme, SCREEN_WIDTH } from '../../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../../utils';
 
 import { BoxShadow } from 'react-native-shadow';
 import TaskItem from './TaskItem';
@@ -15,8 +15,8 @@ class TaskType extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			itemHeight: 70,
-			headerHeight: 50
+			itemHeight: PxFit(70),
+			headerHeight: PxFit(50)
 		};
 	}
 
@@ -87,35 +87,35 @@ class TaskType extends Component {
 }
 
 const shadowOpt = {
-	width: SCREEN_WIDTH - 30,
-	height: 150,
+	width: SCREEN_WIDTH - PxFit(30),
+	height: PxFit(150),
 	color: '#E8E8E8',
-	border: 10,
-	radius: 10,
+	border: PxFit(10),
+	radius: PxFit(10),
 	opacity: 0.5,
 	x: 0,
 	y: 0,
 	style: {
-		marginHorizontal: 15,
-		marginVertical: 15
+		marginHorizontal: PxFit(15),
+		marginVertical: PxFit(15)
 	}
 };
 
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: Theme.white,
-		borderRadius: 10,
-		shadowOffset: { width: 5, height: 5 },
+		borderRadius: PxFit(10),
+		shadowOffset: { width: PxFit(5), height: PxFit(5) },
 		shadowColor: '#E8E8E8',
 		shadowOpacity: 0.8,
-		shadowRadius: 10
+		shadowRadius: PxFit(10)
 	},
 	header: {
-		marginHorizontal: 15,
-		paddingVertical: 15
+		marginHorizontal: PxFit(15),
+		paddingVertical: PxFit(15)
 	},
 	text: {
-		fontSize: 16,
+		fontSize: PxFit(16),
 		color: Theme.black
 	}
 });

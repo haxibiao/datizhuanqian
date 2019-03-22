@@ -169,8 +169,8 @@ class SubmitTaskScreen extends Component {
 					/>
 					<View style={styles.main}>
 						<View style={styles.center}>
-							<Text style={{ fontSize: 16, color: Theme.primaryFont }}>上传截图</Text>
-							<Text style={{ fontSize: 15, color: Theme.grey }}>（{pictures.length}/6）</Text>
+							<Text style={{ fontSize: PxFit(16), color: Theme.primaryFont }}>上传截图</Text>
+							<Text style={{ fontSize: PxFit(15), color: Theme.grey }}>（{pictures.length}/6）</Text>
 						</View>
 						<View style={styles.images}>
 							{pictures.map((image, index) => {
@@ -202,7 +202,7 @@ class SubmitTaskScreen extends Component {
 					</View>
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						<Button
-							title={<Text style={{ color: Theme.white, fontSize: 15 }}>提交</Text>}
+							title={<Text style={{ color: Theme.white, fontSize: PxFit(15) }}>提交</Text>}
 							style={styles.button}
 							onPress={this.startUploadImage}
 							disabled={!(pictures.length > 0 && content)}
@@ -225,81 +225,81 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 20,
+		paddingVertical: PxFit(20),
 		borderTopColor: Theme.lightBorder,
-		borderTopWidth: 5
+		borderTopWidth: PxFit(5)
 	},
 	headerLeft: {
-		height: 22,
-		width: 10,
+		height: PxFit(22),
+		width: PxFit(10),
 		backgroundColor: Theme.theme,
-		marginRight: 15
+		marginRight: PxFit(15)
 	},
 	headerContent: {
 		color: Theme.primaryFont,
-		fontSize: 16
+		fontSize: PxFit(16)
 	},
 	main: {
-		paddingVertical: 15,
-		marginBottom: 30
+		paddingVertical: PxFit(15),
+		marginBottom: PxFit(30)
 	},
 	center: {
-		marginHorizontal: 25,
-		paddingBottom: 30,
+		marginHorizontal: PxFit(25),
+		paddingBottom: PxFit(30),
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	images: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginLeft: 25
+		marginLeft: PxFit(25)
 	},
 	input: {
 		backgroundColor: 'transparent',
-		fontSize: 15,
+		fontSize: PxFit(15),
 		padding: 0,
-		height: 80,
+		height: PxFit(80),
 		justifyContent: 'flex-start',
-		marginHorizontal: 25
+		marginHorizontal: PxFit(25)
 		// marginTop:10,
 	},
 	add: {
-		width: (SCREEN_WIDTH - 60) / 3,
-		height: (SCREEN_WIDTH - 60) / 3,
+		width: (SCREEN_WIDTH - PxFit(60)) / 3,
+		height: (SCREEN_WIDTH - PxFit(60)) / 3,
 		borderColor: Theme.lightBorder,
-		borderWidth: 1,
+		borderWidth: PxFit(1),
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	image: {
-		width: (SCREEN_WIDTH - 60) / 3,
-		height: (SCREEN_WIDTH - 60) / 3,
-		marginRight: 5,
-		marginBottom: 5
+		width: (SCREEN_WIDTH - PxFit(60)) / 3,
+		height: (SCREEN_WIDTH - PxFit(60)) / 3,
+		marginRight: PxFit(5),
+		marginBottom: PxFit(5)
 	},
 	delete: {
 		backgroundColor: 'rgba(150,150,150,0.5)',
-		borderRadius: 8,
+		borderRadius: PxFit(8),
 		position: 'absolute',
-		right: 8,
-		top: 2,
-		width: 16,
-		height: 16,
+		right: PxFit(8),
+		top: PxFit(2),
+		width: PxFit(16),
+		height: PxFit(16),
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	mainBottom: {
-		borderBottomWidth: 1,
+		borderBottomWidth: PxFit(1),
 		borderBottomColor: Theme.lightBorder,
-		marginRight: 15,
-		marginTop: 30
+		marginRight: PxFit(15),
+		marginTop: PxFit(30)
 	},
 	button: {
-		height: 42,
-		marginBottom: 20,
-		borderRadius: 19,
+		height: PxFit(42),
+		marginBottom: PxFit(20),
+		borderRadius: PxFit(19),
 		backgroundColor: Theme.theme,
-		maxWidth: SCREEN_WIDTH - 50
+		maxWidth: SCREEN_WIDTH - PxFit(50)
 	}
 });
 

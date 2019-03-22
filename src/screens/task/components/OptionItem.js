@@ -12,7 +12,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Iconfont } from '../../components';
-import { Theme } from '../../utils';
+import { Theme, PxFit } from '../../utils';
 
 class OptionItem extends Component {
 	render() {
@@ -37,7 +37,7 @@ class OptionItem extends Component {
 				<View style={styles.optionContent}>
 					<Text style={styles.optionContentText}>{option.Text}</Text>
 				</View>
-				<TouchableOpacity style={{ marginTop: 8 }} onPress={() => remove(option)}>
+				<TouchableOpacity style={{ marginTop: PxFit(8) }} onPress={() => remove(option)}>
 					<Iconfont name="close" size={16} color={'#696482'} />
 				</TouchableOpacity>
 			</TouchableOpacity>
@@ -50,28 +50,28 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	optionLabel: {
-		marginRight: 15,
-		width: 36,
-		height: 36,
-		borderRadius: 18,
-		borderWidth: 2,
+		marginRight: PxFit(15),
+		width: PxFit(36),
+		height: PxFit(36),
+		borderRadius: PxFit(18),
+		borderWidth: PxFit(2),
 		borderColor: Theme.skyBlue,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	optionLabelText: {
-		fontSize: 17,
+		fontSize: PxFit(17),
 		fontWeight: '500',
 		color: Theme.skyBlue
 	},
 	optionContent: {
 		flex: 1,
-		minHeight: 36,
+		minHeight: PxFit(36),
 		justifyContent: 'center'
 	},
 	optionContentText: {
-		fontSize: 16,
-		lineHeight: 18,
+		fontSize: PxFit(16),
+		lineHeight: PxFit(18),
 		color: Theme.tintFont
 	}
 });

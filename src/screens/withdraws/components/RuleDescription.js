@@ -18,21 +18,21 @@ class RuleDescription extends Component {
 		return (
 			<View
 				style={{
-					width: SCREEN_WIDTH - 70,
-					paddingHorizontal: 25,
-					paddingVertical: 20,
-					borderRadius: 15,
+					width: SCREEN_WIDTH - PxFit(70),
+					paddingHorizontal: PxFit(25),
+					paddingVertical: PxFit(20),
+					borderRadius: PxFit(15),
 					backgroundColor: '#fff'
 				}}
 			>
-				<Text style={{ color: Theme.black, fontSize: 22, textAlign: 'center' }}>规则说明</Text>
+				<Text style={{ color: Theme.black, fontSize: PxFit(22), textAlign: 'center' }}>规则说明</Text>
 
-				<View style={{ marginTop: 5 }}>
+				<View style={{ marginTop: PxFit(5) }}>
 					<Text
 						style={{
-							paddingVertical: 5,
-							lineHeight: 18,
-							fontSize: 13,
+							paddingVertical: PxFit(5),
+							lineHeight: PxFit(18),
+							fontSize: PxFit(13),
 							color: Theme.grey
 						}}
 					>
@@ -40,9 +40,9 @@ class RuleDescription extends Component {
 					</Text>
 					<Text
 						style={{
-							paddingVertical: 5,
-							lineHeight: 18,
-							fontSize: 13,
+							paddingVertical: PxFit(5),
+							lineHeight: PxFit(18),
+							fontSize: PxFit(13),
 							color: Theme.grey
 						}}
 					>
@@ -50,9 +50,9 @@ class RuleDescription extends Component {
 					</Text>
 					<Text
 						style={{
-							paddingVertical: 5,
-							lineHeight: 18,
-							fontSize: 13,
+							paddingVertical: PxFit(5),
+							lineHeight: PxFit(18),
+							fontSize: PxFit(13),
 							color: Theme.grey
 						}}
 					>
@@ -60,9 +60,9 @@ class RuleDescription extends Component {
 					</Text>
 					<Text
 						style={{
-							paddingVertical: 5,
-							lineHeight: 18,
-							fontSize: 13,
+							paddingVertical: PxFit(5),
+							lineHeight: PxFit(18),
+							fontSize: PxFit(13),
 							color: Theme.grey
 						}}
 					>
@@ -73,9 +73,9 @@ class RuleDescription extends Component {
 					title={'知道了'}
 					onPress={() => OverlayViewer.hide()}
 					style={{
-						height: 38,
-						borderRadius: 19,
-						marginTop: 10,
+						height: PxFit(38),
+						borderRadius: PxFit(19),
+						marginTop: PxFit(10),
 						backgroundColor: Theme.theme
 					}}
 				/>

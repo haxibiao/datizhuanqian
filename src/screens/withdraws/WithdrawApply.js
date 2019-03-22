@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { Button, PageContainer } from '../../components';
 
-import { Theme, SCREEN_WIDTH } from '../../constants';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../constants';
 
 class WithdrawApply extends Component {
 	constructor(props) {
@@ -25,7 +25,7 @@ class WithdrawApply extends Component {
 					<Text style={styles.header}>提现申请已提交</Text>
 					<View style={styles.center}>
 						<Text style={styles.money}>{amount}.00</Text>
-						<Text style={{ fontSize: 15, color: Theme.themeRed, paddingTop: 32 }}> 元</Text>
+						<Text style={{ fontSize: PxFit(15), color: Theme.themeRed, paddingTop: PxFit(32) }}> 元</Text>
 					</View>
 					<View style={styles.bottom}>
 						<Text style={styles.text}>预计3~5个工作日内到账支付宝</Text>
@@ -47,42 +47,42 @@ class WithdrawApply extends Component {
 const styles = StyleSheet.create({
 	image: {
 		width: SCREEN_WIDTH,
-		height: (SCREEN_WIDTH * 617) / 1080
+		height: (SCREEN_WIDTH * PxFit(617)) / PxFit(1080)
 	},
 	content: {
 		alignItems: 'center',
-		paddingHorizontal: 20
+		paddingHorizontal: PxFit(20)
 	},
 	header: {
-		fontSize: 22,
+		fontSize: PxFit(22),
 		color: Theme.black
 	},
 	center: {
 		flexDirection: 'row',
-		marginTop: 20
+		marginTop: PxFit(20)
 	},
 	money: {
-		fontSize: 50,
+		fontSize: PxFit(50),
 		color: Theme.themeRed
 	},
 	bottom: {
 		alignItems: 'center',
-		marginTop: 20
+		marginTop: PxFit(20)
 	},
 	text: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: Theme.black
 	},
 	tips: {
-		fontSize: 14,
+		fontSize: PxFit(14),
 		color: Theme.grey,
-		paddingTop: 10
+		paddingTop: PxFit(10)
 	},
 	button: {
-		height: 38,
-		borderRadius: 19,
-		marginTop: 40,
-		width: SCREEN_WIDTH - 60,
+		height: PxFit(38),
+		borderRadius: PxFit(19),
+		marginTop: PxFit(40),
+		width: SCREEN_WIDTH - PxFit(60),
 		backgroundColor: Theme.theme
 	}
 });

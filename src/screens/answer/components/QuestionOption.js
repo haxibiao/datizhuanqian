@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
 import { Player } from '../../../components';
-import { Theme, SCREEN_WIDTH } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
 class QuestionOption extends Component {
 	constructor(props) {
@@ -68,26 +68,26 @@ class QuestionOption extends Component {
 
 const styles = StyleSheet.create({
 	options: {
-		paddingTop: 20
+		paddingTop: PxFit(20)
 	},
 	option: {
-		marginTop: 13,
-		borderWidth: 1,
-		borderRadius: 5,
+		marginTop: PxFit(13),
+		borderWidth: PxFit(1),
+		borderRadius: PxFit(5),
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 15
+		paddingVertical: PxFit(12),
+		paddingHorizontal: PxFit(15)
 	},
 	valueOption: {
-		marginTop: 13,
-		borderWidth: 1,
-		borderRadius: 5,
+		marginTop: PxFit(13),
+		borderWidth: PxFit(1),
+		borderRadius: PxFit(5),
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingVertical: 12,
-		width: (SCREEN_WIDTH - 80) / 2
+		paddingVertical: PxFit(12),
+		width: (SCREEN_WIDTH - PxFit(80)) / 2
 	}
 });
 

@@ -21,23 +21,37 @@ class UpdateOverlay {
 				<View style={styles.container}>
 					<View
 						style={{
-							width: SCREEN_WIDTH - 60,
-							borderRadius: 15,
+							width: SCREEN_WIDTH - PxFit(60),
+							borderRadius: PxFit(15),
 							backgroundColor: Theme.white,
 							padding: 0
 						}}
 					>
-						<View style={{ justifyContent: 'center', paddingTop: 25 }}>
+						<View style={{ justifyContent: 'center', paddingTop: PxFit(25) }}>
 							<Text style={styles.modalRemindContent}>发现新版本</Text>
-							<Text style={{ color: Theme.grey, fontSize: 13, textAlign: 'center', paddingTop: 3 }}>
+							<Text
+								style={{
+									color: Theme.grey,
+									fontSize: PxFit(13),
+									textAlign: 'center',
+									paddingTop: PxFit(3)
+								}}
+							>
 								版本号：V{versionData.version}
 							</Text>
 						</View>
-						<View style={{ paddingBottom: 20, paddingHorizontal: 20 }}>
-							<Text style={{ fontSize: 14, color: Theme.primaryFont, paddingTop: 10, lineHeight: 22 }}>
+						<View style={{ paddingBottom: PxFit(20), paddingHorizontal: PxFit(20) }}>
+							<Text
+								style={{
+									fontSize: PxFit(14),
+									color: Theme.primaryFont,
+									paddingTop: PxFit(10),
+									lineHeight: PxFit(22)
+								}}
+							>
 								更新提示：
 							</Text>
-							<Text style={{ fontSize: 14, color: Theme.primaryFont, lineHeight: 22 }}>
+							<Text style={{ fontSize: PxFit(14), color: Theme.primaryFont, lineHeight: PxFit(22) }}>
 								{versionData.description}
 							</Text>
 						</View>
@@ -83,27 +97,27 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	modalRemindContent: {
-		fontSize: 18,
+		fontSize: PxFit(18),
 		color: Theme.black,
-		paddingHorizontal: 15,
+		paddingHorizontal: PxFit(15),
 		textAlign: 'center',
-		lineHeight: 20,
+		lineHeight: PxFit(20),
 		fontWeight: '500'
 	},
 	modalFooter: {
-		borderTopWidth: 0.5,
+		borderTopWidth: PxFit(0.5),
 		borderTopColor: Theme.tintGray,
 		flexDirection: 'row'
 	},
 	operation: {
-		paddingVertical: 15,
+		paddingVertical: PxFit(15),
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	operationText: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		fontWeight: '400',
 		color: Theme.grey
 	}

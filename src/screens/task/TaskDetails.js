@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView, TouchableOpacity, Image, Text } from 'react-native';
-import { Theme, SCRREN_WIDTH } from '../../utils';
+import { Theme, SCRREN_WIDTH, PxFit } from '../../utils';
 import { Button, Iconfont, PageContainer } from '../../components';
 
 import { TaskQuery } from '../../assets/graphql/task.graphql';
@@ -65,9 +65,9 @@ class TaskDetailsScreen extends Component {
 								<View style={styles.html}>
 									<HTML
 										html={task.details}
-										imagesMaxWidth={Divice.width - 30}
+										imagesMaxWidth={Divice.width - PxFit(30)}
 										baseFontStyle={{
-											fontSize: 15,
+											fontSize: PxFit(15),
 											color: Theme.primaryFont
 										}}
 										renderers={{
@@ -79,10 +79,10 @@ class TaskDetailsScreen extends Component {
 												this.imgKey++;
 												let width = htmlAttribs.width
 													? parseInt(htmlAttribs.width)
-													: Divice.width - 30;
+													: Divice.width - PxFit(30);
 												let height = htmlAttribs.height
 													? parseInt(htmlAttribs.height)
-													: Divice.width - 30;
+													: Divice.width - PxFit(30);
 												let size = imageSize({ width, height });
 
 												return (
@@ -130,8 +130,8 @@ class TaskDetailsScreen extends Component {
 function imageSize({ width, height }) {
 	var size = {};
 	if (width > Divice.width) {
-		size.width = Divice.width - 30;
-		size.height = ((Divice.width - 30) * height) / width;
+		size.width = Divice.width - PxFit(30);
+		size.height = ((Divice.width - PxFit(30)) * height) / width;
 	} else {
 		size = { width, height };
 	}
@@ -142,52 +142,52 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingTop: 20,
-		paddingBottom: 10
+		paddingTop: PxFit(20),
+		paddingBottom: PxFit(10)
 	},
 	headerLeft: {
-		height: 22,
-		width: 10,
+		height: PxFit(22),
+		width: PxFit(10),
 		backgroundColor: Theme.theme,
-		marginRight: 15
+		marginRight: PxFit(15)
 	},
 	headerContent: {
 		color: Theme.primaryFont,
-		fontSize: 18
+		fontSize: PxFit(18)
 	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingVertical: 20
+		paddingVertical: PxFit(20)
 	},
 	gold: {
-		fontSize: 42,
+		fontSize: PxFit(42),
 		color: Theme.theme,
-		paddingLeft: 5
+		paddingLeft: PxFit(5)
 	},
 	center: {
-		paddingBottom: 20,
-		marginHorizontal: 25,
+		paddingBottom: PxFit(20),
+		marginHorizontal: PxFit(25),
 		justifyContent: 'space-between'
 	},
 	rowCenter: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 5
+		paddingVertical: PxFit(5)
 	},
 	icon: {
-		height: 15,
-		width: 15,
-		marginRight: 10
+		height: PxFit(15),
+		width: PxFit(15),
+		marginRight: PxFit(10)
 	},
 	bottom: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 20
+		paddingVertical: PxFit(20)
 	},
 	html: {
-		marginHorizontal: 15,
+		marginHorizontal: PxFit(15),
 		borderTopWidth: 1,
 		borderTopColor: Theme.lightBorder
 	}

@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { SCREEN_WIDTH, Theme } from '../../../utils';
+import { SCREEN_WIDTH, Theme, PxFit } from '../../../utils';
 
 class FiexdFooter extends Component {
 	constructor(props) {
@@ -21,15 +21,15 @@ class FiexdFooter extends Component {
 					position: 'absolute',
 					alignItems: 'center',
 					bottom: 0,
-					width: 40,
-					left: SCREEN_WIDTH / 2 - 20
+					width: PxFit(40),
+					left: SCREEN_WIDTH / 2 - PxFit(20)
 				}}
 			>
 				<Text
 					style={{
 						backgroundColor: 'transparent',
 						color: '#CFCFCF',
-						fontSize: 11,
+						fontSize: PxFit(11),
 						textAlign: 'center'
 					}}
 				>

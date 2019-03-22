@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 
 import { Button } from '../../../components';
-import { Theme, SCREEN_WIDTH } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
 import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../../assets/graphql/task.graphql';
 import { UserQuery } from '../../../assets/graphql/user.graphql';
@@ -209,9 +209,9 @@ class TaskItem extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: 15,
-		paddingVertical: 12,
-		borderTopWidth: 1,
+		marginHorizontal: PxFit(15),
+		paddingVertical: PxFit(12),
+		borderTopWidth: PxFit(1),
 		borderTopColor: Theme.lightBorder,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -219,32 +219,32 @@ const styles = StyleSheet.create({
 	},
 	name: {
 		color: '#3c3c3c',
-		fontSize: 15
+		fontSize: PxFit(15)
 	},
 	reword: {
 		color: Theme.grey,
-		fontSize: 13,
+		fontSize: PxFit(13),
 		fontWeight: '200'
 	},
 	greyButton: {
-		borderRadius: 45,
-		height: 32,
-		width: 84,
-		borderWidth: 1,
+		borderRadius: PxFit(45),
+		height: PxFit(32),
+		width: PxFit(84),
+		borderWidth: PxFit(1),
 		borderColor: Theme.grey
 	},
 	themeButton: {
-		borderRadius: 45,
-		height: 32,
-		width: 84,
-		borderWidth: 1,
+		borderRadius: PxFit(45),
+		height: PxFit(32),
+		width: PxFit(84),
+		borderWidth: PxFit(1),
 		borderColor: Theme.theme
 	},
 	redButton: {
-		borderRadius: 45,
-		height: 32,
-		width: 84,
-		borderWidth: 1,
+		borderRadius: PxFit(45),
+		height: PxFit(32),
+		width: PxFit(84),
+		borderWidth: PxFit(1),
 		borderColor: Theme.themeRed
 	}
 });

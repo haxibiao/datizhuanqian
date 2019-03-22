@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { PxFit } from '../../../utils';
 
 class SystemUpdateTips extends Component {
 	constructor(props) {
@@ -21,7 +22,7 @@ class SystemUpdateTips extends Component {
 						flex: 1,
 						justifyContent: 'center',
 						alignItems: 'center',
-						width: SCREEN_WIDTH - 30
+						width: SCREEN_WIDTH - PxFit(30)
 					}}
 				>
 					<Text style={{ textAlign: 'center' }}>

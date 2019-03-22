@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
 import { Avatar, PageContainer } from '../../components';
-import { Theme, SCREEN_WIDTH } from '../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 import { connect } from 'react-redux';
 
 import { WithdrawQuery } from '../../assets/graphql/withdraws.graphql';
@@ -32,7 +32,7 @@ class WithdrawLogDetails extends Component {
 
 						return (
 							<View style={{ backgroundColor: Theme.white }}>
-								<View style={{ paddingHorizontal: 15 }}>
+								<View style={{ paddingHorizontal: PxFit(15) }}>
 									<View style={styles.header}>
 										<Avatar size={38} source={{ uri: user.avatar }} />
 										<Text style={styles.name}>{user.name}</Text>
@@ -40,9 +40,9 @@ class WithdrawLogDetails extends Component {
 									<View style={styles.info}>
 										<Text style={styles.money}>{withdraw.amount}.00</Text>
 										{withdraw.status == -1 ? (
-											<Text style={{ fontSize: 16, color: Theme.themeRed }}>交易失败</Text>
+											<Text style={{ fontSize: PxFit(16), color: Theme.themeRed }}>交易失败</Text>
 										) : (
-											<Text style={{ fontSize: 16, color: Theme.weixin }}>交易成功</Text>
+											<Text style={{ fontSize: PxFit(16), color: Theme.weixin }}>交易成功</Text>
 										)}
 									</View>
 									<View style={styles.row}>
@@ -53,7 +53,7 @@ class WithdrawLogDetails extends Component {
 										<Text style={styles.textLeft}>转账备注</Text>
 										<Text style={styles.textRight}>智慧点提现</Text>
 									</View>
-									<View style={[styles.row, { paddingBottom: 15 }]}>
+									<View style={[styles.row, { paddingBottom: PxFit(15) }]}>
 										<Text style={styles.textLeft}>收款账户</Text>
 										<Text style={styles.textRight}>
 											{user.pay_account + '(' + user.real_name + ')'}
@@ -67,15 +67,15 @@ class WithdrawLogDetails extends Component {
 											{withdraw.status == -1 ? withdraw.created_at : withdraw.updated_at}
 										</Text>
 									</View>
-									<View style={[styles.row, { paddingBottom: 15 }]}>
+									<View style={[styles.row, { paddingBottom: PxFit(15) }]}>
 										<Text style={styles.textLeft}>支付宝订单号</Text>
 										<Text style={styles.text}>{withdraw.trade_no}</Text>
 									</View>
 								</View>
 								<View
 									style={{
-										paddingHorizontal: 15,
-										borderTopWidth: 10,
+										paddingHorizontal: PxFit(15),
+										borderTopWidth: PxFit(10),
 										borderTopColor: Theme.lightBorder
 									}}
 								>
@@ -102,52 +102,52 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 15
+		marginTop: PxFit(15)
 	},
 
 	name: {
-		paddingLeft: 10,
-		fontSize: 18,
+		paddingLeft: PxFit(10),
+		fontSize: PxFit(18),
 		color: Theme.black
 	},
 	info: {
 		alignItems: 'center',
-		marginVertical: 20
+		marginVertical: PxFit(20)
 	},
 	money: {
-		fontSize: 36,
-		paddingBottom: 15,
+		fontSize: PxFit(36),
+		paddingBottom: PxFit(15),
 		color: Theme.black
 	},
 	row: {
-		paddingBottom: 20,
+		paddingBottom: PxFit(20),
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
 	textLeft: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: Theme.grey
 	},
 	textRight: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: Theme.black
 	},
 	text: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: Theme.black,
 		width: (SCREEN_WIDTH * 5) / 9,
 		textAlign: 'right'
 	},
 	borderRow: {
-		paddingBottom: 20,
-		paddingTop: 15,
+		paddingBottom: PxFit(20),
+		paddingTop: PxFit(15),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		borderTopWidth: 1,
+		borderTopWidth: PxFit(1),
 		borderTopColor: Theme.lightBorder
 	},
 	footer: {
-		paddingVertical: 15,
+		paddingVertical: PxFit(15),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'

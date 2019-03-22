@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { PxFit } from '../../../utils';
 
 class Default extends Component {
 	constructor(props) {
@@ -16,14 +17,14 @@ class Default extends Component {
 			<BlankContent
 				children={
 					<View>
-						<Text style={{ fontSize: 15, color: Theme.tintFont, marginTop: 12 }}>
+						<Text style={{ fontSize: PxFit(15), color: Theme.tintFont, marginTop: PxFit(12) }}>
 							{category.name}的题目已经答完了哦
 						</Text>
 						<Text
 							style={{
-								fontSize: 15,
+								fontSize: PxFit(15),
 								color: Theme.tintFont,
-								marginTop: 12,
+								marginTop: PxFit(12),
 								textAlign: 'center'
 							}}
 						>

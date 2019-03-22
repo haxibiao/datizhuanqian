@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 
 // import { DivisionLine, WithdrawsTips } from '../Universal';
-import { Theme, SCREEN_WIDTH } from '../../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../../utils';
 
 class NotLogin extends Component {
 	constructor(props) {
@@ -24,8 +24,8 @@ class NotLogin extends Component {
 							flexDirection: 'row',
 							alignItems: 'center',
 							justifyContent: 'space-between',
-							paddingTop: 20,
-							paddingBottom: 30
+							paddingTop: PxFit(20),
+							paddingBottom: PxFit(30)
 						}}
 					>
 						<View style={{ width: SCREEN_WIDTH / 2 }}>
@@ -93,46 +93,46 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FFFEFC'
 	},
 	header: {
-		paddingVertical: 25,
+		paddingVertical: PxFit(25),
 		alignItems: 'center'
 	},
 	gold: {
 		color: Theme.themeRed,
-		fontSize: 44,
-		paddingBottom: 2,
+		fontSize: PxFit(44),
+		paddingBottom: PxFit(2),
 		textAlign: 'center'
 	},
 	type: {
 		color: Theme.grey,
-		fontSize: 13,
+		fontSize: PxFit(13),
 		textAlign: 'center'
 	},
 	center: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		paddingHorizontal: 15,
+		paddingHorizontal: PxFit(15),
 		justifyContent: 'space-between'
 	},
 	item: {
-		paddingVertical: 25,
-		width: (SCREEN_WIDTH - 44) / 2,
+		paddingVertical: PxFit(25),
+		width: (SCREEN_WIDTH - PxFit(44)) / 2,
 		borderColor: '#E0E0E0',
-		borderWidth: 0.5,
+		borderWidth: PxFit(0.5),
 		alignItems: 'center',
-		marginTop: 20,
-		borderRadius: 5
+		marginTop: PxFit(20),
+		borderRadius: PxFit(5)
 	},
 	content: {
-		fontSize: 16,
+		fontSize: PxFit(16),
 		color: Theme.black
 	},
 	footer: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingTop: 20
+		paddingTop: PxFit(20)
 	},
 	tips: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: '#363636'
 	}
 });

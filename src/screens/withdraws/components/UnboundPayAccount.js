@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { Theme, SCREEN_WIDTH } from '../../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../../utils';
 
 import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingHorizontal: 15
+		paddingHorizontal: PxFit(15)
 	},
 	tipsText: {
 		color: Theme.grey,
-		fontSize: 13,
+		fontSize: PxFit(13),
 		fontWeight: '300'
 	},
 	content: {
@@ -53,15 +53,15 @@ const styles = StyleSheet.create({
 	},
 	contentText: {
 		color: Theme.grey,
-		fontSize: 13,
+		fontSize: PxFit(13),
 		fontWeight: '300',
-		paddingTop: 10
+		paddingTop: PxFit(10)
 	},
 	navigateText: {
 		color: Theme.weixin,
-		fontSize: 13,
+		fontSize: PxFit(13),
 		fontWeight: '300',
-		paddingTop: 10
+		paddingTop: PxFit(10)
 	}
 });
 

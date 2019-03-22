@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { TouchFeedback } from '../../../components';
+import { PxFit } from '../../../utils';
 
 class UserInfo extends Component {
 	constructor(props) {
@@ -23,12 +24,15 @@ class UserInfo extends Component {
 				style={{
 					flexDirection: 'row',
 					alignItems: 'center',
-					paddingBottom: 15
+					paddingBottom: PxFit(15)
 				}}
 				onPress={() => navigation.navigate('用户资料', { user_id: user.id })}
 			>
-				<Image source={{ uri: user.avatar }} style={{ width: 20, height: 20, borderRadius: 3 }} />
-				<Text style={{ fontSize: 14, color: '#222', paddingLeft: 6 }}>{user.name}</Text>
+				<Image
+					source={{ uri: user.avatar }}
+					style={{ width: PxFit(20), height: PxFit(20), borderRadius: PxFit(3) }}
+				/>
+				<Text style={{ fontSize: PxFit(14), color: '#222', paddingLeft: PxFit(6) }}>{user.name}</Text>
 			</TouchFeedback>
 		);
 	}

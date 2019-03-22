@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
-import { Theme } from '../../../utils';
+import { Theme, PxFit } from '../../../utils';
 
 class WithdrawsLogItem extends Component {
 	constructor(props) {
@@ -29,10 +29,12 @@ class WithdrawsLogItem extends Component {
 			>
 				<View>
 					{this._showStatus(item.status)}
-					<Text style={{ fontSize: 15, color: Theme.grey, paddingTop: 10 }}>{item.created_at}</Text>
+					<Text style={{ fontSize: PxFit(15), color: Theme.grey, paddingTop: PxFit(10) }}>
+						{item.created_at}
+					</Text>
 				</View>
 				<View>
-					<Text style={{ fontSize: 26, color: item.status == 1 ? Theme.weixin : Theme.black }}>
+					<Text style={{ fontSize: PxFit(26), color: item.status == 1 ? Theme.weixin : Theme.black }}>
 						￥{item.amount.toFixed(0)}.00
 					</Text>
 				</View>
@@ -42,13 +44,13 @@ class WithdrawsLogItem extends Component {
 	_showStatus = status => {
 		switch (status) {
 			case -1:
-				return <Text style={{ fontSize: 18, color: Theme.themeRed }}>提现失败</Text>;
+				return <Text style={{ fontSize: PxFit(18), color: Theme.themeRed }}>提现失败</Text>;
 				break;
 			case 1:
-				return <Text style={{ fontSize: 18, color: Theme.weixin }}>提现成功</Text>;
+				return <Text style={{ fontSize: PxFit(18), color: Theme.weixin }}>提现成功</Text>;
 				break;
 			case 0:
-				return <Text style={{ fontSize: 18, color: Theme.theme }}>待处理</Text>;
+				return <Text style={{ fontSize: PxFit(18), color: Theme.theme }}>待处理</Text>;
 				break;
 		}
 	};
@@ -59,10 +61,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingVertical: 15,
+		paddingVertical: PxFit(15),
 		borderBottomColor: Theme.lightBorder,
-		borderBottomWidth: 1,
-		paddingHorizontal: 15
+		borderBottomWidth: PxFit(1),
+		paddingHorizontal: PxFit(15)
 	}
 });
 

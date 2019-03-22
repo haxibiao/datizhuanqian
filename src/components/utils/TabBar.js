@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
-import { Theme, SCREEN_WIDTH } from '../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
 import Iconfont from '../Iconfont';
 // import NoTicketTipsModal from '../Modal/NoTicketTipsModal';
@@ -56,7 +56,7 @@ class TabTop extends Component {
 							return (
 								<BoxShadow
 									setting={Object.assign({}, shadowOpt, {
-										height: 44
+										height: PxFit(44)
 									})}
 								>
 									<View style={styles.container}>
@@ -65,8 +65,8 @@ class TabTop extends Component {
 											<Text style={styles.text}> 精力点</Text>
 											<Text
 												style={{
-													fontSize: 15,
-													paddingLeft: 5,
+													fontSize: PxFit(15),
+													paddingLeft: PxFit(5),
 													color: user.ticket > 10 ? Theme.black : Theme.themeRed
 												}}
 											>
@@ -78,7 +78,7 @@ class TabTop extends Component {
 										</View>
 										<View style={styles.rowItem}>
 											<Iconfont name={'zhuanshi'} size={22} color={Theme.theme} />
-											<Text style={[styles.text, { paddingRight: 5 }]}>智慧点</Text>
+											<Text style={[styles.text, { paddingRight: PxFit(5) }]}>智慧点</Text>
 											<Text style={styles.text}>{user.gold}</Text>
 										</View>
 									</View>
@@ -101,12 +101,12 @@ class TabTop extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		height: 44,
+		height: PxFit(44),
 		backgroundColor: Theme.white,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		shadowOffset: { width: 0, height: 2 },
+		shadowOffset: { width: 0, height: PxFit(2) },
 		shadowColor: '#F0F0F0',
 		shadowOpacity: 1
 	},
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	text: {
-		fontSize: 15,
+		fontSize: PxFit(15),
 		color: Theme.black
 	}
 });
