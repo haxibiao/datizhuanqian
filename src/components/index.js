@@ -34,6 +34,7 @@ import PopOverlay from './Overlay/PopOverlay';
 import ProgressOverlay from './Overlay/ProgressOverlay';
 import SubmitLoading from './Overlay/SubmitLoading';
 import OverlayViewer from './Overlay/OverlayViewer';
+import UpdateOverlay from './Overlay/UpdateOverlay';
 // Layout
 import MasonryList from './Layout/MasonryList';
 // List
@@ -83,6 +84,7 @@ export {
 	ProgressOverlay,
 	SubmitLoading,
 	OverlayViewer,
+	UpdateOverlay,
 	MasonryList,
 	PullList,
 	ListFooter,

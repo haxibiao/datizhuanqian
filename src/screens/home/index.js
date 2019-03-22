@@ -18,8 +18,10 @@ import {
 	CustomRefreshControl,
 	ListFooter,
 	Placeholder,
-	TabBar
+	TabBar,
+	UpdateOverlay
 } from '../../components';
+import { Api } from '../../utils';
 import PlateItem from './components/PlateItem';
 
 import { connect } from 'react-redux';
@@ -45,23 +47,21 @@ class index extends Component {
 	}
 
 	componentDidMount() {
-		const {
-			client: { query }
-		} = this.props;
-		let promises = [query({ query: CategoriesQuery })];
-		Promise.all(promises)
-			.then(loaded => {
-				SplashScreen.hide();
-			})
-			.catch(rejected => {});
+		SplashScreen.hide();
+		// UpdateOverlay.show();
 
 		this.timer = setTimeout(() => {
-			SplashScreen.hide();
+			Api.checkUpdate(this.dispatch.bind(this));
 		}, 3000);
+		// this.dispatch();
 	}
 
 	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
+	}
+
+	dispatch(serverVersion) {
+		this.props.dispatch(actions.UpdateViewedVesion(serverVersion));
 	}
 
 	async loadCache() {

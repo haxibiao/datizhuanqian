@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 export const ItemKeys = {
   user: 'user',
-  updateTipsVersion: 'updateTipsVersion',
+  viewedVersion: 'viewedVersion',
   appIntroVersion: 'appIntroVersion',
   userCache: 'userCache',
   categoryCache: 'categoryCache',

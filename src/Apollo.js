@@ -93,31 +93,6 @@ class Apollo extends Component {
 		JPushModule.addTags([Config.AppStore], success => {
 			console.log('success', success);
 		});
-
-		// 获取id
-		// JPushModule.getRegistrationID(registrationId => {
-		// 	console.log('registrationId', registrationId);
-		// });
-
-		// 接收自定义消息
-		// JPushModule.addReceiveCustomMsgListener(message => {
-		// 	this.setState({ pushMsg: message });
-		// 	console.log('receive pushMsg: ', message);
-		// });
-
-		// 接收推送通知
-		// JPushModule.addReceiveNotificationListener(message => {
-		// 	console.log('receive notification: ', message);
-		// });
-
-		// 打开通知
-		// JPushModule.addReceiveOpenNotificationListener(map => {
-		// 	console.log('Opening notification!');
-		// 	console.log('map.extra: ' + map.extras);
-		// 	if (Platform.OS === 'android') {
-		// 		JPushModule.notifyJSDidLoad(resultCode => console.log(resultCode));
-		// 	}
-		// });
 	}
 
 	componentWillUnmount() {

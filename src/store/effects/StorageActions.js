@@ -12,9 +12,9 @@ export async function appIntroVersion({ action, getState, dispatch }) {
 	await Storage.setItem(ItemKeys.appIntroVersion, appIntroVersion);
 }
 
-export async function updateTipsVersion({ action, getState, dispatch }) {
-	let { updateTipsVersion } = action;
-	await Storage.setItem(ItemKeys.updateTipsVersion, updateTipsVersion);
+export async function UpdateViewedVesion({ action, getState, dispatch }) {
+	let { viewedVersion } = action;
+	await Storage.setItem(ItemKeys.viewedVersion, viewedVersion);
 }
 
 export async function rememberUserCache({ action, getState, dispatch }) {

@@ -24,17 +24,13 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showHome: false,
-			appIntroVersion: '',
-			introImages: '',
-			isConnect: false,
 			ServerRoot: 'https://datizhuanqian.com'
 		};
 	}
 
 	componentWillMount() {
 		this.loadUserState();
-		this.loadServerRootState();
+		// this.loadServerRootState();
 	}
 
 	componentDidMount() {
@@ -112,47 +108,7 @@ class App extends Component {
 		}
 	};
 
-	// getAppIntro = async () => {
-	//   this.setState({
-	//     appIntroVersion: (await Storage.getItem(ItemKeys.appIntroVersion))
-	//       ? await Storage.getItem(ItemKeys.appIntroVersion)
-	//       : 1
-	//   });
-	//   //获取localstorage version 第一次启动APP设置初始值1
-	//   if (this.state.appIntroVersion < Config.AppVersionNumber) {
-	//     //减少请求次数  如果appIntroVersion小于当前app的version   证明没有浏览过新版本app介绍页 发起获取介绍页请求
-	//     //大于等于则跳过显示原始启动页
-	//     Promise.race([
-	//       fetch(Config.ServerRoot + '/api/app-loading-image'),
-	//       new Promise(function(resolve, reject) {
-	//         setTimeout(() => reject(new Error('request timeout')), 2000);
-	//       })
-	//     ])
-	//       .then(response => response.json())
-	//       .then(data => {
-	//         this.setState({
-	//           introImages: data
-	//         });
-	//       })
-	//       .catch(err => {
-	//         this.setState({
-	//           introImages: []
-	//         });
-	//       });
-	//   } else {
-	//     this.setState({
-	//       isConnected: false
-	//     });
-	//   }
-	// };
-
-	handleIntro = () => {
-		this.setState({ showHome: true });
-	};
-
 	render() {
-		let { showHome, introImages, appIntroVersion, isConnect } = this.state;
-
 		return (
 			<View style={styles.container}>
 				<Provider store={store}>
@@ -161,16 +117,6 @@ class App extends Component {
 					</ErrorBoundary>
 				</Provider>
 				<Toast ref={ref => (this.toast = ref)} />
-				{
-					// <Appintroduction
-					//   showHome={showHome}
-					//   method={this.handleIntro}
-					//   introImages={introImages}
-					//   actions={() => {
-					//     store.dispatch(actions.updateAppIntroVersion(Config.AppVersionNumber));
-					//   }}
-					// />
-				}
 			</View>
 		);
 	}
@@ -180,16 +126,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#FFF'
-	},
-	appLaunch: {
-		width: SCREEN_WIDTH,
-		height: StatusBar.currentHeight > 35 ? SCREEN_HEIGHT + StatusBar.currentHeight : SCREEN_HEIGHT,
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#FEFEFE'
 	}
 });
 

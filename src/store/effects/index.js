@@ -3,7 +3,7 @@ import {
 	rememberUser,
 	forgetUser,
 	appIntroVersion,
-	updateTipsVersion,
+	UpdateViewedVesion,
 	rememberUserCache,
 	rememberCategoryCache,
 	rememberServer
@@ -58,8 +58,8 @@ export default [
 		error: genericErrorHandler
 	},
 	{
-		action: types.CHANGE_UPDATE_TIPS_VERSION,
-		effect: updateTipsVersion,
+		action: types.VIEWED_UPDATE_VERSION,
+		effect: UpdateViewedVesion,
 		error: genericErrorHandler
 	},
 	{

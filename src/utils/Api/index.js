@@ -6,10 +6,12 @@ import imagePicker from './imagePicker';
 import saveVideo from './saveVideo';
 import videoPicker from './videoPicker';
 import videoUpload from './videoUpload';
+import checkUpdate from './checkUpdate';
 
 export default {
 	imagePicker,
 	saveVideo,
 	videoPicker,
-	videoUpload
+	videoUpload,
+	checkUpdate
 };

@@ -68,10 +68,11 @@ export default {
     };
   },
   //用户账号状态
-  changeUpdateTipsVersion(updateTipsVersion) {
+  UpdateViewedVesion(viewedVersion) {
+    console.log('viewedVersion', viewedVersion);
     return {
-      type: types.CHANGE_UPDATE_TIPS_VERSION,
-      updateTipsVersion
+      type: types.VIEWED_UPDATE_VERSION,
+      viewedVersion
     };
   },
 
