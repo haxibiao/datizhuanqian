@@ -38,17 +38,17 @@ export default function(props: UploadOption) {
 					onProcess && onProcess(parseInt(data.progress)); //上传进度
 				});
 				VodUploader.addListener('completed', uploadId, data => {
-					onCompleted && saveVideo(data, onCompleted); //将腾讯云的视频地址保存到服务器
+					onCompleted && onCompleted(data); //将腾讯云的视频地址保存到服务器
 				});
 				VodUploader.addListener('cancelled', uploadId, data => {
 					onCancelled && onCancelled();
 				});
 				VodUploader.addListener('error', uploadId, data => {
-					onError ? onError(data) : Toast.show({ content: '视频上传失败', type: 'fail' });
+					onError ? onError(data) : Toast.show({ content: '视频上传失败' });
 				});
 			})
 			.catch(err => {
-				onError ? onError(data) : Toast.show({ content: '视频上传失败', type: 'fail' });
+				onError ? onError(data) : Toast.show({ content: '视频上传失败' });
 			});
 	});
 }

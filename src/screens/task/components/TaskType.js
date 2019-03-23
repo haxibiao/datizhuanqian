@@ -27,7 +27,7 @@ class TaskType extends Component {
 		} else if (task.type == 1) {
 			navigation.navigate('SubmitTask', { task_id: task.id, again: false });
 		} else if (task.type == 3) {
-			navigation.navigate('问题创建');
+			navigation.navigate('Contribute');
 		} else {
 			navigation.navigate('编辑个人资料', { user: user });
 		}

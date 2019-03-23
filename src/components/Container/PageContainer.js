@@ -6,10 +6,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import { KeyboardSpace } from 'teaset';
 import { Theme, PxFit, ISIOS, NAVBAR_HEIGHT } from '../../utils';
 import StatusView from '../StatusView';
 import NavigatorBar from '../Header/NavigatorBar';
+import KeyboardSpacer from '../Utils/KeyboardSpacer';
 
 type Props = {
 	store?: Object, // redux screen state
@@ -96,7 +96,7 @@ class PageContainer extends Component<Props> {
 			<View style={[styles.container, style]} {...props}>
 				{!hiddenNavBar && this.renderNavBar()}
 				<View style={[styles.contentView, { marginTop }, contentViewStyle]}>{this.renderContent()}</View>
-				<KeyboardSpace topInsets={topInsets} />
+				<KeyboardSpacer topInsets={topInsets} />
 				<NavigationEvents
 					onWillFocus={onWillFocus}
 					onDidFocus={onDidFocus}

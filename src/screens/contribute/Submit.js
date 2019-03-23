@@ -8,7 +8,7 @@ import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, ImageBackg
 import { PageContainer, Iconfont, Button } from '../../components';
 import { Theme, PxFit } from '../../utils';
 
-class QuestionReviewScreen extends Component {
+class SubmitSuccess extends Component {
 	render() {
 		let { navigation } = this.props;
 		return (
@@ -92,4 +92,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default QuestionReviewScreen;
+export default SubmitSuccess;

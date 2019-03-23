@@ -62,9 +62,11 @@ export default {
 	navBarSeparatorColor,
 	boyColor: '#00C8FF',
 	girlColor: '#FF5C9D',
-	linkColor: '#3E65E8',
+	linkColor: '#407FCF',
 	cancelColor: '#b6c2e1',
 	confirmColor: '#3E65E8',
+	correctColor: '#1CACF9',
+	errorColor: '#FF4C4C',
 	itemSpace: 15,
 
 	//old

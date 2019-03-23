@@ -18,6 +18,10 @@ import SocietyScreen from '../screens/profile/Society';
 import EditProfileScreen from '../screens/profile/Edit';
 import ModifyAliPayScreen from '../screens/profile/ModifyAliPay';
 import ModifyPasswordScreen from '../screens/profile/ModifyPassword';
+import ContributeScreen from '../screens/contribute';
+import ContributesScreen from '../screens/contribute/Contributes';
+import ContributeRuleScreen from '../screens/contribute/ContributeRule';
+import SubmitContributeScreen from '../screens/contribute/SubmitContribute';
 
 export default {
 	Main: {
@@ -68,5 +72,17 @@ export default {
 	},
 	ModifyPassword: {
 		screen: ModifyPasswordScreen
+	},
+	Contribute: {
+		screen: ContributeScreen
+	},
+	Contributes: {
+		screen: ContributesScreen
+	},
+	ContributeRule: {
+		screen: ContributeRuleScreen
+	},
+	SubmitContribute: {
+		screen: SubmitContributeScreen
 	}
 };

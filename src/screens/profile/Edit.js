@@ -138,7 +138,7 @@ class index extends Component {
 				title="编辑资料"
 				white
 				rightView={
-					<TouchFeedback onPress={this.saveChange}>
+					<TouchFeedback style={styles.saveButton} onPress={this.saveChange}>
 						<Text style={styles.saveText}>保存修改</Text>
 					</TouchFeedback>
 				}
@@ -244,6 +244,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff'
+	},
+	saveButton: {
+		flex: 1,
+		justifyContent: 'center'
 	},
 	saveText: { fontSize: PxFit(15), textAlign: 'center', color: Theme.secondaryColor },
 	avatarItem: {

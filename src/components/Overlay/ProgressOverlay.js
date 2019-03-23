@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2019-01-14 14:51:21
-*/
+ * @flow
+ * created by wyk made in 2019-01-14 14:51:21
+ */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import * as Progress from 'react-native-progress';
@@ -52,12 +52,7 @@ class ProgressOverlay {
 
 	static progress(progress: number) {
 		console.log('progress', progress);
-		this.progressRef.setState({ progress }, () => {
-			if (this.progressRef.state.progress === 100) {
-				Overlay.hide(this.overlayKey);
-				this.overlayKey = null;
-			}
-		});
+		this.progressRef.setState({ progress });
 	}
 
 	static hide() {

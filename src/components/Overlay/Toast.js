@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-06 16:02:28
-*/
+ * @flow
+ * created by wyk made in 2018-12-06 16:02:28
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -9,12 +9,10 @@ import { StyleSheet, View, Text, Animated, Easing } from 'react-native';
 import { Theme, PxFit, SCREEN_HEIGHT } from '../../utils';
 import Iconfont from '../Iconfont';
 
-type notificationType = 'success' | 'warn' | 'fail';
 type positionValue = 'top' | 'center' | 'bottom';
 
 type Option = {
 	content: any,
-	type?: notificationType,
 	layout?: positionValue,
 	duration?: number,
 	callback?: Function
@@ -51,7 +49,6 @@ class Toast extends Component<Props, State> {
 	}
 
 	show(option: Option) {
-		this.notificationType = option.type;
 		this.positionValue = option.layout || 'center';
 		let duration = option.duration || this.props.showDuration;
 		let content = option.content;
@@ -96,30 +93,9 @@ class Toast extends Component<Props, State> {
 				position = { bottom: PxFit(Theme.HOME_INDICATOR_HEIGHT + 100) };
 				break;
 		}
-		switch (this.notificationType) {
-			case 'success':
-				iconName = 'success';
-				break;
-			case 'warn':
-				iconName = 'prompt';
-				break;
-			case 'fail':
-				iconName = 'delete';
-				break;
-		}
-		if (iconName) {
-			style = {
-				minWidth: PxFit(120),
-				minHeight: PxFit(120),
-				...style
-			};
-		}
 		let ToastView = isShow ? (
 			<View style={[styles.container, position]} pointerEvents="none">
 				<Animated.View style={[styles.toast, { opacity }, style]}>
-					{iconName && (
-						<Iconfont name={iconName} size={PxFit(24)} color="#fff" style={{ marginBottom: PxFit(8) }} />
-					)}
 					{React.isValidElement(content) ? (
 						content
 					) : (

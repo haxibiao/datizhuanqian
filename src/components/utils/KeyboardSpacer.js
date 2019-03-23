@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Platform, View, Keyboard, LayoutAnimation } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 const systemVersion = DeviceInfo.getSystemVersion();
+import { Theme, PxFit, ISIOS, ISAndroid } from '../../utils';
 
 type Props = {
 	topInsets?: number
@@ -29,11 +30,11 @@ class KeyboardSpacer extends Component<Props> {
 
 	componentDidMount() {
 		if (!this.showListener) {
-			let name = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+			let name = ISIOS ? 'keyboardWillShow' : 'keyboardDidShow';
 			this.showListener = Keyboard.addListener(name, e => this.onKeyboardShow(e));
 		}
 		if (!this.hideListener) {
-			let name = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+			let name = ISIOS ? 'keyboardWillHide' : 'keyboardDidHide';
 			this.hideListener = Keyboard.addListener(name, () => this.onKeyboardHide());
 		}
 	}
@@ -69,7 +70,7 @@ class KeyboardSpacer extends Component<Props> {
 	onKeyboardShow(e) {
 		if (!e || !e.endCoordinates || !e.endCoordinates.height) return;
 		let height = e.endCoordinates.height + (this.props.topInsets ? this.props.topInsets : 0);
-		if (Platform.OS === 'android' && systemVersion == 9) {
+		if (ISAndroid && systemVersion == 9) {
 			height += 75;
 		}
 		this.setState({ keyboardHeight: height });

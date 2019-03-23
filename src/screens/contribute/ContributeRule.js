@@ -8,7 +8,7 @@ import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
 import { PageContainer } from '../../components';
 import { Theme, SCREEN_WIDTH } from '../../utils';
 
-class MakeQuestionRule extends Component {
+class ContributeRule extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default MakeQuestionRule;
+export default ContributeRule;
