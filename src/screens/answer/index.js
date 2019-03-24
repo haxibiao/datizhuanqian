@@ -118,13 +118,13 @@ class index extends Component {
 		return this.questionId;
 	};
 
-	_showCuration = () => {
+	_showCuration = question => {
 		let { swithMethod } = this.state;
-		const { question, navigation } = this.props;
+		const { navigation } = this.props;
 		return (
 			<TouchFeedback
 				style={styles.curation}
-				onPress={() => navigation.navigate('题目纠错', { question: question })}
+				onPress={() => navigation.navigate('Curation', { question: question })}
 			>
 				<Text style={styles.curationText}>{swithMethod ? '题目纠错' : ''}</Text>
 			</TouchFeedback>
@@ -191,7 +191,7 @@ class index extends Component {
 												onPress={() => {
 													this.submitAnswer(question, refetch);
 												}}
-												style={{ height: PxFit(38), backgroundColor: PxFit(buttonColor) }}
+												style={{ height: PxFit(38), backgroundColor: buttonColor }}
 												fontSize={14}
 											/>
 										</View>

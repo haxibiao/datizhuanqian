@@ -5,6 +5,7 @@
 import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/login';
 import AnswerScreen from '../screens/answer';
+import CurationScreen from '../screens/answer/Curation';
 import SettingScreen from '../screens/setting';
 import AccountSecurityScreen from '../screens/setting/AccountSecurity';
 import GradeDescriptionScreen from '../screens/setting/GradeDescription';
@@ -18,6 +19,8 @@ import SocietyScreen from '../screens/profile/Society';
 import EditProfileScreen from '../screens/profile/Edit';
 import ModifyAliPayScreen from '../screens/profile/ModifyAliPay';
 import ModifyPasswordScreen from '../screens/profile/ModifyPassword';
+import FeedbackScreen from '../screens/feedback';
+import FeedbackDetails from '../screens/feedback/FeedbackDetails';
 import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
 import ContributeRuleScreen from '../screens/contribute/ContributeRule';
@@ -32,6 +35,9 @@ export default {
 	},
 	Answer: {
 		screen: AnswerScreen
+	},
+	Curation: {
+		screen: CurationScreen
 	},
 	// setting
 	Setting: {
@@ -72,6 +78,12 @@ export default {
 	},
 	ModifyPassword: {
 		screen: ModifyPasswordScreen
+	},
+	Feedback: {
+		screen: FeedbackScreen
+	},
+	FeedbackDetails: {
+		screen: FeedbackDetails
 	},
 	Contribute: {
 		screen: ContributeScreen

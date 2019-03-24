@@ -15,45 +15,17 @@ import actions from '../../store/actions';
 
 class UpdateOverlay {
 	static show(versionData, serverVersion, dispatch) {
-		console.log('versionData', dispatch);
 		let overlayView = (
 			<Overlay.View animated>
 				<View style={styles.container}>
-					<View
-						style={{
-							width: SCREEN_WIDTH - PxFit(60),
-							borderRadius: PxFit(15),
-							backgroundColor: Theme.white,
-							padding: 0
-						}}
-					>
-						<View style={{ justifyContent: 'center', paddingTop: PxFit(25) }}>
+					<View style={style.content}>
+						<View style={styles.header}>
 							<Text style={styles.modalRemindContent}>发现新版本</Text>
-							<Text
-								style={{
-									color: Theme.grey,
-									fontSize: PxFit(13),
-									textAlign: 'center',
-									paddingTop: PxFit(3)
-								}}
-							>
-								版本号：V{versionData.version}
-							</Text>
+							<Text style={styles.headerText}>版本号：V{versionData.version}</Text>
 						</View>
-						<View style={{ paddingBottom: PxFit(20), paddingHorizontal: PxFit(20) }}>
-							<Text
-								style={{
-									fontSize: PxFit(14),
-									color: Theme.primaryFont,
-									paddingTop: PxFit(10),
-									lineHeight: PxFit(22)
-								}}
-							>
-								更新提示：
-							</Text>
-							<Text style={{ fontSize: PxFit(14), color: Theme.primaryFont, lineHeight: PxFit(22) }}>
-								{versionData.description}
-							</Text>
+						<View style={styles.center}>
+							<Text style={styles.centerTitle}>更新提示：</Text>
+							<Text style={styles.centerInfo}>{versionData.description}</Text>
 						</View>
 
 						<View style={styles.modalFooter}>
@@ -95,6 +67,34 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0)',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	content: {
+		width: SCREEN_WIDTH - PxFit(60),
+		borderRadius: PxFit(15),
+		backgroundColor: Theme.white,
+		padding: 0
+	},
+	header: { justifyContent: 'center', paddingTop: PxFit(25) },
+	headerText: {
+		color: Theme.grey,
+		fontSize: PxFit(13),
+		textAlign: 'center',
+		paddingTop: PxFit(3)
+	},
+	center: {
+		paddingBottom: PxFit(20),
+		paddingHorizontal: PxFit(20)
+	},
+	centerTitle: {
+		fontSize: PxFit(14),
+		color: Theme.primaryFont,
+		paddingTop: PxFit(10),
+		lineHeight: PxFit(22)
+	},
+	centerInfo: {
+		fontSize: PxFit(14),
+		color: Theme.primaryFont,
+		lineHeight: PxFit(22)
 	},
 	modalRemindContent: {
 		fontSize: PxFit(18),

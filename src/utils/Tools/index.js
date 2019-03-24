@@ -5,6 +5,15 @@
 import { NumberFormat, TimeFormat, singleImageResponse, generateGenderLable } from './calculate';
 import { contentNavigator } from './navigator';
 import { syncGetter } from './adapter';
+import {
+	NumberFormat,
+	TimeFormat,
+	singleImageResponse,
+	generateGenderLable,
+	imgsLayoutSize,
+	imageSize
+} from './calculate';
+import { contentNavigator } from './navigator';
 
 export default {
 	NumberFormat,
@@ -13,4 +22,6 @@ export default {
 	generateGenderLable,
 	contentNavigator,
 	syncGetter
+	imgsLayoutSize,
+	imageSize
 };

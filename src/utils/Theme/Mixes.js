@@ -40,6 +40,7 @@ const primaryFont = '#363636';
 const tintGray = '#F0F0F0';
 
 const lightBorder = '#F4F4F4';
+const lightGray = '#F6F6F6';
 
 const grey = '#969696';
 const weixin = '#42c02e';
@@ -78,6 +79,7 @@ export default {
 	primaryFont,
 	tintGray,
 	lightBorder,
+	lightGray,
 	grey,
 	weixin
 };
