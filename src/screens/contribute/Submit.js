@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { PageContainer, Iconfont, Button } from '../../components';
-import { Theme, PxFit } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
 class SubmitSuccess extends Component {
 	render() {
@@ -15,10 +15,7 @@ class SubmitSuccess extends Component {
 			<PageContainer title="提交结果">
 				<ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.submitContainer}>
-						<ImageBackground
-							source={require('../../../assets/images/submit.png')}
-							style={styles.submitImage}
-						>
+						<ImageBackground source={require('../../assets/images/submit.png')} style={styles.submitImage}>
 							<View style={{ alignItems: 'center' }}>
 								<Text style={styles.submitStatus}>提交成功</Text>
 								<Text style={styles.submitTip}>工作人员会尽快审核您的题目，请耐心等待哦!</Text>
@@ -53,11 +50,11 @@ const styles = StyleSheet.create({
 		paddingVertical: PxFit(30)
 	},
 	submitImage: {
-		width: Divice.width * 0.52,
-		height: Divice.width * 0.65,
+		width: SCREEN_WIDTH * 0.52,
+		height: SCREEN_WIDTH * 0.65,
 		resizeMode: 'contain',
-		paddingTop: Divice.width * 0.07,
-		paddingHorizontal: Divice.width * 0.055
+		paddingTop: SCREEN_WIDTH * 0.07,
+		paddingHorizontal: SCREEN_WIDTH * 0.055
 	},
 	submitStatus: {
 		fontSize: PxFit(17),

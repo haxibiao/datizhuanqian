@@ -293,7 +293,7 @@ class index extends Component {
 
 	onCompleted = () => {
 		this.setState({ submitLoading: false });
-		// this.props.navigation.replace('SubmitContribute');
+		// this.props.navigation.replace('ContributeSubmited');
 	};
 
 	onError = error => {

@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
 import { PageContainer } from '../../components';
-import { Theme, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
 class ContributeRule extends Component {
 	constructor(props) {

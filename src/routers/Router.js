@@ -24,7 +24,7 @@ import FeedbackDetails from '../screens/feedback/FeedbackDetails';
 import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
 import ContributeRuleScreen from '../screens/contribute/ContributeRule';
-import SubmitContributeScreen from '../screens/contribute/SubmitContribute';
+import ContributeSubmitedScreen from '../screens/contribute/Submit';
 
 export default {
 	Main: {
@@ -94,7 +94,7 @@ export default {
 	ContributeRule: {
 		screen: ContributeRuleScreen
 	},
-	SubmitContribute: {
-		screen: SubmitContributeScreen
+	ContributeSubmited: {
+		screen: ContributeSubmitedScreen
 	}
 };
