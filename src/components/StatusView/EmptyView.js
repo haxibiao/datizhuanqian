@@ -16,7 +16,7 @@ type Props = {
 };
 class EmptyView extends React.Component<Props> {
 	static defaultProps = {
-		title: '此处空空如也~',
+		title: '这里还什么都没有哦~',
 		imageSource: require('../../assets/images/record.jpg')
 	};
 

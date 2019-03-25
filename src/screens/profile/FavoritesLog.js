@@ -27,7 +27,7 @@ import {
 	ListFooter,
 	Row
 } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, Config, Tools, SCREEN_WIDTH } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -61,17 +61,17 @@ class FavoritesLog extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<PageContainer title="我的收藏">
-				<Query query={FavoritesQuery} fetchPolicy="network-only">
-					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return <StatusView.ErrorView reload={() => refetch()} />;
-						if (!(data && data.favorites && data.favorites.length > 0)) {
-							return <StatusView.LoadingSpinner />;
-						}
-						return (
+			<Query query={FavoritesQuery} fetchPolicy="network-only">
+				{({ data, loading, error, refetch, fetchMore }) => {
+					let favorites = Tools.syncGetter('favorites', data);
+					let empty = favorites && favorites.length === 0;
+					loading = !favorites;
+					console.log('favorites', favorites, empty, loading);
+					return (
+						<PageContainer title="我的收藏" refetch={refetch} loading={loading} empty={empty}>
 							<FlatList
 								contentContainerStyle={styles.container}
-								data={data.favorites}
+								data={favorites}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
 									<QuestionItem
@@ -83,37 +83,35 @@ class FavoritesLog extends Component {
 								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
-									if (data.favorites) {
-										fetchMore({
-											variables: {
-												offset: data.favorites.length
-											},
-											updateQuery: (prev, { fetchMoreResult }) => {
-												if (
-													!(
-														fetchMoreResult &&
-														fetchMoreResult.favorites &&
-														fetchMoreResult.favorites.length > 0
-													)
-												) {
-													this.setState({
-														finished: true
-													});
-													return prev;
-												}
-												return Object.assign({}, prev, {
-													questions: [...prev.favorites, ...fetchMoreResult.favorites]
+									fetchMore({
+										variables: {
+											offset: data.favorites.length
+										},
+										updateQuery: (prev, { fetchMoreResult }) => {
+											if (
+												!(
+													fetchMoreResult &&
+													fetchMoreResult.favorites &&
+													fetchMoreResult.favorites.length > 0
+												)
+											) {
+												this.setState({
+													finished: true
 												});
+												return prev;
 											}
-										});
-									}
+											return Object.assign({}, prev, {
+												questions: [...prev.favorites, ...fetchMoreResult.favorites]
+											});
+										}
+									});
 								}}
 								ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 							/>
-						);
-					}}
-				</Query>
-			</PageContainer>
+						</PageContainer>
+					);
+				}}
+			</Query>
 		);
 	}
 }

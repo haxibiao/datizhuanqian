@@ -14,9 +14,11 @@ import KeyboardSpacer from '../Utils/KeyboardSpacer';
 type Props = {
 	store?: Object, // redux screen state
 	navBar?: any, // 导航条
+	refetch?: Function,
+	offline?: boolean,
 	error?: boolean,
-	onErrorPress?: Function,
 	loading?: boolean,
+	empty?: boolean,
 	children?: any,
 	autoKeyboardInsets?: boolean, //键盘占位
 	topInsets?: number,
@@ -44,8 +46,11 @@ class PageContainer extends Component<Props> {
 		topInsets: -Theme.HOME_INDICATOR_HEIGHT
 	};
 	renderContent() {
-		const { error, children, onErrorPress } = this.props;
-		if (error) return <StatusView.ErrorView onPress={onErrorPress} />;
+		const { offline, error, loading, empty, children, refetch } = this.props;
+		if (offline) return <StatusView.ErrorView onPress={refetch} />;
+		if (error) return <StatusView.ErrorView onPress={refetch} />;
+		if (loading) return <StatusView.LoadingSpinner />;
+		if (empty) return <StatusView.EmptyView />;
 		return children;
 	}
 

@@ -13,4 +13,5 @@ export function syncGetter(str, data) {
 			return undefined;
 		}
 	}
+	return result;
 }
