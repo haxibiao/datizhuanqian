@@ -159,7 +159,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
-									onPress={() => navigation.navigate('xxx')}
+									onPress={() => navigation.navigate('Contributes')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -174,7 +174,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
-									onPress={() => navigation.navigate('xxx')}
+									onPress={() => navigation.navigate('FavoritesLog')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -189,7 +189,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
-									onPress={() => navigation.navigate('xxx')}
+									onPress={() => navigation.navigate('CorrectLog')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -204,7 +204,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
-									onPress={() => navigation.navigate('xxx')}
+									onPress={() => navigation.navigate('AnswerLog')}
 								>
 									<Image
 										style={styles.metaIcon}
@@ -246,7 +246,7 @@ class index extends Component {
 						style={styles.columnItem}
 						authenticated
 						navigation={navigation}
-						onPress={() => navigation.navigate('Helps')}
+						onPress={() => navigation.navigate('CommonIssue')}
 					>
 						<Row>
 							<Iconfont name={'question'} size={PxFit(24)} style={styles.itemType} color={'#FF5E7D'} />

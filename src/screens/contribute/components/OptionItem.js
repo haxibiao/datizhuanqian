@@ -40,8 +40,8 @@ class OptionItem extends Component {
 				<View style={styles.optionContent}>
 					<Text style={[styles.optionContentText, isAnswer && styles.correctText]}>{option.Text}</Text>
 				</View>
-				<TouchableOpacity style={{ marginTop: PxFit(8) }} onPress={() => remove(option)}>
-					<Iconfont name="close" size={PxFit(16)} color={'#696482'} />
+				<TouchableOpacity style={styles.closeItem} onPress={() => remove(option)}>
+					<Iconfont name="close" size={PxFit(20)} color={'#696482'} />
 				</TouchableOpacity>
 			</TouchableOpacity>
 		);
@@ -79,6 +79,14 @@ const styles = StyleSheet.create({
 	},
 	correctText: {
 		color: Theme.correctColor
+	},
+	closeItem: {
+		width: PxFit(34),
+		height: PxFit(34),
+		borderRadius: PxFit(17),
+		backgroundColor: Theme.groundColour,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 

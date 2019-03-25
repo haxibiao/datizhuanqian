@@ -3,6 +3,7 @@
  * created by wyk made in 2018-12-05 20:23:50
  */
 import MainTabNavigator from './MainTabNavigator';
+import { QuestionDetail } from '../components';
 import LoginScreen from '../screens/login';
 import AnswerScreen from '../screens/answer';
 import CurationScreen from '../screens/answer/Curation';
@@ -17,6 +18,10 @@ import WithdrawLogDetailScreen from '../screens/withdraws/WithdrawLogDetails';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
 import SocietyScreen from '../screens/profile/Society';
 import EditProfileScreen from '../screens/profile/Edit';
+import FavoritesLogScreen from '../screens/profile/FavoritesLog';
+import CorrectLogScreen from '../screens/profile/CorrectLog';
+import AnswerLogScreen from '../screens/profile/AnswerLog';
+import CommonIssueScreen from '../screens/profile/CommonIssue';
 import ModifyAliPayScreen from '../screens/profile/ModifyAliPay';
 import ModifyPasswordScreen from '../screens/profile/ModifyPassword';
 import FeedbackScreen from '../screens/feedback';
@@ -30,11 +35,15 @@ export default {
 	Main: {
 		screen: MainTabNavigator
 	},
+	QuestionDetail: {
+		screen: QuestionDetail
+	},
 	Register: {
 		screen: LoginScreen
 	},
 	Answer: {
-		screen: AnswerScreen
+		screen: AnswerScreen,
+		path: 'question/:question_id'
 	},
 	Curation: {
 		screen: CurationScreen
@@ -72,6 +81,19 @@ export default {
 	},
 	EditProfile: {
 		screen: EditProfileScreen
+	},
+	FavoritesLog: {
+		screen: FavoritesLogScreen
+	},
+	CorrectLog: {
+		screen: CorrectLogScreen
+	},
+	AnswerLog: {
+		screen: AnswerLogScreen
+	},
+	CommonIssue: {
+		screen: CommonIssueScreen,
+		path: 'app/CommonIssue'
 	},
 	ModifyAliPay: {
 		screen: ModifyAliPayScreen

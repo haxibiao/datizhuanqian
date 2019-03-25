@@ -17,10 +17,10 @@ import Center from './Container/Center';
 import ErrorBoundary from './Container/ErrorBoundary';
 // Content
 import UserItem from './Content/UserItem';
-import TopicItem from './Content/TopicItem';
 import GridImage from './Content/GridImage';
 import Placeholder from './Content/Placeholder';
 import UserTitle from './Content/UserTitle';
+import QuestionDetail from './Content/QuestionDetail';
 // Header
 import NavigatorBar from './Header/NavigatorBar';
 // StatusView
@@ -61,6 +61,7 @@ import DropdownMenu from './Utils/DropdownMenu';
 import Appintroduction from './Utils/Appintroduction';
 import TabBar from './Utils/TabBar';
 import GenderLabel from './Utils/GenderLabel';
+import Player from './Utils/Player';
 
 export {
 	Iconfont,
@@ -74,10 +75,10 @@ export {
 	Center,
 	ErrorBoundary,
 	UserItem,
-	TopicItem,
 	GridImage,
 	Placeholder,
 	UserTitle,
+	QuestionDetail,
 	NavigatorBar,
 	EmptyView,
 	ErrorView,
@@ -109,5 +110,6 @@ export {
 	DropdownMenu,
 	Appintroduction,
 	TabBar,
-	GenderLabel
+	GenderLabel,
+	Player
 };

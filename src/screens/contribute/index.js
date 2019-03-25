@@ -293,7 +293,7 @@ class index extends Component {
 
 	onCompleted = () => {
 		this.setState({ submitLoading: false });
-		// this.props.navigation.replace('ContributeSubmited');
+		this.props.navigation.replace('ContributeSubmited');
 	};
 
 	onError = error => {
@@ -437,7 +437,9 @@ class index extends Component {
 											<View style={styles.answerContainer}>
 												<Row>
 													<Text style={styles.lableText}>答案选项</Text>
-													<Text style={styles.answerTip}>(点击选项设置正确答案)</Text>
+													<Text style={styles.answerTip}>
+														(别忘记点击选项设置来正确答案哦)
+													</Text>
 												</Row>
 												<Row style={{ marginTop: PxFit(6) }}>
 													<Text style={styles.answerText}>正确答案：</Text>
@@ -567,6 +569,7 @@ const styles = StyleSheet.create({
 	},
 	answerText: {
 		fontSize: PxFit(14),
+		lineHeight: PxFit(16),
 		color: Theme.subTextColor
 	},
 	answerTip: {

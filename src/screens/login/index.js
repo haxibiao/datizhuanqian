@@ -302,15 +302,16 @@ const styles = StyleSheet.create({
 	inputWrap: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: PxFit(8),
 		borderBottomWidth: PxFit(1),
 		borderBottomColor: Theme.borderColor
 	},
 	inputStyle: {
 		flex: 1,
+		height: PxFit(40),
 		fontSize: PxFit(15),
 		color: Theme.defaultTextColor,
-		paddingVertical: PxFit(10)
+		paddingBottom: PxFit(10),
+		paddingTop: PxFit(10)
 	},
 	button: {
 		marginTop: PxFit(30),

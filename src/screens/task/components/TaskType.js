@@ -29,7 +29,7 @@ class TaskType extends Component {
 		} else if (task.type == 3) {
 			navigation.navigate('Contribute');
 		} else {
-			navigation.navigate('编辑个人资料', { user: user });
+			navigation.navigate('Edit', { user: user });
 		}
 	}
 

@@ -12,7 +12,7 @@ import {
 	TouchFeedback,
 	Iconfont,
 	Placeholder,
-	EmptyView,
+	StatusView,
 	ListFooter,
 	CustomRefreshControl
 } from '../../../components';
@@ -37,7 +37,7 @@ class Follower extends Component {
 					if (!(data && data.followers)) {
 						return <Placeholder quantity={10} />;
 					} else if (data.followers.length === 0) {
-						return <EmptyView />;
+						return <StatusView.EmptyView />;
 					} else {
 						followers = data.followers;
 					}

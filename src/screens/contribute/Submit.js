@@ -8,11 +8,11 @@ import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, ImageBackg
 import { PageContainer, Iconfont, Button } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
-class SubmitSuccess extends Component {
+class Submit extends Component {
 	render() {
 		let { navigation } = this.props;
 		return (
-			<PageContainer title="提交结果">
+			<PageContainer title="提交结果" white>
 				<ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.submitContainer}>
 						<ImageBackground source={require('../../assets/images/submit.png')} style={styles.submitImage}>
@@ -24,11 +24,14 @@ class SubmitSuccess extends Component {
 						<View style={styles.buttonContaiber}>
 							<TouchableOpacity
 								style={[styles.button, styles.buttonBorder]}
-								onPress={() => navigation.replace('问题创建')}
+								onPress={() => navigation.replace('Contribute')}
 							>
-								<Text style={{ fontSize: PxFit(16), color: Theme.theme }}>继续出题</Text>
+								<Text style={{ fontSize: PxFit(16), color: Theme.primaryColor }}>继续出题</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.button} onPress={() => navigation.replace('我的出题')}>
+							<TouchableOpacity
+								style={styles.button}
+								onPress={() => navigation.replace('MyContribution')}
+							>
 								<Text style={{ fontSize: PxFit(16), color: '#fff' }}>查看题目</Text>
 							</TouchableOpacity>
 						</View>
@@ -79,14 +82,14 @@ const styles = StyleSheet.create({
 		borderRadius: PxFit(4),
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	},
 	buttonBorder: {
 		backgroundColor: '#fff',
 		borderWidth: PxFit(1),
-		borderColor: Theme.theme,
+		borderColor: Theme.primaryColor,
 		marginRight: PxFit(20)
 	}
 });
 
-export default SubmitSuccess;
+export default Submit;

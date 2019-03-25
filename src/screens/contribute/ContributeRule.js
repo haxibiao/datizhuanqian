@@ -14,7 +14,7 @@ class ContributeRule extends Component {
 	}
 	render() {
 		return (
-			<PageContainer title="出题规则">
+			<PageContainer title="出题规则" white>
 				<ScrollView style={styles.container}>
 					<Text style={{ fontSize: PxFit(15), color: Theme.black, lineHeight: PxFit(22) }}>
 						为了能够给广大用户提供一个优质的答题环境，您的言行不得发布、传播或以其它方式传送含有下列内容之一的信息：
