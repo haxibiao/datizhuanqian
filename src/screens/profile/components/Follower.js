@@ -16,7 +16,7 @@ import {
 	ListFooter,
 	CustomRefreshControl
 } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../../utils';
 import { Query } from 'react-apollo';
 import { FollowersQuery } from '../../../assets/graphql/user.graphql';
 
@@ -33,17 +33,18 @@ class Follower extends Component {
 		return (
 			<Query query={FollowersQuery} variables={{ filter: 'users' }} fetchPolicy="network-only">
 				{({ loading, error, data, refetch, fetchMore }) => {
-					let followers;
-					if (!(data && data.followers)) {
-						return <Placeholder quantity={10} />;
-					} else if (data.followers.length === 0) {
-						return <StatusView.EmptyView />;
-					} else {
-						followers = data.followers;
-					}
-					console.log('test followers', followers);
+					let followers = Tools.syncGetter('followers', data);
+					let empty = followers && followers.length === 0;
+					loading = !followers;
 					return (
-						<PageContainer error={error} hiddenNavBar>
+						<PageContainer
+							hiddenNavBar
+							refetch={refetch}
+							error={error}
+							loading={loading}
+							empty={empty}
+							loadingSpinner={<Placeholder quantity={10} type="list" />}
+						>
 							<FlatList
 								data={followers}
 								keyExtractor={(item, index) => index.toString()}
@@ -51,7 +52,6 @@ class Follower extends Component {
 								renderItem={({ item, index }) => <UserItem navigation={navigation} user={item.user} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
-									console.log('followers', followers);
 									fetchMore({
 										variables: {
 											offset: followers.length

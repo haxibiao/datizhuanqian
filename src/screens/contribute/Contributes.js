@@ -26,7 +26,7 @@ import {
 	ListFooter,
 	Row
 } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -50,14 +50,13 @@ class Contributes extends Component {
 			<PageContainer title="我的出题">
 				<Query query={mySubmitQuestionHistoryQuery} fetchPolicy="network-only">
 					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return <StatusView.ErrorView reload={() => refetch()} />;
-						if (!(data && data.user && data.user.questions && data.user.questions.length > 0)) {
-							return <StatusView.LoadingSpinner />;
-						}
+						let questions = Tools.syncGetter('user.questions', data);
+						let empty = questions && questions.length === 0;
+						loading = !questions;
 						return (
 							<FlatList
 								contentContainerStyle={styles.container}
-								data={data.user.questions}
+								data={questions}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
 									<QuestionItem question={item} navigation={navigation} />
@@ -65,36 +64,34 @@ class Contributes extends Component {
 								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
-									if (data.user.questions) {
-										fetchMore({
-											variables: {
-												offset: data.user.questions.length
-											},
-											updateQuery: (prev, { fetchMoreResult }) => {
-												if (
-													!(
-														fetchMoreResult &&
-														fetchMoreResult.user &&
-														fetchMoreResult.user.questions &&
-														fetchMoreResult.user.questions.length > 0
-													)
-												) {
-													this.setState({
-														finished: true
-													});
-													return prev;
-												}
-												return Object.assign({}, prev, {
-													user: Object.assign({}, prev.user, {
-														questions: [
-															...prev.user.questions,
-															...fetchMoreResult.user.questions
-														]
-													})
+									fetchMore({
+										variables: {
+											offset: questions.length
+										},
+										updateQuery: (prev, { fetchMoreResult }) => {
+											if (
+												!(
+													fetchMoreResult &&
+													fetchMoreResult.user &&
+													fetchMoreResult.user.questions &&
+													fetchMoreResult.user.questions.length > 0
+												)
+											) {
+												this.setState({
+													finished: true
 												});
+												return prev;
 											}
-										});
-									}
+											return Object.assign({}, prev, {
+												user: Object.assign({}, prev.user, {
+													questions: [
+														...prev.user.questions,
+														...fetchMoreResult.user.questions
+													]
+												})
+											});
+										}
+									});
 								}}
 								ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 							/>

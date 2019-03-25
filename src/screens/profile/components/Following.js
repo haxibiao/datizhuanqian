@@ -16,7 +16,7 @@ import {
 	ListFooter,
 	CustomRefreshControl
 } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../../utils';
 import { Query } from 'react-apollo';
 import { FollowsQuery } from '../../../assets/graphql/user.graphql';
 
@@ -33,16 +33,18 @@ class Following extends Component {
 		return (
 			<Query query={FollowsQuery} variables={{ filter: 'users' }} fetchPolicy="network-only">
 				{({ loading, error, data, refetch, fetchMore }) => {
-					let follows;
-					if (!(data && data.follows)) {
-						return <Placeholder quantity={10} />;
-					} else if (data.follows.length === 0) {
-						return <StatusView.EmptyView />;
-					} else {
-						follows = data.follows;
-					}
+					let follows = Tools.syncGetter('follows', data);
+					let empty = follows && follows.length === 0;
+					loading = !follows;
 					return (
-						<PageContainer error={error} hiddenNavBar>
+						<PageContainer
+							hiddenNavBar
+							refetch={refetch}
+							error={error}
+							loading={loading}
+							empty={empty}
+							loadingSpinner={<Placeholder quantity={10} />}
+						>
 							<FlatList
 								data={follows}
 								keyExtractor={(item, index) => index.toString()}

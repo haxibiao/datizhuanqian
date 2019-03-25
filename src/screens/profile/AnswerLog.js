@@ -27,7 +27,7 @@ import {
 	ListFooter,
 	Row
 } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -49,59 +49,56 @@ class AnswerLog extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<PageContainer title="答题记录">
-				<Query query={answerHistoriesQuery} fetchPolicy="network-only">
-					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return <StatusView.ErrorView reload={() => refetch()} />;
-						if (!(data && data.user && data.user.answerHistories && data.user.answerHistories.length > 0)) {
-							return <StatusView.LoadingSpinner />;
-						}
-						return (
+			<Query query={answerHistoriesQuery} fetchPolicy="network-only">
+				{({ data, loading, error, refetch, fetchMore }) => {
+					let answerHistories = Tools.syncGetter('user.answerHistories', data);
+					let empty = answerHistories && answerHistories.length === 0;
+					loading = !answerHistories;
+					return (
+						<PageContainer title="答题记录" refetch={refetch} loading={loading} empty={empty}>
 							<FlatList
 								contentContainerStyle={styles.container}
-								data={data.user.answerHistories}
+								data={answerHistories}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => <QuestionItem answer={item} navigation={navigation} />}
 								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
-									if (data.user.answerHistories) {
-										fetchMore({
-											variables: {
-												offset: data.user.answerHistories.length
-											},
-											updateQuery: (prev, { fetchMoreResult }) => {
-												if (
-													!(
-														fetchMoreResult &&
-														fetchMoreResult.user &&
-														fetchMoreResult.user.answerHistories &&
-														fetchMoreResult.user.answerHistories.length > 0
-													)
-												) {
-													this.setState({
-														finished: true
-													});
-													return prev;
-												}
-												return Object.assign({}, prev, {
-													user: Object.assign({}, prev.user, {
-														answerHistories: [
-															...prev.user.answerHistories,
-															...fetchMoreResult.user.answerHistories
-														]
-													})
+									fetchMore({
+										variables: {
+											offset: answerHistories.length
+										},
+										updateQuery: (prev, { fetchMoreResult }) => {
+											if (
+												!(
+													fetchMoreResult &&
+													fetchMoreResult.user &&
+													fetchMoreResult.user.answerHistories &&
+													fetchMoreResult.user.answerHistories.length > 0
+												)
+											) {
+												this.setState({
+													finished: true
 												});
+												return prev;
 											}
-										});
-									}
+											return Object.assign({}, prev, {
+												user: Object.assign({}, prev.user, {
+													answerHistories: [
+														...prev.user.answerHistories,
+														...fetchMoreResult.user.answerHistories
+													]
+												})
+											});
+										}
+									});
 								}}
 								ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 							/>
-						);
-					}}
-				</Query>
-			</PageContainer>
+						</PageContainer>
+					);
+				}}
+			</Query>
 		);
 	}
 }

@@ -19,6 +19,8 @@ type Props = {
 	error?: boolean,
 	loading?: boolean,
 	empty?: boolean,
+	EmptyView: ?any,
+	loadingSpinner: ?any,
 	children?: any,
 	autoKeyboardInsets?: boolean, //键盘占位
 	topInsets?: number,
@@ -46,11 +48,11 @@ class PageContainer extends Component<Props> {
 		topInsets: -Theme.HOME_INDICATOR_HEIGHT
 	};
 	renderContent() {
-		const { offline, error, loading, empty, children, refetch } = this.props;
+		const { offline, error, loading, empty, loadingSpinner, EmptyView, children, refetch } = this.props;
 		if (offline) return <StatusView.ErrorView onPress={refetch} />;
 		if (error) return <StatusView.ErrorView onPress={refetch} />;
-		if (loading) return <StatusView.LoadingSpinner />;
-		if (empty) return <StatusView.EmptyView />;
+		if (loading) return loadingSpinner || <StatusView.LoadingSpinner />;
+		if (empty) return EmptyView || <StatusView.EmptyView />;
 		return children;
 	}
 
@@ -92,7 +94,6 @@ class PageContainer extends Component<Props> {
 			onDidFocus,
 			onWillBlur,
 			onDidBlur,
-			loading,
 			...props
 		} = this.props;
 		const marginTop = !hiddenNavBar ? PxFit(NAVBAR_HEIGHT) : 0;
@@ -108,7 +109,6 @@ class PageContainer extends Component<Props> {
 					onWillBlur={onWillBlur}
 					onDidBlur={onDidBlur}
 				/>
-				{loading && <StatusView.LoadingSpinner />}
 			</View>
 		);
 	}

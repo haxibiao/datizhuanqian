@@ -27,7 +27,7 @@ import {
 	ListFooter,
 	Row
 } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -61,14 +61,13 @@ class CorrectLog extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<PageContainer title="纠错记录">
-				<Query query={curationsQuery} fetchPolicy="network-only">
-					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return <StatusView.ErrorView reload={() => refetch()} />;
-						if (!(data && data.curations && data.curations.length > 0)) {
-							return <StatusView.LoadingSpinner />;
-						}
-						return (
+			<Query query={curationsQuery} fetchPolicy="network-only">
+				{({ data, loading, error, refetch, fetchMore }) => {
+					let curations = Tools.syncGetter('curations', data);
+					let empty = curations && curations.length === 0;
+					loading = !curations;
+					return (
+						<PageContainer title="纠错记录" refetch={refetch} loading={loading} empty={empty}>
 							<FlatList
 								contentContainerStyle={styles.container}
 								data={data.curations}
@@ -106,10 +105,10 @@ class CorrectLog extends Component {
 								}}
 								ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 							/>
-						);
-					}}
-				</Query>
-			</PageContainer>
+						</PageContainer>
+					);
+				}}
+			</Query>
 		);
 	}
 }

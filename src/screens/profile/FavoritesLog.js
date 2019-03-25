@@ -66,7 +66,6 @@ class FavoritesLog extends Component {
 					let favorites = Tools.syncGetter('favorites', data);
 					let empty = favorites && favorites.length === 0;
 					loading = !favorites;
-					console.log('favorites', favorites, empty, loading);
 					return (
 						<PageContainer title="我的收藏" refetch={refetch} loading={loading} empty={empty}>
 							<FlatList
@@ -85,7 +84,7 @@ class FavoritesLog extends Component {
 								onEndReached={() => {
 									fetchMore({
 										variables: {
-											offset: data.favorites.length
+											offset: favorites.length
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (
