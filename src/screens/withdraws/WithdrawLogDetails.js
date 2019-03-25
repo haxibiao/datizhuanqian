@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
 
-import { Avatar, PageContainer } from '../../components';
+import { Avatar, PageContainer, ErrorView, LoadingSpinner, EmptyView } from '../../components';
 import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 import { connect } from 'react-redux';
 
@@ -25,9 +25,10 @@ class WithdrawLogDetails extends Component {
 		return (
 			<PageContainer style={styles.container} title="提现详情">
 				<Query query={WithdrawQuery} variables={{ id: withdraw_id }}>
-					{({ data, error, loading }) => {
-						if (error) return null;
-						if (!(data && data.withdraw)) return null;
+					{({ data, error, loading, refetch }) => {
+						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (loading) return <LoadingSpinner />;
+						if (!(data && data.withdraw)) return <EmptyView />;
 						let withdraw = data.withdraw;
 
 						return (

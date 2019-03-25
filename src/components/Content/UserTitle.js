@@ -19,14 +19,14 @@ class UserTitle extends Component {
 				{user.is_admin ? (
 					<Image
 						source={require('../../assets/images/admin.png')}
-						style={{ height: 13, width: 13, marginLeft: 5 }}
+						style={{ height: 13, width: 13, marginHorizontal: 5 }}
 					/>
 				) : (
 					<View
 						style={{
 							backgroundColor: Theme.theme,
 							paddingHorizontal: 2,
-							marginLeft: 5,
+							marginHorizontal: 5,
 							marginTop: 1,
 							borderRadius: 1
 						}}

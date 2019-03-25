@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
-import { Iconfont, Avatar, UserTitle } from '../../../components';
+import { Iconfont, Avatar, UserTitle, GenderLabel } from '../../../components';
 import { Theme, Tools, PxFit } from '../../../utils';
 
 class FeedbackItem extends Component {
@@ -25,7 +25,7 @@ class FeedbackItem extends Component {
 				<View style={styles.top}>
 					<View style={styles.topLeft}>
 						<Avatar source={{ uri: item.user.avatar }} size={28} />
-						<View style={styles.user}>
+						<View style={styles.row}>
 							<View style={{ justifyContent: 'center' }}>
 								<Text
 									style={{
@@ -37,6 +37,7 @@ class FeedbackItem extends Component {
 								</Text>
 							</View>
 							<UserTitle user={item.user} />
+							<GenderLabel user={item.user} />
 						</View>
 					</View>
 				</View>

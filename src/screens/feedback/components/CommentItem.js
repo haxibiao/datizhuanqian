@@ -8,7 +8,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'rea
 
 import { Theme, Tools } from '../../../utils';
 
-import { Iconfont, Avatar, UserTitle } from '../../../components';
+import { Iconfont, Avatar, UserTitle, GenderLabel } from '../../../components';
 
 import FeedbackOverlay from './FeedbackOverlay';
 
@@ -47,6 +47,7 @@ class CommentItem extends Component {
 									{item.user.name}
 								</Text>
 								<UserTitle user={item.user} />
+								<GenderLabel user={item.user} />
 							</View>
 							<View style={styles.row}>
 								<Text style={styles.time}># {item.rank}</Text>

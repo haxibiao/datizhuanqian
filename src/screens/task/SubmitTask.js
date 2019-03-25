@@ -133,21 +133,7 @@ class SubmitTaskScreen extends Component {
 		let { content, pictures, isVisible } = this.state;
 		const { navigation } = this.props;
 		return (
-			<PageContainer
-				title="提交任务"
-				navBarStyle={{ backgroundColor: Theme.white }}
-				titleStyle={{ color: Theme.black }}
-				leftView={
-					<TouchableOpacity
-						activeOpacity={1}
-						onPress={() => {
-							navigation.goBack();
-						}}
-					>
-						<Iconfont name="left" color={Theme.black} size={PxFit(21)} />
-					</TouchableOpacity>
-				}
-			>
+			<PageContainer title="提交任务" white>
 				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
 					<View style={styles.header}>
 						<View style={styles.headerLeft} />

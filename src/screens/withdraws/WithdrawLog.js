@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter } from '../../components';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../components';
 import { Theme, PxFit } from '../../utils';
 
 import { connect } from 'react-redux';
@@ -27,12 +27,12 @@ class WithdrawsLog extends Component {
 		const { user, navigation } = this.props;
 
 		return (
-			<PageContainer title="提现记录">
+			<PageContainer title="提现记录" white>
 				<Query query={WithdrawsQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return null;
-						if (loading) return null;
-						if (!(data && data.withdraws)) return null;
+						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (loading) return <LoadingSpinner />;
+						if (!(data && data.withdraws)) return <EmptyView />;
 
 						return (
 							<FlatList

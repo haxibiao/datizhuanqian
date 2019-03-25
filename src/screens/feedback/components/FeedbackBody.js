@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
 import { Theme, Tools, PxFit } from '../../../utils';
-import { Avatar, Iconfont, UserTitle } from '../../../components';
+import { Avatar, Iconfont, UserTitle, GenderLabel } from '../../../components';
 
 import { Query } from 'react-apollo';
 import { feedbackQuery } from '../../../assets/graphql/feedback.graphql';
@@ -51,6 +51,7 @@ class FeedbackBody extends Component {
 												{feedback.user.name}
 											</Text>
 											<UserTitle user={feedback.user} />
+											<GenderLabel user={feedback.user} />
 										</View>
 										<Text style={styles.time}>发布于{feedback.time_ago}</Text>
 									</View>

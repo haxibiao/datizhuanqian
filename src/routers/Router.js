@@ -30,6 +30,10 @@ import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
 import ContributeRuleScreen from '../screens/contribute/ContributeRule';
 import ContributeSubmitedScreen from '../screens/contribute/Submit';
+import NotificationScreen from '../screens/notification';
+import SystemNotificationScreen from '../screens/notification/SystemNotification';
+import CommentNotificationScreen from '../screens/notification/CommentNotification';
+import FansNotificationScreen from '../screens/notification/FansNotification';
 
 export default {
 	Main: {
@@ -118,5 +122,17 @@ export default {
 	},
 	ContributeSubmited: {
 		screen: ContributeSubmitedScreen
+	},
+	Notification: {
+		screen: NotificationScreen
+	},
+	SystemNotification: {
+		screen: SystemNotificationScreen
+	},
+	CommentNotification: {
+		screen: CommentNotificationScreen
+	},
+	FansNotification: {
+		screen: FansNotificationScreen
 	}
 };
