@@ -37,8 +37,8 @@ class index extends Component {
 							/>
 						)}
 					>
-						<FeedbackList navigation={navigation} tabLabel="反馈记录" />
-						<Feedback navigation={navigation} tabLabel="提交反馈" />
+						<FeedbackList navigation={navigation} tabLabel="问题中心" />
+						<Feedback navigation={navigation} tabLabel="反馈建议" />
 					</ScrollableTabView>
 				</View>
 			</PageContainer>
@@ -50,23 +50,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Theme.white
-	},
-	header: {
-		// paddingTop: Divice.STATUSBAR_HEIGHT,
-		// height: Divice.STATUSBAR_HEIGHT + 40,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: Theme.white
-	},
-	goBack: {
-		position: 'absolute',
-		flexDirection: 'row',
-		alignItems: 'center',
-		width: 40,
-		height: 40,
-		bottom: 0,
-		left: 15
 	}
 });
 

@@ -17,13 +17,6 @@ class Loading extends Component {
 		return (
 			<View>
 				<View style={styles.header}>
-					<Text
-						style={{
-							height: PxFit(20),
-							width: SCREEN_WIDTH - PxFit(30),
-							backgroundColor: Theme.lightBorder
-						}}
-					/>
 					<View style={styles.user}>
 						<View
 							style={{
@@ -78,13 +71,13 @@ class Loading extends Component {
 const styles = StyleSheet.create({
 	header: {
 		paddingHorizontal: PxFit(15),
-		paddingTop: PxFit(20)
+		paddingTop: PxFit(10)
 	},
 
 	user: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: PxFit(20)
+		marginTop: PxFit(10)
 	},
 	userRight: {
 		paddingLeft: PxFit(10),

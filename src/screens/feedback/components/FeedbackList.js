@@ -106,16 +106,16 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		flexDirection: 'row',
-		paddingHorizontal: 10,
+		paddingHorizontal: PxFit(10),
 		borderBottomColor: Theme.lightBorder,
-		borderBottomWidth: 1,
-		borderTopWidth: 5,
+		borderBottomWidth: PxFit(1),
+		borderTopWidth: PxFit(5),
 		borderTopColor: Theme.lightBorder
 	},
 	tab: {
-		borderBottomWidth: 2,
-		marginRight: 30,
-		paddingVertical: 10
+		borderBottomWidth: PxFit(2),
+		marginRight: PxFit(30),
+		paddingVertical: PxFit(10)
 	}
 });
 

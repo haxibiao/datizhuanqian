@@ -9,7 +9,7 @@ import { UpdateOverlay } from '../../components';
 import Config from '../Config';
 
 //获取线上apk版本信息
-export default function(dispatch) {
+export default function(dispatch?: Function) {
 	fetch('https://datizhuanqian.com' + '/api/app-version' + '?t=' + Date.now(), {
 		method: 'POST',
 		headers: {

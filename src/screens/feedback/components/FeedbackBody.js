@@ -5,9 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
-
 import { Theme, Tools, PxFit } from '../../../utils';
-
 import { Avatar, Iconfont, UserTitle } from '../../../components';
 
 import { Query } from 'react-apollo';
@@ -36,7 +34,6 @@ class FeedbackBody extends Component {
 					return (
 						<View>
 							<View style={styles.header}>
-								<Text style={styles.title}>{feedback.title}</Text>
 								<View style={styles.user}>
 									<TouchableOpacity
 										onPress={() => navigation.navigate('用户资料', { user_id: feedback.user.id })}
@@ -96,7 +93,7 @@ class FeedbackBody extends Component {
 const styles = StyleSheet.create({
 	header: {
 		paddingHorizontal: PxFit(15),
-		paddingTop: PxFit(20)
+		paddingTop: PxFit(10)
 	},
 	title: {
 		color: Theme.black,
@@ -105,7 +102,7 @@ const styles = StyleSheet.create({
 	user: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: PxFit(20)
+		marginTop: PxFit(10)
 	},
 	userRight: {
 		paddingLeft: PxFit(10),

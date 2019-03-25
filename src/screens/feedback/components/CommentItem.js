@@ -12,8 +12,6 @@ import { Iconfont, Avatar, UserTitle } from '../../../components';
 
 import FeedbackOverlay from './FeedbackOverlay';
 
-// import FeedbackCommentModal from '../Modal/FeedbackCommentModal';
-
 class CommentItem extends Component {
 	constructor(props) {
 		super(props);
@@ -22,7 +20,7 @@ class CommentItem extends Component {
 		};
 	}
 	render() {
-		const { navigation, item, replyComment, switchKeybord, user, feedback_id } = this.props;
+		const { navigation, item, replyComment, switchReplyType, user, feedback_id } = this.props;
 		let { feedbackCommentVisible } = this.state;
 
 		return (
@@ -30,7 +28,7 @@ class CommentItem extends Component {
 				style={styles.container}
 				activeOpacity={1}
 				onPress={() => {
-					switchKeybord();
+					switchReplyType();
 					replyComment(item);
 				}}
 			>
@@ -66,7 +64,7 @@ class CommentItem extends Component {
 					</View>
 					<TouchableOpacity
 						onPress={() => {
-							FeedbackOverlay.show(switchKeybord, replyComment, item, user, feedback_id);
+							FeedbackOverlay.show(switchReplyType, replyComment, item, user, feedback_id);
 						}}
 						style={{ padding: 5 }}
 					>
@@ -103,17 +101,6 @@ class CommentItem extends Component {
 						);
 					})}
 				</View>
-				{/*<FeedbackCommentModal
-					visible={feedbackCommentVisible}
-					handleVisible={() => {
-						this.FeedbackCommentModalVisible();
-					}}
-					switchKeybord={switchKeybord}
-					replyComment={replyComment}
-					comment={item}
-					user={user}
-					feedback_id={feedback_id}
-				/>*/}
 			</TouchableOpacity>
 		);
 	}

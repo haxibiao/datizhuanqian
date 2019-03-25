@@ -7,93 +7,33 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import { CustomTextInput, Iconfont } from '../../../components';
 
-import { Theme, SCREEN_WIDTH } from '../../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from '../../../utils';
 
 class Comment extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inputHeight: 51
+			inputHeight: PxFit(51)
 		};
 	}
 
 	render() {
 		const {
-			navigation,
-			feedback,
-			changeValue,
-			autoFocus,
+			changeText,
+			isInput,
 			reply,
 			content,
-			switchKeybord,
+			switchReplyType,
 			submitComment,
 			openPhotos,
 			deleteImage,
 			image
 		} = this.props;
-		let { inputHeight } = this.state;
-		console.log('SCREEN_WIDTH', SCREEN_WIDTH);
 		return (
-			<View style={[styles.container, { maxHeight: image ? 188 : 100 }]}>
-				{autoFocus ? (
-					<View>
-						{image ? (
-							<View style={styles.images}>
-								<Image
-									source={{ uri: image }}
-									style={{
-										width: 68,
-										height: 68
-									}}
-								/>
-								<TouchableOpacity style={styles.delete} onPress={deleteImage}>
-									<Iconfont name={'close'} size={12} color={Theme.white} />
-								</TouchableOpacity>
-							</View>
-						) : null}
-						{image ? <View style={{ height: 5, backgroundColor: Theme.lightBorder }} /> : null}
-
-						{reply && (
-							<View style={styles.quote}>
-								<View style={styles.tag} />
-								<Text style={styles.quoteText}>{reply}</Text>
-							</View>
-						)}
-						<View style={{ paddingVertical: autoFocus ? 10 : 0 }}>
-							<CustomTextInput
-								style={{
-									width: SCREEN_WIDTH - inputHeight - 20,
-									padding: 0,
-									height: null,
-									maxHeight: 80,
-									margin: 0,
-									fontSize: 16
-								}}
-								maxLength={140}
-								placeholder={'说说你的意见...'}
-								multiline
-								underline
-								autoFocus
-								selectionColor={Theme.theme}
-								onEndEditing={switchKeybord}
-								defaultValue={content}
-								changeValue={changeValue}
-							/>
-						</View>
-					</View>
-				) : (
-					<TouchableOpacity
-						onPress={switchKeybord}
-						activeOpacity={1}
-						style={[{ width: SCREEN_WIDTH - inputHeight - 20 }, styles.replaceInput]}
-					>
-						<Text style={{ color: Theme.grey, fontSize: 16 }}>
-							{content || image ? '[草稿待发送]' : '说说你的意见...'}
-						</Text>
-					</TouchableOpacity>
-				)}
+			<View style={[styles.container, { maxHeight: image ? PxFit(188) : PxFit(100) }]}>
+				{isInput ? this.renderInput() : this.rendeReplaceInput()}
 				<View
-					style={styles.control}
+					style={styles.commentRight}
 					onLayout={event => {
 						this.setState({
 							inputHeight: event.nativeEvent.layout.width
@@ -101,78 +41,152 @@ class Comment extends Component {
 					}}
 				>
 					<TouchableWithoutFeedback onPress={openPhotos}>
-						<Iconfont name={'photo'} color={Theme.grey} size={18} style={{ paddingHorizontal: 10 }} />
+						<Iconfont
+							name={'photo'}
+							color={Theme.grey}
+							size={18}
+							style={{ paddingHorizontal: PxFit(10) }}
+						/>
 					</TouchableWithoutFeedback>
 					<TouchableOpacity
 						onPress={submitComment}
 						disabled={!(content.length > 0 || image)}
-						style={{ paddingHorizontal: 10 }}
+						style={{ paddingHorizontal: PxFit(10) }}
 					>
 						<Iconfont
 							name={'publish'}
 							color={content.length > 0 || image ? Theme.theme : Theme.grey}
-							size={20}
+							size={18}
 						/>
 					</TouchableOpacity>
 				</View>
 			</View>
 		);
 	}
+
+	renderInput = () => {
+		const { changeText, reply, content, switchReplyType, deleteImage, image } = this.props;
+		let { inputHeight } = this.state;
+		return (
+			<View>
+				{image && (
+					<View>
+						<View style={styles.images}>
+							<Image
+								source={{ uri: image }}
+								style={{
+									width: PxFit(68),
+									height: PxFit(68)
+								}}
+							/>
+							<TouchableOpacity style={styles.delete} onPress={deleteImage}>
+								<Iconfont name={'close'} size={12} color={Theme.white} />
+							</TouchableOpacity>
+						</View>
+						<View style={{ height: PxFit(0.5), backgroundColor: Theme.lightBorder }} />
+					</View>
+				)}
+				{reply && (
+					<View style={styles.quote}>
+						<View style={styles.tag} />
+						<Text style={styles.quoteText}>{reply}</Text>
+					</View>
+				)}
+				<View style={{ paddingVertical: PxFit(10) }}>
+					<CustomTextInput
+						style={{
+							width: SCREEN_WIDTH - inputHeight - PxFit(20),
+							padding: 0,
+							height: null,
+							maxHeight: PxFit(80),
+							margin: 0,
+							fontSize: PxFit(16)
+						}}
+						maxLength={140}
+						placeholder={'说说你的意见...'}
+						multiline
+						underline
+						autoFocus
+						selectionColor={Theme.theme}
+						onEndEditing={switchReplyType}
+						defaultValue={content}
+						onChangeText={changeText}
+					/>
+				</View>
+			</View>
+		);
+	};
+
+	rendeReplaceInput = () => {
+		const { switchReplyType, image, content } = this.props;
+		let { inputHeight } = this.state;
+		return (
+			<TouchableOpacity
+				onPress={switchReplyType}
+				activeOpacity={1}
+				style={[{ width: SCREEN_WIDTH - inputHeight - PxFit(20) }, styles.replaceInput]}
+			>
+				<Text style={{ color: Theme.grey, fontSize: PxFit(16) }}>
+					{content || image ? '[草稿待发送]' : '说说你的意见...'}
+				</Text>
+			</TouchableOpacity>
+		);
+	};
 }
 
 const styles = StyleSheet.create({
 	container: {
 		borderTopColor: Theme.lightBorder,
-		borderTopWidth: 0.3,
+		borderTopWidth: PxFit(0.3),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
-		paddingHorizontal: 15
+		paddingHorizontal: PxFit(15)
 	},
 	images: {
-		paddingVertical: 10,
-		width: 68,
-		height: 88
+		paddingVertical: PxFit(10),
+		width: PxFit(68),
+		height: PxFit(88)
 	},
 
 	delete: {
 		backgroundColor: 'rgba(150,150,150,0.5)',
-		borderRadius: 8,
+		borderRadius: PxFit(8),
 		position: 'absolute',
-		right: 2,
-		top: 12,
-		width: 16,
-		height: 16,
+		right: PxFit(2),
+		top: PxFit(12),
+		width: PxFit(16),
+		height: PxFit(16),
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	quote: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingTop: 10
+		paddingTop: PxFit(10)
 	},
 	tag: {
-		height: 16,
-		width: 4,
+		height: PxFit(16),
+		width: PxFit(4),
 		backgroundColor: '#dfe2e5'
 	},
 	quoteText: {
 		color: Theme.grey,
-		fontSize: 13,
-		paddingLeft: 10,
-		height: 20
+		fontSize: PxFit(13),
+		paddingLeft: PxFit(10),
+		height: PxFit(20)
 	},
 	replaceInput: {
-		height: 48,
+		height: PxFit(48),
 
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	control: {
+	commentRight: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginRight: 5,
-		height: 48
+		marginRight: PxFit(5),
+		height: PxFit(48)
 	}
 });
 

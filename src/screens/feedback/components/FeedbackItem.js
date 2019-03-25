@@ -20,17 +20,17 @@ class FeedbackItem extends Component {
 				onPress={() => {
 					navigation.navigate('FeedbackDetails', { feedback_id: item.id });
 				}}
-				style={{ borderBottomWidth: 5, borderBottomColor: Theme.lightBorder }}
+				style={styles.container}
 			>
 				<View style={styles.top}>
 					<View style={styles.topLeft}>
 						<Avatar source={{ uri: item.user.avatar }} size={28} />
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<View style={styles.user}>
 							<View style={{ justifyContent: 'center' }}>
 								<Text
 									style={{
 										color: item.user.is_admin ? Theme.themeRed : Theme.black,
-										paddingLeft: 10
+										paddingLeft: PxFit(10)
 									}}
 								>
 									{item.user.name}
@@ -40,33 +40,30 @@ class FeedbackItem extends Component {
 						</View>
 					</View>
 				</View>
-				<View style={{ marginLeft: 15, marginRight: 15, paddingBottom: 10 }}>
+				<View style={styles.content}>
 					<Text style={styles.body} numberOfLines={3}>
 						{item.content}
 					</Text>
 					{this.renderImage(item.images.slice(0, 3))}
 				</View>
-				<View
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						justifyContent: 'space-between',
-						marginHorizontal: 15,
-						paddingBottom: 10
-					}}
-				>
+				<View style={styles.footer}>
 					<View>
 						<Text style={styles.text}>{item.time_ago}</Text>
 					</View>
-					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-							<Iconfont name={'hot'} size={15} color={Theme.theme} style={{ marginHorizontal: 5 }} />
+					<View style={styles.footerRight}>
+						<View style={[styles.row, { marginRight: PxFit(10) }]}>
+							<Iconfont
+								name={'hot'}
+								size={15}
+								color={Theme.theme}
+								style={{ marginHorizontal: PxFit(5) }}
+							/>
 							<Text style={styles.text}>{item.hot}</Text>
 						</View>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<View style={styles.row}>
 							<Iconfont
 								name={'notification'}
-								style={{ marginHorizontal: 5 }}
+								style={{ marginHorizontal: PxFit(5) }}
 								color={Theme.theme}
 								size={12}
 							/>
@@ -92,35 +89,53 @@ class FeedbackItem extends Component {
 }
 
 const styles = StyleSheet.create({
+	container: {
+		borderBottomWidth: PxFit(5),
+		borderBottomColor: Theme.lightBorder
+	},
 	top: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginBottom: 10,
-		paddingTop: 15,
-		marginHorizontal: 15
+		marginBottom: PxFit(10),
+		paddingTop: PxFit(15),
+		marginHorizontal: PxFit(15)
 	},
 	topLeft: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	user: {
-		paddingLeft: 10,
-		justifyContent: 'center'
+	row: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
-	text: {
-		fontSize: 13,
-		color: Theme.grey
+	content: {
+		marginLeft: PxFit(15),
+		marginRight: PxFit(15),
+		paddingBottom: PxFit(10)
 	},
+
 	body: {
-		fontSize: 16,
-		lineHeight: 18,
+		fontSize: PxFit(16),
+		lineHeight: PxFit(18),
 		color: Theme.primaryFont
 	},
 	images: {
 		flexDirection: 'row',
-		marginTop: 10
-	}
+		marginTop: PxFit(10)
+	},
+	text: {
+		fontSize: PxFit(13),
+		color: Theme.grey
+	},
+	footer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		marginHorizontal: PxFit(15),
+		paddingBottom: PxFit(10)
+	},
+	footerRight: { flexDirection: 'row', alignItems: 'center' }
 });
 
 export default FeedbackItem;

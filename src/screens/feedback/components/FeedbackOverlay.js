@@ -21,34 +21,34 @@ class FeedbackOverlay {
 						FeedbackOverlay.hide();
 					}}
 				>
-					<View style={{ width: SCREEN_WIDTH - 100, borderRadius: 10, padding: 0, backgroundColor: '#fff' }}>
+					<View style={styles.content}>
 						<TouchFeedback
-							style={{ paddingVertical: 15 }}
+							style={{ paddingVertical: PxFit(15) }}
 							onPress={() => {
 								handleVisible();
 							}}
 						>
-							<Text style={{ fontSize: 15, color: Theme.black, paddingLeft: 15 }}>举报</Text>
+							<Text style={styles.text}>举报</Text>
 						</TouchFeedback>
 						{comment && (
 							<TouchFeedback
-								style={{ paddingVertical: 15, borderTopColor: Theme.lightBorder, borderTopWidth: 0.5 }}
+								style={styles.comment}
 								onPress={() => {
 									FeedbackOverlay.hide();
 									switchKeybord();
 									replyComment(comment);
 								}}
 							>
-								<Text style={{ fontSize: 15, color: Theme.black, paddingLeft: 15 }}>引用</Text>
+								<Text style={styles.text}>引用</Text>
 							</TouchFeedback>
 						)}
 						{/*	{!feedback
 					? user.id == comment.user.id && (
 							<TouchFeedback
-								style={{ paddingVertical: 15, borderTopColor: Theme.lightBorder, borderTopWidth: 0.5 }}
+								style={{ paddingVertical: PxFit(15), borderTopColor: Theme.lightBorder, borderTopWidth: PxFit(0.5) }}
 								onPress={this.deleteComment}
 							>
-								<Text style={{ fontSize: 15, color: Theme.black, paddingLeft: 15 }}>删除</Text>
+								<Text style={{ fontSize: PxFit(15), color: Theme.black, paddingLeft: PxFit(15) }}>删除</Text>
 							</TouchFeedback>
 					  )
 					: null}*/}
@@ -72,6 +72,19 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0)',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	content: {
+		width: SCREEN_WIDTH - PxFit(100),
+		borderRadius: PxFit(10),
+		padding: 0,
+		backgroundColor: '#fff'
+	},
+	text: { fontSize: PxFit(15), color: Theme.black, paddingLeft: PxFit(15) },
+
+	comment: {
+		paddingVertical: PxFit(15),
+		borderTopColor: Theme.lightBorder,
+		borderTopWidth: PxFit(0.5)
 	}
 });
 
