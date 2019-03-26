@@ -17,70 +17,50 @@ class NotLogin extends Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<View style={styles.container}>
-				<View>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							justifyContent: 'space-between',
-							paddingTop: PxFit(20),
-							paddingBottom: PxFit(30)
+			<View>
+				<View style={styles.header}>
+					<View style={{ flex: 1 }}>
+						<Text style={styles.type}>剩余智慧点</Text>
+						<Text style={styles.gold}>0</Text>
+					</View>
+					<View style={{ flex: 1 }}>
+						<Text style={styles.type}>当前余(元)</Text>
+						<Text style={styles.gold}>0.00</Text>
+					</View>
+				</View>
+				<View style={styles.center}>
+					<TouchableOpacity
+						style={styles.withdrawItem}
+						onPress={() => {
+							navigation.navigate('Register');
 						}}
 					>
-						<View style={{ width: SCREEN_WIDTH / 2 }}>
-							<Text style={styles.gold}>0</Text>
-							<Text style={styles.type}>智慧点</Text>
-						</View>
-						<View style={{ width: SCREEN_WIDTH / 2 }}>
-							<Text style={styles.gold}>0.00</Text>
-							<Text style={styles.type}>余额（元）</Text>
-						</View>
-					</View>
-
-					{/*<DivisionLine height={10} />*/}
-					<View style={styles.center}>
-						<TouchableOpacity
-							style={styles.item}
-							onPress={() => {
-								navigation.navigate('登录注册');
-							}}
-						>
-							<Text style={styles.content}>
-								提现<Text style={{ color: Theme.themeRed }}>1元</Text>
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.item}
-							onPress={() => {
-								navigation.navigate('登录注册');
-							}}
-						>
-							<Text style={styles.content}>
-								提现<Text style={{ color: Theme.themeRed }}>2元</Text>
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.item}
-							onPress={() => {
-								navigation.navigate('登录注册');
-							}}
-						>
-							<Text style={styles.content}>
-								提现<Text style={{ color: Theme.themeRed }}>5元</Text>
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.item}
-							onPress={() => {
-								navigation.navigate('登录注册');
-							}}
-						>
-							<Text style={styles.content}>
-								提现<Text style={{ color: Theme.themeRed }}>10元</Text>
-							</Text>
-						</TouchableOpacity>
-					</View>
+						<Text style={styles.content}>提现1元</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.withdrawItem}
+						onPress={() => {
+							navigation.navigate('Register');
+						}}
+					>
+						<Text style={styles.content}>提现2元</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.withdrawItem}
+						onPress={() => {
+							navigation.navigate('Register');
+						}}
+					>
+						<Text style={styles.content}>提现5元</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.withdrawItem}
+						onPress={() => {
+							navigation.navigate('Register');
+						}}
+					>
+						<Text style={styles.content}>提现10元</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
@@ -88,52 +68,45 @@ class NotLogin extends Component {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#FFFEFC'
-	},
 	header: {
-		paddingVertical: PxFit(25),
-		alignItems: 'center'
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		paddingVertical: PxFit(30)
+	},
+	type: {
+		color: Theme.subTextColor,
+		fontSize: PxFit(13),
+		textAlign: 'center',
+		marginBottom: PxFit(10)
 	},
 	gold: {
 		color: Theme.themeRed,
-		fontSize: PxFit(44),
-		paddingBottom: PxFit(2),
+		fontSize: PxFit(40),
 		textAlign: 'center'
 	},
-	type: {
-		color: Theme.grey,
-		fontSize: PxFit(13),
-		textAlign: 'center'
+	withdraws: {
+		justifyContent: 'space-between',
+		flex: 1
 	},
 	center: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		paddingHorizontal: PxFit(15),
+		paddingHorizontal: PxFit(Theme.itemSpace),
 		justifyContent: 'space-between'
 	},
-	item: {
-		paddingVertical: PxFit(25),
-		width: (SCREEN_WIDTH - PxFit(44)) / 2,
-		borderColor: '#E0E0E0',
-		borderWidth: PxFit(0.5),
+	withdrawItem: {
+		marginBottom: PxFit(Theme.itemSpace),
+		width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+		height: PxFit(60),
+		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: PxFit(20),
-		borderRadius: PxFit(5)
+		borderRadius: PxFit(5),
+		backgroundColor: '#f5f5f5'
 	},
 	content: {
 		fontSize: PxFit(16),
-		color: Theme.black
-	},
-	footer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingTop: PxFit(20)
-	},
-	tips: {
-		fontSize: PxFit(15),
-		color: '#363636'
+		color: Theme.subTextColor
 	}
 });
 

@@ -5,9 +5,9 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, Linking } from 'react-native';
-import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, OverlayViewer } from '../../components';
+import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, OverlayViewer, Row } from '../../components';
 
-import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -18,6 +18,7 @@ import { Mutation, Query, compose, graphql } from 'react-apollo';
 
 import RuleDescription from './components/RuleDescription';
 import NotLogin from './components/NotLogin';
+import WithdrawGuidance from './components/WithdrawGuidance';
 
 const EXCHANGE_RATE = 600; //汇率
 
@@ -114,6 +115,10 @@ class index extends Component {
 		OverlayViewer.show(<RuleDescription />);
 	};
 
+	calcExchange(gold, value) {
+		return gold / 600 > value;
+	}
+
 	render() {
 		let { clickControl, isVisible } = this.state;
 		const { user, login, navigation, luckyMoney } = this.props;
@@ -122,7 +127,7 @@ class index extends Component {
 				title="提现"
 				isTopNavigator
 				rightView={
-					<TouchFeedback onPress={this.showRule} style={{ padding: PxFit(5) }}>
+					<TouchFeedback onPress={this.showRule} style={styles.rule}>
 						<Iconfont name={'question'} size={18} color={'#fff'} />
 					</TouchFeedback>
 				}
@@ -141,26 +146,31 @@ class index extends Component {
 							return (
 								<View style={styles.container}>
 									<View style={styles.header}>
-										<View style={{ width: SCREEN_WIDTH / 2 }}>
+										<View style={{ flex: 1 }}>
+											<Text style={styles.type}>剩余智慧点</Text>
 											<Text style={styles.gold}>{data.user.gold}</Text>
-											<Text style={styles.type}>智慧点</Text>
 										</View>
-										<View style={{ width: SCREEN_WIDTH / 2 }}>
+										<View style={{ flex: 1 }}>
+											<Text style={styles.type}>当前余额(元)</Text>
 											<Text style={styles.gold}>
 												{data.user.wallet && data.user.wallet.available_balance
 													? `${data.user.wallet.available_balance}.00`
 													: '0.00'}
 											</Text>
-											<Text style={styles.type}>余额（元）</Text>
 										</View>
 									</View>
-
-									<View style={styles.main}>
+									<View style={styles.withdraws}>
 										<View style={styles.center}>
 											{luckyMoney.map((luckyMoney, index) => {
+												let bool = this.calcExchange(data.user.gold, luckyMoney.value);
 												return (
 													<TouchFeedback
-														style={styles.item}
+														style={[
+															styles.withdrawItem,
+															bool && {
+																backgroundColor: Theme.primaryColor
+															}
+														]}
 														onPress={() => {
 															this.handleWithdraws(
 																data.user,
@@ -168,39 +178,42 @@ class index extends Component {
 																data.user.wallet
 															);
 														}}
-														disabled={clickControl}
+														disabled={!bool || clickControl}
 														key={index}
 													>
-														<Text style={styles.content}>
+														<Text
+															style={[
+																styles.content,
+																bool && {
+																	color: '#fff'
+																}
+															]}
+														>
 															提现
-															<Text style={{ color: Theme.themeRed }}>
-																{luckyMoney.value}元
-															</Text>
+															{luckyMoney.value}元
 														</Text>
 													</TouchFeedback>
 												);
 											})}
 										</View>
-										{user.pay_account && (
+										{user.pay_account ? (
 											<View style={styles.footer}>
 												<Text style={styles.tips}>当前汇率：600智慧点=1元</Text>
 												<Button
 													title={'查看提现日志'}
 													style={{
 														height: PxFit(38),
-														borderRadius: PxFit(19),
-														backgroundColor: Theme.theme,
-														width: SCREEN_WIDTH - PxFit(80)
+														borderRadius: PxFit(5),
+														backgroundColor: Theme.primaryColor,
+														width: WPercent(80)
 													}}
 													onPress={() => navigation.navigate('WithdrawLog')}
 												/>
 											</View>
+										) : (
+											<WithdrawGuidance navigation={navigation} />
 										)}
 									</View>
-									{user.pay_account ? null : (
-										<View />
-										// <WithdrawsTips navigation={navigation} isVisible={isVisible} />
-									)}
 								</View>
 							);
 						}}
@@ -222,50 +235,51 @@ function checkAmount(user, amount, wallet) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#FFFEFC'
+		backgroundColor: '#fff'
+	},
+	rule: {
+		flex: 1,
+		justifyContent: 'center'
 	},
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingTop: PxFit(20),
-		paddingBottom: PxFit(30),
-		borderBottomWidth: PxFit(10),
-		borderBottomColor: '#F0F0F0'
-	},
-	gold: {
-		color: Theme.themeRed,
-		fontSize: PxFit(44),
-		paddingBottom: PxFit(2),
-		textAlign: 'center'
+		paddingVertical: PxFit(30)
 	},
 	type: {
-		color: Theme.grey,
+		color: Theme.defaultTextColor,
 		fontSize: PxFit(13),
+		textAlign: 'center',
+		marginBottom: PxFit(10)
+	},
+	gold: {
+		color: Theme.secondaryColor,
+		fontSize: PxFit(40),
 		textAlign: 'center'
 	},
-	main: {
+	withdraws: {
 		justifyContent: 'space-between',
 		flex: 1
 	},
 	center: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		paddingHorizontal: PxFit(15),
+		paddingHorizontal: PxFit(Theme.itemSpace),
 		justifyContent: 'space-between'
 	},
-	item: {
-		paddingVertical: 25,
-		width: (SCREEN_WIDTH - PxFit(44)) / 2,
-		borderColor: '#E0E0E0',
-		borderWidth: PxFit(0.5),
+	withdrawItem: {
+		marginBottom: PxFit(Theme.itemSpace),
+		width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+		height: PxFit(60),
+		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: PxFit(20),
-		borderRadius: PxFit(5)
+		borderRadius: PxFit(5),
+		backgroundColor: '#f5f5f5'
 	},
 	content: {
-		fontSize: 16,
-		color: Theme.black
+		fontSize: PxFit(16),
+		color: Theme.subTextColor
 	},
 	footer: {
 		alignItems: 'center',
@@ -273,7 +287,7 @@ const styles = StyleSheet.create({
 	},
 	tips: {
 		fontSize: PxFit(15),
-		color: '#363636',
+		color: Theme.subTextColor,
 		paddingVertical: PxFit(10),
 		lineHeight: PxFit(18)
 	}

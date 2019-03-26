@@ -46,7 +46,18 @@ const shadowOpt = {
 class index extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			userCache: null
+		};
+	}
+
+	componentWillMount() {
+		this.loadCache();
+	}
+
+	async loadCache() {
+		let userCache = await Storage.getItem(ItemKeys.userCache);
+		this.setState({ userCache });
 	}
 
 	userAdapter(data: Object = {}) {
@@ -67,6 +78,8 @@ class index extends Component {
 		if (data && data.user) {
 			user = data.user;
 			user.avatar += '?t=' + Date.now();
+		} else if (this.state.userCache) {
+			user = this.userAdapter(this.state.userCache);
 		} else {
 			user = this.userAdapter(user);
 		}
@@ -221,11 +234,23 @@ class index extends Component {
 						style={styles.columnItem}
 						authenticated
 						navigation={navigation}
-						onPress={() => navigation.navigate('Wallet')}
+						onPress={() => navigation.navigate('Wallet', { user })}
 					>
 						<Row>
 							<Iconfont name={'withdraw'} size={PxFit(20)} style={styles.itemType} color={'#FFBB04'} />
 							<Text style={styles.itemTypeText}>我的钱包</Text>
+						</Row>
+						<Iconfont name="right" size={17} color={Theme.subTextColor} />
+					</TouchFeedback>
+					<TouchFeedback
+						style={styles.columnItem}
+						authenticated
+						navigation={navigation}
+						onPress={() => navigation.navigate('Notification')}
+					>
+						<Row>
+							<Iconfont name={'inform'} size={PxFit(26)} style={styles.itemType} color={'#FE4342'} />
+							<Text style={styles.itemTypeText}>消息通知</Text>
 						</Row>
 						<Iconfont name="right" size={17} color={Theme.subTextColor} />
 					</TouchFeedback>

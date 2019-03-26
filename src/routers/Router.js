@@ -13,6 +13,7 @@ import GradeDescriptionScreen from '../screens/setting/GradeDescription';
 import UserProtocolScreen from '../screens/setting/UserProtocol';
 import ShareAppScreen from '../screens/setting/ShareApp';
 import AboutUsScreen from '../screens/setting/AboutUs';
+import WalletScreen from '../screens/wallet';
 import WithdrawLogScreen from '../screens/withdraws/WithdrawLog';
 import WithdrawLogDetailScreen from '../screens/withdraws/WithdrawLogDetails';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
@@ -70,6 +71,9 @@ export default {
 	},
 	AboutUs: {
 		screen: AboutUsScreen
+	},
+	Wallet: {
+		screen: WalletScreen
 	},
 	WithdrawLog: {
 		screen: WithdrawLogScreen

@@ -7,11 +7,11 @@ import { Platform, Image } from 'react-native';
 import { StackNavigator, TabBarBottom, createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 
 import HomeScreen from '../screens/home';
-import WithDrawsScreen from '../screens/withdraws';
+import WithdrawScreen from '../screens/withdraws';
 import TaskScreen from '../screens/task';
 import ProfileScreen from '../screens/profile';
 import MainTabBar from './MainTabBar';
-import { Theme } from '../utils';
+import { Theme, PxFit } from '../utils';
 import { Iconfont } from '../components';
 
 export default createBottomTabNavigator(
@@ -20,13 +20,13 @@ export default createBottomTabNavigator(
 			screen: HomeScreen,
 			navigationOptions: () => TabOptions('答题')
 		},
-		提现: {
-			screen: WithDrawsScreen,
-			navigationOptions: () => TabOptions('提现')
-		},
 		任务: {
 			screen: TaskScreen,
 			navigationOptions: () => TabOptions('任务')
+		},
+		提现: {
+			screen: WithdrawScreen,
+			navigationOptions: () => TabOptions('提现')
 		},
 		我的: {
 			screen: ProfileScreen,
@@ -85,24 +85,25 @@ export default createBottomTabNavigator(
 const TabOptions = routeName => {
 	const title = routeName;
 	const tabBarIcon = ({ focused }: { focused: boolean }) => {
+		let iconSize, iconName;
 		switch (routeName) {
 			case '答题':
-				iconName = 'answer';
-				size = 22;
-				break;
-			case '提现':
-				iconName = 'withdraw';
-				size = 20;
+				iconName = `brush${focused ? '-fill' : ''}`;
+				iconSize = PxFit(23);
 				break;
 			case '任务':
-				iconName = 'task3';
-				size = 22;
+				iconName = `order${focused ? '-fill' : ''}`;
+				iconSize = PxFit(21);
+				break;
+			case '提现':
+				iconName = `wallet${focused ? '-fill' : ''}`;
+				iconSize = PxFit(19);
 				break;
 			case '我的':
-				iconName = 'my';
-				size = 22;
+				iconName = `person${focused ? '-fill' : ''}`;
+				iconSize = PxFit(22);
 		}
-		return <Iconfont name={iconName} size={size} color={focused ? Theme.primaryColor : Theme.subTextColor} />;
+		return <Iconfont name={iconName} size={iconSize} color={focused ? Theme.primaryColor : Theme.subTextColor} />;
 	};
 	const tabBarVisible = true;
 	return { title, tabBarVisible, tabBarIcon };

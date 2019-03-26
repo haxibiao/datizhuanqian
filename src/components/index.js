@@ -61,7 +61,7 @@ import DropdownMenu from './Utils/DropdownMenu';
 import Appintroduction from './Utils/Appintroduction';
 import TabBar from './Utils/TabBar';
 import GenderLabel from './Utils/GenderLabel';
-import RedDot from './Utils/RedDot';
+import Badge from './Utils/Badge';
 import Player from './Utils/Player';
 
 export {
@@ -113,5 +113,5 @@ export {
 	TabBar,
 	GenderLabel,
 	Player,
-	RedDot
+	Badge
 };

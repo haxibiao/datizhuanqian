@@ -19,8 +19,8 @@ class TabBarComponent extends React.Component {
 		return (
 			<TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
 				<View style={styles.tabItem}>
-					{renderIcon(scene)}
-					<Text style={{ fontSize: PxFit(10), color, marginTop: PxFit(4) }}>{route.key}</Text>
+					<View style={styles.icon}>{renderIcon(scene)}</View>
+					<Text style={{ fontSize: PxFit(10), color }}>{route.key}</Text>
 				</View>
 			</TouchableWithoutFeedback>
 		);
@@ -62,7 +62,8 @@ const styles = {
 		alignItems: 'center',
 		justifyContent: 'center',
 		position: 'relative'
-	}
+	},
+	icon: { width: PxFit(28), height: PxFit(28), alignItems: 'center', justifyContent: 'center' }
 };
 
 export default TabBarComponent;

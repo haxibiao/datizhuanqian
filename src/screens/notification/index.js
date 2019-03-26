@@ -5,13 +5,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { Iconfont, PageContainer, Avatar, RedDot } from '../../components';
-import { Theme, PxFit } from '../../utils';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { Iconfont, PageContainer, Avatar, Badge, TouchFeedback, Row, SafeText } from '../../components';
+import { Theme, PxFit, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
 import { userUnreadQuery } from '../../assets/graphql/notification.graphql';
-import { Query } from 'react-apollo';
+import { Query, compose, graphql } from 'react-apollo';
 
 class index extends Component {
 	constructor(props) {
@@ -21,91 +21,91 @@ class index extends Component {
 		};
 	}
 
+	calcUnreads(data) {
+		data = data || {};
+		return function(key) {
+			var state = {
+				system:
+					data.unread_notifications_count -
+						data.unread_comment_notifications_count -
+						data.unread_user_follow_notifications_count ||
+					data.unread_notifications_count - data.unread_comment_notifications_count,
+				comment: data.unread_comment_notifications_count,
+				fans: data.unread_user_follow_notifications_count
+			};
+			return state[key] || 0;
+		};
+	}
+
 	render() {
-		let { navigation, user } = this.props;
+		let { navigation, data } = this.props;
+		let user = Tools.syncGetter('user', data);
+		let loading = !user;
+		let calcUnreads = this.calcUnreads(user);
+		console.log('calcUnreads', calcUnreads, calcUnreads('fans'), 1);
 		return (
-			<PageContainer title="消息中心" white>
-				<TouchableOpacity
-					style={styles.item}
-					onPress={() => {
-						navigation.navigate('SystemNotification');
-					}}
+			<PageContainer loading={loading} title="消息中心" white>
+				<TouchFeedback
+					style={styles.notificationItem}
+					onPress={() => navigation.navigate('SystemNotification')}
 				>
-					<Avatar source={this.state.LOGO} size={48} />
-					<View style={styles.itemRight}>
-						<Text style={styles.name}>系统通知</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }}>
-							{({ data, error }) => {
-								if (error) return null;
-								if (!(data && data.user)) return null;
-								if (
-									data.user.unread_notifications_count -
-									data.user.unread_comment_notifications_count -
-									data.user.unread_user_follow_notifications_count
-								) {
-									return (
-										<RedDot
-											count={
-												data.user.unread_notifications_count -
-												data.user.unread_comment_notifications_count
-											}
-										/>
-									);
-								} else {
-									return <Iconfont name={'right'} size={16} />;
-								}
-							}}
-						</Query>
+					<View>
+						<Image
+							style={styles.notificationAvatar}
+							source={require('../../assets/images/notification_system.png')}
+						/>
 					</View>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.item}
-					onPress={() => {
-						navigation.navigate('CommentNotification');
-					}}
+					<View style={styles.itemContent}>
+						<SafeText style={styles.itemName}>系统通知</SafeText>
+						{calcUnreads('system') ? (
+							<Badge count={calcUnreads('system')} />
+						) : (
+							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
+						)}
+					</View>
+				</TouchFeedback>
+				<TouchFeedback
+					authenticate
+					navigation={navigation}
+					style={styles.notificationItem}
+					onPress={() => navigation.navigate('CommentNotification')}
 				>
-					<View style={styles.CommentIcon}>
-						<Iconfont name={'notification'} size={23} color={Theme.white} />
+					<View>
+						<Image
+							style={styles.notificationAvatar}
+							source={require('../../assets/images/notification_comment.png')}
+						/>
 					</View>
-					<View style={styles.itemRight}>
-						<Text style={styles.name}>评论</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }}>
-							{({ data, error }) => {
-								if (error) return null;
-								if (!(data && data.user)) return null;
-								if (data.user.unread_comment_notifications_count) {
-									return <RedDot count={data.user.unread_comment_notifications_count} />;
-								} else {
-									return <Iconfont name={'right'} size={16} />;
-								}
-							}}
-						</Query>
+					<View style={styles.itemContent}>
+						<SafeText style={styles.itemName}>评论</SafeText>
+						{calcUnreads('comment') ? (
+							<Badge count={calcUnreads('comment')} />
+						) : (
+							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
+						)}
 					</View>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.item}
-					onPress={() => {
-						navigation.navigate('FansNotification');
-					}}
+				</TouchFeedback>
+				<TouchFeedback
+					authenticate
+					navigation={navigation}
+					style={styles.notificationItem}
+					onPress={() => navigation.navigate('FansNotification')}
 				>
-					<View style={styles.FansIcon}>
-						<Iconfont name={'fans'} size={23} color={Theme.white} />
+					<View>
+						<Image
+							style={styles.notificationAvatar}
+							source={require('../../assets/images/notification_follow.png')}
+						/>
 					</View>
-					<View style={styles.itemRight}>
-						<Text style={styles.name}>粉丝</Text>
-						<Query query={userUnreadQuery} variables={{ id: user.id }}>
-							{({ data, error }) => {
-								if (error) return null;
-								if (!(data && data.user)) return null;
-								if (data.user.unread_user_follow_notifications_count) {
-									return <RedDot count={data.user.unread_user_follow_notifications_count} />;
-								} else {
-									return <Iconfont name={'right'} size={16} />;
-								}
-							}}
-						</Query>
+					<View style={styles.itemContent}>
+						<SafeText style={styles.itemName}>粉丝</SafeText>
+						{calcUnreads('fans') ? (
+							<Badge count={calcUnreads('fans')} />
+						) : (
+							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
+						)}
 					</View>
-				</TouchableOpacity>
+				</TouchFeedback>
 			</PageContainer>
 		);
 	}
@@ -116,9 +116,29 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Theme.lightBorder
 	},
-	name: {
+	notificationItem: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: '#fff',
+		padding: PxFit(Theme.itemSpace)
+	},
+	notificationAvatar: {
+		width: PxFit(48),
+		height: PxFit(48),
+		borderRadius: PxFit(24),
+		justifyContent: 'center',
+		alignItems: 'center',
+		resizeMode: 'cover'
+	},
+	itemContent: {
+		flex: 1,
+		marginLeft: PxFit(10),
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	itemName: {
 		fontSize: PxFit(16),
-		color: Theme.black
+		color: Theme.defaultTextColor
 	},
 	itemRight: {
 		marginLeft: PxFit(10),
@@ -129,24 +149,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
-	},
-	item: {
-		flexDirection: 'row',
-		paddingHorizontal: PxFit(15),
-		alignItems: 'center'
-	},
-	CommentIcon: {
-		backgroundColor: Theme.weixin,
-		padding: PxFit(12),
-		borderRadius: PxFit(30)
-	},
-	FansIcon: {
-		backgroundColor: '#68afff',
-		padding: PxFit(12),
-		borderRadius: PxFit(30)
 	}
 });
 
-export default connect(store => {
-	return { user: store.users.user };
-})(index);
+export default compose(
+	connect(store => ({ user: store.users.user })),
+	graphql(userUnreadQuery, {
+		options: props => ({ variables: { id: props.user.id } })
+	})
+)(index);
