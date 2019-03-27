@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: PxFit(15),
 		borderBottomWidth: PxFit(0.5),
-		borderBottomColor: Theme.borderColor,
-		backgroundColor: '#fff'
+		borderBottomColor: Theme.borderColor
 	},
 	cover: {
 		width: PxFit(48),

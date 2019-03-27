@@ -20,11 +20,11 @@ class NotLogin extends Component {
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={{ flex: 1 }}>
-						<Text style={styles.type}>剩余智慧点</Text>
+						<Text style={styles.type}>当前智慧点</Text>
 						<Text style={styles.gold}>0</Text>
 					</View>
 					<View style={{ flex: 1 }}>
-						<Text style={styles.type}>当前余(元)</Text>
+						<Text style={styles.type}>当前余额(元)</Text>
 						<Text style={styles.gold}>0.00</Text>
 					</View>
 				</View>

@@ -167,7 +167,7 @@ class index extends Component {
 								<View style={styles.container}>
 									<View style={styles.header}>
 										<View style={{ flex: 1 }}>
-											<Text style={styles.type}>剩余智慧点</Text>
+											<Text style={styles.type}>当前智慧点</Text>
 											<Text style={styles.gold}>{user.gold}</Text>
 										</View>
 										<View style={{ flex: 1 }}>
