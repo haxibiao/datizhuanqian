@@ -14,13 +14,6 @@ import { userUnreadQuery } from '../../assets/graphql/notification.graphql';
 import { Query, compose, graphql } from 'react-apollo';
 
 class index extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			LOGO: require('../../assets/images/logo.png')
-		};
-	}
-
 	calcUnreads(data) {
 		data = data || {};
 		return function(key) {
@@ -120,7 +113,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		backgroundColor: '#fff',
-		padding: PxFit(Theme.itemSpace)
+		padding: PxFit(Theme.itemSpace),
+		borderBottomWidth: PxFit(0.5),
+		borderColor: Theme.borderColor
 	},
 	notificationAvatar: {
 		width: PxFit(48),

@@ -36,17 +36,14 @@ import SplashScreen from 'react-native-splash-screen';
 class index extends Component {
 	constructor(props) {
 		super(props);
-		this.categoryCache = null;
 		this.state = {
-			finished: false
+			finished: false,
+			categoryCache: null
 		};
 	}
 
-	componentWillMount() {
-		this.loadCache();
-	}
-
 	componentDidMount() {
+		this.loadCache();
 		SplashScreen.hide();
 		// UpdateOverlay.show();
 
@@ -60,13 +57,19 @@ class index extends Component {
 		this.timer && clearTimeout(this.timer);
 	}
 
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.data && nextProps.data.categories) {
+			this.props.dispatch(actions.categoryCache(nextProps.data.categories));
+		}
+	}
+
 	dispatch(serverVersion) {
 		this.props.dispatch(actions.UpdateViewedVesion(serverVersion));
 	}
 
 	async loadCache() {
 		let categoryCache = await Storage.getItem(ItemKeys.categoryCache);
-		this.categoryCache = categoryCache;
+		this.setState({ categoryCache });
 	}
 
 	_renderCategoryList = () => {
@@ -76,21 +79,23 @@ class index extends Component {
 			navigation,
 			data: { loading, error, categories, refetch, fetchMore }
 		} = this.props;
-		if (error) {
-			categories = this.categoryCache;
-		}
-		if (!categories) {
-			return Array(10)
-				.fill(0)
-				.map((elem, index) => {
-					return <Placeholder key={index} type="list" />;
-				});
+		let questionCategories = categories;
+		if (!questionCategories) {
+			if (this.state.categoryCache) {
+				questionCategories = this.state.categoryCache;
+			} else {
+				return Array(10)
+					.fill(0)
+					.map((elem, index) => {
+						return <Placeholder key={index} type="list" />;
+					});
+			}
 		}
 		return (
 			<View style={styles.container}>
 				<TabBar />
 				<FlatList
-					data={categories}
+					data={questionCategories}
 					refreshControl={<CustomRefreshControl refreshing={loading} onRefresh={refetch} />}
 					keyExtractor={(item, index) => index.toString()}
 					renderItem={({ item, index }) => (
@@ -98,10 +103,10 @@ class index extends Component {
 					)}
 					onEndReachedThreshold={0.3}
 					onEndReached={() => {
-						if (categories) {
+						if (categories && questionCategories) {
 							fetchMore({
 								variables: {
-									offset: categories.length
+									offset: questionCategories.length
 								},
 								updateQuery: (prev, { fetchMoreResult }) => {
 									if (

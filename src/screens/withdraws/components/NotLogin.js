@@ -17,7 +17,7 @@ class NotLogin extends Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<View>
+			<View style={styles.container}>
 				<View style={styles.header}>
 					<View style={{ flex: 1 }}>
 						<Text style={styles.type}>剩余智慧点</Text>
@@ -28,39 +28,58 @@ class NotLogin extends Component {
 						<Text style={styles.gold}>0.00</Text>
 					</View>
 				</View>
-				<View style={styles.center}>
-					<TouchableOpacity
-						style={styles.withdrawItem}
-						onPress={() => {
-							navigation.navigate('Register');
-						}}
-					>
-						<Text style={styles.content}>提现1元</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.withdrawItem}
-						onPress={() => {
-							navigation.navigate('Register');
-						}}
-					>
-						<Text style={styles.content}>提现2元</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.withdrawItem}
-						onPress={() => {
-							navigation.navigate('Register');
-						}}
-					>
-						<Text style={styles.content}>提现5元</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.withdrawItem}
-						onPress={() => {
-							navigation.navigate('Register');
-						}}
-					>
-						<Text style={styles.content}>提现10元</Text>
-					</TouchableOpacity>
+				<View style={styles.withdraws}>
+					<View style={styles.center}>
+						<TouchableOpacity
+							style={styles.withdrawItem}
+							onPress={() => {
+								navigation.navigate('Register');
+							}}
+						>
+							<Text style={styles.content}>提现1元</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.withdrawItem}
+							onPress={() => {
+								navigation.navigate('Register');
+							}}
+						>
+							<Text style={styles.content}>提现2元</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.withdrawItem}
+							onPress={() => {
+								navigation.navigate('Register');
+							}}
+						>
+							<Text style={styles.content}>提现5元</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.withdrawItem}
+							onPress={() => {
+								navigation.navigate('Register');
+							}}
+						>
+							<Text style={styles.content}>提现10元</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.bottomView}>
+						<Image
+							source={require('../../../assets/images/alipay.jpg')}
+							style={{ width: SCREEN_WIDTH / 3, height: SCREEN_WIDTH / 3 }}
+						/>
+						<Text style={styles.tipsText}>
+							您还没有登录哦，
+							<Text
+								style={{ color: Theme.linkColor }}
+								onPress={() => {
+									navigation.navigate('Register');
+								}}
+							>
+								快去登录吧
+							</Text>
+						</Text>
+					</View>
 				</View>
 			</View>
 		);
@@ -68,6 +87,10 @@ class NotLogin extends Component {
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#fff'
+	},
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -107,7 +130,14 @@ const styles = StyleSheet.create({
 	content: {
 		fontSize: PxFit(16),
 		color: Theme.subTextColor
-	}
+	},
+	bottomView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingHorizontal: 15
+	},
+	tipsText: { color: Theme.subTextColor, fontSize: PxFit(13), fontWeight: '300' }
 });
 
 export default NotLogin;

@@ -7,10 +7,11 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, Linking } from 'react-native';
 import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, OverlayViewer, Row } from '../../components';
 
-import { Theme, PxFit, SCREEN_WIDTH, WPercent } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
+import { Storage, ItemKeys } from '../../store/localStorage';
 
 import { CreateWithdrawMutation, WithdrawsQuery } from '../../assets/graphql/withdraws.graphql';
 import { UserQuery } from '../../assets/graphql/User.graphql';
@@ -28,8 +29,27 @@ class index extends Component {
 		this.handleWithdraws = this.handleWithdraws.bind(this);
 		this.state = {
 			clickControl: false,
-			isVisible: false
+			isVisible: false,
+			userCache: {
+				gold: 0,
+				wallet: {
+					available_balance: 0
+				}
+			}
 		};
+	}
+
+	componentDidMount() {
+		this.loadCache();
+	}
+
+	async loadCache() {
+		let userCache = await Storage.getItem(ItemKeys.userCache);
+		if (userCache) {
+			this.setState({
+				userCache
+			});
+		}
 	}
 
 	//处理提现
@@ -120,7 +140,7 @@ class index extends Component {
 	}
 
 	render() {
-		let { clickControl, isVisible } = this.state;
+		let { clickControl, isVisible, userCache } = this.state;
 		const { user, login, navigation, luckyMoney } = this.props;
 		return (
 			<PageContainer
@@ -128,7 +148,7 @@ class index extends Component {
 				isTopNavigator
 				rightView={
 					<TouchFeedback onPress={this.showRule} style={styles.rule}>
-						<Iconfont name={'question'} size={18} color={'#fff'} />
+						<Iconfont name={'question'} size={PxFit(19)} color={'#fff'} />
 					</TouchFeedback>
 				}
 			>
@@ -139,22 +159,22 @@ class index extends Component {
 							navigation.addListener('didFocus', payload => {
 								refetch();
 							});
-
-							if (error) return <UserWithdrawsCache luckyMoney={luckyMoney} />;
-							if (!(data && data.user)) return null;
-
+							let user = Tools.syncGetter('user', data);
+							if (!user) {
+								user = userCache;
+							}
 							return (
 								<View style={styles.container}>
 									<View style={styles.header}>
 										<View style={{ flex: 1 }}>
 											<Text style={styles.type}>剩余智慧点</Text>
-											<Text style={styles.gold}>{data.user.gold}</Text>
+											<Text style={styles.gold}>{user.gold}</Text>
 										</View>
 										<View style={{ flex: 1 }}>
 											<Text style={styles.type}>当前余额(元)</Text>
 											<Text style={styles.gold}>
-												{data.user.wallet && data.user.wallet.available_balance
-													? `${data.user.wallet.available_balance}.00`
+												{user.wallet && user.wallet.available_balance
+													? `${user.wallet.available_balance}.00`
 													: '0.00'}
 											</Text>
 										</View>
@@ -162,7 +182,7 @@ class index extends Component {
 									<View style={styles.withdraws}>
 										<View style={styles.center}>
 											{luckyMoney.map((luckyMoney, index) => {
-												let bool = this.calcExchange(data.user.gold, luckyMoney.value);
+												let bool = this.calcExchange(user.gold, luckyMoney.value);
 												return (
 													<TouchFeedback
 														style={[
@@ -172,11 +192,7 @@ class index extends Component {
 															}
 														]}
 														onPress={() => {
-															this.handleWithdraws(
-																data.user,
-																luckyMoney.value,
-																data.user.wallet
-															);
+															this.handleWithdraws(user, luckyMoney.value, user.wallet);
 														}}
 														disabled={!bool || clickControl}
 														key={index}

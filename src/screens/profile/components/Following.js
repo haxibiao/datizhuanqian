@@ -43,7 +43,7 @@ class Following extends Component {
 							error={error}
 							loading={loading}
 							empty={empty}
-							loadingSpinner={<Placeholder quantity={10} />}
+							loadingSpinner={<Placeholder quantity={10} type="list" />}
 						>
 							<FlatList
 								data={follows}

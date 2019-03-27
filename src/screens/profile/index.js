@@ -55,6 +55,13 @@ class index extends Component {
 		this.loadCache();
 	}
 
+	componentWillUpdate(nextProps, nextState) {
+		console.log('componentWillUpdate');
+		if (nextProps.data && nextProps.data.user) {
+			this.props.dispatch(actions.userCache(nextProps.data.user));
+		}
+	}
+
 	async loadCache() {
 		let userCache = await Storage.getItem(ItemKeys.userCache);
 		this.setState({ userCache });
@@ -75,6 +82,7 @@ class index extends Component {
 
 	render() {
 		let { user, login, navigation, data } = this.props;
+		console.log('test render');
 		if (data && data.user) {
 			user = data.user;
 			user.avatar += '?t=' + Date.now();
@@ -230,18 +238,25 @@ class index extends Component {
 							</View>
 						</BoxShadow>
 					</View>
-					<TouchFeedback
-						style={styles.columnItem}
-						authenticated
-						navigation={navigation}
-						onPress={() => navigation.navigate('Wallet', { user })}
-					>
-						<Row>
-							<Iconfont name={'withdraw'} size={PxFit(20)} style={styles.itemType} color={'#FFBB04'} />
-							<Text style={styles.itemTypeText}>我的钱包</Text>
-						</Row>
-						<Iconfont name="right" size={17} color={Theme.subTextColor} />
-					</TouchFeedback>
+					{
+						// <TouchFeedback
+						// 	style={styles.columnItem}
+						// 	authenticated
+						// 	navigation={navigation}
+						// 	onPress={() => navigation.navigate('Wallet', { user })}
+						// >
+						// 	<Row>
+						// 		<Iconfont
+						// 			name={'withdraw'}
+						// 			size={PxFit(20)}
+						// 			style={styles.itemType}
+						// 			color={'#FFBB04'}
+						// 		/>
+						// 		<Text style={styles.itemTypeText}>我的钱包</Text>
+						// 	</Row>
+						// 	<Iconfont name="right" size={17} color={Theme.subTextColor} />
+						// </TouchFeedback>
+					}
 					<TouchFeedback
 						style={styles.columnItem}
 						authenticated
@@ -249,7 +264,7 @@ class index extends Component {
 						onPress={() => navigation.navigate('Notification')}
 					>
 						<Row>
-							<Iconfont name={'inform'} size={PxFit(26)} style={styles.itemType} color={'#FE4342'} />
+							<Iconfont name={'inform'} size={PxFit(26)} style={styles.itemType} color={'#04C9FE'} />
 							<Text style={styles.itemTypeText}>消息通知</Text>
 						</Row>
 						<Iconfont name="right" size={17} color={Theme.subTextColor} />

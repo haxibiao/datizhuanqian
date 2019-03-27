@@ -90,6 +90,7 @@ export default {
       user
     };
   },
+
   categoryCache(categories) {
     return {
       type: types.CATEGORY_CACHE,

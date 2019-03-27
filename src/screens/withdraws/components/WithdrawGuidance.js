@@ -41,7 +41,7 @@ class WithdrawGuidance extends Component {
 							paddingTop: PxFit(10)
 						}}
 					>
-						请先绑定支付宝账号哦
+						前往绑定支付宝账号
 					</Text>
 				</TouchableOpacity>
 			</View>
