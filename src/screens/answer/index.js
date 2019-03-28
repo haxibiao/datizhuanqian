@@ -13,18 +13,20 @@ import {
 	ItemSeparator,
 	PopOverlay,
 	SubmitLoading,
+	Row,
 	Button,
-	TabBar
+	TabBar,
+	Placeholder
 } from '../../components';
 
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../utils';
 
 import QuestionError from './components/QuestionError';
-import QuestionOption from './components/QuestionOption';
+import QuestionOptions from './components/QuestionOptions';
 import QuestionBody from './components/QuestionBody';
-import FavoriteQuestion from './components/FavoriteQuestion';
 import UserInfo from './components/UserInfo';
 import FiexdFooter from './components/FiexdFooter';
+import FooterBar from './components/FooterBar';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -37,167 +39,157 @@ class index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			swithMethod: false,
-			value: '',
-			isShow: false,
-			name: '提交答案',
-			optionColor: Theme.theme, //选项颜色
-			buttonColor: Theme.theme, //按钮颜色
-			rightColor: Theme.tintGray //正确答案颜色,
+			submited: false,
+			answer: null
 		};
 	}
-
 	//提交答案 下一题
-	submitAnswer = async (question, refetch) => {
-		const { user } = this.props;
-		let { swithMethod, name, isShow, optionColor, buttonColor, rightColor, value } = this.state;
-		let result = {};
-
-		if (swithMethod) {
-			//下一题
-			this.nextQuestion(refetch);
-		} else {
-			//提交答案
-			this.setState({
-				swithMethod: true,
-				name: '下一题',
-				isShow: true,
-				buttonColor: question.answer.indexOf(value) > -1 ? Theme.weixin : Theme.themeRed,
-				optionColor: question.answer.indexOf(value) > -1 ? Theme.weixin : Theme.themeRed,
-				rightColor: Theme.weixin
-			});
-			//UI状态改变
-			try {
-				result = await this.props.QuestionAnswerMutation({
-					variables: {
-						id: question.id,
-						answer: value
-					},
-					errorPolicy: 'all',
-					refetchQueries: () => [
-						{
-							query: UserQuery,
-							variables: { id: user.id },
-							fetchPolicy: 'network-only'
-						}
-					]
+	onSubmit = (question, refetch) => {
+		return async () => {
+			const { user } = this.props;
+			let { submited, answer } = this.state;
+			let result = {};
+			if (submited) {
+				//下一题
+				this.nextQuestion(refetch);
+			} else {
+				//提交答案
+				this.setState({
+					submited: true
 				});
-			} catch (ex) {
-				result.errors = ex;
+				//UI状态改变
+				try {
+					result = await this.props.QuestionAnswerMutation({
+						variables: {
+							id: question.id,
+							answer: answer.join()
+						},
+						errorPolicy: 'all',
+						refetchQueries: () => [
+							{
+								query: UserQuery,
+								variables: { id: user.id },
+								fetchPolicy: 'network-only'
+							}
+						]
+					});
+				} catch (ex) {
+					result.errors = ex;
+				}
+				if (result && result.errors) {
+					let str = result.errors[0].message;
+					Toast.show({ content: str });
+				}
 			}
-			if (result && result.errors) {
-				let str = result.errors[0].message;
-				Methods.toast(str, -100);
-			}
-		}
+		};
 	};
 
 	nextQuestion = refetch => {
 		const { category } = this.props.navigation.state.params;
-		this.favoriteButton.resetFavorite();
 		this.setState({
-			swithMethod: false,
-			value: '',
-			name: '提交答案',
-			optionColor: Theme.theme,
-			buttonColor: Theme.blue,
-			rightColor: Theme.tintGray
+			submited: false,
+			answer: null
 		});
 		//重置state
 		refetch({ category_id: category.id });
 		//更换题目
 	};
 
-	changeValue(Value) {
-		this.setState({
-			value: Value
-		});
-	}
-
-	getQuestionId = () => {
-		return this.questionId;
+	onComment = () => {
+		if (!this.state.submited) {
+			Toast.show({ content: '先答题再评论哦', layout: 'bottom' });
+		}
 	};
 
-	_showCuration = question => {
-		let { swithMethod } = this.state;
-		const { navigation } = this.props;
-		return (
-			<TouchFeedback
-				style={styles.curation}
-				onPress={() => navigation.navigate('Curation', { question: question })}
-			>
-				<Text style={styles.curationText}>{swithMethod ? '题目纠错' : ''}</Text>
-			</TouchFeedback>
-		);
+	//选择的选项
+	//单选/多选：单选会清除其它已选择的选项
+	selectOption = (value, singleOption) => {
+		let { answer } = this.state;
+		if (!answer) answer = [];
+		if (singleOption) {
+			if (answer.includes(value)) {
+				answer = null;
+			} else {
+				answer = [value];
+			}
+		} else {
+			if (answer.includes(value)) {
+				answer.splice(answer.indexOf(value), 1);
+				if (answer.length < 1) {
+					answer = null;
+				}
+			} else {
+				answer.push(value);
+			}
+		}
+		this.setState({ answer });
 	};
 
 	render() {
 		const { navigation, user, noTicketTips } = this.props;
-		let { value, swithMethod, isShow, optionColor, name, buttonColor, rightColor } = this.state;
+		let { answer, submited } = this.state;
 		const { category, question_id } = navigation.state.params;
 
 		return (
-			<PageContainer
-				title="答题"
-				rightView={
-					<FavoriteQuestion ref={ref => (this.favoriteButton = ref)} getQuestionId={this.getQuestionId} />
-				}
-			>
+			<PageContainer title="答题">
 				<Query
 					query={QuestionQuery}
 					variables={{ category_id: category ? category.id : null, id: question_id }}
 					fetchPolicy="network-only"
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {
+						let question = Tools.syncGetter('question', data);
+						loading = !question;
 						if (error) {
 							return <QuestionError />;
 						}
-						if (loading) return null;
-						if (!(data && data.question)) return null;
-
-						let question = data.question;
-						this.questionId = question.id;
-
-						let selections = data.question.selections.replace(/\\/g, '');
-						let option = [];
-						try {
-							option = JSON.parse(selections);
-						} catch (error) {
-							<LoadingError reload={() => refetch()} />;
-						}
-
+						if (loading) return <Placeholder />;
 						return (
-							<View style={{ flex: 1, minheight: SCREEN_HEIGHT }}>
-								<ScrollView style={styles.container}>
-									{/*<TabTop user={user} isShow={isShow} isAnswer={true} />*/}
+							<View style={styles.container}>
+								<ScrollView
+									contentContainerStyle={{ flexGrow: 1 }}
+									showsVerticalScrollIndicator={false}
+									bounces={false}
+								>
 									<TabBar />
 									<View style={styles.content}>
-										<UserInfo user={question.user} />
+										<UserInfo user={question.user} navigation={navigation} />
 										<QuestionBody question={question} />
-										<QuestionOption
-											question={question}
-											option={option}
-											changeValue={this.changeValue.bind(this)}
-											value={value}
-											swithMethod={swithMethod}
-											optionColor={optionColor}
-											rightColor={rightColor}
+										<QuestionOptions
+											selections={question.selections_array}
+											onSelectOption={this.selectOption}
+											submited={submited}
+											answer={question.answer}
+											selectedOption={answer}
 										/>
-										<View style={styles.submitWrap}>
-											{this._showCuration(question)}
-											<Button
-												title={name}
-												disabled={value ? false : true}
-												onPress={() => {
-													this.submitAnswer(question, refetch);
-												}}
-												style={{ height: PxFit(38), backgroundColor: buttonColor }}
-												fontSize={14}
-											/>
-										</View>
 									</View>
+									{submited && (
+										<View style={styles.tipsView}>
+											<View>
+												<Text style={styles.answerText}>
+													正确答案: {[...question.answer].join(',')}
+												</Text>
+											</View>
+											<Row>
+												<Text style={styles.curationText}>答案有误?</Text>
+												<Text
+													style={styles.errorText}
+													onPress={() => navigation.navigate('Curation', { question })}
+												>
+													帮忙纠错
+												</Text>
+											</Row>
+										</View>
+									)}
 								</ScrollView>
-								<FiexdFooter question={question.id} />
+								<FooterBar
+									navigation={navigation}
+									question={question}
+									submited={submited}
+									answer={answer}
+									onComment={this.onComment}
+									oSubmit={this.onSubmit(question, refetch)}
+								/>
 							</View>
 						);
 					}}
@@ -210,25 +202,35 @@ class index extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Theme.white
+		backgroundColor: '#fff'
 	},
-
 	content: {
 		paddingTop: PxFit(20),
-		paddingHorizontal: PxFit(30)
+		paddingHorizontal: PxFit(Theme.itemSpace)
 	},
 	submitWrap: {
 		marginTop: PxFit(50),
 		marginBottom: PxFit(30)
 	},
-	curation: {
-		alignItems: 'flex-end',
-		paddingBottom: PxFit(15)
+	tipsView: {
+		margin: PxFit(Theme.itemSpace),
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		padding: PxFit(Theme.itemSpace)
+	},
+	answerText: {
+		fontSize: PxFit(15),
+		color: Theme.defaultTextColor
 	},
 	curationText: {
-		color: Theme.orange,
-		fontSize: PxFit(12),
-		fontWeight: '200'
+		fontSize: PxFit(13),
+		color: Theme.subTextColor
+	},
+	errorText: {
+		fontSize: PxFit(13),
+		paddingLeft: PxFit(5),
+		color: Theme.errorColor
 	}
 });
 

@@ -68,6 +68,7 @@ export default {
 	confirmColor: '#3E65E8',
 	correctColor: '#1CACF9',
 	errorColor: '#FF4C4C',
+	teaGreen: '#12E2BB',
 	itemSpace: 15,
 
 	//old

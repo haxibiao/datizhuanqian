@@ -57,7 +57,7 @@ class TaskList extends Component {
 		//成长任务
 
 		return (
-			<ScrollView style={{ flex: 1 }}>
+			<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
 				<TaskType
 					tasks={[{ name: '我来出题', taskStatus: 4, gold: 10, type: 3 }]}
 					user={user}

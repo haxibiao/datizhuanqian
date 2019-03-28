@@ -5,8 +5,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { TouchFeedback } from '../../../components';
-import { PxFit } from '../../../utils';
+import { TouchFeedback, Avatar } from '../../../components';
+import { PxFit, Theme } from '../../../utils';
 
 class UserInfo extends Component {
 	constructor(props) {
@@ -15,29 +15,26 @@ class UserInfo extends Component {
 	}
 
 	render() {
-		const { user } = this.props;
+		const { user, navigation } = this.props;
 		if (user.id == 1) {
 			return null;
 		}
 		return (
-			<TouchFeedback
-				style={{
-					flexDirection: 'row',
-					alignItems: 'center',
-					paddingBottom: PxFit(15)
-				}}
-				onPress={() => navigation.navigate('用户资料', { user_id: user.id })}
-			>
-				<Image
-					source={{ uri: user.avatar }}
-					style={{ width: PxFit(20), height: PxFit(20), borderRadius: PxFit(3) }}
-				/>
-				<Text style={{ fontSize: PxFit(14), color: '#222', paddingLeft: PxFit(6) }}>{user.name}</Text>
+			<TouchFeedback style={styles.userItem} onPress={() => navigation.navigate('User', { user_id: user.id })}>
+				<Avatar source={user.avatar} size={PxFit(24)} />
+				<Text style={styles.userName}>{user.name}</Text>
 			</TouchFeedback>
 		);
 	}
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	userItem: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingBottom: PxFit(Theme.itemSpace)
+	},
+	userName: { fontSize: PxFit(13), color: Theme.defaultTextColor, paddingLeft: PxFit(6) }
+});
 
 export default UserInfo;

@@ -5,9 +5,9 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, Linking } from 'react-native';
-import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, OverlayViewer, Row } from '../../components';
+import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, PopOverlay, Row } from '../../components';
 
-import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, WPercent, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -20,6 +20,8 @@ import { Mutation, Query, compose, graphql } from 'react-apollo';
 import RuleDescription from './components/RuleDescription';
 import NotLogin from './components/NotLogin';
 import WithdrawGuidance from './components/WithdrawGuidance';
+
+import { Overlay } from 'teaset';
 
 const EXCHANGE_RATE = 600; //汇率
 
@@ -132,7 +134,14 @@ class index extends Component {
 	}
 
 	showRule = () => {
-		OverlayViewer.show(<RuleDescription />);
+		let overlayView = (
+			<Overlay.View animated>
+				<View style={styles.overlayInner}>
+					<RuleDescription hide={() => Overlay.hide(this.OverlayKey)} />
+				</View>
+			</Overlay.View>
+		);
+		this.OverlayKey = Overlay.show(overlayView);
 	};
 
 	calcExchange(gold, value) {
@@ -306,6 +315,13 @@ const styles = StyleSheet.create({
 		color: Theme.subTextColor,
 		paddingVertical: PxFit(10),
 		lineHeight: PxFit(18)
+	},
+	overlayInner: {
+		flex: 1,
+		width: SCREEN_WIDTH,
+		height: SCREEN_HEIGHT,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 

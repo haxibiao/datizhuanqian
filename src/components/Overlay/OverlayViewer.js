@@ -17,11 +17,11 @@ class OverlayViewer {
 			<Overlay.View animated>
 				<View style={styles.container}>
 					{children}
-					{/*<View style={styles.header}>
+					<View style={styles.header}>
 						<TouchFeedback onPress={() => OverlayViewer.hide()}>
-							<Iconfont name="close" size={PxFit(26)} color="#fff" />
+							<Iconfont name="close" size={PxFit(24)} color="#fff" />
 						</TouchFeedback>
-					</View>*/}
+					</View>
 				</View>
 			</Overlay.View>
 		);
@@ -38,9 +38,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: SCREEN_WIDTH,
 		height: SCREEN_HEIGHT,
-		backgroundColor: 'rgba(255,255,255,0)',
-		justifyContent: 'center',
-		alignItems: 'center'
+		backgroundColor: '#000000'
 	},
 	header: {
 		position: 'absolute',
@@ -51,6 +49,7 @@ const styles = StyleSheet.create({
 		paddingLeft: PxFit(Theme.itemSpace),
 		paddingRight: PxFit(Theme.itemSpace),
 		justifyContent: 'center',
+		alignItems: 'flex-end',
 		backgroundColor: 'rgba(0,0,0,0.5)'
 	}
 });

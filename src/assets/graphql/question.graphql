@@ -20,6 +20,10 @@ query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int) {
 		id
 		description
 		selections
+		selections_array {
+			Text
+			Value
+		}
 		answer
 		status
 		gold
@@ -48,6 +52,10 @@ query QuestionQuery($id: Int, $category_id: Int) {
 		id
 		description
 		selections
+		selections_array {
+			Text
+			Value
+		}
 		answer
 		status
 		favorite_status

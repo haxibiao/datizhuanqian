@@ -95,6 +95,7 @@ class index extends Component {
 			<View style={styles.container}>
 				<TabBar />
 				<FlatList
+					showsVerticalScrollIndicator={false}
 					data={questionCategories}
 					refreshControl={<CustomRefreshControl refreshing={loading} onRefresh={refetch} />}
 					keyExtractor={(item, index) => index.toString()}

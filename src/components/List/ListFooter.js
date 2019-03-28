@@ -23,7 +23,7 @@ class ListFooter extends Component<Props> {
 		if (finished) {
 			return (
 				<View style={styles.footerView}>
-					<Text style={styles.footerViewText}>{text || '-- 没有更多了哦 --'}</Text>
+					<Text style={styles.footerViewText}>{text || '没有更多了哦'}</Text>
 				</View>
 			);
 		} else {

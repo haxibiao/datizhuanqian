@@ -27,7 +27,8 @@ import {
 	KeyboardSpacer,
 	DropdownMenu,
 	PullChooser,
-	ProgressOverlay
+	ProgressOverlay,
+	OverlayViewer
 } from '../../components';
 import { Theme, PxFit, Api, Config, SCREEN_WIDTH, ISAndroid } from '../../utils';
 
@@ -37,6 +38,7 @@ import { createQuestionMutation } from '../../assets/graphql/task.graphql';
 import { CategoriesQuery, QuestionQuery } from '../../assets/graphql/question.graphql';
 import { compose, Query, Mutation, graphql } from 'react-apollo';
 import Video from 'react-native-video';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 import OptionItem from './components/OptionItem';
 
@@ -256,6 +258,28 @@ class index extends Component {
 		}
 	};
 
+	showPicture = url => {
+		let overlayView = (
+			<ImageViewer onSwipeDown={() => OverlayViewer.hide()} imageUrls={[{ url }]} enableSwipeDown />
+		);
+		OverlayViewer.show(overlayView);
+	};
+
+	reviewVideo = path => {
+		let overlayView = (
+			<Video
+				source={{
+					uri: path
+				}}
+				style={styles.videoViewer}
+				muted={false}
+				paused={false}
+				resizeMode="contain"
+			/>
+		);
+		OverlayViewer.show(overlayView);
+	};
+
 	buildVariables = () => {
 		let { video_path, category_id, video_id, description, picture, options, answers } = this.state;
 		if (video_path && !video_id) {
@@ -370,11 +394,11 @@ class index extends Component {
 													multiline
 													maxLength={300}
 													textAlignVertical="top"
-													placeholder="填写题目题干"
+													placeholder="填写题目题干..."
 												/>
 												<View style={styles.mediaSelect}>
 													{picture ? (
-														<View>
+														<TouchFeedback onPress={() => this.showPicture(picture)}>
 															<Image source={{ uri: picture }} style={styles.addImage} />
 															<TouchableOpacity
 																style={styles.closeBtn}
@@ -386,9 +410,9 @@ class index extends Component {
 																	color="#fff"
 																/>
 															</TouchableOpacity>
-														</View>
+														</TouchFeedback>
 													) : video_path ? (
-														<View>
+														<TouchFeedback onPress={() => this.reviewVideo(video_path)}>
 															<Video
 																muted
 																source={{ uri: video_path }}
@@ -406,7 +430,7 @@ class index extends Component {
 																	color="#fff"
 																/>
 															</TouchableOpacity>
-														</View>
+														</TouchFeedback>
 													) : (
 														<TouchableOpacity
 															style={styles.addImage}
@@ -604,6 +628,11 @@ const styles = StyleSheet.create({
 	addText: {
 		fontSize: PxFit(15),
 		color: '#fff'
+	},
+	videoViewer: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%'
 	}
 });
 
