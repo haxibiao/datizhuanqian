@@ -10,7 +10,8 @@ import {
 	singleImageResponse,
 	generateGenderLable,
 	imgsLayoutSize,
-	imageSize
+	imageSize,
+	regular
 } from './calculate';
 
 export default {
@@ -21,5 +22,6 @@ export default {
 	singleImageResponse,
 	generateGenderLable,
 	imgsLayoutSize,
-	imageSize
+	imageSize,
+	regular
 };

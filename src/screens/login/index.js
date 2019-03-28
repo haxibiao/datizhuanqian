@@ -219,7 +219,7 @@ class index extends Component {
 								</Button>
 								<View style={styles.bottomInfo}>
 									{signIn ? (
-										<TouchFeedback onPress={() => navigation.navigate('ForgerPassword')}>
+										<TouchFeedback onPress={() => navigation.navigate('ForgetPassword')}>
 											<Text style={styles.bottomInfoText}>忘记密码?</Text>
 										</TouchFeedback>
 									) : (
