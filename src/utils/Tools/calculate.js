@@ -194,3 +194,12 @@ export function imageSize({ width, height, padding }) {
 	}
 	return size;
 }
+
+//手机 邮箱 正则验证
+export function regular(account) {
+	const phoneReg = /^1[3-9]\d{9}$/;
+	const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+
+	let value = phoneReg.test(account) || mailReg.test(account);
+	return value;
+}

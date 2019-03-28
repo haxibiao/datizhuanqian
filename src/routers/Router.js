@@ -5,6 +5,8 @@
 import MainTabNavigator from './MainTabNavigator';
 import { QuestionDetail } from '../components';
 import LoginScreen from '../screens/login';
+import ForgetPasswordScreen from '../screens/login/ForgetPassword';
+import RetrievePasswordScreen from '../screens/login/RetrievePassword';
 import AnswerScreen from '../screens/answer';
 import CurationScreen from '../screens/answer/Curation';
 import SettingScreen from '../screens/setting';
@@ -20,11 +22,12 @@ import SubmitTaskScreen from '../screens/task/SubmitTask';
 import SocietyScreen from '../screens/profile/Society';
 import EditProfileScreen from '../screens/profile/Edit';
 import FavoritesLogScreen from '../screens/profile/FavoritesLog';
-import CorrectLogScreen from '../screens/profile/CorrectLog';
+import CurationLogScreen from '../screens/profile/CurationLog';
 import AnswerLogScreen from '../screens/profile/AnswerLog';
 import CommonIssueScreen from '../screens/profile/CommonIssue';
 import ModifyAliPayScreen from '../screens/profile/ModifyAliPay';
 import ModifyPasswordScreen from '../screens/profile/ModifyPassword';
+import VerificationCodeScreen from '../screens/profile/VerificationCode';
 import FeedbackScreen from '../screens/feedback';
 import FeedbackDetails from '../screens/feedback/FeedbackDetails';
 import ContributeScreen from '../screens/contribute';
@@ -45,6 +48,12 @@ export default {
 	},
 	Register: {
 		screen: LoginScreen
+	},
+	ForgetPassword: {
+		screen: ForgetPasswordScreen
+	},
+	RetrievePassword: {
+		screen: RetrievePasswordScreen
 	},
 	Answer: {
 		screen: AnswerScreen,
@@ -93,8 +102,8 @@ export default {
 	FavoritesLog: {
 		screen: FavoritesLogScreen
 	},
-	CorrectLog: {
-		screen: CorrectLogScreen
+	CurationLog: {
+		screen: CurationLogScreen
 	},
 	AnswerLog: {
 		screen: AnswerLogScreen
@@ -108,6 +117,9 @@ export default {
 	},
 	ModifyPassword: {
 		screen: ModifyPasswordScreen
+	},
+	VerificationCode: {
+		screen: VerificationCodeScreen
 	},
 	Feedback: {
 		screen: FeedbackScreen

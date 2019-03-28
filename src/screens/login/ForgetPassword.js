@@ -1,0 +1,131 @@
+/*
+ * @Author: Gaoxuan
+ * @Date:   2019-03-28 09:17:40
+ */
+
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from '../../components';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+
+import { connect } from 'react-redux';
+import actions from '../../store/actions';
+
+import { SendVerificationCodeMutation } from '../../assets/graphql/user.graphql';
+import { Mutation, compose, graphql } from 'react-apollo';
+
+class VerificationScreen extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			account: '',
+			isOnpress: true,
+			second: 5000,
+			buttonColor: Theme.theme,
+			isVisible: false
+		};
+	}
+
+	sendVerificationCode = async () => {
+		const { navigation } = this.props;
+		let { account, second } = this.state;
+		let result = {};
+
+		if (Tools.regular(account)) {
+			this.setState({
+				isOnpress: false,
+				isVisible: true
+			});
+
+			try {
+				result = await this.props.SendVerificationCodeMutation({
+					variables: {
+						account: account,
+						action: 'RESET_PASSWORD'
+					},
+					errorPolicy: 'all'
+				});
+			} catch (error) {
+				result.errors = error;
+			}
+			if (result && result.errors) {
+				let str = result.errors[0].message;
+				Toast.show({ content: str });
+				this.setState({ isVisible: false });
+			} else {
+				navigation.navigate('RetrievePassword', {
+					account: account,
+					time: result.data.sendVerificationCode.surplusSecond
+				});
+				this.setState({ isVisible: false });
+			}
+			setTimeout(() => {
+				this.setState({ isOnpress: true });
+			}, second);
+		} else {
+			Toast.show({ content: '账号格式错误' });
+		}
+	};
+
+	render() {
+		const { navigation } = this.props;
+		let { account, isOnpress, second, buttonColor, isVisible } = this.state;
+
+		return (
+			<PageContainer title="找回密码" white>
+				<View style={styles.container}>
+					<View style={{ marginTop: 50, paddingHorizontal: 25 }}>
+						<Text style={{ color: Theme.black, fontSize: 20, fontWeight: '600' }}>获取验证码</Text>
+					</View>
+					<View style={styles.textWrap}>
+						<CustomTextInput
+							textAlignVertical={'center'}
+							placeholder={'请输入手机号或邮箱'}
+							selectionColor={Theme.theme}
+							maxLength={48}
+							style={styles.textInput}
+							onChangeText={value => {
+								this.setState({
+									account: value
+								});
+							}}
+							autoFocus
+						/>
+					</View>
+
+					<Button
+						title="获取验证码"
+						onPress={this.sendVerificationCode}
+						disabled={account ? false : true}
+						style={{ marginHorizontal: 25, marginTop: 35, height: 38, backgroundColor: Theme.theme }}
+					/>
+				</View>
+				<SubmitLoading isVisible={isVisible} content={'发送中...'} />
+				<KeyboardSpacer />
+			</PageContainer>
+		);
+	}
+}
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Theme.white
+	},
+	textWrap: {
+		marginTop: PxFit(40),
+		marginHorizontal: PxFit(25),
+		paddingHorizontal: 0,
+		borderBottomWidth: PxFit(0.5),
+		borderBottomColor: Theme.lightBorder
+	},
+	textInput: {
+		fontSize: PxFit(16),
+		color: Theme.primaryFont,
+		padding: 0,
+		height: PxFit(50)
+	}
+});
+
+export default connect(store => store)(
+	compose(graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(VerificationScreen)
+);
