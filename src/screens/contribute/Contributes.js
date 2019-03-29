@@ -47,13 +47,13 @@ class Contributes extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<PageContainer title="我的出题">
-				<Query query={mySubmitQuestionHistoryQuery} fetchPolicy="network-only">
-					{({ data, loading, error, refetch, fetchMore }) => {
-						let questions = Tools.syncGetter('user.questions', data);
-						let empty = questions && questions.length === 0;
-						loading = !questions;
-						return (
+			<Query query={mySubmitQuestionHistoryQuery} fetchPolicy="network-only">
+				{({ data, loading, error, refetch, fetchMore }) => {
+					let questions = Tools.syncGetter('user.questions', data);
+					let empty = questions && questions.length === 0;
+					loading = !questions;
+					return (
+						<PageContainer title="我的出题" refetch={refetch} loading={loading} empty={empty}>
 							<FlatList
 								contentContainerStyle={styles.container}
 								data={questions}
@@ -95,10 +95,10 @@ class Contributes extends Component {
 								}}
 								ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 							/>
-						);
-					}}
-				</Query>
-			</PageContainer>
+						</PageContainer>
+					);
+				}}
+			</Query>
 		);
 	}
 }

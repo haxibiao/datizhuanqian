@@ -14,13 +14,16 @@ const render = {
 	question: color => (
 		<View style={styles.placeholder}>
 			<View>
+				<Row style={{ marginBottom: PxFit(5) }}>
+					<View style={[styles.avatar, { width: PxFit(24), height: PxFit(24), backgroundColor: color }]} />
+					<View style={[styles.strip, { backgroundColor: color }]} />
+				</Row>
 				<View style={[styles.paragraph, { height: PxFit(Theme.itemSpace), backgroundColor: color }]} />
 				<View
 					style={[
 						styles.paragraph,
 						{
 							width: WPercent(80),
-							marginBottom: PxFit(Theme.itemSpace),
 							height: PxFit(Theme.itemSpace),
 							backgroundColor: color
 						}
@@ -40,13 +43,8 @@ const render = {
 			<View style={{ flex: 1 }}>
 				<View style={styles.group}>
 					<View>
-						<View style={[styles.strip, { height: PxFit(Theme.itemSpace), backgroundColor: color }]} />
-						<View
-							style={[
-								styles.strip,
-								{ height: PxFit(Theme.itemSpace), marginVertical: PxFit(10), backgroundColor: color }
-							]}
-						/>
+						<View style={[styles.strip, { backgroundColor: color }]} />
+						<View style={[styles.strip, { marginVertical: PxFit(10), backgroundColor: color }]} />
 					</View>
 					<Iconfont name="praise2" size={PxFit(24)} color={color} />
 				</View>
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
 	cover: { width: PxFit(48), height: PxFit(48), borderRadius: PxFit(2) },
 	strip: {
 		width: PxFit(80),
-		height: PxFit(20),
+		height: PxFit(Theme.itemSpace),
 		borderRadius: PxFit(4),
 		backgroundColor: '#f0f0f0'
 	},

@@ -41,7 +41,7 @@ class OptionItem extends Component {
 			case 'error':
 				labelStyle = { backgroundColor: Theme.errorColor, borderWidth: 0 };
 				contentStyle = { color: Theme.errorColor };
-				label = <Iconfont name="close" size={PxFit(18)} color={'#fff'} />;
+				label = <Iconfont name="close" size={PxFit(19)} color={'#fff'} />;
 				break;
 			default:
 				label = <Text style={styles.optionLabelText}>{option.Value}</Text>;

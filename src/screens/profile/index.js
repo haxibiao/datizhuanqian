@@ -210,7 +210,7 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
-									onPress={() => navigation.navigate('CorrectLog')}
+									onPress={() => navigation.navigate('CurationLog')}
 								>
 									<Image
 										style={styles.metaIcon}

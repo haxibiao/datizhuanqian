@@ -18,40 +18,63 @@ query CategoriesQuery($offset: Int, $limit: Int) {
 query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int) {
 	questions(offset: $offset, limit: $limit, category_id: $category_id) {
 		id
+		type
 		description
-		selections
-		selections_array {
-			Text
-			Value
-		}
 		answer
 		status
 		gold
 		ticket
-		image {
+		user {
 			id
+			name
+			avatar
+		}
+		image {
 			path
+			width
+			height
+		}
+		video {
+			height
+			width
+			path
+			rotate
+			duration
+		}
+		selections_array {
+			Text
+			Value
 		}
 		category {
 			id
 			name
 		}
-		type
 		correct_count
 		wrong_count
-		user {
-			id
-			name
-		}
 		submit
+		# comments {
+		# 	id
+		# 	content
+		# 	user {
+		# 		id
+		# 		name
+		# 		avatar
+		# 		level {
+		# 			id
+		# 			level
+		# 		}
+		# 		gender
+		# 	}
+		# 	liked
+		# }
 	}
 }
+
 #题目查询
 query QuestionQuery($id: Int, $category_id: Int) {
 	question(id: $id, category_id: $category_id) {
 		id
 		description
-		selections
 		selections_array {
 			Text
 			Value

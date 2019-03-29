@@ -38,6 +38,7 @@ import NotificationScreen from '../screens/notification';
 import SystemNotificationScreen from '../screens/notification/SystemNotification';
 import CommentNotificationScreen from '../screens/notification/CommentNotification';
 import FansNotificationScreen from '../screens/notification/FansNotification';
+import UserScreen from '../screens/user';
 
 export default {
 	Main: {
@@ -150,5 +151,8 @@ export default {
 	},
 	FansNotification: {
 		screen: FansNotificationScreen
+	},
+	User: {
+		screen: UserScreen
 	}
 };

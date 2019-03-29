@@ -19,11 +19,12 @@ class PlateItem extends Component {
 		const { category, navigation } = this.props;
 		navigation.navigate('Answer', { category, question_id: null });
 	};
+
 	render() {
-		const { category } = this.props;
+		const { category, navigation } = this.props;
 		let { icon, name, description } = category;
 		return (
-			<TouchFeedback authenticated style={styles.container} onPress={this.onPress}>
+			<TouchFeedback authenticated navigation={navigation} style={styles.container} onPress={this.onPress}>
 				<Image source={{ uri: icon }} style={styles.cover} />
 				<View style={{ flex: 1, paddingHorizontal: PxFit(15) }}>
 					<Text style={styles.name}>{name}</Text>

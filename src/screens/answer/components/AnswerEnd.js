@@ -1,6 +1,6 @@
 /*
  * @flow
- * created by wyk made in 2018-12-14 10:44:05
+ * created by wyk made in 2019-03-29 15:47:49
  */
 'use strict';
 
@@ -14,10 +14,10 @@ type Props = {
 	style?: any,
 	titleStyle?: any
 };
-class EmptyView extends React.Component<Props> {
+class AnswerEnd extends React.Component<Props> {
 	static defaultProps = {
 		title: '这里什么都没有哦~',
-		imageSource: require('../../assets/images/default_content.png')
+		imageSource: require('../../assets/images/default_xxxx.png')
 	};
 
 	render() {
@@ -26,7 +26,8 @@ class EmptyView extends React.Component<Props> {
 		return (
 			<View style={[styles.container, style]}>
 				<Image style={styles.image} source={imageSource} />
-				<Text style={[styles.title, titleStyle]}>{title}</Text>
+				<Text style={[styles.title, titleStyle]}>您以及答完了下的题目，真是太厉害啦~</Text>
+				<Text style={[styles.title, titleStyle]}>去其它分类下继续答题吧~</Text>
 			</View>
 		);
 	}
@@ -42,8 +43,8 @@ const styles = StyleSheet.create({
 		minHeight: WPercent(80)
 	},
 	image: {
-		width: WPercent(44),
-		height: WPercent(44),
+		width: WPercent(50),
+		height: WPercent(50),
 		resizeMode: 'contain'
 	},
 	title: {
@@ -53,4 +54,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default EmptyView;
+export default AnswerEnd;

@@ -43,13 +43,11 @@ class TabTop extends Component {
 		const { isShow, isAnswer, login } = this.props;
 		const { show } = this.state;
 		const { id } = this.props.users.user;
-		console.log('login', login);
 		return (
 			<View>
 				{login ? (
 					<Query query={UserQuery} variables={{ id: id }}>
 						{({ data, loading, error, refetch }) => {
-							console.log('data', data);
 							if (error) return null;
 							if (!(data && data.user)) return null;
 							let user = data.user;

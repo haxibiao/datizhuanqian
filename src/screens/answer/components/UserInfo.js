@@ -20,7 +20,7 @@ class UserInfo extends Component {
 			return null;
 		}
 		return (
-			<TouchFeedback style={styles.userItem} onPress={() => navigation.navigate('User', { user_id: user.id })}>
+			<TouchFeedback style={styles.userItem} onPress={() => navigation.navigate('User', { user })}>
 				<Avatar source={user.avatar} size={PxFit(24)} />
 				<Text style={styles.userName}>{user.name}</Text>
 			</TouchFeedback>

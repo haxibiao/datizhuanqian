@@ -45,18 +45,6 @@ class CorrectLog extends Component {
 		};
 	}
 
-	cancelFavorite = async (id, callback) => {
-		try {
-			console.log('cancelFavorite', id);
-			callback && callback();
-			await this.props.cancelFavorite({ variables: { data: { favorable_id: id } } });
-			Toast.show({ content: '取消收藏成功' });
-		} catch (err) {
-			let str = err.toString().replace(/Error: GraphQL error: /, '');
-			Toast.show({ content: '取消收藏失败' });
-		}
-	};
-
 	render() {
 		let { navigation } = this.props;
 
@@ -183,9 +171,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(
-	connect(store => ({ user: store.users.user, login: store.users.login })),
-	graphql(toggleFavoriteMutation, {
-		name: 'cancelFavorite'
-	})
-)(CorrectLog);
+export default compose(connect(store => ({ user: store.users.user, login: store.users.login })))(CorrectLog);

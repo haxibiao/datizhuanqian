@@ -102,7 +102,10 @@ query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
 				duration
 			}
 			answer
-			selections
+			selections_array {
+				Text
+				Value
+			}
 			status
 			remark
 			submit

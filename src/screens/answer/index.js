@@ -16,7 +16,8 @@ import {
 	Row,
 	Button,
 	TabBar,
-	Placeholder
+	Placeholder,
+	StatusView
 } from '../../components';
 
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../utils';
@@ -31,68 +32,106 @@ import FooterBar from './components/FooterBar';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { QuestionQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
+import { QuestionsQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
 import { UserQuery } from '../../assets/graphql/user.graphql';
 import { Query, compose, graphql, withApollo } from 'react-apollo';
 
 class index extends Component {
 	constructor(props) {
 		super(props);
+		this.firstLoad = true;
+		this.questions = null;
+		this.questionsLength = 0;
 		this.state = {
+			question: null,
 			submited: false,
 			answer: null
 		};
 	}
-	//提交答案 下一题
-	onSubmit = (question, refetch) => {
-		return async () => {
-			const { user } = this.props;
-			let { submited, answer } = this.state;
-			let result = {};
-			if (submited) {
-				//下一题
-				this.nextQuestion(refetch);
-			} else {
-				//提交答案
-				this.setState({
-					submited: true
-				});
-				//UI状态改变
-				try {
-					result = await this.props.QuestionAnswerMutation({
-						variables: {
-							id: question.id,
-							answer: answer.join()
-						},
-						errorPolicy: 'all',
-						refetchQueries: () => [
-							{
-								query: UserQuery,
-								variables: { id: user.id },
-								fetchPolicy: 'network-only'
-							}
-						]
-					});
-				} catch (ex) {
-					result.errors = ex;
-				}
-				if (result && result.errors) {
-					let str = result.errors[0].message;
-					Toast.show({ content: str });
-				}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.firstLoad) {
+			let questions = Tools.syncGetter('questions', nextProps.data);
+			console.log('questions', questions);
+			if (questions) {
+				this.firstLoad = false;
+				this.questions = questions;
+				this.questionsLength = questions.length;
+				this.setState({ question: this.questions.shift() });
 			}
-		};
+		}
+	}
+
+	//提交答案 下一题
+	onSubmit = () => {
+		if (!this.state.submited) {
+			//下一题
+			this.submitAnswer();
+		} else {
+			//提交答案
+			this.nextQuestion();
+		}
 	};
 
-	nextQuestion = refetch => {
-		const { category } = this.props.navigation.state.params;
+	async submitAnswer() {
+		let { answer, question } = this.state;
+		let result = {};
 		this.setState({
+			submited: true
+		});
+		try {
+			result = await this.props.QuestionAnswerMutation({
+				variables: {
+					id: question.id,
+					answer: answer.join()
+				},
+				errorPolicy: 'all',
+				refetchQueries: () => [
+					{
+						query: UserQuery,
+						variables: { id: this.props.user.id },
+						fetchPolicy: 'network-only'
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors[0].message;
+			Toast.show({ content: str });
+		}
+	}
+
+	nextQuestion = () => {
+		this.setState({
+			question: this.questions.shift(),
 			submited: false,
 			answer: null
 		});
-		//重置state
-		refetch({ category_id: category.id });
-		//更换题目
+		if (this.questions.length === 5) {
+			this.onLoadMore();
+		}
+	};
+
+	onLoadMore = () => {
+		let { fetchMore } = this.props.data;
+		console.log('this.questionsLength', this.questionsLength);
+		fetchMore({
+			variables: {
+				offset: this.questionsLength
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!(fetchMoreResult && fetchMoreResult.questions && fetchMoreResult.questions.length > 0)) {
+					return prev;
+				}
+				this.questionsLength += fetchMoreResult.questions.length;
+				this.questions = [...this.questions, ...fetchMoreResult.questions];
+				return Object.assign({}, prev, {
+					questions: fetchMoreResult.questions
+				});
+			}
+		});
 	};
 
 	onComment = () => {
@@ -125,75 +164,73 @@ class index extends Component {
 		this.setState({ answer });
 	};
 
-	render() {
-		const { navigation, user, noTicketTips } = this.props;
-		let { answer, submited } = this.state;
-		const { category, question_id } = navigation.state.params;
+	renderContent = () => {
+		let { answer, submited, question } = this.state;
+		const { navigation, user, noTicketTips, data } = this.props;
+		const { category } = navigation.state.params;
+		if (data.error) {
+			return <QuestionError />;
+		}
+		if (data.loading) return <Placeholder />;
+		if (!question && !this.firstLoad)
+			return (
+				<StatusView.EmptyView
+					titleStyle={{ textAlign: 'center', fontSize: PxFit(13), lineHeight: PxFit(18) }}
+					title={`您已经答完了${category.name}的题目,真是太厉害啦！\n去其它分类下继续答题吧~`}
+				/>
+			);
+		return (
+			<React.Fragment>
+				<ScrollView
+					contentContainerStyle={{ flexGrow: 1 }}
+					showsVerticalScrollIndicator={false}
+					bounces={false}
+				>
+					<TabBar />
+					<View style={styles.content}>
+						<UserInfo user={question.user} navigation={navigation} />
+						<QuestionBody question={question} />
+						<QuestionOptions
+							selections={question.selections_array}
+							onSelectOption={this.selectOption}
+							submited={submited}
+							answer={question.answer}
+							selectedOption={answer}
+						/>
+					</View>
+					{submited && (
+						<View style={styles.tipsView}>
+							<View>
+								<Text style={styles.answerText}>正确答案: {[...question.answer].join(',')}</Text>
+							</View>
+							<Row>
+								<Text style={styles.curationText}>答案有误?</Text>
+								<Text
+									style={styles.errorText}
+									onPress={() => navigation.navigate('Curation', { question })}
+								>
+									帮忙纠错
+								</Text>
+							</Row>
+						</View>
+					)}
+				</ScrollView>
+				<FooterBar
+					navigation={navigation}
+					question={question}
+					submited={submited}
+					answer={answer}
+					onComment={this.onComment}
+					oSubmit={this.onSubmit}
+				/>
+			</React.Fragment>
+		);
+	};
 
+	render() {
 		return (
 			<PageContainer title="答题">
-				<Query
-					query={QuestionQuery}
-					variables={{ category_id: category ? category.id : null, id: question_id }}
-					fetchPolicy="network-only"
-				>
-					{({ data, error, loading, refetch, fetchMore }) => {
-						let question = Tools.syncGetter('question', data);
-						loading = !question;
-						if (error) {
-							return <QuestionError />;
-						}
-						if (loading) return <Placeholder />;
-						return (
-							<View style={styles.container}>
-								<ScrollView
-									contentContainerStyle={{ flexGrow: 1 }}
-									showsVerticalScrollIndicator={false}
-									bounces={false}
-								>
-									<TabBar />
-									<View style={styles.content}>
-										<UserInfo user={question.user} navigation={navigation} />
-										<QuestionBody question={question} />
-										<QuestionOptions
-											selections={question.selections_array}
-											onSelectOption={this.selectOption}
-											submited={submited}
-											answer={question.answer}
-											selectedOption={answer}
-										/>
-									</View>
-									{submited && (
-										<View style={styles.tipsView}>
-											<View>
-												<Text style={styles.answerText}>
-													正确答案: {[...question.answer].join(',')}
-												</Text>
-											</View>
-											<Row>
-												<Text style={styles.curationText}>答案有误?</Text>
-												<Text
-													style={styles.errorText}
-													onPress={() => navigation.navigate('Curation', { question })}
-												>
-													帮忙纠错
-												</Text>
-											</Row>
-										</View>
-									)}
-								</ScrollView>
-								<FooterBar
-									navigation={navigation}
-									question={question}
-									submited={submited}
-									answer={answer}
-									onComment={this.onComment}
-									oSubmit={this.onSubmit(question, refetch)}
-								/>
-							</View>
-						);
-					}}
-				</Query>
+				<View style={styles.container}>{this.renderContent()}</View>
 			</PageContainer>
 		);
 	}
@@ -234,9 +271,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => {
-	return {
+export default compose(
+	withApollo,
+	graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }),
+	graphql(QuestionsQuery, {
+		options: props => {
+			const category = props.navigation.getParam('category', {});
+			return { variables: { category_id: category.id, limit: 10 }, fetchPolicy: 'network-only' };
+		}
+	}),
+	connect(store => ({
 		user: store.users.user,
 		noTicketTips: store.users.noTicketTips
-	};
-})(compose(graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }))(withApollo(index)));
+	}))
+)(index);

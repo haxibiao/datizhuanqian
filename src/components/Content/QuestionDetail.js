@@ -15,21 +15,7 @@ import OptionItem from './OptionItem';
 class QuestionDetail extends Component {
 	render() {
 		let { navigation } = this.props;
-		let { description, image, selections, category, answer, video } = navigation.getParam('question', {});
-		selections = selections.replace(/\\/g, '');
-		let options = [];
-		try {
-			options = JSON.parse(selections);
-			if (options.Selection) {
-				options = options.Selection;
-			} else if (options.Section) {
-				options = options.Section;
-			}
-		} catch (error) {
-			Toast.show('数据出错');
-			navigation.goBack();
-			return <View />;
-		}
+		let { description, image, selections_array, category, answer, video } = navigation.getParam('question', {});
 		return (
 			<PageContainer title="题目详情">
 				<ScrollView
@@ -59,7 +45,7 @@ class QuestionDetail extends Component {
 							{video && <Player source={video.path} />}
 						</View>
 						<View style={styles.options}>
-							{options.map((option, index) => {
+							{selections_array.map((option, index) => {
 								return (
 									<OptionItem
 										key={index}

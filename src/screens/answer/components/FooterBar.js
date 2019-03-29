@@ -29,14 +29,14 @@ class FooterBar extends Component {
 	toggleFavorite = async () => {
 		let { question, toggleFavorite } = this.props;
 		this.setState(prevState => ({ favorited: !prevState.favorited }));
-		toggleFavorite({ variables: { data: { favorable_id: this.props.question.id } } });
+		toggleFavorite({ variables: { data: { favorable_id: question.id } } });
 	};
 
 	render() {
 		let { navigation, question, submited, answer, onComment, oSubmit } = this.props;
 		let { favorited } = this.state;
 		let buttonStyle = {
-			backgroundColor: submited ? Theme.teaGreen : Theme.correctColor,
+			backgroundColor: submited ? Theme.linkColor : Theme.correctColor,
 			opacity: answer ? 1 : 0.6
 		};
 		return (

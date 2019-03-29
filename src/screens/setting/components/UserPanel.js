@@ -51,15 +51,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	content: {
-		height: 34,
+		height: PxFit(34),
 		justifyContent: 'space-between',
-		marginLeft: 15
+		marginLeft: PxFit(15)
 	},
 	user: {
-		fontSize: 12,
+		fontSize: PxFit(12),
 		color: Theme.subTextColor,
 		fontWeight: '300',
-		paddingTop: 3
+		paddingTop: PxFit(3)
 	}
 });
 

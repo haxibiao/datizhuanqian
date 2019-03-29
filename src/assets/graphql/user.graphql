@@ -129,6 +129,9 @@ query UserInfoQuery($id: Int!, $limit: Int, $offset: Int, $order: QuestionOrderE
 		questions(limit: $limit, offset: $offset, order: $order) {
 			id
 			description
+			created_at
+			count
+			favorite_status
 			image {
 				id
 				path
@@ -142,12 +145,14 @@ query UserInfoQuery($id: Int!, $limit: Int, $offset: Int, $order: QuestionOrderE
 				rotate
 				duration
 			}
-			selections
+			selections_array {
+				Text
+				Value
+			}
 			category {
 				id
 				name
 			}
-			count
 		}
 	}
 }
@@ -200,7 +205,10 @@ query curationsQuery($offset: Int, $limit: Int) {
 				id
 				path
 			}
-			selections
+			selections_array {
+				Text
+				Value
+			}
 			answers {
 				Text
 				Value
@@ -238,7 +246,10 @@ query answerHistoriesQuery($offset: Int, $limit: Int) {
 					rotate
 					duration
 				}
-				selections
+				selections_array {
+					Text
+					Value
+				}
 				answers {
 					Text
 					Value
@@ -269,7 +280,10 @@ query FavoritesQuery($offset: Int, $limit: Int) {
 				rotate
 				duration
 			}
-			selections
+			selections_array {
+				Text
+				Value
+			}
 			category {
 				id
 				name

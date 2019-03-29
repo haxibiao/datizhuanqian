@@ -125,7 +125,7 @@ class QuestionItem extends Component {
 						<View style={{ alignItems: 'flex-end' }}>
 							<TouchableOpacity
 								style={{ padding: PxFit(10) }}
-								onPress={() => navigation.navigate('QuestionCorrect', { question })}
+								onPress={() => navigation.navigate('Curation', { question })}
 							>
 								<Text style={{ fontSize: PxFit(13), color: Theme.correctColor }}>题目纠错</Text>
 							</TouchableOpacity>

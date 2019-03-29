@@ -22,8 +22,6 @@ class QuestionOption extends Component {
 		return (
 			<View style={styles.options}>
 				{selections.map((option, index) => {
-					console.log('answer,', answer, answer && answer.includes(option.Value));
-
 					return (
 						<OptionItem
 							key={index}
