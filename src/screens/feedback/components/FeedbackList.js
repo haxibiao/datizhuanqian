@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter } from '../../../components';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../../components';
 
 import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
@@ -25,7 +25,6 @@ class FeedbackList extends Component {
 		let { onPress, filter } = this.state;
 		return (
 			<PageContainer hiddenNavBar tabLabel="反馈记录">
-				{/*<DivisionLine height={5} />*/}
 				<View style={styles.header}>
 					<TouchableOpacity
 						style={[{ borderBottomColor: filter == null ? Theme.theme : Theme.white }, styles.tab]}
@@ -51,9 +50,9 @@ class FeedbackList extends Component {
 
 				<Query query={feedbacksQuery} variables={{ user_id: filter }} fetchPolicy="network-only">
 					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return null;
-						if (loading) return null;
-						if (!(data && data.feedbacks && data.feedbacks.length > 0)) return null;
+						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (loading) return <LoadingSpinner />;
+						if (!(data && data.feedbacks && data.feedbacks.length > 0)) return <EmptyView />;
 						return (
 							<View style={{ flex: 1 }}>
 								<FlatList
@@ -108,9 +107,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		paddingHorizontal: PxFit(10),
 		borderBottomColor: Theme.lightBorder,
-		borderBottomWidth: PxFit(1),
-		borderTopWidth: PxFit(5),
-		borderTopColor: Theme.lightBorder
+		borderBottomWidth: PxFit(0.5)
+		// borderTopWidth: PxFit(0.5),
+		// borderTopColor: Theme.lightBorder
 	},
 	tab: {
 		borderBottomWidth: PxFit(2),

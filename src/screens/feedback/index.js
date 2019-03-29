@@ -9,7 +9,7 @@ import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-nati
 
 import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
-import { TabBarHeader, PageContainer, ScrollTabBarHeader } from '../../components';
+import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from '../../components';
 
 import Feedback from './components/Feedback';
 import FeedbackList from './components/FeedbackList';
@@ -25,21 +25,19 @@ class index extends Component {
 	render() {
 		const { navigation } = this.props;
 		return (
-			<PageContainer hiddenNavBar>
-				<View style={styles.container}>
-					<ScrollableTabView
-						renderTabBar={props => (
-							<ScrollTabBarHeader
-								{...props}
-								width={SCREEN_WIDTH - 100}
-								underLineColor={Theme.theme}
-								textStyle={{ fontSize: PxFit(15) }}
-							/>
-						)}
-					>
-						<FeedbackList navigation={navigation} tabLabel="问题中心" />
-						<Feedback navigation={navigation} tabLabel="反馈建议" />
-					</ScrollableTabView>
+			<PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
+				<ScrollableTabView
+					renderTabBar={props => (
+						<ScrollTabBar {...props} tabUnderlineWidth={PxFit(50)} underLineColor={Theme.theme} />
+					)}
+				>
+					<FeedbackList navigation={navigation} tabLabel="问题中心" />
+					<Feedback navigation={navigation} tabLabel="反馈建议" />
+				</ScrollableTabView>
+				<View style={styles.backButton}>
+					<TouchFeedback activeOpacity={1} onPress={() => navigation.goBack()}>
+						<Iconfont name="left" color={Theme.defaultTextColor} size={PxFit(21)} />
+					</TouchFeedback>
 				</View>
 			</PageContainer>
 		);
@@ -47,9 +45,14 @@ class index extends Component {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: Theme.white
+	backButton: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		width: Theme.navBarContentHeight,
+		height: Theme.navBarContentHeight,
+		justifyContent: 'center',
+		paddingLeft: PxFit(Theme.itemSpace)
 	}
 });
 

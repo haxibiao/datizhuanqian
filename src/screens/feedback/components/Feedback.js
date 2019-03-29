@@ -77,7 +77,6 @@ class Feedback extends Component {
 		return (
 			<PageContainer hiddenNavBar tabLabel="意见反馈">
 				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
-					{/*					<DivisionLine height={5} />*/}
 					<View style={styles.main}>
 						<CustomTextInput
 							style={styles.input}
@@ -101,12 +100,7 @@ class Feedback extends Component {
 						/>
 						<View style={styles.mainBottom} />
 					</View>
-					<Button
-						title={'提交'}
-						style={{ height: 42, marginHorizontal: 20, marginBottom: 20, backgroundColor: Theme.theme }}
-						onPress={this.submitFeedback}
-						disabled={!content}
-					/>
+					<Button title={'提交'} style={styles.button} onPress={this.submitFeedback} disabled={!content} />
 				</ScrollView>
 				<SubmitLoading isVisible={waitingVisible} content={'提交反馈中'} />
 				<KeyboardSpacer />
@@ -121,22 +115,20 @@ const styles = StyleSheet.create({
 		backgroundColor: Theme.white
 	},
 	main: {
-		paddingVertical: 15,
-		marginBottom: 30,
-		borderTopWidth: 5,
-		borderTopColor: Theme.lightBorder
+		paddingVertical: PxFit(15),
+		marginBottom: PxFit(30)
 	},
 	images: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginLeft: 25
+		marginLeft: PxFit(25)
 	},
 	input: {
 		backgroundColor: 'transparent',
-		fontSize: 15,
+		fontSize: PxFit(15),
 		padding: 0,
-		height: 240,
-		paddingHorizontal: 20,
+		height: PxFit(240),
+		paddingHorizontal: PxFit(20),
 		justifyContent: 'flex-start'
 		// marginTop:10,
 	},
@@ -144,21 +136,27 @@ const styles = StyleSheet.create({
 		width: (SCREEN_WIDTH - 60) / 3,
 		height: (SCREEN_WIDTH - 60) / 3,
 		borderColor: Theme.lightBorder,
-		borderWidth: 1,
+		borderWidth: PxFit(1),
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	image: {
 		width: (SCREEN_WIDTH - 60) / 3,
 		height: (SCREEN_WIDTH - 60) / 3,
-		marginRight: 5,
-		marginBottom: 5
+		marginRight: PxFit(5),
+		marginBottom: PxFit(5)
 	},
 	mainBottom: {
-		borderBottomWidth: 1,
+		borderBottomWidth: PxFit(1),
 		borderBottomColor: Theme.lightBorder,
-		marginRight: 15,
-		marginTop: 15
+		marginRight: PxFit(15),
+		marginTop: PxFit(15)
+	},
+	button: {
+		height: PxFit(42),
+		marginHorizontal: PxFit(20),
+		marginBottom: PxFit(20),
+		backgroundColor: Theme.theme
 	}
 });
 

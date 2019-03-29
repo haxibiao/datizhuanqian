@@ -92,7 +92,7 @@ class TaskList extends Component {
 						handlerLoading={this.handlerLoading}
 					/>
 				)}
-				<SubmitLoading isVisible={this.state.isVisible} tips={'领取中'} />
+				<SubmitLoading isVisible={this.state.isVisible} content={'领取中'} />
 			</ScrollView>
 		);
 	}

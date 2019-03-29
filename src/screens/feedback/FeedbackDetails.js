@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Keyboard, FlatList, RefreshControl, ScrollView } from 'react-native';
-import { PageContainer, Iconfont, SubmitLoading } from '../../components';
+import { PageContainer, Iconfont, SubmitLoading, ListFooter } from '../../components';
 
 import { Theme, Api, PxFit, SCREEN_WIDTH } from '../../utils';
 
@@ -62,8 +62,8 @@ class FeedbackDetails extends Component {
 					variables={{ commentable_id: feedback_id, commentable_type: 'feedbacks' }}
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return null;
-						if (loading) return null;
+						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (loading) return <Loading />;
 						let adminComment = data.comments.filter((elem, i) => {
 							return elem.user.is_admin == true;
 						});
@@ -118,6 +118,12 @@ class FeedbackDetails extends Component {
 									}}
 									ListFooterComponent={() => {
 										return data && data.comments.length > 0 && this.state.finished ? null : null;
+									}}
+									ListFooterComponent={() => {
+										return (
+											data &&
+											data.comments.length > 0 && <ListFooter finished={this.state.finished} />
+										);
 									}}
 								/>
 								<Comment

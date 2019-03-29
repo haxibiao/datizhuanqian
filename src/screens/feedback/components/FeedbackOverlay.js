@@ -25,7 +25,8 @@ class FeedbackOverlay {
 						<TouchFeedback
 							style={{ paddingVertical: PxFit(15) }}
 							onPress={() => {
-								handleVisible();
+								FeedbackOverlay.hide();
+								Toast.show({ content: '举报成功' });
 							}}
 						>
 							<Text style={styles.text}>举报</Text>
