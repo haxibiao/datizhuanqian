@@ -16,10 +16,9 @@ import {
 	ItemSeparator,
 	PopOverlay,
 	CustomRefreshControl,
-	ListFooter,
-	Placeholder
+	ListFooter
 } from '../../components';
-import { Theme, PxFit, Tools } from '../../utils';
+import { Theme, PxFit, Tools, SCREEN_WIDTH, NAVBAR_HEIGHT } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -29,6 +28,7 @@ import { UserInfoQuery } from '../../assets/graphql/user.graphql';
 
 import UserProfile from './components/UserProfile';
 import QuestionItem from './components/QuestionItem';
+import Placeholder from './components/Placeholder';
 
 class index extends Component {
 	constructor(props) {
@@ -83,17 +83,6 @@ class index extends Component {
 		);
 	};
 
-	loadinView() {
-		return (
-			<View style={{ flex: 1 }}>
-				<Image
-					style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, resizeMode: 'cover' }}
-					source={require('../../assets/images/user_home_default.png')}
-				/>
-			</View>
-		);
-	}
-
 	render() {
 		let { navigation } = this.props;
 		let user = navigation.getParam('user', {});
@@ -102,10 +91,10 @@ class index extends Component {
 				{({ data, loading, error, refetch, fetchMore }) => {
 					let user = Tools.syncGetter('user', data);
 					if (!user) {
-						return this.loadinView();
+						return <Placeholder />;
 					}
 					return (
-						<PageContainer refetch={refetch} error={error}>
+						<PageContainer refetch={refetch} error={error} title={user.name} white>
 							<UserProfile user={user} />
 							{this.renderContent(user.questions, fetchMore, refetch)}
 						</PageContainer>

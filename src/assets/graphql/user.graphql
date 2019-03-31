@@ -326,6 +326,7 @@ query FollowsQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 			avatar
 			gender
 			introduction
+			followed_user_status
 			level {
 				id
 				level

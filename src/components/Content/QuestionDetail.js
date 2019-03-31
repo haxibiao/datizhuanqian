@@ -9,7 +9,7 @@ import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
 
 import PageContainer from '../Container/PageContainer';
 import Iconfont from '../Iconfont';
-import Player from '../Utils/Player';
+import Player from '../Media/Player';
 import OptionItem from './OptionItem';
 
 class QuestionDetail extends Component {

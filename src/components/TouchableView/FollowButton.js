@@ -33,7 +33,6 @@ class FollowButton extends Component<Props> {
 
 	constructor(props: Props) {
 		super(props);
-		this.follow();
 		this.onFollowHandler();
 		this.state = {
 			followed: props.followedStatus ? true : false
@@ -98,45 +97,48 @@ class FollowButton extends Component<Props> {
 	onFollowHandler = () => {
 		if (!this.props.login) {
 			this.onFollowHandler = () => {
-				this.props.navigation.navigate('Login');
+				this.props.navigation.navigate('Register');
 			};
 		} else {
 			this.onFollowHandler = () => {
-				if (this.state.followed) {
-					this.setState({ followed: false }, () => {
-						this.follow(true);
-					});
-				} else {
-					this.setState({ followed: true }, () => {
-						this.follow(false);
-					});
-				}
+				this.setState({ followed: !this.state.followed }, () => {
+					this.follow(this.state.followed);
+				});
 			};
 		}
 	};
 
 	follow = followed => {
-		let { id, user, followUser } = this.props;
-		followUser({
-			variables: {
-				followed_type: 'users',
-				followed_id: id
-			},
-			refetchQueries: () => [
-				{
-					query: UserQuery,
-					variables: { id: user.id }
+		console.log('follow', followed);
+
+		if (this.timeout) {
+			clearInterval(this.timeout);
+		}
+		this.timeout = setTimeout(async () => {
+			console.log('setTimeout');
+			let { id, user, followUser } = this.props;
+			let xxx = await followUser({
+				variables: {
+					followed_type: 'users',
+					followed_id: id
 				},
-				{
-					query: FollowsQuery,
-					variables: { filter: 'users' }
-				},
-				{
-					query: UserInfoQuery,
-					variables: { id: user.id }
-				}
-			]
-		});
+				refetchQueries: () => [
+					{
+						query: UserQuery,
+						variables: { id: user.id }
+					},
+					{
+						query: FollowsQuery,
+						variables: { filter: 'users' }
+					},
+					{
+						query: UserInfoQuery,
+						variables: { id: user.id }
+					}
+				]
+			});
+			console.log('xxx', xxx);
+		}, 300);
 	};
 }
 

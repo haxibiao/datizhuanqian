@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 
-import { TouchFeedback, Avatar, Iconfont, ItemSeparator } from '../../../components';
+import { Avatar, Iconfont, FollowButton } from '../../../components';
 import { Theme, PxFit } from '../../../utils';
 
 import { connect } from 'react-redux';
@@ -19,16 +19,50 @@ class UserProfile extends Component {
 		let { user } = this.props;
 		return (
 			<View style={styles.userInfoContainer}>
-				<View style={styles.userInfo}>
-					<Avatar source={user.avatar} size={PxFit(60)} style={styles.userAvatar} />
-					<View style={styles.textInfo}>
-						<Text style={styles.userName} numberOfLines={1}>
-							{user.name}
-						</Text>
-						<Text style={styles.introduction} numberOfLines={1}>
-							{user.introduction || '这个人很神秘，什么介绍都有'}
-						</Text>
+				<View style={styles.main}>
+					<Avatar source={user.avatar} size={PxFit(90)} style={styles.userAvatar} />
+					<View style={styles.userInfo}>
+						<View style={styles.metaWrap}>
+							<View style={styles.metaItem}>
+								<Text style={styles.metaCount} numberOfLines={1}>
+									{user.level ? user.level.level : 0}
+								</Text>
+								<Text style={styles.metaLabel} numberOfLines={1}>
+									等级
+								</Text>
+							</View>
+							<View style={styles.metaItem}>
+								<Text style={styles.metaCount} numberOfLines={1}>
+									{user.follow_users_count || 0}
+								</Text>
+								<Text style={styles.metaLabel} numberOfLines={1}>
+									关注
+								</Text>
+							</View>
+							<View style={styles.metaItem}>
+								<Text style={styles.metaCount} numberOfLines={1}>
+									{user.followers_count || 0}
+								</Text>
+								<Text style={styles.metaLabel} numberOfLines={1}>
+									粉丝
+								</Text>
+							</View>
+						</View>
+						<FollowButton
+							id={user.id}
+							followedStatus={user.followed_user_status}
+							style={{
+								height: PxFit(32),
+								borderRadius: PxFit(16)
+							}}
+							titleStyle={{ fontSize: PxFit(15), letterSpacing: 5 }}
+						/>
 					</View>
+				</View>
+				<View style={styles.bottom}>
+					<Text style={styles.introduction} numberOfLines={2}>
+						{user.introduction || '这个人很神秘，什么介绍都有'}
+					</Text>
 				</View>
 			</View>
 		);
@@ -37,46 +71,45 @@ class UserProfile extends Component {
 
 const styles = StyleSheet.create({
 	userInfoContainer: {
-		height: PxFit(120),
-		padding: Theme.itemSpace,
-		justifyContent: 'center',
-		backgroundColor: Theme.primaryColor
+		padding: PxFit(Theme.itemSpace)
 	},
-	userCoverContainer: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0
-	},
-	userCover: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: null,
-		height: null
-	},
-	userInfo: {
+	main: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	userAvatar: {
-		borderWidth: PxFit(2),
-		borderColor: '#fff'
-	},
-	textInfo: {
+	userInfo: {
 		flex: 1,
-		paddingHorizontal: Theme.itemSpace
+		marginLeft: PxFit(30)
 	},
-	userName: {
-		fontSize: PxFit(17),
-		color: '#fff',
+	metaWrap: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'stretch'
+	},
+	metaItem: {
+		flex: 1,
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingHorizontal: PxFit(5),
+		marginTop: PxFit(5),
+		marginBottom: PxFit(Theme.itemSpace)
+	},
+	metaCount: {
+		fontSize: PxFit(15),
+		color: Theme.defaultTextColor,
 		fontWeight: '500'
 	},
-	introduction: {
-		marginTop: PxFit(8),
+	metaLabel: {
 		fontSize: PxFit(13),
-		color: '#fff'
+		color: Theme.defaultTextColor
+	},
+	bottom: {
+		marginTop: PxFit(20),
+		marginBottom: PxFit(5)
+	},
+	introduction: {
+		fontSize: PxFit(13),
+		color: Theme.defaultTextColor
 	}
 });
 

@@ -36,7 +36,7 @@ class UserItem extends Component<Props> {
 		let { id = 1, avatar, name, followed_user_status, introduction } = user;
 		return (
 			<TouchFeedback style={[styles.item, style]} onPress={() => navigation.navigate('User', { user })}>
-				<Avatar source={{ uri: avatar }} size={PxFit(50)} />
+				<Avatar source={avatar} size={PxFit(50)} />
 				<View style={styles.right}>
 					<View style={styles.info}>
 						<Row>

@@ -5,9 +5,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Animated, Easing, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Video from 'react-native-video';
-import { Colors, Divice } from '../../constants';
-import { Methods } from '../../helpers';
-import { Iconfont } from '../utils/Fonts';
+import { withNavigation } from 'react-navigation';
+import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import Iconfont from '../Iconfont';
 
 class Player extends React.PureComponent {
 	constructor(props) {
@@ -18,6 +18,22 @@ class Player extends React.PureComponent {
 			paused: this.props.paused,
 			loaded: false
 		};
+	}
+
+	componentDidMount() {
+		console.log('componentDidMount');
+		let { navigation } = this.props;
+		this.didFocusSubscription = navigation.addListener('willFocus', payload => {
+			this.setState({ paused: false });
+		});
+		this.willBlurSubscription = navigation.addListener('willBlur', payload => {
+			this.setState({ paused: true });
+		});
+	}
+
+	componentWillUnmount() {
+		this.didFocusSubscription.remove();
+		this.willBlurSubscription.remove();
 	}
 
 	//有异常，应该暂停播放
@@ -62,7 +78,7 @@ class Player extends React.PureComponent {
 	};
 
 	_onPlayError = () => {
-		Methods.toast('播放失败，请重新尝试', 150);
+		Toast.show('播放失败，请重新尝试');
 	};
 
 	control = () => {
@@ -71,7 +87,7 @@ class Player extends React.PureComponent {
 
 	render() {
 		let { paused, loaded } = this.state;
-		let { source, muted, width = Divice.width - 40 } = this.props;
+		let { source, muted, width = SCREEN_WIDTH - 40 } = this.props;
 		return (
 			<TouchableOpacity
 				style={[styles.playContainer, { width, height: width * 0.7 }]}
@@ -103,7 +119,7 @@ class Player extends React.PureComponent {
 					ignoreSilentSwitch="obey"
 				/>
 				{!loaded && <ActivityIndicator color={'#fff'} size={'large'} />}
-				{loaded && paused && <Iconfont name="paused" size={60} color="#fff" style={{ opacity: 0.8 }} />}
+				{loaded && paused && <Iconfont name="paused" size={PxFit(60)} color="#fff" style={{ opacity: 0.8 }} />}
 			</TouchableOpacity>
 		);
 	}
@@ -124,4 +140,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Player;
+export default withNavigation(Player);

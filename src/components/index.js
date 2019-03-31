@@ -62,7 +62,8 @@ import Appintroduction from './Utils/Appintroduction';
 import TabBar from './Utils/TabBar';
 import GenderLabel from './Utils/GenderLabel';
 import Badge from './Utils/Badge';
-import Player from './Utils/Player';
+//Media
+import Player from './Media/Player';
 
 export {
 	Iconfont,
@@ -112,6 +113,6 @@ export {
 	Appintroduction,
 	TabBar,
 	GenderLabel,
-	Player,
-	Badge
+	Badge,
+	Player
 };
