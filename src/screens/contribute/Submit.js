@@ -28,10 +28,7 @@ class Submit extends Component {
 							>
 								<Text style={{ fontSize: PxFit(16), color: Theme.primaryColor }}>继续出题</Text>
 							</TouchableOpacity>
-							<TouchableOpacity
-								style={styles.button}
-								onPress={() => navigation.replace('MyContribution')}
-							>
+							<TouchableOpacity style={styles.button} onPress={() => navigation.replace('Contributes')}>
 								<Text style={{ fontSize: PxFit(16), color: '#fff' }}>查看题目</Text>
 							</TouchableOpacity>
 						</View>

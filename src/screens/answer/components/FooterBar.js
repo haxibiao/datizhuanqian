@@ -33,7 +33,7 @@ class FooterBar extends Component {
 	};
 
 	render() {
-		let { navigation, question, submited, answer, onComment, oSubmit } = this.props;
+		let { navigation, question, submited, answer, showComment, oSubmit } = this.props;
 		let { favorited } = this.state;
 		let buttonStyle = {
 			backgroundColor: submited ? Theme.linkColor : Theme.correctColor,
@@ -53,7 +53,7 @@ class FooterBar extends Component {
 							</View>
 							<Text style={styles.itemName}>{favorited ? '已收藏' : '收藏'}</Text>
 						</TouchFeedback>
-						<TouchFeedback style={styles.toolItem} onPress={onComment}>
+						<TouchFeedback style={styles.toolItem} onPress={showComment}>
 							<View style={styles.iconWrap}>
 								<Iconfont name="message" size={PxFit(18)} color={Theme.defaultTextColor} />
 							</View>

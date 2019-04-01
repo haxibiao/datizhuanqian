@@ -53,7 +53,8 @@ class UserProfile extends Component {
 							followedStatus={user.followed_user_status}
 							style={{
 								height: PxFit(32),
-								borderRadius: PxFit(16)
+								borderRadius: PxFit(16),
+								marginTop: PxFit(Theme.itemSpace)
 							}}
 							titleStyle={{ fontSize: PxFit(15), letterSpacing: 5 }}
 						/>
@@ -61,7 +62,7 @@ class UserProfile extends Component {
 				</View>
 				<View style={styles.bottom}>
 					<Text style={styles.introduction} numberOfLines={2}>
-						{user.introduction || '这个人很神秘，什么介绍都有'}
+						{user.introduction || '这个人很神秘，什么介绍都没有'}
 					</Text>
 				</View>
 			</View>
@@ -71,7 +72,8 @@ class UserProfile extends Component {
 
 const styles = StyleSheet.create({
 	userInfoContainer: {
-		padding: PxFit(Theme.itemSpace)
+		padding: PxFit(Theme.itemSpace),
+		backgroundColor: '#fff'
 	},
 	main: {
 		flexDirection: 'row',
@@ -84,15 +86,15 @@ const styles = StyleSheet.create({
 	metaWrap: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'stretch'
+		alignItems: 'stretch',
+		maxHeight: PxFit(60)
 	},
 	metaItem: {
 		flex: 1,
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: PxFit(5),
-		marginTop: PxFit(5),
-		marginBottom: PxFit(Theme.itemSpace)
+		marginTop: PxFit(5)
 	},
 	metaCount: {
 		fontSize: PxFit(15),

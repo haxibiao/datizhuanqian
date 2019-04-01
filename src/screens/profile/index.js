@@ -56,7 +56,6 @@ class index extends Component {
 	}
 
 	componentWillUpdate(nextProps, nextState) {
-		console.log('componentWillUpdate');
 		if (nextProps.data && nextProps.data.user) {
 			this.props.dispatch(actions.userCache(nextProps.data.user));
 		}
@@ -82,7 +81,6 @@ class index extends Component {
 
 	render() {
 		let { user, login, navigation, data } = this.props;
-		console.log('test render');
 		if (data && data.user) {
 			user = data.user;
 			user.avatar += '?t=' + Date.now();

@@ -102,7 +102,7 @@ class PageContainer extends Component<Props> {
 			<View style={[styles.container, style]} {...props}>
 				{!hiddenNavBar && this.renderNavBar()}
 				<View style={[styles.contentView, { marginTop }, contentViewStyle]}>{this.renderContent()}</View>
-				<KeyboardSpacer topInsets={topInsets} />
+				{autoKeyboardInsets && <KeyboardSpacer topInsets={topInsets} />}
 				<NavigationEvents
 					onWillFocus={onWillFocus}
 					onDidFocus={onDidFocus}

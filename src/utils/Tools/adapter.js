@@ -15,3 +15,31 @@ export function syncGetter(str, data) {
 	}
 	return result;
 }
+
+export function throttle(fn, delay) {
+	var now, lastExec, timer, context, args;
+	function execute() {
+		fn();
+		lastExec = now;
+	}
+	return function() {
+		now = new Date();
+		args = arguments;
+		if (timer) {
+			clearInterval(timer);
+			timer = null;
+		}
+		if (lastExec) {
+			var diff = delay - (now - lastExec);
+			if (diff < 0) {
+				execute();
+			} else {
+				timer = setTimeout(() => {
+					execute();
+				}, diff);
+			}
+		} else {
+			execute();
+		}
+	};
+}

@@ -144,7 +144,7 @@ class VerificationCode extends Component {
 		return (
 			<PageContainer title="验证" white>
 				<View style={styles.container}>
-					<View style={style.header}>
+					<View style={styles.header}>
 						<Text style={styles.title}>验证账号</Text>
 						<Text style={styles.tipsText}>
 							验证码已发送至

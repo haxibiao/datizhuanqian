@@ -121,3 +121,12 @@ mutation createCommentMutation(
 mutation deleteCommentMutation($id: Int!) {
 	deleteComment(id: $id)
 }
+
+#评论点赞
+mutation toggleLikeMutation($likable_id: Int!, $likable_type: LikableEnumType) {
+	toggleLike(likable_id: $likable_id, likable_type: $likable_type) {
+		id
+		likable_id
+		likable_type
+	}
+}

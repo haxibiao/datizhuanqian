@@ -21,6 +21,7 @@ export default {
       type: types.SIGN_OUT
     };
   },
+
   updateAvatar(avatar) {
     return {
       type: types.UPDATE_AVATAR,
@@ -48,12 +49,14 @@ export default {
       account
     };
   },
+
   updateGold(gold) {
     return {
       type: types.UPDATE_GOLD,
       gold
     };
   },
+
   updateGender(gender) {
     return {
       type: types.UPDATE_GENDER,
@@ -104,6 +107,7 @@ export default {
       server
     };
   },
+
   setServer(server) {
     return {
       type: types.SET_SERVER,

@@ -64,7 +64,7 @@ class QuestionItem extends Component {
 										style={styles.fullScreen}
 										resizeMode="cover"
 										paused
-										muted
+										muted={false}
 									/>
 									<View style={styles.fullScreen}>
 										<Iconfont
@@ -94,7 +94,8 @@ class QuestionItem extends Component {
 
 const styles = StyleSheet.create({
 	questionItem: {
-		marginBottom: PxFit(Theme.itemSpace),
+		margin: PxFit(Theme.itemSpace),
+		marginBottom: 0,
 		borderRadius: PxFit(5),
 		backgroundColor: '#fff'
 	},

@@ -17,7 +17,6 @@ class Default extends Component {
 	}
 
 	showPicture = url => {
-		console.log('im,imageageimage', url);
 		let overlayView = (
 			<ImageViewer onSwipeDown={() => OverlayViewer.hide()} imageUrls={[{ url }]} enableSwipeDown />
 		);

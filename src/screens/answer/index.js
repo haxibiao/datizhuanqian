@@ -28,6 +28,7 @@ import QuestionBody from './components/QuestionBody';
 import UserInfo from './components/UserInfo';
 import FiexdFooter from './components/FiexdFooter';
 import FooterBar from './components/FooterBar';
+import CommentOverlay from './components/CommentOverlay';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -45,14 +46,15 @@ class index extends Component {
 		this.state = {
 			question: null,
 			submited: false,
-			answer: null
+			answer: null,
+			showComment: false
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.firstLoad) {
 			let questions = Tools.syncGetter('questions', nextProps.data);
-			console.log('questions', questions);
+			console.log('questions', [...questions]);
 			if (questions) {
 				this.firstLoad = false;
 				this.questions = questions;
@@ -83,7 +85,7 @@ class index extends Component {
 			result = await this.props.QuestionAnswerMutation({
 				variables: {
 					id: question.id,
-					answer: answer.join()
+					answer: answer.join('')
 				},
 				errorPolicy: 'all',
 				refetchQueries: () => [
@@ -117,6 +119,7 @@ class index extends Component {
 	onLoadMore = () => {
 		let { fetchMore } = this.props.data;
 		console.log('this.questionsLength', this.questionsLength);
+		console.log('this.questions', this.questions);
 		fetchMore({
 			variables: {
 				offset: this.questionsLength
@@ -125,6 +128,7 @@ class index extends Component {
 				if (!(fetchMoreResult && fetchMoreResult.questions && fetchMoreResult.questions.length > 0)) {
 					return prev;
 				}
+				console.log('fetchMoreResult.questions', fetchMoreResult.questions);
 				this.questionsLength += fetchMoreResult.questions.length;
 				this.questions = [...this.questions, ...fetchMoreResult.questions];
 				return Object.assign({}, prev, {
@@ -134,11 +138,19 @@ class index extends Component {
 		});
 	};
 
-	onComment = () => {
+	showComment = () => {
 		if (!this.state.submited) {
 			Toast.show({ content: '先答题再评论哦', layout: 'bottom' });
+		} else {
+			this.setState({ showComment: true });
 		}
 	};
+
+	hideComment = () => {
+		this.setState({ showComment: false });
+	};
+
+	fetchMoreComment = offset => {};
 
 	//选择的选项
 	//单选/多选：单选会清除其它已选择的选项
@@ -165,7 +177,7 @@ class index extends Component {
 	};
 
 	renderContent = () => {
-		let { answer, submited, question } = this.state;
+		let { answer, submited, question, showComment } = this.state;
 		const { navigation, user, noTicketTips, data } = this.props;
 		const { category } = navigation.state.params;
 		if (data.error) {
@@ -183,6 +195,7 @@ class index extends Component {
 			<React.Fragment>
 				<ScrollView
 					contentContainerStyle={{ flexGrow: 1 }}
+					keyboardShouldPersistTaps="always"
 					showsVerticalScrollIndicator={false}
 					bounces={false}
 				>
@@ -220,16 +233,17 @@ class index extends Component {
 					question={question}
 					submited={submited}
 					answer={answer}
-					onComment={this.onComment}
+					showComment={this.showComment}
 					oSubmit={this.onSubmit}
 				/>
+				<CommentOverlay visible={showComment} onHide={this.hideComment} />
 			</React.Fragment>
 		);
 	};
 
 	render() {
 		return (
-			<PageContainer title="答题">
+			<PageContainer title="答题" autoKeyboardInsets={false}>
 				<View style={styles.container}>{this.renderContent()}</View>
 			</PageContainer>
 		);

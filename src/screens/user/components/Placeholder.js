@@ -19,7 +19,7 @@ class Placeholder extends Component {
 							style={{
 								width: PxFit(90),
 								height: PxFit(90),
-								backgroundColor: '#f0f0f0',
+								backgroundColor: '#f9f9f9',
 								borderRadius: PxFit(46)
 							}}
 						/>
@@ -29,14 +29,14 @@ class Placeholder extends Component {
 									style={{
 										height: PxFit(15),
 										marginBottom: PxFit(8),
-										backgroundColor: '#f0f0f0'
+										backgroundColor: '#f9f9f9'
 									}}
 								/>
 								<View
 									style={{
 										height: PxFit(12),
 										marginBottom: PxFit(15),
-										backgroundColor: '#f0f0f0'
+										backgroundColor: '#f9f9f9'
 									}}
 								/>
 							</View>
@@ -44,7 +44,7 @@ class Placeholder extends Component {
 								style={{
 									height: PxFit(25),
 									borderRadius: PxFit(5),
-									backgroundColor: '#f0f0f0'
+									backgroundColor: '#f9f9f9'
 								}}
 							/>
 						</View>
@@ -53,7 +53,7 @@ class Placeholder extends Component {
 						style={{
 							height: PxFit(20),
 							marginVertical: PxFit(15),
-							backgroundColor: '#f0f0f0'
+							backgroundColor: '#f9f9f9'
 						}}
 					/>
 				</View>
@@ -66,7 +66,7 @@ class Placeholder extends Component {
 						style={{
 							padding: PxFit(15),
 							marginBottom: PxFit(20),
-							backgroundColor: '#f0f0f0',
+							backgroundColor: '#f9f9f9',
 							justifyContent: 'center',
 							alignItems: 'center',
 							borderRadius: 5
@@ -101,7 +101,7 @@ class Placeholder extends Component {
 						style={{
 							padding: PxFit(15),
 							marginBottom: PxFit(20),
-							backgroundColor: '#f0f0f0',
+							backgroundColor: '#f9f9f9',
 							justifyContent: 'center',
 							alignItems: 'center',
 							borderRadius: 5
@@ -136,7 +136,7 @@ class Placeholder extends Component {
 						style={{
 							padding: PxFit(15),
 							marginBottom: PxFit(20),
-							backgroundColor: '#f0f0f0',
+							backgroundColor: '#f9f9f9',
 							justifyContent: 'center',
 							alignItems: 'center',
 							borderRadius: 5
@@ -164,7 +164,7 @@ class Placeholder extends Component {
 						style={{
 							padding: PxFit(15),
 							marginBottom: PxFit(20),
-							backgroundColor: '#f0f0f0',
+							backgroundColor: '#f9f9f9',
 							justifyContent: 'center',
 							alignItems: 'center',
 							borderRadius: 5
@@ -192,7 +192,7 @@ class Placeholder extends Component {
 						style={{
 							padding: PxFit(15),
 							marginBottom: PxFit(20),
-							backgroundColor: '#f0f0f0',
+							backgroundColor: '#f9f9f9',
 							justifyContent: 'center',
 							alignItems: 'center',
 							borderRadius: 5
@@ -227,7 +227,7 @@ class Placeholder extends Component {
 						style={{
 							padding: PxFit(15),
 							marginBottom: PxFit(20),
-							backgroundColor: '#f0f0f0',
+							backgroundColor: '#f9f9f9',
 							justifyContent: 'center',
 							alignItems: 'center',
 							borderRadius: 5

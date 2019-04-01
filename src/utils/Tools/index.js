@@ -2,7 +2,7 @@
  * @flow
  * created by wyk made in 2018-12-06 10:02:54
  */
-import { syncGetter } from './adapter';
+import { syncGetter, throttle } from './adapter';
 import { contentNavigator } from './navigator';
 import {
 	NumberFormat,
@@ -15,6 +15,7 @@ import {
 } from './calculate';
 
 export default {
+	throttle,
 	syncGetter,
 	contentNavigator,
 	NumberFormat,
