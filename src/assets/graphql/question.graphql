@@ -15,86 +15,70 @@ query CategoriesQuery($offset: Int, $limit: Int) {
 }
 
 #题目列表
-query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int) {
-	questions(offset: $offset, limit: $limit, category_id: $category_id) {
+query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int, $comment_offset: Int, $comment_limit: Int) {
+	questions(category_id: $category_id, offset: $offset, limit: $limit) {
 		id
-		type
 		description
 		answer
 		status
 		gold
 		ticket
-		user {
-			id
-			name
-			avatar
-		}
-		image {
-			path
-			width
-			height
-		}
-		video {
-			height
-			width
-			path
-			rotate
-			duration
-		}
 		selections_array {
 			Text
 			Value
+		}
+		image {
+			id
+			path
 		}
 		category {
 			id
 			name
 		}
+		type
 		correct_count
 		wrong_count
+		user {
+			id
+			name
+		}
 		submit
-		# comments {
-		# 	id
-		# 	content
-		# 	user {
-		# 		id
-		# 		name
-		# 		avatar
-		# 		level {
-		# 			id
-		# 			level
-		# 		}
-		# 		gender
-		# 	}
-		# 	liked
-		# }
+		comments(offset: $comment_offset, limit: $comment_limit) {
+			id
+			content
+			user {
+				id
+				name
+				avatar
+				is_admin
+				level {
+					id
+					level
+				}
+				gender
+			}
+			liked
+			count_likes
+		}
 	}
 }
 
 #题目查询
-query QuestionQuery($id: Int, $category_id: Int) {
+query QuestionQuery($id: Int, $category_id: Int, $comment_offset: Int, $comment_limit: Int) {
 	question(id: $id, category_id: $category_id) {
 		id
 		description
+		answer
+		status
+		gold
+		ticket
 		selections_array {
 			Text
 			Value
 		}
-		answer
-		status
-		favorite_status
-		gold
-		ticket
 		image {
+			id
 			path
-			width
-			height
-		}
-		video {
-			height
-			width
-			path
-			rotate
-			duration
 		}
 		category {
 			id
@@ -106,9 +90,25 @@ query QuestionQuery($id: Int, $category_id: Int) {
 		user {
 			id
 			name
-			avatar
 		}
 		submit
+		comments(offset: $comment_offset, limit: $comment_limit) {
+			id
+			content
+			user {
+				id
+				name
+				avatar
+				is_admin
+				level {
+					id
+					level
+				}
+				gender
+			}
+			liked
+			count_likes
+		}
 	}
 }
 #答题

@@ -19,12 +19,15 @@ class CommentInput extends Component {
 
 	sendComment = () => {
 		let { content } = this.state;
-		if (!content) {
-			Toast.show({ content: '还没有输入评论', layout: 'top' });
-			return;
-		}
 		this.addComment();
-		// this.props.onCompleted({id:-1,user,body:comment});
+		this.props.onCompleted({
+			id: -1,
+			content,
+			user: this.props.user,
+			liked: false,
+			count_likes: 0,
+			time_ago: '刚刚'
+		});
 		this.setState({ content: '' });
 		Keyboard.dismiss();
 	};
@@ -39,18 +42,18 @@ class CommentInput extends Component {
 	};
 
 	onChangeText = text => {
-		this.setState({ content: text + '' });
+		this.setState({ content: text.trim() });
 	};
 
 	render() {
-		let { question_id, navigation, style } = this.props;
+		let { questionId, navigation, style } = this.props;
 		let { content } = this.state;
 		return (
 			<Mutation
 				mutation={createCommentMutation}
 				variables={{
 					content,
-					commentable_id: question_id,
+					commentable_id: questionId,
 					commentable_type: 'questions'
 				}}
 				onCompleted={this.onCompleted}
@@ -66,7 +69,7 @@ class CommentInput extends Component {
 								value={content}
 								onChangeText={this.onChangeText}
 							/>
-							<TouchFeedback authenticate style={styles.touchItem} onPress={this.sendComment}>
+							<TouchFeedback disabled={!content} style={styles.touchItem} onPress={this.sendComment}>
 								<Iconfont
 									name="plane-fill"
 									size={PxFit(24)}
@@ -103,4 +106,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default withApollo(CommentInput);
+export default compose(
+	withApollo,
+	connect(store => ({ user: store.users.user }))
+)(CommentInput);

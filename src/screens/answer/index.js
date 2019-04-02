@@ -33,7 +33,7 @@ import CommentOverlay from './components/CommentOverlay';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { QuestionsQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
+import { QuestionsQuery, QuestionQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
 import { UserQuery } from '../../assets/graphql/user.graphql';
 import { Query, compose, graphql, withApollo } from 'react-apollo';
 
@@ -42,6 +42,7 @@ class index extends Component {
 		super(props);
 		this.firstLoad = true;
 		this.questions = null;
+		// 题目长度，用与加载更多的offset
 		this.questionsLength = 0;
 		this.state = {
 			question: null,
@@ -52,9 +53,10 @@ class index extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		// 初始化 首次加载
 		if (this.firstLoad) {
 			let questions = Tools.syncGetter('questions', nextProps.data);
-			console.log('questions', [...questions]);
+			console.log('questions', questions);
 			if (questions) {
 				this.firstLoad = false;
 				this.questions = questions;
@@ -111,15 +113,14 @@ class index extends Component {
 			submited: false,
 			answer: null
 		});
-		if (this.questions.length === 5) {
+		// 剩余5条数据加载就更多题目
+		if (this.questions.length <= 5) {
 			this.onLoadMore();
 		}
 	};
 
 	onLoadMore = () => {
 		let { fetchMore } = this.props.data;
-		console.log('this.questionsLength', this.questionsLength);
-		console.log('this.questions', this.questions);
 		fetchMore({
 			variables: {
 				offset: this.questionsLength
@@ -150,7 +151,28 @@ class index extends Component {
 		this.setState({ showComment: false });
 	};
 
-	fetchMoreComment = offset => {};
+	// 加载评论，返回promise
+	fetchMoreComment = async offset => {
+		let { fetchMore } = this.props.data;
+		let questions;
+		try {
+			// await fetchMore({
+			// 	variables: {
+			// 		// comment_offset: offset
+			// 	},
+			// 	updateQuery: (prev, { fetchMoreResult }) => {
+			// 		questions = fetchMoreResult.questions;
+			// 	}
+			// });
+			// 获取当前question
+			let question = questions.filter((elem, index) => {
+				return elem.id === this.state.question.id;
+			});
+			new Promise.resolve(question);
+		} catch (err) {
+			new Promise.reject(err);
+		}
+	};
 
 	//选择的选项
 	//单选/多选：单选会清除其它已选择的选项
@@ -183,14 +205,16 @@ class index extends Component {
 		if (data.error) {
 			return <QuestionError />;
 		}
-		if (data.loading) return <Placeholder />;
-		if (!question && !this.firstLoad)
+		if (!question && !this.firstLoad) {
 			return (
 				<StatusView.EmptyView
 					titleStyle={{ textAlign: 'center', fontSize: PxFit(13), lineHeight: PxFit(18) }}
 					title={`您已经答完了${category.name}的题目,真是太厉害啦！\n去其它分类下继续答题吧~`}
 				/>
 			);
+		} else if (!question) {
+			return <Placeholder />;
+		}
 		return (
 			<React.Fragment>
 				<ScrollView
@@ -236,14 +260,20 @@ class index extends Component {
 					showComment={this.showComment}
 					oSubmit={this.onSubmit}
 				/>
-				<CommentOverlay visible={showComment} onHide={this.hideComment} />
+				<CommentOverlay
+					visible={showComment}
+					onHide={this.hideComment}
+					questionId={question.id}
+					comments={question.comments}
+					fetchMoreComment={this.fetchMoreComment}
+				/>
 			</React.Fragment>
 		);
 	};
 
 	render() {
 		return (
-			<PageContainer title="答题" autoKeyboardInsets={false}>
+			<PageContainer title="答题" autoKeyboardInsets={false} onWillBlur={this.hideComment}>
 				<View style={styles.container}>{this.renderContent()}</View>
 			</PageContainer>
 		);
@@ -291,6 +321,7 @@ export default compose(
 	graphql(QuestionsQuery, {
 		options: props => {
 			const category = props.navigation.getParam('category', {});
+			console.log('category.id', category.id);
 			return { variables: { category_id: category.id, limit: 10 }, fetchPolicy: 'network-only' };
 		}
 	}),

@@ -114,6 +114,7 @@ mutation createCommentMutation(
 	) {
 		id
 		content
+		time_ago
 	}
 }
 

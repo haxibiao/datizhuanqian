@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { Platform, Easing, Animated } from 'react-native';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
-import router from './router';
+import router from './Router';
 
 let AppRouter = createStackNavigator(router, {
 	initialRouteName: 'Main',

@@ -50,7 +50,11 @@ class index extends Component {
 		let { navigation } = this.props;
 		let user = navigation.getParam('user', {});
 		return (
-			<Query query={UserInfoQuery} variables={{ id: user.id, order: 'ANSWERS_COUNT', filter: 'publish' }}>
+			<Query
+				query={UserInfoQuery}
+				variables={{ id: user.id, order: 'ANSWERS_COUNT', filter: 'publish' }}
+				fetchPolicy="network-only"
+			>
 				{({ data, loading, error, refetch, fetchMore }) => {
 					let user = Tools.syncGetter('user', data),
 						questions = [];

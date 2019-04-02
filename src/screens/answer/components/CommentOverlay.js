@@ -24,19 +24,37 @@ import {
 	ItemSeparator,
 	StatusView,
 	Placeholder,
-	KeyboardSpacer
+	KeyboardSpacer,
+	ListFooter
 } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Tools } from '../../../utils';
 import { Query, Mutation, withApollo, compose, graphql } from 'react-apollo';
 import { createCommentMutation } from '../../../assets/graphql/feedback.graphql';
 import CommentItem from './CommentItem';
 import CommentInput from './CommentInput';
 
+import { BoxShadow } from 'react-native-shadow';
+const shadowOpt = {
+	width: SCREEN_WIDTH,
+	color: '#E8E8E8',
+	border: PxFit(3),
+	radius: PxFit(10),
+	opacity: 0.5,
+	x: 0,
+	y: 1,
+	style: {
+		marginTop: 0
+	}
+};
+
 class CommentOverlay extends Component {
 	constructor(props) {
 		super(props);
+		this.commentLength = props.comments.length;
+		console.log('props.comments', props.comments);
 		this.state = {
-			comments: props.comments
+			comments: props.comments,
+			finished: this.commentLength < 10
 		};
 	}
 
@@ -47,25 +65,46 @@ class CommentOverlay extends Component {
 	componentWillReceiveProps(nextProps) {
 		try {
 			// 更新comment
-			if (nextProps.comments) {
-				let comments = [...this.state.comments, ...nextProps.comments];
-				this.setState({ comments });
+			if (nextProps.questionId !== this.props.questionId) {
+				this.setState({ comments: nextProps.comments });
 			}
 		} catch {
 			console.log('componentWillReceiveProps error');
 		}
 	}
 
-	onCommented = newComment => {
-		if (newComment) {
-			let { comments } = this.state;
+	fetchMoreComment = () => {
+		if (this.state.finished) return;
+		this.props
+			.fetchMoreComment(this.commentLength)
+			.then(result => {
+				this.commentLength += result.comments.length;
+				console.log('fetchMoreComment result', result);
+				let comments = this.state.comments.concat(result.comments);
+				if (result.comments.length < 10) {
+					this.setState({ comments, finished: true });
+					return;
+				}
+				this.setState({ comments });
+			})
+			.catch(err => {
+				Toast.show({ content: err.toString().replace(/Error: GraphQL error: /, '') });
+			});
+	};
+
+	onCommented = (newComment, really) => {
+		let { comments } = this.state;
+		if (newComment && really) {
+			comments[0] = Object.assign({}, comments[0], newComment.createComment);
+			this.setState({ comments });
+		} else if (newComment) {
 			comments.unshift(newComment);
 			this.setState({ comments });
-			this._flatList.scrollToOffset({
-				offset: 0,
-				animated: true
-			});
-			Toast.show({ content: '评论成功', layout: 'bottom' });
+			this._flatList &&
+				this._flatList.scrollToOffset({
+					offset: 0,
+					animated: true
+				});
 		}
 	};
 
@@ -82,7 +121,6 @@ class CommentOverlay extends Component {
 
 	renderContent = () => {
 		let { comments } = this.state;
-		let { fetchMoreComment } = this.props;
 		if (!comments) return <Placeholder type="comment" />;
 		if (comments && comments.length === 0) return <StatusView.EmptyView />;
 		return (
@@ -94,19 +132,20 @@ class CommentOverlay extends Component {
 					Keyboard.dismiss();
 				}}
 				keyboardShouldPersistTaps="always"
-				keyExtractor={(item, index) => index.toString()}
+				keyExtractor={(item, index) => item.id.toString()}
 				renderItem={({ item, index }) => {
 					return <CommentItem comment={item} />;
 				}}
 				ItemSeparatorComponent={() => <ItemSeparator height={PxFit(1)} />}
+				ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 				onEndReachedThreshold={0.3}
-				onEndReached={() => fetchMoreComment()}
+				onEndReached={Tools.throttle(this.fetchMoreComment, 500)}
 			/>
 		);
 	};
 
 	render() {
-		let { visible, onHide, question_id, hideComment, loadComment } = this.props;
+		let { visible, onHide, questionId, hideComment, loadComment } = this.props;
 		return (
 			<Modal
 				isVisible={visible}
@@ -116,12 +155,18 @@ class CommentOverlay extends Component {
 				backdropOpacity={1}
 				style={{ justifyContent: 'flex-end', margin: 0 }}
 			>
-				<View style={styles.commentContainer}>
-					{this._renderCommentHeader()}
-					<View style={{ flex: 1 }}>{this.renderContent()}</View>
-					<CommentInput commentable_id={question_id} onCompleted={this.onCommented} />
-					<KeyboardSpacer topInsets={-Theme.HOME_INDICATOR_HEIGHT} />
-				</View>
+				<BoxShadow
+					setting={Object.assign({}, shadowOpt, {
+						height: (SCREEN_HEIGHT * 2) / 3
+					})}
+				>
+					<View style={styles.commentContainer}>
+						{this._renderCommentHeader()}
+						<View style={{ flex: 1 }}>{this.renderContent()}</View>
+						<CommentInput questionId={questionId} onCompleted={this.onCommented} />
+						{ISIOS && <KeyboardSpacer topInsets={-Theme.HOME_INDICATOR_HEIGHT} />}
+					</View>
+				</BoxShadow>
 			</Modal>
 		);
 	}
@@ -131,7 +176,9 @@ const styles = StyleSheet.create({
 	commentContainer: {
 		height: (SCREEN_HEIGHT * 2) / 3,
 		paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
+		borderTopLeftRadius: PxFit(10),
+		borderTopRightRadius: PxFit(10)
 	},
 	header: {
 		height: PxFit(50),

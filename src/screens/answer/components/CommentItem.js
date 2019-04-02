@@ -3,7 +3,7 @@
  * created by wyk made in 2019-03-29 16:41:46
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, Animated } from 'react-native';
 import { TouchFeedback, Iconfont, Center, SafeText, Avatar, Row, PullChooser } from '../../../components';
 import { Theme, PxFit, WPercent, Tools } from '../../../utils';
 import { toggleLikeMutation } from '../../../assets/graphql/feedback.graphql';
@@ -11,27 +11,18 @@ import { compose, graphql, Query, Mutation } from 'react-apollo';
 import { Provider, connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
-type replyComment = { id: string, body: any, user: Object, count_likes: boolean, liked: boolean };
+type replyComment = { id: string, content: any, user: Object, count_likes: boolean, liked: boolean };
 type Props = {
 	comment: replyComment
 };
 class CommentItem extends Component<Props> {
 	constructor(props) {
 		super(props);
-		this.comment = props.comment;
 		this.state = {
-			liked: this.comment.liked,
-			count_likes: this.comment.count_count_likes,
+			liked: props.comment.liked,
+			count_likes: props.comment.count_likes,
 			bounce: new Animated.Value(1)
 		};
-		this._animated = new Animated.Value(0);
-	}
-
-	componentDidMount() {
-		Animated.timing(this._animated, {
-			toValue: 1,
-			duration: 250
-		}).start();
 	}
 
 	likeComment = () => {
@@ -45,10 +36,12 @@ class CommentItem extends Component<Props> {
 	};
 
 	bounceAnimation = isLiked => {
+		this.props.comment.liked = isLiked;
+		this.props.comment.count_likes = this.state.count_likes;
 		try {
 			this.props.toggleLikeMutation({
 				variables: {
-					likable_id: this.comment.id,
+					likable_id: this.props.comment.id,
 					likable_type: 'COMMENT'
 				}
 			});
@@ -82,20 +75,8 @@ class CommentItem extends Component<Props> {
 			inputRange: [1, 1.1, 1.2],
 			outputRange: [1, 1.25, 1]
 		});
-		const animateStyles = {
-			opacity: this._animated,
-			transform: [
-				{
-					translateY: this._animated.interpolate({
-						inputRange: [0, 1],
-						outputRange: [-100, 0],
-						extrapolate: 'clamp'
-					})
-				}
-			]
-		};
 		return (
-			<Animated.View style={[styles.comment, animateStyles]}>
+			<Animated.View style={styles.comment}>
 				<TouchFeedback onPress={() => navigation.navigate('User', { user: comment.user })}>
 					<Avatar source={comment.user.avatar} size={PxFit(36)} />
 				</TouchFeedback>
@@ -111,7 +92,7 @@ class CommentItem extends Component<Props> {
 									<Iconfont
 										name={liked ? 'like-fill' : 'like'}
 										size={PxFit(20)}
-										color={Theme.primaryColor}
+										color={liked ? Theme.primaryColor : Theme.subTextColor}
 									/>
 								</TouchFeedback>
 							</Animated.View>
@@ -119,9 +100,9 @@ class CommentItem extends Component<Props> {
 						</Row>
 					</View>
 					<View>
-						{comment.body && (
-							<Text style={styles.bodyText} numberOfLines={3}>
-								{comment.body}
+						{comment.content && (
+							<Text style={styles.contentText} numberOfLines={3}>
+								{comment.content}
 							</Text>
 						)}
 					</View>
@@ -165,7 +146,7 @@ const styles = StyleSheet.create({
 		fontWeight: '200',
 		color: Theme.primaryColor
 	},
-	bodyText: {
+	contentText: {
 		marginTop: PxFit(10),
 		fontSize: PxFit(16),
 		lineHeight: PxFit(22),
