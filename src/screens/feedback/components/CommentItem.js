@@ -41,7 +41,7 @@ class CommentItem extends Component {
 							<View style={styles.row}>
 								<Text
 									style={{
-										color: item.user.is_admin ? Theme.themeRed : Theme.black
+										color: item.user.is_admin ? Theme.secondaryColor : Theme.black
 									}}
 								>
 									{item.user.name}

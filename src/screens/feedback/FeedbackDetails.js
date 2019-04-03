@@ -78,7 +78,7 @@ class FeedbackDetails extends Component {
 										<RefreshControl
 											refreshing={loading}
 											onRefresh={refetch}
-											colors={[Theme.theme]}
+											colors={[Theme.primaryColor]}
 										/>
 									}
 									data={data.comments}

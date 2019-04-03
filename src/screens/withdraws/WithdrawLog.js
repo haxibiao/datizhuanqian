@@ -32,14 +32,19 @@ class WithdrawsLog extends Component {
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <ErrorView onPress={() => refetch()} />;
 						if (loading) return <LoadingSpinner />;
-						if (!(data && data.withdraws)) return <EmptyView />;
+						if (!(data && data.withdraws))
+							return <EmptyView imageSource={require('../../assets/images/default_message.png')} />;
 
 						return (
 							<FlatList
 								data={data.withdraws}
 								keyExtractor={(item, index) => index.toString()}
 								refreshControl={
-									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Theme.theme]} />
+									<RefreshControl
+										refreshing={loading}
+										onRefresh={refetch}
+										colors={[Theme.primaryColor]}
+									/>
 								}
 								renderItem={({ item, index }) => (
 									<WithdrawLogItem item={item} navigation={navigation} />
@@ -92,11 +97,13 @@ class WithdrawsLog extends Component {
 							<View style={styles.top}>
 								<View style={styles.topLeft}>
 									<Text style={{ fontSize: PxFit(14), color: Theme.grey }}>智慧点</Text>
-									<Text style={{ fontSize: PxFit(24), color: Theme.themeRed }}>{data.user.gold}</Text>
+									<Text style={{ fontSize: PxFit(24), color: Theme.secondaryColor }}>
+										{data.user.gold}
+									</Text>
 								</View>
 								<View style={styles.topRight}>
 									<Text style={{ fontSize: PxFit(14), color: Theme.grey }}>累计收益(元)</Text>
-									<Text style={{ fontSize: PxFit(24), color: Theme.themeRed }}>
+									<Text style={{ fontSize: PxFit(24), color: Theme.secondaryColor }}>
 										{data.user.transaction_sum_amount}.00
 									</Text>
 								</View>

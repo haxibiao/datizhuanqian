@@ -23,7 +23,7 @@ class WithdrawNotificationItem extends Component {
 				}}
 			>
 				<View style={styles.titleInfo}>
-					<Iconfont name={'tixian'} size={20} color={Theme.theme} />
+					<Iconfont name={'tixian'} size={20} color={Theme.primaryColor} />
 					<Text style={styles.title}>提现通知</Text>
 				</View>
 				<View style={styles.bottomInfo}>
@@ -36,7 +36,7 @@ class WithdrawNotificationItem extends Component {
 						</View>
 					) : (
 						<View>
-							<Text style={{ color: Theme.themeRed, paddingVertical: 3 }}>提现失败</Text>
+							<Text style={{ color: Theme.secondaryColor, paddingVertical: 3 }}>提现失败</Text>
 							<Text style={styles.infoItem}>提现单号：{notification.withdraw.biz_no}</Text>
 							<Text style={styles.infoItem}>回执信息：{notification.withdraw.remark}</Text>
 						</View>

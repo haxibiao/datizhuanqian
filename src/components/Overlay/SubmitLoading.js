@@ -7,9 +7,9 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
-class Uploading extends Component {
+class SubmitLoading extends Component {
 	render() {
-		let { style = {}, content, isVisible } = this.props;
+		let { style = {}, content = 'loading...', isVisible } = this.props;
 		if (!isVisible) {
 			return null;
 		}
@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
 	container: {
 		width: SCREEN_WIDTH / 4,
 		height: SCREEN_WIDTH / 4,
-		backgroundColor: 'rgba(48,48,48,0.6)',
+		backgroundColor: 'rgba(32,30,51,0.7)',
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderRadius: 5
 	}
 });
 
-export default Uploading;
+export default SubmitLoading;

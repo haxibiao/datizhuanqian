@@ -178,10 +178,15 @@ class index extends Component {
 
 	renderContent = () => {
 		let { answer, submited, question, showComment } = this.state;
-		const { navigation, user, noTicketTips, data } = this.props;
+		const {
+			navigation,
+			user,
+			noTicketTips,
+			data: { error, refetch }
+		} = this.props;
 		const { category } = navigation.state.params;
-		if (data.error) {
-			return <QuestionError />;
+		if (error) {
+			return <StatusView.ErrorView onPress={refetch} />;
 		}
 		if (!question && !this.firstLoad) {
 			return (
@@ -271,7 +276,7 @@ const styles = StyleSheet.create({
 		marginBottom: PxFit(30)
 	},
 	tipsView: {
-		margin: PxFit(Theme.itemSpace),
+		marginHorizontal: PxFit(Theme.itemSpace),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',

@@ -10,6 +10,7 @@ import { Theme, PxFit, ISIOS, NAVBAR_HEIGHT } from '../../utils';
 import StatusView from '../StatusView';
 import NavigatorBar from '../Header/NavigatorBar';
 import KeyboardSpacer from '../Utils/KeyboardSpacer';
+import SubmitLoading from '../Overlay/SubmitLoading';
 
 type Props = {
 	store?: Object, // redux screen state
@@ -18,6 +19,8 @@ type Props = {
 	offline?: boolean,
 	error?: boolean,
 	loading?: boolean,
+	submitting?: boolean,
+	submitTips?: string,
 	empty?: boolean,
 	EmptyView: ?any,
 	loadingSpinner: ?any,
@@ -45,6 +48,7 @@ class PageContainer extends Component<Props> {
 	static defaultProps = {
 		hiddenNavBar: false,
 		autoKeyboardInsets: true,
+		submitTips: '提交中...',
 		topInsets: -Theme.HOME_INDICATOR_HEIGHT
 	};
 	renderContent() {
@@ -94,6 +98,8 @@ class PageContainer extends Component<Props> {
 			onDidFocus,
 			onWillBlur,
 			onDidBlur,
+			submitting,
+			submitTips,
 			...props
 		} = this.props;
 		const marginTop = !hiddenNavBar ? PxFit(NAVBAR_HEIGHT) : 0;
@@ -109,6 +115,7 @@ class PageContainer extends Component<Props> {
 					onWillBlur={onWillBlur}
 					onDidBlur={onDidBlur}
 				/>
+				<SubmitLoading isVisible={submitting} content={submitTips} />
 			</View>
 		);
 	}

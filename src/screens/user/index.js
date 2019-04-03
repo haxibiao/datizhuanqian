@@ -70,13 +70,14 @@ class index extends Component {
 								showsVerticalScrollIndicator={false}
 								bounces={false}
 								contentContainerStyle={{
+									flexGrow: 1,
 									paddingBottom: Theme.HOME_INDICATOR_HEIGHT
 								}}
 								style={styles.container}
 								data={questions}
 								keyExtractor={(item, index) => index.toString()}
 								ListHeaderComponent={<UserProfile user={user} />}
-								ListEmptyComponent={<StatusView.EmptyView />}
+								ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
 								renderItem={({ item, index }) => (
 									<QuestionItem question={item} navigation={navigation} />
 								)}
@@ -112,9 +113,9 @@ class index extends Component {
 										}
 									});
 								}}
-								ListFooterComponent={() => (
-									<ListFooter finished={questions.length == 0 || this.state.finished} />
-								)}
+								ListFooterComponent={() =>
+									questions.length == 0 ? <View /> : <ListFooter finished={this.state.finished} />
+								}
 							/>
 						</PageContainer>
 					);

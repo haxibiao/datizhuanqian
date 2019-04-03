@@ -105,7 +105,7 @@ class TaskItem extends Component {
 						title={'任务失败'}
 						outline
 						style={styles.redButton}
-						textColor={Theme.themeRed}
+						textColor={Theme.secondaryColor}
 						fontSize={13}
 						onPress={() => {
 							navigation.navigate('失败详情', {
@@ -121,7 +121,7 @@ class TaskItem extends Component {
 						title={'领取'}
 						outline
 						style={styles.themeButton}
-						textColor={Theme.theme}
+						textColor={Theme.primaryColor}
 						onPress={this.receiveTask}
 					/>
 				);
@@ -132,7 +132,7 @@ class TaskItem extends Component {
 						title={'做任务'}
 						outline
 						style={styles.themeButton}
-						textColor={Theme.theme}
+						textColor={Theme.primaryColor}
 						onPress={handler}
 					/>
 				);
@@ -147,7 +147,7 @@ class TaskItem extends Component {
 						title={'领取奖励'}
 						outline
 						style={styles.themeButton}
-						textColor={Theme.theme}
+						textColor={Theme.primaryColor}
 						onPress={this.taskReward}
 					/>
 				);
@@ -161,7 +161,7 @@ class TaskItem extends Component {
 						title={'去出题'}
 						outline
 						style={styles.themeButton}
-						textColor={Theme.theme}
+						textColor={Theme.primaryColor}
 						onPress={handler}
 					/>
 				);
@@ -190,13 +190,13 @@ class TaskItem extends Component {
 						{task.gold ? (
 							<Text style={styles.reword}>
 								奖励
-								<Text style={{ color: Theme.theme }}>{`+${task.gold}智慧点`}</Text>
+								<Text style={{ color: Theme.primaryColor }}>{`+${task.gold}智慧点`}</Text>
 							</Text>
 						) : null}
 						{task.ticket ? (
 							<Text style={styles.reword}>
 								奖励
-								<Text style={{ color: Theme.theme }}>{`+${task.ticket}精力点`}</Text>
+								<Text style={{ color: Theme.primaryColor }}>{`+${task.ticket}精力点`}</Text>
 							</Text>
 						) : null}
 					</View>
@@ -238,14 +238,14 @@ const styles = StyleSheet.create({
 		height: PxFit(32),
 		width: PxFit(84),
 		borderWidth: PxFit(1),
-		borderColor: Theme.theme
+		borderColor: Theme.primaryColor
 	},
 	redButton: {
 		borderRadius: PxFit(45),
 		height: PxFit(32),
 		width: PxFit(84),
 		borderWidth: PxFit(1),
-		borderColor: Theme.themeRed
+		borderColor: Theme.secondaryColor
 	}
 });
 

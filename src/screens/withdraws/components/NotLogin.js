@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 		marginBottom: PxFit(10)
 	},
 	gold: {
-		color: Theme.themeRed,
+		color: Theme.secondaryColor,
 		fontSize: PxFit(40),
 		textAlign: 'center'
 	},

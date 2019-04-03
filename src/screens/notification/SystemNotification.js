@@ -58,7 +58,11 @@ class SystemNotification extends Component {
 									<SystemNotificationItem notification={item} navigation={navigation} />
 								)}
 								refreshControl={
-									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Theme.theme]} />
+									<RefreshControl
+										refreshing={loading}
+										onRefresh={refetch}
+										colors={[Theme.primaryColor]}
+									/>
 								}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {

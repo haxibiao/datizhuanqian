@@ -41,7 +41,9 @@ class WithdrawLogDetails extends Component {
 									<View style={styles.info}>
 										<Text style={styles.money}>{withdraw.amount}.00</Text>
 										{withdraw.status == -1 ? (
-											<Text style={{ fontSize: PxFit(16), color: Theme.themeRed }}>交易失败</Text>
+											<Text style={{ fontSize: PxFit(16), color: Theme.secondaryColor }}>
+												交易失败
+											</Text>
 										) : (
 											<Text style={{ fontSize: PxFit(16), color: Theme.weixin }}>交易成功</Text>
 										)}

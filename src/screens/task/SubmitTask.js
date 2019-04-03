@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 	headerLeft: {
 		height: PxFit(22),
 		width: PxFit(10),
-		backgroundColor: Theme.theme,
+		backgroundColor: Theme.primaryColor,
 		marginRight: PxFit(15)
 	},
 	headerContent: {
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
 		height: PxFit(42),
 		marginBottom: PxFit(20),
 		borderRadius: PxFit(19),
-		backgroundColor: Theme.theme,
+		backgroundColor: Theme.primaryColor,
 		maxWidth: SCREEN_WIDTH - PxFit(50)
 	}
 });

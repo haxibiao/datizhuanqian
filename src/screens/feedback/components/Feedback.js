@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { Button, Iconfont, PageContainer, CustomTextInput, SubmitLoading, KeyboardSpacer } from '../../../components';
+import { Button, Iconfont, PageContainer, CustomTextInput, SubmitLoading } from '../../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
 import { CreateFeedbackMutation } from '../../../assets/graphql/feedback.graphql';
@@ -20,16 +20,16 @@ class Feedback extends Component {
 			content: '',
 			pictures: [],
 			titile: '',
-			waitingVisible: false
+			submitting: false
 		};
 	}
 
 	submitFeedback = async () => {
 		const { navigation, client } = this.props;
-		let { title, pictures, content, waitingVisible } = this.state;
+		let { title, pictures, content, submitting } = this.state;
 		let result = {};
 		this.setState({
-			waitingVisible: true
+			submitting: true
 		});
 
 		let promises = [
@@ -50,7 +50,7 @@ class Feedback extends Component {
 		Promise.race(promises)
 			.then(result => {
 				this.setState({
-					waitingVisible: false
+					submitting: false
 				});
 				Toast.show({ content: '反馈成功' });
 				navigation.navigate('反馈详情', {
@@ -63,7 +63,7 @@ class Feedback extends Component {
 			})
 			.catch(rejected => {
 				this.setState({
-					waitingVisible: false
+					submitting: false
 				});
 				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
 				Toast.show({ content: str });
@@ -71,11 +71,11 @@ class Feedback extends Component {
 	};
 
 	render() {
-		let { content, pictures, waitingVisible } = this.state;
+		let { content, pictures, submitting } = this.state;
 		const { navigation } = this.props;
 
 		return (
-			<PageContainer hiddenNavBar tabLabel="意见反馈">
+			<PageContainer hiddenNavBar tabLabel="意见反馈" submitting={submitting}>
 				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
 					<View style={styles.main}>
 						<CustomTextInput
@@ -102,8 +102,6 @@ class Feedback extends Component {
 					</View>
 					<Button title={'提交'} style={styles.button} onPress={this.submitFeedback} disabled={!content} />
 				</ScrollView>
-				<SubmitLoading isVisible={waitingVisible} content={'提交反馈中'} />
-				<KeyboardSpacer />
 			</PageContainer>
 		);
 	}
@@ -156,7 +154,7 @@ const styles = StyleSheet.create({
 		height: PxFit(42),
 		marginHorizontal: PxFit(20),
 		marginBottom: PxFit(20),
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	}
 });
 

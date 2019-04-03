@@ -44,13 +44,13 @@ class WithdrawsLogItem extends Component {
 	_showStatus = status => {
 		switch (status) {
 			case -1:
-				return <Text style={{ fontSize: PxFit(18), color: Theme.themeRed }}>提现失败</Text>;
+				return <Text style={{ fontSize: PxFit(18), color: Theme.secondaryColor }}>提现失败</Text>;
 				break;
 			case 1:
 				return <Text style={{ fontSize: PxFit(18), color: Theme.weixin }}>提现成功</Text>;
 				break;
 			case 0:
-				return <Text style={{ fontSize: PxFit(18), color: Theme.theme }}>待处理</Text>;
+				return <Text style={{ fontSize: PxFit(18), color: Theme.primaryColor }}>待处理</Text>;
 				break;
 		}
 	};

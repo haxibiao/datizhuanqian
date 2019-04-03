@@ -44,7 +44,7 @@ class TaskDetailsScreen extends Component {
 										<Text style={styles.headerContent}>{task.name}</Text>
 									</View>
 									<View style={styles.row}>
-										<Iconfont name={'zhuanshi'} size={40} color={Theme.theme} />
+										<Iconfont name={'zhuanshi'} size={40} color={Theme.primaryColor} />
 										<Text style={styles.gold}>{task.gold}</Text>
 									</View>
 									<View style={styles.center}>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
 	headerLeft: {
 		height: PxFit(22),
 		width: PxFit(10),
-		backgroundColor: Theme.theme,
+		backgroundColor: Theme.primaryColor,
 		marginRight: PxFit(15)
 	},
 	headerContent: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 	},
 	gold: {
 		fontSize: PxFit(42),
-		color: Theme.theme,
+		color: Theme.primaryColor,
 		paddingLeft: PxFit(5)
 	},
 	center: {

@@ -59,7 +59,11 @@ class FansNotification extends Component {
 									<FansNotificationItem follow={item.follow} navigation={navigation} />
 								)}
 								refreshControl={
-									<RefreshControl refreshing={loading} onRefresh={refetch} colors={[Theme.theme]} />
+									<RefreshControl
+										refreshing={loading}
+										onRefresh={refetch}
+										colors={[Theme.primaryColor]}
+									/>
 								}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {

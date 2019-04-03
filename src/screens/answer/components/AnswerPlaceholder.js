@@ -29,7 +29,7 @@ class AnswerPlaceholder extends Component {
 			})
 		]).start(e => {
 			if (e.finished) {
-				start();
+				this.start();
 			}
 		});
 	}

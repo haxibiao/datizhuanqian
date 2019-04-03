@@ -30,6 +30,15 @@ query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int, $comment_offs
 		image {
 			id
 			path
+			width
+			height
+		}
+		video {
+			height
+			width
+			path
+			rotate
+			duration
 		}
 		category {
 			id
@@ -41,6 +50,7 @@ query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int, $comment_offs
 		user {
 			id
 			name
+			avatar
 		}
 		submit
 		comments(offset: $comment_offset, limit: $comment_limit) {
@@ -79,6 +89,15 @@ query QuestionQuery($id: Int, $category_id: Int, $comment_offset: Int, $comment_
 		image {
 			id
 			path
+			width
+			height
+		}
+		video {
+			height
+			width
+			path
+			rotate
+			duration
 		}
 		category {
 			id
@@ -90,6 +109,7 @@ query QuestionQuery($id: Int, $category_id: Int, $comment_offset: Int, $comment_
 		user {
 			id
 			name
+			avatar
 		}
 		submit
 		comments(offset: $comment_offset, limit: $comment_limit) {

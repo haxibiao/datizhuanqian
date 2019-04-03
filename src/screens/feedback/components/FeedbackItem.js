@@ -29,7 +29,7 @@ class FeedbackItem extends Component {
 							<View style={{ justifyContent: 'center' }}>
 								<Text
 									style={{
-										color: item.user.is_admin ? Theme.themeRed : Theme.black,
+										color: item.user.is_admin ? Theme.secondaryColor : Theme.black,
 										paddingLeft: PxFit(10)
 									}}
 								>
@@ -56,7 +56,7 @@ class FeedbackItem extends Component {
 							<Iconfont
 								name={'hot'}
 								size={15}
-								color={Theme.theme}
+								color={Theme.primaryColor}
 								style={{ marginHorizontal: PxFit(5) }}
 							/>
 							<Text style={styles.text}>{item.hot}</Text>
@@ -65,7 +65,7 @@ class FeedbackItem extends Component {
 							<Iconfont
 								name={'notification'}
 								style={{ marginHorizontal: PxFit(5) }}
-								color={Theme.theme}
+								color={Theme.primaryColor}
 								size={12}
 							/>
 							<Text style={styles.text}>{item.publish_comments_count}</Text>

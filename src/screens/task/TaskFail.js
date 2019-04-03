@@ -52,7 +52,9 @@ class TaskFail extends Component {
 								<View style={{ height: PxFit(150) }}>
 									<View style={styles.header}>
 										<View style={styles.headerLeft} />
-										<Text style={{ color: Theme.themeRed, fontSize: PxFit(18) }}>失败原因</Text>
+										<Text style={{ color: Theme.secondaryColor, fontSize: PxFit(18) }}>
+											失败原因
+										</Text>
 									</View>
 									<View style={{ marginLeft: PxFit(25), marginTop: PxFit(20) }}>
 										<Text style={{ fontSize: PxFit(16), color: Theme.black }}>
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
 	headerLeft: {
 		height: PxFit(22),
 		width: PxFit(10),
-		backgroundColor: Theme.theme,
+		backgroundColor: Theme.primaryColor,
 		marginRight: PxFit(15)
 	},
 	headerContent: {

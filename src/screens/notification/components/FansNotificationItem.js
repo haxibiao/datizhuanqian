@@ -35,7 +35,7 @@ class FansNotificationItem extends Component {
 			<TouchableOpacity
 				style={styles.container}
 				activeOpacity={1}
-				onPress={() => navigation.navigate('用户资料', { user_id: follow.user.id })}
+				onPress={() => navigation.navigate('User', { user: follow.user })}
 			>
 				<View style={styles.left}>
 					<Avatar source={{ uri: follow.user.avatar }} size={48} />

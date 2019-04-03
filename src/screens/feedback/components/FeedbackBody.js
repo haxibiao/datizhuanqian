@@ -45,7 +45,7 @@ class FeedbackBody extends Component {
 										<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 											<Text
 												style={{
-													color: feedback.user.is_admin ? Theme.themeRed : Theme.black
+													color: feedback.user.is_admin ? Theme.secondaryColor : Theme.black
 												}}
 											>
 												{feedback.user.name}

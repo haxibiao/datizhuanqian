@@ -18,7 +18,7 @@ class ContributeNotificationItem extends Component {
 		return (
 			<View style={styles.item}>
 				<View style={styles.titleInfo}>
-					<Iconfont name={'task'} size={18} color={Theme.theme} />
+					<Iconfont name={'task'} size={18} color={Theme.primaryColor} />
 					<Text style={styles.title}>出题任务</Text>
 				</View>
 				<View style={styles.bottomInfo}>

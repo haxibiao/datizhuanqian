@@ -52,7 +52,6 @@ mutation ResetPasswordMutation($account: String!, $password: String!, $code: Str
 }
 
 #修改密码
-
 mutation UpdateUserPasswordMutation($old_password: String!, $new_password: String!) {
 	updateUserPassword(old_password: $old_password, new_password: $new_password) {
 		id

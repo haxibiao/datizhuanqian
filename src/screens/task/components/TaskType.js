@@ -29,7 +29,7 @@ class TaskType extends Component {
 		} else if (task.type == 3) {
 			navigation.navigate('Contribute');
 		} else {
-			navigation.navigate('Edit', { user: user });
+			navigation.navigate('EditProfile', { user: user });
 		}
 	}
 

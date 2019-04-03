@@ -61,7 +61,7 @@ class index extends Component {
 			optionValue: null,
 			answers: new Set(),
 			options: new Map(),
-			submitLoading: false
+			submitting: false
 		};
 	}
 
@@ -310,34 +310,25 @@ class index extends Component {
 				Toast.show({ content: '请确保分类/题干/答案填写完整' });
 				return;
 			}
-			this.setState({ submitLoading: true });
+			this.setState({ submitting: true });
 			createQuestion();
 		};
 	};
 
 	onCompleted = () => {
-		this.setState({ submitLoading: false });
+		this.setState({ submitting: false });
 		this.props.navigation.replace('ContributeSubmited');
 	};
 
 	onError = error => {
 		console.log(error);
-		this.setState({ submitLoading: false });
+		this.setState({ submitting: false });
 		Toast.show({ content: '提交出错' });
 	};
 
 	render() {
 		let { navigation, user, login, data } = this.props;
-		let {
-			category_id,
-			description,
-			picture,
-			video_path,
-			options,
-			optionValue,
-			answers,
-			submitLoading
-		} = this.state;
+		let { category_id, description, picture, video_path, options, optionValue, answers, submitting } = this.state;
 		let disableAddButton = options.size >= 4 || !optionValue;
 		this.buildDropData(data);
 		this.variables = this.buildVariables();
@@ -353,7 +344,7 @@ class index extends Component {
 						<PageContainer
 							white
 							title="创建问题"
-							loading={submitLoading}
+							submitting={submitting}
 							rightView={
 								<TouchFeedback style={styles.saveButton} onPress={this.onSubmit(createQuestion)}>
 									<Text style={styles.saveText}>提交</Text>

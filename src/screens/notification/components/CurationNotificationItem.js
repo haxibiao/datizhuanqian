@@ -18,7 +18,7 @@ class CurationNotificationItem extends Component {
 		return (
 			<View style={styles.item}>
 				<View style={styles.titleInfo}>
-					<Iconfont name={'answer'} size={18} color={Theme.theme} />
+					<Iconfont name={'answer'} size={18} color={Theme.primaryColor} />
 					<Text style={styles.title}>题目纠错</Text>
 				</View>
 				<View style={styles.bottomInfo}>

@@ -27,7 +27,7 @@ class FeedbackList extends Component {
 			<PageContainer hiddenNavBar tabLabel="反馈记录">
 				<View style={styles.header}>
 					<TouchableOpacity
-						style={[{ borderBottomColor: filter == null ? Theme.theme : Theme.white }, styles.tab]}
+						style={[{ borderBottomColor: filter == null ? Theme.primaryColor : Theme.white }, styles.tab]}
 						onPress={() => {
 							this.setState({
 								filter: null
@@ -37,7 +37,7 @@ class FeedbackList extends Component {
 						<Text>热门问题</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
-						style={[styles.tab, { borderBottomColor: filter == null ? Theme.white : Theme.theme }]}
+						style={[styles.tab, { borderBottomColor: filter == null ? Theme.white : Theme.primaryColor }]}
 						onPress={() => {
 							this.setState({
 								filter: user.id
@@ -65,7 +65,7 @@ class FeedbackList extends Component {
 										<RefreshControl
 											refreshing={loading}
 											onRefresh={refetch}
-											Colors={[Theme.theme]}
+											Colors={[Theme.primaryColor]}
 										/>
 									}
 									onEndReachedThreshold={0.3}

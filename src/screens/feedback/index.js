@@ -28,7 +28,7 @@ class index extends Component {
 			<PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
 				<ScrollableTabView
 					renderTabBar={props => (
-						<ScrollTabBar {...props} tabUnderlineWidth={PxFit(50)} underLineColor={Theme.theme} />
+						<ScrollTabBar {...props} tabUnderlineWidth={PxFit(50)} underLineColor={Theme.primaryColor} />
 					)}
 				>
 					<FeedbackList navigation={navigation} tabLabel="问题中心" />

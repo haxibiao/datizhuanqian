@@ -25,7 +25,10 @@ class WithdrawApply extends Component {
 					<Text style={styles.header}>提现申请已提交</Text>
 					<View style={styles.center}>
 						<Text style={styles.money}>{amount}.00</Text>
-						<Text style={{ fontSize: PxFit(15), color: Theme.themeRed, paddingTop: PxFit(32) }}> 元</Text>
+						<Text style={{ fontSize: PxFit(15), color: Theme.secondaryColor, paddingTop: PxFit(32) }}>
+							{' '}
+							元
+						</Text>
 					</View>
 					<View style={styles.bottom}>
 						<Text style={styles.text}>预计3~5个工作日内到账支付宝</Text>
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
 	},
 	money: {
 		fontSize: PxFit(50),
-		color: Theme.themeRed
+		color: Theme.secondaryColor
 	},
 	bottom: {
 		alignItems: 'center',
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
 		borderRadius: PxFit(19),
 		marginTop: PxFit(40),
 		width: SCREEN_WIDTH - PxFit(60),
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	}
 });
 

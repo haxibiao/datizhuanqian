@@ -55,7 +55,7 @@ class Comment extends Component {
 					>
 						<Iconfont
 							name={'publish'}
-							color={content.length > 0 || image ? Theme.theme : Theme.grey}
+							color={content.length > 0 || image ? Theme.primaryColor : Theme.grey}
 							size={18}
 						/>
 					</TouchableOpacity>
@@ -107,7 +107,7 @@ class Comment extends Component {
 						multiline
 						underline
 						autoFocus
-						selectionColor={Theme.theme}
+						selectionColor={Theme.primaryColor}
 						onEndEditing={switchReplyType}
 						defaultValue={content}
 						onChangeText={changeText}
