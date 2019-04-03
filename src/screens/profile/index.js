@@ -81,10 +81,11 @@ class index extends Component {
 
 	render() {
 		let { user, login, navigation, data } = this.props;
-		if (data && data.user) {
+		if (login && data && data.user) {
+			data.user.avatar = user.avatar;
 			user = data.user;
-			user.avatar += '?t=' + Date.now();
-		} else if (this.state.userCache) {
+			console.log('user', user);
+		} else if (login && this.state.userCache) {
 			user = this.userAdapter(this.state.userCache);
 		} else {
 			user = this.userAdapter(user);

@@ -22,7 +22,7 @@ class VerificationCode extends Component {
 		this.state = {
 			tips: this.time_remaining + 's后重新发送',
 			verificationCode: null,
-			isVisible: false
+			submitting: false
 		};
 	}
 	componentDidMount() {
@@ -93,7 +93,7 @@ class VerificationCode extends Component {
 
 		if (code == verificationCode) {
 			this.setState({
-				isVisible: true
+				submitting: true
 			});
 			try {
 				result = await this.props.SetUserPaymentInfoMutation({
@@ -110,13 +110,13 @@ class VerificationCode extends Component {
 			console.log('result', result);
 			if (result && result.errors) {
 				this.setState({
-					isVisible: false
+					submitting: false
 				});
 				let str = result.errors[0].message;
 				Toast.show({ content: str });
 			} else {
 				this.setState({
-					isVisible: false
+					submitting: false
 				});
 				this.props.dispatch(
 					actions.updateAlipay({
@@ -140,15 +140,18 @@ class VerificationCode extends Component {
 
 	render() {
 		const { navigation } = this.props;
-		let { verificationCode, tips, isVisible } = this.state;
+		let { verificationCode, tips, submitting } = this.state;
 		return (
-			<PageContainer title="验证" white>
+			<PageContainer title="验证" white submitting={submitting} submitTips="验证中...">
 				<View style={styles.container}>
 					<View style={styles.header}>
 						<Text style={styles.title}>验证账号</Text>
 						<Text style={styles.tipsText}>
 							验证码已发送至
-							<Text style={{ color: Theme.themeRed }}> 登录账号{this.props.users.user.account}</Text>
+							<Text style={{ color: Theme.secondaryColor }}>
+								{' '}
+								登录账号{this.props.users.user.account}
+							</Text>
 						</Text>
 					</View>
 					<View style={styles.textWrap}>
@@ -179,7 +182,7 @@ class VerificationCode extends Component {
 						<TouchableOpacity onPress={this.resendVerificationCode} disabled={!(this.time_remaining == 60)}>
 							<Text
 								style={{
-									color: this.time_remaining == 60 ? Theme.theme : Theme.grey,
+									color: this.time_remaining == 60 ? Theme.primaryColor : Theme.grey,
 									fontSize: PxFit(13)
 								}}
 							>
@@ -191,8 +194,6 @@ class VerificationCode extends Component {
 						</TouchableOpacity>*/}
 					</View>
 				</View>
-				<SubmitLoading isVisible={isVisible} content={'验证中...'} />
-				<KeyboardSpacer />
 			</PageContainer>
 		);
 	}
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
 	button: {
 		height: PxFit(38),
 		fontSize: PxFit(16),
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	},
 	textWrap: {
 		marginHorizontal: PxFit(25),

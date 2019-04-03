@@ -16,7 +16,6 @@ import {
 	Row,
 	Button,
 	TabBar,
-	Placeholder,
 	StatusView
 } from '../../components';
 
@@ -29,6 +28,7 @@ import UserInfo from './components/UserInfo';
 import FiexdFooter from './components/FiexdFooter';
 import FooterBar from './components/FooterBar';
 import CommentOverlay from './components/CommentOverlay';
+import AnswerPlaceholder from './components/AnswerPlaceholder';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -119,6 +119,7 @@ class index extends Component {
 		}
 	};
 
+	// 加载更多
 	onLoadMore = () => {
 		let { fetchMore } = this.props.data;
 		fetchMore({
@@ -149,29 +150,6 @@ class index extends Component {
 
 	hideComment = () => {
 		this.setState({ showComment: false });
-	};
-
-	// 加载评论，返回promise
-	fetchMoreComment = async offset => {
-		let { fetchMore } = this.props.data;
-		let questions;
-		try {
-			// await fetchMore({
-			// 	variables: {
-			// 		// comment_offset: offset
-			// 	},
-			// 	updateQuery: (prev, { fetchMoreResult }) => {
-			// 		questions = fetchMoreResult.questions;
-			// 	}
-			// });
-			// 获取当前question
-			let question = questions.filter((elem, index) => {
-				return elem.id === this.state.question.id;
-			});
-			new Promise.resolve(question);
-		} catch (err) {
-			new Promise.reject(err);
-		}
 	};
 
 	//选择的选项
@@ -213,7 +191,7 @@ class index extends Component {
 				/>
 			);
 		} else if (!question) {
-			return <Placeholder />;
+			return <AnswerPlaceholder />;
 		}
 		return (
 			<React.Fragment>
@@ -265,7 +243,6 @@ class index extends Component {
 					onHide={this.hideComment}
 					questionId={question.id}
 					comments={question.comments}
-					fetchMoreComment={this.fetchMoreComment}
 				/>
 			</React.Fragment>
 		);
@@ -320,9 +297,10 @@ export default compose(
 	graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }),
 	graphql(QuestionsQuery, {
 		options: props => {
-			const category = props.navigation.getParam('category', {});
-			console.log('category.id', category.id);
-			return { variables: { category_id: category.id, limit: 10 }, fetchPolicy: 'network-only' };
+			return {
+				variables: { category_id: props.navigation.getParam('category', {}).id, limit: 10, comment_limit: 10 },
+				fetchPolicy: 'network-only'
+			};
 		}
 	}),
 	connect(store => ({

@@ -21,8 +21,8 @@ class VerificationScreen extends Component {
 			account: '',
 			isOnpress: true,
 			second: 5000,
-			buttonColor: Theme.theme,
-			isVisible: false
+			buttonColor: Theme.primaryColor,
+			submitting: false
 		};
 	}
 
@@ -34,7 +34,7 @@ class VerificationScreen extends Component {
 		if (Tools.regular(account)) {
 			this.setState({
 				isOnpress: false,
-				isVisible: true
+				submitting: true
 			});
 
 			try {
@@ -51,13 +51,13 @@ class VerificationScreen extends Component {
 			if (result && result.errors) {
 				let str = result.errors[0].message;
 				Toast.show({ content: str });
-				this.setState({ isVisible: false });
+				this.setState({ submitting: false });
 			} else {
 				navigation.navigate('RetrievePassword', {
 					account: account,
 					time: result.data.sendVerificationCode.surplusSecond
 				});
-				this.setState({ isVisible: false });
+				this.setState({ submitting: false });
 			}
 			setTimeout(() => {
 				this.setState({ isOnpress: true });
@@ -69,10 +69,10 @@ class VerificationScreen extends Component {
 
 	render() {
 		const { navigation } = this.props;
-		let { account, isOnpress, second, buttonColor, isVisible } = this.state;
+		let { account, isOnpress, second, buttonColor, submitting } = this.state;
 
 		return (
-			<PageContainer title="找回密码" white>
+			<PageContainer title="找回密码" white submitting={submitting} submitTips="发送中...">
 				<View style={styles.container}>
 					<View style={{ marginTop: 50, paddingHorizontal: 25 }}>
 						<Text style={{ color: Theme.black, fontSize: 20, fontWeight: '600' }}>获取验证码</Text>
@@ -81,7 +81,7 @@ class VerificationScreen extends Component {
 						<CustomTextInput
 							textAlignVertical={'center'}
 							placeholder={'请输入手机号或邮箱'}
-							selectionColor={Theme.theme}
+							selectionColor={Theme.primaryColor}
 							maxLength={48}
 							style={styles.textInput}
 							onChangeText={value => {
@@ -97,11 +97,14 @@ class VerificationScreen extends Component {
 						title="获取验证码"
 						onPress={this.sendVerificationCode}
 						disabled={account ? false : true}
-						style={{ marginHorizontal: 25, marginTop: 35, height: 38, backgroundColor: Theme.theme }}
+						style={{
+							marginHorizontal: 25,
+							marginTop: 35,
+							height: PxFit(40),
+							backgroundColor: Theme.primaryColor
+						}}
 					/>
 				</View>
-				<SubmitLoading isVisible={isVisible} content={'发送中...'} />
-				<KeyboardSpacer />
 			</PageContainer>
 		);
 	}

@@ -28,7 +28,7 @@ class EditProfileScreen extends Component {
 		this.state = {
 			real_name: this.props.user.real_name,
 			pay_account: '',
-			isVisible: false
+			submitting: false
 		};
 	}
 
@@ -40,7 +40,7 @@ class EditProfileScreen extends Component {
 		if (Tools.regular(this.state.pay_account)) {
 			if (reg.test(this.state.real_name)) {
 				this.setState({
-					isVisible: true
+					submitting: true
 				});
 				try {
 					result = await this.props.SendVerificationCodeMutation({
@@ -55,13 +55,13 @@ class EditProfileScreen extends Component {
 				}
 				if (result && result.errors) {
 					this.setState({
-						isVisible: false
+						submitting: false
 					});
 					let str = result.errors[0].message;
 					Toast.show({ content: str });
 				} else {
 					this.setState({
-						isVisible: false
+						submitting: false
 					});
 					navigation.navigate('VerificationCode', {
 						code: result.data.sendVerificationCode.code,
@@ -82,18 +82,18 @@ class EditProfileScreen extends Component {
 
 	render() {
 		let { navigation, user } = this.props;
-		const { real_name, pay_account, isVisible } = this.state;
+		const { real_name, pay_account, submitting } = this.state;
 		return (
-			<PageContainer title="账户绑定" white>
+			<PageContainer title="账户绑定" white submitting={submitting}>
 				<View style={styles.container}>
 					<View style={{ marginTop: PxFit(25), paddingHorizontal: PxFit(25) }}>
 						<Text style={{ color: Theme.black, fontSize: 20, fontWeight: '600' }}>支付宝信息绑定</Text>
 					</View>
 					<View style={styles.header}>
 						<Text style={styles.tips}>
-							<Text style={{ color: Theme.themeRed }}>支付宝账号</Text>
+							<Text style={{ color: Theme.secondaryColor }}>支付宝账号</Text>
 							以及
-							<Text style={{ color: Theme.themeRed }}>真实姓名</Text>
+							<Text style={{ color: Theme.secondaryColor }}>真实姓名</Text>
 							为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
 						</Text>
 					</View>
@@ -101,12 +101,13 @@ class EditProfileScreen extends Component {
 					<View style={styles.inputWrap}>
 						<CustomTextInput
 							style={{ height: PxFit(48) }}
-							placeholder={real_name ? real_name : '请输入真实姓名'}
+							placeholder={real_name || '请输入真实姓名'}
 							onChangeText={value => {
 								this.setState({
 									real_name: value
 								});
 							}}
+							value={real_name}
 							maxLength={8}
 						/>
 					</View>
@@ -119,6 +120,7 @@ class EditProfileScreen extends Component {
 									pay_account: value
 								});
 							}}
+							value={pay_account}
 							maxLength={48}
 						/>
 					</View>
@@ -136,8 +138,6 @@ class EditProfileScreen extends Component {
 						</Text>
 					</View>
 				</View>
-				<SubmitLoading isVisible={isVisible} content={'提交中...'} />
-				<KeyboardSpacer />
 			</PageContainer>
 		);
 	}
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
 	},
 	inputWrap: {
 		borderBottomWidth: PxFit(0.5),
-		borderBottomColor: Theme.lightBorder,
+		borderBottomColor: Theme.borderColor,
 		marginHorizontal: PxFit(25),
 		paddingHorizontal: 0
 	},
@@ -167,11 +167,11 @@ const styles = StyleSheet.create({
 		height: PxFit(38),
 		marginHorizontal: PxFit(25),
 		marginTop: PxFit(35),
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	},
 	footer: {
 		fontSize: PxFit(12),
-		color: Theme.themeRed,
+		color: Theme.secondaryColor,
 		paddingTop: PxFit(15)
 	}
 });

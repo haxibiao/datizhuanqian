@@ -23,7 +23,7 @@ class ModifyPassword extends Component {
 			password: '',
 			disabled: true,
 			againpassword: '',
-			isVisible: false
+			submitting: false
 		};
 	}
 
@@ -38,7 +38,7 @@ class ModifyPassword extends Component {
 			let result = {};
 			if (password == againpassword) {
 				this.setState({
-					isVisible: true
+					submitting: true
 				});
 				try {
 					result = await this.props.UpdateUserPasswordMutation({
@@ -52,13 +52,13 @@ class ModifyPassword extends Component {
 				}
 				if (result && result.errors) {
 					this.setState({
-						isVisible: false
+						submitting: false
 					});
 					let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 					Toast.show({ content: str }); //打印错误信息
 				} else {
 					this.setState({
-						isVisible: true
+						submitting: true
 					});
 					Toast.show({ content: '新密码设置成功' });
 					navigation.goBack();
@@ -70,9 +70,9 @@ class ModifyPassword extends Component {
 	}
 
 	render() {
-		let { oldPassword, password, disabled, againpassword, isVisible } = this.state;
+		let { oldPassword, password, disabled, againpassword, submitting } = this.state;
 		return (
-			<PageContainer white title="修改密码">
+			<PageContainer white title="修改密码" submitting={submitting}>
 				<View style={{ marginVertical: PxFit(35), paddingHorizontal: PxFit(25) }}>
 					<Text style={{ color: Theme.black, fontSize: PxFit(20), fontWeight: '600' }}>提交新密码</Text>
 				</View>
@@ -122,8 +122,6 @@ class ModifyPassword extends Component {
 					style={styles.button}
 					disabled={oldPassword && password.length > 5 && againpassword.length > 5 ? false : true}
 				/>
-				<SubmitLoading isVisible={isVisible} content={'提交中...'} />
-				<KeyboardSpacer />
 			</PageContainer>
 		);
 	}
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		marginHorizontal: 25,
 		marginVertical: 30,
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	}
 });
 

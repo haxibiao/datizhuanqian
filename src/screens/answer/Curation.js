@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
 		height: PxFit(42),
 		marginHorizontal: PxFit(20),
 		marginTop: PxFit(15),
-		backgroundColor: Theme.theme
+		backgroundColor: Theme.primaryColor
 	}
 });
 

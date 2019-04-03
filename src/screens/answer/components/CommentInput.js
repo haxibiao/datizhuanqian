@@ -9,7 +9,7 @@ import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 import { TouchFeedback, Iconfont, CustomTextInput, SafeText, Avatar, Row } from '../../../components';
 import { Provider, connect } from 'react-redux';
 import { Mutation, compose, withApollo } from 'react-apollo';
-import { createCommentMutation } from '../../../assets/graphql/feedback.graphql';
+import { createCommentMutation, commentsQuery } from '../../../assets/graphql/feedback.graphql';
 
 class CommentInput extends Component {
 	constructor(props) {
@@ -32,6 +32,37 @@ class CommentInput extends Component {
 		Keyboard.dismiss();
 	};
 
+	// optimisticResponse={{
+	// 	__typename: 'Mutation',
+	// 	addComment: {
+	// 		__typename: 'Comment',
+	// 		id: -1,
+	// 		user: user,
+	// 		content: content,
+	// 		liked: false,
+	// 		time_ago: '刚刚',
+	// 		count_likes: 0
+	// 	}
+	// }}
+	// update = (cache, { data: { createComment } }) => {
+	// 	let { questionId } = this.props;
+	// 	let prev = cache.readQuery({
+	// 		query: commentsQuery,
+	// 		variables: {
+	// 			commentable_type: 'questions',
+	// 			commentable_id: questionId
+	// 		}
+	// 	});
+	// 	cache.writeQuery({
+	// 		query: commentsQuery,
+	// 		variables: {
+	// 			commentable_type: 'questions',
+	// 			commentable_id: questionId
+	// 		},
+	// 		data: { comments: [createComment, ...prev.comments] }
+	// 	});
+	// };
+
 	onCompleted = comment => {
 		this.props.onCompleted(comment, true);
 	};
@@ -46,7 +77,7 @@ class CommentInput extends Component {
 	};
 
 	render() {
-		let { questionId, navigation, style } = this.props;
+		let { questionId, navigation, style, user } = this.props;
 		let { content } = this.state;
 		return (
 			<Mutation

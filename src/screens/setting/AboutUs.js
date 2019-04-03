@@ -18,7 +18,11 @@ class AboutUs extends Component {
 						<View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
 							<Image
 								source={require('../../assets/images/logo.png')}
-								style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4 }}
+								style={{
+									width: SCREEN_WIDTH / 4,
+									height: SCREEN_WIDTH / 4,
+									borderRadius: SCREEN_WIDTH / 8
+								}}
 							/>
 							<Text style={styles.AppVersion}>答题赚钱 {Config.AppVersion}</Text>
 						</View>
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
 	copyright: {
 		backgroundColor: Theme.groundColour,
 		marginTop: PxFit(30),
+		paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
 		paddingVertical: PxFit(15),
 		alignItems: 'center'
 	}

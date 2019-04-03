@@ -36,7 +36,7 @@ class index extends Component {
 		let signIn = props.navigation.getParam('signIn', true);
 		this.state = {
 			signIn,
-			modalShow: false,
+			submitting: false,
 			account: null,
 			password: null,
 			showThumb: false,
@@ -49,7 +49,7 @@ class index extends Component {
 	onSubmit = async () => {
 		const { account, password } = this.state;
 		this.setState({
-			modalShow: true
+			submitting: true
 		});
 		if (this.state.signIn) {
 			//登录
@@ -72,7 +72,7 @@ class index extends Component {
 				this._saveUserData(user);
 			}
 			this.setState({
-				modalShow: false
+				submitting: false
 			});
 		} else {
 			//注册
@@ -95,7 +95,7 @@ class index extends Component {
 				this._saveUserData(user);
 			}
 			this.setState({
-				modalShow: false
+				submitting: false
 			});
 		}
 	};
@@ -123,11 +123,11 @@ class index extends Component {
 
 	render() {
 		let { navigation } = this.props;
-		let { signIn, modalShow, account, password, showThumb, secure, agreement } = this.state;
+		let { signIn, submitting, account, password, showThumb, secure, agreement } = this.state;
 		let disabled = signIn ? !(account && password) : !(account && password && agreement);
 		return (
 			<PageContainer
-				loading={modalShow}
+				submitting={submitting}
 				contentViewStyle={{ marginTop: 0 }}
 				navBarStyle={{ zIndex: 1, backgroundColor: 'transparent' }}
 				leftView={
@@ -174,9 +174,7 @@ class index extends Component {
 													<Iconfont
 														name={'close'}
 														size={PxFit(20)}
-														color={
-															secure ? Theme.tintTextColor : Theme.primaryAuxiliaryColor
-														}
+														color={Theme.tintTextColor}
 													/>
 												</TouchFeedback>
 											)}
@@ -205,9 +203,7 @@ class index extends Component {
 													<Iconfont
 														name={secure ? 'eye' : 'hide'}
 														size={PxFit(20)}
-														color={
-															secure ? Theme.tintTextColor : Theme.primaryAuxiliaryColor
-														}
+														color={secure ? Theme.tintTextColor : Theme.secondaryTextColor}
 													/>
 												</TouchFeedback>
 											)}

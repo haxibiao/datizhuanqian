@@ -29,7 +29,7 @@ import {
 } from '../../../components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Tools } from '../../../utils';
 import { Query, Mutation, withApollo, compose, graphql } from 'react-apollo';
-import { createCommentMutation } from '../../../assets/graphql/feedback.graphql';
+import { createCommentMutation, commentsQuery } from '../../../assets/graphql/feedback.graphql';
 import CommentItem from './CommentItem';
 import CommentInput from './CommentInput';
 
@@ -38,7 +38,7 @@ const shadowOpt = {
 	width: SCREEN_WIDTH,
 	color: '#E8E8E8',
 	border: PxFit(3),
-	radius: PxFit(10),
+	radius: PxFit(12),
 	opacity: 0.5,
 	x: 0,
 	y: 1,
@@ -51,7 +51,6 @@ class CommentOverlay extends Component {
 	constructor(props) {
 		super(props);
 		this.commentLength = props.comments.length;
-		console.log('props.comments', props.comments);
 		this.state = {
 			comments: props.comments,
 			finished: this.commentLength < 10
@@ -72,25 +71,6 @@ class CommentOverlay extends Component {
 			console.log('componentWillReceiveProps error');
 		}
 	}
-
-	fetchMoreComment = () => {
-		if (this.state.finished) return;
-		this.props
-			.fetchMoreComment(this.commentLength)
-			.then(result => {
-				this.commentLength += result.comments.length;
-				console.log('fetchMoreComment result', result);
-				let comments = this.state.comments.concat(result.comments);
-				if (result.comments.length < 10) {
-					this.setState({ comments, finished: true });
-					return;
-				}
-				this.setState({ comments });
-			})
-			.catch(err => {
-				Toast.show({ content: err.toString().replace(/Error: GraphQL error: /, '') });
-			});
-	};
 
 	onCommented = (newComment, really) => {
 		let { comments } = this.state;
@@ -119,9 +99,8 @@ class CommentOverlay extends Component {
 		);
 	};
 
-	renderContent = () => {
-		let { comments } = this.state;
-		if (!comments) return <Placeholder type="comment" />;
+	renderContent = (comments, fetchMore) => {
+		if (!comments) return <Placeholder type="comment" quantity={5} />;
 		if (comments && comments.length === 0) return <StatusView.EmptyView />;
 		return (
 			<FlatList
@@ -139,13 +118,36 @@ class CommentOverlay extends Component {
 				ItemSeparatorComponent={() => <ItemSeparator height={PxFit(1)} />}
 				ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 				onEndReachedThreshold={0.3}
-				onEndReached={Tools.throttle(this.fetchMoreComment, 500)}
+				onEndReached={() => {
+					fetchMore({
+						variables: {
+							offset: comments.length
+						},
+						updateQuery: (prev, { fetchMoreResult }) => {
+							if (!(fetchMoreResult && fetchMoreResult.comments && fetchMoreResult.comments.length > 0)) {
+								this.setState({
+									finished: true
+								});
+								return;
+							}
+							let comments = comments.concat(fetchMoreResult.comments);
+							this.setState({ comments, finished: true });
+						}
+					});
+				}}
 			/>
 		);
 	};
 
 	render() {
-		let { visible, onHide, questionId, hideComment, loadComment } = this.props;
+		let {
+			visible,
+			onHide,
+			questionId,
+			hideComment,
+			data: { fetchMore }
+		} = this.props;
+		let { comments } = this.state;
 		return (
 			<Modal
 				isVisible={visible}
@@ -161,8 +163,8 @@ class CommentOverlay extends Component {
 					})}
 				>
 					<View style={styles.commentContainer}>
-						{this._renderCommentHeader()}
-						<View style={{ flex: 1 }}>{this.renderContent()}</View>
+						{this._renderCommentHeader(comments)}
+						<View style={{ flex: 1 }}>{this.renderContent(comments, fetchMore)}</View>
 						<CommentInput questionId={questionId} onCompleted={this.onCommented} />
 						{ISIOS && <KeyboardSpacer topInsets={-Theme.HOME_INDICATOR_HEIGHT} />}
 					</View>
@@ -177,8 +179,9 @@ const styles = StyleSheet.create({
 		height: (SCREEN_HEIGHT * 2) / 3,
 		paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
 		backgroundColor: '#fff',
-		borderTopLeftRadius: PxFit(10),
-		borderTopRightRadius: PxFit(10)
+		borderTopLeftRadius: PxFit(12),
+		borderTopRightRadius: PxFit(12),
+		overflow: 'hidden'
 	},
 	header: {
 		height: PxFit(50),
@@ -204,4 +207,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(graphql(createCommentMutation, { name: 'createCommentMutation' }))(CommentOverlay);
+export default compose(
+	graphql(createCommentMutation, { name: 'createCommentMutation' }),
+	graphql(commentsQuery, {
+		options: props => {
+			return {
+				variables: { commentable_type: 'questions', commentable_id: props.questionId, limit: 10 }
+			};
+		}
+	})
+)(CommentOverlay);

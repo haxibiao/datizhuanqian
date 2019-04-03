@@ -17,7 +17,8 @@ import {
 	ImagePickerViewer,
 	ItemSeparator
 } from '../../components';
-import { Theme, PxFit, SCREEN_WIDTH, Api } from '../../utils';
+import actions from '../../store/actions';
+import { Theme, PxFit, SCREEN_WIDTH, Api, Tools } from '../../utils';
 import { connect } from 'react-redux';
 import { Query, compose, withApollo, graphql, Mutation } from 'react-apollo';
 import {
@@ -37,7 +38,7 @@ class index extends Component {
 		this.name = user.name;
 		this.introduction = user.introduction;
 		this.state = {
-			saveing: false,
+			submitting: false,
 			avatar: user.avatar,
 			gender: user.gender
 		};
@@ -113,28 +114,30 @@ class index extends Component {
 			Toast.show({ content: '您还没有修改任何信息哦' });
 			return;
 		}
-		this.setState({ saveing: true });
+		this.setState({ submitting: true });
 		Promise.all(promises)
 			.then(posts => {
-				this.setState({ saveing: false });
-				if (posts[0].updateUserAvatar) {
-					this.props.dispatch(actions.updateAvatar(posts[0].updateUserAvatar.avatar + '?t=' + Date.now()));
+				this.setState({ submitting: false });
+				let avatar = Tools.syncGetter('data.updateUserAvatar.avatar', posts[0]);
+				if (avatar) {
+					console.log('avatar', avatar);
+					this.props.dispatch(actions.updateAvatar(avatar + '?t=' + Date.now()));
 				}
 				this.props.navigation.goBack();
 				Toast.show({ content: '修改成功' });
 			})
 			.catch(err => {
-				this.setState({ saveing: false });
+				this.setState({ submitting: false });
 				let str = err.toString().replace(/Error: GraphQL error: /, '');
 				Toast.show({ content: '修改失败' });
 			});
 	};
 
 	render() {
-		let { saveing, avatar, gender } = this.state;
+		let { submitting, avatar, gender } = this.state;
 		return (
 			<PageContainer
-				loading={saveing}
+				submitting={submitting}
 				title="编辑资料"
 				white
 				rightView={

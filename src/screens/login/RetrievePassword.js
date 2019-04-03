@@ -26,7 +26,7 @@ class RetrievePassword extends Component {
 			password: '',
 			tips: `${this.time_remaining}s后重新发送`,
 			disabled: true,
-			isVisible: false
+			submitting: false
 		};
 	}
 
@@ -65,7 +65,7 @@ class RetrievePassword extends Component {
 		const { navigation } = this.props;
 		const { account } = navigation.state.params;
 		this.setState({
-			isVisible: true
+			submitting: true
 		});
 		try {
 			result = await this.props.SendVerificationCodeMutation({
@@ -80,14 +80,14 @@ class RetrievePassword extends Component {
 		}
 		if (result && result.errors) {
 			this.setState({
-				isVisible: true
+				submitting: true
 			});
 			let str = result.errors[0].message;
 			Toast.show({ content: str });
 		} else {
 			this.countDown();
 			this.setState({
-				isVisible: true
+				submitting: true
 			});
 		}
 	};
@@ -99,7 +99,7 @@ class RetrievePassword extends Component {
 		const { account } = navigation.state.params;
 		let result = {};
 		this.setState({
-			isVisible: true
+			submitting: true
 		});
 		try {
 			result = await this.props.ResetPasswordMutation({
@@ -114,13 +114,13 @@ class RetrievePassword extends Component {
 		}
 		if (result && result.errors) {
 			this.setState({
-				isVisible: false
+				submitting: false
 			});
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Toast.show({ content: str }); //打印错误信息
 		} else {
 			this.setState({
-				isVisible: false
+				submitting: false
 			});
 			Toast.show({ content: '新密码设置成功' });
 			navigation.pop(2);
@@ -129,10 +129,10 @@ class RetrievePassword extends Component {
 
 	render() {
 		const { navigation } = this.props;
-		let { verificationCode, password, disabled, tips, isVisible } = this.state;
+		let { verificationCode, password, disabled, tips, submitting } = this.state;
 
 		return (
-			<PageContainer title="重置密码" white>
+			<PageContainer title="重置密码" white submitting={submitting} submitTips="请稍后...">
 				<View style={styles.header}>
 					<Text style={{ color: Theme.black, fontSize: 20, fontWeight: '600' }}>设置新密码</Text>
 				</View>
@@ -168,7 +168,7 @@ class RetrievePassword extends Component {
 					onPress={this.resendVerificationCode}
 					disabled={!(this.time_remaining == 60)}
 				>
-					<Text style={{ color: this.time_remaining == 60 ? Theme.theme : Theme.grey, fontSize: 13 }}>
+					<Text style={{ color: this.time_remaining == 60 ? Theme.primaryColor : Theme.grey, fontSize: 13 }}>
 						{tips}
 					</Text>
 				</TouchableOpacity>
@@ -181,12 +181,10 @@ class RetrievePassword extends Component {
 						fontSize: PxFit(16),
 						marginHorizontal: PxFit(25),
 						marginTop: PxFit(30),
-						backgroundColor: Theme.theme
+						backgroundColor: Theme.primaryColor
 					}}
 					disabled={verificationCode && password ? false : true}
 				/>
-				<SubmitLoading isVisible={isVisible} content={'请稍后...'} />
-				<KeyboardSpacer />
 			</PageContainer>
 		);
 	}

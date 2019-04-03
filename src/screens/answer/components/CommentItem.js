@@ -90,7 +90,7 @@ class CommentItem extends Component<Props> {
 							<Animated.View style={{ transform: [{ scale: scale }] }}>
 								<TouchFeedback style={styles.touchItem} onPress={Tools.throttle(this.likeComment, 400)}>
 									<Iconfont
-										name={liked ? 'like-fill' : 'like'}
+										name={liked ? 'praise-fill' : 'praise'}
 										size={PxFit(20)}
 										color={liked ? Theme.primaryColor : Theme.subTextColor}
 									/>
