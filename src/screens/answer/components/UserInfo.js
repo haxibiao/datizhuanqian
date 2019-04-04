@@ -4,18 +4,16 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Animated } from 'react-native';
 import { TouchFeedback, Avatar } from '../../../components';
-import { PxFit, Theme } from '../../../utils';
+import { PxFit, Theme, SCREEN_WIDTH } from '../../../utils';
 
 class UserInfo extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
 	render() {
-		const { user, navigation } = this.props;
+		const {
+			question: { user },
+			navigation
+		} = this.props;
 		if (user.id == 1) {
 			return null;
 		}

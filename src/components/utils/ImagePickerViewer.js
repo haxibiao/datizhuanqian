@@ -13,16 +13,19 @@ import OverlayViewer from '../Overlay/OverlayViewer';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 type Props = {
+	multiple?: boolean,
 	horizontal?: boolean,
 	maximum?: number,
 	PickerView?: any,
 	pickerStyle?: Object,
 	style?: any,
-	contentContainerStyle?: any
+	contentContainerStyle?: any,
+	onResponse?: Function
 };
 class ImagePickedViewer extends Component<Props> {
 	static defaultProps = {
 		maximum: 9,
+		multiple: true,
 		horizontal: true,
 		contentContainerStyle: { paddingRight: PxFit(Theme.itemSpace) }
 	};
@@ -37,20 +40,33 @@ class ImagePickedViewer extends Component<Props> {
 	savedImages = [];
 
 	openImagePicker = () => {
-		Api.imagePicker(images => {
-			let imagesPath;
-			imagesPath = images.map(image => `data:${image.mime};base64,${image.data}`);
-			this.saveImages(imagesPath);
-		});
+		let { multiple } = this.props;
+		Api.imagePicker(
+			images => {
+				let imagesPath;
+				if (multiple) {
+					imagesPath = images.map(image => `data:${image.mime};base64,${image.data}`);
+				} else {
+					imagesPath = [`data:${images.mime};base64,${images.data}`];
+				}
+				this.saveImages(imagesPath);
+			},
+			{
+				multiple,
+				includeBase64: true
+			}
+		);
 	};
 
 	saveImages = imagesPath => {
 		let { pictures } = this.state;
+		console.log(' imagesPath,pictures', imagesPath, pictures);
 		let { maximum } = this.props;
 		let newPictures = pictures.concat(imagesPath);
+		console.log('newPictures', newPictures);
 		if (newPictures.length > maximum) {
-			newPictures.splice(0, maximum);
-			Toast.show('最多上传6张图片');
+			newPictures.splice(maximum);
+			Toast.show({ content: `最多上传${maximum}张图片` });
 		}
 		this.setState({ pictures: newPictures }, () => {
 			this.onResponse(this.state.pictures);
@@ -89,7 +105,7 @@ class ImagePickedViewer extends Component<Props> {
 			<TouchFeedback key={index} onPress={() => this.showPicture(item)} style={[styles.itemWrap, pickerStyle]}>
 				<Image source={{ uri: item }} style={styles.imageItem} />
 				<TouchFeedback style={styles.close} onPress={() => this.removePicture(index)}>
-					<Iconfont name="chacha" size={PxFit(10)} color="#fff" />
+					<Iconfont name="close" size={PxFit(10)} color="#fff" />
 				</TouchFeedback>
 			</TouchFeedback>
 		);
@@ -113,7 +129,7 @@ class ImagePickedViewer extends Component<Props> {
 
 	render() {
 		let { pictures } = this.state;
-		let { horizontal, contentContainerStyle, style } = this.props;
+		let { horizontal, contentContainerStyle, style, multiple } = this.props;
 		let pictureQuantity = pictures.length;
 		if (horizontal) {
 			return (
@@ -123,14 +139,14 @@ class ImagePickedViewer extends Component<Props> {
 					contentContainerStyle={contentContainerStyle}
 				>
 					{pictureQuantity > 0 && this.renderPictures(pictures)}
-					{this.renderFooter(pictureQuantity)}
+					{!(pictureQuantity > 0 && !multiple) && this.renderFooter(pictureQuantity)}
 				</ScrollView>
 			);
 		} else {
 			return (
 				<View style={[styles.flexContainer, style]}>
 					{pictureQuantity > 0 && this.renderPictures(pictures)}
-					{pictureQuantity > 0 && this.renderFooter(pictureQuantity)}
+					{!(pictureQuantity > 0 && !multiple) && this.renderFooter(pictureQuantity)}
 				</View>
 			);
 		}

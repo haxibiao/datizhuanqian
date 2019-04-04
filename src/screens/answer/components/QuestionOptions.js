@@ -25,6 +25,7 @@ class QuestionOption extends Component {
 					return (
 						<OptionItem
 							key={index}
+							even={index % 2 === 0}
 							submited={submited}
 							option={option}
 							selectedOption={selectedOption}

@@ -5,7 +5,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Animated } from 'react-native';
 import {
 	PageContainer,
 	TouchFeedback,
@@ -33,7 +33,7 @@ import AnswerPlaceholder from './components/AnswerPlaceholder';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 
-import { QuestionsQuery, QuestionQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
+import { QuestionsQuery, QuestionListQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
 import { UserQuery } from '../../assets/graphql/user.graphql';
 import { Query, compose, graphql, withApollo } from 'react-apollo';
 
@@ -44,6 +44,7 @@ class index extends Component {
 		this.questions = null;
 		// 题目长度，用与加载更多的offset
 		this.questionsLength = 0;
+		this._animated = new Animated.Value(0);
 		this.state = {
 			question: null,
 			submited: false,
@@ -56,12 +57,16 @@ class index extends Component {
 		// 初始化 首次加载
 		if (this.firstLoad) {
 			let questions = Tools.syncGetter('questions', nextProps.data);
-			console.log('questions', questions);
 			if (questions) {
 				this.firstLoad = false;
 				this.questions = questions;
 				this.questionsLength = questions.length;
 				this.setState({ question: this.questions.shift() });
+				// 执行动画
+				Animated.timing(this._animated, {
+					toValue: 1,
+					duration: 300
+				}).start();
 			}
 		}
 	}
@@ -108,6 +113,13 @@ class index extends Component {
 	}
 
 	nextQuestion = () => {
+		// 执行动画
+		this._animated.setValue(0);
+		Animated.timing(this._animated, {
+			toValue: 1,
+			duration: 300
+		}).start();
+		// 切换题目
 		this.setState({
 			question: this.questions.shift(),
 			submited: false,
@@ -130,9 +142,8 @@ class index extends Component {
 				if (!(fetchMoreResult && fetchMoreResult.questions && fetchMoreResult.questions.length > 0)) {
 					return prev;
 				}
-				console.log('fetchMoreResult.questions', fetchMoreResult.questions);
 				this.questionsLength += fetchMoreResult.questions.length;
-				this.questions = [...this.questions, ...fetchMoreResult.questions];
+				this.questions = this.questions.concat(fetchMoreResult.questions);
 				return Object.assign({}, prev, {
 					questions: fetchMoreResult.questions
 				});
@@ -198,6 +209,18 @@ class index extends Component {
 		} else if (!question) {
 			return <AnswerPlaceholder />;
 		}
+		const animateStyles = {
+			opacity: this._animated,
+			transform: [
+				{
+					scale: this._animated.interpolate({
+						inputRange: [0, 1],
+						outputRange: [0.5, 1],
+						extrapolate: 'clamp'
+					})
+				}
+			]
+		};
 		return (
 			<React.Fragment>
 				<ScrollView
@@ -208,8 +231,10 @@ class index extends Component {
 				>
 					<TabBar />
 					<View style={styles.content}>
-						<UserInfo user={question.user} navigation={navigation} />
-						<QuestionBody question={question} />
+						<Animated.View style={animateStyles}>
+							<UserInfo question={question} navigation={navigation} />
+							<QuestionBody question={question} />
+						</Animated.View>
 						<QuestionOptions
 							selections={question.selections_array}
 							onSelectOption={this.selectOption}
@@ -300,7 +325,7 @@ const styles = StyleSheet.create({
 export default compose(
 	withApollo,
 	graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }),
-	graphql(QuestionsQuery, {
+	graphql(QuestionListQuery, {
 		options: props => {
 			return {
 				variables: { category_id: props.navigation.getParam('category', {}).id, limit: 10, comment_limit: 10 },

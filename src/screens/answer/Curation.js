@@ -15,7 +15,7 @@ import {
 	ScrollView,
 	Keyboard
 } from 'react-native';
-import { Button, Radio, PageContainer, CustomTextInput, SubmitLoading } from '../../components';
+import { Button, Radio, PageContainer, TouchFeedback, CustomTextInput, ImagePickerViewer } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 import { connect } from 'react-redux';
 import { createCurationMutation } from '../../assets/graphql/question.graphql';
@@ -25,45 +25,23 @@ class ErrorCorrectionScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.onCheck = this.onCheck.bind(this);
-		this.keyboardDidShowListener = null;
-		this.keyboardDidHideListener = null;
 		this.state = {
 			content: '',
 			type: 1,
-			inputHeight: PxFit(220),
-			isVisible: false
+			submitting: false,
+			image: null
 		};
-	}
-
-	componentWillMount() {
-		//监听键盘弹出事件
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShowHandler.bind(this));
-		//监听键盘隐藏事件
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHideHandler.bind(this));
-	}
-
-	componentWillUnmount() {
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
-	}
-
-	keyboardDidShowHandler(event) {
-		this.setState({ inputHeight: PxFit(140) });
-	}
-
-	//键盘隐藏事件响应
-	keyboardDidHideHandler(event) {
-		this.setState({ inputHeight: PxFit(220) });
 	}
 
 	submitError = async () => {
 		const { navigation } = this.props;
 		const { question } = navigation.state.params;
-		let { content, type, isVisible } = this.state;
+		let { content, type, submitting } = this.state;
 		let result = {};
 		this.setState({
-			isVisible: !isVisible
+			submitting: !submitting
 		});
+		content = content.trim();
 		try {
 			result = await this.props.createCurationMutation({
 				variables: {
@@ -77,128 +55,142 @@ class ErrorCorrectionScreen extends Component {
 		}
 		if (result && result.errors) {
 			this.setState({
-				isVisible: false
+				submitting: false
 			});
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Toast.show({ content: str });
 		} else {
 			this.setState({
-				isVisible: false
+				submitting: false
 			});
 			Toast.show({ content: '提交成功' });
 			navigation.goBack();
 		}
 	};
 
+	onCheck(value) {
+		this.setState({ type: value });
+	}
+
+	onChangeText = value => {
+		this.setState({
+			content: value
+		});
+	};
+
 	render() {
 		let { user, navigation, login, prop } = this.props;
-		let { content, type } = this.state;
+		let { content, type, submitting } = this.state;
+		let disabled = !content.trim();
 		return (
-			<PageContainer title="题目纠错" white>
+			<PageContainer
+				white
+				title="题目纠错"
+				submitting={submitting}
+				rightView={
+					<TouchFeedback
+						disabled={disabled}
+						style={[styles.saveButton, disabled && { opacity: 0.5 }]}
+						onPress={this.submitError}
+					>
+						<Text style={styles.saveText}>提交</Text>
+					</TouchFeedback>
+				}
+			>
 				<ScrollView
 					style={styles.container}
 					ref={ref => (this.ScrollTo = ref)}
 					keyboardShouldPersistTaps={'always'}
 				>
-					<View style={styles.header}>
+					<View style={styles.errorTypes}>
 						<Text style={styles.type}>错误类型</Text>
 						<View style={styles.radios}>
-							<View style={styles.row}>
+							<TouchFeedback style={styles.row} onPress={() => this.onCheck(1)}>
 								<Radio value={1} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>题干有误</Text>
-							</View>
-							<View style={styles.row}>
+							</TouchFeedback>
+							<TouchFeedback style={styles.row} onPress={() => this.onCheck(2)}>
 								<Radio value={2} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>答案有误</Text>
-							</View>
-							<View style={styles.row}>
+							</TouchFeedback>
+							<TouchFeedback style={styles.row} onPress={() => this.onCheck(3)}>
 								<Radio value={3} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>图片缺少或不清晰</Text>
-							</View>
-							<View style={styles.row}>
+							</TouchFeedback>
+							<TouchFeedback style={styles.row} onPress={() => this.onCheck(4)}>
 								<Radio value={4} type={type} onCheck={this.onCheck} />
 								<Text style={styles.text}>其他</Text>
-							</View>
+							</TouchFeedback>
 						</View>
 					</View>
-					<View style={styles.footer}>
-						<View style={styles.inputWrap}>
-							<CustomTextInput
-								style={{
-									minHeight: this.state.inputHeight,
-									height: null,
-									fontSize: PxFit(15),
-									paddingHorizontal: PxFit(15),
-									backgroundColor: 'transparent',
-									justifyContent: 'flex-start'
-								}}
-								placeholder={'您的耐心指点,是我们前进的动力！'}
-								multiline
-								underline
-								maxLength={140}
-								textAlignVertical={'top'}
-								onChangeText={value => {
-									this.setState({
-										content: value
-									});
+					<View style={styles.body}>
+						<CustomTextInput
+							style={styles.textInput}
+							placeholder={'您的耐心指点,是我们前进的动力！'}
+							multiline
+							underline
+							maxLength={140}
+							textAlignVertical={'top'}
+							onChangeText={this.onChangeText}
+							value={content}
+						/>
+						<View style={{ padding: PxFit(Theme.itemSpace) }}>
+							<ImagePickerViewer
+								multiple={false}
+								onResponse={images => {
+									this.setState({ image: images[0] });
 								}}
 							/>
 						</View>
-						<Button title={'提交'} style={styles.button} disabled={!content} onPress={this.submitError} />
 					</View>
 				</ScrollView>
-				<SubmitLoading isVisible={this.state.isVisible} content={'提交中...'} />
 			</PageContainer>
 		);
-	}
-
-	onCheck(value) {
-		this.setState({ type: value });
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Theme.lightGray
+		backgroundColor: '#f9f9f9'
 	},
-	header: {
-		paddingHorizontal: PxFit(15),
+	saveButton: {
+		flex: 1,
+		justifyContent: 'center'
+	},
+	saveText: { fontSize: PxFit(15), textAlign: 'center', color: Theme.secondaryColor },
+	errorTypes: {
+		paddingHorizontal: PxFit(Theme.itemSpace),
 		backgroundColor: Theme.white
 	},
 	type: {
+		marginTop: PxFit(Theme.itemSpace),
 		fontSize: PxFit(17),
-		paddingTop: PxFit(25)
+		color: Theme.defaultTextColor
 	},
 	radios: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
 		paddingVertical: PxFit(10)
 	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		width: (SCREEN_WIDTH - PxFit(30)) / 2,
 		paddingVertical: PxFit(10)
 	},
 	text: {
 		fontSize: PxFit(15),
 		paddingLeft: PxFit(20)
 	},
-	footer: {
+	body: {
 		flex: 1,
-		marginBottom: PxFit(20)
-	},
-	inputWrap: {
-		backgroundColor: Theme.white,
-		paddingVertical: PxFit(10),
-		marginTop: PxFit(15)
-	},
-	button: {
-		height: PxFit(42),
-		marginHorizontal: PxFit(20),
 		marginTop: PxFit(15),
-		backgroundColor: Theme.primaryColor
+		backgroundColor: '#fff'
+	},
+	textInput: {
+		marginTop: PxFit(15),
+		height: PxFit(120),
+		fontSize: PxFit(15),
+		padding: PxFit(15),
+		justifyContent: 'flex-start'
 	}
 });
 

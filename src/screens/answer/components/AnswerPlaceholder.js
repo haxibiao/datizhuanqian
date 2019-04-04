@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f0f0f0'
 	},
 	content: {
-		height: PxFit(100),
+		height: PxFit(150),
 		backgroundColor: '#f0f0f0',
 		borderRadius: PxFit(6),
 		marginVertical: PxFit(Theme.itemSpace)

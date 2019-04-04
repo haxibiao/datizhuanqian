@@ -84,7 +84,6 @@ class index extends Component {
 		if (login && data && data.user) {
 			data.user.avatar = user.avatar;
 			user = data.user;
-			console.log('user', user);
 		} else if (login && this.state.userCache) {
 			user = this.userAdapter(this.state.userCache);
 		} else {

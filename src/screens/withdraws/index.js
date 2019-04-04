@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
 	},
 	tips: {
 		fontSize: PxFit(15),
-		color: Theme.subTextColor,
+		color: Theme.secondaryColor,
 		paddingVertical: PxFit(10),
 		lineHeight: PxFit(18)
 	},

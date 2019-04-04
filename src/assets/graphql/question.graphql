@@ -73,6 +73,48 @@ query QuestionsQuery($category_id: Int, $offset: Int, $limit: Int, $comment_offs
 	}
 }
 
+#题目列表
+query QuestionListQuery($category_id: Int, $offset: Int, $limit: Int) {
+	questions(category_id: $category_id, offset: $offset, limit: $limit) {
+		id
+		description
+		answer
+		status
+		gold
+		ticket
+		selections_array {
+			Text
+			Value
+		}
+		image {
+			id
+			path
+			width
+			height
+		}
+		video {
+			height
+			width
+			path
+			rotate
+			duration
+		}
+		category {
+			id
+			name
+		}
+		type
+		correct_count
+		wrong_count
+		user {
+			id
+			name
+			avatar
+		}
+		submit
+	}
+}
+
 #题目查询
 query QuestionQuery($id: Int, $category_id: Int, $comment_offset: Int, $comment_limit: Int) {
 	question(id: $id, category_id: $category_id) {

@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
 	},
 	footer: {
 		fontSize: PxFit(12),
+		lineHeight: PxFit(16),
 		color: Theme.secondaryColor,
 		paddingTop: PxFit(15)
 	}

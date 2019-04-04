@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
 	cover: {
 		width: PxFit(48),
 		height: PxFit(48),
-		borderRadius: PxFit(2)
+		borderRadius: PxFit(2),
+		backgroundColor: '#f0f0f0'
 	},
 	name: {
 		fontSize: PxFit(16),

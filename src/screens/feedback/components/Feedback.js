@@ -5,13 +5,11 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { Button, Iconfont, PageContainer, CustomTextInput, SubmitLoading } from '../../../components';
+import { Button, Iconfont, PageContainer, CustomTextInput, ImagePickerViewer } from '../../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
 import { CreateFeedbackMutation } from '../../../assets/graphql/feedback.graphql';
 import { Mutation, graphql, compose, withApollo } from 'react-apollo';
-
-import ImagePickerView from './ImagePickerView';
 
 class Feedback extends Component {
 	constructor(props) {
@@ -73,9 +71,9 @@ class Feedback extends Component {
 	render() {
 		let { content, pictures, submitting } = this.state;
 		const { navigation } = this.props;
-
+		console.log('pictures', pictures);
 		return (
-			<PageContainer hiddenNavBar tabLabel="意见反馈" submitting={submitting}>
+			<PageContainer hiddenNavBar tabLabel="意见反馈" submitting={submitting} autoKeyboardInsets={false}>
 				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
 					<View style={styles.main}>
 						<CustomTextInput
@@ -85,20 +83,20 @@ class Feedback extends Component {
 							multiline
 							underline
 							textAlignVertical={'top'}
-							defaultValue={this.state.content}
+							defaultValue={content}
 							onChangeText={value => {
 								this.setState({
 									content: value
 								});
 							}}
 						/>
-
-						<ImagePickerView
-							onResponse={images => {
-								this.setState({ pictures: images });
-							}}
-						/>
-						<View style={styles.mainBottom} />
+						<View style={{ marginLeft: PxFit(Theme.itemSpace) }}>
+							<ImagePickerViewer
+								onResponse={images => {
+									this.setState({ pictures: images });
+								}}
+							/>
+						</View>
 					</View>
 					<Button title={'提交'} style={styles.button} onPress={this.submitFeedback} disabled={!content} />
 				</ScrollView>
@@ -114,41 +112,17 @@ const styles = StyleSheet.create({
 	},
 	main: {
 		paddingVertical: PxFit(15),
-		marginBottom: PxFit(30)
-	},
-	images: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		marginLeft: PxFit(25)
+		marginBottom: PxFit(15),
+		borderBottomWidth: PxFit(1),
+		borderBottomColor: Theme.lightBorder
 	},
 	input: {
 		backgroundColor: 'transparent',
 		fontSize: PxFit(15),
 		padding: 0,
-		height: PxFit(240),
+		height: PxFit(200),
 		paddingHorizontal: PxFit(20),
 		justifyContent: 'flex-start'
-		// marginTop:10,
-	},
-	add: {
-		width: (SCREEN_WIDTH - 60) / 3,
-		height: (SCREEN_WIDTH - 60) / 3,
-		borderColor: Theme.lightBorder,
-		borderWidth: PxFit(1),
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	image: {
-		width: (SCREEN_WIDTH - 60) / 3,
-		height: (SCREEN_WIDTH - 60) / 3,
-		marginRight: PxFit(5),
-		marginBottom: PxFit(5)
-	},
-	mainBottom: {
-		borderBottomWidth: PxFit(1),
-		borderBottomColor: Theme.lightBorder,
-		marginRight: PxFit(15),
-		marginTop: PxFit(15)
 	},
 	button: {
 		height: PxFit(42),

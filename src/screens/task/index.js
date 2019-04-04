@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 
 import { StyleSheet, View } from 'react-native';
-import { PageContainer, TabBar } from '../../components';
+import { PageContainer, TabBar, EmptyView } from '../../components';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -20,7 +20,14 @@ class index extends Component {
 		return (
 			<PageContainer isTopNavigator title="任务">
 				<TabBar />
-				{login ? <TaskList navigation={navigation} /> : null}
+				{login ? (
+					<TaskList navigation={navigation} />
+				) : (
+					<EmptyView
+						imageSource={require('../../assets/images/default_message.png')}
+						title="登录之后才能查看任务哦"
+					/>
+				)}
 			</PageContainer>
 		);
 	}

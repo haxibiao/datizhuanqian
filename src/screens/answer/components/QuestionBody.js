@@ -4,18 +4,13 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, Image, ImageBackground, Animated } from 'react-native';
 
 import { Player, overlayView, TouchFeedback, PlaceholderImage, OverlayViewer } from '../../../components';
 import { SCREEN_WIDTH, Theme, PxFit, Tools } from '../../../utils';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-class Default extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
+class QuestionBody extends Component {
 	showPicture = url => {
 		let overlayView = (
 			<ImageViewer onSwipeDown={() => OverlayViewer.hide()} imageUrls={[{ url }]} enableSwipeDown />
@@ -93,4 +88,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Default;
+export default QuestionBody;

@@ -18,7 +18,7 @@ class UpdateOverlay {
 		let overlayView = (
 			<Overlay.View animated>
 				<View style={styles.container}>
-					<View style={style.content}>
+					<View style={styles.content}>
 						<View style={styles.header}>
 							<Text style={styles.modalRemindContent}>发现新版本</Text>
 							<Text style={styles.headerText}>版本号：V{versionData.version}</Text>

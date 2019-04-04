@@ -139,10 +139,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 0
 	},
 	button: {
-		height: 38,
-		fontSize: 16,
-		marginHorizontal: 25,
-		marginVertical: 30,
+		height: PxFit(38),
+		fontSize: PxFit(16),
+		marginHorizontal: PxFit(25),
+		marginVertical: PxFit(30),
 		backgroundColor: Theme.primaryColor
 	}
 });

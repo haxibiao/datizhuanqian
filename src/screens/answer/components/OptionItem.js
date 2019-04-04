@@ -3,11 +3,37 @@
  * created by wyk made in 2019-03-28 11:52:05
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from '../../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
 class OptionItem extends Component {
+	_animated = new Animated.Value(0);
+
+	componentDidMount() {
+		this.animation();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.option !== this.props.option) {
+			this._animated.setValue(0);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		this.animation();
+	}
+
+	animation() {
+		Animated.timing(this._animated, {
+			toValue: 1,
+			velocity: 10,
+			tension: -10,
+			friction: 5,
+			delay: 250
+		}).start();
+	}
+
 	onPress = () => {
 		let { option, singleOption } = this.props;
 		this.props.onSelectOption(option.Value, singleOption);
@@ -51,17 +77,31 @@ class OptionItem extends Component {
 	};
 
 	render() {
-		let { option, submited } = this.props;
+		let { option, submited, even } = this.props;
 		let { labelStyle, contentStyle, label } = this.buildProps();
+		const animateStyles = {
+			opacity: this._animated,
+			transform: [
+				{
+					translateX: this._animated.interpolate({
+						inputRange: [0, 1],
+						outputRange: [even ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+						extrapolate: 'clamp'
+					})
+				}
+			]
+		};
 		return (
-			<View style={styles.optionItemWrap}>
-				<TouchFeedback disabled={submited} style={styles.optionItem} onPress={this.onPress}>
-					<View style={[styles.optionLabel, labelStyle]}>{label}</View>
-					<View style={styles.optionContent}>
-						<Text style={[styles.optionContentText, contentStyle]}>{option.Text}</Text>
-					</View>
-				</TouchFeedback>
-			</View>
+			<Animated.View style={animateStyles}>
+				<View style={styles.optionItemWrap}>
+					<TouchFeedback disabled={submited} style={styles.optionItem} onPress={this.onPress}>
+						<View style={[styles.optionLabel, labelStyle]}>{label}</View>
+						<View style={styles.optionContent}>
+							<Text style={[styles.optionContentText, contentStyle]}>{option.Text}</Text>
+						</View>
+					</TouchFeedback>
+				</View>
+			</Animated.View>
 		);
 	}
 }
