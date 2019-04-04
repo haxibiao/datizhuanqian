@@ -113,5 +113,19 @@ export default {
       type: types.SET_SERVER,
       server
     };
+  },
+
+  netInfo(info) {
+    return {
+      type: types.NET_INFO,
+      info
+    };
+  },
+
+  deviceOffline(status) {
+    return {
+      type: types.DEVICE_OFFLINE,
+      status
+    };
   }
 };

@@ -21,6 +21,8 @@ export default defineActionConstants([
 	'UPDATE_APP_INTRO_VERSION',
 	'UPDATE_SERVER',
 	'SET_SERVER',
+	'NET_INFO',
+	'DEVICE_OFFLINE',
 
 	// 本地缓存
 	'USER_CACHE',

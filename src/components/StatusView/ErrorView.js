@@ -5,9 +5,10 @@
 'use strict';
 
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent } from '../../utils';
 import Button from '../TouchableView/Button';
+import SubmitLoading from '../Overlay/SubmitLoading';
 import { connect } from 'react-redux';
 
 type Props = {
@@ -18,29 +19,49 @@ type Props = {
 	onPress: Function
 };
 class ErrorView extends React.Component<Props> {
-	static defaultProps = {
-		title: '页面出错啦',
-		imageSource: require('../../assets/images/error.png')
+	state = {
+		loading: false
 	};
 
-	onPress = () => {
-		if (this.props.app.offline) {
-			Toast.show({ content: '网络连接错误' });
-			return;
-		}
-		this.props.onPress && this.props.onPress();
+	static defaultProps = {
+		title: '哎呀，好像出了点问题',
+		imageSource: require('../../assets/images/default_error.png')
 	};
+
+	onPress = async () => {
+		let { offline, onPress } = this.props;
+		if (offline) {
+			Toast.show({ content: '网络错误,请检查网络连接' });
+			return;
+		} else if (onPress) {
+			this.setState({ loading: true });
+			this.timer = setTimeout(() => {
+				this.setState({
+					loading: false
+				});
+			}, 2500);
+			onPress();
+		}
+	};
+
+	componentWillUnmount() {
+		this.timer && clearInterval(this.timer);
+	}
 
 	render() {
-		const { title, imageSource, style, titleStyle } = this.props;
-
+		let { offline, title, imageSource, style, titleStyle } = this.props;
+		imageSource = offline ? require('../../assets/images/default_network.png') : imageSource;
+		title = offline ? '网络走丢了' : title;
 		return (
 			<View style={[styles.container, style]}>
-				<Image style={styles.image} source={imageSource} />
-				<Text style={[styles.title, titleStyle]}>{title}</Text>
-				<Button style={styles.button} onPress={this.onPress}>
-					<Text style={styles.buttonText}>点击重试</Text>
-				</Button>
+				<TouchableWithoutFeedback onPress={this.onPress}>
+					<Image style={styles.image} source={imageSource} />
+				</TouchableWithoutFeedback>
+				<View style={styles.textWrap}>
+					<Text style={[styles.text, titleStyle]}>{title}</Text>
+					<Text style={styles.text}>点击图片重试</Text>
+				</View>
+				<SubmitLoading isVisible={this.state.loading} />
 			</View>
 		);
 	}
@@ -56,26 +77,16 @@ const styles = StyleSheet.create({
 		minHeight: WPercent(80)
 	},
 	image: {
-		width: WPercent(36),
-		height: WPercent(36),
+		width: WPercent(44),
+		height: WPercent(44),
 		resizeMode: 'cover'
 	},
-	title: {
-		fontSize: PxFit(12),
-		marginTop: PxFit(10),
-		color: Theme.subTextColor
-	},
-	button: {
-		maxWidth: '60%',
-		height: PxFit(44),
-		borderRadius: PxFit(6),
-		marginTop: PxFit(40),
-		borderWidth: 0
-	},
-	buttonText: {
+	textWrap: { justifyContent: 'center', alignItems: 'center' },
+	text: {
 		fontSize: PxFit(14),
-		color: '#fff'
+		lineHeight: PxFit(18),
+		color: Theme.subTextColor
 	}
 });
 
-export default connect(store => ({ app: store.app }))(ErrorView);
+export default connect(store => ({ offline: store.app.offline }))(ErrorView);

@@ -51,8 +51,9 @@ class Apollo extends Component {
 		if (!this.cache) {
 			this.cache = new InMemoryCache();
 		}
-
+		Config.ServerRoot = 'https://datizhuanqian.com';
 		this.client = new ApolloClient({
+			// http://dev.datizhuanqian.com
 			uri: Config.ServerRoot + '/graphql',
 			request: async operation => {
 				operation.setContext({

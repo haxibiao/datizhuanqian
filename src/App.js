@@ -29,12 +29,23 @@ class App extends Component {
 	}
 
 	componentWillMount() {
+		NetInfo.addEventListener('connectionChange', this.handleConnectivityChange);
 		this.loadUserState();
 		// this.loadServerRootState();
 	}
 
 	componentDidMount() {
 		global.Toast = this.toast;
+	}
+
+	componentWillUnMount() {
+		NetInfo.removeEventListener('connectionChange', this.handleConnectivityChange);
+	}
+
+	handleConnectivityChange(connectionInfo) {
+		store.dispatch(actions.netInfo(connectionInfo));
+		store.dispatch(actions.deviceOffline(connectionInfo.type === 'none'));
+		console.log(connectionInfo);
 	}
 
 	loadUserState = async () => {
