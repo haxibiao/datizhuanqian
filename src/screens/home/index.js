@@ -32,6 +32,7 @@ import { UserQuery } from '../../assets/graphql/user.graphql';
 import { CategoriesQuery, QuestionQuery } from '../../assets/graphql/question.graphql';
 
 import SplashScreen from 'react-native-splash-screen';
+import JPushModule from 'jpush-react-native';
 
 class index extends Component {
 	constructor(props) {
@@ -50,11 +51,33 @@ class index extends Component {
 		this.timer = setTimeout(() => {
 			Api.checkUpdate(this.dispatch.bind(this));
 		}, 3000);
-		// this.dispatch();
+
+		this.receiveNotificationListener = message => {
+			console.log('receive notification: ', message, JSON.parse(message.extras));
+			this.setState({
+				content: message.alertContent,
+				type: JSON.parse(message.extras).type,
+				time: JSON.parse(message.extras).time
+			});
+		};
+		JPushModule.addReceiveNotificationListener(this.receiveNotificationListener);
+		//监听推送通知
+
+		this.openNotificationListener = map => {
+			let { type, content, time } = this.state;
+			// if (type == 'maintenance') {
+			// 	this.props.navigation.navigate('推送通知', { content: content, name: '系统维护', time: time });
+			// }
+			this.props.navigation.navigate('PushNotification', { content: content, name: '官方提示', time: time });
+		};
+		JPushModule.addReceiveOpenNotificationListener(this.openNotificationListener);
+		//监听打开通知事件
 	}
 
 	componentWillUnmount() {
 		this.timer && clearTimeout(this.timer);
+		JPushModule.removeReceiveNotificationListener(this.receiveNotificationListener);
+		JPushModule.removeReceiveOpenNotificationListener(this.openNotificationListener);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
