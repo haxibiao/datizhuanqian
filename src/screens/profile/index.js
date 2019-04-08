@@ -271,6 +271,18 @@ class index extends Component {
 						style={styles.columnItem}
 						authenticated
 						navigation={navigation}
+						onPress={() => navigation.navigate('BillingRecord')}
+					>
+						<Row>
+							<Iconfont name={'billing'} size={PxFit(27)} style={styles.itemType} color={Theme.theme} />
+							<Text style={styles.itemTypeText}>账单记录</Text>
+						</Row>
+						<Iconfont name="right" size={17} color={Theme.subTextColor} />
+					</TouchFeedback>
+					<TouchFeedback
+						style={styles.columnItem}
+						authenticated
+						navigation={navigation}
 						onPress={() => navigation.navigate('Feedback')}
 					>
 						<Row>

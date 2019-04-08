@@ -352,3 +352,29 @@ query FollowersQuery($filter: FollowedEnumType, $offset: Int, $limit: Int) {
 		}
 	}
 }
+
+#兑换记录
+query ExchangesQuery($limit: Int, $offset: Int) {
+	exchanges(limit: $limit, offset: $offset) {
+		id
+		rmb
+		exchange_rate
+		gold
+		created_at
+		user {
+			id
+			name
+		}
+	}
+}
+
+#智慧点变动记录
+query GoldsQuery($user_id: Int, $offset: Int, $limit: Int) {
+	golds(user_id: $user_id, offset: $offset, limit: $limit) {
+		gold
+		balance
+		remark
+		created_at
+	}
+}
+

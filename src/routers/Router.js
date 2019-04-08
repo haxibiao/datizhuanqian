@@ -28,6 +28,7 @@ import CommonIssueScreen from '../screens/profile/CommonIssue';
 import ModifyAliPayScreen from '../screens/profile/ModifyAliPay';
 import ModifyPasswordScreen from '../screens/profile/ModifyPassword';
 import VerificationCodeScreen from '../screens/profile/VerificationCode';
+import BillingRecordScreen from '../screens/profile/BillingRecord';
 import FeedbackScreen from '../screens/feedback';
 import FeedbackDetails from '../screens/feedback/FeedbackDetails';
 import ContributeScreen from '../screens/contribute';
@@ -122,6 +123,9 @@ export default {
 	},
 	VerificationCode: {
 		screen: VerificationCodeScreen
+	},
+	BillingRecord: {
+		screen: BillingRecordScreen
 	},
 	Feedback: {
 		screen: FeedbackScreen
