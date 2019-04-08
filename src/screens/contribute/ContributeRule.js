@@ -8,6 +8,8 @@ import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
 import { PageContainer } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
+let IMAGE_WIDTH = SCREEN_WIDTH - PxFit(15);
+
 class ContributeRule extends Component {
 	constructor(props) {
 		super(props);
@@ -16,7 +18,36 @@ class ContributeRule extends Component {
 		return (
 			<PageContainer title="出题规则" white>
 				<ScrollView style={styles.container}>
-					<Text style={{ fontSize: PxFit(15), color: Theme.black, lineHeight: PxFit(22) }}>
+					<Text
+						style={{
+							fontSize: 18,
+							color: Theme.defaultTextColor,
+							fontWeight: '500',
+							lineHeight: 22,
+							paddingBottom: 10
+						}}
+					>
+						出题示例
+					</Text>
+					<View>
+						<Image
+							source={require('../../assets/images/contribute_example.png')}
+							style={{ width: IMAGE_WIDTH, height: IMAGE_WIDTH }}
+						/>
+					</View>
+					<Text
+						style={{
+							fontSize: 18,
+							color: Theme.defaultTextColor,
+							lineHeight: 22,
+							fontWeight: '500',
+							marginTop: 15,
+							paddingBottom: 10
+						}}
+					>
+						出题规则
+					</Text>
+					<Text style={{ fontSize: PxFit(15), color: Theme.defaultTextColor, lineHeight: PxFit(22) }}>
 						为了能够给广大用户提供一个优质的答题环境，您的言行不得发布、传播或以其它方式传送含有下列内容之一的信息：
 					</Text>
 					<Text style={{ color: Theme.grey, lineHeight: PxFit(22), paddingTop: PxFit(15) }}>
@@ -36,7 +67,7 @@ class ContributeRule extends Component {
 						{'12.含有中国法律、法规、规章、条例以及任何具有法律效力之规范所限制或禁止的其它内容的；\n'}
 						{'13.非官方认证的发布带有任何有联系方式的整容、医药、代考等广告信息以及非真实性中奖信息；\n'}
 					</Text>
-					<Text style={{ color: Theme.black, lineHeight: PxFit(22), paddingTop: PxFit(15) }}>
+					<Text style={{ color: Theme.defaultTextColor, lineHeight: PxFit(22), paddingTop: PxFit(15) }}>
 						答题赚钱官方拥有对违反以上出题规则的用户进行处理的权力，一经发现此类题目内容将不被采纳。
 					</Text>
 				</ScrollView>

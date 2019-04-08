@@ -15,7 +15,8 @@ import {
 	CustomTextInput,
 	Avatar,
 	ImagePickerViewer,
-	ItemSeparator
+	ItemSeparator,
+	WheelPicker
 } from '../../components';
 import actions from '../../store/actions';
 import { Theme, PxFit, SCREEN_WIDTH, Api, Tools } from '../../utils';
@@ -37,11 +38,28 @@ class index extends Component {
 		this.user = user;
 		this.name = user.name;
 		this.introduction = user.introduction;
+		this.age = user.age;
 		this.state = {
 			submitting: false,
 			avatar: user.avatar,
-			gender: user.gender
+			gender: user.gender,
+			age: user.age
 		};
+	}
+
+	showDatePicker = onPickerConfirm => {
+		let Picker = new WheelPicker({ onPickerConfirm });
+		Picker._showDatePicker();
+	};
+
+	onDatePickerConfirm = (value, index) => {
+		this.setState({ age: this.calcAge(value[0]) });
+	};
+
+	calcAge(value) {
+		if (value && typeof parseInt(value) === 'number') {
+			return new Date().getFullYear() - parseInt(value);
+		}
 	}
 
 	changeAvatar = () => {
@@ -63,6 +81,10 @@ class index extends Component {
 
 	changeIntroduction = value => {
 		this.introduction = value;
+	};
+
+	changeAge = value => {
+		this.age = value;
 	};
 
 	updateAvatar = () => {
@@ -134,7 +156,7 @@ class index extends Component {
 	};
 
 	render() {
-		let { submitting, avatar, gender } = this.state;
+		let { submitting, avatar, gender, age } = this.state;
 		return (
 			<PageContainer
 				submitting={submitting}
@@ -237,6 +259,20 @@ class index extends Component {
 							</TouchFeedback>
 						</Row>
 					</Row>
+					<Row style={styles.fieldGroup}>
+						<Text style={styles.field}>年龄:</Text>
+						<View
+							style={{
+								marginLeft: PxFit(30)
+							}}
+						>
+							<TouchFeedback onPress={() => this.showDatePicker(this.onDatePickerConfirm)}>
+								<Text style={{ fontSize: PxFit(15), color: Theme.linkColor }}>
+									{age || '请选择日期'}
+								</Text>
+							</TouchFeedback>
+						</View>
+					</Row>
 				</View>
 			</PageContainer>
 		);
@@ -277,11 +313,10 @@ const styles = StyleSheet.create({
 		borderBottomColor: Theme.borderColor
 	},
 	inputStyle: {
-		flex: 1,
 		fontSize: PxFit(15),
 		color: Theme.defaultTextColor,
-		paddingVertical: PxFit(10),
-		marginTop: PxFit(6)
+		marginTop: PxFit(10),
+		paddingBottom: PxFit(10)
 	},
 	genderGroup: {
 		flexDirection: 'row',

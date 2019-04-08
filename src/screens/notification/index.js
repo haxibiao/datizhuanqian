@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
 export default compose(
 	connect(store => ({ user: store.users.user })),
 	graphql(userUnreadQuery, {
-		options: props => ({ variables: { id: props.user.id } })
+		options: props => ({ variables: { id: props.user.id } }),
+		fetchPolicy: 'network-only'
 	})
 )(index);

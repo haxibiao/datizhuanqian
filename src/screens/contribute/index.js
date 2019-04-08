@@ -290,7 +290,7 @@ class index extends Component {
 				return { Value: ANSWERS[index], Text: option[0] };
 			}
 		});
-		if (category_id && description && selections.length > 1 && answers.size > 0) {
+		if (category_id && description && description.length > 7 && selections.length > 1 && answers.size > 0) {
 			return {
 				data: {
 					category_id,
@@ -385,7 +385,7 @@ class index extends Component {
 													multiline
 													maxLength={300}
 													textAlignVertical="top"
-													placeholder="填写题目题干..."
+													placeholder="填写题目题干，不少于8个字"
 												/>
 												<View style={styles.mediaSelect}>
 													{picture ? (

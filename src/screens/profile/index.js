@@ -13,12 +13,10 @@ import {
 	Row,
 	Avatar,
 	ListItem,
-	CustomSwitch,
 	ItemSeparator,
-	PopOverlay,
 	CustomRefreshControl,
-	ListFooter,
-	Placeholder
+	Placeholder,
+	Badge
 } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
@@ -27,6 +25,7 @@ import actions from '../../store/actions';
 import { Storage, ItemKeys } from '../../store/localStorage';
 import { Query, withApollo, compose, graphql } from 'react-apollo';
 import { UserQuery } from '../../assets/graphql/user.graphql';
+import { userUnreadQuery } from '../../assets/graphql/notification.graphql';
 
 import { BoxShadow } from 'react-native-shadow';
 
@@ -252,7 +251,7 @@ class index extends Component {
 						// 		/>
 						// 		<Text style={styles.itemTypeText}>我的钱包</Text>
 						// 	</Row>
-						// 	<Iconfont name="right" size={17} color={Theme.subTextColor} />
+						// 	<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
 						// </TouchFeedback>
 					}
 					<TouchFeedback
@@ -265,7 +264,22 @@ class index extends Component {
 							<Iconfont name={'inform'} size={PxFit(26)} style={styles.itemType} color={'#04C9FE'} />
 							<Text style={styles.itemTypeText}>消息通知</Text>
 						</Row>
-						<Iconfont name="right" size={17} color={Theme.subTextColor} />
+						{login ? (
+							<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
+								{({ data, error, refetch }) => {
+									navigation.addListener('didFocus', payload => {
+										refetch();
+									});
+									if (data.user && data.user.unread_notifications_count) {
+										return <Badge count={data.user.unread_notifications_count} />;
+									} else {
+										return <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />;
+									}
+								}}
+							</Query>
+						) : (
+							<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+						)}
 					</TouchFeedback>
 					<TouchFeedback
 						style={styles.columnItem}
@@ -289,7 +303,7 @@ class index extends Component {
 							<Iconfont name={'feedback2'} size={PxFit(22)} style={styles.itemType} color={'#BB8DF3'} />
 							<Text style={styles.itemTypeText}>意见反馈</Text>
 						</Row>
-						<Iconfont name="right" size={17} color={Theme.subTextColor} />
+						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
 					</TouchFeedback>
 					<View style={{ height: 10 }} />
 					<TouchFeedback
@@ -302,14 +316,14 @@ class index extends Component {
 							<Iconfont name={'question'} size={PxFit(24)} style={styles.itemType} color={'#FF5E7D'} />
 							<Text style={styles.itemTypeText}>常见问题</Text>
 						</Row>
-						<Iconfont name="right" size={17} color={Theme.subTextColor} />
+						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
 					</TouchFeedback>
 					<TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Setting', { user })}>
 						<Row>
 							<Iconfont name={'setting1'} size={PxFit(24)} style={styles.itemType} color={'#7971F3'} />
 							<Text style={styles.itemTypeText}>设置</Text>
 						</Row>
-						<Iconfont name="right" size={17} color={Theme.subTextColor} />
+						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
 					</TouchFeedback>
 				</ScrollView>
 			</PageContainer>

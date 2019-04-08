@@ -26,6 +26,7 @@
     "react-native-image-crop-picker": "^0.21.3",
     "react-native-image-zoom-viewer": "^2.2.25",
     "react-native-modal": "^6.5.0",
+    "react-native-picker": "^4.3.7",
     "react-native-progress": "^3.5.0",
     "react-native-render-html": "^3.10.0",
     "react-native-scrollable-tab-view": "^0.10.0",
