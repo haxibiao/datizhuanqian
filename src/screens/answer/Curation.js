@@ -29,14 +29,14 @@ class ErrorCorrectionScreen extends Component {
 			content: '',
 			type: 1,
 			submitting: false,
-			image: null
+			images: null
 		};
 	}
 
 	submitError = async () => {
 		const { navigation } = this.props;
 		const { question } = navigation.state.params;
-		let { content, type, submitting } = this.state;
+		let { content, type, images, submitting } = this.state;
 		let result = {};
 		this.setState({
 			submitting: !submitting
@@ -47,7 +47,8 @@ class ErrorCorrectionScreen extends Component {
 				variables: {
 					question_id: question.id,
 					type,
-					content
+					content,
+					images
 				}
 			});
 		} catch (ex) {
@@ -136,9 +137,9 @@ class ErrorCorrectionScreen extends Component {
 						/>
 						<View style={{ padding: PxFit(Theme.itemSpace) }}>
 							<ImagePickerViewer
-								multiple={false}
+								maximum={3}
 								onResponse={images => {
-									this.setState({ image: images[0] });
+									this.setState({ images });
 								}}
 							/>
 						</View>

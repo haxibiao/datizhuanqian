@@ -15,6 +15,7 @@ import SafeText from '../Basics/SafeText';
 import Row from '../Container/Row';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import FollowButton from '../TouchableView/FollowButton';
+import UserTitle from './UserTitle';
 import GenderLabel from '../Utils/GenderLabel';
 
 type User = {
@@ -42,6 +43,7 @@ class UserItem extends Component<Props> {
 						<Row>
 							<SafeText style={styles.nameText}>{name}</SafeText>
 							<GenderLabel user={user} />
+							<UserTitle user={user} />
 						</Row>
 						{introduction && (
 							<View style={{ flex: 1 }}>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
 	nameText: {
 		fontSize: PxFit(16),
 		color: Theme.defaultTextColor,
-		marginRight: PxFit(6)
+		marginRight: PxFit(2)
 	},
 	introduction: {
 		marginTop: PxFit(8),

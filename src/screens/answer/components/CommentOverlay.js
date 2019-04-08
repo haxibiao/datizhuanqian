@@ -29,7 +29,7 @@ import {
 } from '../../../components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Tools } from '../../../utils';
 import { Query, Mutation, withApollo, compose, graphql } from 'react-apollo';
-import { createCommentMutation, commentsQuery } from '../../../assets/graphql/feedback.graphql';
+import { createCommentMutation, questionCommentsQuery } from '../../../assets/graphql/feedback.graphql';
 import CommentItem from './CommentItem';
 import CommentInput from './CommentInput';
 
@@ -50,42 +50,28 @@ const shadowOpt = {
 class CommentOverlay extends Component {
 	constructor(props) {
 		super(props);
-		this.commentLength = props.comments.length;
 		this.state = {
-			comments: props.comments,
-			finished: this.commentLength < 10
+			finished: false
 		};
 	}
-
-	static defaultProps = {
-		comments: []
-	};
 
 	componentWillReceiveProps(nextProps) {
 		try {
 			// 更新comment
 			if (nextProps.questionId !== this.props.questionId) {
-				this.setState({ comments: nextProps.comments });
+				this.setState({ finished: false });
 			}
 		} catch {
 			console.log('componentWillReceiveProps error');
 		}
 	}
 
-	onCommented = (newComment, really) => {
-		let { comments } = this.state;
-		if (newComment && really) {
-			comments[0] = Object.assign({}, comments[0], newComment.createComment);
-			this.setState({ comments });
-		} else if (newComment) {
-			comments.unshift(newComment);
-			this.setState({ comments });
-			this._flatList &&
-				this._flatList.scrollToOffset({
-					offset: 0,
-					animated: true
-				});
-		}
+	onCommented = () => {
+		this._flatList &&
+			this._flatList.scrollToOffset({
+				offset: 0,
+				animated: true
+			});
 	};
 
 	_renderCommentHeader = () => {
@@ -119,19 +105,22 @@ class CommentOverlay extends Component {
 				ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 				onEndReachedThreshold={0.3}
 				onEndReached={() => {
+					if (this.state.finished) return;
 					fetchMore({
 						variables: {
 							offset: comments.length
 						},
 						updateQuery: (prev, { fetchMoreResult }) => {
-							if (!(fetchMoreResult && fetchMoreResult.comments && fetchMoreResult.comments.length > 0)) {
-								this.setState({
-									finished: true
+							if (fetchMoreResult && fetchMoreResult.comments) {
+								if (fetchMoreResult.comments.length < 10) {
+									this.setState({
+										finished: true
+									});
+								}
+								return Object.assign({}, prev, {
+									comments: [...prev.comments, ...fetchMoreResult.comments]
 								});
-								return;
 							}
-							let comments = comments.concat(fetchMoreResult.comments);
-							this.setState({ comments, finished: true });
 						}
 					});
 				}}
@@ -140,14 +129,7 @@ class CommentOverlay extends Component {
 	};
 
 	render() {
-		let {
-			visible,
-			onHide,
-			questionId,
-			hideComment,
-			data: { fetchMore }
-		} = this.props;
-		let { comments } = this.state;
+		let { visible, onHide, questionId, hideComment } = this.props;
 		return (
 			<Modal
 				isVisible={visible}
@@ -157,18 +139,25 @@ class CommentOverlay extends Component {
 				backdropOpacity={1}
 				style={{ justifyContent: 'flex-end', margin: 0 }}
 			>
-				<BoxShadow
-					setting={Object.assign({}, shadowOpt, {
-						height: (SCREEN_HEIGHT * 2) / 3
-					})}
-				>
-					<View style={styles.commentContainer}>
-						{this._renderCommentHeader(comments)}
-						<View style={{ flex: 1 }}>{this.renderContent(comments, fetchMore)}</View>
-						<CommentInput questionId={questionId} onCompleted={this.onCommented} />
-						{ISIOS && <KeyboardSpacer topInsets={-Theme.HOME_INDICATOR_HEIGHT} />}
-					</View>
-				</BoxShadow>
+				<Query query={questionCommentsQuery} variables={{ commentable_id: questionId, limit: 10 }}>
+					{({ data, loading, error, refetch, fetchMore }) => {
+						let comments = Tools.syncGetter('comments', data);
+						return (
+							<BoxShadow
+								setting={Object.assign({}, shadowOpt, {
+									height: (SCREEN_HEIGHT * 2) / 3
+								})}
+							>
+								<View style={styles.commentContainer}>
+									{this._renderCommentHeader(comments)}
+									<View style={{ flex: 1 }}>{this.renderContent(comments, fetchMore)}</View>
+									<CommentInput questionId={questionId} onCommented={this.onCommented} />
+									{ISIOS && <KeyboardSpacer topInsets={-Theme.HOME_INDICATOR_HEIGHT} />}
+								</View>
+							</BoxShadow>
+						);
+					}}
+				</Query>
 			</Modal>
 		);
 	}
@@ -207,13 +196,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(
-	graphql(createCommentMutation, { name: 'createCommentMutation' }),
-	graphql(commentsQuery, {
-		options: props => {
-			return {
-				variables: { commentable_type: 'questions', commentable_id: props.questionId, limit: 10 }
-			};
-		}
-	})
-)(CommentOverlay);
+export default compose(graphql(createCommentMutation, { name: 'createCommentMutation' }))(CommentOverlay);

@@ -36,12 +36,9 @@ class QuestionBody extends Component {
 			<View style={styles.questionBody}>
 				<View>
 					<Text style={styles.description}>{'          ' + description}</Text>
-					<ImageBackground
-						source={require('../../../assets/images/question_type.png')}
-						style={styles.imageBG}
-					>
+					<View style={styles.questionType}>
 						<Text style={styles.answerType}>{answer.length > 1 ? '多选' : '单选'}</Text>
-					</ImageBackground>
+					</View>
 				</View>
 				<View style={styles.contentStyle}>
 					{image && this.showImage(image)}
@@ -63,12 +60,15 @@ const styles = StyleSheet.create({
 		fontSize: PxFit(16),
 		lineHeight: PxFit(22)
 	},
-	imageBG: {
+	questionType: {
 		position: 'absolute',
 		top: 2,
 		left: 0,
 		width: PxFit(36),
 		height: PxFit(18),
+		borderTopLeftRadius: PxFit(9),
+		borderBottomRightRadius: PxFit(9),
+		backgroundColor: Theme.primaryColor,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},

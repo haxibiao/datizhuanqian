@@ -19,19 +19,19 @@ class UserTitle extends Component {
 				{user.is_admin ? (
 					<Image
 						source={require('../../assets/images/admin.png')}
-						style={{ height: 13, width: 13, marginHorizontal: 5 }}
+						style={{ height: PxFit(13), width: PxFit(13), marginHorizontal: PxFit(5) }}
 					/>
 				) : (
 					<View
 						style={{
 							backgroundColor: Theme.theme,
-							paddingHorizontal: 2,
-							marginHorizontal: 5,
-							marginTop: 1,
-							borderRadius: 1
+							paddingVertical: PxFit(1),
+							paddingHorizontal: PxFit(2),
+							marginHorizontal: PxFit(5),
+							borderRadius: PxFit(2)
 						}}
 					>
-						<Text style={{ fontSize: 8, color: Theme.white }}>Lv.{user.level.level}</Text>
+						<Text style={{ fontSize: PxFit(8), color: '#fff' }}>Lv.{user.level.level}</Text>
 					</View>
 				)}
 			</View>

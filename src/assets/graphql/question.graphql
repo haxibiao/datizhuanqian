@@ -173,6 +173,7 @@ query QuestionQuery($id: Int, $category_id: Int, $comment_offset: Int, $comment_
 		}
 	}
 }
+
 #答题
 mutation QuestionAnswerMutation($id: Int!, $answer: String!) {
 	answerQuestion(id: $id, answer: $answer)
@@ -189,8 +190,8 @@ query BannersQuery {
 }
 
 #问题纠错
-mutation createCurationMutation($question_id: Int!, $type: Int, $content: String) {
-	createCuration(question_id: $question_id, type: $type, content: $content) {
+mutation createCurationMutation($question_id: Int!, $type: Int, $content: String, $images: [String]) {
+	createCuration(question_id: $question_id, type: $type, content: $content, images: $images) {
 		id
 	}
 }

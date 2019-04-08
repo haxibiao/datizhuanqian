@@ -187,6 +187,18 @@ class index extends Component {
 		this.setState({ answer });
 	};
 
+	helpCuration = () => {
+		let { question } = this.state;
+		let { navigation } = this.props;
+		if (question.type === 'contribute') {
+			Toast.show({ content: '无法对自己出的题纠错哦~' });
+		} else if (question.type === 'curation') {
+			Toast.show({ content: '该题您已经纠过了呢~' });
+		} else {
+			navigation.navigate('Curation', { question });
+		}
+	};
+
 	renderContent = () => {
 		let { answer, submited, question, showComment } = this.state;
 		const {
@@ -250,10 +262,7 @@ class index extends Component {
 							</View>
 							<Row>
 								<Text style={styles.curationText}>答案有误?</Text>
-								<Text
-									style={styles.errorText}
-									onPress={() => navigation.navigate('Curation', { question })}
-								>
+								<Text style={styles.errorText} onPress={this.helpCuration}>
 									帮忙纠错
 								</Text>
 							</Row>
@@ -268,12 +277,7 @@ class index extends Component {
 					showComment={this.showComment}
 					oSubmit={this.onSubmit}
 				/>
-				<CommentOverlay
-					visible={showComment}
-					onHide={this.hideComment}
-					questionId={question.id}
-					comments={question.comments}
-				/>
+				<CommentOverlay visible={showComment} onHide={this.hideComment} questionId={question.id} />
 			</React.Fragment>
 		);
 	};
@@ -302,14 +306,12 @@ const styles = StyleSheet.create({
 	},
 	tipsView: {
 		marginHorizontal: PxFit(Theme.itemSpace),
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
 		padding: PxFit(Theme.itemSpace)
 	},
 	answerText: {
 		fontSize: PxFit(15),
-		color: Theme.defaultTextColor
+		color: Theme.defaultTextColor,
+		marginBottom: PxFit(5)
 	},
 	curationText: {
 		fontSize: PxFit(13),

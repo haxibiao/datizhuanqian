@@ -9,7 +9,7 @@ import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 import { TouchFeedback, Iconfont, CustomTextInput, SafeText, Avatar, Row } from '../../../components';
 import { Provider, connect } from 'react-redux';
 import { Mutation, compose, withApollo } from 'react-apollo';
-import { createCommentMutation, commentsQuery } from '../../../assets/graphql/feedback.graphql';
+import { createCommentMutation, questionCommentsQuery } from '../../../assets/graphql/feedback.graphql';
 
 class CommentInput extends Component {
 	constructor(props) {
@@ -17,54 +17,30 @@ class CommentInput extends Component {
 		this.state = { content: null };
 	}
 
-	sendComment = () => {
-		let { content } = this.state;
-		this.addComment();
-		this.props.onCompleted({
-			id: -1,
-			content,
-			user: this.props.user,
-			liked: false,
-			count_likes: 0,
-			time_ago: '刚刚'
+	update = (cache, { data: { createComment } }) => {
+		let { questionId } = this.props;
+		let prev = cache.readQuery({
+			query: questionCommentsQuery,
+			variables: {
+				commentable_type: 'questions',
+				commentable_id: questionId,
+				limit: 10
+			}
 		});
-		this.setState({ content: '' });
-		Keyboard.dismiss();
+		cache.writeQuery({
+			query: questionCommentsQuery,
+			variables: {
+				commentable_type: 'questions',
+				commentable_id: questionId,
+				limit: 10
+			},
+			data: { comments: [createComment, ...prev.comments] }
+		});
 	};
 
-	// optimisticResponse={{
-	// 	__typename: 'Mutation',
-	// 	addComment: {
-	// 		__typename: 'Comment',
-	// 		id: -1,
-	// 		user: user,
-	// 		content: content,
-	// 		liked: false,
-	// 		time_ago: '刚刚',
-	// 		count_likes: 0
-	// 	}
-	// }}
-	// update = (cache, { data: { createComment } }) => {
-	// 	let { questionId } = this.props;
-	// 	let prev = cache.readQuery({
-	// 		query: commentsQuery,
-	// 		variables: {
-	// 			commentable_type: 'questions',
-	// 			commentable_id: questionId
-	// 		}
-	// 	});
-	// 	cache.writeQuery({
-	// 		query: commentsQuery,
-	// 		variables: {
-	// 			commentable_type: 'questions',
-	// 			commentable_id: questionId
-	// 		},
-	// 		data: { comments: [createComment, ...prev.comments] }
-	// 	});
-	// };
-
 	onCompleted = comment => {
-		this.props.onCompleted(comment, true);
+		this.props.onCommented();
+		Toast.show({ content: '评论成功', layout: 'top' });
 	};
 
 	onError = error => {
@@ -79,19 +55,10 @@ class CommentInput extends Component {
 	render() {
 		let { questionId, navigation, style, user } = this.props;
 		let { content } = this.state;
+		console.log('test user', user);
 		return (
-			<Mutation
-				mutation={createCommentMutation}
-				variables={{
-					content,
-					commentable_id: questionId,
-					commentable_type: 'questions'
-				}}
-				onCompleted={this.onCompleted}
-				onError={this.onError}
-			>
+			<Mutation mutation={createCommentMutation} onCompleted={this.onCompleted} onError={this.onError}>
 				{addComment => {
-					this.addComment = addComment;
 					return (
 						<View style={[styles.footerBar, style]}>
 							<CustomTextInput
@@ -100,7 +67,35 @@ class CommentInput extends Component {
 								value={content}
 								onChangeText={this.onChangeText}
 							/>
-							<TouchFeedback disabled={!content} style={styles.touchItem} onPress={this.sendComment}>
+							<TouchFeedback
+								disabled={!content}
+								style={styles.touchItem}
+								onPress={() => {
+									addComment({
+										variables: {
+											content,
+											commentable_id: questionId,
+											commentable_type: 'questions'
+										},
+										optimisticResponse: {
+											__typename: 'Mutation',
+											createComment: {
+												__typename: 'Comment',
+												id: -1,
+												user,
+												content,
+												time_ago: '刚刚',
+												liked: false,
+												count_likes: 0
+											}
+										},
+
+										update: this.update
+									});
+									this.setState({ content: '' });
+									Keyboard.dismiss();
+								}}
+							>
 								<Iconfont
 									name="plane-fill"
 									size={PxFit(24)}

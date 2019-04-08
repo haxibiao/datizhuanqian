@@ -15,6 +15,14 @@ mutation signUpMutation($account: String!, $password: String!) {
 		status
 		token
 		pay_info_change_count
+		is_admin
+		level {
+			id
+			name
+			ticket_max
+			level
+			exp
+		}
 	}
 }
 
@@ -35,6 +43,14 @@ mutation signInMutation($account: String!, $password: String!) {
 		status
 		token
 		pay_info_change_count
+		is_admin
+		level {
+			id
+			name
+			ticket_max
+			level
+			exp
+		}
 	}
 }
 

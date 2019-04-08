@@ -38,15 +38,19 @@ const render = {
 		</View>
 	),
 	comment: color => (
-		<View style={[styles.placeholder, { flexDirection: 'row', alignItems: 'flex-start' }]}>
-			<View style={[styles.avatar, { backgroundColor: color }]} />
+		<View style={[styles.placeholder, { flexDirection: 'row' }]}>
+			<View
+				style={[
+					styles.avatar,
+					{ width: PxFit(30), height: PxFit(30), borderRadius: PxFit(15), backgroundColor: color }
+				]}
+			/>
 			<View style={{ flex: 1 }}>
 				<View style={styles.group}>
 					<View>
 						<View style={[styles.strip, { backgroundColor: color }]} />
-						<View style={[styles.strip, { marginVertical: PxFit(10), backgroundColor: color }]} />
 					</View>
-					<Iconfont name="praise2" size={PxFit(24)} color={color} />
+					<Iconfont name="praise-fill" size={PxFit(20)} color={color} />
 				</View>
 				<View style={[styles.paragraph, { backgroundColor: color }]} />
 				<View style={[styles.paragraph, { backgroundColor: color }]} />
@@ -154,5 +158,5 @@ const styles = StyleSheet.create({
 		borderRadius: PxFit(4),
 		backgroundColor: '#f0f0f0'
 	},
-	group: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }
+	group: { height: PxFit(30), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }
 });

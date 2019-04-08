@@ -62,6 +62,7 @@ import Appintroduction from './Utils/Appintroduction';
 import TabBar from './Utils/TabBar';
 import GenderLabel from './Utils/GenderLabel';
 import Badge from './Utils/Badge';
+import WheelPicker from './Utils/WheelPicker';
 //Media
 import Player from './Media/Player';
 
@@ -114,5 +115,6 @@ export {
 	TabBar,
 	GenderLabel,
 	Badge,
+	WheelPicker,
 	Player
 };

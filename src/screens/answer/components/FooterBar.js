@@ -36,7 +36,7 @@ class FooterBar extends Component {
 		let { navigation, question, submited, answer, showComment, oSubmit } = this.props;
 		let { favorited } = this.state;
 		let buttonStyle = {
-			backgroundColor: submited ? Theme.linkColor : Theme.correctColor,
+			backgroundColor: submited ? Theme.primaryColor : Theme.correctColor,
 			opacity: answer ? 1 : 0.6
 		};
 		return (

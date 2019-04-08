@@ -4,7 +4,17 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, Animated } from 'react-native';
-import { TouchFeedback, Iconfont, Center, SafeText, Avatar, Row, PullChooser } from '../../../components';
+import {
+	TouchFeedback,
+	Iconfont,
+	Center,
+	SafeText,
+	Avatar,
+	Row,
+	PullChooser,
+	UserTitle,
+	GenderLabel
+} from '../../../components';
 import { Theme, PxFit, WPercent, Tools } from '../../../utils';
 import { toggleLikeMutation } from '../../../assets/graphql/feedback.graphql';
 import { compose, graphql, Query, Mutation } from 'react-apollo';
@@ -78,14 +88,15 @@ class CommentItem extends Component<Props> {
 		return (
 			<Animated.View style={styles.comment}>
 				<TouchFeedback onPress={() => navigation.navigate('User', { user: comment.user })}>
-					<Avatar source={comment.user.avatar} size={PxFit(36)} />
+					<Avatar source={comment.user.avatar} size={PxFit(30)} />
 				</TouchFeedback>
 				<View style={{ flex: 1, marginLeft: PxFit(12) }}>
 					<View style={styles.profile}>
-						<View>
+						<Row>
 							<SafeText style={styles.name}>{comment.user.name}</SafeText>
-							<SafeText style={styles.timeAgo}>{comment.time_ago}</SafeText>
-						</View>
+							<GenderLabel user={comment.user} size={PxFit(14)} />
+							<UserTitle user={comment.user} />
+						</Row>
 						<Row>
 							<Animated.View style={{ transform: [{ scale: scale }] }}>
 								<TouchFeedback style={styles.touchItem} onPress={Tools.throttle(this.likeComment, 400)}>
@@ -106,6 +117,9 @@ class CommentItem extends Component<Props> {
 							</Text>
 						)}
 					</View>
+					<View>
+						<SafeText style={styles.timeAgo}>{comment.time_ago}</SafeText>
+					</View>
 				</View>
 			</Animated.View>
 		);
@@ -120,7 +134,7 @@ const styles = StyleSheet.create({
 	},
 	profile: {
 		flex: 1,
-		height: PxFit(40),
+		height: PxFit(30),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
@@ -136,7 +150,7 @@ const styles = StyleSheet.create({
 		color: Theme.secondaryTextColor
 	},
 	timeAgo: {
-		marginTop: PxFit(6),
+		marginTop: PxFit(8),
 		fontSize: PxFit(12),
 		fontWeight: '200',
 		color: Theme.tintTextColor
@@ -147,7 +161,7 @@ const styles = StyleSheet.create({
 		color: Theme.primaryColor
 	},
 	contentText: {
-		marginTop: PxFit(10),
+		marginTop: PxFit(8),
 		fontSize: PxFit(16),
 		lineHeight: PxFit(22),
 		fontWeight: '300',
@@ -156,17 +170,6 @@ const styles = StyleSheet.create({
 	linkText: {
 		lineHeight: PxFit(22),
 		color: Theme.linkColor
-	},
-	replyCommentsContainer: {
-		marginTop: PxFit(10),
-		padding: PxFit(12),
-		backgroundColor: Theme.groundColour,
-		borderRadius: PxFit(6)
-	},
-	replyBodyText: {
-		fontSize: PxFit(14),
-		lineHeight: PxFit(18),
-		color: Theme.secondaryTextColor
 	}
 });
 
