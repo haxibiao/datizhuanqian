@@ -62,7 +62,7 @@ class FeedbackDetails extends Component {
 					variables={{ commentable_id: feedback_id, commentable_type: 'feedbacks' }}
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <Loading />;
 						let adminComment = data.comments.filter((elem, i) => {
 							return elem.user.is_admin == true;

@@ -25,11 +25,11 @@ class ErrorCorrectionScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.onCheck = this.onCheck.bind(this);
+		this.images = null;
 		this.state = {
 			content: '',
 			type: 1,
-			submitting: false,
-			images: null
+			submitting: false
 		};
 	}
 
@@ -48,7 +48,7 @@ class ErrorCorrectionScreen extends Component {
 					question_id: question.id,
 					type,
 					content,
-					images
+					images: this.images
 				}
 			});
 		} catch (ex) {
@@ -139,7 +139,7 @@ class ErrorCorrectionScreen extends Component {
 							<ImagePickerViewer
 								maximum={3}
 								onResponse={images => {
-									this.setState({ images });
+									this.images = images;
 								}}
 							/>
 						</View>

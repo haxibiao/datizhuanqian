@@ -27,7 +27,7 @@ class ExchangeLog extends Component {
 			<View style={{ flex: 1 }}>
 				<Query query={ExchangesQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
 						if (!(data && data.exchanges.length > 0))
 							return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;

@@ -30,7 +30,7 @@ class WithdrawsLog extends Component {
 			<PageContainer title="提现记录" white>
 				<Query query={WithdrawsQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
 						if (!(data && data.withdraws))
 							return <EmptyView imageSource={require('../../assets/images/default_message.png')} />;

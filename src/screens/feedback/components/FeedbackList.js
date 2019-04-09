@@ -50,7 +50,7 @@ class FeedbackList extends Component {
 
 				<Query query={feedbacksQuery} variables={{ user_id: filter }} fetchPolicy="network-only">
 					{({ data, loading, error, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
 						if (!(data && data.feedbacks && data.feedbacks.length > 0)) return <EmptyView />;
 						return (

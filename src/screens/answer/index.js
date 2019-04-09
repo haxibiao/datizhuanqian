@@ -29,6 +29,8 @@ import FiexdFooter from './components/FiexdFooter';
 import FooterBar from './components/FooterBar';
 import CommentOverlay from './components/CommentOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
+import AuditTitle from './components/AuditTitle';
+import Audit from './components/Audit';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -233,10 +235,11 @@ class index extends Component {
 				}
 			]
 		};
+		question.submit = 0;
 		return (
 			<React.Fragment>
 				<ScrollView
-					contentContainerStyle={{ flexGrow: 1 }}
+					contentContainerStyle={{ flexGrow: 1, paddingBottom: question.submit === 0 && SCREEN_WIDTH / 3 }}
 					keyboardShouldPersistTaps="always"
 					showsVerticalScrollIndicator={false}
 					bounces={false}
@@ -244,13 +247,17 @@ class index extends Component {
 					<TabBar />
 					<View style={styles.content}>
 						<Animated.View style={animateStyles}>
-							<UserInfo question={question} navigation={navigation} />
+							{question.submit === 0 ? (
+								<AuditTitle navigation={navigation} />
+							) : (
+								<UserInfo question={question} navigation={navigation} />
+							)}
 							<QuestionBody question={question} />
 						</Animated.View>
 						<QuestionOptions
 							selections={question.selections_array}
 							onSelectOption={this.selectOption}
-							submited={submited}
+							submited={question.submit === 0 || submited}
 							answer={question.answer}
 							selectedOption={answer}
 						/>
@@ -269,14 +276,18 @@ class index extends Component {
 						</View>
 					)}
 				</ScrollView>
-				<FooterBar
-					navigation={navigation}
-					question={question}
-					submited={submited}
-					answer={answer}
-					showComment={this.showComment}
-					oSubmit={this.onSubmit}
-				/>
+				{question.submit === 0 ? (
+					<Audit navigation={navigation} nextQuestion={this.nextQuestion} />
+				) : (
+					<FooterBar
+						navigation={navigation}
+						question={question}
+						submited={submited}
+						answer={answer}
+						showComment={this.showComment}
+						oSubmit={this.onSubmit}
+					/>
+				)}
 				<CommentOverlay visible={showComment} onHide={this.hideComment} questionId={question.id} />
 			</React.Fragment>
 		);
@@ -306,7 +317,7 @@ const styles = StyleSheet.create({
 	},
 	tipsView: {
 		marginHorizontal: PxFit(Theme.itemSpace),
-		padding: PxFit(Theme.itemSpace)
+		padding: PxFit(10)
 	},
 	answerText: {
 		fontSize: PxFit(15),

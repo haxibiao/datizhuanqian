@@ -46,7 +46,7 @@ class SystemNotification extends Component {
 					fetchPolicy="network-only"
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
 						if (!(data && data.notifications.length > 0)) return <EmptyView />;
 						return (

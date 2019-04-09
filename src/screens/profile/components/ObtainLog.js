@@ -27,7 +27,7 @@ class ObtainLog extends Component {
 			<View style={{ flex: 1 }}>
 				<Query query={GoldsQuery} fetchPolicy="network-only" variables={{ user_id: user.id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
 						if (!(data && data.golds))
 							return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;

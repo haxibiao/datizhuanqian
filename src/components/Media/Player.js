@@ -87,10 +87,10 @@ class Player extends React.PureComponent {
 
 	render() {
 		let { paused, loaded } = this.state;
-		let { source, muted, width = SCREEN_WIDTH - 40 } = this.props;
+		let { source, muted, width = SCREEN_WIDTH - PxFit(40) } = this.props;
 		return (
 			<TouchableOpacity
-				style={[styles.playContainer, { width, height: width * 0.7 }]}
+				style={[styles.playContainer, { width, height: width * 0.65 }]}
 				activeOpacity={1}
 				onPress={this.control}
 			>

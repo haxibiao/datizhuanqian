@@ -26,7 +26,7 @@ class WithdrawLogDetails extends Component {
 			<PageContainer style={styles.container} title="提现详情">
 				<Query query={WithdrawQuery} variables={{ id: withdraw_id }}>
 					{({ data, error, loading, refetch }) => {
-						if (error) return <ErrorView onPress={() => refetch()} />;
+						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
 						if (!(data && data.withdraw)) return <EmptyView />;
 						let withdraw = data.withdraw;
