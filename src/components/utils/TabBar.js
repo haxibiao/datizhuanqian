@@ -59,12 +59,23 @@ class TabTop extends Component {
 								>
 									<View style={styles.container}>
 										<View style={styles.rowItem}>
-											<Iconfont name={'like'} size={24} color={Theme.theme} />
-											<Text style={styles.text}> 精力点</Text>
+											<View
+												style={{
+													width: PxFit(28),
+													height: PxFit(28),
+													justifyContent: 'center',
+													alignItems: 'center'
+												}}
+											>
+												<Image
+													source={require('../../assets/images/heart.png')}
+													style={styles.iconImage}
+												/>
+											</View>
+											<Text style={styles.text}>精力点 </Text>
 											<Text
 												style={{
 													fontSize: PxFit(15),
-													paddingLeft: PxFit(5),
 													color: user.ticket > 10 ? Theme.black : Theme.themeRed
 												}}
 											>
@@ -75,8 +86,24 @@ class TabTop extends Component {
 											</Text>
 										</View>
 										<View style={styles.rowItem}>
-											<Iconfont name={'zhuanshi'} size={22} color={Theme.theme} />
-											<Text style={[styles.text, { paddingRight: PxFit(5) }]}>智慧点</Text>
+											<View
+												style={{
+													width: PxFit(28),
+													height: PxFit(28),
+													justifyContent: 'center',
+													alignItems: 'center'
+												}}
+											>
+												<Image
+													source={require('../../assets/images/diamond.png')}
+													style={{
+														width: PxFit(23),
+														height: PxFit(25),
+														marginBottom: PxFit(2)
+													}}
+												/>
+											</View>
+											<Text style={styles.text}>智慧点 </Text>
 											<Text style={styles.text}>{user.gold}</Text>
 										</View>
 									</View>
@@ -114,9 +141,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
+	iconImage: {
+		width: PxFit(24),
+		height: PxFit(24)
+	},
 	text: {
 		fontSize: PxFit(15),
-		color: Theme.black
+		color: Theme.defaultTextColor
 	}
 });
 

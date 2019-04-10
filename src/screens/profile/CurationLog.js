@@ -58,7 +58,7 @@ class CorrectLog extends Component {
 						<PageContainer title="纠错记录" refetch={refetch} loading={loading} empty={empty}>
 							<FlatList
 								contentContainerStyle={styles.container}
-								data={data.curations}
+								data={curations}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
 									<CorrectionItem correctionItem={item} navigation={navigation} />
@@ -66,10 +66,10 @@ class CorrectLog extends Component {
 								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
-									if (data.curations) {
+									if (curations) {
 										fetchMore({
 											variables: {
-												offset: data.curations.length
+												offset: curations.length
 											},
 											updateQuery: (prev, { fetchMoreResult }) => {
 												if (

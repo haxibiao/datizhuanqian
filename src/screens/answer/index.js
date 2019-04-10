@@ -46,6 +46,8 @@ class index extends Component {
 		this.questions = null;
 		// 题目长度，用与加载更多的offset
 		this.questionsLength = 0;
+		this.bodyHeight = 0;
+		this.footerHeight = 0;
 		this._animated = new Animated.Value(0);
 		this.state = {
 			question: null,
@@ -201,6 +203,16 @@ class index extends Component {
 		}
 	};
 
+	_onBodyLayout = e => {
+		let { height } = e.nativeEvent.layout;
+		this.bodyHeight = height;
+	};
+
+	_onFooterLayout = e => {
+		let { height } = e.nativeEvent.layout;
+		this.footerHeight = height;
+	};
+
 	renderContent = () => {
 		let { answer, submited, question, showComment } = this.state;
 		const {
@@ -223,30 +235,43 @@ class index extends Component {
 		} else if (!question) {
 			return <AnswerPlaceholder />;
 		}
-		const animateStyles = {
+		const bodyStyle = {
 			opacity: this._animated,
 			transform: [
 				{
-					scale: this._animated.interpolate({
+					translateY: this._animated.interpolate({
 						inputRange: [0, 1],
-						outputRange: [0.5, 1],
+						outputRange: [-this.bodyHeight, 0],
 						extrapolate: 'clamp'
 					})
 				}
 			]
 		};
+		const footerStyle = {
+			opacity: this._animated,
+			transform: [
+				{
+					translateY: this._animated.interpolate({
+						inputRange: [0, 1],
+						outputRange: [this.footerHeight, 0],
+						extrapolate: 'clamp'
+					})
+				}
+			]
+		};
+		// Math.random(0, 1) > 0.5 ? 0 : 1;
 		question.submit = 0;
 		return (
 			<React.Fragment>
+				<TabBar />
 				<ScrollView
 					contentContainerStyle={{ flexGrow: 1, paddingBottom: question.submit === 0 && SCREEN_WIDTH / 3 }}
 					keyboardShouldPersistTaps="always"
 					showsVerticalScrollIndicator={false}
 					bounces={false}
 				>
-					<TabBar />
 					<View style={styles.content}>
-						<Animated.View style={animateStyles}>
+						<Animated.View style={bodyStyle} onLayout={this._onBodyLayout}>
 							{question.submit === 0 ? (
 								<AuditTitle navigation={navigation} />
 							) : (
@@ -279,14 +304,16 @@ class index extends Component {
 				{question.submit === 0 ? (
 					<Audit navigation={navigation} nextQuestion={this.nextQuestion} />
 				) : (
-					<FooterBar
-						navigation={navigation}
-						question={question}
-						submited={submited}
-						answer={answer}
-						showComment={this.showComment}
-						oSubmit={this.onSubmit}
-					/>
+					<Animated.View style={footerStyle} onLayout={this._onFooterLayout}>
+						<FooterBar
+							navigation={navigation}
+							question={question}
+							submited={submited}
+							answer={answer}
+							showComment={this.showComment}
+							oSubmit={this.onSubmit}
+						/>
+					</Animated.View>
 				)}
 				<CommentOverlay visible={showComment} onHide={this.hideComment} questionId={question.id} />
 			</React.Fragment>

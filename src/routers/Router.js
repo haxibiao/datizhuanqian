@@ -9,13 +9,15 @@ import ForgetPasswordScreen from '../screens/login/ForgetPassword';
 import RetrievePasswordScreen from '../screens/login/RetrievePassword';
 import AnswerScreen from '../screens/answer';
 import CurationScreen from '../screens/answer/Curation';
+import ChargeTicketScreen from '../screens/wallet/ChargeTicket';
+import TopUpScreen from '../screens/wallet/TopUp';
 import SettingScreen from '../screens/setting';
 import AccountSecurityScreen from '../screens/setting/AccountSecurity';
 import GradeDescriptionScreen from '../screens/setting/GradeDescription';
 import UserProtocolScreen from '../screens/setting/UserProtocol';
 import ShareAppScreen from '../screens/setting/ShareApp';
 import AboutUsScreen from '../screens/setting/AboutUs';
-import WalletScreen from '../screens/wallet';
+import WithdrawsScreen from '../screens/withdraws';
 import WithdrawLogScreen from '../screens/withdraws/WithdrawLog';
 import WithdrawLogDetailScreen from '../screens/withdraws/WithdrawLogDetails';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
@@ -65,6 +67,12 @@ export default {
 	Curation: {
 		screen: CurationScreen
 	},
+	ChargeTicket: {
+		screen: ChargeTicketScreen
+	},
+	TopUp: {
+		screen: TopUpScreen
+	},
 	// setting
 	Setting: {
 		screen: SettingScreen
@@ -84,8 +92,8 @@ export default {
 	AboutUs: {
 		screen: AboutUsScreen
 	},
-	Wallet: {
-		screen: WalletScreen
+	Withdraws: {
+		screen: WithdrawsScreen
 	},
 	WithdrawLog: {
 		screen: WithdrawLogScreen

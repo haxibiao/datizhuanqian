@@ -442,7 +442,7 @@ class index extends Component {
 															<Iconfont
 																name={'question'}
 																size={PxFit(14)}
-																color={Theme.subTextColor}
+																color={Theme.errorColor}
 															/>
 															<Text style={styles.ruleText}>出题规则</Text>
 														</Row>
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	ruleText: { fontSize: PxFit(13), color: Theme.subTextColor, marginLeft: PxFit(2) },
+	ruleText: { fontSize: PxFit(13), color: Theme.errorColor, marginLeft: PxFit(2) },
 	answerContainer: {
 		marginTop: PxFit(Theme.itemSpace)
 	},

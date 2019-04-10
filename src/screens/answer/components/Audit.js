@@ -42,21 +42,15 @@ class Audit extends Component<Props> {
 	};
 
 	nextQuestion = () => {
-		this.timer && clearInterval(this.timer);
-		this.setState(
-			prevState => ({ status: 0 }),
-			() => {
-				Animated.timing(this._animated, {
-					toValue: 0,
-					duration: 300,
-					delay: 500
-				}).start();
-			}
-		);
-		this.timer = setTimeout(() => {
+		Animated.timing(this._animated, {
+			toValue: 0,
+			duration: 300,
+			delay: 500
+		}).start(() => {
+			this.setState({ status: 0 });
 			this.props.nextQuestion();
 			this._animated.setValue(1);
-		}, 900);
+		});
 	};
 
 	render() {
@@ -87,7 +81,7 @@ class Audit extends Component<Props> {
 						<Image source={require('../../../assets/images/oppose.png')} style={styles.opinionImage} />
 					</TouchFeedback>
 				</Animated.View>
-				<Image source={source} style={styles.statusImage} />
+				<Animated.Image source={source} style={[styles.statusImage, { opacity: this._animated }]} />
 				<Animated.View style={[styles.opinionItem, styles.opinionItemRight, this.styleMap()]}>
 					<TouchFeedback
 						style={styles.opinionItemButton}

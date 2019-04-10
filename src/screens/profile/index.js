@@ -51,7 +51,9 @@ class index extends Component {
 	}
 
 	componentWillMount() {
-		this.loadCache();
+		if (this.props.login) {
+			this.loadCache();
+		}
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -235,25 +237,6 @@ class index extends Component {
 							</View>
 						</BoxShadow>
 					</View>
-					{
-						// <TouchFeedback
-						// 	style={styles.columnItem}
-						// 	authenticated
-						// 	navigation={navigation}
-						// 	onPress={() => navigation.navigate('Wallet', { user })}
-						// >
-						// 	<Row>
-						// 		<Iconfont
-						// 			name={'withdraw'}
-						// 			size={PxFit(20)}
-						// 			style={styles.itemType}
-						// 			color={'#FFBB04'}
-						// 		/>
-						// 		<Text style={styles.itemTypeText}>我的钱包</Text>
-						// 	</Row>
-						// 	<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-						// </TouchFeedback>
-					}
 					<TouchFeedback
 						style={styles.columnItem}
 						authenticated
@@ -261,7 +244,10 @@ class index extends Component {
 						onPress={() => navigation.navigate('Notification')}
 					>
 						<Row>
-							<Iconfont name={'inform'} size={PxFit(26)} style={styles.itemType} color={'#04C9FE'} />
+							<Image
+								style={styles.metaIcon}
+								source={require('../../assets/images/profile_notification.png')}
+							/>
 							<Text style={styles.itemTypeText}>消息通知</Text>
 						</Row>
 						{login ? (
@@ -270,7 +256,7 @@ class index extends Component {
 									navigation.addListener('didFocus', payload => {
 										refetch();
 									});
-									if (data.user && data.user.unread_notifications_count) {
+									if (data && data.user && data.user.unread_notifications_count) {
 										return <Badge count={data.user.unread_notifications_count} />;
 									} else {
 										return <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />;
@@ -288,7 +274,7 @@ class index extends Component {
 						onPress={() => navigation.navigate('BillingRecord')}
 					>
 						<Row>
-							<Iconfont name={'billing'} size={PxFit(27)} style={styles.itemType} color={Theme.theme} />
+							<Image style={styles.metaIcon} source={require('../../assets/images/profile_order.png')} />
 							<Text style={styles.itemTypeText}>账单记录</Text>
 						</Row>
 						<Iconfont name="right" size={17} color={Theme.subTextColor} />
@@ -300,7 +286,10 @@ class index extends Component {
 						onPress={() => navigation.navigate('Feedback')}
 					>
 						<Row>
-							<Iconfont name={'feedback2'} size={PxFit(22)} style={styles.itemType} color={'#BB8DF3'} />
+							<Image
+								style={styles.metaIcon}
+								source={require('../../assets/images/profile_feedback.png')}
+							/>
 							<Text style={styles.itemTypeText}>意见反馈</Text>
 						</Row>
 						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
@@ -313,14 +302,17 @@ class index extends Component {
 						onPress={() => navigation.navigate('CommonIssue')}
 					>
 						<Row>
-							<Iconfont name={'question'} size={PxFit(24)} style={styles.itemType} color={'#FF5E7D'} />
+							<Image style={styles.metaIcon} source={require('../../assets/images/profile_help.png')} />
 							<Text style={styles.itemTypeText}>常见问题</Text>
 						</Row>
 						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
 					</TouchFeedback>
 					<TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Setting', { user })}>
 						<Row>
-							<Iconfont name={'setting1'} size={PxFit(24)} style={styles.itemType} color={'#7971F3'} />
+							<Image
+								style={styles.metaIcon}
+								source={require('../../assets/images/profile_setting.png')}
+							/>
 							<Text style={styles.itemTypeText}>设置</Text>
 						</Row>
 						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
@@ -424,6 +416,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	itemTypeText: {
+		marginLeft: PxFit(10),
 		fontSize: PxFit(15),
 		color: Theme.defaultTextColor
 	},

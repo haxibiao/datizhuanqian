@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, PopOverlay, Button, CustomTextInput } from '../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -139,7 +139,11 @@ class index extends Component {
 				<View style={styles.container} bounces={false}>
 					<View style={styles.registerCoverContainer}>
 						<Image
-							source={require('../../assets/images/register_cover_2.png')}
+							source={
+								SCREEN_HEIGHT / SCREEN_WIDTH >= 2
+									? require('../../assets/images/register_cover_2.png')
+									: require('../../assets/images/register_cover_1.png')
+							}
 							style={styles.registerCover}
 						/>
 					</View>

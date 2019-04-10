@@ -17,7 +17,6 @@ import { CreateWithdrawMutation, WithdrawsQuery } from '../../assets/graphql/wit
 import { UserQuery } from '../../assets/graphql/User.graphql';
 import { Mutation, Query, compose, graphql } from 'react-apollo';
 
-import RuleDescription from './components/RuleDescription';
 import NotLogin from './components/NotLogin';
 import WithdrawGuidance from './components/WithdrawGuidance';
 
@@ -42,7 +41,9 @@ class index extends Component {
 	}
 
 	componentDidMount() {
-		this.loadCache();
+		if (this.props.login) {
+			this.loadCache();
+		}
 	}
 
 	async loadCache() {
@@ -133,17 +134,6 @@ class index extends Component {
 		}
 	}
 
-	showRule = () => {
-		let overlayView = (
-			<Overlay.View animated>
-				<View style={styles.overlayInner}>
-					<RuleDescription hide={() => Overlay.hide(this.OverlayKey)} />
-				</View>
-			</Overlay.View>
-		);
-		this.OverlayKey = Overlay.show(overlayView);
-	};
-
 	calcExchange(gold, value) {
 		return gold / 600 > value;
 	}
@@ -152,15 +142,7 @@ class index extends Component {
 		let { clickControl, isVisible, userCache } = this.state;
 		const { user, login, navigation, luckyMoney } = this.props;
 		return (
-			<PageContainer
-				title="提现"
-				isTopNavigator
-				rightView={
-					<TouchFeedback onPress={this.showRule} style={styles.rule}>
-						<Iconfont name={'question'} size={PxFit(19)} color={'#fff'} />
-					</TouchFeedback>
-				}
-			>
+			<PageContainer title="提现">
 				{login ? (
 					<Query query={UserQuery} variables={{ id: user.id }}>
 						{({ data, loading, error, refetch }) => {

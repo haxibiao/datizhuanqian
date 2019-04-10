@@ -7,8 +7,9 @@ import { Platform, Image } from 'react-native';
 import { StackNavigator, TabBarBottom, createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 
 import HomeScreen from '../screens/home';
-import WithdrawScreen from '../screens/withdraws';
 import TaskScreen from '../screens/task';
+import WithdrawScreen from '../screens/withdraws';
+import WalletScreen from '../screens/wallet';
 import ProfileScreen from '../screens/profile';
 import MainTabBar from './MainTabBar';
 import { Theme, PxFit } from '../utils';
@@ -24,9 +25,9 @@ export default createBottomTabNavigator(
 			screen: TaskScreen,
 			navigationOptions: () => TabOptions('任务')
 		},
-		提现: {
-			screen: WithdrawScreen,
-			navigationOptions: () => TabOptions('提现')
+		钱袋: {
+			screen: WalletScreen,
+			navigationOptions: () => TabOptions('钱袋')
 		},
 		我的: {
 			screen: ProfileScreen,
@@ -95,7 +96,7 @@ const TabOptions = routeName => {
 				iconName = `order${focused ? '-fill' : ''}`;
 				iconSize = PxFit(21);
 				break;
-			case '提现':
+			case '钱袋':
 				iconName = `wallet${focused ? '-fill' : ''}`;
 				iconSize = PxFit(19);
 				break;
