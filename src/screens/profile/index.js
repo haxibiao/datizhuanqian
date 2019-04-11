@@ -275,7 +275,7 @@ class index extends Component {
 					>
 						<Row>
 							<Image style={styles.metaIcon} source={require('../../assets/images/profile_order.png')} />
-							<Text style={styles.itemTypeText}>账单记录</Text>
+							<Text style={styles.itemTypeText}>我的账单</Text>
 						</Row>
 						<Iconfont name="right" size={17} color={Theme.subTextColor} />
 					</TouchFeedback>
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
 	},
 	columnItem: {
 		height: PxFit(52),
-		paddingHorizontal: Theme.itemSpace,
+		paddingHorizontal: PxFit(Theme.itemSpace),
 		borderBottomWidth: PxFit(0.5),
 		borderColor: Theme.borderColor,
 		backgroundColor: '#fff',

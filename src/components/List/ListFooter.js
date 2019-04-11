@@ -29,8 +29,8 @@ class ListFooter extends Component<Props> {
 		} else {
 			return (
 				<View style={styles.footerView}>
-					<Spinner isVisible={true} size={PxFit(16)} type={'FadingCircleAlt'} color={Theme.primaryColor} />
 					<Text style={styles.footerViewText}>加载中</Text>
+					<Spinner isVisible={true} size={PxFit(14)} type={'FadingCircleAlt'} color={Theme.primaryColor} />
 				</View>
 			);
 		}
@@ -39,14 +39,14 @@ class ListFooter extends Component<Props> {
 
 const styles = StyleSheet.create({
 	footerView: {
-		height: PxFit(40),
+		paddingVertical: PxFit(Theme.itemSpace),
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	footerViewText: {
-		fontSize: PxFit(14),
-		color: '#a0a0a0',
+		fontSize: PxFit(13),
+		color: Theme.subTextColor,
 		marginHorizontal: PxFit(10)
 	}
 });

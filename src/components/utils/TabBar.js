@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
 	},
 	iconImage: {
 		width: PxFit(24),
-		height: PxFit(24)
+		height: PxFit(25)
 	},
 	text: {
 		fontSize: PxFit(15),

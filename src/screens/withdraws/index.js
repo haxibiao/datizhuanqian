@@ -4,9 +4,9 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Dimensions, Linking } from 'react-native';
-import { PageContainer, Iconfont, TouchFeedback, Button, SubmitLoading, PopOverlay, Row } from '../../components';
+import { StyleSheet, View, Text, Dimensions, Linking, ScrollView, FlatList } from 'react-native';
 
+import { PageContainer, Iconfont, TouchFeedback, SubmitLoading, Loader, Row, EmptyView } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, WPercent, Tools } from '../../utils';
 
 import { connect } from 'react-redux';
@@ -17,92 +17,47 @@ import { CreateWithdrawMutation, WithdrawsQuery } from '../../assets/graphql/wit
 import { UserQuery } from '../../assets/graphql/User.graphql';
 import { Mutation, Query, compose, graphql } from 'react-apollo';
 
-import NotLogin from './components/NotLogin';
-import WithdrawGuidance from './components/WithdrawGuidance';
-
 import { Overlay } from 'teaset';
-
-const EXCHANGE_RATE = 600; //汇率
+import WithdrawGuidance from './components/WithdrawGuidance';
+import WithdrawItem from './components/WithdrawItem';
 
 class index extends Component {
 	constructor(props) {
 		super(props);
-		this.handleWithdraws = this.handleWithdraws.bind(this);
 		this.state = {
-			clickControl: false,
 			isVisible: false,
-			userCache: {
-				gold: 0,
-				wallet: {
-					available_balance: 0
-				}
-			}
+			finished: false
 		};
 	}
 
-	componentDidMount() {
-		if (this.props.login) {
-			this.loadCache();
-		}
-	}
-
-	async loadCache() {
-		let userCache = await Storage.getItem(ItemKeys.userCache);
-		if (userCache) {
-			this.setState({
-				userCache
-			});
-		}
-	}
-
 	//处理提现
-	handleWithdraws(user, amount, wallet) {
-		this.setState({
-			clickControl: true
-		});
-		//判断提现次数
-		if (user.available_withdraw_count < 1) {
-			this.WithdrawsTipsModalVisible();
-			this.setState({
-				clickControl: false
-			});
-			Toast.show({ content: '今日提现次数已达上限~' });
-		} else {
-			this._checkBalance(user, amount, wallet);
-		}
-	}
-
-	//检查余额
-	_checkBalance(user, amount, wallet) {
-		let { clickControl } = this.state;
-		if (checkAmount(user, amount, wallet)) {
-			this._withdrawsRequest(amount);
-		} else {
-			Toast.show({ content: '智慧点不足，快去答题赚钱吧~' });
-			this.setState({
-				clickControl: false
-			});
-		}
-	}
+	handleWithdraws = (user, amount) => {
+		let fn = () => {
+			if (user.available_withdraw_count < 1) {
+				this.WithdrawsTipsModalVisible();
+				Toast.show({ content: '今日提现次数已达上限~' });
+			} else {
+				this._withdrawsRequest(amount);
+			}
+		};
+		return Tools.throttle(fn, 400);
+	};
 
 	//发起提现请求
 	async _withdrawsRequest(amount) {
-		const user_id = this.props.user.id;
 		let result = {};
-
 		this.setState({
 			isVisible: true
 		});
-
 		try {
 			result = await this.props.CreateWithdrawMutation({
 				variables: {
-					amount: amount
+					amount
 				},
 				refetchQueries: () => [
 					{
 						query: UserQuery,
-						variables: { id: user_id }
+						variables: { id: this.props.user.id }
 					},
 					{
 						query: WithdrawsQuery
@@ -116,127 +71,140 @@ class index extends Component {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Toast.show({ content: str });
 			this.setState({
-				clickControl: false
-			});
-			this.setState({
 				isVisible: false
 			});
 		} else {
-			this.props.navigation.dispatch(
-				Methods.navigationAction({ routeName: '提现申请', params: { amount: amount } })
-			);
-			this.setState({
-				clickControl: false
-			});
+			this.props.navigation.navigate('WithdrawApply', { amount });
 			this.setState({
 				isVisible: false
 			});
 		}
 	}
 
-	calcExchange(gold, value) {
-		return gold / 600 > value;
+	calcExchange(userGold, value) {
+		return userGold / 600 > value;
+	}
+
+	withdrawsFetchMore = () => {
+		return this.withdrawsLogfetchMore({
+			variables: {
+				offset: this.withdrawsLogOffset
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!(fetchMoreResult && fetchMoreResult.withdraws && fetchMoreResult.withdraws.length > 0)) {
+					this.setState({
+						finished: true
+					});
+					return prev;
+				}
+				return Object.assign({}, prev, {
+					withdraws: [...prev.withdraws, ...fetchMoreResult.withdraws]
+				});
+			}
+		});
+	};
+
+	renderWithDrawsLog() {
+		let { navigation } = this.props;
+		return (
+			<Query query={WithdrawsQuery} fetchPolicy="network-only">
+				{({ data, error, loading, refetch, fetchMore }) => {
+					let withdrawsLog = Tools.syncGetter('withdraws', data) || [];
+					this.withdrawsLogfetchMore = fetchMore;
+					this.withdrawsLogOffset = withdrawsLog.length;
+					return (
+						<View>
+							<FlatList
+								bounces={false}
+								scrollEnabled={false}
+								data={withdrawsLog}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={({ item, index }) => <WithdrawItem item={item} navigation={navigation} />}
+								ListEmptyComponent={
+									<EmptyView imageSource={require('../../assets/images/default_message.png')} />
+								}
+							/>
+							<Loader
+								hidden={withdrawsLog.length === 0}
+								finished={withdrawsLog.length < 10 || this.state.finished}
+								onLoad={this.withdrawsFetchMore}
+							/>
+						</View>
+					);
+				}}
+			</Query>
+		);
 	}
 
 	render() {
 		let { clickControl, isVisible, userCache } = this.state;
-		const { user, login, navigation, luckyMoney } = this.props;
+		let { user, login, navigation, luckyMoney, exchangeRate, UserQuery } = this.props;
+		user = Tools.syncGetter('user', UserQuery) || user;
 		return (
-			<PageContainer title="提现">
-				{login ? (
-					<Query query={UserQuery} variables={{ id: user.id }}>
-						{({ data, loading, error, refetch }) => {
-							//点击刷新
-							navigation.addListener('didFocus', payload => {
-								refetch();
-							});
-							let user = Tools.syncGetter('user', data);
-							if (!user) {
-								user = userCache;
-							}
-							return (
-								<View style={styles.container}>
-									<View style={styles.header}>
-										<View style={{ flex: 1 }}>
-											<Text style={styles.type}>当前智慧点</Text>
-											<Text style={styles.gold}>{user.gold}</Text>
-										</View>
-										<View style={{ flex: 1 }}>
-											<Text style={styles.type}>当前余额(元)</Text>
-											<Text style={styles.gold}>
-												{user.wallet && user.wallet.available_balance
-													? `${user.wallet.available_balance}.00`
-													: '0.00'}
-											</Text>
-										</View>
-									</View>
-									<View style={styles.withdraws}>
-										<View style={styles.center}>
-											{luckyMoney.map((luckyMoney, index) => {
-												let bool = this.calcExchange(user.gold, luckyMoney.value);
-												return (
-													<TouchFeedback
-														style={[
-															styles.withdrawItem,
-															bool && {
-																backgroundColor: Theme.primaryColor
-															}
-														]}
-														onPress={() => {
-															this.handleWithdraws(user, luckyMoney.value, user.wallet);
-														}}
-														disabled={!bool || clickControl}
-														key={index}
-													>
-														<Text
-															style={[
-																styles.content,
-																bool && {
-																	color: '#fff'
-																}
-															]}
-														>
-															提现
-															{luckyMoney.value}元
-														</Text>
-													</TouchFeedback>
-												);
-											})}
-										</View>
-										{user.pay_account ? (
-											<View style={styles.footer}>
-												<Text style={styles.tips}>当前汇率：600智慧点=1元</Text>
-												<Button
-													title={'查看提现日志'}
-													style={{
-														height: PxFit(38),
-														borderRadius: PxFit(5),
-														backgroundColor: Theme.primaryColor,
-														width: WPercent(80)
-													}}
-													onPress={() => navigation.navigate('WithdrawLog')}
-												/>
-											</View>
-										) : (
-											<WithdrawGuidance navigation={navigation} />
-										)}
-									</View>
-								</View>
-							);
-						}}
-					</Query>
-				) : (
-					<NotLogin navigation={navigation} />
-				)}
-				<SubmitLoading isVisible={isVisible} content={'加载中...'} />
+			<PageContainer title="提现" didFocus={UserQuery && UserQuery.refetch} white>
+				<View style={styles.container}>
+					<View style={styles.header}>
+						<View style={{ flex: 1 }}>
+							<Text style={styles.greyText}>当前智慧点</Text>
+							<Text style={styles.goldText}>{user.gold}</Text>
+						</View>
+						<View style={{ flex: 1 }}>
+							<Text style={styles.greyText}>当前汇率(智慧点/RMB)</Text>
+							<Text style={styles.goldText}>{exchangeRate}/1</Text>
+						</View>
+					</View>
+					<View style={styles.withdraws}>
+						<View style={styles.center}>
+							{luckyMoney.map((luckyMoney, index) => {
+								let bool = this.calcExchange(user.gold, luckyMoney.value);
+								return (
+									<TouchFeedback
+										style={[
+											styles.withdrawItem,
+											bool && {
+												backgroundColor: Theme.primaryColor
+											}
+										]}
+										onPress={this.handleWithdraws(user, luckyMoney.value)}
+										disabled={!bool}
+										key={index}
+									>
+										<Text
+											style={[
+												styles.content,
+												bool && {
+													color: '#fff'
+												}
+											]}
+										>
+											提现
+											{luckyMoney.value}元
+										</Text>
+									</TouchFeedback>
+								);
+							})}
+						</View>
+						<View style={styles.withdrawsLogTitleWrap}>
+							<Text style={styles.withdrawsLogTitle}>提现明细</Text>
+						</View>
+						<ScrollView
+							contentContainerStyle={{ flexGrow: 1, paddingHorizontal: PxFit(Theme.itemSpace) }}
+							keyboardShouldPersistTaps="always"
+							showsVerticalScrollIndicator={false}
+							bounces={false}
+						>
+							{user.pay_account ? (
+								this.renderWithDrawsLog()
+							) : (
+								<WithdrawGuidance navigation={navigation} />
+							)}
+						</ScrollView>
+					</View>
+				</View>
+				<SubmitLoading isVisible={isVisible} content={'请稍后...'} />
 			</PageContainer>
 		);
 	}
-}
-
-function checkAmount(user, amount, wallet) {
-	let canWithdraw = user.gold / EXCHANGE_RATE >= amount || (wallet && wallet.available_balance >= amount);
-	return canWithdraw;
 }
 
 const styles = StyleSheet.create({
@@ -252,17 +220,18 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingVertical: PxFit(30)
-	},
-	type: {
-		color: Theme.defaultTextColor,
-		fontSize: PxFit(13),
-		textAlign: 'center',
+		marginTop: PxFit(20),
 		marginBottom: PxFit(10)
 	},
-	gold: {
-		color: Theme.secondaryColor,
-		fontSize: PxFit(40),
+	greyText: {
+		color: Theme.subTextColor,
+		fontSize: PxFit(13),
+		textAlign: 'center',
+		marginBottom: PxFit(8)
+	},
+	goldText: {
+		color: Theme.primaryColor,
+		fontSize: PxFit(20),
 		textAlign: 'center'
 	},
 	withdraws: {
@@ -276,7 +245,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	withdrawItem: {
-		marginBottom: PxFit(Theme.itemSpace),
+		marginTop: PxFit(10),
 		width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
 		height: PxFit(60),
 		justifyContent: 'center',
@@ -298,19 +267,28 @@ const styles = StyleSheet.create({
 		paddingVertical: PxFit(10),
 		lineHeight: PxFit(18)
 	},
-	overlayInner: {
-		flex: 1,
-		width: SCREEN_WIDTH,
-		height: SCREEN_HEIGHT,
-		justifyContent: 'center',
-		alignItems: 'center'
+	withdrawsLogTitleWrap: {
+		marginHorizontal: PxFit(Theme.itemSpace),
+		paddingVertical: PxFit(Theme.itemSpace),
+		borderBottomWidth: PxFit(1),
+		borderBottomColor: Theme.borderColor
+	},
+	withdrawsLogTitle: {
+		fontSize: PxFit(15),
+		color: Theme.defaultTextColor
 	}
 });
 
-export default connect(store => {
-	return {
+export default compose(
+	connect(store => ({
 		user: store.users.user,
 		login: store.users.login,
-		luckyMoney: store.withdraws.luckyMoney
-	};
-})(compose(graphql(CreateWithdrawMutation, { name: 'CreateWithdrawMutation' }))(index));
+		luckyMoney: store.withdraws.luckyMoney,
+		exchangeRate: store.app.exchangeRate
+	})),
+	graphql(UserQuery, {
+		options: props => ({ variables: { id: props.user.id } }),
+		name: 'UserQuery'
+	}),
+	graphql(CreateWithdrawMutation, { name: 'CreateWithdrawMutation' })
+)(index);

@@ -21,9 +21,8 @@ class WithdrawLogDetails extends Component {
 	render() {
 		const { navigation, user } = this.props;
 		const { withdraw_id } = navigation.state.params;
-		console.log('user', user);
 		return (
-			<PageContainer style={styles.container} title="提现详情">
+			<PageContainer style={styles.container} title="提现详情" white>
 				<Query query={WithdrawQuery} variables={{ id: withdraw_id }}>
 					{({ data, error, loading, refetch }) => {
 						if (error) return <ErrorView onPress={refetch} />;
@@ -41,7 +40,7 @@ class WithdrawLogDetails extends Component {
 									<View style={styles.info}>
 										<Text style={styles.money}>{withdraw.amount}.00</Text>
 										{withdraw.status == -1 ? (
-											<Text style={{ fontSize: PxFit(16), color: Theme.secondaryColor }}>
+											<Text style={{ fontSize: PxFit(16), color: Theme.errorColor }}>
 												交易失败
 											</Text>
 										) : (
@@ -99,7 +98,7 @@ class WithdrawLogDetails extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Theme.lightBorder
+		backgroundColor: '#f9f9f9'
 	},
 	header: {
 		flexDirection: 'row',
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
 	name: {
 		paddingLeft: PxFit(10),
 		fontSize: PxFit(18),
-		color: Theme.black
+		color: Theme.defaultTextColor
 	},
 	info: {
 		alignItems: 'center',
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
 	money: {
 		fontSize: PxFit(36),
 		paddingBottom: PxFit(15),
-		color: Theme.black
+		color: Theme.defaultTextColor
 	},
 	row: {
 		paddingBottom: PxFit(20),
@@ -129,15 +128,15 @@ const styles = StyleSheet.create({
 	},
 	textLeft: {
 		fontSize: PxFit(15),
-		color: Theme.grey
+		color: Theme.subTextColor
 	},
 	textRight: {
 		fontSize: PxFit(15),
-		color: Theme.black
+		color: Theme.defaultTextColor
 	},
 	text: {
 		fontSize: PxFit(15),
-		color: Theme.black,
+		color: Theme.defaultTextColor,
 		width: (SCREEN_WIDTH * 5) / 9,
 		textAlign: 'right'
 	},
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		borderTopWidth: PxFit(1),
-		borderTopColor: Theme.lightBorder
+		borderTopColor: Theme.borderColor
 	},
 	footer: {
 		paddingVertical: PxFit(15),

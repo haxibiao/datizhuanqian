@@ -1,20 +1,28 @@
 /*
- * @Author: Gaoxuan
- * @Date:   2019-04-08 12:01:41
+ * @flow
+ * created by wyk made in 2019-04-11 17:14:30
  */
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../../components';
+import {
+	PageContainer,
+	ListFooter,
+	ErrorView,
+	LoadingSpinner,
+	EmptyView,
+	Row,
+	CustomRefreshControl
+} from '../../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
-import { WithdrawsQuery } from '../../../assets/graphql/withdraws.graphql';
+import { GoldsQuery } from '../../../assets/graphql/user.graphql';
 
-import WithdrawItem from '../../withdraws/components/WithdrawItem';
+import IncomeAndExpenditureItem from '../../wallet/components/IncomeAndExpenditureItem';
 
-class WithdrawLog extends Component {
+class IntegralDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -27,43 +35,33 @@ class WithdrawLog extends Component {
 
 		return (
 			<View style={{ flex: 1 }}>
-				<Query query={WithdrawsQuery} fetchPolicy="network-only">
+				<Query query={GoldsQuery} fetchPolicy="network-only" variables={{ user_id: user.id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
-						if (!(data && data.withdraws))
+						if (!(data && data.golds))
 							return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
 						return (
 							<FlatList
-								data={data.withdraws}
+								data={data.golds}
 								keyExtractor={(item, index) => index.toString()}
-								refreshControl={
-									<RefreshControl
-										refreshing={loading}
-										onRefresh={refetch}
-										colors={[Theme.primaryColor]}
-									/>
-								}
+								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
 								renderItem={({ item, index }) => (
-									<WithdrawItem
-										item={item}
-										navigation={navigation}
-										style={{ paddingHorizontal: PxFit(Theme.itemSpace) }}
-									/>
+									<IncomeAndExpenditureItem item={item} navigation={navigation} />
 								)}
 								ListHeaderComponent={this._userWithdrawInfo}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									fetchMore({
 										variables: {
-											offset: data.withdraws.length
+											offset: data.golds.length
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (
 												!(
 													fetchMoreResult &&
-													fetchMoreResult.withdraws &&
-													fetchMoreResult.withdraws.length > 0
+													fetchMoreResult.golds &&
+													fetchMoreResult.golds.length > 0
 												)
 											) {
 												this.setState({
@@ -72,7 +70,7 @@ class WithdrawLog extends Component {
 												return prev;
 											}
 											return Object.assign({}, prev, {
-												withdraws: [...prev.withdraws, ...fetchMoreResult.withdraws]
+												golds: [...prev.golds, ...fetchMoreResult.golds]
 											});
 										}
 									});
@@ -93,4 +91,4 @@ export default connect(store => {
 	return {
 		user: store.users.user
 	};
-})(WithdrawLog);
+})(IntegralDetail);

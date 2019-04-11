@@ -100,7 +100,7 @@
 		E607E94DFBE847EF993AFA96 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D3BE87B25A8419A94E55CC1 /* MaterialIcons.ttf */; };
 		EA76AAEA6B5F444AA8091C48 /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B67FF3CBDD4E03A4734FAC /* libAppCenterReactNativeCrashes.a */; };
 		F62E17CB8430404191C870CB /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E62ADF1161343B898405E3F /* libRNVectorIcons.a */; };
-		20DFF2C4F1394E14B89368F5 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666AFE9FA944C12B94FC156 /* iconfont.ttf */; };
+		4514062604E94528A195A92E /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4113F7D2D1E4BD5AC962CFE /* iconfont.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -691,7 +691,7 @@
 		F782571C5422419183D5A353 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		F935334A41004CEBBFF4ED33 /* RCTJPushModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTJPushModule.xcodeproj; path = "../node_modules/jpush-react-native/ios/RCTJPushModule.xcodeproj"; sourceTree = "<group>"; };
 		FAC78C759AC44A6AA5D12E8E /* AppCenter-Config.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "datizhuanqian/AppCenter-Config.plist"; sourceTree = "<group>"; };
-		8666AFE9FA944C12B94FC156 /* iconfont.ttf */ = {isa = PBXFileReference; name = "iconfont.ttf"; path = "../src/components/Iconfont/fonts/iconfont.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E4113F7D2D1E4BD5AC962CFE /* iconfont.ttf */ = {isa = PBXFileReference; name = "iconfont.ttf"; path = "../src/components/Iconfont/fonts/iconfont.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -943,7 +943,7 @@
 				ECE9F87E064E46E79739A17C /* FontAwesome5_Brands.ttf */,
 				4EB588ED2A42494EA541E4B6 /* FontAwesome5_Regular.ttf */,
 				A1795F3AD9EC44AFA4715824 /* FontAwesome5_Solid.ttf */,
-				8666AFE9FA944C12B94FC156 /* iconfont.ttf */,
+				E4113F7D2D1E4BD5AC962CFE /* iconfont.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2006,7 +2006,7 @@
 				C8D8CAFCBD084E8A8FDF518E /* FontAwesome5_Regular.ttf in Resources */,
 				363178AAC74D4515839F7399 /* FontAwesome5_Solid.ttf in Resources */,
 				D46D954AA3E043F193009A2D /* AppCenter-Config.plist in Resources */,
-				20DFF2C4F1394E14B89368F5 /* iconfont.ttf in Resources */,
+				4514062604E94528A195A92E /* iconfont.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -40,6 +40,7 @@ import UpdateOverlay from './Overlay/UpdateOverlay';
 import MasonryList from './Layout/MasonryList';
 // List
 import PullList from './List/PullList';
+import Loader from './List/Loader';
 import ListFooter from './List/ListFooter';
 import HorizontalList from './List/HorizontalList';
 import ListItem from './List/ListItem';
@@ -96,6 +97,7 @@ export {
 	UpdateOverlay,
 	MasonryList,
 	PullList,
+	Loader,
 	ListFooter,
 	HorizontalList,
 	ListItem,
