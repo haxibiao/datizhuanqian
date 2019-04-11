@@ -106,19 +106,36 @@ class index extends Component {
 									<View style={styles.buttonWrap}>
 										<TouchFeedback
 											style={[styles.button, styles.withdrawButton]}
-											onPress={() => navigation.navigate('TopUp')}
+											onPress={() => navigation.navigate('Withdraws')}
 										>
-											<Text style={styles.withdrawText}>充值</Text>
+											<Text style={styles.withdrawText}>提现</Text>
 										</TouchFeedback>
 										<TouchFeedback
 											style={[styles.button, styles.toUpButton]}
-											onPress={() => navigation.navigate('Withdraws')}
+											onPress={() => navigation.navigate('TopUp', { user })}
 										>
-											<Text style={styles.toUpText}>提现</Text>
+											<Text style={styles.toUpText}>充值</Text>
 										</TouchFeedback>
 									</View>
 								</View>
 								<View style={styles.feature}>
+									<TouchFeedback
+										style={styles.columnItem}
+										authenticated
+										navigation={navigation}
+										onPress={() => navigation.navigate('IncomeAndExpenditure')}
+									>
+										<Row>
+											<Iconfont
+												name={'order-fill'}
+												size={PxFit(22)}
+												style={styles.itemType}
+												color={Theme.primaryColor}
+											/>
+											<Text style={styles.itemTypeText}>收支明细</Text>
+										</Row>
+										<Iconfont name="right" size={17} color={Theme.subTextColor} />
+									</TouchFeedback>
 									<TouchFeedback
 										style={styles.columnItem}
 										authenticated
@@ -128,29 +145,14 @@ class index extends Component {
 										<Row>
 											<Iconfont
 												name={'like-fill'}
-												size={PxFit(22)}
+												size={PxFit(24)}
 												style={styles.itemType}
 												color={Theme.secondaryColor}
 											/>
-											<Text style={styles.itemTypeText}>补充精力</Text>
+											<Text style={styles.itemTypeText}>精力补充</Text>
 										</Row>
 										<Iconfont name="right" size={17} color={Theme.subTextColor} />
 									</TouchFeedback>
-									<View
-										style={{
-											flexGrow: 1,
-											justifyContent: 'center',
-											alignItems: 'center'
-										}}
-									>
-										<Image
-											source={require('../../assets/images/saving_pot.png')}
-											style={{
-												width: PxFit(144),
-												height: PxFit(124)
-											}}
-										/>
-									</View>
 								</View>
 							</View>
 						</PageContainer>
@@ -166,8 +168,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f9f9f9'
 	},
 	rule: {
-		flex: 1,
-		justifyContent: 'center'
+		flexGrow: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	walletPanel: {
 		padding: PxFit(Theme.itemSpace),
@@ -237,7 +240,7 @@ const styles = StyleSheet.create({
 	},
 	withdrawText: {
 		fontSize: PxFit(16),
-		color: Theme.primaryColor
+		color: '#b6c2e1'
 	},
 	toUpText: {
 		fontSize: PxFit(16),
