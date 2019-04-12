@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { PageContainer, TouchFeedback, CustomTextInput, Iconfont, Row, Button } from '../../components';
+import { PageContainer, TouchFeedback, CustomTextInput, Iconfont, Row, Button, KeyboardSpacer } from '../../components';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
 import { connect } from 'react-redux';
@@ -92,9 +92,15 @@ class TopUp extends Component {
 		let overlayView = (
 			<Overlay.View animated style={styles.overlayInner}>
 				<InputMoney money={custom_money} setMoney={this.setMoney} />
+				<KeyboardSpacer />
 			</Overlay.View>
 		);
 		this.OverlayKey = Overlay.show(overlayView);
+	};
+
+	onPayment = () => {
+		let { navigation } = this.props;
+		navigation.navigate('Payment');
 	};
 
 	rendertopUpValue() {
@@ -127,7 +133,7 @@ class TopUp extends Component {
 		});
 	}
 
-	rendertopCustomUpValue() {
+	rendertopUpCustomValue() {
 		let { custom_money } = this.state;
 		let { exchangeRate } = this.props;
 		return (
@@ -158,7 +164,15 @@ class TopUp extends Component {
 		let { navigation, user } = this.props;
 		let ZFB = paymentType === PAYMENT_TYPE.ZFB;
 		return (
-			<PageContainer title="充值">
+			<PageContainer
+				white
+				title="充值"
+				rightView={
+					<TouchFeedback onPress={() => navigation.navigate('TopUpLog')} style={styles.headerRight}>
+						<Text style={styles.headerRightText}>充值记录</Text>
+					</TouchFeedback>
+				}
+			>
 				<ScrollView
 					style={styles.container}
 					contentContainerStyle={{ flexGrow: 1 }}
@@ -176,7 +190,7 @@ class TopUp extends Component {
 						</View>
 						<View style={styles.moneyOptions}>
 							{this.rendertopUpValue()}
-							{this.rendertopCustomUpValue()}
+							{this.rendertopUpCustomValue()}
 						</View>
 						<View style={{ marginTop: PxFit(25), marginBottom: PxFit(Theme.itemSpace) }}>
 							<Text style={styles.panelTitle}>支付方式</Text>
@@ -197,7 +211,7 @@ class TopUp extends Component {
 							<Iconfont
 								name={ZFB ? 'success-fill' : 'success'}
 								size={PxFit(20)}
-								color={ZFB ? Theme.secondaryColor : Theme.subTextColor}
+								color={ZFB ? Theme.correctColor : Theme.subTextColor}
 							/>
 						</TouchFeedback>
 						<TouchFeedback
@@ -213,7 +227,7 @@ class TopUp extends Component {
 							<Iconfont
 								name={ZFB ? 'success' : 'success-fill'}
 								size={PxFit(20)}
-								color={ZFB ? Theme.subTextColor : Theme.secondaryColor}
+								color={ZFB ? Theme.subTextColor : Theme.correctColor}
 							/>
 						</TouchFeedback>
 						<TouchFeedback style={styles.paymentButton} onPress={this.onPayment}>
@@ -232,6 +246,15 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#f9f9f9'
+	},
+	headerRight: {
+		flexGrow: 1,
+		justifyContent: 'center'
+	},
+	headerRightText: {
+		fontSize: PxFit(15),
+		textAlign: 'center',
+		color: Theme.primaryColor
 	},
 	userGold: {
 		paddingHorizontal: PxFit(Theme.itemSpace + 10),
@@ -252,7 +275,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	panelTitle: {
-		fontSize: PxFit(16),
+		fontSize: PxFit(15),
 		color: Theme.defaultTextColor
 	},
 	moneyOptions: {

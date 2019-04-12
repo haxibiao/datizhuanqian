@@ -33,6 +33,7 @@ class IncomeAndExpenditure extends Component {
 					loading = !golds;
 					return (
 						<PageContainer
+							white
 							title="收支明细"
 							refetch={refetch}
 							error={error}
