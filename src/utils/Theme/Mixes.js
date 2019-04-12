@@ -43,7 +43,7 @@ const lightBorder = '#F4F4F4';
 const lightGray = '#F6F6F6';
 
 const grey = '#969696';
-const weixin = '#42c02e';
+const weixin = '#47D850';
 //sheet
 export default {
 	theme,

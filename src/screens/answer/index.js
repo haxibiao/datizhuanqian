@@ -260,12 +260,12 @@ class index extends Component {
 			]
 		};
 		// Math.random(0, 1) > 0.5 ? 0 : 1;
-		question.submit = 0;
+		// question.submit = 0;
 		return (
 			<React.Fragment>
 				<TabBar />
 				<ScrollView
-					contentContainerStyle={{ flexGrow: 1, paddingBottom: question.submit === 0 && SCREEN_WIDTH / 3 }}
+					contentContainerStyle={{ flexGrow: 1, paddingBottom: question.submit === 0 ? SCREEN_WIDTH / 3 : 0 }}
 					keyboardShouldPersistTaps="always"
 					showsVerticalScrollIndicator={false}
 					bounces={false}

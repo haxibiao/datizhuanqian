@@ -9,7 +9,11 @@ import ForgetPasswordScreen from '../screens/login/ForgetPassword';
 import RetrievePasswordScreen from '../screens/login/RetrievePassword';
 import AnswerScreen from '../screens/answer';
 import CurationScreen from '../screens/answer/Curation';
+import RewardScreen from '../screens/answer/Reward';
 import TopUpScreen from '../screens/wallet/TopUp';
+import PaymentScreen from '../screens/wallet/Payment';
+import TopUpLogScreen from '../screens/wallet/TopUpLog';
+import TopUpDetailScreen from '../screens/wallet/TopUpDetail';
 import ChargeTicketScreen from '../screens/wallet/ChargeTicket';
 import IncomeAndExpenditureScreen from '../screens/wallet/IncomeAndExpenditure';
 import SettingScreen from '../screens/setting';
@@ -67,8 +71,20 @@ export default {
 	Curation: {
 		screen: CurationScreen
 	},
+	Reward: {
+		screen: RewardScreen
+	},
 	TopUp: {
 		screen: TopUpScreen
+	},
+	Payment: {
+		screen: PaymentScreen
+	},
+	TopUpLog: {
+		screen: TopUpLogScreen
+	},
+	TopUpDetail: {
+		screen: TopUpDetailScreen
 	},
 	ChargeTicket: {
 		screen: ChargeTicketScreen

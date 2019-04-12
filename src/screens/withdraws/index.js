@@ -185,7 +185,7 @@ class index extends Component {
 							})}
 						</View>
 						<View style={styles.withdrawsLogTitleWrap}>
-							<Text style={styles.withdrawsLogTitle}>提现明细</Text>
+							<Text style={styles.withdrawsLogTitle}>提现记录</Text>
 						</View>
 						<ScrollView
 							contentContainerStyle={{ flexGrow: 1, paddingHorizontal: PxFit(Theme.itemSpace) }}
