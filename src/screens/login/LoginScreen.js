@@ -43,7 +43,11 @@ class LoginScreen extends Component {
 			}
 			if (result && result.errors) {
 				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, 80); //Toast错误信息
+				if (str.indexOf('Network') > -1) {
+					Methods.toast('网络错误，请检查是否连接网络', 80);
+				} else {
+					Methods.toast(str, 80); //Toast错误信息
+				}
 			} else {
 				const user = result.data.signIn;
 				this._saveUserData(user);
@@ -66,7 +70,11 @@ class LoginScreen extends Component {
 			}
 			if (result && result.errors) {
 				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, 80); //Toast错误信息
+				if (str.indexOf('Network request') > -1) {
+					Methods.toast('网络错误，请检查是否连接网络', 80);
+				} else {
+					Methods.toast(str, 80); //Toast错误信息
+				}
 			} else {
 				const user = result.data.signUp;
 				this._saveUserData(user);

@@ -26,7 +26,7 @@ class NoTicketTipsModal extends Component {
 				<Image source={require('../../../assets/images/tips.png')} style={{ height: 100, width: 100 }} />
 				<View style={styles.content}>
 					<Text style={styles.text}>继续答题将不再增加智慧点</Text>
-					<Text style={styles.text}>精力点将在每日凌晨0点自动恢复</Text>
+					<Text style={styles.text}>精力点将在24小时后自动恢复</Text>
 				</View>
 				<Button
 					name={'知道了'}

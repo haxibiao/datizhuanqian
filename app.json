@@ -1,8 +1,8 @@
 {
 	"name": "datizhuanqian",
 	"displayName": "答题赚钱",
-	"AppVersion": "v1.4.0(build1)",
+	"AppVersion": "v1.4.0(build2)",
 	"ServerRoot": "https://datizhuanqian.com",
 	"AppSlogan": "全新1.4.0版本,体验更好的赚钱方式",
-	"Build": "1"
+	"Build": "2"
 }

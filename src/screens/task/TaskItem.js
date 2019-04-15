@@ -119,7 +119,13 @@ class TaskItem extends Component {
 								<Text style={{ color: Colors.theme }}>{`+${task.gold}智慧点`}</Text>
 							</Text>
 						) : null}
-						{task.ticket ? (
+						{task.ticket < 0 ? (
+							<Text style={styles.reword}>
+								消耗
+								<Text style={{ color: Colors.theme }}>{`${task.ticket}精力点`}</Text>
+							</Text>
+						) : null}
+						{task.ticket > 0 ? (
 							<Text style={styles.reword}>
 								奖励
 								<Text style={{ color: Colors.theme }}>{`+${task.ticket}精力点`}</Text>

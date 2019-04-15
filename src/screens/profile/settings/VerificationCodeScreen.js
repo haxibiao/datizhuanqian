@@ -147,13 +147,13 @@ class VerificationCodeScreen extends Component {
 			<Screen>
 				<View style={styles.container}>
 					<View style={{ marginTop: 50, paddingHorizontal: 25 }}>
-						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>输入验证码</Text>
+						<Text style={{ color: Colors.black, fontSize: 20, fontWeight: '600' }}>验证登录账号</Text>
 						<Text style={{ color: Colors.grey, fontSize: 12, paddingTop: 20 }}>
-							验证码已发送至 {this.props.users.user.account}
+							验证码已发送至登录账号 {this.props.users.user.account}
 						</Text>
 					</View>
 					<Input
-						placeholder="请输入收到的哈希表科技验证码"
+						placeholder="请输入收到的验证码"
 						viewStyle={{ marginHorizontal: 25, paddingHorizontal: 0, marginTop: 30 }}
 						defaultValue={this.state.verificationCode}
 						autoFocus

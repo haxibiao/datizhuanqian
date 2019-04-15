@@ -255,7 +255,7 @@ class MakeQuestionScreen extends Component {
 				return { Value: ANSWERS[index], Text: option[0] };
 			}
 		});
-		if (category_id && description && selections.length > 1 && answers.size > 0) {
+		if (category_id && description && description.length > 7 && selections.length > 1 && answers.size > 0) {
 			return {
 				data: {
 					category_id,
@@ -275,7 +275,7 @@ class MakeQuestionScreen extends Component {
 			mutate && mutate();
 			return;
 		}
-		Methods.toast('请确保分类/题干/答案填写完整', 150);
+		Methods.toast('请确保分类/题干字数/答案填写完整', 150);
 	};
 
 	onCompleted = () => {
@@ -284,9 +284,9 @@ class MakeQuestionScreen extends Component {
 	};
 
 	onError = error => {
-		console.log(error);
 		this.setState({ submitLoading: false });
-		Methods.toast('提交出错', 150);
+		let str = error.toString().replace(/Error: GraphQL error: /, '');
+		Methods.toast(str, 150);
 	};
 
 	render() {
@@ -358,9 +358,9 @@ class MakeQuestionScreen extends Component {
 												style={styles.questionInput}
 												onChangeText={text => this.setState({ description: text.trim() })}
 												multiline
-												maxLength={300}
+												maxLength={140}
 												textAlignVertical="top"
-												placeholder="填写题目题干"
+												placeholder="填写题目题干，不少8个字"
 											/>
 											<View
 												style={{
