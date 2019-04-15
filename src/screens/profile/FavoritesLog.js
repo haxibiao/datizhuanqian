@@ -20,12 +20,11 @@ import {
 	PageContainer,
 	Iconfont,
 	TouchFeedback,
-	StatusView,
-	Placeholder,
 	CustomRefreshControl,
 	ItemSeparator,
 	ListFooter,
-	Row
+	Row,
+	PlaceholderImage
 } from '../../components';
 import { Theme, PxFit, Config, Tools, SCREEN_WIDTH } from '../../utils';
 
@@ -145,7 +144,7 @@ class QuestionItem extends Component {
 			navigation,
 			cancelFavorite
 		} = this.props;
-		let { id, category, image, description, video } = question;
+		let { id, category, image, description, video, count } = question;
 		if (this.state.hidden) {
 			return null;
 		}
@@ -164,12 +163,13 @@ class QuestionItem extends Component {
 		};
 		return (
 			<Animated.View style={animateStyles}>
-				<TouchableWithoutFeedback onPress={() => navigation.navigate('QuestionDetail', { question })}>
+				<TouchableWithoutFeedback onPress={() => navigation.navigate('Question', { question })}>
 					<View style={styles.questionItem}>
 						<View style={styles.questionCategory}>
 							<Text style={styles.categoryText} numberOfLines={1}>
 								#{category.name}
 							</Text>
+							<Text style={styles.metaText}>{Tools.NumberFormat(count) + '人答过'}</Text>
 						</View>
 						<View style={{ padding: PxFit(Theme.itemSpace) }}>
 							<View style={styles.questionContent}>
@@ -178,7 +178,7 @@ class QuestionItem extends Component {
 										{description}
 									</Text>
 								</View>
-								{image && <Image source={{ uri: image.path }} style={styles.image} />}
+								{image && <PlaceholderImage source={{ uri: image.path }} style={styles.image} />}
 								{video && (
 									<View style={styles.image}>
 										<Video
@@ -225,6 +225,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	questionCategory: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 		paddingVertical: PxFit(10),
 		paddingHorizontal: PxFit(Theme.itemSpace),
 		borderBottomWidth: PxFit(0.5),

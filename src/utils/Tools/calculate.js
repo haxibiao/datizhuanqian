@@ -11,8 +11,8 @@ const SCREEN_WIDTH = width;
 // number Format
 export function NumberFormat(number) {
 	number = parseFloat(number);
-	if (number >= 10000) {
-		return (number / 10000).toFixed(1) + 'w';
+	if (number >= 1000) {
+		return (number / 1000).toFixed(1) + 'k';
 	} else {
 		return number || 0;
 	}

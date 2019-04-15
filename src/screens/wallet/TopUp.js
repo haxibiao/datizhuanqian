@@ -161,7 +161,8 @@ class TopUp extends Component {
 
 	render() {
 		let { money, custom_money, paymentType } = this.state;
-		let { navigation, user } = this.props;
+		let { navigation } = this.props;
+		let user = this.props.navigation.getParam('user', {});
 		let ZFB = paymentType === PAYMENT_TYPE.ZFB;
 		return (
 			<PageContainer

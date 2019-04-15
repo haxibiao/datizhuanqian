@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 
 import { TouchFeedback, Avatar, Iconfont, ItemSeparator } from '../../../components';
-import { Theme, PxFit } from '../../../utils';
+import { Theme, PxFit, Tools } from '../../../utils';
 
 import { connect } from 'react-redux';
 import actions from '../../../store/actions';
@@ -18,37 +18,12 @@ import { toggleFavoriteMutation } from '../../../assets/graphql/question.graphql
 import Video from 'react-native-video';
 
 class QuestionItem extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			favorited: props.question.favorite_status
-		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.question !== this.props.question) {
-			this.setState({ favorited: nextProps.question.favorite_status });
-		}
-	}
-
-	toggleFavorite = async () => {
-		let { question, toggleFavorite } = this.props;
-		this.setState(prevState => ({ favorited: !prevState.favorited }));
-		toggleFavorite({ variables: { data: { favorable_id: question.id } } });
-	};
-
 	render() {
-		let { favorited } = this.state;
-		let { question, navigation, cancelFavorite } = this.props;
+		let { question, navigation } = this.props;
 		let { category, image, description, video, created_at } = question;
 		return (
-			<TouchableWithoutFeedback onPress={() => navigation.navigate('QuestionDetail', { question })}>
+			<TouchableWithoutFeedback onPress={() => navigation.navigate('Question', { question })}>
 				<View style={styles.questionItem}>
-					<View style={styles.questionCategory}>
-						<Text style={styles.categoryText} numberOfLines={1}>
-							#{category.name}
-						</Text>
-					</View>
 					<View style={{ padding: PxFit(Theme.itemSpace) }}>
 						<View style={styles.questionContent}>
 							<View style={{ flex: 1 }}>
@@ -77,14 +52,12 @@ class QuestionItem extends Component {
 								</View>
 							)}
 						</View>
-						<View style={styles.meta}>
-							<Text style={styles.metaText}>{created_at}</Text>
-							<TouchFeedback onPress={this.toggleFavorite}>
-								<Text style={[styles.metaText, !favorited && { color: Theme.linkColor }]}>
-									{favorited ? '取消收藏' : '收藏题目'}
-								</Text>
-							</TouchFeedback>
-						</View>
+					</View>
+					<View style={styles.meta}>
+						<Text style={styles.categoryText} numberOfLines={1}>
+							#{category.name}
+						</Text>
+						<Text style={styles.metaText}>{Tools.NumberFormat(question.count)}人答过</Text>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
@@ -99,18 +72,7 @@ const styles = StyleSheet.create({
 		borderRadius: PxFit(5),
 		backgroundColor: '#fff'
 	},
-	questionCategory: {
-		paddingVertical: PxFit(10),
-		paddingHorizontal: PxFit(Theme.itemSpace),
-		borderBottomWidth: PxFit(0.5),
-		borderBottomColor: '#f0f0f0'
-	},
-	questionContent: { flexDirection: 'row', alignItems: 'center', marginBottom: PxFit(Theme.itemSpace) },
-	categoryText: {
-		fontSize: PxFit(14),
-		color: Theme.primaryColor,
-		borderColor: Theme.primaryColor
-	},
+	questionContent: { flexDirection: 'row', alignItems: 'center' },
 	subjectText: {
 		fontSize: PxFit(15),
 		lineHeight: PxFit(20),
@@ -134,9 +96,18 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0,0,0,0.2)'
 	},
 	meta: {
+		borderTopWidth: PxFit(0.5),
+		borderColor: Theme.borderColor,
+		paddingVertical: PxFit(10),
+		paddingHorizontal: PxFit(Theme.itemSpace),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
+	},
+	categoryText: {
+		fontSize: PxFit(14),
+		color: Theme.primaryColor,
+		borderColor: Theme.primaryColor
 	},
 	metaText: {
 		fontSize: PxFit(13),
@@ -144,8 +115,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(
-	graphql(toggleFavoriteMutation, {
-		name: 'toggleFavorite'
-	})
-)(QuestionItem);
+export default QuestionItem;

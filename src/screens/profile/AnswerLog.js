@@ -114,8 +114,8 @@ class QuestionItem extends Component {
 		let { category, description } = question;
 
 		return (
-			<TouchableWithoutFeedback onPress={() => navigation.navigate('QuestionDetail', { question })}>
-				<View style={styles.answerItem}>
+			<TouchableWithoutFeedback onPress={() => navigation.navigate('Question', { question })}>
+				<View style={styles.questionItem}>
 					<View style={styles.content}>
 						<View style={{ flex: 1 }}>
 							<Text style={styles.subjectText} numberOfLines={3}>
@@ -157,12 +157,13 @@ class QuestionItem extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
-		backgroundColor: '#fff'
-	},
-	answerItem: {
 		padding: PxFit(Theme.itemSpace),
-		borderBottomWidth: PxFit(10),
-		borderColor: '#f9f9f9'
+		backgroundColor: '#f9f9f9'
+	},
+	questionItem: {
+		marginBottom: PxFit(Theme.itemSpace),
+		borderRadius: PxFit(5),
+		backgroundColor: '#fff'
 	},
 	categoryLabel: {
 		alignSelf: 'auto',
@@ -175,9 +176,9 @@ const styles = StyleSheet.create({
 		borderColor: Theme.primaryColor
 	},
 	content: {
+		padding: PxFit(Theme.itemSpace),
 		borderColor: '#f0f0f0',
-		borderBottomWidth: PxFit(0.6),
-		marginBottom: PxFit(10)
+		borderBottomWidth: PxFit(0.6)
 	},
 	subjectText: {
 		fontSize: PxFit(15),
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
 		color: Theme.primaryFont
 	},
 	answer: {
-		marginTop: PxFit(5),
+		padding: PxFit(Theme.itemSpace),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'

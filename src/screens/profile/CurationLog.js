@@ -109,7 +109,7 @@ class CorrectionItem extends Component {
 			<TouchableOpacity
 				style={styles.correctionItem}
 				onPress={() => {
-					navigation.navigate('QuestionDetail', { question });
+					navigation.navigate('Question', { question });
 				}}
 			>
 				<Text style={styles.content}>题干:{question.description}</Text>

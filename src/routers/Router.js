@@ -3,13 +3,13 @@
  * created by wyk made in 2018-12-05 20:23:50
  */
 import MainTabNavigator from './MainTabNavigator';
-import { QuestionDetail } from '../components';
 import LoginScreen from '../screens/login';
 import ForgetPasswordScreen from '../screens/login/ForgetPassword';
 import RetrievePasswordScreen from '../screens/login/RetrievePassword';
 import AnswerScreen from '../screens/answer';
 import CurationScreen from '../screens/answer/Curation';
 import RewardScreen from '../screens/answer/Reward';
+import QuestionScreen from '../screens/question';
 import TopUpScreen from '../screens/wallet/TopUp';
 import PaymentScreen from '../screens/wallet/Payment';
 import TopUpLogScreen from '../screens/wallet/TopUpLog';
@@ -52,8 +52,8 @@ export default {
 	Main: {
 		screen: MainTabNavigator
 	},
-	QuestionDetail: {
-		screen: QuestionDetail
+	Question: {
+		screen: QuestionScreen
 	},
 	Register: {
 		screen: LoginScreen

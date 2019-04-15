@@ -18,7 +18,7 @@ class IncomeAndExpenditure extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			finished: true
+			finished: false
 		};
 	}
 

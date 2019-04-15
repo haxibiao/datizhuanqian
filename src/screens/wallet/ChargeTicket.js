@@ -125,7 +125,7 @@ class ChargeTicket extends Component {
 								bounces={false}
 							>
 								<View style={styles.userTicket}>
-									<Text style={styles.remainTicket}>剩余智慧点</Text>
+									<Text style={styles.remainTicket}>剩余精力点</Text>
 									<Row>
 										<Image
 											source={require('../../assets/images/heart.png')}

@@ -82,8 +82,9 @@ query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
 		questions(offset: $offset, limit: $limit, order: CREATED_AT) {
 			id
 			description
-			count
 			created_at
+			count
+			correct_count
 			category {
 				name
 				id
@@ -105,6 +106,11 @@ query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
 			selections_array {
 				Text
 				Value
+			}
+			user {
+				id
+				name
+				avatar
 			}
 			status
 			remark

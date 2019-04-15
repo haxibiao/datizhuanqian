@@ -21,7 +21,7 @@ class WithdrawGuidance extends Component {
 			>
 				<Image
 					source={require('../../../assets/images/alipay.jpg')}
-					style={{ width: SCREEN_WIDTH / 3, height: SCREEN_WIDTH / 3 }}
+					style={{ width: SCREEN_WIDTH / 2.8, height: SCREEN_WIDTH / 3 }}
 				/>
 				<Text style={{ color: Theme.subTextColor, fontSize: PxFit(13), fontWeight: '300' }}>
 					{tips ? tips : '目前没有绑定支付宝账户哦'}

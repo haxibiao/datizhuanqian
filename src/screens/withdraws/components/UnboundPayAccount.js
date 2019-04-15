@@ -15,7 +15,7 @@ class WithdrawsTips extends Component {
 			<View style={styles.container}>
 				<Image
 					source={require('../../../assets/images/alipay.jpg')}
-					style={{ width: SCREEN_WIDTH / 3, height: SCREEN_WIDTH / 3 }}
+					style={{ width: SCREEN_WIDTH / 2.5, height: SCREEN_WIDTH / 3 }}
 				/>
 				<Text style={styles.tipsText}>{'目前没有绑定支付宝账户哦'}</Text>
 				<View style={styles.content}>

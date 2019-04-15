@@ -16,7 +16,7 @@ class FooterBar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			favorited: props.question.favorite_status
+			favorited: false
 		};
 	}
 
@@ -33,12 +33,8 @@ class FooterBar extends Component {
 	};
 
 	render() {
-		let { navigation, question, submited, answer, showComment, oSubmit } = this.props;
+		let { navigation, question, showComment, oSubmit } = this.props;
 		let { favorited } = this.state;
-		let buttonStyle = {
-			backgroundColor: submited ? Theme.primaryColor : Theme.correctColor,
-			opacity: answer ? 1 : 0.6
-		};
 		return (
 			<View style={styles.container}>
 				<View style={styles.footerBar}>
@@ -69,8 +65,8 @@ class FooterBar extends Component {
 							<Text style={styles.itemName}>打赏</Text>
 						</TouchFeedback>
 					</View>
-					<TouchFeedback style={[styles.button, buttonStyle]} onPress={oSubmit} disabled={!answer}>
-						<Text style={styles.buttpnText}>{submited ? '下一题' : '提交答案'}</Text>
+					<TouchFeedback style={[styles.button, { backgroundColor: '#969696' }]} onPress={oSubmit} disabled>
+						<Text style={styles.buttpnText}>{'提交答案'}</Text>
 					</TouchFeedback>
 				</View>
 			</View>

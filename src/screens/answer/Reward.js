@@ -47,7 +47,10 @@ class Reward extends Component {
 			let selected = ticket === elem;
 			return (
 				<TouchFeedback
-					style={[styles.valueItem, selected && { backgroundColor: Theme.primaryColor }]}
+					style={[
+						styles.valueItem,
+						selected && { backgroundColor: Theme.primaryColor, borderColor: Theme.primaryColor }
+					]}
 					key={index}
 					onPress={() => this.setState({ ticket: elem + '' })}
 				>
@@ -73,7 +76,7 @@ class Reward extends Component {
 							<Text style={styles.name}>{question.user.name}</Text>
 							<Row>
 								<Text style={styles.paragraph}>“</Text>
-								<Text style={styles.slogan}> 支持好题，作者将收到全额赞赏 </Text>
+								<Text style={styles.slogan}> 尊重知识，作者将收到你的智慧点赞赏 </Text>
 								<Text style={styles.paragraph}>”</Text>
 							</Row>
 						</View>
@@ -93,7 +96,7 @@ class Reward extends Component {
 							</Row>
 						</View>
 					</View>
-					<View style={{ alignItems: 'center' }}>
+					<View style={styles.bottom}>
 						<TouchFeedback
 							style={[styles.paymentButton, ticket && { backgroundColor: Theme.weixin }]}
 							onPress={this.onPayment}
@@ -182,6 +185,10 @@ const styles = StyleSheet.create({
 		fontWeight: '500',
 		color: Theme.defaultTextColor
 	},
+	bottom: {
+		alignItems: 'center',
+		paddingBottom: Theme.HOME_INDICATOR_HEIGHT || PxFit(Theme.itemSpace)
+	},
 	paymentButton: {
 		width: WIDTH_LIMIT,
 		flexDirection: 'row',
@@ -199,8 +206,7 @@ const styles = StyleSheet.create({
 	},
 	bottomText: {
 		fontSize: PxFit(14),
-		color: Theme.subTextColor,
-		marginBottom: PxFit(Theme.itemSpace)
+		color: Theme.subTextColor
 	}
 });
 

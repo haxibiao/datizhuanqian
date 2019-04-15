@@ -3,7 +3,6 @@
  * created by wyk made in 2019-03-19 11:22:26
  */
 'use strict';
-
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, Animated } from 'react-native';
 import {
@@ -21,14 +20,14 @@ import {
 
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../utils';
 
-import QuestionError from './components/QuestionError';
-import QuestionOptions from './components/QuestionOptions';
-import QuestionBody from './components/QuestionBody';
-import UserInfo from './components/UserInfo';
-import FiexdFooter from './components/FiexdFooter';
-import FooterBar from './components/FooterBar';
-import CommentOverlay from './components/CommentOverlay';
+import UserInfo from '../question/components/UserInfo';
+import QuestionBody from '../question/components/QuestionBody';
+import QuestionOptions from '../question/components/QuestionOptions';
+import AnswerCorrectRate from '../question/components/AnswerCorrectRate';
+import CommentOverlay from '../question/components/CommentOverlay';
+
 import AnswerPlaceholder from './components/AnswerPlaceholder';
+import FooterBar from './components/FooterBar';
 import AuditTitle from './components/AuditTitle';
 import Audit from './components/Audit';
 
@@ -55,9 +54,11 @@ class index extends Component {
 			answer: null,
 			showComment: false
 		};
+		console.log('constructor', props);
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log('componentWillReceiveProps', nextProps);
 		// 初始化 首次加载
 		if (this.firstLoad) {
 			let questions = Tools.syncGetter('questions', nextProps.data);
@@ -203,6 +204,17 @@ class index extends Component {
 		}
 	};
 
+	showOptions = () => {
+		let { navigation } = this.props;
+		let { question } = this.state;
+		PullChooser.show([
+			{
+				title: '举报',
+				onPress: () => navigation.navigate('Curation', { question })
+			}
+		]);
+	};
+
 	_onBodyLayout = e => {
 		let { height } = e.nativeEvent.layout;
 		this.bodyHeight = height;
@@ -259,7 +271,6 @@ class index extends Component {
 				}
 			]
 		};
-		// Math.random(0, 1) > 0.5 ? 0 : 1;
 		// question.submit = 0;
 		return (
 			<React.Fragment>
@@ -287,19 +298,7 @@ class index extends Component {
 							selectedOption={answer}
 						/>
 					</View>
-					{submited && (
-						<View style={styles.tipsView}>
-							<View>
-								<Text style={styles.answerText}>正确答案: {[...question.answer].join(',')}</Text>
-							</View>
-							<Row>
-								<Text style={styles.curationText}>答案有误?</Text>
-								<Text style={styles.errorText} onPress={this.helpCuration}>
-									帮忙纠错
-								</Text>
-							</Row>
-						</View>
-					)}
+					<AnswerCorrectRate correct={question.correct_count} count={question.count} />
 				</ScrollView>
 				{question.submit === 0 ? (
 					<Audit navigation={navigation} nextQuestion={this.nextQuestion} />
@@ -322,7 +321,16 @@ class index extends Component {
 
 	render() {
 		return (
-			<PageContainer title="答题" autoKeyboardInsets={false} onWillBlur={this.hideComment}>
+			<PageContainer
+				title="答题"
+				autoKeyboardInsets={false}
+				onWillBlur={this.hideComment}
+				rightView={
+					<TouchFeedback style={styles.optionsButton} onPress={this.showOptions}>
+						<Iconfont name="more-horizontal" color="#fff" size={PxFit(18)} />
+					</TouchFeedback>
+				}
+			>
 				<View style={styles.container}>{this.renderContent()}</View>
 			</PageContainer>
 		);
@@ -334,6 +342,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff'
 	},
+	optionsButton: {
+		flex: 1,
+		justifyContent: 'center'
+	},
+	optionsText: { fontSize: PxFit(15), textAlign: 'center', color: Theme.secondaryColor },
 	content: {
 		paddingTop: PxFit(20),
 		paddingHorizontal: PxFit(Theme.itemSpace)
@@ -354,11 +367,6 @@ const styles = StyleSheet.create({
 	curationText: {
 		fontSize: PxFit(13),
 		color: Theme.subTextColor
-	},
-	errorText: {
-		fontSize: PxFit(13),
-		paddingLeft: PxFit(5),
-		color: Theme.errorColor
 	}
 });
 
@@ -368,7 +376,7 @@ export default compose(
 	graphql(QuestionListQuery, {
 		options: props => {
 			return {
-				variables: { category_id: props.navigation.getParam('category', {}).id, limit: 10, comment_limit: 10 },
+				variables: { category_id: props.navigation.getParam('category', {}).id, limit: 10 },
 				fetchPolicy: 'network-only'
 			};
 		}

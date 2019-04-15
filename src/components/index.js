@@ -20,7 +20,6 @@ import UserItem from './Content/UserItem';
 import GridImage from './Content/GridImage';
 import Placeholder from './Content/Placeholder';
 import UserTitle from './Content/UserTitle';
-import QuestionDetail from './Content/QuestionDetail';
 // Header
 import NavigatorBar from './Header/NavigatorBar';
 // StatusView
@@ -82,7 +81,6 @@ export {
 	GridImage,
 	Placeholder,
 	UserTitle,
-	QuestionDetail,
 	NavigatorBar,
 	EmptyView,
 	ErrorView,

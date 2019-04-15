@@ -108,7 +108,9 @@ class index extends Component {
 								style={styles.userInfo}
 								onPress={() => navigation.navigate('EditProfile', { user })}
 							>
-								<Avatar source={user.avatar} size={PxFit(60)} style={styles.userAvatar} />
+								<TouchFeedback onPress={() => navigation.navigate('User', { user })}>
+									<Avatar source={user.avatar} size={PxFit(60)} style={styles.userAvatar} />
+								</TouchFeedback>
 								<View style={styles.textInfo}>
 									<Text style={styles.userName} numberOfLines={1}>
 										{login ? user.name : '登录/注册'}
