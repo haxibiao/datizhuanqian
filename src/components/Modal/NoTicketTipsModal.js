@@ -15,25 +15,26 @@ class NoTicketTipsModal extends Component {
 				visible={visible}
 				handleVisible={handleVisible}
 				customStyle={{
-					width: 260,
-					height: 300,
-					borderRadius: 10,
+					width: (width * 2) / 3,
+					borderRadius: 5,
+					backgroundColor: '#fff',
 					alignItems: 'center',
-					justifyContent: 'space-between'
+					justifyContent: 'space-between',
+					paddingVertical: 20,
+					paddingHorizontal: 20
 				}}
 				header={<Text style={styles.false}>精力点不足</Text>}
 			>
-				<Image source={require('../../../assets/images/tips.png')} style={{ height: 110, width: 110 }} />
+				<Image source={require('../../../assets/images/tips.png')} style={{ height: 120, width: 120 }} />
 				<View style={styles.content}>
 					<Text style={styles.text}>继续答题不再奖励智慧点</Text>
-					<Text style={styles.text}>精力点恢复时间</Text>
-					<Text style={styles.text}>{'2019-04-16 16:04:08'}</Text>
+					<Text style={styles.text}>每日零时将重置精力</Text>
 				</View>
 				<Button
 					name={'知道了'}
 					disabled={false}
 					handler={handleVisible}
-					style={{ height: 34, paddingHorizontal: 42 }}
+					style={{ height: 34, width: (width * 2) / 3 - 40, borderRadius: 17 }}
 					theme={Colors.theme}
 					fontSize={14}
 				/>
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 13,
-		color: Colors.theme,
+		color: Colors.black,
 		paddingVertical: 2
 	}
 });

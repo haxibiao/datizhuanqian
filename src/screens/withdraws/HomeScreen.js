@@ -172,7 +172,10 @@ class HomeScreen extends Component {
 										</View>
 										{user.pay_account && (
 											<View style={styles.footer}>
-												<Text style={styles.tips}>当前汇率：600智慧点=1元</Text>
+												<Text style={styles.tips}>
+													当前汇率：{data.user.exchange_rate ? data.user.exchange_rate : 600}
+													智慧点=1元
+												</Text>
 												<Button
 													name={'查看提现日志'}
 													style={{

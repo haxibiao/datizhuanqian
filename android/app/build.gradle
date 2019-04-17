@@ -5,6 +5,7 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js",
     devDisabledInDev: true,
+    devDisabledHotfix: true,
     devDisabledInStaging: true,
     devDisabledInXiaomi: true,
     devDisabledInBaidu: true,
@@ -18,6 +19,7 @@ project.ext.react = [
     devDisabledInOther:true,
 
     bundleInDev:true,
+    bundleInHotfix: true,
     bundleInStaging: true,
     bundleInXiaomi: true,
     bundleInBaidu: true,
@@ -36,6 +38,7 @@ project.ext.react = [
 project.ext.envConfigFiles = [
     debug: ".env",
     dev:".env.dev",
+    hotfix:".env.hotfix",
     release: ".env.prod",
     staging: ".env.staging",
     xiaomi: ".env.xiaomi",
@@ -122,6 +125,13 @@ android {
         dev {
             initWith release
             applicationIdSuffix '.dev'
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.release 
+            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
+        }
+        hotfix {
+            initWith release
+            applicationIdSuffix '.hotfix'
             matchingFallbacks = ['release']
             signingConfig signingConfigs.release 
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'

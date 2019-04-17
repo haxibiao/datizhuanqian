@@ -15,6 +15,7 @@ mutation signUpMutation($account: String!, $password: String!) {
 		status
 		token
 		pay_info_change_count
+		exchange_rate
 	}
 }
 
@@ -35,6 +36,7 @@ mutation signInMutation($account: String!, $password: String!) {
 		status
 		token
 		pay_info_change_count
+		exchange_rate
 	}
 }
 
@@ -94,6 +96,7 @@ query UserQuery($id: Int!) {
 		available_withdraw_count
 		follow_users_count
 		followers_count
+		exchange_rate
 		level {
 			id
 			name
