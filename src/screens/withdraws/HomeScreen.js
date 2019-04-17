@@ -45,38 +45,8 @@ class HomeScreen extends Component {
 		};
 	}
 
-	//处理提现
-	handleWithdraws(user, amount, wallet) {
-		this.setState({
-			clickControl: true
-		});
-		//判断提现次数
-		if (user.available_withdraw_count < 1) {
-			this.WithdrawsTipsModalVisible();
-			this.setState({
-				clickControl: false,
-				withdrawTips: '今日提现次数已达上限~'
-			});
-		} else {
-			this._checkBalance(user, amount, wallet);
-		}
-	}
-
-	//判断余额
-	_checkBalance(user, amount, wallet) {
-		let { EXCHANGE_RATE, clickControl } = this.state;
-		if (!(user.gold / EXCHANGE_RATE >= amount || (wallet && wallet.available_balance >= amount))) {
-			this.WithdrawsTipsModalVisible();
-			this.setState({
-				clickControl: false
-			});
-		} else {
-			this._withdrawsRequest(amount);
-		}
-	}
-
 	//发起提现请求
-	async _withdrawsRequest(amount) {
+	async handleWithdraws(amount) {
 		const user_id = this.props.user.id;
 		let result = {};
 
@@ -103,28 +73,9 @@ class HomeScreen extends Component {
 			result.errors = ex;
 		}
 		if (result && result.errors) {
-			let info = result.errors.toString().indexOf('Cannot');
-			if (info > -1) {
-				codePush.checkForUpdate().then(update => {
-					if (!update) {
-						Methods.toast('请重启APP完成更新', -100);
-					} else {
-						codePush.sync({
-							updateDialog: {
-								optionalIgnoreButtonLabel: '取消',
-								optionalInstallButtonLabel: '后台更新',
-								optionalUpdateMessage: '发现新版本',
-								title: '更新提示'
-							},
-							installMode: codePush.InstallMode.IMMEDIATE
-						});
-					}
-				});
-				//过渡办法
-			} else {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Methods.toast(str, -100); //Toast错误信息
-			}
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Methods.toast(str, -150); //Toast错误信息
+
 			this.setState({
 				clickControl: false
 			});
@@ -204,11 +155,7 @@ class HomeScreen extends Component {
 													<TouchableOpacity
 														style={styles.item}
 														onPress={() => {
-															this.handleWithdraws(
-																data.user,
-																luckyMoney.value,
-																data.user.wallet
-															);
+															this.handleWithdraws(luckyMoney.value);
 														}}
 														disabled={clickControl}
 														key={index}
@@ -255,6 +202,7 @@ class HomeScreen extends Component {
 				<RuleDescriptionModal
 					visible={RuleDescriptioVisible}
 					handleVisible={this.RuleDescriptionModalVisible}
+					user={user}
 				/>
 				<WithdrawsTipsModal
 					visible={WithdrawsTipsVisible}

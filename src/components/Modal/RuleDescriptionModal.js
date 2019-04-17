@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get('window');
 
 class RuleDescriptionModal extends Component {
 	render() {
-		const { visible, handleVisible, nextQuestion, gold } = this.props;
+		const { visible, handleVisible, nextQuestion, gold, user } = this.props;
 		return (
 			<BasicModal
 				visible={visible}
@@ -24,10 +24,10 @@ class RuleDescriptionModal extends Component {
 
 				<View style={{ marginTop: 5 }}>
 					<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
-						1.只有当您绑定支付宝账号之后，才能开始提现，每天最多进行3次提现。
+						1.只有当您绑定支付宝账号之后，才能开始提现。
 					</Text>
 					<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
-						2.提现金额分为1元(600)、3元(1800)、5元(3000)、10元(6000)四档，每次提现时会优先扣除钱包内的余额再扣除智慧点，剩余智慧点可以在下次满足最低提现额度时申请提现。
+						2.提现金额分为1元、3元、5元、10元四档，每次提现时会优先扣除钱包内的余额再扣除智慧点，剩余智慧点可以在下次满足最低提现额度时申请提现。
 					</Text>
 					<Text style={{ paddingVertical: 5, lineHeight: 18, fontSize: 13, color: Colors.grey }}>
 						3.一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现系统将判定涉嫌恶意刷取智慧点，答题赚钱官方有权限制提现功能。

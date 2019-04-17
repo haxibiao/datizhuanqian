@@ -17,23 +17,24 @@ class NoTicketTipsModal extends Component {
 				customStyle={{
 					width: 260,
 					height: 300,
-					borderRadius: 5,
+					borderRadius: 10,
 					alignItems: 'center',
 					justifyContent: 'space-between'
 				}}
-				header={<Text style={styles.false}>没有精力点了哦</Text>}
+				header={<Text style={styles.false}>精力点不足</Text>}
 			>
-				<Image source={require('../../../assets/images/tips.png')} style={{ height: 100, width: 100 }} />
+				<Image source={require('../../../assets/images/tips.png')} style={{ height: 110, width: 110 }} />
 				<View style={styles.content}>
-					<Text style={styles.text}>继续答题将不再增加智慧点</Text>
-					<Text style={styles.text}>精力点将在24小时后自动恢复</Text>
+					<Text style={styles.text}>继续答题不再奖励智慧点</Text>
+					<Text style={styles.text}>精力点恢复时间</Text>
+					<Text style={styles.text}>{'2019-04-16 16:04:08'}</Text>
 				</View>
 				<Button
 					name={'知道了'}
 					disabled={false}
 					handler={handleVisible}
 					style={{ height: 34, paddingHorizontal: 42 }}
-					theme={Colors.blue}
+					theme={Colors.theme}
 					fontSize={14}
 				/>
 			</BasicModal>
@@ -49,15 +50,17 @@ const styles = StyleSheet.create({
 	},
 	false: {
 		fontSize: 20,
-		paddingTop: 15,
+		paddingTop: 5,
 		color: Colors.grey
 	},
 	content: {
-		alignItems: 'center'
+		alignItems: 'center',
+		marginVertical: 10
 	},
 	text: {
 		fontSize: 13,
-		color: Colors.theme
+		color: Colors.theme,
+		paddingVertical: 2
 	}
 });
 
