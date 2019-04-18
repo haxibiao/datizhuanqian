@@ -1,5 +1,5 @@
 #注册
-mutation signUpMutation($account: String!, $password: String!) {
+mutation signUpMutation($account: String!, $password: String) {
 	signUp(account: $account, password: $password) {
 		id
 		account
@@ -27,8 +27,8 @@ mutation signUpMutation($account: String!, $password: String!) {
 }
 
 #登录
-mutation signInMutation($account: String!, $password: String!) {
-	signIn(account: $account, password: $password) {
+mutation signInMutation($account: String!, $password: String, $code: String) {
+	signIn(account: $account, password: $password, code: $code) {
 		id
 		account
 		name

@@ -13,7 +13,12 @@ import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Storage, ItemKeys } from '../../store/localStorage';
 import { Query, withApollo, compose, graphql } from 'react-apollo';
-import { signUpMutation, signInMutation, UserQuery } from '../../assets/graphql/user.graphql';
+import {
+	signUpMutation,
+	signInMutation,
+	UserQuery,
+	SendVerificationCodeMutation
+} from '../../assets/graphql/user.graphql';
 
 import { BoxShadow } from 'react-native-shadow';
 
@@ -33,71 +38,89 @@ var showThumbType = ['accpunt', 'password'];
 class index extends Component {
 	constructor(props) {
 		super(props);
-		let signIn = props.navigation.getParam('signIn', true);
+		this.timeRemaining = 60;
 		this.state = {
-			signIn,
+			phone: true,
 			submitting: false,
 			account: null,
 			password: null,
 			showThumb: false,
 			secure: true,
-			agreement: true
+			countdown: 0
 		};
+	}
+
+	checkNetwork = childState => {
+		NetInfo.isConnected.fetch().then(isConnected => {
+			if (isConnected) {
+				this.onSubmit();
+			} else {
+				Methods.toast('请检查是否连接网络', 80);
+			}
+		});
+	};
+
+	getVerificationCode = async () => {
+		let { account } = this.state;
+		try {
+			let result = await this.props.SendVerificationCodeMutation({
+				variables: {
+					account: account,
+					action: 'USER_LOGIN'
+				},
+				errorPolicy: 'all'
+			});
+			this.verificationCode = result.data.sendVerificationCode.code;
+			this.timeRemaining = result.data.sendVerificationCode.surplusSecond;
+			this.countdown();
+		} catch (error) {
+			let str = errors.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({ content: str, layout: 'top' });
+		}
+	};
+
+	countdown() {
+		this.setState(
+			prevState => ({ countdown: --this.timeRemaining }),
+			() => {
+				if (this.timeRemaining === 0) {
+					clearTimeout(this.timer);
+				}
+			}
+		);
+		this.timer = setTimeout(() => {
+			this.countdown();
+		}, 1000);
 	}
 
 	//处理表单提交
 	onSubmit = async () => {
-		const { account, password } = this.state;
+		const { phone, account, password } = this.state;
 		this.setState({
 			submitting: true
 		});
-		if (this.state.signIn) {
-			//登录
-			let result = {};
-			try {
-				result = await this.props.signInMutation({
-					variables: {
-						account,
-						password
-					}
-				});
-			} catch (ex) {
-				result.errors = ex;
-			}
-			if (result && result.errors) {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Toast.show({ content: str, layout: 'top' }); //Toast错误信息
-			} else {
-				const user = result.data.signIn;
-				this._saveUserData(user);
-			}
-			this.setState({
-				submitting: false
+		let result = {};
+		try {
+			result = await this.props.signInMutation({
+				variables: {
+					account,
+					password: phone ? undefined : password,
+					code: phone ? password : undefined
+				}
 			});
-		} else {
-			//注册
-			let result = {};
-			try {
-				result = await this.props.signUpMutation({
-					variables: {
-						account,
-						password
-					}
-				});
-			} catch (ex) {
-				result.errors = ex;
-			}
-			if (result && result.errors) {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Toast.show({ content: str, layout: 'top' }); //Toast错误信息
-			} else {
-				const user = result.data.signUp;
-				this._saveUserData(user);
-			}
-			this.setState({
-				submitting: false
-			});
+		} catch (ex) {
+			result.errors = ex;
 		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({ content: str, layout: 'top' });
+		} else {
+			const user = result.data.signIn;
+			this._saveUserData(user);
+		}
+		this.setState({
+			submitting: false
+		});
 	};
 
 	_saveUserData = user => {
@@ -115,16 +138,24 @@ class index extends Component {
 
 	toggleMutation = () => {
 		this.setState(prevState => ({
-			signIn: !prevState.signIn,
+			phone: !prevState.phone,
 			account: null,
 			password: null
 		}));
 	};
 
+	validator(number) {
+		console.log('number', number);
+		if (String(number).length === 11) {
+			return true;
+		}
+		return false;
+	}
+
 	render() {
 		let { navigation } = this.props;
-		let { signIn, submitting, account, password, showThumb, secure, agreement } = this.state;
-		let disabled = signIn ? !(account && password) : !(account && password && agreement);
+		let { phone, submitting, account, password, showThumb, secure, countdown } = this.state;
+		let disabled = !(account && password);
 		return (
 			<PageContainer
 				submitting={submitting}
@@ -156,7 +187,7 @@ class index extends Component {
 							<View style={{ width: '80%' }}>
 								<View>
 									<View style={styles.fieldGroup}>
-										<Text style={styles.field}>账号</Text>
+										<Text style={styles.field}>{phone ? '手机号' : '账号'}</Text>
 										<View
 											style={[
 												styles.inputWrap,
@@ -166,7 +197,7 @@ class index extends Component {
 											<CustomTextInput
 												placeholderTextColor={Theme.subTextColor}
 												autoCorrect={false}
-												placeholder="请输入手机号/邮箱"
+												placeholder={phone ? '请输入手机号' : '请输入账号'}
 												style={styles.inputStyle}
 												value={account}
 												onChangeText={this.changeAccount}
@@ -185,7 +216,7 @@ class index extends Component {
 										</View>
 									</View>
 									<View style={styles.fieldGroup}>
-										<Text style={styles.field}>密码</Text>
+										<Text style={styles.field}>{phone ? '验证码' : '密码'}</Text>
 										<View
 											style={[
 												styles.inputWrap,
@@ -195,14 +226,36 @@ class index extends Component {
 											<CustomTextInput
 												placeholderTextColor={Theme.subTextColor}
 												autoCorrect={false}
-												placeholder="请输入密码"
-												secureTextEntry={secure}
+												placeholder={phone ? '请输入验证码' : '请输入密码'}
+												secureTextEntry={phone ? false : secure}
 												style={styles.inputStyle}
 												value={password}
 												onChangeText={this.changePassword}
 												onFocus={() => this.setState({ showThumb: showThumbType[1] })}
 											/>
-											{showThumb == showThumbType[1] && (
+
+											{phone && (
+												<TouchFeedback
+													onPress={this.getVerificationCode}
+													style={[
+														styles.countdown,
+														this.validator(account) && {
+															backgroundColor: Theme.primaryColor
+														}
+													]}
+													disabled={!this.validator(account)}
+												>
+													<Text
+														style={[
+															styles.countdownText,
+															this.validator(account) && { color: '#fff' }
+														]}
+													>
+														{countdown > 0 ? countdown : '获取验证码'}
+													</Text>
+												</TouchFeedback>
+											)}
+											{!phone && showThumb == showThumbType[1] && (
 												<TouchFeedback onPress={() => this.setState({ secure: !secure })}>
 													<Iconfont
 														name={secure ? 'eye' : 'hide'}
@@ -214,46 +267,31 @@ class index extends Component {
 										</View>
 									</View>
 								</View>
-								<Button style={styles.button} disabled={disabled} onPress={this.onSubmit}>
-									<Text style={styles.buttonText}>{signIn ? '登 录' : '注 册'}</Text>
+								<Button style={styles.button} disabled={disabled} onPress={this.checkNetwork}>
+									<Text style={styles.buttonText}>{phone ? '登录/注册' : '登 录'}</Text>
 								</Button>
 								<View style={styles.bottomInfo}>
-									{signIn ? (
+									<TouchFeedback onPress={this.toggleMutation}>
+										<Text style={styles.bottomLinkText}>
+											{phone ? '账号密码登录' : '验证码登录'}
+										</Text>
+									</TouchFeedback>
+									{!phone && (
 										<TouchFeedback onPress={() => navigation.navigate('ForgetPassword')}>
 											<Text style={styles.bottomInfoText}>忘记密码?</Text>
 										</TouchFeedback>
-									) : (
-										<Row>
-											<TouchFeedback
-												onPress={() =>
-													this.setState(prevState => ({
-														agreement: !prevState.agreement
-													}))
-												}
-											>
-												<Image
-													source={
-														agreement
-															? require('../../assets/images/check_fill.png')
-															: require('../../assets/images/check.png')
-													}
-													style={{ width: PxFit(17), height: PxFit(17) }}
-												/>
-											</TouchFeedback>
-											<Text style={styles.bottomInfoText}>同意</Text>
-											<TouchFeedback onPress={() => navigation.navigate('UserProtocol')}>
-												<Text style={styles.bottomLinkText}>《用户协议》</Text>
-											</TouchFeedback>
-										</Row>
 									)}
-									<TouchFeedback onPress={this.toggleMutation}>
-										<Text style={styles.bottomLinkText}>{signIn ? '注册' : '登录'}</Text>
-									</TouchFeedback>
 								</View>
 							</View>
 						</View>
 					</BoxShadow>
 				</View>
+				<Row style={styles.protocol}>
+					<Text style={styles.bottomInfoText}>登录代表你已同意</Text>
+					<TouchFeedback onPress={() => navigation.navigate('UserProtocol')}>
+						<Text style={styles.bottomLinkText}>《用户协议》</Text>
+					</TouchFeedback>
+				</Row>
 			</PageContainer>
 		);
 	}
@@ -313,6 +351,18 @@ const styles = StyleSheet.create({
 		paddingBottom: PxFit(10),
 		paddingTop: PxFit(10)
 	},
+	countdown: {
+		width: PxFit(64),
+		height: PxFit(20),
+		borderRadius: PxFit(4),
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#f0f0f0'
+	},
+	countdownText: {
+		fontSize: PxFit(10),
+		color: Theme.subTextColor
+	},
 	button: {
 		marginTop: PxFit(30),
 		height: PxFit(40),
@@ -336,6 +386,14 @@ const styles = StyleSheet.create({
 	bottomLinkText: {
 		fontSize: PxFit(14),
 		color: '#F79B7C'
+	},
+	protocol: {
+		position: 'absolute',
+		bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace),
+		left: 0,
+		right: 0,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
 
@@ -345,5 +403,6 @@ export default compose(
 		return { users: store.users };
 	}),
 	graphql(signUpMutation, { name: 'signUpMutation' }),
-	graphql(signInMutation, { name: 'signInMutation' })
+	graphql(signInMutation, { name: 'signInMutation' }),
+	graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
 )(index);
