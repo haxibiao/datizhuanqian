@@ -2,12 +2,12 @@
  * @flow
  * created by wyk made in 2019-04-08 16:06:49
  */
-import React, { Component } from 'react';
+import React, { Component } from 'src/components/Utils/node_modules/react';
 import { View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 
-import Picker from 'react-native-picker';
+import Picker from 'src/components/Utils/node_modules/react-native-picker';
 // import area from './json/area.json';
-import { Overlay } from 'teaset';
+import { Overlay } from 'src/components/Utils/node_modules/teaset';
 
 let initStyle = {
 	pickerConfirmBtnText: '确定',

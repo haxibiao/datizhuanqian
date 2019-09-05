@@ -4,13 +4,13 @@
  */
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component } from 'src/components/Utils/node_modules/react';
 import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, WPercent, Api } from '../../utils';
 import Iconfont from '../Iconfont';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import OverlayViewer from '../Overlay/OverlayViewer';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import ImageViewer from 'src/components/Utils/node_modules/react-native-image-zoom-viewer';
 
 type Props = {
 	multiple?: boolean,

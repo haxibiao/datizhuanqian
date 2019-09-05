@@ -1,6 +1,31 @@
 {
-  "presets": ["module:metro-react-native-babel-preset"],
-  "plugins": [
-    "import-graphql"
-  ]
+    "presets": ["module:metro-react-native-babel-preset"],
+    "plugins": [
+        "import-graphql",
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": true
+            }
+        ],
+        [
+            "babel-plugin-root-import",
+            {
+                "paths": [
+                    {
+                        "rootPathPrefix": "@apollo",
+                        "rootPathSuffix": "./src/apollo"
+                    },
+                    {
+                        "rootPathPrefix": "@utils",
+                        "rootPathSuffix": "./src/utils"
+                    },
+                    {
+                        "rootPathPrefix": "@store",
+                        "rootPathSuffix": "./src/store"
+                    }
+                ]
+            }
+        ]
+    ]
 }
