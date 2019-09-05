@@ -1,0 +1,34 @@
+query TasksQuery($type: Int, $offset: Int, $limit: Int) {
+	tasks(type: $type, offset: $offset, limit: $limit) {
+		id
+		name
+		details
+		type
+		gold
+		ticket
+		count
+		status
+		taskStatus
+		router
+		submit_name
+	}
+}
+#领取任务
+mutation ReceiveTaskMutation($task_id: Int!) {
+	receiveTask(task_id: $task_id)
+}
+
+#领取奖励
+mutation TaskRewardMutation($task_id: Int!) {
+	taskReward(task_id: $task_id)
+}
+
+#答复任务
+mutation ReplyTaskMutation($task_id: Int!, $content: ReplyContent) {
+	replyTask(task_id: $task_id, content: $content)
+}
+
+#上传图片
+mutation UploadImage($image: [String]!) {
+	uploadImage(image: $image)
+}

@@ -1,13 +1,12 @@
 /*
  * @Author: Gaoxuan
- * @Date:   2019-02-27 10:51:31
+ * @Date:   2019-03-22 15:43:59
  */
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { DivisionLine } from '../../../components';
-import { Colors, Divice } from '../../../constants';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
 class Loading extends Component {
 	constructor(props) {
@@ -18,58 +17,51 @@ class Loading extends Component {
 		return (
 			<View>
 				<View style={styles.header}>
-					<Text
-						style={{
-							height: 20,
-							width: Divice.width - 30,
-							backgroundColor: Colors.lightBorder
-						}}
-					/>
 					<View style={styles.user}>
 						<View
 							style={{
-								height: 34,
-								width: 34,
-								borderRadius: 17,
-								backgroundColor: Colors.lightBorder
+								height: PxFit(34),
+								width: PxFit(34),
+								borderRadius: PxFit(17),
+								backgroundColor: Theme.lightBorder
 							}}
 						/>
 						<View style={styles.userRight}>
 							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 								<Text
 									style={{
-										height: 13,
-										width: 80,
-										backgroundColor: Colors.lightBorder
+										height: PxFit(13),
+										width: PxFit(80),
+										backgroundColor: Theme.lightBorder
 									}}
 								/>
 							</View>
-							<Text style={{ height: 11, width: 40, backgroundColor: Colors.lightBorder }} />
+							<Text style={{ height: PxFit(11), width: PxFit(40), backgroundColor: Theme.lightBorder }} />
 						</View>
 					</View>
 				</View>
 				<View style={styles.center}>
 					<Text
 						style={{
-							width: Divice.width - 30,
-							height: 14,
-							backgroundColor: Colors.lightBorder,
-							marginVertical: 4
+							width: SCREEN_WIDTH - PxFit(30),
+							height: PxFit(14),
+							backgroundColor: Theme.lightBorder,
+							marginVertical: PxFit(4)
 						}}
 					/>
 
 					<Text
 						style={{
-							width: Divice.width - 100,
-							height: 14,
-							backgroundColor: Colors.lightBorder,
-							marginVertical: 4
+							width: SCREEN_WIDTH - PxFit(100),
+							height: PxFit(14),
+							backgroundColor: Theme.lightBorder,
+							marginVertical: PxFit(4)
 						}}
 					/>
 				</View>
-				<DivisionLine height={5} />
+				<View style={{ height: PxFit(5), backgroundColor: Theme.lightBorder }} />
 				<View style={styles.commentsTab}>
-					<Text style={{ fontSize: 16, color: Colors.black }}>评论 0</Text>
+					<Text style={{ fontSize: PxFit(16), color: Theme.black }}>评论 0</Text>
 				</View>
 			</View>
 		);
@@ -78,31 +70,31 @@ class Loading extends Component {
 
 const styles = StyleSheet.create({
 	header: {
-		paddingHorizontal: 15,
-		paddingTop: 20
+		paddingHorizontal: PxFit(15),
+		paddingTop: PxFit(10)
 	},
 
 	user: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 20
+		marginTop: PxFit(10)
 	},
 	userRight: {
-		paddingLeft: 10,
+		paddingLeft: PxFit(10),
 		justifyContent: 'space-between',
-		height: 34
+		height: PxFit(34)
 	},
 
 	center: {
-		marginTop: 15,
-		paddingHorizontal: 15,
-		paddingBottom: 20
+		marginTop: PxFit(15),
+		paddingHorizontal: PxFit(15),
+		paddingBottom: PxFit(20)
 	},
 	commentsTab: {
-		paddingHorizontal: 15,
-		paddingVertical: 10,
-		borderBottomWidth: 0.5,
-		borderBottomColor: Colors.lightBorder
+		paddingHorizontal: PxFit(15),
+		paddingVertical: PxFit(10),
+		borderBottomWidth: PxFit(0.5),
+		borderBottomColor: Theme.lightBorder
 	}
 });
 

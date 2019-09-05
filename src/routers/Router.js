@@ -1,206 +1,286 @@
+/*
+ * @Author: Gaoxuan
+ * @Date:   2019-08-01 09:55:03
+ */
+
 import MainTabNavigator from './MainTabNavigator';
+//登录注验证
+import LoginScreen from '../screens/login';
+import ForgetPasswordScreen from '../screens/login/ForgetPassword';
+import RetrievePasswordScreen from '../screens/login/RetrievePassword';
+import PhoneBindScreen from '../screens/login/PhoneBind';
+import VerificationPhoneScreen from '../screens/login/VerificationPhone';
+import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
+import PasswordLoginScreen from '../screens/login/PasswordLogin';
+//答题
+import AnswerScreen from '../screens/answer';
+//题目详情
+import QuestionScreen from '../screens/question';
+import VideoExplanationScreen from '../screens/question/VideoExplanation';
+//提现
+import WithdrawLogDetailScreen from '../screens/withdraw/WithdrawLogDetails';
+import WithdrawApplyScreen from '../screens/withdraw/WithdrawApply';
+//任务
+import CpcTaskScreen from '../screens/task/CpcTask';
+import SubmitTaskScreen from '../screens/task/SubmitTask';
+//出题
+import ContributeScreen from '../screens/contribute';
+import ContributesScreen from '../screens/contribute/Contributes';
+import ContributeRuleScreen from '../screens/contribute/ContributeRule';
+import ContributeSubmitedScreen from '../screens/contribute/Submit';
+import ContributeEditCategoryScreen from '../screens/contribute/EditCategory';
+import ContributeEditOptionsScreen from '../screens/contribute/EditOptions';
+import ContributeEditExplainScreen from '../screens/contribute/EditExplain';
 
-import LoginScreen from '../screens/login/LoginScreen';
-import RetrievePasswordScreen from '../screens/login/RetrievePasswordScreen';
-import VerificationScreen from '../screens/login/VerificationScreen';
+//分享
+import ShareScreen from '../screens/share';
+import InviteeListScreen from '../screens/share/InviteeList';
+import AppShareCardScreen from '../screens/share/AppShareCard';
 
-import AnswerScreen from '../screens/home/AnswerScreen';
-import ErrorCorrectionScreen from '../screens/home/ErrorCorrectionScreen';
-import QuestionDetaiList from '../screens/home/QuestionDetaiList';
-import FavoritesDetaiList from '../screens/home/FavoritesDetaiList';
+//个人
+import EditScreen from '../screens/profile/Edit';
+import FavoritesLogScreen from '../screens/profile/FavoritesLog';
+import AnswerLogScreen from '../screens/profile/AnswerLog';
+import CommonIssueScreen from '../screens/profile/CommonIssue';
+import ModifyAliPayScreen from '../screens/profile/ModifyAliPay';
+import ModifyPasswordScreen from '../screens/profile/ModifyPassword';
+import ModifyAccountScreen from '../screens/profile/ModifyAccount';
+import VerificationCodeScreen from '../screens/profile/VerificationCode';
+import BillingRecordScreen from '../screens/profile/BillingRecord';
+import IntroduceScreen from '../screens/profile/Introduce';
+import SocietyScreen from '../screens/profile/Society';
+import RecruitScreen from '../screens/profile/Recruit';
+//通知
+import NotificationScreen from '../screens/notification';
+import SystemNotificationScreen from '../screens/notification/SystemNotification';
+import OfficialNoticeScreen from '../screens/notification/OfficialNotice';
+import CommentNotificationScreen from '../screens/notification/CommentNotification';
+import FansNotificationScreen from '../screens/notification/FansNotification';
+import PushNotificationScreen from '../screens/notification/PushNotification';
+import LikeNotificationScreen from '../screens/notification/LikeNotification';
+import NoticeItemDetailScreen from '../screens/notification/NoticeItemDetail';
+//反馈
+import FeedbackScreen from '../screens/feedback';
+import FeedbackDetails from '../screens/feedback/FeedbackDetails';
 
-import SettingScreen from '../screens/profile/settings/HomeScreen';
-import EditProfileScreen from '../screens/profile/settings/EditProfileScreen';
-import MyAccountScreen from '../screens/profile/settings/MyAccountScreen';
-import VerificationCodeScreen from '../screens/profile/settings/VerificationCodeScreen';
-import AboutScreen from '../screens/profile/settings/AboutScreen';
-import UserAgreenmentScreen from '../screens/profile/settings/UserAgreenmentScreen';
-import ShareScreen from '../screens/profile/settings/ShareScreen';
-import LevelDescriptionScreen from '../screens/profile/settings/LevelDescriptionScreen';
-import ChangePasswordScreen from '../screens/profile/settings/ChangePasswordScreen';
+//举报
+import ReportCommentScreen from '../screens/comment/ReportComment';
+import ReportUserScreen from '../screens/user/ReportUser';
+import ReportQuestionScreen from '../screens/question/ReportQuestion';
 
-import GoFeedBackScreen from '../screens/profile/FeedBackScreen';
-import CommonIssueScreen from '../screens/profile/CommonIssueScreen';
-import MyPropScreen from '../screens/profile/MyPropScreen';
-import TestScreen from '../screens/profile/TestScreen';
-import BusinessScreen from '../screens/profile/BusinessScreen';
-import CorrectionLogScreen from '../screens/profile/CorrectionLogScreen';
-import AnswerLogScreen from '../screens/profile/AnswerLogScreen';
-import MyFavoritesScreen from '../screens/profile/MyFavoritesScreen';
-import FollowFans from '../screens/profile/followFans';
+//
+import UserScreen from '../screens/user';
 
-import FeedbackScreen from '../screens/feedback/HomeScreen';
-import FeedbackDetailsScreen from '../screens/feedback/FeedbackDetailsScreen';
-
-import NotificationScreen from '../screens/notification/HomeScreen';
-import SystemNotificationScreen from '../screens/notification/SystemNotificationScreen';
-import CommentNotificationScreen from '../screens/notification/CommentNotificationScreen';
-import FansNotificationScreen from '../screens/notification/FansNotificationScreen';
-
-import WithdrawsLogScreen from '../screens/withdraws/WithdrawsLogScreen';
-import WithdrawDetailsScreen from '../screens/withdraws/WithdrawDetailsScreen';
-import WithdrawApplyScreen from '../screens/withdraws/WithdrawApplyScreen';
-
-import SubmitTaskScreen from '../screens/task/SubmitTaskScreen';
-import TaskDetailsScreen from '../screens/task/TaskDetailsScreen';
-import TaskFailScreen from '../screens/task/TaskFailScreen';
-import MakeQuestionScreen from '../screens/task/MakeQuestionScreen';
-import MakeQuestionHistoryScreen from '../screens/task/MakeQuestionHistoryScreen';
-import QuestionDetail from '../screens/task/QuestionDetail';
-import MakeQuestionRule from '../screens/task/MakeQuestionRule';
-import QuestionReviewScreen from '../screens/task/QuestionReviewScreen';
-
-import PropScreen from '../screens/prop/HomeScreen';
-
-import User from '../screens/user';
+//设置
+import SettingScreen from '../screens/setting';
+import AccountSecurityScreen from '../screens/setting/AccountSecurity';
+import GradeDescriptionScreen from '../screens/setting/GradeDescription';
+import UserProtocolScreen from '../screens/setting/UserProtocol';
+import ShareAppScreen from '../screens/setting/ShareApp';
+import AboutUsScreen from '../screens/setting/AboutUs';
+import UpdateLogScreen from '../screens/setting/UpdateLog';
+import PrivacyPolicyScreen from '../screens/setting/PrivacyPolicy';
+import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
 
 export default {
-	主页: {
+	Main: {
 		screen: MainTabNavigator
 	},
-	//mainTab
-	登录注册: {
+	//登录验证
+	Login: {
 		screen: LoginScreen
 	},
-	重置密码: {
+	ForgetPassword: {
+		screen: ForgetPasswordScreen
+	},
+	RetrievePassword: {
 		screen: RetrievePasswordScreen
 	},
-	忘记密码: {
-		screen: VerificationScreen
+	PhoneBind: {
+		screen: PhoneBindScreen
 	},
-	//登录注册
-	回答: {
-		screen: AnswerScreen,
-		path: 'question/:question_id'
+	VerificationPhone: {
+		screen: VerificationPhoneScreen
 	},
-	//scheme question 路径    question_id 参数
-	//示例  dtzq://question/10    {question_id:10} 可以在answerScreen 页面通过params获取到
-	题目纠错: {
-		screen: ErrorCorrectionScreen
+	RegisterSetPassword: {
+		screen: RegisterSetPasswordScreen
 	},
-	题目详情列表: {
-		screen: QuestionDetaiList
-	},
-	收藏详情列表: {
-		screen: FavoritesDetaiList
+	PasswordLogin: {
+		screen: PasswordLoginScreen
 	},
 	//答题
-	设置: {
-		screen: SettingScreen
+	Answer: {
+		screen: AnswerScreen
 	},
-	编辑个人资料: {
-		screen: EditProfileScreen
+	//题目详情
+	Question: {
+		screen: QuestionScreen
 	},
-	我的账户: {
-		screen: MyAccountScreen
-	},
-	验证: {
-		screen: VerificationCodeScreen
-	},
-	关于答题赚钱: {
-		screen: AboutScreen
-	},
-	用户协议: {
-		screen: UserAgreenmentScreen
-	},
-	分享给好友: {
-		screen: ShareScreen
-	},
-	等级说明: {
-		screen: LevelDescriptionScreen
-	},
-	修改密码: {
-		screen: ChangePasswordScreen
-	},
-	//设置页
-	我的道具: {
-		screen: MyPropScreen
-	},
-	常见问题: {
-		screen: CommonIssueScreen,
-		path: 'app/CommonIssue'
-	},
-	商务合作: {
-		screen: BusinessScreen
-	},
-	//我的
-	意见反馈: {
-		screen: FeedbackScreen
-	},
-	问题反馈: {
-		screen: GoFeedBackScreen
-	},
-	反馈详情: {
-		screen: FeedbackDetailsScreen
-	},
-	纠题记录: {
-		screen: CorrectionLogScreen
-	},
-	答题记录: {
-		screen: AnswerLogScreen
-	},
-	我的收藏: {
-		screen: MyFavoritesScreen
-	},
-	关注粉丝: {
-		screen: FollowFans
-	},
-	//反馈
-	通知: {
-		screen: NotificationScreen
-	},
-	系统通知: {
-		screen: SystemNotificationScreen
-	},
-	评论通知: {
-		screen: CommentNotificationScreen
-	},
-	粉丝通知: {
-		screen: FansNotificationScreen
-	},
-	//通知
-	提现日志: {
-		screen: WithdrawsLogScreen
-	},
-	提现详情: {
-		screen: WithdrawDetailsScreen
-	},
-	提现申请: {
-		screen: WithdrawApplyScreen
-	},
-	测试: {
-		screen: TestScreen
+	VideoExplanation: {
+		screen: VideoExplanationScreen
 	},
 	//提现
-	提交任务: {
-		screen: SubmitTaskScreen
+	withdrawLogDetails: {
+		screen: WithdrawLogDetailScreen
 	},
-	任务详情: {
-		screen: TaskDetailsScreen
-	},
-	失败详情: {
-		screen: TaskFailScreen
-	},
-	问题创建: {
-		screen: MakeQuestionScreen
-	},
-	我的出题: {
-		screen: MakeQuestionHistoryScreen
-	},
-	题目详情: {
-		screen: QuestionDetail
-	},
-	出题规则: {
-		screen: MakeQuestionRule
-	},
-	出题审核: {
-		screen: QuestionReviewScreen
+	WithdrawApply: {
+		screen: WithdrawApplyScreen
 	},
 	//任务
-	道具: {
-		screen: PropScreen
+	CpcTask: {
+		screen: CpcTaskScreen
 	},
-	用户资料: {
-		screen: User
+	SubmitTask: {
+		screen: SubmitTaskScreen
+	},
+	//举报评论
+	ReportComment: {
+		screen: ReportCommentScreen
+	},
+	//出题
+	Contribute: {
+		screen: ContributeScreen
+	},
+	Contributes: {
+		screen: ContributesScreen
+	},
+	ContributeRule: {
+		screen: ContributeRuleScreen
+	},
+	ContributeSubmited: {
+		screen: ContributeSubmitedScreen
+	},
+	EditCategory: {
+		screen: ContributeEditCategoryScreen
+	},
+	EditOptions: {
+		screen: ContributeEditOptionsScreen
+	},
+	EditExplain: {
+		screen: ContributeEditExplainScreen
+	},
+
+	//分享
+	Share: {
+		screen: ShareScreen
+	},
+	InviteeList: {
+		screen: InviteeListScreen
+	},
+	AppShareCard: {
+		screen: AppShareCardScreen
+	},
+
+	//个人
+	EditProfile: {
+		screen: EditScreen
+	},
+	FavoritesLog: {
+		screen: FavoritesLogScreen
+	},
+	AnswerLog: {
+		screen: AnswerLogScreen
+	},
+
+	CommonIssue: {
+		screen: CommonIssueScreen
+	},
+	ModifyAliPay: {
+		screen: ModifyAliPayScreen
+	},
+	ModifyPassword: {
+		screen: ModifyPasswordScreen
+	},
+	ModifyAccount: {
+		screen: ModifyAccountScreen
+	},
+	VerificationCode: {
+		screen: VerificationCodeScreen
+	},
+	BillingRecord: {
+		screen: BillingRecordScreen
+	},
+	Introduce: {
+		screen: IntroduceScreen
+	},
+	Society: {
+		screen: SocietyScreen
+	},
+	Recruit: {
+		screen: RecruitScreen
+	},
+	//通知
+	Notification: {
+		screen: NotificationScreen
+	},
+	SystemNotification: {
+		screen: SystemNotificationScreen
+	},
+	OfficialNotice: {
+		screen: OfficialNoticeScreen
+	},
+	CommentNotification: {
+		screen: CommentNotificationScreen
+	},
+	FansNotification: {
+		screen: FansNotificationScreen
+	},
+	PushNotification: {
+		screen: PushNotificationScreen
+	},
+	LikeNotification: {
+		screen: LikeNotificationScreen
+	},
+	NoticeItemDetail: {
+		screen: NoticeItemDetailScreen
+	},
+	//反馈
+	Feedback: {
+		screen: FeedbackScreen
+	},
+	FeedbackDetails: {
+		screen: FeedbackDetails
+	},
+	//举报
+	ReportUser: {
+		screen: ReportUserScreen
+	},
+	ReportComment: {
+		screen: ReportCommentScreen
+	},
+	ReportQuestion: {
+		screen: ReportQuestionScreen
+	},
+	//用户
+	User: {
+		screen: UserScreen
+	},
+	//设置
+	Setting: {
+		screen: SettingScreen
+	},
+	AccountSecurity: {
+		screen: AccountSecurityScreen
+	},
+	GradeDescription: {
+		screen: GradeDescriptionScreen
+	},
+	UserProtocol: {
+		screen: UserProtocolScreen
+	},
+	ShareApp: {
+		screen: ShareAppScreen
+	},
+	AboutUs: {
+		screen: AboutUsScreen
+	},
+	UpdateLog: {
+		screen: UpdateLogScreen
+	},
+	PrivacyPolicy: {
+		screen: PrivacyPolicyScreen
+	},
+	SetLoginInfo: {
+		screen: SetLoginInfoScreen
 	}
 };

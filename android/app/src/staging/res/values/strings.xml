@@ -1,6 +1,7 @@
 <resources>
-    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">oMniPk6e1DCDjMEXE3rw5bR8NR7PSyNuibrk4</string>
-    <string name="app_name">答题内测(1.4)</string>
-    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true">ALWAYS_SEND</string>
-    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true">ALWAYS_SEND</string>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">oMniPk6e1DCDjMEXE3rw5bR8NR7PSyNuibrk4</string>
+    <string name="app_name">答题赚钱(内测)</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+	<string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
 </resources>
+	

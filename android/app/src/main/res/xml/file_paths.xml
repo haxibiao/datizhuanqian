@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<paths>
+	<paths xmlns:android="http://schemas.android.com/apk/res/android">
 		<external-path path="" name="download" />
+
+		<!--为了适配头条的ad sdk 所有路径可以设置 path = "." -->
+		<external-files-path name="." path="Download" />
 	</paths>
 </resources>

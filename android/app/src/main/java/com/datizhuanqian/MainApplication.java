@@ -2,73 +2,66 @@ package com.datizhuanqian;
 
 import android.app.Application;
 
+import com.bytedance.sdk.openadsdk.TTAdNative;
+import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
+import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import cn.jpush.reactnativejpush.JPushPackage;
-import com.brentvatne.react.ReactVideoPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
-import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
-import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.horcrux.svg.SvgPackage;
 import com.microsoft.codepush.react.CodePush;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import cn.jpush.reactnativejpush.JPushPackage;
+import cn.jpush.android.api.JPushInterface;
+import com.haxibiao.UploaderPackage;
+import com.haxibiao.share.NativeSharePackage;
+import com.datizhuanqian.ad.TtAdvertPackage;
+import com.datizhuanqian.wxapi.WxEntryPackage;
 import com.datizhuanqian.apkdownload.DownloadApkPackage;
-import com.haxibiao.rnpackages.RCTVodUploaderReactPackage;
+import com.datizhuanqian.utils.AppUtilPackage;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
-public class MainApplication extends Application implements ReactApplication {
+import androidx.multidex.MultiDexApplication;
+
+public class MainApplication extends MultiDexApplication implements ReactApplication {
+
+  public static TTAdNative mTTAdNative;
+  public static ReactApplicationContext reactContext;
+  public static TTRewardVideoAd ad = null;
+  public static TTFullScreenVideoAd fullAd = null;
+  public static ArrayBlockingQueue<String> myBlockingQueue = new ArrayBlockingQueue<String>(1);
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-
-    // 设置为 true 将不会弹出 toast
-    private boolean SHUTDOWN_TOAST = true;
-    // 设置为 true 将不会打印 log
-    private boolean SHUTDOWN_LOG = true;
-
-    @Override
-    protected String getJSBundleFile() {
-    return CodePush.getJSBundleFile();
-    }
-    
+   
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
     }
 
+     @Override
+    protected String getJSBundleFile(){
+      return CodePush.getJSBundleFile();
+    }
+
+
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            new RCTVodUploaderReactPackage(),
-            new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
-            new ReactVideoPackage(),
-            new RNGestureHandlerPackage(),
-            new SplashScreenReactPackage(),
-            new RNCWebViewPackage(),
-            new ReactNativeConfigPackage(),
-            new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
-            new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-            new AppCenterReactNativePackage(MainApplication.this),
-            new RNDeviceInfo(),
-            new SvgPackage(),
-            new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
-            new RNSpinkitPackage(),
-            new PickerPackage(),
-            new VectorIconsPackage(),
-            new DownloadApkPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      packages.add(new JPushPackage(true,true));
+      packages.add(new UploaderPackage());
+      packages.add(new NativeSharePackage());
+      packages.add(new TtAdvertPackage());
+      packages.add(new WxEntryPackage());
+      packages.add(new DownloadApkPackage());
+      packages.add(new AppUtilPackage());
+      return packages;
     }
 
     @Override
@@ -86,5 +79,6 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    JPushInterface.init(this);
   }
 }

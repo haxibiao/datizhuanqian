@@ -1,13 +1,14 @@
+/*
+ * @Author: Gaoxuan
+ * @Date:   2019-03-22 15:39:23
+ */
+
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
+import { Theme, Tools, PxFit } from 'utils';
+import { Avatar, Iconfont, UserTitle, GenderLabel } from 'components';
 
-import { Colors, Divice } from '../../../constants';
-import { Methods } from '../../../helpers';
-
-import { Avatar, Iconfont, Screen, DivisionLine, LoadingError, UserTitle } from '../../../components';
-
-import { Query } from 'react-apollo';
-import { feedbackQuery } from '../../../graphql/feedback.graphql';
+import { Query, GQL } from 'apollo';
 
 import Loading from './Loading';
 
@@ -21,35 +22,34 @@ class FeedbackBody extends Component {
 		const { navigation, feedback_id, getHeight } = this.props;
 
 		return (
-			<Query query={feedbackQuery} variables={{ id: feedback_id }}>
+			<Query query={GQL.feedbackQuery} variables={{ id: feedback_id }}>
 				{({ data, error, loading }) => {
-					if (error) return <LoadingError reload={() => refetch()} />;
+					if (error) return null;
 					if (loading) return <Loading />;
 					if (!(data && data.feedback))
-						return <View style={{ height: Divice.height / 2, backgroundColor: Colors.white }} />;
+						return <View style={{ height: Divice.height / 2, backgroundColor: Theme.white }} />;
 					let feedback = data.feedback;
-
 					return (
 						<View>
 							<View style={styles.header}>
-								<Text style={styles.title}>{feedback.title}</Text>
 								<View style={styles.user}>
 									<TouchableOpacity
-										onPress={() => navigation.navigate('用户资料', { user_id: feedback.user.id })}
+										onPress={() => navigation.navigate('User', { user: feedback.user })}
 									>
-										<Avatar uri={feedback.user.avatar} size={34} />
+										<Avatar source={{ uri: feedback.user.avatar }} size={34} />
 									</TouchableOpacity>
 
 									<View style={styles.userRight}>
 										<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 											<Text
 												style={{
-													color: feedback.user.is_admin ? Colors.themeRed : Colors.black
+													color: feedback.user.is_admin ? Theme.secondaryColor : Theme.black
 												}}
 											>
 												{feedback.user.name}
 											</Text>
 											<UserTitle user={feedback.user} />
+											<GenderLabel user={feedback.user} />
 										</View>
 										<Text style={styles.time}>发布于{feedback.time_ago}</Text>
 									</View>
@@ -61,23 +61,23 @@ class FeedbackBody extends Component {
 									let width = image.width;
 									let height = image.height;
 									let padding = 30;
-									let size = Methods.imageSize({ width, height, padding });
+									let size = Tools.imageSize({ width, height, padding });
 									return (
 										<Image
 											source={{ uri: image.path }}
 											style={{
 												width: size.width,
 												height: size.height,
-												marginTop: 10
+												marginTop: PxFit(10)
 											}}
 											key={index}
 										/>
 									);
 								})}
 							</View>
-							<DivisionLine height={5} />
+							<View style={{ height: PxFit(5), backgroundColor: Theme.lightBorder }} />
 							<View style={styles.commentsTab}>
-								<Text style={{ fontSize: 16, color: Colors.black }}>
+								<Text style={{ fontSize: PxFit(16), color: Theme.black }}>
 									评论 {feedback.publish_comments_count}
 								</Text>
 							</View>
@@ -91,43 +91,43 @@ class FeedbackBody extends Component {
 
 const styles = StyleSheet.create({
 	header: {
-		paddingHorizontal: 15,
-		paddingTop: 20
+		paddingHorizontal: PxFit(15),
+		paddingTop: PxFit(10)
 	},
 	title: {
-		color: Colors.black,
-		fontSize: 18
+		color: Theme.black,
+		fontSize: PxFit(18)
 	},
 	user: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 20
+		marginTop: PxFit(10)
 	},
 	userRight: {
-		paddingLeft: 10,
+		paddingLeft: PxFit(10),
 		justifyContent: 'space-between',
-		height: 34
+		height: PxFit(34)
 	},
 	time: {
-		fontSize: 11,
-		color: Colors.grey
+		fontSize: PxFit(11),
+		color: Theme.grey
 	},
 	center: {
-		marginTop: 15,
-		paddingHorizontal: 15,
-		paddingBottom: 20
+		marginTop: PxFit(15),
+		paddingHorizontal: PxFit(15),
+		paddingBottom: PxFit(20)
 	},
 	body: {
-		color: Colors.black,
-		fontSize: 16,
-		paddingBottom: 5,
-		lineHeight: 20
+		color: Theme.black,
+		fontSize: PxFit(16),
+		paddingBottom: PxFit(5),
+		lineHeight: PxFit(20)
 	},
 	commentsTab: {
-		paddingHorizontal: 15,
-		paddingVertical: 10,
-		borderBottomWidth: 0.5,
-		borderBottomColor: Colors.lightBorder
+		paddingHorizontal: PxFit(15),
+		paddingVertical: PxFit(10),
+		borderBottomWidth: PxFit(0.5),
+		borderBottomColor: Theme.lightBorder
 	}
 });
 

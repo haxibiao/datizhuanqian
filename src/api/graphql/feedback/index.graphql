@@ -1,0 +1,104 @@
+#反馈列表
+query feedbacksQuery($user_id: Int, $offset: Int, $limit: Int) {
+	feedbacks(user_id: $user_id, offset: $offset, limit: $limit) {
+		id
+		title
+		content
+		hot
+		publish_comments_count
+		time_ago
+		images {
+			id
+			path
+			width
+			height
+		}
+		user {
+			id
+			name
+			avatar
+			is_admin
+			gender
+			level {
+				id
+				level
+			}
+		}
+	}
+}
+
+#反馈评论列表
+query feedbackCommentsQuery($commentable_type: CommentTableEnum!, $commentable_id: Int!, $offset: Int, $limit: Int) {
+	comments(commentable_type: $commentable_type, commentable_id: $commentable_id, offset: $offset, limit: $limit) {
+		id
+		content
+		time_ago
+		rank
+		images {
+			id
+			path
+			width
+			height
+		}
+		parent_comment {
+			id
+			rank
+			content
+			user {
+				id
+				name
+				is_admin
+			}
+		}
+		user {
+			id
+			name
+			avatar
+			is_admin
+			gender
+			level {
+				id
+				level
+			}
+		}
+	}
+}
+
+#反馈详情
+query feedbackQuery($id: Int!) {
+	feedback(id: $id) {
+		id
+		title
+		content
+		hot
+		publish_comments_count
+		time_ago
+		images {
+			id
+			path
+			width
+			height
+		}
+		user {
+			id
+			name
+			avatar
+			gender
+			is_admin
+			level {
+				id
+				level
+			}
+		}
+	}
+}
+
+#创建反馈
+mutation CreateFeedbackMutation($title: String, $content: String, $images: [String]) {
+	createFeedback(title: $title, content: $content, images: $images) {
+		id
+		title
+	}
+}
+
+

@@ -1,0 +1,8 @@
+#点赞  type: question  comment
+mutation toggleLikeMutation($likable_id: Int!, $likable_type: LikableEnumType) {
+	toggleLike(likable_id: $likable_id, likable_type: $likable_type) {
+		id
+		likable_id
+		likable_type
+	}
+}
