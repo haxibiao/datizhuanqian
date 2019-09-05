@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-13 11:43:52
-*/
+ * @flow
+ * created by wyk made in 2018-12-13 11:43:52
+ */
 'use strict';
 
 import React, { Component } from 'react';
@@ -61,7 +61,11 @@ class PullChooser {
 				</View>
 			</Overlay.PullView>
 		);
-		Overlay.show(overlayView);
+		this.OverlayKey = Overlay.show(overlayView);
+	}
+
+	static hide() {
+		Overlay.hide(this.OverlayKey);
 	}
 }
 

@@ -5,29 +5,26 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 
-import { TouchFeedback, Avatar, Iconfont, ItemSeparator } from '../../../components';
-import { Theme, PxFit } from '../../../utils';
+import { TouchFeedback, Avatar, Iconfont, ItemSeparator } from 'components';
+import { Theme, PxFit } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../../store/actions';
-import { Storage, ItemKeys } from '../../../store/localStorage';
+// import { Storage, ItemKeys } from '../../../store/localStorage';
 
-import { UserQuery } from '../../../assets/graphql/user.graphql';
-import { Query, ApolloClient, withApollo } from 'react-apollo';
+import { Query, ApolloClient, withApollo, GQL } from 'apollo';
 
 class UserPanel extends Component {
 	render() {
 		let { navigation, user = {} } = this.props;
 		return (
-			<View style={styles.container}>
-				<View style={styles.left}>
+			<View style={styles.userPanel}>
+				<View style={styles.panelLeft}>
 					<Avatar source={user.avatar} size={52} borderStyle={{ borderWidth: 1, borderColor: '#ffffff' }} />
-					<View style={styles.content}>
+					<View style={styles.panelContent}>
 						<Text style={{ color: Theme.defaultTextColor, fontSize: 15 }}>{user.name}</Text>
-						<Text style={styles.user}>
+						<Text style={styles.userLevel}>
 							LV.{user.level ? user.level.level : '1'} {'  '}
 							{user.level.name} {'  '}
-							{user.exp}/{user.next_level_exp}
+							{user.level ? user.level.exp : 0}/{user.next_level_exp}
 						</Text>
 					</View>
 				</View>
@@ -37,25 +34,25 @@ class UserPanel extends Component {
 }
 
 const styles = StyleSheet.create({
-	container: {
+	userPanel: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		height: PxFit(80),
-		paddingHorizontal: PxFit(15),
 		borderBottomWidth: PxFit(1),
-		borderBottomColor: Theme.borderColor
+		borderBottomColor: Theme.borderColor,
+		marginHorizontal: PxFit(Theme.itemSpace)
 	},
-	left: {
+	panelLeft: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	content: {
+	panelContent: {
 		height: PxFit(34),
 		justifyContent: 'space-between',
 		marginLeft: PxFit(15)
 	},
-	user: {
+	userLevel: {
 		fontSize: PxFit(12),
 		color: Theme.subTextColor,
 		fontWeight: '300',

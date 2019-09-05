@@ -1,11 +1,7 @@
-/*
- * @flow
- * created by wyk made in 2019-03-21 09:43:37
- */
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, Switch, Linking } from 'react-native';
 import {
 	PageContainer,
 	TouchFeedback,
@@ -15,11 +11,10 @@ import {
 	CustomSwitch,
 	ItemSeparator,
 	PopOverlay
-} from '../../components';
-import { Theme, PxFit, Config } from '../../utils';
-import actions from '../../store/actions';
-import { connect } from 'react-redux';
-import { Query, compose, withApollo, graphql, Mutation } from 'react-apollo';
+} from 'components';
+import { Theme, PxFit, Config, Api, ISIOS } from 'utils';
+import { app, config } from 'store';
+import { withApollo, compose, graphql, GQL } from 'apollo';
 
 class index extends Component {
 	constructor(props) {
@@ -29,12 +24,63 @@ class index extends Component {
 		};
 	}
 
-	componentWillUnmount() {}
+	checkVersion = () => {
+		Api.checkUpdate();
+	};
 
-	checkVersion = () => {};
+	signOut = async () => {
+		const { navigation, phone, client } = this.props;
+
+		let result = await client.mutate({
+			mutation: GQL.UserAutoQuery,
+			variables: {
+				id: app.me.id
+			}
+		});
+
+		if (result && result.data && result.data.user) {
+			let user = result.data.user;
+			if (user.auto_uuid_user) {
+				PopOverlay({
+					title: '提示',
+					content:
+						'您现在处于游客登录模式，还没有绑定手机号，退出当前账号可能会影响您的智慧点提现，也会影响你之后的正常收益哦~',
+					leftContent: '退出登录',
+					rightContent: '绑定手机号',
+					leftConfirm: async () => {
+						app.signOut();
+						app.forget();
+						navigation.navigate('Main', null, navigation.navigate({ routeName: '答题' }));
+					},
+					onConfirm: () => {
+						navigation.navigate('SetLoginInfo', { phone: null });
+					}
+				});
+			} else {
+				PopOverlay({
+					content: '确定退出登录吗?',
+					onConfirm: async () => {
+						app.signOut();
+						app.forget();
+						navigation.navigate('Main', null, navigation.navigate({ routeName: '答题' }));
+					}
+				});
+			}
+		} else {
+			PopOverlay({
+				content: '确定退出登录吗?',
+				onConfirm: async () => {
+					app.signOut();
+					app.forget();
+					navigation.navigate('Main', null, navigation.navigate({ routeName: '答题' }));
+				}
+			});
+		}
+	};
 
 	render() {
-		let { navigation, login, dispatch, client } = this.props;
+		let { navigation } = this.props;
+		let { login } = app;
 		let { storageSize } = this.state;
 		let user = navigation.getParam('user', {});
 		return (
@@ -62,16 +108,16 @@ class index extends Component {
 					)}
 					{login && <ItemSeparator />}
 					<ListItem
-						onPress={() => navigation.navigate('GradeDescription')}
+						onPress={() => navigation.navigate('UserProtocol')}
 						style={styles.listItem}
-						leftComponent={<Text style={styles.itemText}>等级说明</Text>}
+						leftComponent={<Text style={styles.itemText}>用户协议</Text>}
 						rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
 					/>
 					<ItemSeparator />
 					<ListItem
-						onPress={() => navigation.navigate('UserProtocol')}
+						onPress={() => navigation.navigate('PrivacyPolicy')}
 						style={styles.listItem}
-						leftComponent={<Text style={styles.itemText}>用户协议</Text>}
+						leftComponent={<Text style={styles.itemText}>隐私政策</Text>}
 						rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
 					/>
 					<ItemSeparator />
@@ -85,7 +131,43 @@ class index extends Component {
 					<ListItem
 						onPress={() => navigation.navigate('AboutUs')}
 						style={styles.listItem}
-						leftComponent={<Text style={styles.itemText}>关于答题赚钱</Text>}
+						leftComponent={<Text style={styles.itemText}>关于{Config.AppName}</Text>}
+						rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+					/>
+					<ItemSeparator />
+					<ListItem
+						onPress={() =>
+							Linking.openURL(
+								ISIOS
+									? 'itms-apps://itunes.apple.com/app/id1462854524'
+									: 'market://details?id=com.datizhuanqian'
+							)
+						}
+						//  id  答妹上架后的itunes的id  itms-apps://itunes.apple.com/app/id1462854524
+						style={styles.listItem}
+						leftComponent={<Text style={styles.itemText}>鼓励一下{Config.AppName}</Text>}
+						rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+					/>
+					<ItemSeparator />
+					<ListItem
+						onPress={() =>
+							Linking.openURL(
+								ISIOS
+									? 'itms-apps://itunes.apple.com/app/id1462854524'
+									: 'market://details?id=com.dianmoge'
+							)
+						}
+						//  id  答妹上架后的itunes的id  itms-apps://itunes.apple.com/app/id1462854524
+						style={styles.listItem}
+						leftComponent={<Text style={styles.itemText}>下载点墨阁</Text>}
+						rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+					/>
+
+					<ItemSeparator />
+					<ListItem
+						onPress={() => navigation.navigate('UpdateLog')}
+						style={styles.listItem}
+						leftComponent={<Text style={styles.itemText}>更新日志</Text>}
 						rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
 					/>
 					<ItemSeparator />
@@ -110,21 +192,7 @@ class index extends Component {
 					/>
 					<ItemSeparator />
 					{login && (
-						<TouchFeedback
-							style={[styles.listItem, { justifyContent: 'center' }]}
-							onPress={() =>
-								PopOverlay({
-									content: '确定退出登录吗?',
-									onConfirm: async () => {
-										await dispatch(actions.signOut());
-										await client.resetStore();
-										// await client.clearStore();
-										// client.cache.reset();
-										navigation.navigate('Main', null, navigation.navigate({ routeName: '答题' }));
-									}
-								})
-							}
-						>
+						<TouchFeedback style={[styles.listItem, { justifyContent: 'center' }]} onPress={this.signOut}>
 							<Text style={styles.logout}>退出登录</Text>
 						</TouchFeedback>
 					)}
@@ -160,4 +228,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => ({ login: store.users.login }))(withApollo(index));
+export default withApollo(index);

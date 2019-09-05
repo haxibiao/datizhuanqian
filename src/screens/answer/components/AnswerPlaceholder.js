@@ -41,7 +41,7 @@ class AnswerPlaceholder extends Component {
 		return (
 			<Animated.View style={[styles.placeholder, style]}>
 				<View>
-					<View style={styles.header} />
+					{this.props.answer ? <View style={styles.header} /> : null}
 					<View style={{ padding: PxFit(Theme.itemSpace) }}>
 						<Row style={{ marginBottom: PxFit(5) }}>
 							<View style={styles.avatar} />

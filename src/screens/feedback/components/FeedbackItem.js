@@ -5,10 +5,10 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
-import { Iconfont, Avatar, UserTitle, GenderLabel } from '../../../components';
-import { Theme, Tools, PxFit } from '../../../utils';
+import { Iconfont, Avatar, UserTitle, GenderLabel } from 'components';
+import { Theme, Tools, PxFit } from 'utils';
 
-class FeedbackItem extends Component {
+class FeedbackItem extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {};

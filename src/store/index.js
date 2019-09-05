@@ -1,7 +1,7 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import { effectsMiddleware } from "redux-effex";
+export { observer } from 'mobx-react';
 
-import reducers from "./reducers";
-import Effects from "./effects";
+import app from './app';
+import config from './config';
+import { keys, storage } from './storage';
 
-export default createStore(combineReducers(reducers), applyMiddleware(effectsMiddleware(Effects)));
+export { app, config, storage, keys };

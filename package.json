@@ -1,67 +1,78 @@
 {
-  "name": "datizhuanqian",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
-  },
-  "dependencies": {
-    "apollo-boost": "0.1.27",
-    "appcenter": "1.10.0",
-    "appcenter-analytics": "1.10.0",
-    "appcenter-crashes": "1.10.0",
-    "graphql": "^14.0.2",
-    "immutable": "^3.8.2",
-    "jcore-react-native": "^1.3.1",
-    "jpush-react-native": "^2.5.1",
-    "react": "16.6.1",
-    "react-apollo": "2.4.0",
-    "react-dom": "^16.6.3",
-    "react-native": "0.57.8",
-    "react-native-code-push": "^5.4.2",
-    "react-native-config": "^0.11.7",
-    "react-native-device-info": "^0.24.3",
-    "react-native-gesture-handler": "^1.0.15",
-    "react-native-image-crop-picker": "^0.21.3",
-    "react-native-image-zoom-viewer": "^2.2.25",
-    "react-native-modal": "^6.5.0",
-    "react-native-picker": "^4.3.7",
-    "react-native-progress": "^3.5.0",
-    "react-native-render-html": "^3.10.0",
-    "react-native-scrollable-tab-view": "^0.10.0",
-    "react-native-shadow": "^1.2.2",
-    "react-native-spinkit": "^1.1.1",
-    "react-native-splash-screen": "^3.2.0",
-    "react-native-svg": "^8.0.8",
-    "react-native-swiper": "^1.5.14",
-    "react-native-vector-icons": "^6.1.0",
-    "react-native-video": "^4.4.0",
-    "react-native-webview": "^3.2.1",
-    "react-navigation": "^3.3.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "redux-effex": "^1.1.2",
-    "teaset": "^0.6.3"
-  },
-  "devDependencies": {
-    "babel-jest": "23.6.0",
-    "babel-plugin-import-graphql": "^2.6.2",
-    "jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.49.0",
-    "react-test-renderer": "16.6.0-alpha.8af6728"
-  },
-  "rnpm": {
-    "assets": [
-      "./src/components/Iconfont/fonts/"
-    ]
-  },
-  "jest": {
-    "preset": "react-native",
-    "setupFiles": [
-      "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
-      "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
-      "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js"
-    ]
-  }
+	"name": "datizhuanqian",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"restart": "yarn clear:babel-cache && yarn start --reset-cache",
+		"start": "react-native start",
+		"test": "jest",
+		"clear:babel-cache": "rm -rf ./node_modules/.cache/babel-loader/*",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@babel/plugin-proposal-decorators": "^7.4.4",
+		"@react-native-community/async-storage": "^1.6.1",
+		"@react-native-community/cameraroll": "^1.2.1",
+		"@react-native-community/netinfo": "^4.1.4",
+		"@react-native-community/slider": "^2.0.0",
+		"apollo-boost": "^0.4.3",
+		"apollo-cache-inmemory": "^1.6.0",
+		"apollo-client": "^2.6.3",
+		"appcenter": "2.2.0",
+		"appcenter-analytics": "2.2.0",
+		"appcenter-crashes": "2.2.0",
+		"eslint-plugin-react": "^7.14.3",
+		"jcore-react-native": "1.3.2",
+		"jpush-react-native": "2.5.3",
+		"laravel-echo": "^1.5.4",
+		"mobx": "^5.13.0",
+		"mobx-react": "^6.1.1",
+		"react": "16.8.6",
+		"react-apollo": "^2.5.8",
+		"react-native": "0.60.4",
+		"react-native-code-push": "^5.6.1",
+		"react-native-config": "^0.11.7",
+		"react-native-device-info": "^2.3.2",
+		"react-native-gesture-handler": "^1.3.0",
+		"react-native-image-crop-picker": "^0.25.0",
+		"react-native-image-zoom-viewer": "^2.2.26",
+		"react-native-marquee-ab": "^1.2.6",
+		"react-native-modal": "^11.3.1",
+		"react-native-orientation": "^3.1.3",
+		"react-native-picker": "^4.3.7",
+		"react-native-progress": "^3.6.0",
+		"react-native-qrcode-svg": "^5.1.2",
+		"react-native-scrollable-tab-view": "^0.10.0",
+		"react-native-shadow": "^1.2.2",
+		"react-native-splash-screen": "^3.2.0",
+		"react-native-svg": "9.6.2",
+		"react-native-vector-icons": "^6.6.0",
+		"react-native-video": "^5.0.0",
+		"react-native-view-shot": "^3.0.2",
+		"react-native-webview": "^6.9.0",
+		"react-navigation": "^3.11.1",
+		"socket.io-client": "^2.2.0",
+		"teaset": "^0.6.3"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.5.5",
+		"@babel/runtime": "^7.5.5",
+		"@react-native-community/eslint-config": "^0.0.5",
+		"babel-jest": "^24.8.0",
+		"babel-plugin-import-graphql": "^2.6.2",
+		"cos-nodejs-sdk-v5": "^2.5.7",
+		"eslint": "^6.1.0",
+		"graphql": "^14.4.2",
+		"jest": "^24.8.0",
+		"metro-react-native-babel-preset": "^0.55.0",
+		"react-test-renderer": "16.8.6"
+	},
+	"rnpm": {
+		"assets": [
+			"./src/components/Iconfont/fonts/"
+		]
+	},
+	"jest": {
+		"preset": "react-native"
+	}
 }

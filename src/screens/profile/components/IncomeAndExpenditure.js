@@ -4,48 +4,45 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, RefreshControl } from 'react-native';
-import {
-	PageContainer,
-	ListFooter,
-	ErrorView,
-	LoadingSpinner,
-	EmptyView,
-	Row,
-	CustomRefreshControl
-} from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, Row, CustomRefreshControl } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 
-import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { GoldsQuery } from '../../../assets/graphql/user.graphql';
+import { Query, GQL } from 'apollo';
+import { app } from 'store';
 
-import IncomeAndExpenditureItem from '../../wallet/components/IncomeAndExpenditureItem';
+import IncomeAndExpenditureItem from './IncomeAndExpenditureItem';
 
 class IntegralDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			finished: true
+			finished: false
 		};
 	}
 
 	render() {
-		const { user, navigation } = this.props;
+		const { navigation } = this.props;
 
 		return (
 			<View style={{ flex: 1 }}>
-				<Query query={GoldsQuery} fetchPolicy="network-only" variables={{ user_id: user.id }}>
+				<Query query={GQL.GoldsQuery} fetchPolicy="network-only" variables={{ user_id: app.me.id }}>
 					{({ data, error, loading, refetch, fetchMore }) => {
-						if (error) return <ErrorView onPress={refetch} />;
+						let golds = Tools.syncGetter('golds', data);
+						if (error) return <ErrorView onPress={refetch} error={error} />;
 						if (loading) return <LoadingSpinner />;
-						if (!(data && data.golds))
+						if (!golds || golds.length === 0)
 							return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
 						return (
 							<FlatList
-								data={data.golds}
+								data={golds}
 								keyExtractor={(item, index) => index.toString()}
-								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
+								refreshControl={
+									<CustomRefreshControl
+										onRefresh={refetch}
+										reset={() => this.setState({ finished: false })}
+									/>
+								}
 								renderItem={({ item, index }) => (
 									<IncomeAndExpenditureItem item={item} navigation={navigation} />
 								)}
@@ -54,7 +51,7 @@ class IntegralDetail extends Component {
 								onEndReached={() => {
 									fetchMore({
 										variables: {
-											offset: data.golds.length
+											offset: golds.length
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (
@@ -87,8 +84,4 @@ class IntegralDetail extends Component {
 
 const styles = StyleSheet.create({});
 
-export default connect(store => {
-	return {
-		user: store.users.user
-	};
-})(IntegralDetail);
+export default IntegralDetail;

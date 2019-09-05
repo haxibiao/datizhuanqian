@@ -81,6 +81,10 @@ class ImagePickedViewer extends Component<Props> {
 		});
 	};
 
+	removeAllPicture = () => {
+		this.setState({ pictures: [] });
+	};
+
 	// 把上传的图片暴露出去
 	onResponse = images => {
 		this.props.onResponse && this.props.onResponse(images);
@@ -166,10 +170,10 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(32,30,51,0.8)'
 	},
 	itemWrap: {
-		width: PxFit(90),
-		height: PxFit(90),
+		width: PxFit(68),
+		height: PxFit(68),
 		marginRight: PxFit(Theme.itemSpace),
-		borderRadius: PxFit(6),
+		borderRadius: PxFit(4),
 		backgroundColor: '#F1EFFA',
 		justifyContent: 'center',
 		alignItems: 'center',

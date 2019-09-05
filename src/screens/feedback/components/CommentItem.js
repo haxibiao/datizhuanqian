@@ -6,11 +6,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
-import { Theme, Tools } from '../../../utils';
+import { Theme, Tools } from 'utils';
 
-import { Iconfont, Avatar, UserTitle, GenderLabel } from '../../../components';
+import { Iconfont, Avatar, UserTitle, GenderLabel } from 'components';
 
 import FeedbackOverlay from './FeedbackOverlay';
+
+import { graphql, compose, GQL } from 'apollo';
 
 class CommentItem extends Component {
 	constructor(props) {
@@ -19,10 +21,51 @@ class CommentItem extends Component {
 			feedbackCommentVisible: false
 		};
 	}
+
+	deleteComment = async () => {
+		let result = {};
+		const { navigation, item, feedback_id } = this.props;
+		try {
+			result = await this.props.deleteCommentMutation({
+				variables: {
+					id: item.id
+				},
+				refetchQueries: () => [
+					{
+						query: GQL.feedbackCommentsQuery,
+						variables: {
+							commentable_id: feedback_id,
+							commentable_type: 'feedbacks'
+						}
+					},
+					{
+						query: GQL.feedbackQuery,
+						variables: {
+							id: feedback_id
+						}
+					}
+				]
+			});
+		} catch (ex) {
+			result.errors = result;
+		}
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({ content: str });
+		} else {
+			Toast.show({ content: '删除成功' });
+			FeedbackOverlay.hide();
+		}
+	};
+
+	onSkip = () => {
+		const { navigation, item } = this.props;
+		navigation.navigate('ReportComment', { comment_id: item.id });
+	};
+
 	render() {
 		const { navigation, item, replyComment, switchReplyType, user, feedback_id } = this.props;
 		let { feedbackCommentVisible } = this.state;
-
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -34,7 +77,7 @@ class CommentItem extends Component {
 			>
 				<View style={styles.top}>
 					<View style={styles.topLeft}>
-						<TouchableOpacity onPress={() => navigation.navigate('用户资料', { user_id: item.user.id })}>
+						<TouchableOpacity onPress={() => navigation.navigate('User', { user: item.user })}>
 							<Avatar source={{ uri: item.user.avatar }} size={34} borderStyle={{}} />
 						</TouchableOpacity>
 						<View style={styles.user}>
@@ -65,7 +108,15 @@ class CommentItem extends Component {
 					</View>
 					<TouchableOpacity
 						onPress={() => {
-							FeedbackOverlay.show(switchReplyType, replyComment, item, user, feedback_id);
+							FeedbackOverlay.show(
+								user,
+								switchReplyType,
+								replyComment,
+								item,
+								feedback_id,
+								this.deleteComment,
+								this.onSkip
+							);
 						}}
 						style={{ padding: 5 }}
 					>
@@ -160,4 +211,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default CommentItem;
+export default compose(graphql(GQL.deleteCommentMutation, { name: 'deleteCommentMutation' }))(CommentItem);

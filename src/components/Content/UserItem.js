@@ -17,6 +17,7 @@ import TouchFeedback from '../TouchableView/TouchFeedback';
 import FollowButton from '../TouchableView/FollowButton';
 import UserTitle from './UserTitle';
 import GenderLabel from '../Utils/GenderLabel';
+import { StackActions } from 'react-navigation';
 
 type User = {
 	id: number,
@@ -34,9 +35,15 @@ type Props = {
 class UserItem extends Component<Props> {
 	render() {
 		let { user, style, navigation } = this.props;
-		let { id = 1, avatar, name, followed_user_status, introduction } = user;
+		let { id = 1, avatar, name, followed_user_status, profile } = user;
+		const pushAction = StackActions.push({
+			routeName: 'User',
+			params: {
+				user
+			}
+		});
 		return (
-			<TouchFeedback style={[styles.item, style]} onPress={() => navigation.navigate('User', { user })}>
+			<TouchFeedback style={[styles.item, style]} onPress={() => navigation.dispatch(pushAction)}>
 				<Avatar source={avatar} size={PxFit(50)} />
 				<View style={styles.right}>
 					<View style={styles.info}>
@@ -45,10 +52,10 @@ class UserItem extends Component<Props> {
 							<GenderLabel user={user} />
 							<UserTitle user={user} />
 						</Row>
-						{introduction && (
+						{!!profile.introduction && (
 							<View style={{ flex: 1 }}>
 								<SafeText style={styles.introduction} numberOfLines={1}>
-									{introduction}
+									{profile.introduction}
 								</SafeText>
 							</View>
 						)}

@@ -5,11 +5,9 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { Button, Iconfont, PageContainer, CustomTextInput, ImagePickerViewer } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
-
-import { CreateFeedbackMutation } from '../../../assets/graphql/feedback.graphql';
-import { Mutation, graphql, compose, withApollo } from 'react-apollo';
+import { Button, Iconfont, PageContainer, CustomTextInput, ImagePickerViewer } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
+import { Mutation, graphql, compose, withApollo, GQL } from 'apollo';
 
 class Feedback extends Component {
 	constructor(props) {
@@ -32,7 +30,7 @@ class Feedback extends Component {
 
 		let promises = [
 			client.mutate({
-				mutation: CreateFeedbackMutation,
+				mutation: GQL.CreateFeedbackMutation,
 				variables: {
 					title: title,
 					content: content,
@@ -51,9 +49,10 @@ class Feedback extends Component {
 					submitting: false
 				});
 				Toast.show({ content: '反馈成功' });
-				navigation.navigate('反馈详情', {
+				navigation.navigate('FeedbackDetails', {
 					feedback_id: result.data.createFeedback.id
 				});
+				this._imagePickerViewer && this._imagePickerViewer.removeAllPicture();
 				this.setState({
 					pictures: [],
 					content: ''
@@ -71,7 +70,6 @@ class Feedback extends Component {
 	render() {
 		let { content, pictures, submitting } = this.state;
 		const { navigation } = this.props;
-		console.log('pictures', pictures);
 		return (
 			<PageContainer hiddenNavBar tabLabel="意见反馈" submitting={submitting} autoKeyboardInsets={false}>
 				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
@@ -92,6 +90,7 @@ class Feedback extends Component {
 						/>
 						<View style={{ marginLeft: PxFit(Theme.itemSpace) }}>
 							<ImagePickerViewer
+								ref={ref => (this._imagePickerViewer = ref)}
 								onResponse={images => {
 									this.setState({ pictures: images });
 								}}

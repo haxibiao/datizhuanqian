@@ -4,9 +4,9 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { PageContainer } from '../../components';
+import { PageContainer } from 'components';
 
-import { Theme, PxFit, Tools, SCREEN_WIDTH } from '../../utils';
+import { Config, Theme, PxFit, Tools, SCREEN_WIDTH } from 'utils';
 
 class PushNotification extends Component {
 	constructor(props) {
@@ -16,7 +16,6 @@ class PushNotification extends Component {
 	render() {
 		const { navigation } = this.props;
 		const { content, name, time } = navigation.state.params;
-		console.log('content', content);
 
 		return (
 			<PageContainer title={name} white>
@@ -37,7 +36,7 @@ class PushNotification extends Component {
 					</View>
 					<View style={{ paddingLeft: 10, width: SCREEN_WIDTH - 70 }}>
 						<Text style={{ color: '#000', fontSize: 15, paddingTop: 2, fontWeight: '500' }}>
-							答题赚钱官方团队
+							{Config.AppName}官方团队
 						</Text>
 						<Text style={{ fontSize: 14, color: '#000', paddingTop: 8, lineHeight: 20 }}>{content}</Text>
 						<Text style={{ fontSize: 12, color: Theme.grey, paddingTop: 15 }}>{time}</Text>

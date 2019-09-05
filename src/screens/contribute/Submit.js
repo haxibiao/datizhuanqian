@@ -5,20 +5,29 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
-import { PageContainer, Iconfont, Button } from '../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
+import { PageContainer, Iconfont, Button } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class Submit extends Component {
 	render() {
 		let { navigation } = this.props;
+		let status, content, noTicket;
+		noTicket = navigation.getParam('noTicket', false);
+		if (noTicket) {
+			status = '暂存成功';
+			content = '您的题目已经保存到草稿箱，可以在“我的出题”中查看。';
+		} else {
+			status = '提交成功';
+			content = '工作人员会尽快审核您的题目，请耐心等待哦!';
+		}
 		return (
 			<PageContainer title="提交结果" white>
 				<ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.submitContainer}>
 						<ImageBackground source={require('../../assets/images/submit.png')} style={styles.submitImage}>
 							<View style={{ alignItems: 'center' }}>
-								<Text style={styles.submitStatus}>提交成功</Text>
-								<Text style={styles.submitTip}>工作人员会尽快审核您的题目，请耐心等待哦!</Text>
+								<Text style={styles.submitStatus}>{status}</Text>
+								<Text style={styles.submitTip}>{content}</Text>
 							</View>
 						</ImageBackground>
 						<View style={styles.buttonContaiber}>

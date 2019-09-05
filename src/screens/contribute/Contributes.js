@@ -25,13 +25,9 @@ import {
 	ItemSeparator,
 	ListFooter,
 	Row
-} from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
-
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { mySubmitQuestionHistoryQuery } from '../../assets/graphql/task.graphql';
-import { compose, Query, Mutation, graphql } from 'react-apollo';
+} from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
+import { compose, Query, Mutation, graphql, GQL } from 'apollo';
 
 import QuestionItem from './components/QuestionItem';
 
@@ -48,21 +44,31 @@ class Contributes extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<Query query={mySubmitQuestionHistoryQuery} fetchPolicy="network-only">
+			<Query query={GQL.mySubmitQuestionHistoryQuery} fetchPolicy="network-only">
 				{({ data, loading, error, refetch, fetchMore }) => {
 					let questions = Tools.syncGetter('user.questions', data);
 					let empty = questions && questions.length === 0;
-					loading = !questions;
 					return (
-						<PageContainer title="我的出题" refetch={refetch} loading={loading} empty={empty}>
+						<PageContainer
+							title="我的出题"
+							refetch={refetch}
+							loading={questions === undefined}
+							empty={empty}
+							error={error}
+						>
 							<FlatList
 								contentContainerStyle={styles.container}
 								data={questions}
-								keyExtractor={(item, index) => index.toString()}
+								keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
 								renderItem={({ item, index }) => (
 									<QuestionItem question={item} navigation={navigation} />
 								)}
-								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
+								refreshControl={
+									<CustomRefreshControl
+										onRefresh={refetch}
+										reset={() => this.setState({ finished: false })}
+									/>
+								}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									fetchMore({
@@ -112,9 +118,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => {
-	return {
-		user: store.users.user,
-		login: store.users.login
-	};
-})(Contributes);
+export default Contributes;

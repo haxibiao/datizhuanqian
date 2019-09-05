@@ -2,60 +2,18 @@
  * @flow
  * created by wyk made in 2019-04-09 10:47:03
  */
+/*
+ * @flow
+ * created by wyk made in 2019-04-09 10:47:03
+ */
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Animated, Image } from 'react-native';
 import { TouchFeedback, Iconfont, Row } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../../utils';
 
-type Props = {
-	navigation: Object,
-	nextQuestion: Function
-};
 class Audit extends Component<Props> {
-	constructor(props) {
-		super(props);
-		this._animated = new Animated.Value(1);
-		this.state = {
-			status: 0
-		};
-	}
-
-	styleMap = left => {
-		return {
-			opacity: this._animated,
-			transform: [
-				{
-					translateX: this._animated.interpolate({
-						inputRange: [0, 1],
-						outputRange: [left ? -PxFit(100) : PxFit(100), 0],
-						extrapolate: 'clamp'
-					})
-				}
-			]
-		};
-	};
-
-	// 提交审核
-	onSubmitOpinion = opinion => {
-		this.setState({ status: opinion });
-		this.nextQuestion();
-	};
-
-	nextQuestion = () => {
-		Animated.timing(this._animated, {
-			toValue: 0,
-			duration: 300,
-			delay: 500
-		}).start(() => {
-			this.setState({ status: 0 });
-			this.props.nextQuestion();
-			this._animated.setValue(1);
-		});
-	};
-
 	render() {
-		let { navigation } = this.props;
-		let { status } = this.state;
+		let { status, onSubmitOpinion } = this.props;
 		switch (status) {
 			case -1:
 				source = require('../../../assets/images/audit_reject.png');
@@ -67,32 +25,33 @@ class Audit extends Component<Props> {
 				source = require('../../../assets/images/audited.png');
 				break;
 		}
+		let disabled = status !== 0;
 		return (
-			<Animated.View style={styles.footerBar}>
-				<Animated.View style={[styles.opinionItem, styles.opinionItemLeft, this.styleMap(true)]}>
+			<View style={styles.footerBar}>
+				<View style={[styles.opinionItem, styles.opinionItemLeft]}>
 					<TouchFeedback
-						style={styles.opinionItemButton}
-						disabled={status !== 0}
-						onPress={() => this.onSubmitOpinion(-1)}
+						style={[styles.opinionItemButton, disabled && { opacity: 0.7 }]}
+						disabled={disabled}
+						onPress={() => onSubmitOpinion(-1)}
 					>
 						<Text style={[styles.opinionText, { color: Theme.errorColor, marginRight: PxFit(4) }]}>
 							反对
 						</Text>
 						<Image source={require('../../../assets/images/oppose.png')} style={styles.opinionImage} />
 					</TouchFeedback>
-				</Animated.View>
-				<Animated.Image source={source} style={[styles.statusImage, { opacity: this._animated }]} />
-				<Animated.View style={[styles.opinionItem, styles.opinionItemRight, this.styleMap()]}>
+				</View>
+				<Image source={source} style={styles.statusImage} />
+				<View style={[styles.opinionItem, styles.opinionItemRight]}>
 					<TouchFeedback
-						style={styles.opinionItemButton}
-						disabled={status !== 0}
-						onPress={() => this.onSubmitOpinion(1)}
+						style={[styles.opinionItemButton, disabled && { opacity: 0.7 }]}
+						disabled={disabled}
+						onPress={() => onSubmitOpinion(1)}
 					>
 						<Image source={require('../../../assets/images/approve.png')} style={styles.opinionImage} />
 						<Text style={[styles.opinionText, { marginLeft: PxFit(4) }]}>赞成</Text>
 					</TouchFeedback>
-				</Animated.View>
-			</Animated.View>
+				</View>
+			</View>
 		);
 	}
 }
@@ -100,7 +59,7 @@ class Audit extends Component<Props> {
 const styles = StyleSheet.create({
 	footerBar: {
 		position: 'absolute',
-		bottom: PxFit(Theme.HOME_INDICATOR_HEIGHT) + PxFit(Theme.itemSpace),
+		bottom: 0,
 		left: 0,
 		right: 0,
 		flexDirection: 'row',

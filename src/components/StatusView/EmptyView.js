@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, WPercent } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent } from 'utils';
 
 type Props = {
 	title?: string,

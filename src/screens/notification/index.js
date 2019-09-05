@@ -6,12 +6,11 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Iconfont, PageContainer, Avatar, Badge, TouchFeedback, Row, SafeText } from '../../components';
-import { Theme, PxFit, Tools } from '../../utils';
+import { Iconfont, PageContainer, Avatar, Badge, TouchFeedback, Row, SafeText } from 'components';
+import { Theme, PxFit, Tools } from 'utils';
 
-import { connect } from 'react-redux';
-import { userUnreadQuery } from '../../assets/graphql/notification.graphql';
-import { Query, compose, graphql } from 'react-apollo';
+import { Query, compose, graphql, GQL } from 'apollo';
+import { app } from 'store';
 
 class index extends Component {
 	calcUnreads(data) {
@@ -20,11 +19,14 @@ class index extends Component {
 			var state = {
 				system:
 					data.unread_notifications_count -
-						data.unread_comment_notifications_count -
-						data.unread_user_follow_notifications_count ||
-					data.unread_notifications_count - data.unread_comment_notifications_count,
+					data.unread_comment_notifications_count -
+					data.unread_user_follow_notifications_count -
+					data.unread_like_notifications_count -
+					data.unread_notices_count,
 				comment: data.unread_comment_notifications_count,
-				fans: data.unread_user_follow_notifications_count
+				fans: data.unread_user_follow_notifications_count,
+				like: data.unread_like_notifications_count,
+				notice: data.unread_notices_count
 			};
 			return state[key] || 0;
 		};
@@ -35,7 +37,6 @@ class index extends Component {
 		let user = Tools.syncGetter('user', data);
 		let loading = !user;
 		let calcUnreads = this.calcUnreads(user);
-		console.log('calcUnreads', calcUnreads, calcUnreads('fans'), 1);
 		return (
 			<PageContainer loading={loading} title="消息中心" white>
 				<TouchFeedback
@@ -52,6 +53,27 @@ class index extends Component {
 						<SafeText style={styles.itemName}>系统通知</SafeText>
 						{calcUnreads('system') ? (
 							<Badge count={calcUnreads('system')} />
+						) : (
+							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
+						)}
+					</View>
+				</TouchFeedback>
+				<TouchFeedback
+					authenticate
+					navigation={navigation}
+					style={styles.notificationItem}
+					onPress={() => navigation.navigate('OfficialNotice')}
+				>
+					<View>
+						<Image
+							style={styles.notificationAvatar}
+							source={require('../../assets/images/official-notice.png')}
+						/>
+					</View>
+					<View style={styles.itemContent}>
+						<SafeText style={styles.itemName}>官方公告</SafeText>
+						{calcUnreads('notice') ? (
+							<Badge count={calcUnreads('notice')} />
 						) : (
 							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
 						)}
@@ -94,6 +116,27 @@ class index extends Component {
 						<SafeText style={styles.itemName}>粉丝</SafeText>
 						{calcUnreads('fans') ? (
 							<Badge count={calcUnreads('fans')} />
+						) : (
+							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
+						)}
+					</View>
+				</TouchFeedback>
+				<TouchFeedback
+					authenticate
+					navigation={navigation}
+					style={styles.notificationItem}
+					onPress={() => navigation.navigate('LikeNotification')}
+				>
+					<View>
+						<Image
+							style={styles.notificationAvatar}
+							source={require('../../assets/images/notification_like.png')}
+						/>
+					</View>
+					<View style={styles.itemContent}>
+						<SafeText style={styles.itemName}>赞</SafeText>
+						{calcUnreads('like') ? (
+							<Badge count={calcUnreads('like')} />
 						) : (
 							<Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
 						)}
@@ -148,9 +191,8 @@ const styles = StyleSheet.create({
 });
 
 export default compose(
-	connect(store => ({ user: store.users.user })),
-	graphql(userUnreadQuery, {
-		options: props => ({ variables: { id: props.user.id } }),
+	graphql(GQL.userUnreadQuery, {
+		options: props => ({ variables: { id: app.me.id } }),
 		fetchPolicy: 'network-only'
 	})
 )(index);

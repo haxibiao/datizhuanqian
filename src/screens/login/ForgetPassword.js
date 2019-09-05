@@ -5,20 +5,17 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-
-import { SendVerificationCodeMutation } from '../../assets/graphql/user.graphql';
-import { Mutation, compose, graphql } from 'react-apollo';
+import { Mutation, compose, graphql, GQL } from 'apollo';
 
 class VerificationScreen extends Component {
 	constructor(props) {
 		super(props);
+		console.log(' props.navigation.state.params', props.navigation.state.params);
 		this.state = {
-			account: '',
+			account: props.navigation.state.params.account,
 			isOnpress: true,
 			second: 5000,
 			buttonColor: Theme.primaryColor,
@@ -71,8 +68,10 @@ class VerificationScreen extends Component {
 		const { navigation } = this.props;
 		let { account, isOnpress, second, buttonColor, submitting } = this.state;
 
+		let { title } = navigation.state.params;
+
 		return (
-			<PageContainer title="找回密码" white submitting={submitting} submitTips="发送中...">
+			<PageContainer title={title} white submitting={submitting} submitTips="发送中...">
 				<View style={styles.container}>
 					<View style={{ marginTop: 50, paddingHorizontal: 25 }}>
 						<Text style={{ color: Theme.black, fontSize: 20, fontWeight: '600' }}>获取验证码</Text>
@@ -89,6 +88,7 @@ class VerificationScreen extends Component {
 									account: value
 								});
 							}}
+							value={account}
 							autoFocus
 						/>
 					</View>
@@ -129,6 +129,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => store)(
-	compose(graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(VerificationScreen)
+export default compose(graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(
+	VerificationScreen
 );

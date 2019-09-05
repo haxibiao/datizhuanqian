@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { Theme, SCREEN_WIDTH, PxFit } from '../../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
 class Loading extends Component {
 	constructor(props) {

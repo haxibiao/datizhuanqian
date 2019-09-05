@@ -1,0 +1,4 @@
+#邀请奖励列表
+query InvitationRewardsQuery($limit: Int!) {
+	invitationRewards(limit: $limit)
+}

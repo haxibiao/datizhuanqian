@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_corner"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+>
+
+    <!--<View-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="50dp">-->
+
+    <!--</View>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="答题不及格，看会视频吧"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:paddingTop="75dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+
+        >
+        <Button
+            android:id="@+id/btn_banner_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:background="@drawable/left_border"
+            android:layout_weight="1"
+            android:text="休息会"
+            android:textColor="#969696"
+            android:paddingBottom="10dp"
+            />
+        <Button
+            android:id="@+id/btn_banner_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10智慧跳过"
+            android:textColor="#FFB100"
+            android:background="@drawable/right_border"
+            android:layout_weight="1"
+            android:textSize="14dp"
+            android:paddingBottom="10dp"
+            />
+    </LinearLayout>
+
+    <!-- BannerView的Container -->
+
+</RelativeLayout>

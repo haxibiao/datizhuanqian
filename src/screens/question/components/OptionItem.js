@@ -4,8 +4,8 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
-import { TouchFeedback, Iconfont } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { TouchFeedback, Iconfont } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class OptionItem extends Component {
 	_animated = new Animated.Value(0);
@@ -14,27 +14,28 @@ class OptionItem extends Component {
 		this.animation();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.option !== this.props.option) {
-			this._animated.setValue(0);
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.questionId !== this.props.questionId) {
+			this.animation();
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		this.animation();
-	}
-
 	animation() {
+		this.disable = true;
+		this._animated.setValue(0);
 		Animated.timing(this._animated, {
 			toValue: 1,
 			velocity: 10,
 			tension: -10,
 			friction: 5,
-			delay: 250
-		}).start();
+			delay: 350
+		}).start(() => {
+			this.disable = false;
+		});
 	}
 
 	onPress = () => {
+		if (this.disable) return;
 		let { option, singleOption } = this.props;
 		this.props.onSelectOption(option.Value, singleOption);
 	};
@@ -44,12 +45,14 @@ class OptionItem extends Component {
 		let status, labelStyle, contentStyle, label, focused;
 		focused = selectedOption && selectedOption.includes(option.Value);
 		if (submited) {
-			if (correct) {
-				status = 'correct';
-			} else {
-				if (focused) {
+			if (focused) {
+				if (correct) {
+					status = 'correct';
+				} else {
 					status = 'error';
 				}
+			} else if (correct) {
+				status = 'missing';
 			}
 		} else if (focused) {
 			status = 'selected';
@@ -63,6 +66,11 @@ class OptionItem extends Component {
 				labelStyle = { backgroundColor: Theme.correctColor, borderWidth: 0 };
 				contentStyle = { color: Theme.correctColor };
 				label = <Iconfont name="correct" size={PxFit(16)} color={'#fff'} />;
+				break;
+			case 'missing':
+				labelStyle = { backgroundColor: Theme.correctColor, borderWidth: 0 };
+				contentStyle = { color: Theme.correctColor };
+				label = <Text style={[styles.optionLabelText, { color: '#fff' }]}>{option.Value}</Text>;
 				break;
 			case 'error':
 				labelStyle = { backgroundColor: Theme.errorColor, borderWidth: 0 };
@@ -108,13 +116,12 @@ class OptionItem extends Component {
 
 const styles = StyleSheet.create({
 	optionItemWrap: {
-		backgroundColor: '#f0f0f0',
 		marginBottom: PxFit(20)
 	},
 	optionItem: {
+		opacity: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: '#fff'
+		alignItems: 'center'
 	},
 	optionLabel: {
 		marginRight: PxFit(15),

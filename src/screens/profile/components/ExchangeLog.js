@@ -4,13 +4,11 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
-import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { ExchangesQuery } from '../../../assets/graphql/user.graphql';
+import { Query, GQL } from 'apollo';
 
 class ExchangeLog extends Component {
 	constructor(props) {
@@ -21,11 +19,11 @@ class ExchangeLog extends Component {
 	}
 
 	render() {
-		const { user, navigation } = this.props;
+		const { navigation } = this.props;
 
 		return (
 			<View style={{ flex: 1 }}>
-				<Query query={ExchangesQuery} fetchPolicy="network-only">
+				<Query query={GQL.ExchangesQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
@@ -36,10 +34,14 @@ class ExchangeLog extends Component {
 								data={data.exchanges}
 								keyExtractor={(item, index) => index.toString()}
 								refreshControl={
-									<RefreshControl
+									<CustomRefreshControl
 										refreshing={loading}
 										onRefresh={refetch}
-										colors={[Theme.primaryColor]}
+										reset={() =>
+											this.setState({
+												finished: false
+											})
+										}
 									/>
 								}
 								renderItem={({ item, index }) => (
@@ -114,8 +116,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => {
-	return {
-		user: store.users.user
-	};
-})(ExchangeLog);
+export default ExchangeLog;

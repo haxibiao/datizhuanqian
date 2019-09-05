@@ -4,13 +4,32 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image, Keyboard } from 'react-native';
-import { Button, Iconfont, PageContainer, CustomTextInput, KeyboardSpacer, SubmitLoading } from '../../components';
+import {
+	StyleSheet,
+	View,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	TextInput,
+	Image,
+	Keyboard,
+	Linking
+} from 'react-native';
+import {
+	Button,
+	Iconfont,
+	PageContainer,
+	CustomTextInput,
+	KeyboardSpacer,
+	SubmitLoading,
+	TouchFeedback
+} from 'components';
 
-import { Theme, PxFit, SCREEN_WIDTH, Api } from '../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, Api, Config } from 'utils';
 
-import { ReplyTaskMutation, TasksQuery, UploadImage } from '../../assets/graphql/task.graphql';
-import { graphql, compose, withApollo } from 'react-apollo';
+import { graphql, compose, withApollo, GQL } from 'apollo';
+
+import { BoxShadow } from 'react-native-shadow';
 
 let arry = {};
 
@@ -61,7 +80,7 @@ class SubmitTaskScreen extends Component {
 
 		let promises = [
 			client.mutate({
-				mutation: UploadImage,
+				mutation: GQL.UploadImage,
 				variables: {
 					image: pictures
 				}
@@ -89,7 +108,7 @@ class SubmitTaskScreen extends Component {
 	//提交任务
 	async submitTask(images) {
 		const { navigation } = this.props;
-		const { task_id, again } = navigation.state.params;
+		const { task } = navigation.state.params;
 		let { pictures, isVisible } = this.state;
 		let result = {};
 
@@ -97,13 +116,13 @@ class SubmitTaskScreen extends Component {
 		try {
 			result = await this.props.ReplyTaskMutation({
 				variables: {
-					task_id: task_id,
+					task_id: task.id,
 					content: arry
 				},
 				errorPolicy: 'all',
 				refetchQueries: () => [
 					{
-						query: TasksQuery
+						query: GQL.TasksQuery
 					}
 				]
 			});
@@ -121,39 +140,60 @@ class SubmitTaskScreen extends Component {
 				isVisible: false
 			});
 			Toast.show({ content: '提交成功,工作人员会尽快审核您的答复信息' });
-
-			if (again) {
-				this.props.navigation.pop(2);
-			} else {
-				this.props.navigation.goBack();
-			}
+			this.props.navigation.goBack();
 		}
 	}
 	render() {
 		let { content, pictures, isVisible } = this.state;
 		const { navigation } = this.props;
+		const { task } = navigation.state.params;
 		return (
-			<PageContainer title="提交任务" white>
+			<PageContainer
+				navBarStyle={{
+					borderBottomWidth: 0,
+					borderBottomColor: '#fff',
+					backgroundColor: '#fff'
+				}}
+				titleStyle={{ color: Theme.defaultTextColor }}
+				backButtonColor={Theme.defaultTextColor}
+				title="提交任务"
+			>
 				<ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>
-					<View style={styles.header}>
-						<View style={styles.headerLeft} />
-						<Text style={styles.headerContent}>小米应用商店评论</Text>
-					</View>
-					<CustomTextInput
-						style={styles.input}
-						maxLength={140}
-						placeholder={'文字说明'}
-						multiline
-						underline
-						textAlignVertical={'top'}
-						onChangeText={value => {
-							this.setState({
-								content: value
-							});
-							arry['content'] = content;
-						}}
-					/>
+					<BoxShadow
+						setting={Object.assign({}, shadowOpt, {
+							height: PxFit(48)
+						})}
+					>
+						<View style={styles.header}>
+							<View>
+								{/*<Text>请截图评价内容和星级，并提供应用商店账号</Text>*/}
+								<Text style={{}}>{task.details}</Text>
+							</View>
+							<TouchFeedback
+								style={styles.row}
+								onPress={() => Linking.openURL('market://details?id=' + Config.PackageName)}
+							>
+								<Text style={{ fontSize: 12, color: Theme.grey }}>去应用商店评价</Text>
+								<Iconfont name="right" size={PxFit(15)} />
+							</TouchFeedback>
+						</View>
+					</BoxShadow>
 					<View style={styles.main}>
+						<CustomTextInput
+							style={styles.input}
+							maxLength={48}
+							placeholder={'请上传评论内容和星级截图，并提供应用商店名以及账号名'}
+							multiline
+							underline
+							textAlignVertical={'top'}
+							defaultValue={content}
+							onChangeText={value => {
+								this.setState({
+									content: value
+								});
+							}}
+						/>
+
 						<View style={styles.center}>
 							<Text style={{ fontSize: PxFit(16), color: Theme.primaryFont }}>上传截图</Text>
 							<Text style={{ fontSize: PxFit(15), color: Theme.grey }}>（{pictures.length}/6）</Text>
@@ -203,6 +243,19 @@ class SubmitTaskScreen extends Component {
 	}
 }
 
+const shadowOpt = {
+	width: SCREEN_WIDTH,
+	color: '#E8E8E8',
+	border: 10,
+	// radius: 10,
+	opacity: 0.4,
+	x: 0,
+	y: 10,
+	style: {
+		marginTop: 0
+	}
+};
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -211,9 +264,15 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: PxFit(20),
-		borderTopColor: Theme.lightBorder,
-		borderTopWidth: PxFit(5)
+		justifyContent: 'space-between',
+		height: 60,
+		paddingLeft: 18,
+		paddingRight: 12,
+		backgroundColor: '#fff'
+	},
+	row: {
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	headerLeft: {
 		height: PxFit(22),
@@ -226,8 +285,11 @@ const styles = StyleSheet.create({
 		fontSize: PxFit(16)
 	},
 	main: {
+		marginTop: 20,
 		paddingVertical: PxFit(15),
-		marginBottom: PxFit(30)
+		marginBottom: PxFit(15),
+		borderBottomWidth: PxFit(1),
+		borderBottomColor: Theme.lightBorder
 	},
 	center: {
 		marginHorizontal: PxFit(25),
@@ -242,12 +304,11 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		backgroundColor: 'transparent',
-		fontSize: PxFit(15),
+		fontSize: PxFit(13),
 		padding: 0,
-		height: PxFit(80),
-		justifyContent: 'flex-start',
-		marginHorizontal: PxFit(25)
-		// marginTop:10,
+		height: PxFit(60),
+		paddingHorizontal: PxFit(20),
+		justifyContent: 'flex-start'
 	},
 	add: {
 		width: (SCREEN_WIDTH - PxFit(60)) / 3,
@@ -289,4 +350,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(graphql(ReplyTaskMutation, { name: 'ReplyTaskMutation' }))(withApollo(SubmitTaskScreen));
+export default compose(graphql(GQL.ReplyTaskMutation, { name: 'ReplyTaskMutation' }))(withApollo(SubmitTaskScreen));

@@ -31,7 +31,9 @@ class UserTitle extends Component {
 							borderRadius: PxFit(2)
 						}}
 					>
-						<Text style={{ fontSize: PxFit(8), color: '#fff' }}>Lv.{user.level.level}</Text>
+						<Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10) }}>
+							Lv.{user.level.level}
+						</Text>
 					</View>
 				)}
 			</View>

@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-05 21:08:16
-*/
+ * @flow
+ * created by wyk made in 2018-12-05 21:08:16
+ */
 import { PixelRatio, Dimensions, Platform } from 'react-native';
 const { width, height } = Dimensions.get('window');
 

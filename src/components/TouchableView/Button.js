@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Platform, View, Text } from 'react-native';
 import { PxFit, Theme, ISAndroid } from '../../utils';
 
+import NetInfo from '@react-native-community/netinfo';
+
 type ButtonSize = 'default' | 'small' | 'large';
 
 type Props = {
@@ -23,6 +25,16 @@ class Button extends Component {
 		activeOpacity: 0.6,
 		hitSlop: { top: 12, bottom: 12, left: 8, right: 8 }
 	};
+
+	checkNetwork(submit) {
+		NetInfo.isConnected.fetch().then(isConnected => {
+			if (isConnected) {
+				submit();
+			} else {
+				Toast.show({ content: '网络错误,请检查是否连接网络' });
+			}
+		});
+	}
 
 	buildProps() {
 		let { size, style, disabled, title, children, textColor, ...others } = this.props;
@@ -75,14 +87,15 @@ class Button extends Component {
 			);
 		}
 		if (!children) children = title;
+
 		return { style, children, disabled, ...others };
 	}
 
 	render() {
-		let { children, style, ...others } = this.buildProps();
+		let { children, style, onPress, ...others } = this.buildProps();
 		return (
 			<View style={style}>
-				<TouchableOpacity style={styles.touch} {...others}>
+				<TouchableOpacity style={styles.touch} onPress={() => this.checkNetwork(onPress)} {...others}>
 					{children}
 				</TouchableOpacity>
 			</View>

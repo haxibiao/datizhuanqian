@@ -10,7 +10,8 @@ import { Theme, PxFit, ISAndroid } from '../../utils';
 
 type Props = {
 	textInputRef?: Function,
-	defaultValue: string,
+	defaultValue?: string,
+	style?: Object,
 	value: string
 };
 

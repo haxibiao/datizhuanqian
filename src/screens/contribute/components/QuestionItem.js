@@ -11,27 +11,68 @@ import { Theme, PxFit, Tools } from '../../../utils';
 import Video from 'react-native-video';
 
 class QuestionItem extends Component {
+	constructor(props) {
+		super(props);
+	}
+
 	static defaultProps = {
 		question: {}
 	};
 
 	submitStatus(submit) {
-		console.log('submit', submit);
-		switch (submit) {
+		switch (String(submit)) {
+			case '-3':
+				this.Submit = { text: '草稿箱', color: Theme.subTextColor, remarkType: '状态' };
+				break;
 			case '-2':
-				this.Submit = { text: '被驳回', color: Theme.errorColor };
+				this.Submit = { text: '已拒绝', color: Theme.errorColor, remarkType: '原因' };
+				break;
+			case '-1':
+				this.Submit = { text: '被下架', color: Theme.errorColor, remarkType: '原因' };
 				break;
 			case '1':
-				this.Submit = { text: '已入库', color: Theme.linkColor };
+				this.Submit = { text: '已入库', color: Theme.correctColor, remarkType: '状态' };
+				break;
+			case '0':
+				this.Submit = { text: '审核中', color: Theme.subTextColor, remarkType: '状态' };
 				break;
 			default:
-				this.Submit = { text: '审核中', color: Theme.subTextColor };
+				this.Submit = { text: '审核中', color: Theme.subTextColor, remarkType: '状态' };
 		}
 	}
 
+	renderVideo = () => {
+		const {
+			question: { description, image, video, answer }
+		} = this.props;
+		console.log('video', video);
+		if (video) {
+			return (
+				<View style={[styles.image, { backgroundColor: '#201e33' }]}>
+					<Image source={{ uri: video.cover }} style={{ width: PxFit(60), height: PxFit(60) }} />
+					<Iconfont name="paused" size={PxFit(24)} color="#fff" style={styles.fullScreen} />
+				</View>
+			);
+		} else {
+			return null;
+		}
+	};
+
 	render() {
 		let { question, navigation } = this.props;
-		let { category, image, description, created_at, count, submit, remark, video } = question;
+		let {
+			category,
+			image,
+			description,
+			created_at,
+			count,
+			submit,
+			status,
+			remark,
+			video,
+			accepted_count,
+			declined_count
+		} = question;
 		this.submitStatus(submit);
 		return (
 			<TouchableWithoutFeedback onPress={() => navigation.navigate('Question', { question })}>
@@ -44,8 +85,8 @@ class QuestionItem extends Component {
 							</View>
 						</Row>
 						{remark && (
-							<Text style={styles.remark} numberOfLines={1}>
-								原因:{remark}
+							<Text style={[styles.remark, { color: this.Submit.color }]} numberOfLines={1}>
+								{this.Submit.remarkType + ':' + remark}
 							</Text>
 						)}
 					</View>
@@ -57,31 +98,20 @@ class QuestionItem extends Component {
 								</Text>
 							</View>
 							{image && <PlaceholderImage source={{ uri: image.path }} style={styles.image} />}
-							{video && (
-								<View style={styles.image}>
-									<Video
-										source={{ uri: video.path }}
-										style={styles.fullScreen}
-										resizeMode="cover"
-										paused
-										muted
-									/>
-									<View style={styles.fullScreen}>
-										<Iconfont
-											name="paused"
-											size={PxFit(24)}
-											color="#fff"
-											style={{ opacity: 0.8 }}
-										/>
-									</View>
-								</View>
-							)}
+							{this.renderVideo()}
 						</View>
 						<View style={styles.meta}>
 							<Text style={styles.categoryText} numberOfLines={1}>
 								#{category.name}
 							</Text>
-							<Text style={styles.metaText}>{Tools.NumberFormat(count) + '人答过'}</Text>
+							{status === 0 && (
+								<Text style={styles.metaText}>
+									{accepted_count}赞同 / {declined_count}反对
+								</Text>
+							)}
+							{status === 1 && (
+								<Text style={styles.metaText}>{Tools.NumberFormat(count) + '人答过'}</Text>
+							)}
 						</View>
 					</View>
 				</View>
@@ -124,13 +154,10 @@ const styles = StyleSheet.create({
 	},
 	fullScreen: {
 		position: 'absolute',
-		top: 0,
-		left: 0,
+		top: PxFit(18),
+		left: PxFit(18),
 		bottom: 0,
-		right: 0,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: 'rgba(0,0,0,0.2)'
+		right: 0
 	},
 	meta: {
 		flexDirection: 'row',

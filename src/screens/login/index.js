@@ -1,26 +1,21 @@
-/*
- * @flow
- * created by wangyukun made in 2019-03-18 11:44:32
- */
 'use strict';
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, PopOverlay, Button, CustomTextInput } from '../../components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
+import { PageContainer, TouchFeedback, Iconfont, Row, PopOverlay, Button, CustomTextInput } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, Config } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { Storage, ItemKeys } from '../../store/localStorage';
-import { Query, withApollo, compose, graphql } from 'react-apollo';
-import {
-	signUpMutation,
-	signInMutation,
-	UserQuery,
-	SendVerificationCodeMutation
-} from '../../assets/graphql/user.graphql';
+import { Query, withApollo, compose, graphql, GQL } from 'apollo';
+import { app } from 'store';
+import { WeChat } from 'native';
+
+import UserRewardOverlay from '../home/components/UserRewardOverlay';
 
 import { BoxShadow } from 'react-native-shadow';
+import { Overlay } from 'teaset';
+
+import { Util } from 'native';
+import DeviceInfo from 'react-native-device-info';
 
 const shadowOpt = {
 	width: SCREEN_WIDTH - Theme.itemSpace * 3,
@@ -39,73 +34,124 @@ class index extends Component {
 	constructor(props) {
 		super(props);
 		this.timeRemaining = 60;
+		this.phoneNumber = null;
+		this.deviceId = DeviceInfo.getUniqueID();
 		this.state = {
-			phone: true,
+			signIn: true,
 			submitting: false,
 			account: null,
 			password: null,
 			showThumb: false,
 			secure: true,
-			countdown: 0
+			submitTips: '登录中...',
+			readed: true
 		};
 	}
 
-	checkNetwork = childState => {
-		NetInfo.isConnected.fetch().then(isConnected => {
-			if (isConnected) {
-				this.onSubmit();
-			} else {
-				Methods.toast('请检查是否连接网络', 80);
-			}
-		});
-	};
+	async componentDidMount() {
+		let phone = await Util.getPhoneNumber();
 
-	getVerificationCode = async () => {
-		let { account } = this.state;
-		try {
-			let result = await this.props.SendVerificationCodeMutation({
-				variables: {
-					account: account,
-					action: 'USER_LOGIN'
-				},
-				errorPolicy: 'all'
+		if (phone) {
+			this.phoneNumber = phone.substr(phone.length - 11);
+			this.setState({
+				account: this.phoneNumber
 			});
-			this.verificationCode = result.data.sendVerificationCode.code;
-			this.timeRemaining = result.data.sendVerificationCode.surplusSecond;
-			this.countdown();
-		} catch (error) {
-			let str = errors.toString().replace(/Error: GraphQL error: /, '');
-			Toast.show({ content: str, layout: 'top' });
+		}
+	}
+
+	onSubmit = () => {
+		if (this.state.readed) {
+			if (this.state.signIn) {
+				this.signIn();
+			} else {
+				this.signUp();
+			}
+		} else {
+			Toast.show({
+				content: '请先勾选同意”用户协议“和”隐私政策“'
+			});
 		}
 	};
 
-	countdown() {
-		this.setState(
-			prevState => ({ countdown: --this.timeRemaining }),
-			() => {
-				if (this.timeRemaining === 0) {
-					clearTimeout(this.timer);
+	autoSign = async () => {
+		let result = {};
+		this.setState({
+			submitting: true
+		});
+		console.log('this.deviceId', this.deviceId);
+		try {
+			result = await this.props.autoSignInMutation({
+				variables: {
+					account: null,
+					uuid: this.deviceId
 				}
-			}
-		);
-		this.timer = setTimeout(() => {
-			this.countdown();
-		}, 1000);
-	}
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		console.log('result', result);
+		if (result && result.errors) {
+			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({ content: str, layout: 'top' });
+		} else {
+			const user = result.data.autoSignIn;
+			this._saveUserData(user);
+		}
+		this.setState({
+			submitting: false
+		});
+	};
 
-	//处理表单提交
-	onSubmit = async () => {
-		const { phone, account, password } = this.state;
+	signIn = async () => {
+		let { account } = this.state;
+		const { navigation } = this.props;
+
+		if (account == this.phoneNumber) {
+			let result = {};
+			this.setState({
+				submitting: true
+			});
+			console.log('this.deviceId', this.deviceId);
+			try {
+				result = await this.props.autoSignInMutation({
+					variables: {
+						account: account,
+						uuid: this.deviceId
+					}
+				});
+			} catch (ex) {
+				result.errors = ex;
+			}
+			console.log('result', result);
+			if (result && result.errors) {
+				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+				Toast.show({ content: str, layout: 'top' });
+			} else {
+				const user = result.data.autoSignIn;
+				this._saveUserData(user);
+			}
+			this.setState({
+				submitting: false
+			});
+		} else {
+			navigation.navigate('PasswordLogin', { hasPassword: true, account: account });
+		}
+	};
+
+	//处理注册来源
+	signUp = async () => {
+		let { signIn, account, password } = this.state;
+		let { client, navigation } = this.props;
 		this.setState({
 			submitting: true
 		});
 		let result = {};
+
 		try {
-			result = await this.props.signInMutation({
+			result = await client.query({
+				query: GQL.IsInviteUser,
 				variables: {
-					account,
-					password: phone ? undefined : password,
-					code: phone ? password : undefined
+					account
 				}
 			});
 		} catch (ex) {
@@ -114,18 +160,75 @@ class index extends Component {
 		if (result && result.errors) {
 			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
 			Toast.show({ content: str, layout: 'top' });
+			this.setState({
+				submitting: false
+			});
 		} else {
-			const user = result.data.signIn;
-			this._saveUserData(user);
+			if (result && result.data.isInviteUser) {
+				//对邀请用户发送验证码验证
+				this.sendVerificationCode(account);
+			} else {
+				//自然流量无需验证手机，设置密码注册
+				navigation.navigate('RegisterSetPassword', { phone: account });
+				this.setState({
+					submitting: false
+				});
+			}
+		}
+	};
+
+	//发送验证码
+	sendVerificationCode = async () => {
+		const { navigation } = this.props;
+
+		let result = {};
+		try {
+			result = await this.props.SendVerificationCodeMutation({
+				variables: {
+					account: this.state.account,
+					action: 'USER_LOGIN'
+				},
+				errorPolicy: 'all'
+			});
+		} catch (ex) {
+			result.errors = ex;
+		}
+		if (result && result.errors) {
+			let str = result.errors[0].message;
+			Toast.show({ content: str });
+		} else {
+			navigation.navigate('VerificationPhone', {
+				code: result.data.sendVerificationCode.code,
+				time: result.data.sendVerificationCode.surplusSecond,
+				phone: this.state.account,
+				data: null
+			});
 		}
 		this.setState({
 			submitting: false
 		});
 	};
 
+	//保存用户信息
 	_saveUserData = user => {
-		this.props.dispatch(actions.signIn(user));
+		app.signIn(user);
+		this.setState({
+			submitting: false
+		});
 		this.props.navigation.goBack();
+		Toast.show({ content: '登录成功' });
+	};
+
+	//显示邀请奖励
+	loadUserReword = () => {
+		let overlayView = (
+			<Overlay.View animated>
+				<View style={styles.overlayInner}>
+					<UserRewardOverlay hide={() => Overlay.hide(this.OverlayKey)} />
+				</View>
+			</Overlay.View>
+		);
+		this.OverlayKey = Overlay.show(overlayView);
 	};
 
 	changeAccount = value => {
@@ -138,27 +241,105 @@ class index extends Component {
 
 	toggleMutation = () => {
 		this.setState(prevState => ({
-			phone: !prevState.phone,
-			account: null,
+			signIn: !prevState.signIn,
+			// account: null,
 			password: null
 		}));
 	};
 
 	validator(number) {
-		console.log('number', number);
 		if (String(number).length === 11) {
 			return true;
 		}
 		return false;
 	}
 
+	//微信登录
+	wechatLogin = () => {
+		WeChat.isSupported()
+			.then(isSupported => {
+				if (isSupported) {
+					WeChat.wechatLogin().then(code => {
+						this.setState({
+							submitting: true
+						});
+						console.log('code', code);
+						this.getWechatInfo(code);
+					});
+				} else {
+					Toast.show({ content: '未安装微信或当前微信版本较低' });
+				}
+			})
+			.catch(err => {
+				console.log('err=' + err);
+				Toast.show({ content: '微信请求失败，请使用手机号登录' });
+			});
+	};
+
+	//获取微信身份信息
+	getWechatInfo = code => {
+		var data = new FormData();
+		data.append('code', code);
+
+		fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
+			method: 'POST',
+			body: data
+		})
+			.then(response => response.json())
+			.then(result => {
+				if (result.data && result.data.unionid) {
+					//新用户绑定手机号
+					this.props.navigation.navigate('PhoneBind', { data: result.data });
+					this.setState({
+						submitting: false
+					});
+				} else {
+					//老用户直接登录
+					this.getUserData(result.data.user);
+				}
+			})
+			.catch(error => {
+				Toast.show({ content: '微信账号获取失败' });
+				this.setState({
+					submitting: false
+				});
+			});
+	};
+
+	//微信已存在，直接登录
+	getUserData = user => {
+		const { client } = this.props;
+		client
+			.query({
+				query: GQL.UserQuery,
+				variables: {
+					id: user.id
+				}
+			})
+			.then(result => {
+				let token = { token: user.api_token };
+				let userLoginInfo = { ...result.data.user, token: user.api_token };
+				this._saveUserData(userLoginInfo);
+			})
+			.catch(error => {
+				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
+				Toast.show({ content: str });
+				this.setState({
+					submitting: false
+				});
+			});
+	};
+
 	render() {
+		let { me } = app;
 		let { navigation } = this.props;
-		let { phone, submitting, account, password, showThumb, secure, countdown } = this.state;
-		let disabled = !(account && password);
+		let { signIn, submitting, account, password, showThumb, secure, submitTips, readed } = this.state;
+		// let disabled = signIn ? !(account && password) : !account;
+		let disabled = !account;
 		return (
 			<PageContainer
 				submitting={submitting}
+				submitTips={submitTips}
 				contentViewStyle={{ marginTop: 0 }}
 				navBarStyle={{ zIndex: 1, backgroundColor: 'transparent' }}
 				leftView={
@@ -166,132 +347,123 @@ class index extends Component {
 						<Iconfont name="close" size={PxFit(24)} color={Theme.primaryColor} />
 					</TouchFeedback>
 				}
+				autoKeyboardInsets
 			>
 				<View style={styles.container} bounces={false}>
-					<View style={styles.registerCoverContainer}>
-						<Image
-							source={
-								SCREEN_HEIGHT / SCREEN_WIDTH >= 2
-									? require('../../assets/images/register_cover_2.png')
-									: require('../../assets/images/register_cover_1.png')
-							}
-							style={styles.registerCover}
-						/>
-					</View>
-					<BoxShadow
-						setting={Object.assign({}, shadowOpt, {
-							height: PxFit(320)
-						})}
-					>
-						<View style={styles.formContainer}>
-							<View style={{ width: '80%' }}>
-								<View>
-									<View style={styles.fieldGroup}>
-										<Text style={styles.field}>{phone ? '手机号' : '账号'}</Text>
-										<View
-											style={[
-												styles.inputWrap,
-												showThumb == showThumbType[0] && { borderBottomColor: '#f79b7c' }
-											]}
-										>
-											<CustomTextInput
-												placeholderTextColor={Theme.subTextColor}
-												autoCorrect={false}
-												placeholder={phone ? '请输入手机号' : '请输入账号'}
-												style={styles.inputStyle}
-												value={account}
-												onChangeText={this.changeAccount}
-												onFocus={() => this.setState({ showThumb: showThumbType[0] })}
-											/>
+					<View style={styles.formContainer}>
+						<View style={{ alignItems: 'center' }}>
+							<Image
+								source={require('../../../icon.png')}
+								style={{ width: 90, height: 90, marginTop: SCREEN_HEIGHT / 12 }}
+							/>
+							<View style={{ alignItems: 'center', marginVertical: 40 }}>
+								<View
+									style={[
+										styles.inputWrap,
+										showThumb == showThumbType[0] && {
+											borderBottomColor: Theme.primaryColor
+										}
+									]}
+								>
+									<Iconfont name={'phone'} color={'#D0D0D0'} size={17} style={{ paddingRight: 10 }} />
+									<CustomTextInput
+										placeholderTextColor={Theme.subTextColor}
+										autoCorrect={false}
+										placeholder="请输入手机号"
+										autoFocus={true}
+										style={styles.inputStyle}
+										value={account}
+										onChangeText={this.changeAccount}
+										onFocus={() =>
+											this.setState({
+												showThumb: showThumbType[0]
+											})
+										}
+									/>
 
-											{showThumb == showThumbType[0] && (
-												<TouchFeedback onPress={() => this.changeAccount('')}>
-													<Iconfont
-														name={'close'}
-														size={PxFit(20)}
-														color={Theme.tintTextColor}
-													/>
-												</TouchFeedback>
-											)}
-										</View>
-									</View>
-									<View style={styles.fieldGroup}>
-										<Text style={styles.field}>{phone ? '验证码' : '密码'}</Text>
-										<View
-											style={[
-												styles.inputWrap,
-												showThumb == showThumbType[1] && { borderBottomColor: '#f79b7c' }
-											]}
-										>
-											<CustomTextInput
-												placeholderTextColor={Theme.subTextColor}
-												autoCorrect={false}
-												placeholder={phone ? '请输入验证码' : '请输入密码'}
-												secureTextEntry={phone ? false : secure}
-												style={styles.inputStyle}
-												value={password}
-												onChangeText={this.changePassword}
-												onFocus={() => this.setState({ showThumb: showThumbType[1] })}
-											/>
-
-											{phone && (
-												<TouchFeedback
-													onPress={this.getVerificationCode}
-													style={[
-														styles.countdown,
-														this.validator(account) && {
-															backgroundColor: Theme.primaryColor
-														}
-													]}
-													disabled={!this.validator(account)}
-												>
-													<Text
-														style={[
-															styles.countdownText,
-															this.validator(account) && { color: '#fff' }
-														]}
-													>
-														{countdown > 0 ? countdown : '获取验证码'}
-													</Text>
-												</TouchFeedback>
-											)}
-											{!phone && showThumb == showThumbType[1] && (
-												<TouchFeedback onPress={() => this.setState({ secure: !secure })}>
-													<Iconfont
-														name={secure ? 'eye' : 'hide'}
-														size={PxFit(20)}
-														color={secure ? Theme.tintTextColor : Theme.secondaryTextColor}
-													/>
-												</TouchFeedback>
-											)}
-										</View>
-									</View>
-								</View>
-								<Button style={styles.button} disabled={disabled} onPress={this.checkNetwork}>
-									<Text style={styles.buttonText}>{phone ? '登录/注册' : '登 录'}</Text>
-								</Button>
-								<View style={styles.bottomInfo}>
-									<TouchFeedback onPress={this.toggleMutation}>
-										<Text style={styles.bottomLinkText}>
-											{phone ? '账号密码登录' : '验证码登录'}
-										</Text>
-									</TouchFeedback>
-									{!phone && (
-										<TouchFeedback onPress={() => navigation.navigate('ForgetPassword')}>
-											<Text style={styles.bottomInfoText}>忘记密码?</Text>
+									{showThumb == showThumbType[0] && (
+										<TouchFeedback onPress={() => this.changeAccount('')}>
+											<Iconfont name={'close'} size={PxFit(18)} color={Theme.tintTextColor} />
 										</TouchFeedback>
 									)}
 								</View>
 							</View>
+							<Button style={styles.button} disabled={disabled} onPress={this.onSubmit}>
+								<Text style={styles.buttonText}>{signIn ? '登 录' : '注 册'}</Text>
+							</Button>
+
+							<View style={styles.bottomInfo}>
+								<TouchFeedback onPress={this.toggleMutation}>
+									<Text style={styles.bottomLinkText}>{signIn ? '注册' : '登录'}</Text>
+								</TouchFeedback>
+							</View>
 						</View>
-					</BoxShadow>
+						<View style={{ alignItems: 'center' }}>
+							<View
+								style={{
+									marginBottom: 55,
+									width: SCREEN_WIDTH
+								}}
+							>
+								<Row style={styles.rowCenter}>
+									<View style={styles.line} />
+									<Text style={{ marginHorizontal: 20 }}>其他登录方式</Text>
+									<View style={styles.line} />
+								</Row>
+								<Row
+									style={{
+										alignItems: 'stretch'
+									}}
+								>
+									<TouchFeedback style={styles.otherLogin} onPress={this.wechatLogin}>
+										<Image
+											source={require('../../assets/images/wechat.png')}
+											style={{ width: 26, height: 26, marginBottom: 8 }}
+										/>
+										<Text>微信登录</Text>
+									</TouchFeedback>
+									<TouchFeedback style={styles.otherLogin} onPress={this.autoSign}>
+										<Image
+											source={require('../../assets/images/phone.png')}
+											style={{ width: 28, height: 28, marginBottom: 8 }}
+										/>
+										<Text>一键登录</Text>
+									</TouchFeedback>
+								</Row>
+							</View>
+							<Row style={styles.rowCenter}>
+								<TouchFeedback
+									style={styles.bageWrap}
+									onPress={() => {
+										this.setState({
+											readed: !readed
+										});
+									}}
+								>
+									{readed ? (
+										<View style={styles.bage}>
+											<Iconfont name={'correct'} color={Theme.white} size={10} />
+										</View>
+									) : null}
+								</TouchFeedback>
+
+								<Text style={styles.bottomInfoText}>同意</Text>
+								<View
+									onPress={() => navigation.navigate('UserProtocol')}
+									style={{ flexDirection: 'row', alignItems: 'center' }}
+								>
+									<TouchFeedback onPress={() => navigation.navigate('UserProtocol')}>
+										<Text style={{ fontSize: PxFit(12), color: Theme.theme }}> 用户协议</Text>
+									</TouchFeedback>
+									<Text style={styles.bottomLinkText}> 和 </Text>
+									<TouchFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
+										<Text style={{ fontSize: PxFit(12), color: Theme.theme }}> 隐私政策</Text>
+									</TouchFeedback>
+								</View>
+							</Row>
+						</View>
+					</View>
 				</View>
-				<Row style={styles.protocol}>
-					<Text style={styles.bottomInfoText}>登录代表你已同意</Text>
-					<TouchFeedback onPress={() => navigation.navigate('UserProtocol')}>
-						<Text style={styles.bottomLinkText}>《用户协议》</Text>
-					</TouchFeedback>
-				</Row>
 			</PageContainer>
 		);
 	}
@@ -300,8 +472,6 @@ class index extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
 		backgroundColor: '#fff'
 	},
 	registerCoverContainer: {
@@ -312,7 +482,7 @@ const styles = StyleSheet.create({
 		bottom: 0
 	},
 	registerCover: {
-		flex: 1,
+		// flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		width: null,
@@ -325,13 +495,14 @@ const styles = StyleSheet.create({
 	// },
 	formContainer: {
 		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: PxFit(10)
+		justifyContent: 'space-between',
+		paddingHorizontal: PxFit(35),
+		marginTop: 50,
+		marginHorizontal: 15
 	},
 	fieldGroup: {
-		marginBottom: PxFit(10)
+		marginBottom: PxFit(10),
+		backgroundColor: '#000000'
 	},
 	field: {
 		fontSize: PxFit(16),
@@ -340,8 +511,9 @@ const styles = StyleSheet.create({
 	inputWrap: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		borderBottomWidth: PxFit(1),
-		borderBottomColor: Theme.borderColor
+		borderBottomWidth: PxFit(0.5),
+		borderBottomColor: Theme.lightBorder,
+		marginTop: 15
 	},
 	inputStyle: {
 		flex: 1,
@@ -351,58 +523,85 @@ const styles = StyleSheet.create({
 		paddingBottom: PxFit(10),
 		paddingTop: PxFit(10)
 	},
-	countdown: {
-		width: PxFit(64),
-		height: PxFit(20),
-		borderRadius: PxFit(4),
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#f0f0f0'
-	},
-	countdownText: {
-		fontSize: PxFit(10),
-		color: Theme.subTextColor
-	},
 	button: {
 		marginTop: PxFit(30),
-		height: PxFit(40),
-		backgroundColor: Theme.primaryColor
+		height: PxFit(38),
+		backgroundColor: Theme.primaryColor,
+		borderRadius: PxFit(20)
 	},
 	buttonText: {
 		fontSize: PxFit(16),
-		fontWeight: '500',
+		fontWeight: '400',
 		color: '#fff'
 	},
 	bottomInfo: {
+		width: SCREEN_WIDTH,
+		paddingHorizontal: PxFit(50),
 		marginTop: PxFit(20),
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between'
 	},
 	bottomInfoText: {
-		fontSize: PxFit(14),
-		color: Theme.subTextColor
+		fontSize: PxFit(12),
+		color: '#7D8089'
 	},
 	bottomLinkText: {
-		fontSize: PxFit(14),
-		color: '#F79B7C'
+		fontSize: PxFit(12),
+		color: '#7D8089'
 	},
 	protocol: {
 		position: 'absolute',
 		bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace),
 		left: 0,
-		right: 0,
+		right: 0
+	},
+	line: {
+		width: SCREEN_WIDTH / 5,
+		height: 0.5,
+		backgroundColor: Theme.grey
+	},
+	otherLogin: {
+		flex: 1,
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginTop: 30
+	},
+	bageWrap: {
+		height: 14,
+		width: 14,
+		borderRadius: 8,
+		borderWidth: 2,
+		borderColor: Theme.grey,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 10
+	},
+	bage: {
+		backgroundColor: Theme.theme,
+		height: 14,
+		width: 14,
+		borderRadius: 8,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	overlayInner: {
+		flex: 1,
+		width: SCREEN_WIDTH,
+		height: SCREEN_HEIGHT,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	rowCenter: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace)
 	}
 });
 
 export default compose(
 	withApollo,
-	connect(store => {
-		return { users: store.users };
-	}),
-	graphql(signUpMutation, { name: 'signUpMutation' }),
-	graphql(signInMutation, { name: 'signInMutation' }),
-	graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
+	graphql(GQL.signInMutation, { name: 'signInMutation' }),
+	graphql(GQL.autoSignInMutation, { name: 'autoSignInMutation' }),
+	graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
 )(index);

@@ -109,10 +109,13 @@ class WheelPicker {
 		return data;
 	}
 
-	_showDatePicker() {
+	_showDatePicker(initValue = []) {
 		Picker.init({
 			...initStyle,
-			selectedValue: ['1990年', '6月', '1日'],
+			selectedValue:
+				initValue.length > 1
+					? [initValue[0] + '年', initValue[1] + '月', initValue[2] + '日']
+					: ['1990年', '6月', '1日'],
 			pickerData: this._createDateData(),
 			onPickerConfirm: (pickedValue, pickedIndex) => {
 				this.onPickerConfirm && this.onPickerConfirm(pickedValue, pickedIndex);

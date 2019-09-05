@@ -34,6 +34,7 @@ class ErrorBoundary extends React.Component {
 				<View style={styles.container}>
 					<Image style={styles.image} source={require('../../assets/images/default_error.png')} />
 					<Text style={styles.title}>糟糕，出错了。我们会尽快修复！</Text>
+					<Text style={styles.title}>请尝试卸载重新安装答题赚钱或清除数据!</Text>
 				</View>
 			);
 		}

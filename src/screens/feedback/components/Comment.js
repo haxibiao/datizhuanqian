@@ -5,9 +5,9 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
-import { CustomTextInput, Iconfont } from '../../../components';
+import { CustomTextInput, Iconfont } from 'components';
 
-import { Theme, SCREEN_WIDTH, PxFit } from '../../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
 class Comment extends Component {
 	constructor(props) {
@@ -69,7 +69,7 @@ class Comment extends Component {
 		let { inputHeight } = this.state;
 		return (
 			<View>
-				{image && (
+				{image ? (
 					<View>
 						<View style={styles.images}>
 							<Image
@@ -85,7 +85,7 @@ class Comment extends Component {
 						</View>
 						<View style={{ height: PxFit(0.5), backgroundColor: Theme.lightBorder }} />
 					</View>
-				)}
+				) : null}
 				{reply && (
 					<View style={styles.quote}>
 						<View style={styles.tag} />
@@ -137,7 +137,7 @@ class Comment extends Component {
 const styles = StyleSheet.create({
 	container: {
 		borderTopColor: Theme.lightBorder,
-		borderTopWidth: PxFit(0.3),
+		borderTopWidth: PxFit(0.5),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',

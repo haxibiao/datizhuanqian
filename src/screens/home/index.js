@@ -18,42 +18,83 @@ import {
 	CustomRefreshControl,
 	ListFooter,
 	Placeholder,
-	TabBar,
+	Banner,
 	UpdateOverlay
-} from '../../components';
-import { Api } from '../../utils';
+} from 'components';
+import { Api, Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 import PlateItem from './components/PlateItem';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { Storage, ItemKeys } from '../../store/localStorage';
-import { Query, withApollo, compose, graphql } from 'react-apollo';
-import { UserQuery } from '../../assets/graphql/user.graphql';
-import { CategoriesQuery, QuestionQuery } from '../../assets/graphql/question.graphql';
-
+import { observer, app, config, keys, storage } from 'store';
+import { withApollo, compose, graphql, GQL } from 'apollo';
 import SplashScreen from 'react-native-splash-screen';
-import JPushModule from 'jpush-react-native';
 
+import JPushModule from 'jpush-react-native';
+import NetInfo from '@react-native-community/netinfo';
+
+import { Util } from 'native';
+import { Overlay } from 'teaset';
+
+import UserRewardOverlay from './components/UserRewardOverlay';
+
+@observer
 class index extends Component {
 	constructor(props) {
 		super(props);
+		// ConfigStore.navigation = props.navigation;
 		this.state = {
 			finished: false,
-			categoryCache: null
+			categoryCache: null,
+			description: null,
+			content: null,
+			time: new Date()
 		};
 	}
 
-	componentDidMount() {
-		this.loadCache();
-		SplashScreen.hide();
-		// UpdateOverlay.show();
+	async componentDidMount() {
+		const { navigation } = this.props;
+		// SplashScreen.hide();
+		this.resetUser();
 
-		this.timer = setTimeout(() => {
-			Api.checkUpdate(this.dispatch.bind(this));
-		}, 3000);
+		this.timer = setTimeout(async () => {
+			let phone = await Util.getPhoneNumber();
+		}, 2000);
+
+		this.registerTimer = setTimeout(async () => {
+			//再次请求权限防止未获取到手机号
+			let phone = await Util.getPhoneNumber();
+			let userCache = await storage.getItem(keys.userCache);
+
+			if (!app.login && !userCache) {
+				this.loadUserReword(null);
+			}
+		}, 5000);
+
+		this.didFocusSubscription = navigation.addListener('didFocus', payload => {
+			let { user, client, login } = this.props;
+			if (login) {
+				client
+					.query({
+						query: GQL.UserWithdrawQuery
+					})
+					.then(({ data }) => {})
+					.catch(error => {
+						let info = error.toString().indexOf('登录');
+						if (info > -1) {
+							app.forget();
+							Toast.show({ content: '您的身份信息已过期,请重新登录' });
+						}
+					});
+			}
+			NetInfo.isConnected.fetch().then(isConnected => {
+				if (!isConnected) {
+					Toast.show({ content: '网络不可用' });
+				}
+			});
+		});
+
+		//当有用户seesion 过期时 ,清空redux 强制重新登录。
 
 		this.receiveNotificationListener = message => {
-			console.log('receive notification: ', message, JSON.parse(message.extras));
 			this.setState({
 				content: message.alertContent,
 				type: JSON.parse(message.extras).type,
@@ -80,32 +121,62 @@ class index extends Component {
 		JPushModule.removeReceiveOpenNotificationListener(this.openNotificationListener);
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.data && nextProps.data.categories) {
-			this.props.dispatch(actions.categoryCache(nextProps.data.categories));
+	componentDidUpdate(nextProps, nextState) {
+		let { data } = this.props;
+		if (data && data.categories && nextProps.data.categories !== data.categories) {
+			app.updateCategoryCache(data.categories);
 		}
 	}
 
-	dispatch(serverVersion) {
-		this.props.dispatch(actions.UpdateViewedVesion(serverVersion));
+	//每个版本静默重新登录一次
+	async resetUser() {
+		let resetVersion = await storage.getItem(keys.resetVersion);
+		let me = (await storage.getItem(keys.me)) || (await storage.getItem(keys.user));
+
+		if (resetVersion !== Config.AppVersionNumber && me) {
+			this.props
+				.signToken({
+					variables: {
+						token: me.token
+					}
+				})
+				.then(result => {
+					app.signIn(result.data.signInWithToken);
+					app.updateResetVersion(Config.AppVersionNumber);
+					app.updateUserCache(result.data.signInWithToken);
+				});
+		}
 	}
 
-	async loadCache() {
-		let categoryCache = await Storage.getItem(ItemKeys.categoryCache);
-		this.setState({ categoryCache });
-	}
+	//新用户奖励提示
+	loadUserReword = phone => {
+		let overlayView = (
+			<Overlay.View animated>
+				<View style={styles.overlayInner}>
+					<UserRewardOverlay
+						hide={() => Overlay.hide(this.OverlayKey)}
+						navigation={this.props.navigation}
+						phone={phone}
+						client={this.props.client}
+					/>
+				</View>
+			</Overlay.View>
+		);
+		this.OverlayKey = Overlay.show(overlayView);
+		//回调后端
+	};
 
 	_renderCategoryList = () => {
 		let {
-			user,
-			login,
 			navigation,
+			data,
 			data: { loading, error, categories, refetch, fetchMore }
 		} = this.props;
 		let questionCategories = categories;
+		let { me, login, categoryCache } = app;
 		if (!questionCategories) {
-			if (this.state.categoryCache) {
-				questionCategories = this.state.categoryCache;
+			if (categoryCache) {
+				questionCategories = categoryCache;
 			} else {
 				return Array(10)
 					.fill(0)
@@ -114,14 +185,29 @@ class index extends Component {
 					});
 			}
 		}
+
+		let categrorys = questionCategories.filter((elem, i, category) => {
+			return category.indexOf(elem, 0) === i;
+		});
+
 		return (
 			<View style={styles.container}>
-				<TabBar />
+				{login && <Banner />}
 				<FlatList
 					showsVerticalScrollIndicator={false}
-					data={questionCategories}
-					refreshControl={<CustomRefreshControl refreshing={loading} onRefresh={refetch} />}
-					keyExtractor={(item, index) => index.toString()}
+					data={categrorys}
+					refreshControl={
+						<CustomRefreshControl
+							refreshing={loading}
+							onRefresh={refetch}
+							reset={() =>
+								this.setState({
+									finished: false
+								})
+							}
+						/>
+					}
+					keyExtractor={(item, index) => (item.id ? item.id.toString() + Date.now() : index.toString())}
 					renderItem={({ item, index }) => (
 						<PlateItem category={item} navigation={navigation} login={login} />
 					)}
@@ -159,7 +245,7 @@ class index extends Component {
 	};
 	render() {
 		return (
-			<PageContainer title="答题赚钱" isTopNavigator>
+			<PageContainer title={Config.AppName} isTopNavigator>
 				{this._renderCategoryList()}
 			</PageContainer>
 		);
@@ -170,17 +256,19 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff'
+	},
+
+	overlayInner: {
+		flex: 1,
+		width: SCREEN_WIDTH,
+		height: SCREEN_HEIGHT,
+		justifyContent: 'center',
+		backgroundColor: 'rgba(255,255,255,0)',
+		alignItems: 'center'
 	}
 });
 
 export default compose(
-	withApollo,
-	connect(store => {
-		return {
-			user: store.users.user,
-			login: store.users.login,
-			isUpdate: store.users.isUpdate
-		};
-	}),
-	graphql(CategoriesQuery, { options: props => ({ variables: { limit: 10 } }) })
-)(index);
+	graphql(GQL.CategoriesQuery, { options: props => ({ variables: { limit: 10 } }) }),
+	graphql(GQL.signToken, { name: 'signToken' })
+)(withApollo(index));

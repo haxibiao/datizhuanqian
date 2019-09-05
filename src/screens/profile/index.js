@@ -1,47 +1,24 @@
-/*
+/**
+ * @format
  * @flow
- * created by wangyukun made in 2019-03-18 11:44:55
  */
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import {
-	PageContainer,
-	TouchFeedback,
-	Iconfont,
-	Row,
-	Avatar,
-	ListItem,
-	ItemSeparator,
-	CustomRefreshControl,
-	Placeholder,
-	Badge
-} from '../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
+import { StyleSheet, View, ScrollView, Text, Image, NativeModules } from 'react-native';
+import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge } from '../../components';
+import { Config, Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
+import { GQL, Query, withApollo, compose, graphql } from 'apollo';
+import { observer, app, config, keys, storage } from 'store';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { Storage, ItemKeys } from '../../store/localStorage';
-import { Query, withApollo, compose, graphql } from 'react-apollo';
-import { UserQuery } from '../../assets/graphql/user.graphql';
-import { userUnreadQuery } from '../../assets/graphql/notification.graphql';
+import JPushModule from 'jpush-react-native';
 
 import { BoxShadow } from 'react-native-shadow';
+import codePush from 'react-native-code-push';
 
-const shadowOpt = {
-	width: SCREEN_WIDTH - Theme.itemSpace * 2,
-	color: '#E8E8E8',
-	border: PxFit(3),
-	radius: PxFit(10),
-	opacity: 0.5,
-	x: 0,
-	y: 1,
-	style: {
-		marginTop: 0
-	}
-};
+import { TtAdvert } from 'native';
 
+@observer
 class index extends Component {
 	constructor(props) {
 		super(props);
@@ -50,21 +27,11 @@ class index extends Component {
 		};
 	}
 
-	componentWillMount() {
-		if (this.props.login) {
-			this.loadCache();
+	componentDidUpdate(nextProps, nextState) {
+		let { data } = this.props;
+		if (data && data.user && nextProps.data.user !== data.user) {
+			app.updateUserCache(data.user);
 		}
-	}
-
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.data && nextProps.data.user) {
-			this.props.dispatch(actions.userCache(nextProps.data.user));
-		}
-	}
-
-	async loadCache() {
-		let userCache = await Storage.getItem(ItemKeys.userCache);
-		this.setState({ userCache });
 	}
 
 	userAdapter(data: Object = {}) {
@@ -81,17 +48,21 @@ class index extends Component {
 	}
 
 	render() {
-		let { user, login, navigation, data } = this.props;
+		let { navigation, data, echo } = this.props;
+		let { login, me, userCache } = app;
+		let user = me;
+
 		if (login && data && data.user) {
 			data.user.avatar = user.avatar;
 			user = data.user;
-		} else if (login && this.state.userCache) {
-			user = this.userAdapter(this.state.userCache);
+		} else if (login && userCache) {
+			user = this.userAdapter(userCache);
+			user.avatar = user.avatar;
 		} else {
 			user = this.userAdapter(user);
 		}
 		return (
-			<PageContainer hiddenNavBar>
+			<PageContainer hiddenNavBar onWillFocus={data && data.refetch}>
 				<ScrollView style={styles.container} bounces={false}>
 					<View style={{ marginBottom: -Theme.itemSpace }}>
 						<View style={styles.userInfoContainer}>
@@ -102,34 +73,50 @@ class index extends Component {
 								/>
 							</View>
 							<TouchFeedback
-								navigation={navigation}
 								authenticated
+								navigation={navigation}
 								activeOpacity={1}
 								style={styles.userInfo}
 								onPress={() => navigation.navigate('EditProfile', { user })}
 							>
-								<TouchFeedback onPress={() => navigation.navigate('User', { user })}>
-									<Avatar source={user.avatar} size={PxFit(60)} style={styles.userAvatar} />
+								<TouchFeedback
+									authenticated
+									navigation={navigation}
+									onPress={() => navigation.navigate('User', { user })}
+								>
+									<Avatar
+										source={user.avatar + '?t=' + Date.now()}
+										size={PxFit(60)}
+										style={styles.userAvatar}
+									/>
 								</TouchFeedback>
 								<View style={styles.textInfo}>
 									<Text style={styles.userName} numberOfLines={1}>
 										{login ? user.name : '登录/注册'}
 									</Text>
 									<Text style={styles.introduction} numberOfLines={1}>
-										{login ? user.introduction || '快去完善个人资料吧' : '欢迎来到答题赚钱'}
+										{login
+											? user.profile.introduction || '快去完善个人资料吧'
+											: '欢迎来到' + Config.AppName}
 									</Text>
 								</View>
 								<Iconfont name={'right'} size={PxFit(20)} color={'#fff'} />
 							</TouchFeedback>
 							<View style={styles.metaWrap}>
-								<View style={styles.metaItem}>
+								<TouchFeedback
+									navigation={navigation}
+									onPress={() => navigation.navigate('GradeDescription', { user })}
+									authenticated
+									activeOpacity={1}
+									style={styles.metaItem}
+								>
 									<Text style={styles.metaCount} numberOfLines={1}>
 										{user.level ? user.level.level : 0}
 									</Text>
 									<Text style={styles.metaLabel} numberOfLines={1}>
 										等级
 									</Text>
-								</View>
+								</TouchFeedback>
 								<TouchFeedback
 									navigation={navigation}
 									onPress={() => navigation.navigate('Society')}
@@ -158,14 +145,6 @@ class index extends Component {
 										粉丝
 									</Text>
 								</TouchFeedback>
-								<View style={styles.metaItem}>
-									<Text style={styles.metaCount} numberOfLines={1}>
-										{user.gold || 0}
-									</Text>
-									<Text style={styles.metaLabel} numberOfLines={1}>
-										智慧点
-									</Text>
-								</View>
 							</View>
 						</View>
 					</View>
@@ -211,21 +190,6 @@ class index extends Component {
 									authenticated
 									activeOpacity={1}
 									style={styles.metaItem}
-									onPress={() => navigation.navigate('CurationLog')}
-								>
-									<Image
-										style={styles.metaIcon}
-										source={require('../../assets/images/profile_correct.png')}
-									/>
-									<Text style={styles.metaIconLabel} numberOfLines={1}>
-										纠错记录
-									</Text>
-								</TouchFeedback>
-								<TouchFeedback
-									navigation={navigation}
-									authenticated
-									activeOpacity={1}
-									style={styles.metaItem}
 									onPress={() => navigation.navigate('AnswerLog')}
 								>
 									<Image
@@ -239,6 +203,21 @@ class index extends Component {
 							</View>
 						</BoxShadow>
 					</View>
+					{/*<TouchFeedback
+						style={styles.columnItem}
+						onPress={() => {
+							TtAdvert.Banner.loadBannerAd();
+						}}
+					>
+						<Row>
+							<Image
+								style={styles.metaIcon}
+								source={require('../../assets/images/profile_setting.png')}
+							/>
+							<Text style={styles.itemTypeText}>测试Appcenter</Text>
+						</Row>
+						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+					</TouchFeedback>*/}
 					<TouchFeedback
 						style={styles.columnItem}
 						authenticated
@@ -253,7 +232,7 @@ class index extends Component {
 							<Text style={styles.itemTypeText}>消息通知</Text>
 						</Row>
 						{login ? (
-							<Query query={userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
+							<Query query={GQL.userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
 								{({ data, error, refetch }) => {
 									navigation.addListener('didFocus', payload => {
 										refetch();
@@ -292,17 +271,29 @@ class index extends Component {
 								style={styles.metaIcon}
 								source={require('../../assets/images/profile_feedback.png')}
 							/>
-							<Text style={styles.itemTypeText}>意见反馈</Text>
+							<Text style={styles.itemTypeText}>反馈建议</Text>
 						</Row>
 						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
 					</TouchFeedback>
 					<View style={{ height: 10 }} />
-					<TouchFeedback
-						style={styles.columnItem}
-						authenticated
-						navigation={navigation}
-						onPress={() => navigation.navigate('CommonIssue')}
-					>
+					<TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Recruit')}>
+						<Row>
+							<Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
+							<Text style={styles.itemTypeText}>版主招募</Text>
+						</Row>
+						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+					</TouchFeedback>
+					<TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Introduce')}>
+						<Row>
+							<Image
+								style={styles.metaIcon}
+								source={require('../../assets/images/profile_explain.png')}
+							/>
+							<Text style={styles.itemTypeText}>答题须知</Text>
+						</Row>
+						<Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+					</TouchFeedback>
+					<TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('CommonIssue')}>
 						<Row>
 							<Image style={styles.metaIcon} source={require('../../assets/images/profile_help.png')} />
 							<Text style={styles.itemTypeText}>常见问题</Text>
@@ -324,6 +315,19 @@ class index extends Component {
 		);
 	}
 }
+
+const shadowOpt = {
+	width: SCREEN_WIDTH - Theme.itemSpace * 2,
+	color: '#E8E8E8',
+	border: PxFit(3),
+	radius: PxFit(10),
+	opacity: 0.5,
+	x: 0,
+	y: 1,
+	style: {
+		marginTop: 0
+	}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -431,8 +435,8 @@ const styles = StyleSheet.create({
 });
 
 export default compose(
-	connect(store => ({ user: store.users.user, login: store.users.login })),
-	graphql(UserQuery, {
-		options: props => ({ variables: { id: props.user.id } })
+	graphql(GQL.UserQuery, {
+		options: props => ({ variables: { id: app.me.id } }),
+		skip: props => !app.login
 	})
 )(index);

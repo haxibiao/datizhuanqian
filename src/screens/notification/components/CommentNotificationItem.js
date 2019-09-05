@@ -4,58 +4,110 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Iconfont, UserTitle, Avatar } from '../../../components';
-import { Theme, PxFit } from '../../../utils';
+import { StyleSheet, View, Text } from 'react-native';
+import { Iconfont, UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
+import { Theme, PxFit, Tools } from 'utils';
 
 class CommentNotification extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
-	render() {
-		const { navigation, notification } = this.props;
-		return (
-			<TouchableOpacity
-				style={styles.container}
-				onPress={() => {
-					navigation.navigate('反馈详情', {
-						feedback_id: notification.comment.feedback.id
-					});
-				}}
-			>
-				<View style={styles.header}>
-					<Avatar source={{ uri: notification.comment.user.avatar }} size={34} />
-					<View style={styles.user}>
-						<View style={styles.userTop}>
-							<Text
-								style={{
-									color: Theme.black
-								}}
-							>
-								{notification.comment.user.name}
-							</Text>
-							<UserTitle user={notification.comment.user} />
-						</View>
 
-						<Text style={styles.commenTime}>
-							{notification.comment.time_ago}
-							{notification.type == 'FEEDBACK_COMMENT' ? '  回复了我的反馈' : '  引用了我的评论'}
-						</Text>
+	siwthType = notification => {
+		switch (notification.type) {
+			case 'FEEDBACK_COMMENT':
+				this.content = {
+					tips: '回复了我的反馈',
+					body: Tools.syncGetter('comment.feedback.title', notification)
+				};
+				break;
+			case 'QUESTION_COMMENT':
+				this.content = {
+					tips: '评论了我的出题',
+					body: Tools.syncGetter('comment.question.description', notification)
+				};
+				break;
+			case 'REPLY_COMMENT':
+				this.content = {
+					tips: '回复了我的评论',
+					body: Tools.syncGetter('comment.parent_comment.content', notification)
+				};
+				break;
+		}
+	};
+
+	render() {
+		const { navigation, notification, replyComment, showCommentModal } = this.props;
+		if (notification.comment) {
+			this.siwthType(notification);
+			return (
+				<TouchFeedback
+					style={styles.container}
+					onPress={() => {
+						if (notification.type == 'QUESTION_COMMENT') {
+							navigation.navigate('Question', {
+								question: notification.comment.question
+							});
+						} else if (notification.comment.feedback) {
+							navigation.navigate('FeedbackDetails', {
+								feedback_id: Tools.syncGetter('comment.feedback.id', notification)
+							});
+						} else if (notification.comment.question) {
+							navigation.navigate('Question', {
+								question: notification.comment.question
+							});
+						}
+						//未知原因 返回值中question为 null
+					}}
+				>
+					<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+						<TouchFeedback
+							style={styles.header}
+							onPress={() =>
+								navigation.navigate('User', { user: Tools.syncGetter('comment.user', notification) })
+							}
+						>
+							<Avatar source={{ uri: Tools.syncGetter('comment.user.avatar', notification) }} size={34} />
+							<View style={styles.user}>
+								<View style={styles.userTop}>
+									<Text
+										style={{
+											color: Theme.black
+										}}
+									>
+										{Tools.syncGetter('comment.user.name', notification)}
+									</Text>
+									<UserTitle user={Tools.syncGetter('comment.user', notification)} />
+									<GenderLabel user={Tools.syncGetter('comment.user', notification)} />
+								</View>
+
+								<Text style={styles.commenTime}>
+									{Tools.syncGetter('comment.time_ago', notification)} {this.content.tips}
+								</Text>
+							</View>
+						</TouchFeedback>
+						<TouchFeedback
+							style={styles.replay}
+							onPress={() => {
+								replyComment(notification.comment);
+								showCommentModal();
+							}}
+						>
+							<Text style={{ fontSize: 12, color: Theme.grey }}>回复</Text>
+						</TouchFeedback>
 					</View>
-				</View>
-				<View style={styles.center}>
-					<Text style={styles.content}>{notification.comment.content}</Text>
-				</View>
-				<View style={styles.bottom}>
-					<Text>
-						{notification.type == 'FEEDBACK_COMMENT'
-							? notification.comment.feedback.title
-							: notification.comment.parent_comment.content}
-					</Text>
-				</View>
-			</TouchableOpacity>
-		);
+					<View style={styles.center}>
+						<Text style={styles.content}>{Tools.syncGetter('comment.content', notification)}</Text>
+					</View>
+					<View style={styles.bottom}>
+						<Text>{this.content.body}</Text>
+					</View>
+				</TouchFeedback>
+			);
+		} else {
+			return null;
+		}
 	}
 }
 
@@ -99,6 +151,13 @@ const styles = StyleSheet.create({
 		padding: PxFit(6),
 		marginTop: PxFit(10),
 		marginLeft: PxFit(44)
+	},
+	replay: {
+		marginRight: 10,
+		backgroundColor: '#F0F0F0',
+		paddingVertical: 8,
+		paddingHorizontal: 13,
+		borderRadius: 5
 	}
 });
 

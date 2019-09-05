@@ -4,19 +4,33 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated } from 'react-native';
 
-import { Button } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { Button, Row, Iconfont, TouchFeedback } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 
-import { ReceiveTaskMutation, TaskRewardMutation, TasksQuery } from '../../../assets/graphql/task.graphql';
-import { UserQuery } from '../../../assets/graphql/user.graphql';
-import { Mutation, compose, graphql } from 'react-apollo';
+import { Mutation, compose, graphql, GQL } from 'apollo';
+import { app } from 'store';
 
 class TaskItem extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.taskDetail = null;
+		this.state = {
+			heart: require('../../../assets/images/heart.png'),
+			diamond: require('../../../assets/images/diamond.png'),
+			rotateValue: new Animated.Value(0),
+			fadeValue: new Animated.Value(0),
+			showTaskDetail: false
+		};
+	}
+
+	componentDidMount() {
+		// this.state.rotateValue.setValue(0);
+		// Animated.timing(this.state.rotateValue, {
+		// 	toValue: 180,
+		// 	duration: 800
+		// }).start(); // 开始spring动画
 	}
 
 	//领取奖励
@@ -31,11 +45,11 @@ class TaskItem extends Component {
 				},
 				refetchQueries: () => [
 					{
-						query: TasksQuery
+						query: GQL.TasksQuery
 					},
 					{
-						query: UserQuery,
-						variables: { id: user.id }
+						query: GQL.UserQuery,
+						variables: { id: app.me.id }
 					}
 				]
 			});
@@ -68,11 +82,11 @@ class TaskItem extends Component {
 				},
 				refetchQueries: () => [
 					{
-						query: TasksQuery
+						query: GQL.TasksQuery
 					},
 					{
-						query: UserQuery,
-						variables: { id: user.id }
+						query: GQL.UserQuery,
+						variables: { id: app.me.id }
 					}
 				]
 			});
@@ -88,7 +102,7 @@ class TaskItem extends Component {
 			if (result.data.receiveTask == 1) {
 				Toast.show({ content: '领取成功' });
 				if (type == 2) {
-					navigation.navigate('任务详情', { task_id: task.id });
+					navigation.navigate('任务详情', { task: task });
 				}
 			} else {
 				Toast.show({ content: '已经领取该任务了哦~' });
@@ -98,18 +112,19 @@ class TaskItem extends Component {
 
 	_showTask = () => {
 		let { navigation, reword, handler, user, task, handleHeight } = this.props;
-		switch (task.taskStatus) {
+		let taskAction = task.taskAction ? task.taskAction : task.taskStatus; //兼容系统任务里的taskStatus
+
+		switch (taskAction) {
 			case -1:
 				return (
 					<Button
 						title={'任务失败'}
-						outline
 						style={styles.redButton}
 						textColor={Theme.secondaryColor}
 						fontSize={13}
 						onPress={() => {
 							navigation.navigate('失败详情', {
-								task_id: task.id
+								task: task
 							});
 						}}
 					/>
@@ -119,9 +134,8 @@ class TaskItem extends Component {
 				return (
 					<Button
 						title={'领取'}
-						outline
 						style={styles.themeButton}
-						textColor={Theme.primaryColor}
+						textColor={Theme.white}
 						onPress={this.receiveTask}
 					/>
 				);
@@ -129,39 +143,76 @@ class TaskItem extends Component {
 			case 0:
 				return (
 					<Button
-						title={'做任务'}
-						outline
+						title={task.submit_name}
 						style={styles.themeButton}
-						textColor={Theme.primaryColor}
+						textColor={Theme.white}
 						onPress={handler}
 					/>
 				);
 				break;
 			case 1:
 				return (
-					<Button name={'审核中'} outline style={styles.themeButton} textColor={Colors.theme} fontSize={13} />
+					<Button
+						title={'审核中'}
+						style={styles.themeButton}
+						textColor={Theme.white}
+						fontSize={13}
+						onPress={() => {
+							Toast.show({
+								content: '正在努力审核中。。'
+							});
+						}}
+					/>
 				);
+				break;
 			case 2:
 				return (
 					<Button
 						title={'领取奖励'}
-						outline
 						style={styles.themeButton}
-						textColor={Theme.primaryColor}
+						textColor={Theme.white}
 						onPress={this.taskReward}
 					/>
 				);
 				break;
 			case 3:
-				return <Button title={'已完成'} outline disabled style={styles.greyButton} textColor={Theme.grey} />;
+				return <Button title={'已完成'} disabled style={styles.greyButton} textColor={Theme.grey} />;
 				break;
 			case 4:
+				return <Button title={'去出题'} style={styles.themeButton} textColor={Theme.white} onPress={handler} />;
+				break;
+			case 5:
+				return <Button title={'看视频'} style={styles.themeButton} textColor={Theme.white} onPress={handler} />;
+				break;
+			case 6:
 				return (
 					<Button
-						title={'去出题'}
+						title={'去阅读'}
 						outline
 						style={styles.themeButton}
-						textColor={Theme.primaryColor}
+						textColor={Theme.white}
+						onPress={handler}
+					/>
+				);
+				break;
+			case 7:
+				return (
+					<Button
+						title={'去分享'}
+						outline
+						style={styles.themeButton}
+						textColor={Theme.white}
+						onPress={handler}
+					/>
+				);
+				break;
+			case 8:
+				return (
+					<Button
+						title={'去好评'}
+						outline
+						style={styles.themeButton}
+						textColor={Theme.white}
 						onPress={handler}
 					/>
 				);
@@ -169,56 +220,297 @@ class TaskItem extends Component {
 		}
 	};
 
-	render() {
-		let { navigation, reword, handler, user, task, handleHeight } = this.props;
-		let { RewarVisible } = this.state;
-		return (
-			<TouchableOpacity
-				activeOpacity={0.6}
-				disabled={task.type == 2 ? false : true}
-				style={styles.container}
-				onPress={() => {
-					navigation.navigate('任务详情', { task_id: task.id });
-				}}
-				onLayout={event => {
-					handleHeight(event.nativeEvent.layout.height);
-				}}
-			>
-				<View>
-					<Text style={styles.name}>{task.name}</Text>
-					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-						{task.gold ? (
-							<Text style={styles.reword}>
-								奖励
-								<Text style={{ color: Theme.primaryColor }}>{`+${task.gold}智慧点 `}</Text>
-							</Text>
-						) : null}
-						{task.ticket > 0 && task.taskStatus == 4 ? (
-							<Text style={styles.reword}>
-								消耗
-								<Text style={{ color: Theme.primaryColor }}>{`-${task.ticket}精力点`}</Text>
-							</Text>
-						) : null}
-						{task.ticket > 0 && task.taskStatus !== 4 ? (
-							<Text style={styles.reword}>
-								奖励
-								<Text style={{ color: Theme.primaryColor }}>{`+${task.ticket}精力点`}</Text>
-							</Text>
-						) : null}
+	_showReward = task => {
+		if (task.type == 4) {
+			if (ISIOS) {
+				return (
+					<View style={styles.reword}>
+						<Image source={this.state.heart} style={{ width: PxFit(18), height: PxFit(18) }} />
+						<Text style={styles.rewordText}>+{task.ticket}</Text>
+					</View>
+				);
+			}
+			return (
+				<View style={styles.reword}>
+					{task.ticket > 0 && (
+						<View style={styles.reword}>
+							<Image source={this.state.heart} style={{ width: PxFit(18), height: PxFit(18) }} />
+							<Text style={styles.rewordText}>+{task.ticket}</Text>
+						</View>
+					)}
+
+					{task.gold > 0 && (
+						<View style={styles.reword}>
+							<Image source={this.state.diamond} style={{ width: PxFit(18), height: PxFit(18) }} />
+							<Text style={styles.rewordText}>{task.gold > 0 ? '+' + task.gold : ''}</Text>
+						</View>
+					)}
+
+					{task.contribute > 0 && (
+						<View style={styles.reword}>
+							<Image
+								source={require('../../../assets/images/gongxian.png')}
+								style={{ width: PxFit(14), height: PxFit(14) }}
+							/>
+							<Text style={styles.rewordText}>{task.contribute > 0 ? '+' + task.contribute : ''}</Text>
+						</View>
+					)}
+				</View>
+			);
+		}
+		if (task.type == 3) {
+			return (
+				<View style={styles.reword}>
+					<View style={styles.reword}>
+						<Image source={this.state.diamond} style={{ width: PxFit(18), height: PxFit(18) }} />
+						<Text style={styles.rewordText}>
+							{task.gold > 0 ? `+${task.gold}~20` : ''}
+							{task.contribute > 0 ? `+${task.contribute}` : ''}
+						</Text>
 					</View>
 				</View>
-				{this._showTask()}
-			</TouchableOpacity>
+			);
+		}
+
+		if (task.type == 6) {
+			return (
+				<View style={styles.reword}>
+					<View style={styles.reword}>
+						{task.ticket > 0 && (
+							<View style={styles.reword}>
+								<Image source={this.state.heart} style={{ width: PxFit(18), height: PxFit(18) }} />
+								<Text style={styles.rewordText}>+{task.ticket}</Text>
+							</View>
+						)}
+
+						{task.gold > 0 && (
+							<View style={styles.reword}>
+								<Image source={this.state.diamond} style={{ width: PxFit(18), height: PxFit(18) }} />
+								<Text style={styles.rewordText}>{task.gold > 0 ? '+' + task.gold : ''}</Text>
+							</View>
+						)}
+
+						{task.contribute > 0 && (
+							<View style={styles.reword}>
+								<Image
+									source={require('../../../assets/images/gongxian.png')}
+									style={{ width: PxFit(14), height: PxFit(14) }}
+								/>
+								<Text style={styles.rewordText}>
+									{task.contribute > 0 ? '+' + task.contribute : ''}
+								</Text>
+							</View>
+						)}
+						{task.invitationLines > 0 && (
+							<View style={styles.reword}>
+								<Image
+									source={require('../../../assets/images/reward.png')}
+									style={{ width: PxFit(16), height: PxFit(16) }}
+								/>
+								<Text style={styles.rewordText}>
+									{task.invitationLines > 0 ? '+' + task.invitationLines : ''}
+								</Text>
+							</View>
+						)}
+					</View>
+				</View>
+			);
+		}
+		return (
+			<Row>
+				{this.showNormalReward(task)}
+				{this._showRewardTicket(task)}
+				{this._showContribute(task)}
+			</Row>
+		);
+	};
+
+	showNormalReward = task => {
+		if (task.gold > 0) {
+			return (
+				<View style={styles.reword}>
+					<Image source={this.state.diamond} style={{ width: PxFit(18), height: PxFit(18) }} />
+					<Text style={styles.rewordText}>{`+${task.gold}`}</Text>
+				</View>
+			);
+		}
+	};
+
+	_showRewardTicket = task => {
+		if (task.ticket < 0) {
+			return (
+				<View style={styles.reword}>
+					<Image source={this.state.heart} style={{ width: PxFit(18), height: PxFit(18) }} />
+					<Text style={styles.rewordText}>{`${task.ticket}`}</Text>
+				</View>
+			);
+		}
+		if (task.ticket > 0) {
+			return (
+				<View style={styles.reword}>
+					<Image source={this.state.heart} style={{ width: PxFit(18), height: PxFit(18) }} />
+					<Text style={styles.rewordText}>{`+${task.ticket}`}</Text>
+				</View>
+			);
+		}
+	};
+
+	_showContribute = task => {
+		if (task.contribute > 0) {
+			return (
+				<View style={styles.reword}>
+					<Image
+						source={require('../../../assets/images/gongxian.png')}
+						style={{ width: PxFit(14), height: PxFit(14) }}
+					/>
+					<Text style={styles.rewordText}>{`+${task.contribute}`}</Text>
+				</View>
+			);
+		}
+	};
+
+	_showTaskDetail = task => {
+		if (this.state.showTaskDetail) {
+			return (
+				<Animated.View style={[styles.taskDetail, { opacity: this.state.fadeValue }]}>
+					{this._showTaskContent(task)}
+				</Animated.View>
+			);
+		}
+
+		//任务详情由后端返回较好
+	};
+
+	_showTaskContent = task => {
+		if (task.type == 6) {
+			return (
+				<Text style={styles.taskDetailText}>{`每成功分享一个用户注册登录，既可获取智慧点和提现额度奖励`}</Text>
+			);
+		}
+		if (task.type == 4) {
+			return (
+				<Text style={styles.taskDetailText}>
+					看完视频才可获取精力点奖励,
+					{(task.contribute > 0 || task.gold) && (
+						<Text>点击下载、查看详情才能够获取智慧点或贡献点奖励。</Text>
+					)}
+				</Text>
+			);
+		}
+		if (task.type == 3) {
+			return (
+				<Text style={styles.taskDetailText}>{`每出一题要${task.ticket}精力点和${
+					task.cost
+				}智慧点,出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，没有解析将只能获得${
+					task.gold
+				}智慧点的奖励。恶意刷题和乱出解析将会受到惩罚哦！`}</Text>
+			);
+		}
+		if (task.type == 1) {
+			return <Text style={styles.taskDetailText}>{`${task.name}即可领取奖励`}</Text>;
+		}
+		if (task.type == 0) {
+			return <Text style={styles.taskDetailText}>{`${task.name}保存个人资料,即可领取奖励`}</Text>;
+		}
+		if (task.type == 2) {
+			return <Text style={styles.taskDetailText}>{task.details}</Text>;
+		}
+	};
+
+	showTaskDetail = () => {
+		let { showTaskDetail } = this.state;
+
+		if (showTaskDetail) {
+			this.state.rotateValue.setValue(180);
+			Animated.timing(this.state.rotateValue, {
+				toValue: 0,
+				duration: 400,
+				useNativeDriver: true
+			}).start();
+
+			this.setState({
+				showTaskDetail: false
+			});
+		} else {
+			this.state.rotateValue.setValue(0);
+			this.state.fadeValue.setValue(0);
+			Animated.timing(this.state.rotateValue, {
+				toValue: 180,
+				duration: 400,
+				useNativeDriver: true
+			}).start(); // 开始spring动画
+			Animated.timing(this.state.fadeValue, {
+				toValue: 1,
+				duration: 400
+			}).start();
+			this.setState({
+				showTaskDetail: true
+			});
+		}
+	};
+
+	render() {
+		let { navigation, reword, handler, user, task, handleHeight, goTask, min_level } = this.props;
+		let { RewarVisible, showTaskDetail } = this.state;
+		return (
+			<View>
+				<TouchFeedback
+					// activeOpacity={0.6}
+					// disabled={task.type == 2 ? false : true}
+					style={styles.container}
+					onPress={() => {
+						if (task.type == 3) {
+							if (user.level.level < min_level) {
+								Toast.show({
+									content: `${min_level}级之后才可以出题哦`
+								});
+							} else {
+								navigation.navigate('Contribute', { category: {} });
+							}
+						}
+						if (task.type == 4) {
+							goTask && goTask();
+						}
+					}}
+				>
+					<Row>
+						<Text style={styles.name}>{task.name}</Text>
+						<Row>{this._showReward(task)}</Row>
+					</Row>
+
+					<Row>
+						{this._showTask()}
+						<TouchFeedback onPress={this.showTaskDetail} style={styles.taskRight}>
+							<Animated.Image
+								style={{
+									width: 20,
+									height: 20,
+									transform: [
+										{
+											rotate: this.state.rotateValue.interpolate({
+												inputRange: [0, 180],
+												outputRange: ['0deg', '180deg']
+											})
+										}
+									]
+								}}
+								source={require('../../../assets/images/down.png')}
+							/>
+						</TouchFeedback>
+					</Row>
+				</TouchFeedback>
+				{this._showTaskDetail(task)}
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: PxFit(15),
+		marginLeft: PxFit(15),
 		paddingVertical: PxFit(12),
-		borderTopWidth: PxFit(1),
-		borderTopColor: Theme.lightBorder,
+		// borderTopWidth: PxFit(1),
+		// borderTopColor: Theme.lightBorder,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
@@ -227,24 +519,32 @@ const styles = StyleSheet.create({
 		color: '#3c3c3c',
 		fontSize: PxFit(15)
 	},
+	taskRight: {
+		paddingVertical: PxFit(5),
+		paddingLeft: 5,
+		paddingRight: 15
+	},
 	reword: {
-		color: Theme.grey,
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginLeft: PxFit(3)
+	},
+	rewordText: {
+		color: Theme.primaryColor,
 		fontSize: PxFit(13),
 		fontWeight: '200'
 	},
 	greyButton: {
+		backgroundColor: Theme.borderColor,
 		borderRadius: PxFit(45),
 		height: PxFit(32),
-		width: PxFit(84),
-		borderWidth: PxFit(1),
-		borderColor: Theme.grey
+		width: PxFit(84)
 	},
 	themeButton: {
+		backgroundColor: Theme.primaryColor,
 		borderRadius: PxFit(45),
 		height: PxFit(32),
-		width: PxFit(84),
-		borderWidth: PxFit(1),
-		borderColor: Theme.primaryColor
+		width: PxFit(84)
 	},
 	redButton: {
 		borderRadius: PxFit(45),
@@ -252,10 +552,24 @@ const styles = StyleSheet.create({
 		width: PxFit(84),
 		borderWidth: PxFit(1),
 		borderColor: Theme.secondaryColor
+	},
+	taskDetail: {
+		marginHorizontal: PxFit(15),
+		paddingVertical: PxFit(10),
+		paddingHorizontal: PxFit(10),
+		marginBottom: PxFit(10),
+		borderRadius: PxFit(10),
+		backgroundColor: Theme.borderColor
+	},
+	taskDetailText: {
+		fontSize: PxFit(12),
+		color: Theme.primaryFont,
+		letterSpacing: 1,
+		lineHeight: 18
 	}
 });
 
 export default compose(
-	graphql(TaskRewardMutation, { name: 'TaskRewardMutation' }),
-	graphql(ReceiveTaskMutation, { name: 'ReceiveTaskMutation' })
+	graphql(GQL.TaskRewardMutation, { name: 'TaskRewardMutation' }),
+	graphql(GQL.ReceiveTaskMutation, { name: 'ReceiveTaskMutation' })
 )(TaskItem);

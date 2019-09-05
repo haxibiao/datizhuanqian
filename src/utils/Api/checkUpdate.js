@@ -3,14 +3,19 @@
  * @Date:   2019-03-21 16:21:28
  */
 
+import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { Storage, ItemKeys } from '../../store/localStorage';
-import { UpdateOverlay } from '../../components';
+import { storage, keys } from '../../store/storage';
+import UpdateOverlay from '../../components/Overlay/UpdateOverlay';
 import Config from '../Config';
 
 //获取线上apk版本信息
-export default function(dispatch?: Function) {
-	fetch('https://datizhuanqian.com' + '/api/app-version' + '?t=' + Date.now(), {
+export default function(type: String) {
+	//如果是ios, 跳过
+	if (Platform.OS == 'ios') {
+		return;
+	}
+	fetch(Config.ServerRoot + '/api/app-version' + '?package=' + Config.PackageName, {
 		method: 'POST',
 		headers: {
 			version: DeviceInfo.getVersion(),
@@ -19,19 +24,19 @@ export default function(dispatch?: Function) {
 	})
 		.then(response => response.json())
 		.then(data => {
-			handleUpdate(data[0], dispatch);
+			if (type == 'autoCheck') {
+				autoUpdate(data[0]);
+			} else {
+				manualUpdate(data[0]);
+			}
 		})
 		.catch(err => {
 			console.log(err);
 		});
 }
 
-handleUpdate = async (versionData, dispatch) => {
-	let viewedVersion = 1;
-	if (await Storage.getItem(ItemKeys.viewedVersion)) {
-		viewedVersion = await Storage.getItem(ItemKeys.viewedVersion);
-	}
-	console.log('viewedVersion', await Storage.getItem(ItemKeys.viewedVersion));
+autoUpdate = async versionData => {
+	viewedVersion = (await storage.getItem(keys.viewedVersion)) || 1;
 	//viewedVersion 观测当前版本用户是否已查看过更新日志
 
 	let localVersion = Config.AppVersionNumber; //本地版本
@@ -41,7 +46,7 @@ handleUpdate = async (versionData, dispatch) => {
 		UpdateOverlay.show(versionData, serverVersion);
 		// 强制更新
 	} else if (selectUpdate(localVersion, serverVersion, versionData, viewedVersion)) {
-		UpdateOverlay.show(versionData, serverVersion, dispatch);
+		UpdateOverlay.show(versionData, serverVersion);
 		// 选择更新
 	} else {
 		return false;
@@ -58,6 +63,17 @@ function forceUpdate(localVersion, serverVersion, versionData) {
 function selectUpdate(localVersion, serverVersion, versionData, viewedVersion) {
 	return localVersion < serverVersion && !versionData.is_force && viewedVersion < serverVersion;
 }
+
+manualUpdate = versionData => {
+	let localVersion = Config.AppVersionNumber; //本地版本
+	let serverVersion = numberVersion(versionData.version); //线上版本
+
+	if (localVersion < serverVersion) {
+		UpdateOverlay.show(versionData, serverVersion);
+	} else {
+		Toast.show({ content: '已经是最新版本了' });
+	}
+};
 
 //版本号转数值
 function numberVersion(version) {

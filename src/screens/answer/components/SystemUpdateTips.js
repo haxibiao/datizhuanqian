@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { PxFit } from '../../../utils';
+import { PxFit, SCREEN_WIDTH } from '../../../utils';
 
 class SystemUpdateTips extends Component {
 	constructor(props) {
@@ -13,25 +13,22 @@ class SystemUpdateTips extends Component {
 		this.state = {};
 	}
 	render() {
-		let info = error.toString().indexOf('维护');
-		if (info > -1) {
-			//维护处理
-			return (
-				<View
-					style={{
-						flex: 1,
-						justifyContent: 'center',
-						alignItems: 'center',
-						width: SCREEN_WIDTH - PxFit(30)
-					}}
-				>
-					<Text style={{ textAlign: 'center' }}>
-						{error.toString().replace(/Error: GraphQL error: /, '')}
-					</Text>
-				</View>
-			);
-		}
-		return null;
+		const { error } = this.props;
+		//维护处理
+		return (
+			<View
+				style={{
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center',
+					paddingHorizontal: 15
+				}}
+			>
+				<Text style={{ textAlign: 'center', fontSize: 18, lineHeight: 20 }}>
+					{error.toString().replace(/Error: GraphQL error: /, '')}
+				</Text>
+			</View>
+		);
 	}
 }
 

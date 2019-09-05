@@ -43,6 +43,7 @@
   "man": 58907,
   "fans": 58971,
   "paused": 58965,
+  "play": 58980,
   "plane-fill": 59099,
   "sort": 59041,
   "RMB": 58987,
@@ -66,5 +67,18 @@
   "praise-fill": 59497,
   "success": 59184,
   "success-fill": 59181,
-  "billing": 58910
+  "fullScreen": 58976,
+  "defullScreen": 59226,
+  "audit": 58916,
+  "billing": 58910,
+  "report": 58883,
+  "trash": 59192,
+  "trash-fill": 59193,
+  "radio": 60613,
+  "radio-fill": 60612,
+  "search": 59201,
+  "share": 59051,
+  "share-fill": 58975,
+  "password": 58892,
+  "phone": 58960
 }

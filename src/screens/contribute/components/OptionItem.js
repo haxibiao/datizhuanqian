@@ -8,40 +8,28 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Iconfont } from '../../../components';
 import { Theme, PxFit } from '../../../utils';
+import { observer, Provider, inject } from 'mobx-react';
 
+const ANSWER = ['A', 'B', 'C', 'D'];
+
+@observer
 class OptionItem extends Component {
 	render() {
-		const { style, option, isAnswer, reduceAnswer, remove } = this.props;
-		if (!reduceAnswer || !remove) {
-			return (
-				<View style={[styles.optionItem, style]}>
-					<View style={[styles.optionLabel, isAnswer && styles.rightOption]}>
-						{isAnswer ? (
-							<Iconfont name="correct" size={PxFit(16)} color={'#fff'} />
-						) : (
-							<Text style={styles.optionLabelText}>{option.Value}</Text>
-						)}
-					</View>
-					<View style={styles.optionContent}>
-						<Text style={[styles.optionContentText, isAnswer && styles.correctText]}>{option.Text}</Text>
-					</View>
-				</View>
-			);
-		}
+		const { option, reduceAnswer, remove, label } = this.props;
 		return (
-			<TouchableOpacity style={[styles.optionItem, style]} onPress={() => reduceAnswer(option)}>
-				<View style={[styles.optionLabel, isAnswer && styles.rightOption]}>
-					{isAnswer ? (
+			<TouchableOpacity style={styles.optionItem} onPress={() => reduceAnswer(option[0])}>
+				<View style={[styles.optionLabel, option[1] && styles.rightOption]}>
+					{option[1] ? (
 						<Iconfont name="correct" size={PxFit(16)} color={'#fff'} />
 					) : (
-						<Text style={styles.optionLabelText}>{option.Value}</Text>
+						<Text style={styles.optionLabelText}>{ANSWER[label]}</Text>
 					)}
 				</View>
-				<View style={styles.optionContent}>
-					<Text style={[styles.optionContentText, isAnswer && styles.correctText]}>{option.Text}</Text>
+				<View style={[styles.optionContent, { marginHorizontal: PxFit(10) }]}>
+					<Text style={styles.optionContentText}>{option[0]}</Text>
 				</View>
-				<TouchableOpacity style={styles.closeItem} onPress={() => remove(option)}>
-					<Iconfont name="close" size={PxFit(20)} color={'#696482'} />
+				<TouchableOpacity style={styles.closeItem} onPress={() => remove(option[0])}>
+					<Iconfont name="trash" size={PxFit(24)} color={Theme.subTextColor} />
 				</TouchableOpacity>
 			</TouchableOpacity>
 		);
@@ -50,22 +38,22 @@ class OptionItem extends Component {
 
 const styles = StyleSheet.create({
 	optionItem: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		marginTop: PxFit(Theme.itemSpace),
+		marginBottom: PxFit(5)
 	},
 	optionLabel: {
-		marginRight: PxFit(15),
 		width: PxFit(34),
 		height: PxFit(34),
+		backgroundColor: Theme.primaryColor,
 		borderRadius: PxFit(17),
-		borderWidth: PxFit(1),
-		borderColor: Theme.borderColor,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	rightOption: { backgroundColor: Theme.correctColor, borderWidth: 0 },
+	rightOption: { backgroundColor: Theme.correctColor },
 	optionLabelText: {
 		fontSize: PxFit(17),
-		color: Theme.defaultTextColor
+		color: '#fff'
 	},
 	optionContent: {
 		flex: 1,
@@ -81,10 +69,8 @@ const styles = StyleSheet.create({
 		color: Theme.correctColor
 	},
 	closeItem: {
-		width: PxFit(34),
+		width: PxFit(30),
 		height: PxFit(34),
-		borderRadius: PxFit(17),
-		backgroundColor: Theme.groundColour,
 		justifyContent: 'center',
 		alignItems: 'center'
 	}

@@ -19,13 +19,13 @@ type Props = {
 	onPress: Function
 };
 class ErrorView extends React.Component<Props> {
-	state = {
-		loading: false
+	static defaultProps = {
+		title: '好像出了点问题，点击图片重试',
+		imageSource: require('../../assets/images/default_error.png')
 	};
 
-	static defaultProps = {
-		title: '哎呀，好像出了点问题',
-		imageSource: require('../../assets/images/default_error.png')
+	state = {
+		loading: false
 	};
 
 	onPress = async () => {
@@ -35,11 +35,12 @@ class ErrorView extends React.Component<Props> {
 			return;
 		} else if (onPress) {
 			this.setState({ loading: true });
+			this.timer && clearInterval(this.timer);
 			this.timer = setTimeout(() => {
 				this.setState({
 					loading: false
 				});
-			}, 2500);
+			}, 2000);
 			onPress();
 		}
 	};
@@ -48,10 +49,24 @@ class ErrorView extends React.Component<Props> {
 		this.timer && clearInterval(this.timer);
 	}
 
+	buildProps = () => {
+		let { offline, error, title, imageSource, ...props } = this.props;
+		console.log('test error', error);
+		switch (true) {
+			case offline:
+				this.onPress = () => null;
+				imageSource = require('../../assets/images/default_network.png');
+				title = '网络走丢了，请检查网络设置';
+				break;
+			// case error:
+			// 	title = error.message || title;
+			// 	break;
+		}
+		return { title, imageSource, ...props };
+	};
+
 	render() {
-		let { offline, title, imageSource, style, titleStyle } = this.props;
-		imageSource = offline ? require('../../assets/images/default_network.png') : imageSource;
-		title = offline ? '网络走丢了' : title;
+		let { title, imageSource, style, titleStyle } = this.buildProps();
 		return (
 			<View style={[styles.container, style]}>
 				<TouchableWithoutFeedback onPress={this.onPress}>
@@ -59,7 +74,6 @@ class ErrorView extends React.Component<Props> {
 				</TouchableWithoutFeedback>
 				<View style={styles.textWrap}>
 					<Text style={[styles.text, titleStyle]}>{title}</Text>
-					<Text style={styles.text}>点击图片重试</Text>
 				</View>
 				<SubmitLoading isVisible={this.state.loading} />
 			</View>

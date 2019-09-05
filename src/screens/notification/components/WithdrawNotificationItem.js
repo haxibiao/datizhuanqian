@@ -5,8 +5,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Iconfont } from '../../../components';
-import { Theme, PxFit } from '../../../utils';
+import { Iconfont } from 'components';
+import { Theme, PxFit, Tools } from 'utils';
 
 class WithdrawNotificationItem extends Component {
 	constructor(props) {
@@ -15,11 +15,12 @@ class WithdrawNotificationItem extends Component {
 	}
 	render() {
 		const { navigation, notification } = this.props;
+		let withdraw = Tools.syncGetter('withdraw', notification);
 		return (
 			<TouchableOpacity
 				style={styles.item}
 				onPress={() => {
-					navigation.navigate('提现日志');
+					navigation.navigate('BillingRecord');
 				}}
 			>
 				<View style={styles.titleInfo}>
@@ -27,26 +28,30 @@ class WithdrawNotificationItem extends Component {
 					<Text style={styles.title}>提现通知</Text>
 				</View>
 				<View style={styles.bottomInfo}>
-					<Text style={styles.text}>￥{notification.withdraw.amount}.00</Text>
+					<Text style={styles.text}>￥{Tools.syncGetter('amount', withdraw)}.00</Text>
 					{notification.type == 'WITHDRAW_SUCCESS' ? (
 						<View>
 							<Text style={{ color: Theme.weixin, paddingVertical: 3 }}>提现成功</Text>
-							<Text style={styles.infoItem}>提现方式：支付宝({notification.withdraw.to_account})</Text>
-							<Text style={styles.infoItem}>到账时间：{notification.withdraw.updated_at}</Text>
+							<Text style={styles.infoItem}>
+								提现方式：支付宝({Tools.syncGetter('to_account', withdraw)})
+							</Text>
+							<Text style={styles.infoItem}>到账时间：{Tools.syncGetter('updated_at', withdraw)}</Text>
 						</View>
 					) : (
 						<View>
 							<Text style={{ color: Theme.secondaryColor, paddingVertical: 3 }}>提现失败</Text>
-							<Text style={styles.infoItem}>提现单号：{notification.withdraw.biz_no}</Text>
-							<Text style={styles.infoItem}>回执信息：{notification.withdraw.remark}</Text>
+							<Text style={styles.infoItem}>提现单号：{Tools.syncGetter('biz_no', withdraw)}</Text>
+							<Text style={[styles.infoItem, { lineHeight: PxFit(20) }]}>
+								回执信息：{Tools.syncGetter('remark', withdraw)}
+							</Text>
 						</View>
 					)}
 				</View>
 				<TouchableOpacity
 					style={styles.footer}
 					onPress={() => {
-						navigation.navigate('提现详情', {
-							withdraw_id: notification.withdraw.id
+						navigation.navigate('withdrawLogDetails', {
+							withdraw_id: Tools.syncGetter('id', withdraw)
 						});
 					}}
 				>

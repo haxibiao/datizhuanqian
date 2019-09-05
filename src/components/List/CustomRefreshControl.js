@@ -6,11 +6,13 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, RefreshControl } from 'react-native';
+import { observer, config, app } from 'store';
 
 import { Theme } from '../../utils';
 
 type Props = {
 	onRefresh: Function,
+	reset: Function,
 	title?: string,
 	size?: ?string,
 	tintColor?: ?string,
@@ -18,6 +20,7 @@ type Props = {
 	progressBackgroundColor?: ?string
 };
 
+@observer
 class CustomRefreshControl extends Component<Props> {
 	static defaultProps = {
 		title: '',
@@ -36,10 +39,22 @@ class CustomRefreshControl extends Component<Props> {
 	}
 
 	onRefresh = () => {
-		if (!this.props.onRefresh) return;
+		let { onRefresh, reset } = this.props;
+		const { deviceOffline } = config;
+		if (deviceOffline) {
+			Toast.show({ content: '网络错误,请检查网络连接' });
+			return;
+		}
+		if (!onRefresh) return;
 		this.setState({ isRefreshing: true }, async () => {
-			await this.props.onRefresh();
-			this.setState({ isRefreshing: false });
+			try {
+				await onRefresh();
+			} catch (e) {
+				console.error('onRefresh error', e);
+			} finally {
+				this.setState({ isRefreshing: false });
+				reset && reset();
+			}
 		});
 	};
 

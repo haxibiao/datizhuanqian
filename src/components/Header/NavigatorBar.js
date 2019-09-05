@@ -82,8 +82,8 @@ class NavigatorBar extends Component {
 		titleViewStyle = {
 			position: 'absolute',
 			top: PxFit(Theme.statusBarHeight),
-			left: 0,
-			right: 0,
+			left: PxFit(Theme.itemSpace),
+			right: PxFit(Theme.itemSpace),
 			bottom: 0,
 			opacity: this.state.barOpacity,
 			flexDirection: 'row',

@@ -5,16 +5,20 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Iconfont } from '../../../components';
-import { Theme } from '../../../utils';
+import { Iconfont } from 'components';
+import { Theme, Config, Tools } from 'utils';
 
 class ContributeNotificationItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
+
 	render() {
 		const { navigation, notification } = this.props;
+
+		let data = JSON.parse(notification.data);
+
 		return (
 			<View style={styles.item}>
 				<View style={styles.titleInfo}>
@@ -23,11 +27,13 @@ class ContributeNotificationItem extends Component {
 				</View>
 				<View style={styles.bottomInfo}>
 					<Text style={styles.text}>已被采纳</Text>
-					<Text style={styles.infoItem}>奖励：10智慧点 </Text>
-					<Text style={styles.infoItem}>专题：{notification.question.category.name} </Text>
-					<Text style={styles.infoItem}>时间：{notification.question.created_at}</Text>
-					<Text style={[styles.infoItem, { lineHeight: 22 }]}>
-						题目名：{notification.question.description}
+					<Text style={styles.infoItem}>奖励：{data.gold}智慧点 </Text>
+					<Text style={styles.infoItem}>
+						专题：{Tools.syncGetter('question.category.name', notification)}{' '}
+					</Text>
+					<Text style={styles.infoItem}>时间：{Tools.syncGetter('question.created_at', notification)}</Text>
+					<Text style={[styles.infoItem, { lineHeight: 20 }]}>
+						题目名：{Tools.syncGetter('question.description', notification)}
 					</Text>
 				</View>
 			</View>

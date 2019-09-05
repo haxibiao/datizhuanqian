@@ -6,11 +6,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 
-import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
-import { ScrollTabBar, PageContainer } from '../../components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { ScrollTabBar, PageContainer } from 'components';
 
-import WithdrawLog from './components/WithdrawLog';
-import TopUpLog from './components/TopUpLog';
+import WithdrawLog from '../withdraw/components/WithdrawLog';
+import ContributeLog from './components/ContributeLog';
 import IncomeAndExpenditure from './components/IncomeAndExpenditure';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -30,8 +30,8 @@ class BillingRecord extends Component {
 						renderTabBar={props => <ScrollTabBar {...props} tabUnderlineWidth={PxFit(30)} />}
 					>
 						<WithdrawLog navigation={navigation} tabLabel="提现" />
-						<TopUpLog navigation={navigation} tabLabel="充值" />
 						<IncomeAndExpenditure navigation={navigation} tabLabel="明细" />
+						<ContributeLog navigation={navigation} tabLabel="贡献" />
 					</ScrollableTabView>
 				</View>
 			</PageContainer>

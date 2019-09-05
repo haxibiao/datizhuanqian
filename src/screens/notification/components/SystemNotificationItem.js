@@ -7,8 +7,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Iconfont } from '../../../components';
-import { Theme, PxFit } from '../../../utils';
+import { Iconfont } from 'components';
+import { Theme, PxFit, Tools } from 'utils';
 
 import WithdrawNotificationItem from './WithdrawNotificationItem';
 import ContributeNotificationItem from './ContributeNotificationItem';
@@ -58,20 +58,45 @@ class NotificationItem extends Component {
 					</View>
 					//精力点恢复
 				)}
-				{notification.type == 3 && (
+
+				{notification.type == 'REPORT_SUCCEED' && (
 					<View style={styles.item}>
 						<View style={styles.titleInfo}>
-							<Iconfont name={'rank-up'} size={20} color={Theme.red} />
+							<Iconfont name={'report'} size={20} color={Theme.themeRed} />
+							<Text style={styles.title}>举报结果</Text>
+						</View>
+						<View style={styles.bottomInfo}>
+							<Text style={styles.text}>您的举报已生效</Text>
+							<Text style={styles.infoItem}>奖励：2贡献值</Text>
+							<Text style={styles.infoItem}>内容：{Tools.syncGetter('report.reason', notification)}</Text>
+							<Text style={styles.infoItem}>
+								时间：{Tools.syncGetter('report.created_at', notification)}
+							</Text>
+							<Text style={[styles.infoItem, { lineHeight: 20 }]}>
+								题目名：{Tools.syncGetter('report.question.description', notification)}
+							</Text>
+						</View>
+					</View>
+				)}
+				{notification.type == 'LEVEL_UP' && (
+					<View style={styles.item}>
+						<View style={styles.titleInfo}>
+							<Iconfont name={'rank-up'} size={20} color={Theme.themeRed} />
 							<Text style={styles.title}>升级通知</Text>
 						</View>
 						<View style={styles.bottomInfo}>
 							<Text style={styles.text}>恭喜你升级了！</Text>
-							<Text style={styles.infoItem}>当前等级: LV{item.user.level.level} </Text>
-							<Text style={styles.infoItem}>精力点上限: {item.user.ticket} </Text>
-							<Text style={styles.infoItem}>距离下一级升级还需: {item.user.next_level_exp}经验 </Text>
+							<Text style={styles.infoItem}>
+								当前等级: LV{Tools.syncGetter('user.level.level', notification)}{' '}
+							</Text>
+							<Text style={styles.infoItem}>
+								精力点上限: {Tools.syncGetter('user.level.ticket_max', notification)}{' '}
+							</Text>
+							<Text style={styles.infoItem}>
+								距离下一级升级还需: {Tools.syncGetter('user.next_level_exp', notification)}经验{' '}
+							</Text>
 						</View>
 					</View>
-					//升级
 				)}
 			</View>
 		);
@@ -117,7 +142,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15
 	},
 	text: {
-		fontSize: 20,
+		fontSize: 16,
 		paddingBottom: 15,
 		color: Theme.primaryFont,
 		fontWeight: '500'

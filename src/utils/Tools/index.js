@@ -2,7 +2,7 @@
  * @flow
  * created by wyk made in 2018-12-06 10:02:54
  */
-import { syncGetter, throttle } from './adapter';
+import { syncGetter, throttle, debounce, isContained, arrayRandomSort } from './adapter';
 import { contentNavigator } from './navigator';
 import {
 	NumberFormat,
@@ -13,10 +13,14 @@ import {
 	imageSize,
 	regular
 } from './calculate';
+// import { checkNetwork } from './netWork';
 
 export default {
-	throttle,
 	syncGetter,
+	throttle,
+	debounce,
+	isContained,
+	arrayRandomSort,
 	contentNavigator,
 	NumberFormat,
 	TimeFormat,
@@ -25,4 +29,5 @@ export default {
 	imgsLayoutSize,
 	imageSize,
 	regular
+	// checkNetwork
 };

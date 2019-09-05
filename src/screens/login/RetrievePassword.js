@@ -8,11 +8,7 @@ import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-nativ
 import { Button, PageContainer, CustomTextInput, KeyboardSpacer, SubmitLoading } from '../../components';
 import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-
-import { ResetPasswordMutation, SendVerificationCodeMutation } from '../../assets/graphql/user.graphql';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, GQL } from 'apollo';
 
 let countDown = 59;
 
@@ -80,14 +76,14 @@ class RetrievePassword extends Component {
 		}
 		if (result && result.errors) {
 			this.setState({
-				submitting: true
+				submitting: false
 			});
 			let str = result.errors[0].message;
 			Toast.show({ content: str });
 		} else {
 			this.countDown();
 			this.setState({
-				submitting: true
+				submitting: false
 			});
 		}
 	};
@@ -205,11 +201,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => ({
-	user: store.users.user
-}))(
-	compose(
-		graphql(ResetPasswordMutation, { name: 'ResetPasswordMutation' }),
-		graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
-	)(RetrievePassword)
-);
+export default compose(
+	graphql(GQL.ResetPasswordMutation, { name: 'ResetPasswordMutation' }),
+	graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
+)(RetrievePassword);

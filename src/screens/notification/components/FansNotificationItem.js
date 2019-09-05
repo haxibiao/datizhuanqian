@@ -6,18 +6,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { Theme, PxFit } from '../../../utils';
+import { Theme, PxFit, Tools } from 'utils';
 
-import { Button, Avatar, UserTitle, Iconfont, GenderLabel, FollowButton } from '../../../components';
+import { Button, Avatar, UserTitle, Iconfont, GenderLabel, FollowButton } from 'components';
 
-import { compose, graphql } from 'react-apollo';
-import {
-	FollowToggbleMutation,
-	UserQuery,
-	FollowsQuery,
-	UserInfoQuery,
-	FollowersQuery
-} from '../../../assets/graphql/user.graphql';
+import { Query, withApollo, GQL, compose, graphql } from 'apollo';
+import { app } from 'store';
 
 class FansNotificationItem extends Component {
 	constructor(props) {
@@ -28,34 +22,34 @@ class FansNotificationItem extends Component {
 		const { follow, navigation } = this.props;
 
 		if (!follow) return null;
-
+		let user = Tools.syncGetter('user', follow);
 		let created_at = follow.created_at.substr(5, 5);
 
 		return (
 			<TouchableOpacity
 				style={styles.container}
 				activeOpacity={1}
-				onPress={() => navigation.navigate('User', { user: follow.user })}
+				onPress={() => navigation.navigate('User', { user })}
 			>
 				<View style={styles.left}>
-					<Avatar source={{ uri: follow.user.avatar }} size={48} />
+					<Avatar source={{ uri: Tools.syncGetter('avatar', user) }} size={48} />
 					<View style={styles.leftUserInfo}>
 						<View style={styles.userInfoTop}>
 							<View style={{ flexShrink: 1 }}>
 								<Text style={{ color: Theme.black }} numberOfLines={1}>
-									{follow.user.name}
+									{Tools.syncGetter('name', user)}
 								</Text>
 							</View>
-							<UserTitle user={follow.user} />
-							<GenderLabel user={follow.user} />
+							<UserTitle user={user} />
+							<GenderLabel user={user} />
 						</View>
 						<Text style={styles.userIntro}>{'关注了你  ' + created_at}</Text>
 					</View>
 				</View>
 
 				<FollowButton
-					id={follow.user.id}
-					followedStatus={follow.user.followed_user_status}
+					id={Tools.syncGetter('id', user)}
+					followedStatus={Tools.syncGetter('followed_user_status', user)}
 					style={{
 						width: PxFit(70),
 						height: PxFit(30),
@@ -78,19 +72,19 @@ class FansNotificationItem extends Component {
 				},
 				refetchQueries: () => [
 					{
-						query: UserQuery,
+						query: GQL.UserQuery,
 						variables: { id: follow.user.id }
 					},
 					{
-						query: FollowsQuery,
+						query: GQL.FollowsQuery,
 						variables: { filter: 'users' }
 					},
 					{
-						query: FollowersQuery,
+						query: GQL.FollowersQuery,
 						variables: { filter: 'users' }
 					},
 					{
-						query: UserInfoQuery,
+						query: GQL.UserInfoQuery,
 						variables: { id: follow.user.id }
 					}
 				]
@@ -144,4 +138,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(graphql(FollowToggbleMutation, { name: 'FollowToggble' }))(FansNotificationItem);
+export default compose(graphql(GQL.FollowToggbleMutation, { name: 'FollowToggble' }))(FansNotificationItem);

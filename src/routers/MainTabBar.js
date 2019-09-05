@@ -1,7 +1,8 @@
 /*
- * @flow
- * created by wyk made in 2018-12-06 20:16:58
+ * @Author: Gaoxuan
+ * @Date:   2019-08-01 10:20:58
  */
+
 import React from 'react';
 import { StyleSheet, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { Theme, PxFit } from '../utils';
@@ -26,23 +27,10 @@ class TabBarComponent extends React.Component {
 		);
 	};
 
-	// renderPublis() {
-	// 	const { navigation, login } = this.props;
-	// 	return (
-	// 		<TouchableWithoutFeedback key="publis" onPress={() => navigation.navigate(login ? 'Publish' : 'Login')}>
-	// 			<View style={styles.tabItem}>
-	// 				<Image source={require('../../public/images/publish.png')} style={{ width: 42, height: 42 }} />
-	// 			</View>
-	// 		</TouchableWithoutFeedback>
-	// 	);
-	// }
-
 	render() {
 		const { navigation } = this.props;
 		let { routes } = navigation.state;
-		// let publisItem = this.renderPublis();
 		let routerItem = routes && routes.map((route, index) => this.renderItem(route, index));
-		// routerItem.splice(2, 0, publisItem);
 		return <View style={styles.tabBar}>{routerItem}</View>;
 	}
 }
@@ -63,7 +51,12 @@ const styles = {
 		justifyContent: 'center',
 		position: 'relative'
 	},
-	icon: { width: PxFit(28), height: PxFit(28), alignItems: 'center', justifyContent: 'center' }
+	icon: {
+		width: PxFit(28),
+		height: PxFit(28),
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
 };
 
 export default TabBarComponent;

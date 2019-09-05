@@ -4,13 +4,12 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../components';
-import { Theme, PxFit } from '../../utils';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
+import { Theme, PxFit } from 'utils';
 
-import { Query, withApollo } from 'react-apollo';
-import { connect } from 'react-redux';
-import { systemNotificationsQuery, userUnreadQuery } from '../../assets/graphql/notification.graphql';
+import { Query, withApollo, GQL } from 'apollo';
+import { app } from 'store';
 
 import SystemNotificationItem from './components/SystemNotificationItem';
 
@@ -23,12 +22,12 @@ class SystemNotification extends Component {
 	}
 
 	componentWillUnmount() {
-		const { client, user } = this.props;
+		const { client } = this.props;
 
 		client.query({
-			query: userUnreadQuery,
+			query: GQL.userUnreadQuery,
 			variable: {
-				id: user.id
+				id: app.me.id
 			},
 			fetchPolicy: 'network-only'
 		});
@@ -39,9 +38,16 @@ class SystemNotification extends Component {
 		return (
 			<PageContainer title="系统通知" white>
 				<Query
-					query={systemNotificationsQuery}
+					query={GQL.systemNotificationsQuery}
 					variables={{
-						filter: ['WITHDRAW_SUCCESS', 'WITHDRAW_FAILURE', 'CURATION_REWARD', 'QUESTION_AUDIT']
+						filter: [
+							'WITHDRAW_SUCCESS',
+							'WITHDRAW_FAILURE',
+							'CURATION_REWARD',
+							'QUESTION_AUDIT',
+							'LEVEL_UP',
+							'REPORT_SUCCEED'
+						]
 					}}
 					fetchPolicy="network-only"
 				>
@@ -55,13 +61,21 @@ class SystemNotification extends Component {
 								data={data.notifications}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => (
-									<SystemNotificationItem notification={item} navigation={navigation} />
+									<SystemNotificationItem
+										notification={item}
+										navigation={navigation}
+										user={app.me.id}
+									/>
 								)}
 								refreshControl={
-									<RefreshControl
+									<CustomRefreshControl
 										refreshing={loading}
 										onRefresh={refetch}
-										colors={[Theme.primaryColor]}
+										reset={() =>
+											this.setState({
+												finished: false
+											})
+										}
 									/>
 								}
 								onEndReachedThreshold={0.3}
@@ -95,6 +109,4 @@ class SystemNotification extends Component {
 
 const styles = StyleSheet.create({});
 
-export default connect(store => {
-	return { user: store.users.user };
-})(withApollo(SystemNotification));
+export default withApollo(SystemNotification);

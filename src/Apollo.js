@@ -1,117 +1,103 @@
 /*
- * @flow
- * created by wangyukun made in 2019-03-18 11:06:25
+ * @Author: Gaoxuan
+ * @Date:   2019-07-31 10:35:57
  */
+
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
-import { Config } from './utils';
-import { connect } from 'react-redux';
-import { Storage, ItemKeys } from './store/localStorage';
+import { StyleSheet, View, Text } from 'react-native';
 
-import { ApolloProvider } from 'react-apollo';
-import ApolloClient from 'apollo-boost';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { CategoriesQuery, QuestionQuery } from './assets/graphql/question.graphql';
-import { UserQuery } from './assets/graphql/User.graphql';
-
-import DeviceInfo from 'react-native-device-info';
-import AppRouter from './routers';
+import { GQL, makeClient, ApolloProvider } from 'apollo';
+import { observer, app } from 'store';
+import { Config } from 'utils';
 
 import JPushModule from 'jpush-react-native';
+import Echo from 'laravel-echo';
+import Socketio from 'socket.io-client';
 
+import AppRouter from './routers';
+
+import Crashes from 'appcenter-crashes';
+
+@observer
 class Apollo extends Component {
-	async _makeClient(user) {
-		let { token } = user;
+	async componentDidMount() {
+		//挂载socklit
+		this.mountWebSockit(app.me);
 
-		// let server = await Storage.getItem(ItemKeys.server);
-
-		// let ServerRoot = Config.ServerRoot;
-		// if (server && server.mainApi) {
-		// 	ServerRoot = server.mainApi;
-		// }
-
-		let deviceHeaders = {};
-		const isEmulator = DeviceInfo.isEmulator();
-		if (!isEmulator) {
-			deviceHeaders.os = Platform.OS; //操作系统
-			deviceHeaders.brand = DeviceInfo.getBrand(); //设备品牌
-			deviceHeaders.build = Config.Build; //手动修改的build版本号
-			deviceHeaders.deviceCountry = DeviceInfo.getDeviceCountry(); //国家
-			deviceHeaders.referrer = Config.AppStore; //根据不同的.env文件打包不同的apk，方便追踪应用商店流量
-
-			deviceHeaders.systemVersion = DeviceInfo.getSystemVersion(); //系统版本
-			deviceHeaders.uniqueId = DeviceInfo.getUniqueID(); //uniqueId
-			DeviceInfo.getIPAddress()
-				.then(response => response.toString())
-				.then(data => {
-					deviceHeaders.ip = data;
-				}); //ip地址
-		}
-		deviceHeaders.version = '1.4.0'; //版本号
-		if (!this.cache) {
-			this.cache = new InMemoryCache();
-		}
-		// Config.ServerRoot = 'https://datizhuanqian.com';
-		this.client = new ApolloClient({
-			// http://dev.datizhuanqian.com
-			uri: Config.ServerRoot + '/graphql',
-			request: async operation => {
-				operation.setContext({
-					headers: {
-						token,
-						...deviceHeaders
-					}
-				});
-			},
-			cache: new InMemoryCache()
-		});
-	}
-
-	componentWillMount() {
-		let { user = {} } = this.props;
-		this._makeClient(user);
-	}
-
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.user !== this.props.user) {
-			this._makeClient(nextProps.user);
-		}
-		// if (nextProps.server !== this.props.server) {
-		// 	console.log('c1', nextProps.user, nextProps.server);
-		// 	this._makeClient(nextProps.user, nextProps.server);
-		// }
-	}
-
-	componentDidMount() {
 		if (Platform.OS === 'android') {
 			JPushModule.notifyJSDidLoad(resultCode => {
 				if (resultCode === 0) {
 				}
 			});
 		}
+		//注册Jpush
+		JPushModule.getRegistrationID(registrationId => {});
 
-		// 增加tag
-		JPushModule.addTags([Config.AppStore], success => {
-			console.log('success', success);
+		// 添加设备来源tag;
+		JPushModule.addTags([Config.AppStore], success => {});
+
+		// throw new Error('This is a test javascript crash!');
+
+		// await Crashes.setEnabled(true);
+
+		// const enabled = await Crashes.isEnabled();
+		// console.log('enabled', enabled);
+	}
+
+	mountWebSockit(user) {
+		if (user.token != undefined) {
+			// 构造laravel echo及Socket Client
+			let echo = new Echo({
+				broadcaster: 'socket.io',
+				host: 'ws://socket.datizhuanqian.com:6001',
+				client: Socketio,
+				auth: {
+					headers: {
+						Authorization: 'Bearer ' + user.token
+					}
+				}
+			});
+
+			app.setEcho(echo);
+
+			//监听公共频道
+			echo.channel('notice').listen('NewNotice', this.sendLocalNotification);
+
+			//监听用户私人频道
+			echo.private('App.User.' + user.id)
+				.listen('WithdrawalDone', this.sendLocalNotification)
+				.listen('NewLike', this.sendLocalNotification)
+				.listen('NewFollow', this.sendLocalNotification)
+				.listen('NewComment', this.sendLocalNotification)
+				.listen('NewAudit', this.sendLocalNotification);
+			//系统通知栏
+		}
+	}
+
+	//本地推送通知
+	sendLocalNotification(data) {
+		let currentDate = new Date();
+		JPushModule.sendLocalNotification({
+			buildId: 1,
+			id: data.id,
+			content: data.content,
+			extra: {},
+			fireTime: currentDate.getTime() + 3000,
+			title: data.title
 		});
 	}
 
-	componentWillUnmount() {
-		this.timer && clearTimeout(this.timer);
-		this.promiseTimer && clearTimeout(this.promiseTimer);
-	}
-
 	render() {
-		// if (!this.client) return null;
-
+		let { checkServer } = this.props;
+		let client = makeClient(app.me, checkServer); //构建apollo client
 		return (
-			<ApolloProvider client={this.client}>
+			<ApolloProvider client={client}>
 				<AppRouter />
 			</ApolloProvider>
 		);
 	}
 }
 
-export default connect(store => {
-	return { user: store.users.user, server: store.users.server };
-})(Apollo);
+const styles = StyleSheet.create({});
+
+export default Apollo;

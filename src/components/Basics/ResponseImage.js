@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-14 13:25:56
-*/
+ * @flow
+ * created by wyk made in 2018-12-14 13:25:56
+ */
 'use strict';
 import React, { Component } from 'react';
 import { Image, View, StyleSheet } from 'react-native';
@@ -27,7 +27,7 @@ class ResponseImage extends Component {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		let { max, width: image_width, height: image_height } = this.props;
 		Image.getSize(this.props.uri, (width, height) => {
 			if (image_width && !image_height) {

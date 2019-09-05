@@ -7,12 +7,12 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, NAVBAR_HEIGHT } from '../../../utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, NAVBAR_HEIGHT } from 'utils';
 import { Overlay } from 'teaset';
-import { Iconfont, TouchFeedback } from '../../../components';
+import { Iconfont, TouchFeedback } from 'components';
 
 class FeedbackOverlay {
-	static show(switchKeybord, replyComment, comment, user, feedback_id) {
+	static show(user, switchKeybord, replyComment, comment, feedback_id, deleteComment, onSkip) {
 		let overlayView = (
 			<Overlay.View animated>
 				<TouchFeedback
@@ -26,7 +26,7 @@ class FeedbackOverlay {
 							style={{ paddingVertical: PxFit(15) }}
 							onPress={() => {
 								FeedbackOverlay.hide();
-								Toast.show({ content: '举报成功' });
+								onSkip();
 							}}
 						>
 							<Text style={styles.text}>举报</Text>
@@ -43,16 +43,21 @@ class FeedbackOverlay {
 								<Text style={styles.text}>引用</Text>
 							</TouchFeedback>
 						)}
-						{/*	{!feedback
-					? user.id == comment.user.id && (
+
+						{user.is_admin && comment ? (
 							<TouchFeedback
-								style={{ paddingVertical: PxFit(15), borderTopColor: Theme.lightBorder, borderTopWidth: PxFit(0.5) }}
-								onPress={this.deleteComment}
+								style={{
+									paddingVertical: PxFit(15),
+									borderTopColor: Theme.lightBorder,
+									borderTopWidth: PxFit(0.5)
+								}}
+								onPress={() => deleteComment()}
 							>
-								<Text style={{ fontSize: PxFit(15), color: Theme.black, paddingLeft: PxFit(15) }}>删除</Text>
+								<Text style={{ fontSize: PxFit(15), color: Theme.black, paddingLeft: PxFit(15) }}>
+									删除
+								</Text>
 							</TouchFeedback>
-					  )
-					: null}*/}
+						) : null}
 					</View>
 				</TouchFeedback>
 			</Overlay.View>

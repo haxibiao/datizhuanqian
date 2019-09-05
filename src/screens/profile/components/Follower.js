@@ -15,10 +15,9 @@ import {
 	StatusView,
 	ListFooter,
 	CustomRefreshControl
-} from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../../utils';
-import { Query } from 'react-apollo';
-import { FollowersQuery } from '../../../assets/graphql/user.graphql';
+} from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
+import { Query, GQL } from 'apollo';
 
 class Follower extends Component {
 	constructor(props) {
@@ -29,9 +28,9 @@ class Follower extends Component {
 	}
 
 	render() {
-		let { navigation, user } = this.props;
+		let { navigation } = this.props;
 		return (
-			<Query query={FollowersQuery} variables={{ filter: 'users' }} fetchPolicy="network-only">
+			<Query query={GQL.FollowersQuery} variables={{ filter: 'users' }} fetchPolicy="network-only">
 				{({ loading, error, data, refetch, fetchMore }) => {
 					let followers = Tools.syncGetter('followers', data);
 					let empty = followers && followers.length === 0;
@@ -47,8 +46,13 @@ class Follower extends Component {
 						>
 							<FlatList
 								data={followers}
-								keyExtractor={(item, index) => index.toString()}
-								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
+								keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+								refreshControl={
+									<CustomRefreshControl
+										onRefresh={refetch}
+										reset={() => this.setState({ finished: false })}
+									/>
+								}
 								renderItem={({ item, index }) => <UserItem navigation={navigation} user={item.user} />}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {

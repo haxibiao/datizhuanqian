@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { Theme, PxFit } from '../../utils';
-import Spinner from 'react-native-spinkit';
+// import Spinner from 'react-native-spinkit';
 
 type Props = {
 	hidden: boolean,
@@ -30,7 +30,8 @@ class ListFooter extends Component<Props> {
 			return (
 				<View style={styles.footerView}>
 					<Text style={styles.footerViewText}>加载中</Text>
-					<Spinner isVisible={true} size={PxFit(14)} type={'FadingCircleAlt'} color={Theme.primaryColor} />
+					{/*<Spinner isVisible={true} size={PxFit(14)} type={'FadingCircleAlt'} color={Theme.primaryColor} />*/}
+					<ActivityIndicator size="small" color={Theme.primaryColor} />
 				</View>
 			);
 		}

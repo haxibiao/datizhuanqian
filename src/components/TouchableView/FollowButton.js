@@ -7,12 +7,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { PxFit, Theme } from '../../utils';
+import { PxFit, Theme, Tools } from 'utils';
 import Iconfont from '../Iconfont';
 
-import { connect } from 'react-redux';
-import { graphql, compose } from 'react-apollo';
-import { FollowToggbleMutation, UserQuery, FollowsQuery, UserInfoQuery } from '../../assets/graphql/user.graphql';
+import { GQL, graphql, compose } from 'apollo';
+import { app } from 'store';
 
 type Props = {
 	id: number,
@@ -33,15 +32,10 @@ class FollowButton extends Component<Props> {
 
 	constructor(props: Props) {
 		super(props);
-		this.onFollowHandler();
+		this.onFollowHandler = Tools.throttle(this.onFollowHandler(), 500);
 		this.state = {
 			followed: props.followedStatus ? true : false
 		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (this.props.login !== nextProps.login) {
-		}
 	}
 
 	buildProps() {
@@ -83,7 +77,7 @@ class FollowButton extends Component<Props> {
 	}
 
 	render() {
-		if (this.props.user.id === this.props.id) {
+		if (app.me.id === this.props.id) {
 			return null;
 		}
 		let { children, style, ...others } = this.buildProps();
@@ -95,50 +89,40 @@ class FollowButton extends Component<Props> {
 	}
 
 	onFollowHandler = () => {
-		if (!this.props.login) {
-			this.onFollowHandler = () => {
+		console.log('触发');
+		if (!app.login) {
+			return () => {
 				this.props.navigation.navigate('Register');
 			};
 		} else {
-			this.onFollowHandler = () => {
+			console.log('true');
+			return () => {
 				this.setState({ followed: !this.state.followed }, () => {
-					this.follow(this.state.followed);
+					this.follow();
 				});
 			};
 		}
 	};
 
-	follow = followed => {
-		console.log('follow', followed);
-
-		if (this.timeout) {
-			clearInterval(this.timeout);
-		}
-		this.timeout = setTimeout(async () => {
-			console.log('setTimeout');
-			let { id, user, followUser } = this.props;
-			let xxx = await followUser({
+	follow = async () => {
+		console.log('follow');
+		let { id, followUser } = this.props;
+		try {
+			await this.props.followUser({
 				variables: {
 					followed_type: 'users',
 					followed_id: id
 				},
 				refetchQueries: () => [
 					{
-						query: UserQuery,
-						variables: { id: user.id }
-					},
-					{
-						query: FollowsQuery,
+						query: GQL.FollowsQuery,
 						variables: { filter: 'users' }
-					},
-					{
-						query: UserInfoQuery,
-						variables: { id: user.id }
 					}
 				]
 			});
-			console.log('xxx', xxx);
-		}, 300);
+		} catch (error) {
+			Toast.show({ content: '操作失败', layout: 'top' });
+		}
 	};
 }
 
@@ -146,6 +130,5 @@ const styles = StyleSheet.create({});
 
 export default compose(
 	withNavigation,
-	graphql(FollowToggbleMutation, { name: 'followUser' }),
-	connect(store => ({ login: store.users.login, user: store.users.user }))
+	graphql(GQL.FollowToggbleMutation, { name: 'followUser' })
 )(FollowButton);

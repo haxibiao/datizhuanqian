@@ -4,15 +4,11 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-
-import { SetUserPaymentInfoMutation } from '../../assets/graphql/withdraws.graphql';
-import { SendVerificationCodeMutation } from '../../assets/graphql/user.graphql';
-import { Mutation, compose, graphql } from 'react-apollo';
+import { Mutation, compose, graphql, GQL } from 'apollo';
+import { app } from 'store';
 
 class VerificationCode extends Component {
 	constructor(props) {
@@ -22,7 +18,9 @@ class VerificationCode extends Component {
 		this.state = {
 			tips: this.time_remaining + 's后重新发送',
 			verificationCode: null,
-			submitting: false
+			submitting: false,
+			real_name: null,
+			pay_account: null
 		};
 	}
 	componentDidMount() {
@@ -65,7 +63,7 @@ class VerificationCode extends Component {
 		try {
 			result = await this.props.SendVerificationCodeMutation({
 				variables: {
-					account: this.props.users.user.account,
+					account: app.me.account,
 					action: 'USER_INFO_CHANGE'
 				},
 				errorPolicy: 'all'
@@ -86,72 +84,63 @@ class VerificationCode extends Component {
 
 	//提交设置支付宝
 	setPaymentInfo = async () => {
-		let { verificationCode } = this.state;
+		let { verificationCode, real_name, pay_account } = this.state;
 		const { navigation } = this.props;
-		const { code, accountInfo } = navigation.state.params;
+		const { code } = navigation.state.params;
 		let result = {};
 
-		if (code == verificationCode) {
-			this.setState({
-				submitting: true
-			});
-			try {
-				result = await this.props.SetUserPaymentInfoMutation({
-					variables: {
-						real_name: accountInfo.real_name,
-						pay_account: accountInfo.pay_account,
-						code: code
-					},
-					errorPolicy: 'all'
-				});
-			} catch (ex) {
-				result.errors = ex;
-			}
-			console.log('result', result);
-			if (result && result.errors) {
+		if (Tools.regular(this.state.pay_account)) {
+			if (code == verificationCode) {
 				this.setState({
-					submitting: false
+					submitting: true
 				});
-				let str = result.errors[0].message;
-				Toast.show({ content: str });
+				try {
+					result = await this.props.SetUserPaymentInfoMutation({
+						variables: {
+							real_name: real_name,
+							pay_account: pay_account,
+							code: code
+						},
+						errorPolicy: 'all'
+					});
+				} catch (ex) {
+					result.errors = ex;
+				}
+				if (result && result.errors) {
+					this.setState({
+						submitting: false
+					});
+					let str = result.errors[0].message;
+					Toast.show({ content: str });
+				} else {
+					this.setState({
+						submitting: false
+					});
+					navigation.pop(2);
+					Toast.show({ content: '修改成功' });
+				}
+				this.setState({
+					pay_account: ''
+				});
 			} else {
-				this.setState({
-					submitting: false
-				});
-				this.props.dispatch(
-					actions.updateAlipay({
-						real_name: accountInfo.real_name,
-						pay_account: accountInfo.pay_account
-					})
-				);
-				navigation.pop(2);
-				Toast.show({ content: '修改成功' });
+				Toast.show({ content: '验证码错误' });
 			}
-			this.setState({
-				pay_account: ''
-			});
 		} else {
-			Toast.show({ content: '验证码错误' });
+			Toast.show({ content: '支付宝格式错误' });
 		}
-		this.setState({
-			verificationCode: ''
-		});
 	};
 
 	render() {
 		const { navigation } = this.props;
-		let { verificationCode, tips, submitting } = this.state;
+		let { verificationCode, tips, submitting, pay_account, real_name } = this.state;
 		return (
 			<PageContainer title="验证" white submitting={submitting} submitTips="验证中...">
 				<View style={styles.container}>
 					<View style={styles.header}>
-						<Text style={styles.title}>验证账号</Text>
+						<Text style={styles.title}>支付宝信息</Text>
+						{/*<Text style={styles.tipsText}>验证码已发送至 账号{app.me.account}</Text>*/}
 						<Text style={styles.tipsText}>
-							验证码已发送至
-							<Text style={{ color: Theme.secondaryColor }}>
-								{' '}
-								登录账号{this.props.users.user.account}
-							</Text>
+							支付宝账号以及真实姓名为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
 						</Text>
 					</View>
 					<View style={styles.textWrap}>
@@ -169,13 +158,37 @@ class VerificationCode extends Component {
 							}}
 						/>
 					</View>
+					<View style={styles.textWrap}>
+						<CustomTextInput
+							style={{ height: PxFit(48) }}
+							placeholder={'请输入真实姓名'}
+							onChangeText={value => {
+								this.setState({
+									real_name: value
+								});
+							}}
+							maxLength={8}
+						/>
+					</View>
+					<View style={styles.textWrap}>
+						<CustomTextInput
+							placeholder="请输入支付宝账号"
+							style={{ height: PxFit(48) }}
+							onChangeText={value => {
+								this.setState({
+									pay_account: value
+								});
+							}}
+							maxLength={48}
+						/>
+					</View>
 
 					<View style={styles.buttonWrap}>
 						<Button
-							title="确认"
+							title="保存"
 							onPress={this.setPaymentInfo}
 							style={styles.button}
-							disabled={verificationCode ? false : true}
+							disabled={verificationCode && pay_account && real_name ? false : true}
 						/>
 					</View>
 					<View style={styles.footer}>
@@ -189,9 +202,6 @@ class VerificationCode extends Component {
 								{tips}
 							</Text>
 						</TouchableOpacity>
-						{/*<TouchableOpacity>
-							<Text style={{ color: Theme.grey, fontSize: 13 }}>账号有误?</Text>
-						</TouchableOpacity>*/}
 					</View>
 				</View>
 			</PageContainer>
@@ -204,8 +214,9 @@ const styles = StyleSheet.create({
 		backgroundColor: Theme.white
 	},
 	header: {
-		marginTop: PxFit(50),
-		paddingHorizontal: PxFit(25)
+		marginTop: PxFit(30),
+		paddingHorizontal: PxFit(25),
+		marginBottom: 15
 	},
 	title: {
 		color: Theme.black,
@@ -225,12 +236,13 @@ const styles = StyleSheet.create({
 	button: {
 		height: PxFit(38),
 		fontSize: PxFit(16),
-		backgroundColor: Theme.primaryColor
+		backgroundColor: Theme.primaryColor,
+		borderRadius: PxFit(5)
 	},
 	textWrap: {
 		marginHorizontal: PxFit(25),
 		paddingHorizontal: 0,
-		marginTop: PxFit(30),
+		// marginTop: PxFit(2),
 		borderBottomWidth: PxFit(0.5),
 		borderBottomColor: Theme.lightBorder
 	},
@@ -249,9 +261,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => store)(
-	compose(
-		graphql(SetUserPaymentInfoMutation, { name: 'SetUserPaymentInfoMutation' }),
-		graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
-	)(VerificationCode)
-);
+export default compose(
+	graphql(GQL.SetUserPaymentInfoMutation, { name: 'SetUserPaymentInfoMutation' }),
+	graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
+)(VerificationCode);

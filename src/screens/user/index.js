@@ -17,15 +17,13 @@ import {
 	PopOverlay,
 	CustomRefreshControl,
 	ListFooter,
-	StatusView
-} from '../../components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH, NAVBAR_HEIGHT } from '../../utils';
+	StatusView,
+	PullChooser
+} from 'components';
+import { Theme, PxFit, Tools, SCREEN_WIDTH, NAVBAR_HEIGHT } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { Storage, ItemKeys } from '../../store/localStorage';
-import { Query, withApollo, compose, graphql } from 'react-apollo';
-import { UserInfoQuery } from '../../assets/graphql/user.graphql';
+import { app } from 'store';
+import { Query, withApollo, compose, graphql, GQL } from 'apollo';
 
 import UserProfile from './components/UserProfile';
 import QuestionItem from './components/QuestionItem';
@@ -33,12 +31,15 @@ import Placeholder from './components/Placeholder';
 
 const HEADER_EXPANDED_HEIGHT = PxFit(158);
 const HEADER_COLLAPSED_HEIGHT = 0;
+const ORDER = ['ANSWERS_COUNT', 'CREATED_AT'];
 
 class index extends Component {
 	constructor(props) {
 		super(props);
+		this.switchOrder = Tools.throttle(this.switchOrder.bind(this), 500);
 		this.state = {
-			finished: false
+			finished: false,
+			orderByHot: false
 		};
 	}
 
@@ -46,13 +47,30 @@ class index extends Component {
 		let { navigation } = this.props;
 	};
 
+	showOptions = () => {
+		let { navigation } = this.props;
+		let user = navigation.getParam('user', {});
+
+		PullChooser.show([
+			{
+				title: '举报',
+				onPress: () => navigation.navigate('ReportUser', { user })
+			}
+		]);
+	};
+
+	switchOrder() {
+		this.setState({ orderByHot: !this.state.orderByHot });
+	}
+
 	render() {
+		let { orderByHot } = this.state;
 		let { navigation } = this.props;
 		let user = navigation.getParam('user', {});
 		return (
 			<Query
-				query={UserInfoQuery}
-				variables={{ id: user.id, order: 'ANSWERS_COUNT', filter: 'publish' }}
+				query={GQL.UserInfoQuery}
+				variables={{ id: user.id, order: orderByHot ? ORDER[0] : ORDER[1], filter: 'publish' }}
 				fetchPolicy="network-only"
 			>
 				{({ data, loading, error, refetch, fetchMore }) => {
@@ -65,7 +83,23 @@ class index extends Component {
 						questions = user.questions;
 					}
 					return (
-						<PageContainer refetch={refetch} error={error} title={user.name} white>
+						<PageContainer
+							refetch={refetch}
+							error={error}
+							title={user.name + '的主页'}
+							white
+							rightView={
+								user.id == app.me.id ? null : (
+									<TouchFeedback onPress={this.showOptions} style={styles.optionsButton}>
+										<Iconfont
+											name="more-horizontal"
+											color={Theme.defaultTextColor}
+											size={PxFit(18)}
+										/>
+									</TouchFeedback>
+								)
+							}
+						>
 							<FlatList
 								showsVerticalScrollIndicator={false}
 								bounces={false}
@@ -76,12 +110,25 @@ class index extends Component {
 								style={styles.container}
 								data={questions}
 								keyExtractor={(item, index) => index.toString()}
-								ListHeaderComponent={<UserProfile user={user} />}
+								ListHeaderComponent={
+									<UserProfile
+										user={user}
+										hasQuestion={questions.length > 0}
+										navigation={navigation}
+										switchOrder={this.switchOrder}
+										orderByHot={orderByHot}
+									/>
+								}
 								ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
 								renderItem={({ item, index }) => (
 									<QuestionItem question={item} navigation={navigation} />
 								)}
-								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
+								refreshControl={
+									<CustomRefreshControl
+										onRefresh={refetch}
+										reset={() => this.setState({ finished: false })}
+									/>
+								}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									fetchMore({
@@ -137,12 +184,13 @@ const styles = StyleSheet.create({
 		width: SCREEN_WIDTH,
 		overflow: 'hidden',
 		backgroundColor: '#fff'
+	},
+	optionsButton: {
+		flex: 1,
+		width: PxFit(40),
+		alignItems: 'flex-end',
+		justifyContent: 'center'
 	}
 });
 
-export default compose(
-	withApollo,
-	connect(store => ({
-		user: store.users.user
-	}))
-)(index);
+export default compose(withApollo)(index);

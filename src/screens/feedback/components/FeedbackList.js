@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../../components';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from 'react-native';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
 
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
-
-import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { feedbacksQuery } from '../../../assets/graphql/feedback.graphql';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { Query, GQL } from 'apollo';
+import { app } from 'store';
 
 import FeedbackItem from './FeedbackItem';
 
@@ -21,7 +19,7 @@ class FeedbackList extends Component {
 		};
 	}
 	render() {
-		let { user, navigation, login } = this.props;
+		let { navigation } = this.props;
 		let { onPress, filter } = this.state;
 		return (
 			<PageContainer hiddenNavBar tabLabel="反馈记录">
@@ -40,7 +38,7 @@ class FeedbackList extends Component {
 						style={[styles.tab, { borderBottomColor: filter == null ? Theme.white : Theme.primaryColor }]}
 						onPress={() => {
 							this.setState({
-								filter: user.id
+								filter: app.me.id
 							});
 						}}
 					>
@@ -48,7 +46,7 @@ class FeedbackList extends Component {
 					</TouchableOpacity>
 				</View>
 
-				<Query query={feedbacksQuery} variables={{ user_id: filter }} fetchPolicy="network-only">
+				<Query query={GQL.feedbacksQuery} variables={{ user_id: filter }} fetchPolicy="network-only">
 					{({ data, loading, error, refetch, fetchMore }) => {
 						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
@@ -56,36 +54,48 @@ class FeedbackList extends Component {
 						return (
 							<View style={{ flex: 1 }}>
 								<FlatList
+									removeClippedSubviews
+									initialNumToRender={10}
+									onEndReachedThreshold={0.2}
+									onContentSizeChange={() => {
+										this.isCanLoadMore = true;
+									}}
 									data={data.feedbacks}
-									keyExtractor={(item, index) => index.toString()}
+									keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
 									renderItem={({ item, index }) => (
 										<FeedbackItem item={item} navigation={navigation} />
 									)}
 									refreshControl={
-										<RefreshControl
+										<CustomRefreshControl
 											refreshing={loading}
 											onRefresh={refetch}
-											Colors={[Theme.primaryColor]}
+											reset={() =>
+												this.setState({
+													finished: false
+												})
+											}
 										/>
 									}
-									onEndReachedThreshold={0.3}
 									onEndReached={() => {
-										fetchMore({
-											variables: {
-												offset: data.feedbacks.length
-											},
-											updateQuery: (prev, { fetchMoreResult }) => {
-												if (!(fetchMoreResult && fetchMoreResult.feedbacks.length > 0)) {
-													this.setState({
-														finished: true
+										if (this.isCanLoadMore) {
+											this.isCanLoadMore = false;
+											fetchMore({
+												variables: {
+													offset: data.feedbacks.length
+												},
+												updateQuery: (prev, { fetchMoreResult }) => {
+													if (!(fetchMoreResult && fetchMoreResult.feedbacks.length > 0)) {
+														this.setState({
+															finished: true
+														});
+														return prev;
+													}
+													return Object.assign({}, prev, {
+														feedbacks: [...prev.feedbacks, ...fetchMoreResult.feedbacks]
 													});
-													return prev;
 												}
-												return Object.assign({}, prev, {
-													feedbacks: [...prev.feedbacks, ...fetchMoreResult.feedbacks]
-												});
-											}
-										});
+											});
+										}
 									}}
 									ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
 								/>
@@ -118,8 +128,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => {
-	return {
-		user: store.users.user
-	};
-})(FeedbackList);
+export default FeedbackList;

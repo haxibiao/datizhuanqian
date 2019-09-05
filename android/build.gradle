@@ -2,12 +2,11 @@
 
 buildscript {
     ext {
-        applicationId = 'com.datizhuanqian'
-        buildToolsVersion = "27.0.3"
+        buildToolsVersion = "28.0.3"
         minSdkVersion = 16
-        compileSdkVersion = 27
-        targetSdkVersion = 26
-        supportLibVersion = "27.1.1"
+        compileSdkVersion = 28
+        targetSdkVersion = 28
+        supportLibVersion = "28.0.0"
         code_push_key_production = "nz2pKDfcbAo3yBgVcxlGN7fIgAoyBkN_o-HyE"
         code_push_key_staging = "oMniPk6e1DCDjMEXE3rw5bR8NR7PSyNuibrk4"
     }
@@ -16,7 +15,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath("com.android.tools.build:gradle:3.4.1")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,31 +24,19 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
         mavenLocal()
-        jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../node_modules/react-native/android"
+            url("$rootDir/../node_modules/react-native/android")
+        }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../node_modules/jsc-android/dist")
         }
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
+
+        google()
+        jcenter()
     }
-}
-
-
-subprojects { 
-    afterEvaluate { project -> 
-        if (project.hasProperty("android")) { 
-            android { 
-                compileSdkVersion = 27 
-                buildToolsVersion = "27.0.3" 
-            } 
-        } 
-    } 
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.1.4'
-    distributionUrl = distributionUrl.replace("bin", "all")
 }

@@ -14,19 +14,16 @@ import {
 	CustomTextInput,
 	KeyboardSpacer,
 	SubmitLoading
-} from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+} from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { SendVerificationCodeMutation } from '../../assets/graphql/user.graphql';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, GQL } from 'apollo';
+import { app } from 'store';
 
 class EditProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			real_name: this.props.user.real_name,
 			pay_account: '',
 			submitting: false
 		};
@@ -34,109 +31,98 @@ class EditProfileScreen extends Component {
 
 	sendVerificationCode = async () => {
 		const { navigation } = this.props;
-		let result = {};
-		var reg = /^[\u4E00-\u9FA5]{1,8}$/;
-
-		if (Tools.regular(this.state.pay_account)) {
-			if (reg.test(this.state.real_name)) {
-				this.setState({
-					submitting: true
+		let { me } = app;
+		if (me && me.account) {
+			let result = {};
+			this.setState({
+				submitting: true
+			});
+			try {
+				result = await this.props.SendVerificationCodeMutation({
+					variables: {
+						account: me.account,
+						action: 'USER_INFO_CHANGE'
+					},
+					errorPolicy: 'all'
 				});
-				try {
-					result = await this.props.SendVerificationCodeMutation({
-						variables: {
-							account: this.props.user.account,
-							action: 'USER_INFO_CHANGE'
-						},
-						errorPolicy: 'all'
-					});
-				} catch (ex) {
-					result.errors = ex;
-				}
-				if (result && result.errors) {
-					this.setState({
-						submitting: false
-					});
-					let str = result.errors[0].message;
-					Toast.show({ content: str });
-				} else {
-					this.setState({
-						submitting: false
-					});
-					navigation.navigate('VerificationCode', {
-						code: result.data.sendVerificationCode.code,
-						time: result.data.sendVerificationCode.surplusSecond,
-						accountInfo: {
-							real_name: this.state.real_name,
-							pay_account: this.state.pay_account
-						}
-					});
-				}
+			} catch (ex) {
+				result.errors = ex;
+			}
+			if (result && result.errors) {
+				this.setState({
+					submitting: false
+				});
+				let str = result.errors[0].message;
+				Toast.show({ content: str });
 			} else {
-				Toast.show({ content: '姓名格式错误' });
+				this.setState({
+					submitting: false
+				});
+				navigation.navigate('VerificationCode', {
+					code: result.data.sendVerificationCode.code,
+					time: result.data.sendVerificationCode.surplusSecond
+				});
 			}
 		} else {
-			Toast.show({ content: '支付宝格式错误' });
+			Toast.show({ content: '账号获取失败，请重新登录' });
 		}
 	};
 
 	render() {
-		let { navigation, user } = this.props;
-		const { real_name, pay_account, submitting } = this.state;
+		let { navigation } = this.props;
+		const { pay_account, submitting } = this.state;
+		let { me } = app;
+
 		return (
 			<PageContainer title="账户绑定" white submitting={submitting}>
 				<View style={styles.container}>
-					<View style={{ marginTop: PxFit(25), paddingHorizontal: PxFit(25) }}>
-						<Text style={{ color: Theme.black, fontSize: 20, fontWeight: '600' }}>支付宝信息绑定</Text>
-					</View>
-					<View style={styles.header}>
-						<Text style={styles.tips}>
-							<Text style={{ color: Theme.secondaryColor }}>支付宝账号</Text>
-							以及
-							<Text style={{ color: Theme.secondaryColor }}>真实姓名</Text>
-							为提现有效证据,请输入已经通过实名认证的支付宝账号,否则提现将失败.
-						</Text>
-					</View>
-
-					<View style={styles.inputWrap}>
-						<CustomTextInput
-							style={{ height: PxFit(48) }}
-							placeholder={real_name || '请输入真实姓名'}
-							onChangeText={value => {
-								this.setState({
-									real_name: value
-								});
+					<View style={{ marginTop: PxFit(50), paddingHorizontal: PxFit(25), paddingBottom: PxFit(15) }}>
+						<Text
+							style={{
+								color: Theme.black,
+								fontSize: 20,
+								fontWeight: '600',
+								paddingBottom: PxFit(20)
 							}}
-							value={real_name}
-							maxLength={8}
-						/>
+						>
+							验证账号
+						</Text>
+						<Text style={styles.tipsText}>绑定支付宝信息需要验证账号的安全性</Text>
+						{/*<Text style={styles.tipsText}>
+							验证码将发送至账号
+							<Text style={{ color: Theme.secondaryColor }}> {user.account}</Text>
+						</Text>*/}
 					</View>
 					<View style={styles.inputWrap}>
 						<CustomTextInput
-							placeholder="请输入支付宝账号"
+							placeholder={
+								me && me.account ? '验证码将发送至账号 ' + me.account : '账号获取失败，请重新登录'
+							}
 							style={{ height: PxFit(48) }}
 							onChangeText={value => {
 								this.setState({
 									pay_account: value
 								});
 							}}
-							value={pay_account}
-							maxLength={48}
+							editable={false}
 						/>
 					</View>
-
-					<Button
-						title={'提交'}
-						style={styles.button}
-						disabled={!(real_name && pay_account)}
-						onPress={this.sendVerificationCode}
-					/>
-
-					<View style={{ paddingHorizontal: PxFit(25), marginTop: PxFit(5) }}>
+					<Button title={'确认发送验证码'} style={styles.button} onPress={this.sendVerificationCode} />
+					<TouchFeedback
+						style={{ marginHorizontal: 28, marginTop: 15 }}
+						onPress={() => {
+							me.verified_at
+								? Toast.show({ content: '已经修改或绑定了哦' })
+								: navigation.navigate('ModifyAccount');
+						}}
+					>
+						<Text style={{ color: Theme.grey, fontSize: 13 }}>账号有误?</Text>
+					</TouchFeedback>
+					{/*<View style={{ paddingHorizontal: PxFit(25), marginTop: PxFit(5) }}>
 						<Text style={styles.footer}>
-							* 每个支付宝只能被一个答题赚钱账号绑定，多账号绑定将无法享受提现功能。
+							* 每个支付宝只能被一个{Config.AppName}账号绑定，多账号绑定将无法享受提现功能。
 						</Text>
-					</View>
+					</View>*/}
 				</View>
 			</PageContainer>
 		);
@@ -157,6 +143,10 @@ const styles = StyleSheet.create({
 		color: Theme.grey,
 		lineHeight: PxFit(20)
 	},
+	tipsText: {
+		color: Theme.grey,
+		fontSize: PxFit(13)
+	},
 	inputWrap: {
 		borderBottomWidth: PxFit(0.5),
 		borderBottomColor: Theme.borderColor,
@@ -165,6 +155,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		height: PxFit(38),
+		borderRadius: PxFit(5),
 		marginHorizontal: PxFit(25),
 		marginTop: PxFit(35),
 		backgroundColor: Theme.primaryColor
@@ -177,6 +168,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(store => ({ user: store.users.user }))(
-	compose(graphql(SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(EditProfileScreen)
+export default compose(graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(
+	EditProfileScreen
 );

@@ -16,7 +16,6 @@ type Props = {
 	store?: Object, // redux screen state
 	navBar?: any, // 导航条
 	refetch?: Function,
-	offline?: boolean,
 	error?: boolean,
 	loading?: boolean,
 	submitting?: boolean,
@@ -52,9 +51,8 @@ class PageContainer extends Component<Props> {
 		topInsets: -Theme.HOME_INDICATOR_HEIGHT
 	};
 	renderContent() {
-		const { offline, error, loading, empty, loadingSpinner, EmptyView, children, refetch } = this.props;
-		if (offline) return <StatusView.ErrorView onPress={refetch} />;
-		if (error) return <StatusView.ErrorView onPress={refetch} />;
+		const { error, loading, empty, loadingSpinner, EmptyView, children, refetch } = this.props;
+		if (error) return <StatusView.ErrorView onPress={refetch} error={error} />;
 		if (loading) return loadingSpinner || <StatusView.LoadingSpinner />;
 		if (empty) return EmptyView || <StatusView.EmptyView />;
 		return children;
@@ -72,8 +70,10 @@ class PageContainer extends Component<Props> {
 						style={{
 							backgroundColor: '#fff',
 							borderBottomWidth: PxFit(0.5),
-							borderBottomColor: Theme.borderColor
+							borderBottomColor: Theme.borderColor,
+							...navBarStyle
 						}}
+						statusBarStyle="dark-content"
 						titleStyle={{ color: Theme.defaultTextColor }}
 						backButtonColor={Theme.defaultTextColor}
 						isTopNavigator={isTopNavigator}

@@ -2,10 +2,10 @@
  * @flow
  * created by wyk made in 2019-01-14 11:44:03
  */
-import VodUploader from '../../../native/VodUploader';
-import saveVideo from './saveVideo';
+import { VideoUploader } from 'native';
+import Config from '../Config';
 
-export const cancelUpload = VodUploader.cancelUpload;
+export const cancelUpload = VideoUploader.cancelUpload;
 
 export type UploadOption = {
 	videoPath: string,
@@ -19,35 +19,52 @@ export type UploadOption = {
 
 export default function(props: UploadOption) {
 	let { videoPath, onBeforeUpload, onStarted, onProcess, onCancelled, onCompleted, onError } = props;
-	VodUploader.getFileInfo(videoPath).then(metadata => {
+	console.log('videoPath', videoPath);
+	console.log('UploadServer', Config.UploadServer);
+	VideoUploader.getFileInfo(videoPath).then(metadata => {
 		const options = Object.assign(
 			{
 				method: 'POST',
+				type: 'multipart',
+				field: 'video',
 				headers: {
-					Accept: 'application/json',
-					'content-type': metadata.mimeType
+					'content-type': 'multipart/form-data',
+					token: TOKEN
+				},
+				parameters: {
+					videoName: metadata.name,
+					api_token: TOKEN
 				}
 			},
-			{ path: videoPath }
+			{
+				url: Config.UploadServer + '/api/video/upload',
+				path: videoPath
+			}
 		);
 		onBeforeUpload && onBeforeUpload(metadata);
-		VodUploader.startUpload(options) //上传
+		console.log('metadata', metadata);
+		VideoUploader.startUpload(options) //上传
 			.then(uploadId => {
+				console.log('uploadId', uploadId);
 				onStarted && onStarted(uploadId);
-				VodUploader.addListener('progress', uploadId, data => {
+				VideoUploader.addListener('progress', uploadId, data => {
+					console.log('progerss', data);
 					onProcess && onProcess(parseInt(data.progress)); //上传进度
 				});
-				VodUploader.addListener('completed', uploadId, data => {
-					onCompleted && onCompleted(data); //将腾讯云的视频地址保存到服务器
+				VideoUploader.addListener('completed', uploadId, data => {
+					console.log('completed', data);
+					onCompleted && onCompleted(data);
 				});
-				VodUploader.addListener('cancelled', uploadId, data => {
+				VideoUploader.addListener('cancelled', uploadId, data => {
 					onCancelled && onCancelled();
 				});
-				VodUploader.addListener('error', uploadId, data => {
+				VideoUploader.addListener('error', uploadId, data => {
+					console.log('error', data);
 					onError ? onError(data) : Toast.show({ content: '视频上传失败' });
 				});
 			})
 			.catch(err => {
+				console.log('err', err);
 				onError ? onError(data) : Toast.show({ content: '视频上传失败' });
 			});
 	});

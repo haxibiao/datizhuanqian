@@ -9,13 +9,12 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../components';
-import { Theme, PxFit } from '../../utils';
+import { StyleSheet, FlatList } from 'react-native';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
+import { Theme, PxFit } from 'utils';
 
-import { Query, withApollo } from 'react-apollo';
-import { connect } from 'react-redux';
-import { FansNotificationsQuery, userUnreadQuery } from '../../assets/graphql/notification.graphql';
+import { Query, withApollo, GQL } from 'apollo';
+import { app } from 'store';
 
 import FansNotificationItem from './components/FansNotificationItem';
 
@@ -28,11 +27,11 @@ class FansNotification extends Component {
 	}
 
 	componentWillUnmount() {
-		const { client, user } = this.props;
+		const { client } = this.props;
 		client.query({
-			query: userUnreadQuery,
+			query: GQL.userUnreadQuery,
 			variable: {
-				id: user.id
+				id: app.me.id
 			},
 			fetchPolicy: 'network-only'
 		});
@@ -43,7 +42,7 @@ class FansNotification extends Component {
 		return (
 			<PageContainer title="粉丝" white>
 				<Query
-					query={FansNotificationsQuery}
+					query={GQL.FansNotificationsQuery}
 					variables={{ filter: ['USER_FOLLOW'] }}
 					fetchPolicy="network-only"
 				>
@@ -59,10 +58,14 @@ class FansNotification extends Component {
 									<FansNotificationItem follow={item.follow} navigation={navigation} />
 								)}
 								refreshControl={
-									<RefreshControl
+									<CustomRefreshControl
 										refreshing={loading}
 										onRefresh={refetch}
-										colors={[Theme.primaryColor]}
+										reset={() =>
+											this.setState({
+												finished: false
+											})
+										}
 									/>
 								}
 								onEndReachedThreshold={0.3}
@@ -96,6 +99,4 @@ class FansNotification extends Component {
 
 const styles = StyleSheet.create({});
 
-export default connect(store => {
-	return { user: store.users.user };
-})(withApollo(FansNotification));
+export default withApollo(FansNotification);

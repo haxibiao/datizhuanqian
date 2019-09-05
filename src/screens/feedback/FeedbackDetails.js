@@ -4,19 +4,13 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Keyboard, FlatList, RefreshControl, ScrollView } from 'react-native';
-import { PageContainer, Iconfont, SubmitLoading, ListFooter } from '../../components';
+import { View, Text, TouchableOpacity, Keyboard, FlatList, ScrollView } from 'react-native';
+import { PageContainer, Iconfont, SubmitLoading, ListFooter, CustomRefreshControl, ErrorView } from 'components';
 
-import { Theme, Api, PxFit, SCREEN_WIDTH } from '../../utils';
+import { Theme, Api, PxFit, SCREEN_WIDTH } from 'utils';
 
-import { connect } from 'react-redux';
-import {
-	feedbackCommentsQuery,
-	createCommentMutation,
-	feedbackQuery,
-	feedbacksQuery
-} from '../../assets/graphql/feedback.graphql';
-import { compose, graphql, Query } from 'react-apollo';
+import { compose, graphql, Query, GQL } from 'apollo';
+import { app } from 'store';
 
 import FeedbackBody from './components/FeedbackBody';
 import Comment from './components/Comment';
@@ -40,26 +34,15 @@ class FeedbackDetails extends Component {
 	}
 
 	render() {
-		const { navigation, user } = this.props;
+		const { navigation } = this.props;
 		let { feedback_id } = navigation.state.params;
 		let { isInput, reply, content, waitingVisible } = this.state;
 		return (
-			<PageContainer
-				title="反馈详情"
-				white
-				rightView={
-					<TouchableOpacity
-						onPress={() => {
-							FeedbackOverlay.show();
-						}}
-					>
-						<Iconfont name={'more-horizontal'} size={18} color={Theme.primaryFont} />
-					</TouchableOpacity>
-				}
-			>
+			<PageContainer title="反馈详情" white topInsets={0}>
 				<Query
-					query={feedbackCommentsQuery}
+					query={GQL.feedbackCommentsQuery}
 					variables={{ commentable_id: feedback_id, commentable_type: 'feedbacks' }}
+					fetchPolicy="network-only"
 				>
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <ErrorView onPress={refetch} />;
@@ -75,10 +58,14 @@ class FeedbackDetails extends Component {
 										Keyboard.dismiss();
 									}}
 									refreshControl={
-										<RefreshControl
+										<CustomRefreshControl
 											refreshing={loading}
 											onRefresh={refetch}
-											colors={[Theme.primaryColor]}
+											reset={() =>
+												this.setState({
+													finished: false
+												})
+											}
 										/>
 									}
 									data={data.comments}
@@ -86,7 +73,7 @@ class FeedbackDetails extends Component {
 									renderItem={({ item, index }) => (
 										<CommentItem
 											item={item}
-											user={user}
+											user={app.me}
 											index={index}
 											feedback_id={feedback_id}
 											navigation={navigation}
@@ -170,17 +157,17 @@ class FeedbackDetails extends Component {
 				},
 				refetchQueries: () => [
 					{
-						query: feedbackCommentsQuery,
+						query: GQL.feedbackCommentsQuery,
 						variables: {
 							commentable_id: feedback_id,
 							commentable_type: 'feedbacks'
 						}
 					},
 					{
-						query: feedbacksQuery
+						query: GQL.feedbacksQuery
 					},
 					{
-						query: feedbackQuery,
+						query: GQL.feedbackQuery,
 						variables: {
 							id: feedback_id
 						}
@@ -253,8 +240,4 @@ class FeedbackDetails extends Component {
 	};
 }
 
-export default connect(store => {
-	return {
-		user: store.users.user
-	};
-})(compose(graphql(createCommentMutation, { name: 'createCommentMutation' }))(FeedbackDetails));
+export default compose(graphql(GQL.createCommentMutation, { name: 'createCommentMutation' }))(FeedbackDetails);

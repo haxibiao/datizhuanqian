@@ -4,95 +4,253 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView, Animated } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Animated, Easing, StatusBar } from 'react-native';
 import {
 	PageContainer,
 	TouchFeedback,
 	Iconfont,
-	ItemSeparator,
-	PopOverlay,
-	SubmitLoading,
-	Row,
-	Button,
-	TabBar,
-	StatusView
-} from '../../components';
-
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from '../../utils';
+	Banner,
+	StatusView,
+	PullChooser,
+	Player,
+	UpwardImage
+} from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
 
 import UserInfo from '../question/components/UserInfo';
 import QuestionBody from '../question/components/QuestionBody';
 import QuestionOptions from '../question/components/QuestionOptions';
-import AnswerCorrectRate from '../question/components/AnswerCorrectRate';
-import CommentOverlay from '../question/components/CommentOverlay';
+import AnswerBar from '../question/components/AnswerBar';
+import Explain from '../question/components/Explain';
+import VideoExplain from '../question/components/VideoExplain';
+
+import CommentOverlay from '../comment/CommentOverlay';
 
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import FooterBar from './components/FooterBar';
 import AuditTitle from './components/AuditTitle';
 import Audit from './components/Audit';
+import AnswerOverlay from './components/AnswerOverlay';
+import SystemUpdateTips from './components/SystemUpdateTips';
+import ChooseOverlay from './components/ChooseOverlay';
+import WithdrawCircleProgress from './components/WithdrawCircleProgress';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
+import { Overlay } from 'teaset';
+import { Query, compose, graphql, withApollo, GQL } from 'apollo';
+import { app, config, observer } from 'store';
 
-import { QuestionsQuery, QuestionListQuery, QuestionAnswerMutation } from '../../assets/graphql/question.graphql';
-import { UserQuery } from '../../assets/graphql/user.graphql';
-import { Query, compose, graphql, withApollo } from 'react-apollo';
+import { TtAdvert } from 'native';
 
+let VIDEO_WIDTH = SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2;
+
+@observer
 class index extends Component {
 	constructor(props) {
 		super(props);
-		this.firstLoad = true;
 		this.questions = null;
-		// 题目长度，用与加载更多的offset
-		this.questionsLength = 0;
-		this.bodyHeight = 0;
-		this.footerHeight = 0;
+		this.gold = 0;
+		this.ticket = 0;
 		this._animated = new Animated.Value(0);
+		this.onSubmitOpinion = Tools.throttle(this.onSubmitOpinion, 1500);
+		this.onSubmit = Tools.throttle(this.onSubmit, 1500);
+		this.category_id = props.navigation.getParam('category', {}).id;
+		this.containerHeight = SCREEN_HEIGHT - PxFit(170);
+		this.answer_count = 0;
+		this.error_count = 0;
+		this.loadFullVideoAd = false;
 		this.state = {
 			question: null,
 			submited: false,
 			answer: null,
-			showComment: false
+			auditStatus: 0,
+			finished: false,
+			shieldingAd: null,
+			min_level: 2
+			// answer_count: 1
 		};
-		console.log('constructor', props);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		console.log('componentWillReceiveProps', nextProps);
-		// 初始化 首次加载
-		if (this.firstLoad) {
-			let questions = Tools.syncGetter('questions', nextProps.data);
-			if (questions) {
-				this.firstLoad = false;
-				this.questions = questions;
-				this.questionsLength = questions.length;
-				this.setState({ question: this.questions.shift() });
-				// 执行动画
-				Animated.timing(this._animated, {
-					toValue: 1,
-					duration: 300
-				}).start();
-			}
+	UNSAFE_componentWillMount() {
+		this.fetchData();
+	}
+
+	componentDidMount() {
+		const { data } = this.props;
+		let { me } = app;
+
+		if (!ISIOS && config.enableQuestion) {
+			this.CloseAdlistener = TtAdvert.Banner.addListener('CloseAd', this.loadFullScreenVideo);
+			this.BuyAdlistener = TtAdvert.Banner.addListener('BuyAd', this.ShieldingCategoryAd);
+			//挂载广告提示弹窗按钮的监听事件
+		}
+
+		fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + me.token)
+			.then(response => response.json())
+			.then(data => {
+				this.setState({
+					min_level: data.chuti.min_level
+				});
+			})
+			.catch(err => {
+				console.log('加载task config err', err);
+			});
+
+		if (data && data.user && !ISIOS && config.enableQuestion) {
+			let adinfo = {
+				tt_appid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.appid', this.props.data),
+				tt_codeid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.codeid', this.props.data)
+			};
+			TtAdvert.FullScreenVideo.loadFullScreenVideoAd(adinfo).then(data => {
+				this.loadFullVideoAd = data;
+			});
 		}
 	}
 
-	//提交答案 下一题
-	onSubmit = () => {
-		if (!this.state.submited) {
-			//下一题
-			this.submitAnswer();
+	componentWillUnmount() {
+		if (!ISIOS && config.enableQuestion) {
+			this.CloseAdlistener.remove();
+			this.BuyAdlistener.remove();
+		}
+	}
+
+	loadFullScreenVideo = () => {
+		const { data } = this.props;
+
+		let adinfo = {
+			tt_appid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.appid', data),
+			tt_codeid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.codeid', data)
+		};
+
+		if (this.loadFullVideoAd) {
+			TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo);
 		} else {
-			//提交答案
-			this.nextQuestion();
+			TtAdvert.FullScreenVideo.loadFullScreenVideoAd(adinfo).then(data => {
+				TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo);
+			});
 		}
 	};
 
-	async submitAnswer() {
+	ShieldingCategoryAd = () => {
+		// let { user } = this.props;
+		this.props
+			.ShieldingCategoryAd({
+				variables: {
+					category_id: this.category_id
+				},
+				refetchQueries: () => [
+					{
+						query: GQL.CategoriesQuery,
+						fetchPolicy: 'network-only'
+					},
+					{
+						query: GQL.UserMetaQuery,
+						variables: { id: app.me.id },
+						fetchPolicy: 'network-only'
+					}
+				]
+			})
+			.then(data => {
+				Toast.show({ content: `成功跳过惩罚` });
+			})
+			.catch(err => {
+				Toast.show({ content: `成功跳过惩罚` });
+			});
+	};
+
+	async fetchData() {
+		try {
+			let result = await this.props.client.query({
+				query: GQL.QuestionListQuery,
+				variables: { category_id: this.category_id, limit: 10 },
+				fetchPolicy: 'network-only'
+			});
+			let questions = Tools.syncGetter('questions', result.data);
+			if (questions && questions instanceof Array && questions.length > 0) {
+				this.questions = [...questions];
+				this.resetState();
+			} else {
+				this.setState({ finished: true });
+			}
+		} catch (error) {
+			let str = error.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({ content: str });
+			this.setState({ error });
+		}
+	}
+
+	// 提交后显示模态框
+	// 计算模态框所需参数
+	showResultsOverlay() {
+		let { question, answer, auditStatus } = this.state;
+		let { data } = this.props;
+		let { user = {} } = data;
+		let result, type;
+		type = Number(question.status) === 0 ? 'audit' : 'answer';
+		if (type === 'audit') {
+			this.gold = 0;
+			this.ticket = question.ticket;
+			result = auditStatus > 0 ? true : false;
+		} else {
+			if (question.answer === answer.sort().join('')) {
+				this.gold = question.gold;
+				this.ticket = user.ticket > 0 ? user.ticket : 0;
+				result = true;
+			} else {
+				this.gold = 0;
+				this.ticket = question.ticket;
+				result = false;
+				this.error_count = this.error_count + 1;
+			}
+		}
+		AnswerOverlay.show({ gold: this.gold, ticket: this.ticket, result, type });
+	}
+
+	// 提交审核
+	onSubmitOpinion = async status => {
+		this.setState({ auditStatus: status }, () => {
+			this.showResultsOverlay();
+		});
+		try {
+			await this.props.auditMutation({
+				variables: {
+					question_id: this.state.question.id,
+					status: status > 0 ? true : false
+				},
+				refetchQueries: () => [
+					{
+						query: GQL.UserMetaQuery,
+						variables: { id: app.me.id },
+						fetchPolicy: 'network-only'
+					}
+				]
+			});
+		} catch (errors) {
+			let str = errors.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({ content: str });
+			this.setState({ auditStatus: 0 });
+		}
+		this.setState({ submited: true });
+	};
+
+	onSubmit = () => {
+		if (this.state.submited) {
+			//下一题
+			this.nextQuestion();
+		} else {
+			//提交答案
+			this.submitAnswer();
+		}
+	};
+
+	submitAnswer = async () => {
 		let { answer, question } = this.state;
 		let result = {};
-		this.setState({
-			submited: true
-		});
+		if (answer) {
+			this.showResultsOverlay();
+			this.setState({
+				submited: true
+			});
+		}
 		try {
 			result = await this.props.QuestionAnswerMutation({
 				variables: {
@@ -102,8 +260,8 @@ class index extends Component {
 				errorPolicy: 'all',
 				refetchQueries: () => [
 					{
-						query: UserQuery,
-						variables: { id: this.props.user.id },
+						query: GQL.UserMetaQuery,
+						variables: { id: app.me.id },
 						fetchPolicy: 'network-only'
 					}
 				]
@@ -111,61 +269,106 @@ class index extends Component {
 		} catch (ex) {
 			result.errors = ex;
 		}
+		this.showUpward();
 		if (result && result.errors) {
 			let str = result.errors[0].message;
 			Toast.show({ content: str });
 		}
-	}
+	};
 
-	nextQuestion = () => {
-		// 执行动画
-		this._animated.setValue(0);
-		Animated.timing(this._animated, {
-			toValue: 1,
-			duration: 300
-		}).start();
-		// 切换题目
-		this.setState({
-			question: this.questions.shift(),
-			submited: false,
-			answer: null
-		});
-		// 剩余5条数据加载就更多题目
-		if (this.questions.length <= 5) {
-			this.onLoadMore();
+	onContainerLayout = event => {
+		if (event) {
+			let { x, y, width, height } = event.nativeEvent.layout;
+			this.containerHeight = height;
 		}
 	};
 
-	// 加载更多
-	onLoadMore = () => {
-		let { fetchMore } = this.props.data;
-		fetchMore({
-			variables: {
-				offset: this.questionsLength
-			},
-			updateQuery: (prev, { fetchMoreResult }) => {
-				if (!(fetchMoreResult && fetchMoreResult.questions && fetchMoreResult.questions.length > 0)) {
-					return prev;
+	showUpward() {
+		if (this.markView) {
+			this.markView.measure((x, y, width, height, pageX, pageY) => {
+				if (Tools.syncGetter('explanation', this.state.question) && pageY >= this.containerHeight) {
+					this._upwardImage && this._upwardImage.show();
 				}
-				this.questionsLength += fetchMoreResult.questions.length;
-				this.questions = this.questions.concat(fetchMoreResult.questions);
-				return Object.assign({}, prev, {
-					questions: fetchMoreResult.questions
-				});
+			});
+		}
+	}
+
+	hideUpward() {
+		this._upwardImage && this._upwardImage.hide();
+	}
+
+	onScroll = () => {
+		this.hideUpward();
+	};
+
+	nextQuestion = () => {
+		this.hideUpward();
+		const { data } = this.props;
+
+		let adinfo = {
+			tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
+			tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data)
+		};
+
+		if (this.questions.length === 0) {
+			this.refetchQuery();
+		} else {
+			this.resetState();
+		}
+
+		this.answer_count = this.answer_count + 1;
+		let error_rate = this.error_count / this.answer_count;
+		if (this.answer_count == 10) {
+			if (error_rate >= 0.5 && config.enableQuestion) {
+				setTimeout(() => {
+					TtAdvert.Banner.loadBannerAd(adinfo);
+				}, 1000);
 			}
-		});
+
+			this.error_count = 0;
+			this.answer_count = 0;
+		}
+	};
+
+	// 加载更多题目
+	async refetchQuery() {
+		this.setState({ question: null });
+		this.fetchData();
+	}
+
+	// 切换题目,重置UI状态
+	resetState() {
+		this.setState(
+			preState => ({
+				question: this.questions.shift(),
+				submited: false,
+				answer: null,
+				auditStatus: 0
+			}),
+			() => {
+				this._animated.setValue(0);
+				Animated.timing(this._animated, {
+					toValue: 1,
+					duration: 400
+				}).start();
+			}
+		);
+	}
+
+	commentHandler = () => {
+		if (!this.state.submited) {
+			Toast.show({ content: '答题后再评论哦', layout: 'bottom' });
+		} else {
+			this.showComment();
+		}
 	};
 
 	showComment = () => {
-		if (!this.state.submited) {
-			Toast.show({ content: '先答题再评论哦', layout: 'bottom' });
-		} else {
-			this.setState({ showComment: true });
-		}
+		this._commentOverlay && this._commentOverlay.slideUp();
 	};
 
 	hideComment = () => {
-		this.setState({ showComment: false });
+		this._commentOverlay && this._commentOverlay.slideDown();
 	};
 
 	//选择的选项
@@ -192,60 +395,39 @@ class index extends Component {
 		this.setState({ answer });
 	};
 
-	helpCuration = () => {
-		let { question } = this.state;
-		let { navigation } = this.props;
-		if (question.type === 'contribute') {
-			Toast.show({ content: '无法对自己出的题纠错哦~' });
-		} else if (question.type === 'curation') {
-			Toast.show({ content: '该题您已经纠过了呢~' });
-		} else {
-			navigation.navigate('Curation', { question });
-		}
-	};
-
 	showOptions = () => {
-		let { navigation } = this.props;
+		let { navigation, data } = this.props;
 		let { question } = this.state;
-		PullChooser.show([
-			{
-				title: '举报',
-				onPress: () => navigation.navigate('Curation', { question })
-			}
-		]);
-	};
-
-	_onBodyLayout = e => {
-		let { height } = e.nativeEvent.layout;
-		this.bodyHeight = height;
-	};
-
-	_onFooterLayout = e => {
-		let { height } = e.nativeEvent.layout;
-		this.footerHeight = height;
+		const { category = {} } = navigation.state.params;
+		ISIOS
+			? PullChooser.show([
+					{
+						title: '举报',
+						onPress: () => navigation.navigate('ReportQuestion', { question })
+					},
+					{
+						title: '分享',
+						onPress: () => navigation.navigate('ShareCard', { question })
+					}
+			  ])
+			: ChooseOverlay.show(question, navigation, category, this.state.min_level, data.user);
 	};
 
 	renderContent = () => {
-		let { answer, submited, question, showComment } = this.state;
-		const {
-			navigation,
-			user,
-			noTicketTips,
-			data: { error, refetch }
-		} = this.props;
-		const { category } = navigation.state.params;
+		let { answer, submited, question, finished, auditStatus, error } = this.state;
+		const { navigation, data } = this.props;
+		const { category = {} } = this.props.navigation.state.params;
 		if (error) {
-			return <StatusView.ErrorView onPress={refetch} />;
-		}
-		if (!question && !this.firstLoad) {
+			return <StatusView.ErrorView onPress={this.fetchData} error={error} />;
+		} else if (!question && finished) {
 			return (
 				<StatusView.EmptyView
 					titleStyle={{ textAlign: 'center', fontSize: PxFit(13), lineHeight: PxFit(18) }}
-					title={`您已经答完了${category.name}的题目,真是太厉害啦！\n去其它分类下继续答题吧~`}
+					title={`暂时没有题目了，刷新几次试试看吧！\n我们会不断更新，先去其它分类下答题吧~`}
 				/>
 			);
 		} else if (!question) {
-			return <AnswerPlaceholder />;
+			return <AnswerPlaceholder answer />;
 		}
 		const bodyStyle = {
 			opacity: this._animated,
@@ -253,7 +435,7 @@ class index extends Component {
 				{
 					translateY: this._animated.interpolate({
 						inputRange: [0, 1],
-						outputRange: [-this.bodyHeight, 0],
+						outputRange: [-SCREEN_WIDTH, 0],
 						extrapolate: 'clamp'
 					})
 				}
@@ -265,124 +447,168 @@ class index extends Component {
 				{
 					translateY: this._animated.interpolate({
 						inputRange: [0, 1],
-						outputRange: [this.footerHeight, 0],
+						outputRange: [PxFit(80), 0],
 						extrapolate: 'clamp'
 					})
 				}
 			]
 		};
-		// question.submit = 0;
+		let audit = question.status === 0;
 		return (
 			<React.Fragment>
-				<TabBar />
+				{!config.isFullScreen && <Banner isAnswer showWithdraw />}
 				<ScrollView
-					contentContainerStyle={{ flexGrow: 1, paddingBottom: question.submit === 0 ? SCREEN_WIDTH / 3 : 0 }}
+					contentContainerStyle={[
+						styles.scrollStyle,
+						{
+							paddingBottom: audit ? SCREEN_WIDTH / 3 : 0
+						}
+					]}
 					keyboardShouldPersistTaps="always"
 					showsVerticalScrollIndicator={false}
 					bounces={false}
+					scrollEnabled={!config.isFullScreen}
+					onScroll={this.onScroll}
 				>
 					<View style={styles.content}>
-						<Animated.View style={bodyStyle} onLayout={this._onBodyLayout}>
-							{question.submit === 0 ? (
-								<AuditTitle navigation={navigation} />
-							) : (
-								<UserInfo question={question} navigation={navigation} />
-							)}
-							<QuestionBody question={question} />
+						<Animated.View style={[{ marginHorizontal: PxFit(Theme.itemSpace) }, bodyStyle]}>
+							<UserInfo
+								question={question}
+								navigation={navigation}
+								shieldingAd={this.state.shieldingAd}
+								category={category}
+							/>
+							<QuestionBody question={question} audit={audit} />
 						</Animated.View>
-						<QuestionOptions
-							selections={question.selections_array}
-							onSelectOption={this.selectOption}
-							submited={question.submit === 0 || submited}
-							answer={question.answer}
-							selectedOption={answer}
-						/>
+						{question.video && question.video.url && (
+							<Player style={{ marginTop: PxFit(Theme.itemSpace) }} video={question.video} />
+						)}
+
+						<View style={{ marginHorizontal: PxFit(Theme.itemSpace), marginTop: PxFit(20) }}>
+							<QuestionOptions
+								questionId={question.id}
+								selections={question.selections_array}
+								onSelectOption={this.selectOption}
+								submited={audit || submited}
+								answer={question.answer}
+								selectedOption={answer}
+							/>
+						</View>
 					</View>
-					<AnswerCorrectRate correct={question.correct_count} count={question.count} />
+					<View
+						style={{ marginHorizontal: PxFit(Theme.itemSpace), zIndex: -1 }}
+						ref={ref => (this.markView = ref)}
+					>
+						{audit ? (
+							<AuditTitle navigation={navigation} />
+						) : (
+							<AnswerBar isShow={audit || submited} question={question} navigation={navigation} />
+						)}
+						{(audit || submited) && (
+							<VideoExplain video={Tools.syncGetter('explanation.video', question)} />
+						)}
+						{(audit || submited) && (
+							<Explain
+								text={Tools.syncGetter('explanation.content', question)}
+								picture={Tools.syncGetter('explanation.images.0.path', question)}
+							/>
+						)}
+					</View>
+					{audit && <Audit status={auditStatus} onSubmitOpinion={this.onSubmitOpinion} />}
 				</ScrollView>
-				{question.submit === 0 ? (
-					<Audit navigation={navigation} nextQuestion={this.nextQuestion} />
-				) : (
-					<Animated.View style={footerStyle} onLayout={this._onFooterLayout}>
-						<FooterBar
-							navigation={navigation}
-							question={question}
-							submited={submited}
-							answer={answer}
-							showComment={this.showComment}
-							oSubmit={this.onSubmit}
-						/>
+				{!config.isFullScreen && (
+					<Animated.View style={footerStyle}>
+						{audit ? (
+							<FooterBar
+								audit
+								answer
+								question={question}
+								navigation={navigation}
+								submited={submited}
+								showComment={this.showComment}
+								oSubmit={this.nextQuestion}
+							/>
+						) : (
+							<FooterBar
+								navigation={navigation}
+								question={question}
+								submited={submited}
+								answer={answer}
+								showComment={this.commentHandler}
+								oSubmit={this.onSubmit}
+							/>
+						)}
 					</Animated.View>
 				)}
-				<CommentOverlay visible={showComment} onHide={this.hideComment} questionId={question.id} />
+				<UpwardImage
+					ref={ref => (this._upwardImage = ref)}
+					style={{ bottom: PxFit(48) + Theme.HOME_INDICATOR_HEIGHT }}
+				/>
 			</React.Fragment>
 		);
 	};
 
 	render() {
+		const { category = {} } = this.props.navigation.state.params;
 		return (
-			<PageContainer
-				title="答题"
-				autoKeyboardInsets={false}
-				onWillBlur={this.hideComment}
-				rightView={
-					<TouchFeedback style={styles.optionsButton} onPress={this.showOptions}>
-						<Iconfont name="more-horizontal" color="#fff" size={PxFit(18)} />
-					</TouchFeedback>
-				}
-			>
-				<View style={styles.container}>{this.renderContent()}</View>
-			</PageContainer>
+			<React.Fragment>
+				<PageContainer
+					title={category.name || '答题'}
+					autoKeyboardInsets={false}
+					onWillBlur={this.hideComment}
+					rightView={
+						<TouchFeedback
+							disabled={!this.state.question}
+							style={styles.optionsButton}
+							onPress={this.showOptions}
+						>
+							<Iconfont name="more-vertical" color="#fff" size={PxFit(18)} />
+						</TouchFeedback>
+					}
+					hiddenNavBar={config.isFullScreen}
+					onLayout={this.onContainerLayout}
+				>
+					{config.isFullScreen && <StatusBar translucent={true} hidden />}
+
+					<View style={styles.container}>{this.renderContent()}</View>
+				</PageContainer>
+				<CommentOverlay ref={ref => (this._commentOverlay = ref)} question={this.state.question} />
+			</React.Fragment>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#fff'
+		flex: 1
+	},
+	scrollStyle: {
+		flexGrow: 1,
+		backgroundColor: '#fefefe'
 	},
 	optionsButton: {
 		flex: 1,
+		width: PxFit(40),
+		alignItems: 'flex-end',
 		justifyContent: 'center'
 	},
-	optionsText: { fontSize: PxFit(15), textAlign: 'center', color: Theme.secondaryColor },
 	content: {
 		paddingTop: PxFit(20),
-		paddingHorizontal: PxFit(Theme.itemSpace)
+		marginBottom: PxFit(Theme.itemSpace)
 	},
-	submitWrap: {
-		marginTop: PxFit(50),
-		marginBottom: PxFit(30)
-	},
-	tipsView: {
-		marginHorizontal: PxFit(Theme.itemSpace),
-		padding: PxFit(10)
-	},
-	answerText: {
-		fontSize: PxFit(15),
-		color: Theme.defaultTextColor,
-		marginBottom: PxFit(5)
-	},
-	curationText: {
-		fontSize: PxFit(13),
-		color: Theme.subTextColor
+	withdrawProgress: {
+		position: 'absolute',
+		right: PxFit(20),
+		bottom: PxFit(80) + Theme.HOME_INDICATOR_HEIGHT
 	}
 });
 
 export default compose(
 	withApollo,
-	graphql(QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }),
-	graphql(QuestionListQuery, {
-		options: props => {
-			return {
-				variables: { category_id: props.navigation.getParam('category', {}).id, limit: 10 },
-				fetchPolicy: 'network-only'
-			};
-		}
-	}),
-	connect(store => ({
-		user: store.users.user,
-		noTicketTips: store.users.noTicketTips
-	}))
+	graphql(GQL.QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }),
+	graphql(GQL.auditMutation, { name: 'auditMutation' }),
+	graphql(GQL.ShieldingCategoryAdMutation, { name: 'ShieldingCategoryAd' }),
+	graphql(GQL.UserMeansQuery, {
+		options: props => ({ variables: { id: app.me.id } })
+	})
 )(index);

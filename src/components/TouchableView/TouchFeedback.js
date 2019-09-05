@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 class TouchFeedback extends Component {
 	static propTypes = {
@@ -25,17 +26,49 @@ class TouchFeedback extends Component {
 			if (TOKEN) {
 				callback && callback();
 			} else {
-				navigation.navigate('Register');
+				navigation.navigate('Login');
 			}
 		};
 	}
 
+	checkNetwork(submit) {
+		NetInfo.isConnected.fetch().then(isConnected => {
+			if (isConnected) {
+				submit && submit();
+			} else {
+				Toast.show({ content: '网络错误,请检查是否连接网络' });
+			}
+		});
+	}
+
 	buildPorps() {
-		let { authenticated, navigation, onPress, ...props } = this.props;
+		let { authenticated, navigation, onPress, disabled, checkNetwork, style, ...props } = this.props;
 		if (authenticated && navigation) {
 			onPress = this.middleware(onPress, navigation);
 		}
-		return { onPress, ...props };
+
+		if (checkNetwork) {
+			onPress = this.checkNetwork(onPress);
+		}
+
+		if (disabled) {
+			if (style instanceof Array) {
+				style = [
+					{
+						opacity: 0.6
+					},
+					...style
+				];
+			} else {
+				style = [
+					{
+						opacity: 0.6
+					},
+					style
+				];
+			}
+		}
+		return { onPress, disabled, style, ...props };
 	}
 
 	render() {

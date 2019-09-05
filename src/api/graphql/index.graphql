@@ -1,0 +1,17 @@
+#import './comment/index.graphql'
+#import './contribute/index.graphql'
+#import './feedback/index.graphql'
+#import './like/index.graphql'
+#import './notification/index.graphql'
+#import './question/index.graphql'
+#import './report/index.graphql'
+#import './share/index.graphql'
+#import './task/index.graphql'
+#import './user/index.graphql'
+#import './withdraw/index.graphql'
+
+query me {
+	user {
+		id
+	}
+}

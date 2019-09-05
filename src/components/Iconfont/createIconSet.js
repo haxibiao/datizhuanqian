@@ -18,7 +18,7 @@ export default function(glyphMap, fontName, expoAssetId) {
 			fontIsLoaded: true //Font.isLoaded(fontName),
 		};
 
-		async componentWillMount() {
+		async componentDidMount() {
 			this._mounted = true;
 			if (!this.state.fontIsLoaded) {
 				// await Font.loadAsync(font);

@@ -5,8 +5,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Iconfont } from '../../../components';
-import { Theme } from '../../../utils';
+import { Iconfont } from 'components';
+import { Theme, Tools } from 'utils';
 
 class CurationNotificationItem extends Component {
 	constructor(props) {
@@ -15,6 +15,7 @@ class CurationNotificationItem extends Component {
 	}
 	render() {
 		const { navigation, notification } = this.props;
+		let type = Tools.syncGetter('curation.type', notification);
 		return (
 			<View style={styles.item}>
 				<View style={styles.titleInfo}>
@@ -23,14 +24,16 @@ class CurationNotificationItem extends Component {
 				</View>
 				<View style={styles.bottomInfo}>
 					<Text style={styles.text}>已被采纳</Text>
-					<Text style={styles.infoItem}>奖励：{`${notification.curation.gold_awarded}智慧点`} </Text>
-					{notification.curation.type == 0 && <Text style={styles.infoItem}>类型：题干有误</Text>}
-					{notification.curation.type == 1 && <Text style={styles.infoItem}>类型：答案有误</Text>}
-					{notification.curation.type == 2 && <Text style={styles.infoItem}>类型：图片缺少或不清晰</Text>}
-					{notification.curation.type == 3 && <Text style={styles.infoItem}>类型：其他</Text>}
-					<Text style={styles.infoItem}>时间：{notification.curation.created_at}</Text>
+					<Text style={styles.infoItem}>
+						奖励：{`${Tools.syncGetter('curation.gold_awarded', notification)}智慧点`}{' '}
+					</Text>
+					{type == 0 && <Text style={styles.infoItem}>类型：题干有误</Text>}
+					{type == 1 && <Text style={styles.infoItem}>类型：答案有误</Text>}
+					{type == 2 && <Text style={styles.infoItem}>类型：图片缺少或不清晰</Text>}
+					{type == 3 && <Text style={styles.infoItem}>类型：其他</Text>}
+					<Text style={styles.infoItem}>时间：{Tools.syncGetter('curation.created_at', notification)}</Text>
 					<Text style={[styles.infoItem, { lineHeight: 22 }]}>
-						题目名：{notification.curation.question.description}
+						题目名：{Tools.syncGetter('curation.question.description', notification)}
 					</Text>
 				</View>
 			</View>

@@ -1,7 +1,7 @@
 /*
-* @flow
-* created by wyk made in 2018-12-05 21:08:02
-*/
+ * @flow
+ * created by wyk made in 2018-12-05 21:08:02
+ */
 import { Dimensions, Platform } from 'react-native';
 import Api from './Api';
 import Config from './Config';

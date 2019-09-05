@@ -1,13 +1,12 @@
 /*
  * @flow
- * created by wyk made in 2019-03-22 16:26:04
+ * created by wyk made in 2019-06-04 11:06:06
  */
 'use strict';
 
 import React, { Component } from 'react';
 import {
 	StyleSheet,
-	TouchableWithoutFeedback,
 	View,
 	ScrollView,
 	Image,
@@ -18,616 +17,428 @@ import {
 	BackHandler,
 	Platform
 } from 'react-native';
-import {
-	PageContainer,
-	TouchFeedback,
-	Iconfont,
-	Row,
-	CustomTextInput,
-	KeyboardSpacer,
-	DropdownMenu,
-	PullChooser,
-	ProgressOverlay,
-	OverlayViewer
-} from '../../components';
-import { Theme, PxFit, Api, Config, SCREEN_WIDTH, ISAndroid } from '../../utils';
+import { PageContainer, TouchFeedback, Iconfont, Row, CustomTextInput } from 'components';
+import { Theme, PxFit, Api, Config, Tools, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { createQuestionMutation } from '../../assets/graphql/task.graphql';
-import { CategoriesQuery, QuestionQuery } from '../../assets/graphql/question.graphql';
-import { compose, Query, Mutation, graphql } from 'react-apollo';
-import Video from 'react-native-video';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import { storage, keys } from 'store';
 
-import OptionItem from './components/OptionItem';
+import { compose, Query, Mutation, graphql, withApollo, GQL } from 'apollo';
+import { observer, Provider } from 'mobx-react';
+import ContributeStore from './ContributeStore';
+import Rules from './components/Rules';
+import MediaSelect from './components/MediaSelect';
+import Options from './components/Options';
+import Explain from '../question/components/Explain';
+import VideoExplain from '../question/components/VideoExplain';
 
-const ANSWERS = ['A', 'B', 'C', 'D'];
+import { Overlay } from 'teaset';
+import { app } from 'store';
 
-class index extends Component {
-	constructor(props) {
-		super(props);
-		this.categories = [];
-		this.dropData = null;
-		this.variables = null;
-		this.uploading = false;
-		this.state = {
-			uploadId: null,
-			category_id: null,
-			video_id: null,
-			description: null,
-			picture: null,
-			video_path: null,
-			optionValue: null,
-			answers: new Set(),
-			options: new Map(),
-			submitting: false
-		};
-	}
-
-	//组件初始渲染执行完毕后调用
-	componentDidMount() {
-		//如果当前是Android系统，则添加back键按下事件监听
-		if (Platform.OS === 'android') {
-			BackHandler.addEventListener('hardwareBackPress', () => {
-				return this.handleBackAndroid();
-			});
-		}
-	}
-
-	//组件被卸载前会执行
-	componentWillUnmount() {
-		//如果当前是Android系统，则移除back键按下事件监听
-		if (Platform.OS === 'android') {
-			BackHandler.removeEventListener('hardwareBackPress', () => {});
-		}
-	}
-
-	//back键按下事件响应
-	handleBackAndroid() {
-		// 如果存在上一页则后退;
-		if (this.uploading) {
-			return true; //接管默认行为
-		}
-		return false; //使用默认行为（直接退出应用）
-	}
-
-	onOptionInputFocus = () => {
-		this._ScrollView.scrollTo({
-			x: 0,
-			y: 300,
-			animated: true
-		});
-	};
-
-	buildDropData = data => {
-		if (data && data.categories) {
-			this.categories = data.categories;
-			data = data.categories.map((elem, index) => {
-				return elem.name;
-			});
-		} else {
-			data = [['请选择题库']];
-		}
-		this.dropData = [data];
-	};
-
-	addOption = () => {
-		let { optionValue, options } = this.state;
-		if (optionValue) {
-			options.set(optionValue, false);
-			this.setState({ options });
-		}
-		this.setState({ optionValue: null });
-		Keyboard.dismiss();
-	};
-
-	removeOption = option => {
-		let { options } = this.state;
-		options.delete(option.Text);
-		this.setState({ options }, () => {
-			this.reduceAnswer();
-		});
-	};
-
-	reduceAnswer = option => {
-		let { options, answers } = this.state;
-		if (option) {
-			if (answers.has(option.Value)) {
-				answers.delete(option.Value);
-				options.set(option.Text, false);
-			} else {
-				answers.add(option.Value);
-				options.set(option.Text, true);
-			}
-		} else {
-			let i = 0;
-			answers.clear();
-			options.forEach((value, key) => {
-				if (value === true) {
-					answers.add(ANSWERS[i]);
-				}
-				i++;
-			});
-		}
-		answers = new Set([...answers].sort());
-		this.setState({ answers, options });
-	};
-
-	dropHandler = name => {
-		this.categories.some((elem, i) => {
-			if (elem.name === name) {
-				this.setState({ category_id: elem.id });
-				return true;
-			}
-		});
-	};
-
-	showSelected = () => {
-		let { favorited } = this.state;
-		let { login, navigation, favoriteArticle } = this.props;
-		PullChooser.show([
-			{
-				title: '视频',
-				onPress: () => this.videoPicke()
-			},
-			{
-				title: '图片',
-				onPress: () => this.imagePicke()
-			}
-		]);
-	};
-
-	imagePicke = () => {
-		Api.imagePicker(
-			image => {
-				image = `data:${image.mime};base64,${image.data}`;
-				this.setState({ picture: image });
-			},
-			{
-				multiple: false,
-				includeBase64: true
-			}
-		);
-	};
-
-	videoPicke = () => {
-		Api.videoPicker(
-			video => {
-				this.setState({ video_path: video.path });
-			},
-			{
-				onBeforeUpload: metadata => {
-					if (metadata.duration > 15) {
-						this.setState({ video_path: null });
-						Toast.show({ content: '抱歉，视频时长需在15秒以内' });
-						throw '视频时长需在15秒以内';
-					}
-				},
-				onStarted: uploadId => {
-					ProgressOverlay.show('正在上传视频');
-					this.uploading = true;
-					this.setState({ uploadId });
-				},
-				onProcess: progress => {
-					console.log('test progress', progress);
-					ProgressOverlay.progress(progress);
-				},
-				onCancelled: () => {
-					console.log('onCancelled');
-				},
-				onCompleted: async video => {
-					if (this.uploading) {
-						Api.saveVideo(
-							video,
-							video => {
-								ProgressOverlay.hide();
-								this.uploading = false;
-								this.setState({ video_id: video.id });
-							},
-							this.onUploadError
-						);
-					}
-				},
-				onError: this.onUploadError
-			}
-		);
-	};
-
-	onUploadError = () => {
-		ProgressOverlay.hide();
-		this.uploading = false;
-		Toast.show({ content: '视频上传失败' });
-		this.setState({ video_path: null });
-	};
-
-	onCancelUpload = () => {
-		if (this.uploading) {
-			ISAndroid && Api.cancelUpload(this.state.uploadId);
-			ProgressOverlay.hide();
-			this.uploading = false;
-			this.setState({ uploadId: null, video_path: null });
-		}
-	};
-
-	closeMedia = () => {
-		if (this.state.video_path) {
-			this.setState({ uploadId: null, video_path: null, video_id: null });
-		} else {
-			this.setState({ picture: null });
-		}
-	};
-
-	showPicture = url => {
-		let overlayView = (
-			<ImageViewer onSwipeDown={() => OverlayViewer.hide()} imageUrls={[{ url }]} enableSwipeDown />
-		);
-		OverlayViewer.show(overlayView);
-	};
-
-	reviewVideo = path => {
-		let overlayView = (
-			<Video
-				source={{
-					uri: path
-				}}
-				style={styles.videoViewer}
-				muted={false}
-				paused={false}
-				resizeMode="contain"
-			/>
-		);
-		OverlayViewer.show(overlayView);
-	};
-
-	buildVariables = () => {
-		let { video_path, category_id, video_id, description, picture, options, answers } = this.state;
-		if (video_path && !video_id) {
-			return null;
-		}
-		let selections = [...options].map((option, index) => {
-			if (option) {
-				return { Value: ANSWERS[index], Text: option[0] };
-			}
-		});
-		if (category_id && description && description.length > 7 && selections.length > 1 && answers.size > 0) {
-			return {
-				data: {
-					category_id,
-					description,
-					selections,
-					video_id,
-					image: picture,
-					answers: [...answers]
-				}
+let contributeStore;
+const Contribute = observer(
+	class index extends Component {
+		constructor(props) {
+			super(props);
+			contributeStore = new ContributeStore();
+			contributeStore.setVideoDuration(app.me.video_duration);
+			contributeStore.setExplainVideoDuration(app.me.explanation_video_duration);
+			this.state = {
+				submitting: false
 			};
 		}
-	};
 
-	onSubmit = createQuestion => {
-		return () => {
-			if (!this.variables) {
-				Toast.show({ content: '请确保分类/题干/答案填写完整' });
-				return;
+		componentDidMount() {
+			this.loadCache();
+		}
+
+		componentWillMount() {
+			// contributeStore.removeInstance();
+		}
+
+		async loadCache() {
+			let contributeRuleRead = (await storage.getItem(keys.contributeRuleRead)) || false;
+
+			if (!contributeRuleRead) {
+				let overlayView = (
+					<Overlay.View animated>
+						<View style={styles.overlayInner}>
+							<Rules hide={() => Overlay.hide(this.OverlayKey)} />
+						</View>
+					</Overlay.View>
+				);
+				this.OverlayKey = Overlay.show(overlayView);
 			}
-			this.setState({ submitting: true });
-			createQuestion();
+		}
+
+		onSubmit = () => {
+			if (contributeStore.validator(contributeStore.variables)) {
+				this.setState({
+					submitting: true
+				});
+				let { explanationVariables } = contributeStore;
+				if (explanationVariables) {
+					this.createExplanation(explanationVariables);
+				} else {
+					this.createQuestion();
+				}
+			}
 		};
-	};
 
-	onCompleted = () => {
-		this.setState({ submitting: false });
-		this.props.navigation.replace('ContributeSubmited');
-	};
+		async createQuestion() {
+			let { variables } = contributeStore;
+			try {
+				await this.props.createQuestion({
+					variables: {
+						data: {
+							...variables,
+							explanation_id: Tools.syncGetter('data.createExplanation.id', this.explanation) || null
+						}
+					}
+				});
+				this.onCompleted();
+			} catch (error) {
+				this.onError(error);
+			}
+		}
 
-	onError = error => {
-		console.log(error);
-		this.setState({ submitting: false });
-		Toast.show({ content: '提交出错' });
-	};
+		onError = error => {
+			this.setState({
+				submitting: false
+			});
+			console.log('error', error);
+			let str = error.toString().replace(/Error: GraphQL error: /, '');
+			Toast.show({
+				content: str
+			});
+		};
 
-	render() {
-		let { navigation, user, login, data } = this.props;
-		let { category_id, description, picture, video_path, options, optionValue, answers, submitting } = this.state;
-		let disableAddButton = options.size >= 4 || !optionValue;
-		this.buildDropData(data);
-		this.variables = this.buildVariables();
-		return (
-			<Mutation
-				mutation={createQuestionMutation}
-				variables={this.variables}
-				onCompleted={this.onCompleted}
-				onError={this.onError}
-			>
-				{createQuestion => {
-					return (
-						<PageContainer
-							white
-							title="创建问题"
-							submitting={submitting}
-							rightView={
-								<TouchFeedback style={styles.saveButton} onPress={this.onSubmit(createQuestion)}>
-									<Text style={styles.saveText}>提交</Text>
-								</TouchFeedback>
-							}
-						>
-							<View style={styles.container}>
-								<DropdownMenu
-									dropStyle={styles.dropStyle}
-									dropItemStyle={{ alignItems: 'flex-end' }}
-									lables={['请选择题库']}
-									lable={
-										<Row>
-											<Image
-												style={{ width: PxFit(14), height: PxFit(14), marginRight: PxFit(4) }}
-												source={require('../../assets/images/category.png')}
-											/>
-											<Text style={styles.lableText}>题目分类</Text>
-										</Row>
-									}
-									bgColor={'white'}
-									tintColor={'#666666'}
-									activityTintColor={Theme.primaryColor}
-									handler={(selection, row) => this.dropHandler(this.dropData[selection][row])}
-									data={this.dropData}
-								>
-									<ScrollView
-										keyboardDismissMode={'none'}
-										style={styles.container}
-										contentContainerStyle={styles.scrollStyle}
-										ref={ref => (this._ScrollView = ref)}
-									>
-										<View style={styles.main}>
-											<View style={styles.section_top}>
-												<CustomTextInput
-													style={styles.questionInput}
-													onChangeText={text => this.setState({ description: text.trim() })}
-													multiline
-													maxLength={300}
-													textAlignVertical="top"
-													placeholder="填写题目题干，不少于8个字"
-												/>
-												<View style={styles.mediaSelect}>
-													{picture ? (
-														<TouchFeedback onPress={() => this.showPicture(picture)}>
-															<Image source={{ uri: picture }} style={styles.addImage} />
-															<TouchableOpacity
-																style={styles.closeBtn}
-																onPress={this.closeMedia}
-															>
-																<Iconfont
-																	name={'close'}
-																	size={PxFit(20)}
-																	color="#fff"
-																/>
-															</TouchableOpacity>
-														</TouchFeedback>
-													) : video_path ? (
-														<TouchFeedback onPress={() => this.reviewVideo(video_path)}>
-															<Video
-																muted
-																source={{ uri: video_path }}
-																style={styles.addImage}
-																resizeMode="cover"
-																repeat
-															/>
-															<TouchableOpacity
-																style={styles.closeBtn}
-																onPress={this.closeMedia}
-															>
-																<Iconfont
-																	name={'close'}
-																	size={PxFit(20)}
-																	color="#fff"
-																/>
-															</TouchableOpacity>
-														</TouchFeedback>
-													) : (
-														<TouchableOpacity
-															style={styles.addImage}
-															onPress={this.showSelected}
-														>
-															<Image
-																style={{ width: PxFit(40), height: PxFit(30) }}
-																source={require('../../assets/images/camera.png')}
-															/>
-														</TouchableOpacity>
-													)}
-													<TouchFeedback
-														onPress={() => {
-															navigation.navigate('ContributeRule');
-														}}
-													>
-														<Row>
-															<Iconfont
-																name={'question'}
-																size={PxFit(14)}
-																color={Theme.errorColor}
-															/>
-															<Text style={styles.ruleText}>出题规则</Text>
-														</Row>
-													</TouchFeedback>
-												</View>
-											</View>
-											<View style={styles.answerContainer}>
-												<Row>
-													<Text style={styles.lableText}>答案选项</Text>
-													<Text style={styles.answerTip}>
-														(别忘记点击选项设置来正确答案哦)
-													</Text>
-												</Row>
-												<Row style={{ marginTop: PxFit(6) }}>
-													<Text style={styles.answerText}>正确答案：</Text>
-													<Text style={[styles.answerText, { color: Theme.linkColor }]}>
-														{[...answers].join(',')}
-													</Text>
-												</Row>
-											</View>
-											{[...options].map((option, index) => {
-												return (
-													<OptionItem
-														key={index}
-														style={{
-															paddingRight: PxFit(Theme.itemSpace),
-															marginTop: PxFit(Theme.itemSpace) * 2
-														}}
-														option={{ Value: ANSWERS[index], Text: option[0] }}
-														isAnswer={option[1]}
-														reduceAnswer={this.reduceAnswer}
-														remove={this.removeOption}
-													/>
-												);
-											})}
+		onCompleted() {
+			let { client, navigation } = this.props;
+			let { userCache } = app;
+			this.setState({
+				submitting: false
+			});
+			client.query({
+				query: GQL.UserMetaQuery,
+				variables: {
+					id: app.me.id
+				},
+				fetchPolicy: 'network-only'
+			});
+			contributeStore.removeInstance();
+			navigation.replace('ContributeSubmited', {
+				noTicket: userCache.ticket === 0
+			});
+		}
+
+		async createExplanation(explanationVariables) {
+			try {
+				this.explanation = await this.props.createExplanation({
+					variables: explanationVariables
+				});
+				this.createQuestion();
+			} catch (error) {
+				this.setState({
+					submitting: false
+				});
+				let str = error.toString().replace(/Error: GraphQL error: /, '');
+				Toast.show({ content: str });
+			}
+		}
+
+		render() {
+			let { navigation, data } = this.props;
+			let {
+				inputDescription,
+				category,
+				description,
+				options,
+				optionValue,
+				inputOptionValue,
+				addOption,
+				picture,
+				video_path,
+				videoPicke,
+				imagePicke,
+				explain_text,
+				explain_picture,
+				explain_video,
+				explain_video_path
+			} = contributeStore;
+			let disableAddButton = options.size >= 4 || !optionValue;
+			return (
+				<Provider contributeStore={contributeStore}>
+					<PageContainer
+						white
+						submitting={this.state.submitting}
+						title="创建题目"
+						rightView={
+							<TouchFeedback style={styles.saveButton} onPress={this.onSubmit}>
+								<Text style={styles.saveText}> 提交 </Text>
+							</TouchFeedback>
+						}
+					>
+						<View style={styles.container}>
+							<ScrollView
+								showsVerticalScrollIndicator={false}
+								keyboardShouldPersistTaps="handled"
+								style={styles.container}
+								contentContainerStyle={styles.scrollStyle}
+								ref={ref => (this._scrollView = ref)}
+							>
+								<View style={styles.question}>
+									<View style={styles.questionBody}>
+										<View style={styles.borderItem}>
+											<Text style={styles.itemTypeText}>题目题干</Text>
+											<TouchFeedback onPress={() => navigation.navigate('ContributeRule')}>
+												<Text
+													style={{
+														fontSize: PxFit(14),
+														color: Theme.primaryColor
+													}}
+												>
+													#出题规则
+												</Text>
+											</TouchFeedback>
 										</View>
-									</ScrollView>
-									<View style={styles.bottom}>
-										<View style={styles.inputContainer}>
+										<View style={styles.questionContainer}>
 											<CustomTextInput
-												style={styles.optionInput}
-												maxLength={80}
-												value={optionValue}
-												onChangeText={text => this.setState({ optionValue: text.trim() })}
-												placeholder="请填写答案选项(2~4个)"
-												onFocus={this.onOptionInputFocus}
+												style={styles.questionInput}
+												value={description}
+												onChangeText={inputDescription}
+												multiline
+												maxLength={300}
+												textAlignVertical="top"
+												placeholder="填写题干，不少于8个字......"
 											/>
-											<TouchableOpacity
-												disabled={disableAddButton}
-												style={[
-													styles.selectionButton,
-													!disableAddButton && { backgroundColor: Theme.primaryColor }
-												]}
-												onPress={this.addOption}
-											>
-												<Text style={styles.addText}>添 加</Text>
-											</TouchableOpacity>
+											{!!(picture || video_path) && <MediaSelect />}
+										</View>
+										<View style={styles.mediaPicker}>
+											<Row>
+												<TouchFeedback
+													onPress={() => imagePicke()}
+													disabled={!!(picture || video_path)}
+												>
+													<Image
+														style={styles.mediaIcon}
+														source={require('../../assets/images/superb_ic_publish_pic.png')}
+													/>
+												</TouchFeedback>
+												<TouchFeedback
+													onPress={() => videoPicke()}
+													disabled={!!(picture || video_path)}
+												>
+													<Image
+														style={styles.mediaIcon}
+														source={require('../../assets/images/superb_ic_publish_video.png')}
+													/>
+												</TouchFeedback>
+											</Row>
+										</View>
+										<View
+											style={[
+												styles.borderItem,
+												{ justifyContent: 'flex-start', marginBottom: 0 }
+											]}
+										>
+											<Text style={styles.itemTypeText}>答案选项</Text>
+											<Text style={styles.tips}>(*依次添加答案选项)</Text>
 										</View>
 									</View>
-								</DropdownMenu>
-							</View>
-						</PageContainer>
-					);
-				}}
-			</Mutation>
-		);
+									<View style={styles.optionInputWrap}>
+										<CustomTextInput
+											style={styles.optionInput}
+											value={optionValue}
+											onChangeText={inputOptionValue}
+											placeholder="填写答案选项......"
+											maxLength={100}
+										/>
+										{!disableAddButton && (
+											<TouchableOpacity style={styles.addOptionButton} onPress={addOption}>
+												<Text style={styles.addOptionText}> 添 加 </Text>
+											</TouchableOpacity>
+										)}
+									</View>
+									<TouchFeedback onPress={() => navigation.navigate('EditCategory')}>
+										<View style={styles.operationItem}>
+											<Row>
+												<Image
+													style={styles.metaIcon}
+													source={require('../../assets/images/superb_ic_publish_dubbing.png')}
+												/>
+												<Text style={styles.itemTypeText}>所在题库</Text>
+												{category && category.name && (
+													<Text style={styles.categoryText}>（{category.name}）</Text>
+												)}
+											</Row>
+											<Iconfont name="right" size={PxFit(16)} color={Theme.subTextColor} />
+										</View>
+									</TouchFeedback>
+									<TouchFeedback onPress={() => navigation.navigate('EditExplain')}>
+										<View style={styles.operationItem}>
+											<Row>
+												<Image
+													style={styles.metaIcon}
+													source={require('../../assets/images/superb_ic_publish_link.png')}
+												/>
+												<Text style={styles.itemTypeText}>题目解析</Text>
+											</Row>
+											<Iconfont name="right" size={PxFit(16)} color={Theme.subTextColor} />
+										</View>
+									</TouchFeedback>
+								</View>
+								<Options />
+								<View style={{ marginHorizontal: PxFit(Theme.itemSpace) }}>
+									<VideoExplain
+										video={explain_video && { ...explain_video, url: explain_video_path }}
+									/>
+									<Explain text={explain_text} picture={explain_picture} />
+								</View>
+							</ScrollView>
+						</View>
+					</PageContainer>
+				</Provider>
+			);
+		}
 	}
-}
+);
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: Theme.groundColour
 	},
 	saveButton: {
 		flex: 1,
 		justifyContent: 'center'
 	},
-	saveText: { fontSize: PxFit(15), textAlign: 'center', color: Theme.secondaryColor },
-	dropStyle: {
-		paddingHorizontal: PxFit(Theme.itemSpace),
-		borderBottomWidth: PxFit(0.5),
-		borderColor: Theme.borderColor
+	saveText: {
+		fontSize: PxFit(15),
+		textAlign: 'center',
+		color: Theme.primaryColor
 	},
 	scrollStyle: {
 		flexGrow: 1,
 		paddingBottom: Theme.HOME_INDICATOR_HEIGHT + 50
 	},
-	submitButton: {
-		width: 60,
-		height: 25,
-		backgroundColor: 'transparent',
-		flexDirection: 'row',
-		alignItems: 'center'
+	question: {
+		backgroundColor: '#fff',
+		paddingLeft: PxFit(Theme.itemSpace)
 	},
-	lableText: {
-		fontSize: PxFit(15),
-		color: Theme.defaultTextColor
-	},
-	main: { paddingLeft: PxFit(Theme.itemSpace) },
-	section_top: {
-		paddingVertical: PxFit(Theme.itemSpace),
-		borderBottomWidth: PxFit(0.5),
-		borderColor: Theme.borderColor
-	},
-	mediaSelect: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'flex-end',
+	questionBody: {
 		marginTop: PxFit(Theme.itemSpace),
-		paddingRight: PxFit(Theme.itemSpace)
+		marginRight: PxFit(Theme.itemSpace)
 	},
-	questionInput: {
-		fontSize: PxFit(15),
-		lineHeight: PxFit(20),
-		height: PxFit(100),
-		backgroundColor: '#fff'
+	borderItem: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		marginBottom: PxFit(10),
+		paddingLeft: PxFit(6),
+		borderLeftWidth: PxFit(3),
+		borderLeftColor: Theme.primaryColor
 	},
-	addImage: {
-		width: PxFit(100),
-		height: PxFit(100),
-		backgroundColor: Theme.groundColour,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	closeBtn: {
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		width: PxFit(20),
-		height: PxFit(20),
-		backgroundColor: 'rgba(0,0,0,0.2)',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	ruleText: { fontSize: PxFit(13), color: Theme.errorColor, marginLeft: PxFit(2) },
-	answerContainer: {
-		marginTop: PxFit(Theme.itemSpace)
-	},
-	answerText: {
-		fontSize: PxFit(14),
-		lineHeight: PxFit(16),
-		color: Theme.subTextColor
-	},
-	answerTip: {
+	tips: {
 		marginLeft: PxFit(5),
 		fontSize: PxFit(12),
-		color: Theme.secondaryColor
+		color: Theme.subTextColor
 	},
-	bottom: {
-		paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
-		backgroundColor: '#f7f7f7'
+	questionContainer: {
+		padding: PxFit(10),
+		borderWidth: PxFit(1),
+		borderRadius: PxFit(5),
+		borderColor: Theme.borderColor,
+		alignItems: 'flex-end'
 	},
-	inputContainer: {
-		height: PxFit(50),
-		paddingHorizontal: PxFit(Theme.itemSpace),
+	questionInput: {
+		alignSelf: 'stretch',
+		height: PxFit(100),
+		fontSize: PxFit(14),
+		lineHeight: PxFit(20),
+		backgroundColor: '#fff'
+	},
+	mediaPicker: {
+		marginTop: PxFit(10),
+		marginBottom: PxFit(Theme.itemSpace),
 		flexDirection: 'row',
-		alignItems: 'center'
+		justifyContent: 'space-between',
+		alignItems: 'flex-end'
+	},
+	optionInputWrap: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		height: PxFit(50),
+		borderBottomWidth: PxFit(0.5),
+		borderColor: Theme.borderColor
 	},
 	optionInput: {
 		flex: 1,
 		alignSelf: 'stretch',
-		justifyContent: 'center',
-		marginRight: PxFit(15)
+		fontSize: PxFit(14),
+		lineHeight: PxFit(20)
 	},
-	selectionButton: {
-		width: PxFit(58),
-		borderRadius: PxFit(4),
-		height: PxFit(34),
-		backgroundColor: '#A0A0A0',
+	addOptionButton: {
+		width: PxFit(52),
+		height: PxFit(30),
+		marginHorizontal: PxFit(10),
+		backgroundColor: Theme.primaryColor,
+		borderRadius: PxFit(5),
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	addText: {
+	addOptionText: {
 		fontSize: PxFit(15),
 		color: '#fff'
 	},
-	videoViewer: {
-		position: 'absolute',
-		width: '100%',
-		height: '100%'
+	operationItem: {
+		height: PxFit(52),
+		paddingRight: PxFit(Theme.itemSpace),
+		borderBottomWidth: PxFit(0.5),
+		borderColor: Theme.borderColor,
+		backgroundColor: '#fff',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
+	mediaIcon: {
+		width: PxFit(30),
+		height: PxFit(30),
+		marginRight: PxFit(15),
+		resizeMode: 'cover'
+	},
+	metaIcon: {
+		width: PxFit(25),
+		height: PxFit(25),
+		marginRight: PxFit(5),
+		resizeMode: 'cover'
+	},
+	itemTypeText: {
+		fontSize: PxFit(14),
+		color: Theme.defaultTextColor
+	},
+	categoryText: {
+		fontSize: PxFit(14),
+		color: Theme.primaryColor,
+		marginRight: PxFit(5)
+	},
+	overlayInner: {
+		flex: 1,
+		width: SCREEN_WIDTH,
+		height: SCREEN_HEIGHT,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 
 export default compose(
-	connect(store => ({ user: store.users.user, login: store.users.login })),
-	graphql(CategoriesQuery, { options: props => ({ variables: { limit: 100 } }) })
-)(index);
+	withApollo,
+	graphql(GQL.SearchCategoriesQuery, {
+		options: props => ({
+			variables: {
+				limit: 999
+			}
+		})
+	}),
+	graphql(GQL.createExplanationMutation, { name: 'createExplanation' }),
+	graphql(GQL.createQuestionMutation, { name: 'createQuestion' })
+)(Contribute);

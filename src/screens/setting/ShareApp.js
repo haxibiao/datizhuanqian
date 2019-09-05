@@ -12,13 +12,13 @@ import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
 class ShareApp extends Component {
 	render() {
 		return (
-			<PageContainer title="分享给朋友" white>
+			<PageContainer title='分享给朋友' white>
 				<View style={styles.container}>
 					<Image
 						source={{ uri: 'https://datizhuanqian.com/picture/qrcode.png' }}
 						style={{ width: SCREEN_WIDTH / 3, height: SCREEN_WIDTH / 3 }}
 					/>
-					<Text style={styles.text}>扫描下载答题赚钱APP</Text>
+					<Text style={styles.text}>扫描下载{Config.AppName}APP</Text>
 				</View>
 			</PageContainer>
 		);

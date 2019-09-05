@@ -1,0 +1,73 @@
+# 用户出题
+mutation createQuestionMutation($data: CreateQuestionInputType) {
+	createQuestion(data: $data) {
+		id
+		description
+		answer
+		selections
+		video {
+			id
+			url
+			height
+			width
+			path
+			rotate
+			duration
+		}
+	}
+}
+
+# 用户出题解析
+mutation createExplanationMutation($content: String, $video_id: Int, $images: [String]) {
+	createExplanation(content: $content, video_id: $video_id, images: $images) {
+		id
+		content
+	}
+}
+
+# 发布题目(精力不足出题后暂存的或者撤回的)
+mutation publishQuestion($id: Int!) {
+	publishQuestion(id: $id)
+}
+
+# 撤回题目
+mutation removeQuestionMutation($id: Int) {
+	removeQuestion(id: $id)
+}
+
+# 删除题目
+mutation deleteQuestionMutation($id: Int) {
+	deleteQuestion(id: $id)
+}
+
+# 出题记录
+query mySubmitQuestionHistoryQuery($offset: Int, $limit: Int) {
+	user {
+		id
+		questions(offset: $offset, limit: $limit, order: CREATED_AT) {
+			id
+			description
+			created_at
+			image {
+				id
+				path
+			}
+			video {
+				id
+				url
+				path
+				cover
+			}
+			category {
+				id
+				name
+			}
+			submit
+			status
+			remark
+			count
+			accepted_count
+			declined_count
+		}
+	}
+}

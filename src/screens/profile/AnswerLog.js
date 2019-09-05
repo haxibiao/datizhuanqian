@@ -26,14 +26,10 @@ import {
 	ItemSeparator,
 	ListFooter,
 	Row
-} from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+} from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { answerHistoriesQuery } from '../../assets/graphql/user.graphql';
-import { toggleFavoriteMutation } from '../../assets/graphql/question.graphql';
-import { compose, Query, Mutation, graphql } from 'react-apollo';
+import { compose, Query, Mutation, graphql, GQL } from 'apollo';
 import Video from 'react-native-video';
 
 class AnswerLog extends Component {
@@ -49,7 +45,7 @@ class AnswerLog extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<Query query={answerHistoriesQuery} fetchPolicy="network-only">
+			<Query query={GQL.answerHistoriesQuery} fetchPolicy="network-only">
 				{({ data, loading, error, refetch, fetchMore }) => {
 					let answerHistories = Tools.syncGetter('user.answerHistories', data);
 					let empty = answerHistories && answerHistories.length === 0;
@@ -61,7 +57,12 @@ class AnswerLog extends Component {
 								data={answerHistories}
 								keyExtractor={(item, index) => index.toString()}
 								renderItem={({ item, index }) => <QuestionItem answer={item} navigation={navigation} />}
-								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
+								refreshControl={
+									<CustomRefreshControl
+										onRefresh={refetch}
+										reset={() => this.setState({ finished: false })}
+									/>
+								}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									fetchMore({
@@ -108,10 +109,9 @@ class QuestionItem extends Component {
 		let {
 			answer: { question, correct_count },
 			navigation,
-
 			index
 		} = this.props;
-		let { category, description } = question;
+		let { description, id } = question;
 
 		return (
 			<TouchableWithoutFeedback onPress={() => navigation.navigate('Question', { question })}>
@@ -125,9 +125,9 @@ class QuestionItem extends Component {
 						<View style={{ alignItems: 'flex-end' }}>
 							<TouchableOpacity
 								style={{ padding: PxFit(10) }}
-								onPress={() => navigation.navigate('Curation', { question })}
+								onPress={() => navigation.navigate('ReportQuestion', { question })}
 							>
-								<Text style={{ fontSize: PxFit(13), color: Theme.correctColor }}>题目纠错</Text>
+								<Text style={{ fontSize: PxFit(13), color: Theme.correctColor }}>举报</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -141,11 +141,7 @@ class QuestionItem extends Component {
 							>
 								{correct_count > 0 ? '您答对了' : '您答错了'}
 							</Text>
-							<Iconfont
-								name={correct_count > 0 ? 'correct' : 'close'}
-								size={PxFit(20)}
-								color={correct_count > 0 ? Theme.correctColor : Theme.errorColor}
-							/>
+							<Text style={[styles.answerText]}>#{id}</Text>
 						</View>
 					</View>
 				</View>
@@ -198,8 +194,7 @@ const styles = StyleSheet.create({
 });
 
 export default compose(
-	connect(store => ({ user: store.users.user, login: store.users.login })),
-	graphql(toggleFavoriteMutation, {
+	graphql(GQL.toggleFavoriteMutation, {
 		name: 'cancelFavorite'
 	})
 )(AnswerLog);

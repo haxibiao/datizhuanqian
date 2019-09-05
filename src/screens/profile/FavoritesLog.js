@@ -25,15 +25,9 @@ import {
 	ListFooter,
 	Row,
 	PlaceholderImage
-} from '../../components';
-import { Theme, PxFit, Config, Tools, SCREEN_WIDTH } from '../../utils';
-
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-import { FavoritesQuery } from '../../assets/graphql/user.graphql';
-import { toggleFavoriteMutation } from '../../assets/graphql/question.graphql';
-import { compose, Query, Mutation, graphql } from 'react-apollo';
-import Video from 'react-native-video';
+} from 'components';
+import { Theme, PxFit, Config, Tools, SCREEN_WIDTH } from 'utils';
+import { compose, Query, Mutation, graphql, GQL } from 'apollo';
 
 class FavoritesLog extends Component {
 	constructor(props) {
@@ -60,7 +54,7 @@ class FavoritesLog extends Component {
 		let { navigation } = this.props;
 
 		return (
-			<Query query={FavoritesQuery} fetchPolicy="network-only">
+			<Query query={GQL.FavoritesQuery} fetchPolicy="network-only">
 				{({ data, loading, error, refetch, fetchMore }) => {
 					let favorites = Tools.syncGetter('favorites', data);
 					let empty = favorites && favorites.length === 0;
@@ -78,7 +72,12 @@ class FavoritesLog extends Component {
 										cancelFavorite={this.cancelFavorite}
 									/>
 								)}
-								refreshControl={<CustomRefreshControl onRefresh={refetch} />}
+								refreshControl={
+									<CustomRefreshControl
+										onRefresh={refetch}
+										reset={() => this.setState({ finished: false })}
+									/>
+								}
 								onEndReachedThreshold={0.3}
 								onEndReached={() => {
 									fetchMore({
@@ -99,7 +98,7 @@ class FavoritesLog extends Component {
 												return prev;
 											}
 											return Object.assign({}, prev, {
-												questions: [...prev.favorites, ...fetchMoreResult.favorites]
+												favorites: [...prev.favorites, ...fetchMoreResult.favorites]
 											});
 										}
 									});
@@ -180,22 +179,17 @@ class QuestionItem extends Component {
 								</View>
 								{image && <PlaceholderImage source={{ uri: image.path }} style={styles.image} />}
 								{video && (
-									<View style={styles.image}>
-										<Video
-											source={{ uri: video.path }}
-											style={styles.fullScreen}
-											resizeMode="cover"
-											paused
-											muted
+									<View style={[styles.image, { backgroundColor: '#201e33' }]}>
+										<Image
+											source={{ uri: video.cover }}
+											style={{ width: PxFit(60), height: PxFit(60) }}
 										/>
-										<View style={styles.fullScreen}>
-											<Iconfont
-												name="paused"
-												size={PxFit(24)}
-												color="#fff"
-												style={{ opacity: 0.8 }}
-											/>
-										</View>
+										<Iconfont
+											name="paused"
+											size={PxFit(24)}
+											color="#fff"
+											style={styles.fullScreen}
+										/>
 									</View>
 								)}
 							</View>
@@ -249,17 +243,15 @@ const styles = StyleSheet.create({
 		height: PxFit(60),
 		borderRadius: PxFit(5),
 		resizeMode: 'cover',
-		marginLeft: PxFit(12)
+		marginLeft: PxFit(12),
+		overflow: 'hidden'
 	},
 	fullScreen: {
 		position: 'absolute',
-		top: 0,
-		left: 0,
+		top: PxFit(18),
+		left: PxFit(18),
 		bottom: 0,
-		right: 0,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: 'rgba(0,0,0,0.2)'
+		right: 0
 	},
 	meta: {
 		flexDirection: 'row',
@@ -273,8 +265,7 @@ const styles = StyleSheet.create({
 });
 
 export default compose(
-	connect(store => ({ user: store.users.user, login: store.users.login })),
-	graphql(toggleFavoriteMutation, {
+	graphql(GQL.toggleFavoriteMutation, {
 		name: 'cancelFavorite'
 	})
 )(FavoritesLog);

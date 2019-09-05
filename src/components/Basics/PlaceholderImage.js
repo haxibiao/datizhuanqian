@@ -30,7 +30,7 @@ class PlaceholderImage extends Component<Props> {
 	render() {
 		let { style, source, resizeMode } = this.props;
 		if (this.state.error || !source || !source.uri || !source.uri.includes('http')) {
-			source = { uri: `https://tuimeizi.cn/random?w=${style.width}&h=${style.height}` };
+			return <View style={[styles.container, style]} />;
 		}
 		return (
 			<View style={[styles.container, style]}>

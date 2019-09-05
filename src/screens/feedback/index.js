@@ -7,9 +7,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
 
-import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
-import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from '../../components';
+import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from 'components';
 
 import Feedback from './components/Feedback';
 import FeedbackList from './components/FeedbackList';

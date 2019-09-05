@@ -1,19 +1,19 @@
 /*
- * @flow
- * created by wyk made in 2018-12-06 17:06:35
+ * @Author: Gaoxuan
+ * @Date:   2019-08-01 10:20:58
  */
+
 import React from 'react';
-import { Platform, Image } from 'react-native';
+import { Platform, Image, Text } from 'react-native';
 import { StackNavigator, TabBarBottom, createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 
 import HomeScreen from '../screens/home';
 import TaskScreen from '../screens/task';
-import WithdrawScreen from '../screens/withdraws';
-import WalletScreen from '../screens/wallet';
+import WithdrawScreen from '../screens/withdraw';
 import ProfileScreen from '../screens/profile';
 import MainTabBar from './MainTabBar';
 import { Theme, PxFit } from '../utils';
-import { Iconfont } from '../components';
+import { Iconfont } from 'components';
 
 export default createBottomTabNavigator(
 	{
@@ -25,9 +25,9 @@ export default createBottomTabNavigator(
 			screen: TaskScreen,
 			navigationOptions: () => TabOptions('任务')
 		},
-		钱袋: {
-			screen: WalletScreen,
-			navigationOptions: () => TabOptions('钱袋')
+		提现: {
+			screen: WithdrawScreen,
+			navigationOptions: () => TabOptions('提现')
 		},
 		我的: {
 			screen: ProfileScreen,
@@ -96,7 +96,7 @@ const TabOptions = routeName => {
 				iconName = `order${focused ? '-fill' : ''}`;
 				iconSize = PxFit(21);
 				break;
-			case '钱袋':
+			case '提现':
 				iconName = `wallet${focused ? '-fill' : ''}`;
 				iconSize = PxFit(19);
 				break;

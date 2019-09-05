@@ -14,7 +14,10 @@ import TouchFeedback from '../TouchableView/TouchFeedback';
 type args = {
 	title?: string,
 	content: any,
-	onConfirm: Function
+	onConfirm: Function,
+	leftContent: string,
+	rightContent: string,
+	leftConfirm: Function
 };
 
 function renderContent(content) {
@@ -26,7 +29,7 @@ function renderContent(content) {
 }
 
 function PopOverlay(props: args) {
-	let { title, content, onConfirm } = props,
+	let { title, content, onConfirm, leftContent, rightContent, leftConfirm } = props,
 		popViewRef,
 		overlayView;
 	overlayView = (
@@ -43,9 +46,10 @@ function PopOverlay(props: args) {
 						style={styles.cancel}
 						onPress={() => {
 							popViewRef.close();
+							leftConfirm && leftConfirm();
 						}}
 					>
-						<Text style={styles.cancelText}>取消</Text>
+						<Text style={styles.cancelText}>{leftContent || '取消'}</Text>
 					</TouchFeedback>
 					<TouchFeedback
 						style={styles.confirm}
@@ -54,7 +58,7 @@ function PopOverlay(props: args) {
 							popViewRef.close();
 						}}
 					>
-						<Text style={styles.confirmText}>确定</Text>
+						<Text style={styles.confirmText}>{rightContent || '确定'}</Text>
 					</TouchFeedback>
 				</View>
 			</View>
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
 	},
 	messageText: {
 		fontSize: PxFit(16),
+		lineHeight: PxFit(20),
 		marginVertical: PxFit(20),
 		color: Theme.secondaryTextColor,
 		textAlign: 'center'

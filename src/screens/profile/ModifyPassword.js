@@ -6,14 +6,10 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { PageContainer, TouchFeedback, Button, CustomTextInput, KeyboardSpacer, SubmitLoading } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { PageContainer, TouchFeedback, Button, CustomTextInput, KeyboardSpacer, SubmitLoading } from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH } from 'utils';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
-
-import { UpdateUserPasswordMutation } from '../../assets/graphql/user.graphql';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, GQL } from 'apollo';
 
 class ModifyPassword extends Component {
 	constructor(props) {
@@ -147,4 +143,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default compose(graphql(UpdateUserPasswordMutation, { name: 'UpdateUserPasswordMutation' }))(ModifyPassword);
+export default compose(graphql(GQL.UpdateUserPasswordMutation, { name: 'UpdateUserPasswordMutation' }))(ModifyPassword);

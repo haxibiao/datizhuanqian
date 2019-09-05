@@ -5,8 +5,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
-import { Player } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { Player } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import OptionItem from './OptionItem';
 
@@ -17,13 +17,14 @@ class QuestionOption extends Component {
 	}
 
 	render() {
-		let { selections, submited, answer, selectedOption, onSelectOption } = this.props;
+		let { selections, submited, answer, selectedOption, onSelectOption, questionId } = this.props;
 		let singleOption = answer && answer.length === 1;
 		return (
-			<View style={styles.options}>
+			<View>
 				{selections.map((option, index) => {
 					return (
 						<OptionItem
+							questionId={questionId}
 							key={index}
 							even={index % 2 === 0}
 							submited={submited}
@@ -40,10 +41,6 @@ class QuestionOption extends Component {
 	}
 }
 
-const styles = StyleSheet.create({
-	options: {
-		marginHorizontal: PxFit(10)
-	}
-});
+const styles = StyleSheet.create({});
 
 export default QuestionOption;

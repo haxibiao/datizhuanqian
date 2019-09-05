@@ -5,11 +5,10 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
-import { Theme, Tools, PxFit } from '../../../utils';
-import { Avatar, Iconfont, UserTitle, GenderLabel } from '../../../components';
+import { Theme, Tools, PxFit } from 'utils';
+import { Avatar, Iconfont, UserTitle, GenderLabel } from 'components';
 
-import { Query } from 'react-apollo';
-import { feedbackQuery } from '../../../assets/graphql/feedback.graphql';
+import { Query, GQL } from 'apollo';
 
 import Loading from './Loading';
 
@@ -23,20 +22,19 @@ class FeedbackBody extends Component {
 		const { navigation, feedback_id, getHeight } = this.props;
 
 		return (
-			<Query query={feedbackQuery} variables={{ id: feedback_id }}>
+			<Query query={GQL.feedbackQuery} variables={{ id: feedback_id }}>
 				{({ data, error, loading }) => {
 					if (error) return null;
 					if (loading) return <Loading />;
 					if (!(data && data.feedback))
 						return <View style={{ height: Divice.height / 2, backgroundColor: Theme.white }} />;
 					let feedback = data.feedback;
-
 					return (
 						<View>
 							<View style={styles.header}>
 								<View style={styles.user}>
 									<TouchableOpacity
-										onPress={() => navigation.navigate('用户资料', { user_id: feedback.user.id })}
+										onPress={() => navigation.navigate('User', { user: feedback.user })}
 									>
 										<Avatar source={{ uri: feedback.user.avatar }} size={34} />
 									</TouchableOpacity>

@@ -1,10 +1,11 @@
 /*
-* @flow
-* created by wyk made in 2018-12-14 14:52:43
-*/
+ * @flow
+ * created by wyk made in 2018-12-14 14:52:43
+ */
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Iconfont from '../Iconfont';
+import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
 
 type Props = {
 	size?: number,
@@ -13,14 +14,14 @@ type Props = {
 
 class VideoMark extends Component<Props> {
 	static defaultProps = {
-		size: 60
+		size: PxFit(60)
 	};
 
 	render() {
 		let { size, style } = this.props;
 		return (
 			<View style={styles.wrap}>
-				<Iconfont name="play-large" size={size} color={'#fff'} style={{ opacity: 0.8 }} />
+				<Iconfont name="paused" size={size} color={'#fff'} style={{ opacity: 0.8 }} />
 			</View>
 		);
 	}

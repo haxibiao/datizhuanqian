@@ -12,12 +12,11 @@ const SCREEN_WIDTH = width;
 export function NumberFormat(number) {
 	number = parseFloat(number);
 	if (number >= 1000) {
-		return (number / 1000).toFixed(1) + 'k';
+		return Math.round((number / 1000).toFixed(2) * 10) / 10 + 'k';
 	} else {
 		return number || 0;
 	}
 }
-
 // time Format
 export function TimeFormat(second) {
 	let h = 0,

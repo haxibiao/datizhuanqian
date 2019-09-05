@@ -16,7 +16,7 @@ class Radio extends Component {
 				style={{
 					height: PxFit(20),
 					width: PxFit(20),
-					borderRadius: 10,
+					borderRadius: PxFit(10),
 					borderColor: type == value ? Theme.theme : Theme.tintGray,
 					borderWidth: PxFit(1),
 					justifyContent: 'center',

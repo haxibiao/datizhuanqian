@@ -50,7 +50,7 @@ class KeyboardSpacer extends Component<Props> {
 		}
 	}
 
-	componentWillUpdate(props, state) {
+	componentDidUpdate(props, state) {
 		if (state.keyboardHeight !== this.state.keyboardHeight) {
 			LayoutAnimation.configureNext({
 				duration: 500,
@@ -70,7 +70,7 @@ class KeyboardSpacer extends Component<Props> {
 	onKeyboardShow(e) {
 		if (!e || !e.endCoordinates || !e.endCoordinates.height) return;
 		let height = e.endCoordinates.height + (this.props.topInsets ? this.props.topInsets : 0);
-		if (ISAndroid && systemVersion == 9) {
+		if (ISAndroid && Theme.HAS_NOTCH && systemVersion == 9) {
 			height += 75;
 		}
 		this.setState({ keyboardHeight: height });

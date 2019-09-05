@@ -4,13 +4,11 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, RefreshControl } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from '/components';
+import { Theme, PxFit, SCREEN_WIDTH } from '/utils';
 
-import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import { ExchangesQuery } from '../../../assets/graphql/user.graphql';
+import { Query, GQL } from 'react-apollo';
 
 import TopUpItem from '../../wallet/components/TopUpItem';
 
@@ -23,11 +21,11 @@ class TopUpLog extends Component {
 	}
 
 	render() {
-		const { user, navigation } = this.props;
+		const { navigation } = this.props;
 
 		return (
 			<View style={{ flex: 1 }}>
-				<Query query={ExchangesQuery} fetchPolicy="network-only">
+				<Query query={GQL.ExchangesQuery} fetchPolicy="network-only">
 					{({ data, error, loading, refetch, fetchMore }) => {
 						if (error) return <ErrorView onPress={refetch} />;
 						if (loading) return <LoadingSpinner />;
@@ -38,10 +36,14 @@ class TopUpLog extends Component {
 								data={data.exchanges}
 								keyExtractor={(item, index) => index.toString()}
 								refreshControl={
-									<RefreshControl
+									<CustomRefreshControl
 										refreshing={loading}
 										onRefresh={refetch}
-										colors={[Theme.primaryColor]}
+										reset={() =>
+											this.setState({
+												finished: false
+											})
+										}
 									/>
 								}
 								renderItem={({ item, index }) => <TopUpItem item={item} navigation={navigation} />}
@@ -83,8 +85,4 @@ class TopUpLog extends Component {
 
 const styles = StyleSheet.create({});
 
-export default connect(store => {
-	return {
-		user: store.users.user
-	};
-})(TopUpLog);
+export default TopUpLog;

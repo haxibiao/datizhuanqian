@@ -1,7 +1,8 @@
 /*
- * @flow
- * created by wyk made in 2018-12-05 20:26:05
+ * @Author: Gaoxuan
+ * @Date:   2019-08-01 09:55:03
  */
+
 'use strict';
 import React, { Component } from 'react';
 import { Platform, Easing, Animated } from 'react-native';

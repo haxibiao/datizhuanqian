@@ -5,8 +5,8 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { PageContainer, TouchFeedback, Iconfont, Row } from 'components';
+import { Theme, PxFit, Config, SCREEN_WIDTH } from 'utils';
 
 class CommonIssue extends Component {
 	constructor(props) {
@@ -34,48 +34,49 @@ class CommonIssue extends Component {
 					</View>
 					<View style={styles.issueItem}>
 						<View style={styles.issuePH}>
+							<Text style={styles.questionText}>Q：免广告是什么？</Text>
+							<Text style={styles.answerText}>
+								A：答题时花费一定的智慧点就可以24小时免广告，但只限当前题目所在专题哦。
+							</Text>
+						</View>
+					</View>
+					<View style={styles.issueItem}>
+						<View style={styles.issuePH}>
 							<Text style={styles.questionText}>Q：被限制提现怎么办？</Text>
 							<Text style={styles.answerText}>
-								A：一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现系统将判定涉嫌恶意刷取智慧点，答题赚钱官方有权限制提现功能。
-							</Text>
-						</View>
-					</View>
-
-					<View style={styles.issueItem}>
-						<View style={styles.issuePH}>
-							<Text style={styles.questionText}>Q：提现多久到账？</Text>
-							<Text style={styles.answerText}>
-								A：提现会在3-5个工作日内到账,请及时留意您的支付宝到账信息哦。
+								A：一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现,系统将判定涉嫌恶意刷取智慧点，
+								{Config.AppName}官方有权限制提现功能。
 							</Text>
 						</View>
 					</View>
 					<View style={styles.issueItem}>
 						<View style={styles.issuePH}>
-							<Text style={styles.questionText}>Q：精力点怎么获取？</Text>
+							<Text style={styles.questionText}>Q：绑定支付宝账户是否会有风险？ </Text>
 							<Text style={styles.answerText}>
-								A：您好，系统默认初始值会有180点精力点，每天0点会重置精力点哦。
+								A：绑定支付宝账户只是为了方便给您提现哦，除了您的支付宝账户，我们不会获取您支付宝的任何信息，完全不用担心会有风险哦。
 							</Text>
 						</View>
 					</View>
 					<View style={styles.issueItem}>
 						<View style={styles.issuePH}>
-							<Text style={styles.questionText}>Q：题目或者答案出现错误，怎么办?</Text>
+							<Text style={styles.questionText}>Q：题目出现问题怎么办?</Text>
 							<Text style={styles.answerText}>
-								A：可以到意见反馈中提供错误信息，我们收到您的错误信息会在最快的时间内对题目进行纠正哦
+								A：可以使用举报功能提供错误信息，我们收到您的错误信息会在最快的时间内对题目进行纠正哦
 							</Text>
 						</View>
 					</View>
 					<View style={styles.issueItem}>
 						<View style={styles.issuePH}>
 							<Text style={styles.questionText}>Q：无法答题或查看信息,怎么办?</Text>
-							<Text style={styles.answerText}>A：请先检查您的网络是否正常或者重新登录。</Text>
+							<Text style={styles.answerText}>A：请先检查您的网络是否正常或尝试重新登录。</Text>
 						</View>
 					</View>
 					<View style={styles.issueItem}>
 						<View style={styles.issuePH}>
 							<Text style={styles.questionText}>Q：无法更新怎么办?</Text>
 							<Text style={styles.answerText}>
-								A：请到datizhuanqian.com、datizhuanqian.cn下载最新版本，如遇无法安装，请先卸载旧的答题赚钱再安装。
+								A：请到xiaodamei.com下载最新版本，如遇无法安装，请先卸载旧的
+								{Config.AppName}再安装。
 							</Text>
 						</View>
 					</View>
@@ -95,14 +96,6 @@ class CommonIssue extends Component {
 							</Text>
 						</View>
 					</View>*/}
-					<View style={styles.issueItem}>
-						<View style={styles.issuePH}>
-							<Text style={styles.questionText}>Q：绑定支付宝账户是否会有风险？ </Text>
-							<Text style={styles.answerText}>
-								A：绑定支付宝账户只是为了方便给您提现哦，除了您的支付宝账户，我们不会获取您支付宝的任何信息，完全不用担心会有风险哦。
-							</Text>
-						</View>
-					</View>
 					<View style={styles.issueItem}>
 						<View style={styles.issuePH}>
 							<Text style={styles.questionText}>Q：忘记密码了怎么办？</Text>
@@ -130,9 +123,19 @@ const styles = StyleSheet.create({
 		borderBottomColor: Theme.borderColor,
 		backgroundColor: '#fff'
 	},
-	issuePH: { paddingHorizontal: PxFit(20) },
-	questionText: { fontSize: PxFit(15), color: Theme.defaultTextColor },
-	answerText: { fontSize: PxFit(13), color: Theme.subTextColor, marginTop: PxFit(15), lineHeight: PxFit(15) }
+	issuePH: {
+		paddingHorizontal: PxFit(20)
+	},
+	questionText: {
+		fontSize: PxFit(15),
+		color: Theme.defaultTextColor
+	},
+	answerText: {
+		fontSize: PxFit(13),
+		color: Theme.subTextColor,
+		marginTop: PxFit(15),
+		lineHeight: PxFit(15)
+	}
 });
 
 export default CommonIssue;

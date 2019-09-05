@@ -5,43 +5,63 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, NativeModules } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, NAVBAR_HEIGHT } from '../../utils';
+import { StyleSheet, View, Text, TouchableOpacity, NativeModules, Dimensions } from 'react-native';
+// import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
+import Theme from '../../utils/Theme';
+import { WPercent, HPercent, PxFit, FontSize } from '../../utils/Scale';
+import app from '../../store/app';
+
 import { Overlay } from 'teaset';
 import Iconfont from '../Iconfont';
 
-import { connect } from 'react-redux';
-import actions from '../../store/actions';
+const { height, width } = Dimensions.get('window');
+const SCREEN_WIDTH = width;
+const SCREEN_HEIGHT = height;
 
 class UpdateOverlay {
-	static show(versionData, serverVersion, dispatch) {
+	static show(versionData, serverVersion) {
 		let overlayView = (
 			<Overlay.View animated>
 				<View style={styles.container}>
 					<View style={styles.content}>
 						<View style={styles.header}>
-							<Text style={styles.modalRemindContent}>发现新版本</Text>
-							<Text style={styles.headerText}>版本号：V{versionData.version}</Text>
+							<Text style={styles.modalRemindContent}>检测到新版本</Text>
 						</View>
 						<View style={styles.center}>
-							<Text style={styles.centerTitle}>更新提示：</Text>
+							<Text style={styles.centerTitle}>建议在WLAN环境下进行升级</Text>
+							<Text style={styles.centerTitle}>版本：{versionData.version}</Text>
+							<Text style={styles.centerTitle}>大小：{versionData.size}</Text>
+							<Text style={styles.centerTitle}>更新说明：</Text>
 							<Text style={styles.centerInfo}>{versionData.description}</Text>
 						</View>
 
 						<View style={styles.modalFooter}>
+							{!versionData.is_force && (
+								<TouchableOpacity
+									style={styles.operation}
+									onPress={() => {
+										UpdateOverlay.hide();
+										app.updateViewedVesion(serverVersion);
+									}}
+								>
+									<Text style={styles.operationText}>以后再说</Text>
+								</TouchableOpacity>
+							)}
+
 							<TouchableOpacity
-								style={styles.operation}
+								style={[
+									styles.operation,
+									versionData.is_force
+										? null
+										: { borderLeftColor: Theme.lightBorder, borderLeftWidth: 0.5 }
+								]}
 								onPress={() => {
+									NativeModules.DownloadApk.downloading(
+										versionData.apk,
+										'datizhuanqian.apk',
+										'答题赚钱'
+									);
 									UpdateOverlay.hide();
-									dispatch(serverVersion);
-								}}
-							>
-								<Text style={styles.operationText}>以后再说</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={[styles.operation, { borderLeftColor: Theme.lightBorder, borderLeftWidth: 0.5 }]}
-								onPress={() => {
-									NativeModules.DownloadApk.downloading(versionData.apk, 'datizhuanqian.apk');
 								}}
 							>
 								<Text style={[styles.operationText, { color: Theme.theme }]}>立即更新</Text>
@@ -82,6 +102,7 @@ const styles = StyleSheet.create({
 		paddingTop: PxFit(3)
 	},
 	center: {
+		paddingTop: PxFit(15),
 		paddingBottom: PxFit(20),
 		paddingHorizontal: PxFit(20)
 	},
