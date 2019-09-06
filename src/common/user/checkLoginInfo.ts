@@ -1,6 +1,6 @@
 import TipsOverlay from '../../components/Overlay/TipsOverlay';
 
-export default function(auto_uuid_user, auto_phone_user, navigation, user) {
+export function checkLoginInfo(auto_uuid_user?: boolean, auto_phone_user?: boolean, navigation?: any) {
     if (auto_uuid_user || auto_phone_user) {
         TipsOverlay.show({
             title: '您还未完善登录信息',

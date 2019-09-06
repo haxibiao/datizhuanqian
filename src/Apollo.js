@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 
 import { makeClient, ApolloProvider } from 'apollo';
+
 import { observer, app } from 'store';
 import { Config } from 'utils';
 

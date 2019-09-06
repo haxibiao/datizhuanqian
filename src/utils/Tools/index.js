@@ -5,29 +5,29 @@
 import { syncGetter, throttle, debounce, isContained, arrayRandomSort } from './adapter';
 import { contentNavigator } from './navigator';
 import {
-	NumberFormat,
-	TimeFormat,
-	singleImageResponse,
-	generateGenderLable,
-	imgsLayoutSize,
-	imageSize,
-	regular
+    NumberFormat,
+    TimeFormat,
+    singleImageResponse,
+    generateGenderLable,
+    imgsLayoutSize,
+    imageSize,
+    regular,
 } from './calculate';
 // import { checkNetwork } from './netWork';
 
 export default {
-	syncGetter,
-	throttle,
-	debounce,
-	isContained,
-	arrayRandomSort,
-	contentNavigator,
-	NumberFormat,
-	TimeFormat,
-	singleImageResponse,
-	generateGenderLable,
-	imgsLayoutSize,
-	imageSize,
-	regular
-	// checkNetwork
+    syncGetter,
+    throttle,
+    debounce,
+    isContained,
+    arrayRandomSort,
+    contentNavigator,
+    NumberFormat,
+    TimeFormat,
+    singleImageResponse,
+    generateGenderLable,
+    imgsLayoutSize,
+    imageSize,
+    regular,
+    // checkNetwork
 };

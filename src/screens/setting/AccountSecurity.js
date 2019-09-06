@@ -15,6 +15,7 @@ import { WeChat } from 'native';
 import { app } from 'store';
 
 import { compose, graphql, GQL } from 'apollo';
+import { checkLoginInfo } from 'common';
 
 class AccountSecurity extends Component {
     constructor(props) {
@@ -86,7 +87,7 @@ class AccountSecurity extends Component {
             this.setState({
                 submitting: false,
             });
-            let str = result.errors[0].message;
+            const str = result.errors[0].message;
             Toast.show({ content: str });
         } else {
             this.setState({
@@ -98,7 +99,7 @@ class AccountSecurity extends Component {
 
     checkAccount = (auto_uuid_user, auto_phone_user) => {
         const { navigation } = this.props;
-        let user = navigation.getParam('user');
+        const user = navigation.getParam('user');
 
         if (auto_uuid_user || auto_phone_user) {
             TipsOverlay.show({
@@ -122,12 +123,13 @@ class AccountSecurity extends Component {
     };
 
     render() {
-        let { navigation, data } = this.props;
-        let { is_bind_wechat } = this.state;
-        // let user = navigation.getParam('user');
+        const { navigation, data } = this.props;
+        const { is_bind_wechat } = this.state;
+        const { loading, user } = data;
 
-        let { loading, user } = data;
-        if (loading) return null;
+        if (loading) {
+            return null;
+        }
         let auto_uuid_user = false;
         let auto_phone_user = false;
 
@@ -205,10 +207,10 @@ class AccountSecurity extends Component {
                     />
                     <ListItem
                         onPress={() => {
-                            if (user.wallet && user.wallet.pay_info_change_count == -1) {
+                            if (user.wallet && user.wallet.pay_info_change_count === -1) {
                                 Toast.show({ content: '支付宝信息更改次数已达上限' });
                             } else {
-                                Api.checkLoginInfo(auto_uuid_user, auto_phone_user, navigation, user);
+                                checkLoginInfo(auto_uuid_user, auto_phone_user, navigation);
                             }
                         }}
                         style={styles.listItem}

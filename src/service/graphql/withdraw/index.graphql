@@ -5,11 +5,6 @@ mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!, 
 	}
 }
 
-#智慧点兑换到钱包
-mutation ExchangeCash($gold: Int!) {
-	exchangeCash(gold: $gold)
-}
-
 #提交提现
 mutation CreateWithdrawMutation($amount: Float!) {
 	createWithdrawal(amount: $amount)

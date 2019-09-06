@@ -10,7 +10,7 @@ import { TouchFeedback } from 'components';
 import { Config, PxFit, SCREEN_WIDTH } from 'utils';
 import { GQL } from 'apollo';
 import { app } from 'store';
-import { rest } from 'api';
+import { fetch } from 'service';
 import DeviceInfo from 'react-native-device-info';
 
 class UserRewardOverlay extends Component {
@@ -35,7 +35,7 @@ class UserRewardOverlay extends Component {
     componentDidMount() {
         const data = JSON.stringify(this.state.reportContent);
 
-        rest.dataReport(data, result => {
+        fetch.dataReport(data, result => {
             console.warn('result', result);
         });
     }

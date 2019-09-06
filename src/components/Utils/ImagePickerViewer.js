@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, WPercent, Api } from '../../utils';
+import { Theme, PxFit, Api } from '../../utils';
 import Iconfont from '../Iconfont';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import OverlayViewer from '../Overlay/OverlayViewer';
@@ -40,7 +40,7 @@ class ImagePickedViewer extends Component<Props> {
     savedImages = [];
 
     openImagePicker = () => {
-        let { multiple } = this.props;
+        const { multiple } = this.props;
         Api.imagePicker(
             images => {
                 let imagesPath;
@@ -59,11 +59,10 @@ class ImagePickedViewer extends Component<Props> {
     };
 
     saveImages = imagesPath => {
-        let { pictures } = this.state;
-        console.log(' imagesPath,pictures', imagesPath, pictures);
-        let { maximum } = this.props;
-        let newPictures = pictures.concat(imagesPath);
-        console.log('newPictures', newPictures);
+        const { pictures } = this.state;
+        const { maximum } = this.props;
+        const newPictures = pictures.concat(imagesPath);
+
         if (newPictures.length > maximum) {
             newPictures.splice(maximum);
             Toast.show({ content: `最多上传${maximum}张图片` });
@@ -74,7 +73,7 @@ class ImagePickedViewer extends Component<Props> {
     };
 
     removePicture = pictureIndex => {
-        let { pictures } = this.state;
+        const { pictures } = this.state;
         pictures.splice(pictureIndex, 1);
         this.setState({ pictures }, () => {
             this.onResponse(this.state.pictures);
@@ -91,7 +90,7 @@ class ImagePickedViewer extends Component<Props> {
     };
 
     showPicture = url => {
-        let overlayView = (
+        const overlayView = (
             <ImageViewer onSwipeDown={() => OverlayViewer.hide()} imageUrls={[{ url }]} enableSwipeDown />
         );
         OverlayViewer.show(overlayView);
@@ -104,7 +103,7 @@ class ImagePickedViewer extends Component<Props> {
     };
 
     renderPicture = (item, index) => {
-        let { pickerStyle } = this.props;
+        const { pickerStyle } = this.props;
         return (
             <TouchFeedback key={index} onPress={() => this.showPicture(item)} style={[styles.itemWrap, pickerStyle]}>
                 <Image source={{ uri: item }} style={styles.imageItem} />
@@ -132,9 +131,9 @@ class ImagePickedViewer extends Component<Props> {
     };
 
     render() {
-        let { pictures } = this.state;
-        let { horizontal, contentContainerStyle, style, multiple } = this.props;
-        let pictureQuantity = pictures.length;
+        const { pictures } = this.state;
+        const { horizontal, contentContainerStyle, style, multiple } = this.props;
+        const pictureQuantity = pictures.length;
         if (horizontal) {
             return (
                 <ScrollView

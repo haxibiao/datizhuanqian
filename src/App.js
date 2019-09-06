@@ -14,9 +14,10 @@ import { app, config } from 'store';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
 import { TtAdvert, WeChat } from 'native';
-import { ISIOS, Config, Api } from 'utils';
+import { ISIOS, Config } from 'utils';
 
-import { rest } from 'api';
+import service from 'service';
+import { checkUpdate } from 'common';
 
 import Apollo from './Apollo';
 
@@ -41,7 +42,7 @@ class App extends Component {
         // 恢复缓存
         app.recallCache();
         // 获取广告开放状态
-        rest.enableAdvert(data => {
+        service.enableAdvert(data => {
             config.saveAdvertConfig(data);
             if (data.enable_splash) {
                 // 开屏广告因为时机问题直接在此判断了
@@ -49,7 +50,7 @@ class App extends Component {
             }
         });
         // 检查更新
-        Api.checkUpdate('autoCheck');
+        checkUpdate('autoCheck');
         // 检查GQL接口状态
         this.checkServer();
         // 微信注册
@@ -68,7 +69,6 @@ class App extends Component {
                 if (response.status === 503) {
                     this.setState({ serverMaintenance: response });
                 }
-                console.warn('respose', response);
             })
             .catch(error => {
                 console.warn('server error', error);
