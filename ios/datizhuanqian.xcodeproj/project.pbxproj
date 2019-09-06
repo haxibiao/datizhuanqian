@@ -55,6 +55,7 @@
 		B7DC40822322221500406F34 /* BUDdemoDislikeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40692322221500406F34 /* BUDdemoDislikeCollectionCell.m */; };
 		B7DC40832322221500406F34 /* BUDActionAreaView.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC406A2322221500406F34 /* BUDActionAreaView.m */; };
 		B7DC40842322221500406F34 /* BUDFeedNormalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC406F2322221500406F34 /* BUDFeedNormalModel.m */; };
+		B7DC4115232228AC00406F34 /* VideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC4114232228AC00406F34 /* VideoUploader.m */; };
 		FEFAB7EB96ABB0E31A342FAB /* libPods-datizhuanqian-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40584EFE0FFD9922393793FB /* libPods-datizhuanqian-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -156,6 +157,7 @@
 		B7DC406D2322221500406F34 /* BUDDrawTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDDrawTableViewCell.h; sourceTree = "<group>"; };
 		B7DC406E2322221500406F34 /* BUDFeedStyleHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedStyleHelper.h; sourceTree = "<group>"; };
 		B7DC406F2322221500406F34 /* BUDFeedNormalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalModel.m; sourceTree = "<group>"; };
+		B7DC4114232228AC00406F34 /* VideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoUploader.m; sourceTree = "<group>"; };
 		BAC5C74146B56875F3C9EEE2 /* libPods-datizhuanqian.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C07064FB237BAAA7BB3DC2FA /* Pods-datizhuanqian-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D342D97E3872FB9B6F22F62F /* libPods-datizhuanqian-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,6 +235,7 @@
 		13B07FAE1A68108700A75B9A /* datizhuanqian */ = {
 			isa = PBXGroup;
 			children = (
+				B7DC4113232228AC00406F34 /* toolkits */,
 				B7DC403D2322221500406F34 /* ttad */,
 				B7DC40182322130200406F34 /* sdk */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -419,6 +422,15 @@
 				B7DC406E2322221500406F34 /* BUDFeedStyleHelper.h */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		B7DC4113232228AC00406F34 /* toolkits */ = {
+			isa = PBXGroup;
+			children = (
+				B7DC4114232228AC00406F34 /* VideoUploader.m */,
+			);
+			name = toolkits;
+			path = datizhuanqian/toolkits;
 			sourceTree = "<group>";
 		};
 		BDD3C07F71ABF46AD18D2FBE /* Pods */ = {
@@ -831,6 +843,7 @@
 				B7DC40762322221500406F34 /* BUDCocoaSecurity.m in Sources */,
 				B7DC407D2322221500406F34 /* BUDNormalButton.m in Sources */,
 				B7DC40742322221500406F34 /* NSString+LocalizedString.m in Sources */,
+				B7DC4115232228AC00406F34 /* VideoUploader.m in Sources */,
 				B7DC40722322221500406F34 /* UIView+Draw.m in Sources */,
 				B7DC40752322221500406F34 /* RRFPSBar.m in Sources */,
 			);
