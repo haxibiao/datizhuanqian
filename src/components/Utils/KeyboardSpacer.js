@@ -4,9 +4,9 @@
  */
 'use strict';
 
-import React, { Component } from 'src/components/Utils/node_modules/react';
-import { StyleSheet, Platform, View, Keyboard, LayoutAnimation } from 'react-native';
-import DeviceInfo from 'src/components/Utils/node_modules/react-native-device-info';
+import React, { Component } from 'react';
+import { StyleSheet, View, Keyboard, LayoutAnimation } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 const systemVersion = DeviceInfo.getSystemVersion();
 import { Theme, PxFit, ISIOS, ISAndroid } from '../../utils';
 

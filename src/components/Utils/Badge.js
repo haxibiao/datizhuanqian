@@ -4,8 +4,8 @@
  */
 'use strict';
 
-import React, { Component } from 'src/components/Utils/node_modules/react';
-import PropTypes from 'src/components/Utils/node_modules/prop-types';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, ViewPropTypes } from 'react-native';
 import { Theme, PxFit, Tools } from '../../utils';
 

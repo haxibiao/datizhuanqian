@@ -18,7 +18,7 @@ import {
 	CustomRefreshControl,
 	ListFooter,
 	StatusView,
-	PullChooser
+	PullChooser,
 } from 'components';
 import { Theme, PxFit, Tools, SCREEN_WIDTH, NAVBAR_HEIGHT } from 'utils';
 
@@ -39,7 +39,7 @@ class index extends Component {
 		this.switchOrder = Tools.throttle(this.switchOrder.bind(this), 500);
 		this.state = {
 			finished: false,
-			orderByHot: false
+			orderByHot: false,
 		};
 	}
 
@@ -54,8 +54,8 @@ class index extends Component {
 		PullChooser.show([
 			{
 				title: '举报',
-				onPress: () => navigation.navigate('ReportUser', { user })
-			}
+				onPress: () => navigation.navigate('ReportUser', { user }),
+			},
 		]);
 	};
 
@@ -71,8 +71,7 @@ class index extends Component {
 			<Query
 				query={GQL.UserInfoQuery}
 				variables={{ id: user.id, order: orderByHot ? ORDER[0] : ORDER[1], filter: 'publish' }}
-				fetchPolicy="network-only"
-			>
+				fetchPolicy="network-only">
 				{({ data, loading, error, refetch, fetchMore }) => {
 					let user = Tools.syncGetter('user', data),
 						questions = [];
@@ -98,14 +97,13 @@ class index extends Component {
 										/>
 									</TouchFeedback>
 								)
-							}
-						>
+							}>
 							<FlatList
 								showsVerticalScrollIndicator={false}
 								bounces={false}
 								contentContainerStyle={{
 									flexGrow: 1,
-									paddingBottom: Theme.HOME_INDICATOR_HEIGHT
+									paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
 								}}
 								style={styles.container}
 								data={questions}
@@ -133,7 +131,7 @@ class index extends Component {
 								onEndReached={() => {
 									fetchMore({
 										variables: {
-											offset: questions.length
+											offset: questions.length,
 										},
 										updateQuery: (prev, { fetchMoreResult }) => {
 											if (
@@ -145,7 +143,7 @@ class index extends Component {
 												)
 											) {
 												this.setState({
-													finished: true
+													finished: true,
 												});
 												return prev;
 											}
@@ -153,11 +151,11 @@ class index extends Component {
 												user: Object.assign({}, prev.user, {
 													questions: [
 														...prev.user.questions,
-														...fetchMoreResult.user.questions
-													]
-												})
+														...fetchMoreResult.user.questions,
+													],
+												}),
 											});
-										}
+										},
 									});
 								}}
 								ListFooterComponent={() =>
@@ -175,7 +173,7 @@ class index extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#f9f9f9'
+		backgroundColor: '#f9f9f9',
 	},
 	header: {
 		position: 'absolute',
@@ -183,14 +181,14 @@ const styles = StyleSheet.create({
 		left: 0,
 		width: SCREEN_WIDTH,
 		overflow: 'hidden',
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
 	},
 	optionsButton: {
 		flex: 1,
 		width: PxFit(40),
 		alignItems: 'flex-end',
-		justifyContent: 'center'
-	}
+		justifyContent: 'center',
+	},
 });
 
 export default compose(withApollo)(index);

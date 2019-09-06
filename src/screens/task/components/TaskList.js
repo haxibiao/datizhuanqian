@@ -41,7 +41,7 @@ class TaskList extends Component {
 			invitationGold: 100,
 			invitationLines: 1,
 			tasksCache: null,
-			min_level: 2
+			min_level: 2,
 		};
 	}
 
@@ -83,7 +83,7 @@ class TaskList extends Component {
 					//后端邀请配置
 					invitationStatus: data.invitation.status,
 					invitationGold: data.invitation.gold,
-					invitationLines: data.invitation.withdraw_lines
+					invitationLines: data.invitation.withdraw_lines,
 				});
 			})
 			.catch(err => {
@@ -107,7 +107,7 @@ class TaskList extends Component {
 				if (user.adinfo && user.adinfo.tt_appid) {
 					await TtAdvert.RewardVideo.loadAd({
 						...user.adinfo,
-						uid: user.id
+						uid: user.id,
 					});
 				}
 			}
@@ -141,7 +141,7 @@ class TaskList extends Component {
 			cpcContribute,
 			invitationStatus,
 			invitationGold,
-			invitationLines
+			invitationLines,
 		} = this.state;
 
 		let refetchUserQuery = UserQuery && UserQuery.refetch;
@@ -158,7 +158,7 @@ class TaskList extends Component {
 				gold: rewardGold,
 				ticket: rewardTicket,
 				contribute: rewardContribute,
-				type: 4
+				type: 4,
 			},
 			{
 				name: '出题被采纳',
@@ -168,7 +168,7 @@ class TaskList extends Component {
 				cost: -1, //伪装提示消耗智慧，解释智慧点的消耗用途
 				ticket,
 				contribute,
-				type: 3
+				type: 3,
 			},
 			{
 				name: '分享给好友',
@@ -177,8 +177,8 @@ class TaskList extends Component {
 				gold: invitationGold,
 				// contribute: 60,
 				invitationLines: invitationLines,
-				type: 6
-			}
+				type: 6,
+			},
 		];
 		if (!config.enableReward) {
 			adtasks.splice(0, 1);
@@ -193,7 +193,7 @@ class TaskList extends Component {
 				ticket: cpcTicket,
 				gold: cpcGold,
 				contribute: cpcContribute,
-				type: 5
+				type: 5,
 			});
 		}
 
@@ -237,7 +237,7 @@ class TaskList extends Component {
 							let _this = this;
 							if (!adinfo) {
 								Toast.show({
-									content: '激励视频没加载成功!'
+									content: '激励视频没加载成功!',
 								});
 								return;
 							}
@@ -245,7 +245,7 @@ class TaskList extends Component {
 								//开始看奖励视频
 								TtAdvert.RewardVideo.startAd({
 									...adinfo,
-									uid: me.id
+									uid: me.id,
 								})
 									.then(result => {
 										//TODO:ios还不能确定用户的行为做了哪些行为,只奖励精力
@@ -263,24 +263,24 @@ class TaskList extends Component {
 														content:
 															`看视频+看详情: +${task.ticket}精力 ` +
 															(task.gold != 0 ? `+${task.gold}智慧` : '') +
-															(task.contribute != 0 ? `+${task.contribute}贡献` : '')
+															(task.contribute != 0 ? `+${task.contribute}贡献` : ''),
 													});
 												} else {
 													Toast.show({
-														content: `看完视频 +${task.ticket}精力`
+														content: `看完视频 +${task.ticket}精力`,
 													});
 												}
 
 												// 后端通过rewardStatus来控制允许重复激励
 												if (rewardStatus < 2) {
 													_this.setState({
-														rewardTaskAction: 3
+														rewardTaskAction: 3,
 													});
 												}
 											} else {
 												didWatched = false;
 												Toast.show({
-													content: '没看完视频,或没看详情，或其他异常...'
+													content: '没看完视频,或没看详情，或其他异常...',
 												});
 											}
 										}
@@ -290,8 +290,8 @@ class TaskList extends Component {
 											let task_id = adClicked ? -2 : 0;
 											taskReward({
 												variables: {
-													task_id
-												}
+													task_id,
+												},
 											}).then(() => {
 												refetchUserQuery && refetchUserQuery();
 											});
@@ -339,7 +339,7 @@ class TaskList extends Component {
 
 	handlerLoading = () => {
 		this.setState({
-			isVisible: !this.state.isVisible
+			isVisible: !this.state.isVisible,
 		});
 	};
 }
@@ -347,20 +347,20 @@ class TaskList extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#FFFEFC'
-	}
+		backgroundColor: '#FFFEFC',
+	},
 });
 
 export default compose(
 	graphql(GQL.TasksQuery, {
 		options: props => ({ variables: { offest: 0, limit: 20 } }),
-		name: 'TasksQuery'
+		name: 'TasksQuery',
 	}),
 	graphql(GQL.UserQuery, {
 		options: props => ({ variables: { id: app.me.id } }),
-		name: 'UserQuery'
+		name: 'UserQuery',
 	}),
 	graphql(GQL.TaskRewardMutation, {
-		name: 'taskReward'
-	})
+		name: 'taskReward',
+	}),
 )(withApollo(TaskList));

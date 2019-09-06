@@ -77,7 +77,6 @@
         "babel-plugin-import-graphql": "^2.6.2",
         "babel-plugin-root-import": "^6.4.1",
         "cos-nodejs-sdk-v5": "^2.5.7",
-        "eslint": "^6.1.0",
         "graphql": "^14.4.2",
         "jest": "^24.8.0",
         "metro-react-native-babel-preset": "^0.55.0",
@@ -85,7 +84,7 @@
     },
     "rnpm": {
         "assets": [
-            "./src/components/Iconfont/fonts/"
+            "./src/assets/fonts/"
         ]
     },
     "jest": {

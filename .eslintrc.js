@@ -180,5 +180,9 @@ module.exports = {
                 args: 'none',
             },
         ],
+
+        // note you must disable the base rule as it can report incorrect errors
+        camelcase: 'off',
+        '@typescript-eslint/camelcase': ['error', { properties: 'never' }],
     },
 };

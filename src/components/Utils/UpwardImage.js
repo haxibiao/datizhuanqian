@@ -4,7 +4,7 @@
  */
 'use strict';
 
-import React, { Component } from 'src/components/Utils/node_modules/react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Image, Animated } from 'react-native';
 import { Theme, PxFit, Tools } from '../../utils';
 

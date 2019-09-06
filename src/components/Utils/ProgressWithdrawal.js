@@ -4,7 +4,7 @@
  */
 'use strict';
 
-import React, { Component } from 'src/components/Utils/node_modules/react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { Theme, PxFit, ISIOS, ISAndroid } from '../../utils';
 class ProgressWithdrawal extends Component {

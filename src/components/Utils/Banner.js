@@ -3,22 +3,19 @@
  * @Date:   2019-03-21 11:41:39
  */
 
-import React, { Component } from 'src/components/Utils/node_modules/react';
+import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
 import ProgressWithdrawal from './ProgressWithdrawal';
-import Iconfont from '../Iconfont';
-import Button from '../TouchableView/Button';
-// import NoTicketTipsModal from '../Modal/NoTicketTipsModal';
 
-import { BoxShadow } from 'src/components/Utils/node_modules/react-native-shadow';
+import { BoxShadow } from 'react-native-shadow';
 
-import { app } from 'src/components/Utils/node_modules/store';
+import { app } from 'store';
 
-import { GQL, Query, compose, graphql } from 'src/components/Utils/node_modules/apollo';
+import { GQL, Query, compose, graphql } from 'apollo';
 
-import { Overlay } from 'src/components/Utils/node_modules/teaset';
+import { Overlay } from 'teaset';
 
 const shadowOpt = {
     width: SCREEN_WIDTH,
