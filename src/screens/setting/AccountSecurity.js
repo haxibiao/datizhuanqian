@@ -58,13 +58,12 @@ class AccountSecurity extends Component {
                     Toast.show({ content: '未安装微信或当前微信版本较低' });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 Toast.show({ content: '绑定失败' });
             });
     };
 
     bindWx = async data => {
-        const { navigation } = this.props;
         let result = {};
         try {
             result = await this.props.BindWechatMutation({
@@ -145,20 +144,11 @@ class AccountSecurity extends Component {
                     <ListItem
                         disabled
                         style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>{auto_phone_user ? '访客' : '账号'}</Text>}
-                        rightComponent={<Text style={styles.rightText}>{user.account}</Text>}
+                        leftComponent={<Text style={styles.itemText}>{auto_uuid_user ? '访客' : '账号'}</Text>}
+                        rightComponent={
+                            <Text style={styles.rightText}>{auto_uuid_user ? '未设置手机号' : user.account}</Text>
+                        }
                     />
-
-                    {/*	{user.is_visitor_user && user.verified_at && (
-						<ListItem
-							onPress={() =>
-								navigation.navigate('ForgetPassword', { account: user.account, title: '设置密码' })
-							}
-							style={styles.listItem}
-							leftComponent={<Text style={styles.itemText}>设置密码</Text>}
-							rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
-						/>
-					)}*/}
                     {auto_uuid_user && (
                         <ListItem
                             onPress={() => navigation.navigate('SetLoginInfo', { account: null })}
@@ -210,7 +200,7 @@ class AccountSecurity extends Component {
                             if (user.wallet && user.wallet.pay_info_change_count === -1) {
                                 Toast.show({ content: '支付宝信息更改次数已达上限' });
                             } else {
-                                checkLoginInfo(auto_uuid_user, auto_phone_user, navigation);
+                                checkLoginInfo(auto_uuid_user, auto_phone_user, navigation, user);
                             }
                         }}
                         style={styles.listItem}

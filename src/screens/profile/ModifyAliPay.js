@@ -30,9 +30,9 @@ class EditProfileScreen extends Component {
     }
 
     sendVerificationCode = async () => {
-        const { navigation } = this.props;
-        let { me } = app;
-        if (me && me.account) {
+        const { navigation, data } = this.props;
+        const { user } = data;
+        if (user && user.account) {
             let result = {};
             this.setState({
                 submitting: true,
@@ -40,7 +40,7 @@ class EditProfileScreen extends Component {
             try {
                 result = await this.props.SendVerificationCodeMutation({
                     variables: {
-                        account: me.account,
+                        account: user.account,
                         action: 'USER_INFO_CHANGE',
                     },
                     errorPolicy: 'all',
@@ -69,10 +69,10 @@ class EditProfileScreen extends Component {
     };
 
     render() {
-        let { navigation } = this.props;
+        let { navigation, data } = this.props;
         const { pay_account, submitting } = this.state;
-        let { me } = app;
-
+        if (loading) return null;
+        let { loading, user } = data;
         return (
             <PageContainer title="账户绑定" white submitting={submitting}>
                 <View style={styles.container}>
@@ -95,7 +95,7 @@ class EditProfileScreen extends Component {
                     <View style={styles.inputWrap}>
                         <CustomTextInput
                             placeholder={
-                                me && me.account ? '验证码将发送至账号 ' + me.account : '账号获取失败，请重新登录'
+                                user && user.account ? '验证码将发送至账号 ' + user.account : '账号获取失败，请重新登录'
                             }
                             style={{ height: PxFit(48) }}
                             onChangeText={value => {
@@ -110,7 +110,7 @@ class EditProfileScreen extends Component {
                     <TouchFeedback
                         style={{ marginHorizontal: 28, marginTop: 15 }}
                         onPress={() => {
-                            me.verified_at
+                            user.verified_at
                                 ? Toast.show({ content: '已经修改或绑定了哦' })
                                 : navigation.navigate('ModifyAccount');
                         }}>
@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default compose(graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }))(
-    EditProfileScreen,
-);
+export default compose(
+    graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }),
+    graphql(GQL.UserQuery, { options: props => ({ variables: { id: app.me.id } }) }),
+)(EditProfileScreen);
