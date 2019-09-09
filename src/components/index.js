@@ -69,6 +69,9 @@ import UpwardImage from './Utils/UpwardImage';
 import ProgressWithdrawal from './Utils/ProgressWithdrawal';
 //Media
 import Player from './Media/Player';
+// Guide
+import beginnerGuidance from './Guide/beginnerGuidance';
+import VideoTaskGuidance from './Guide/VideoTaskGuidance';
 
 export {
 	Iconfont,
@@ -123,5 +126,7 @@ export {
 	WheelPicker,
 	UpwardImage,
 	ProgressWithdrawal,
-	Player
+	Player,
+	beginnerGuidance,
+	VideoTaskGuidance
 };
