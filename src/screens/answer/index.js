@@ -37,6 +37,7 @@ import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
 
 import { TtAdvert } from 'native';
+import { toJS } from 'mobx';
 
 @observer
 class index extends Component {
@@ -403,12 +404,21 @@ class index extends Component {
         };
 
         if (this.loadFullVideoAd) {
-            TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo);
+            this.startFullScreenVideoAd(adinfo);
         } else {
             TtAdvert.FullScreenVideo.loadFullScreenVideoAd(adinfo).then(() => {
-                TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo);
+                this.startFullScreenVideoAd(adinfo);
             });
         }
+    };
+
+    // 展示全屏视频
+    startFullScreenVideoAd = adinfo => {
+        TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
+            if (result) {
+                // 发放奖励 banner弹窗
+            }
+        });
     };
 
     // 加载激励视频
@@ -421,12 +431,21 @@ class index extends Component {
         };
 
         if (this.loadRewardVideoAd) {
-            TtAdvert.RewardVideo.startAd(adinfo);
+            this.startRewardVideo(adinfo);
         } else {
             TtAdvert.RewardVideo.loadAd(adinfo).then(() => {
-                TtAdvert.RewardVideo.startAd(adinfo);
+                this.startRewardVideo(adinfo);
             });
         }
+    };
+
+    // 展示激励视频
+    startRewardVideo = adinfo => {
+        TtAdvert.RewardVideo.startAd(adinfo).then(result => {
+            if (result) {
+                // 发放奖励 banner弹窗
+            }
+        });
     };
 
     renderContent = () => {

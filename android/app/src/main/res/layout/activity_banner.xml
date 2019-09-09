@@ -14,9 +14,10 @@
     <!--</View>-->
 
     <TextView
+        android:id="@+id/banner_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="答题不及格，看会视频吧"
+        android:text="答题及格，领激励奖励"
         android:textSize="16dp"
         android:textColor="#000"
         android:layout_gravity="center|center_horizontal|center_vertical"

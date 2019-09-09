@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_corner"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    >
+
+
+
+    <!--<View-->
+    <!--android:layout_width="200dp"-->
+    <!--android:layout_height="50dp">-->
+
+    <!--</View>-->
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:gravity="center"
+       >
+
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginTop="20dp">
+           <TextView
+               android:id="@+id/banner_title"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="恭喜您获得"
+               android:textSize="24dp"
+               android:textColor="#f00"
+               android:layout_gravity="center|center_horizontal|center_vertical"
+               android:gravity="center"
+               android:textAlignment="center"
+              />
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_gravity="center"
+               android:layout_marginTop="20dp">
+               <ImageView
+                   android:layout_width="24dp"
+                   android:layout_height="24dp"
+                   android:src="@drawable/gold"
+                />
+               <TextView
+                   android:id="@+id/reward_gold"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="20"
+                   android:textSize="16dp"
+                   android:textColor="#000"
+                   android:layout_gravity="center|center_horizontal|center_vertical"
+                   android:gravity="center"
+                   android:textAlignment="center"
+                   android:paddingLeft="5dp"
+                   />
+               <ImageView
+                   android:layout_width="24dp"
+                   android:layout_height="24dp"
+                   android:src="@drawable/heart"
+                   android:layout_marginLeft="15dp"
+
+                  />
+               <TextView
+                   android:id="@+id/reward_ticket"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="10"
+                   android:textSize="16dp"
+                   android:textColor="#000"
+                   android:layout_gravity="center|center_horizontal|center_vertical"
+                   android:gravity="center"
+                   android:textAlignment="center"
+                   android:paddingLeft="5dp"
+                   />
+               <ImageView
+                   android:layout_width="20dp"
+                   android:layout_height="20dp"
+                   android:src="@drawable/contribute"
+                   android:layout_marginLeft="15dp"
+
+                   />
+               <TextView
+                   android:id="@+id/reward_contribute"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="6"
+                   android:textSize="16dp"
+                   android:textColor="#000"
+                   android:layout_gravity="center|center_horizontal|center_vertical"
+                   android:gravity="center"
+                   android:textAlignment="center"
+                   android:paddingLeft="5dp"
+                   />
+           </LinearLayout>
+       </LinearLayout>
+
+           />
+   </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:gravity="center"
+            android:paddingBottom="25dp">
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+
+            >
+            <Button
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:background="@drawable/left_border"
+                android:layout_weight="1"
+                android:text="忽略"
+                android:textColor="#969696"
+                android:paddingBottom="10dp"
+                />
+            <Button
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看"
+                android:textColor="#FFB100"
+                android:background="@drawable/right_border"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:paddingBottom="10dp"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <!-- BannerView的Container -->
+
+</RelativeLayout>

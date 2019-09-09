@@ -1,6 +1,6 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform, DeviceEventEmitter } from 'react-native';
 
-const module = NativeModules.Banner;
+const module = NativeModules.RewardDialog;
 
 const adArgs = {
     tt_appid: '5016518', // 正式
@@ -14,11 +14,11 @@ interface adinfo {
     tt_codeid?: string;
 }
 
-export const loadBannerAd = (options?: adinfo, result?: boolean) => {
+export const loadRewardDialog = (options?: adinfo, result?: boolean) => {
     if (options && !options.tt_appid) {
         return;
     }
-    return module.loadAd(adArgs, result);
+    return module.loadAd(adArgs, false);
 };
 
-export default { loadBannerAd };
+export default { loadRewardDialog };

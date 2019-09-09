@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Gravity;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.FilterWord;
@@ -44,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Banner extends ReactContextBaseJavaModule {
+public class RewardDialog extends ReactContextBaseJavaModule {
 
     private TTAdNative mTTAdNative;
     private Button mButtonLeft;
@@ -54,10 +56,11 @@ public class Banner extends ReactContextBaseJavaModule {
     private static WeakReference<Activity> mActivity;
     private List<TTNativeExpressAd>  mTTAdList;
 
-    private View view ;
     protected Context mContext;
 
     static Promise promise = null;
+
+    private RelativeLayout rewardLayout;
 
 
     Point point = new Point();
@@ -65,11 +68,11 @@ public class Banner extends ReactContextBaseJavaModule {
 
     @Override
     public String getName() {
-        return "Banner";
+        return "RewardDialog";
     }
 
 
-    public Banner(ReactApplicationContext reactContext) {
+    public RewardDialog(ReactApplicationContext reactContext) {
         super(reactContext);
         mContext = reactContext;
         // 保存reactConext到application
@@ -201,8 +204,17 @@ public class Banner extends ReactContextBaseJavaModule {
                     public void run() {
                         if (!_this.isFinishing()) {
                             AdDialog = new Dialog(_this,R.style.SelfDialog);
+                            AdDialog.setContentView(R.layout.reward_dialog);
 
-                            AdDialog.setContentView(R.layout.activity_banner);
+                            rewardLayout = (RelativeLayout)AdDialog.findViewById(R.id.banner_container);
+
+                            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    ,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                            rewardLayout.addView(view,lp);
+
+
+
 
                             Display display = _this.getWindow().getWindowManager().getDefaultDisplay();
                             Point point = new Point();
@@ -210,13 +222,15 @@ public class Banner extends ReactContextBaseJavaModule {
 
                             WindowManager.LayoutParams params = AdDialog.getWindow().getAttributes();
 
-                            params.width = point.x*3/4;
-                            params.height =  point.x*3/4 *4/5;
+                            params.width = point.x*9/10;
+                            params.height =  point.x*9/10 *9/10;
 
 
-                            view.setPadding(10,10,10,0);
+//                            view.setPadding(10,10,10,0);
 
-                            AdDialog.addContentView(view,new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT , FrameLayout.LayoutParams.WRAP_CONTENT));
+
+//                            AdDialog.addContentView(view,new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT , LinearLayout.LayoutParams.WRAP_CONTENT));
+
 
                             mButtonLeft=AdDialog.findViewById(R.id.btn_left);
                             mButtonRight=AdDialog.findViewById(R.id.btn_right);
@@ -235,6 +249,7 @@ public class Banner extends ReactContextBaseJavaModule {
 
                             AdDialog.setCancelable(false);
 
+                            Log.d("dialog status",AdDialog.isShowing()+"");
                             if (!AdDialog.isShowing()) {
                                 AdDialog.show();
                                 AdDialog.getWindow().setAttributes(params);

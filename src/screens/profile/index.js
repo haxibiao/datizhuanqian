@@ -197,7 +197,7 @@ class index extends Component {
                     <TouchFeedback
                         style={styles.columnItem}
                         onPress={() => {
-                            TtAdvert.Banner.loadBannerAd().then(result => {
+                            TtAdvert.RewardDialog.loadRewardDialog().then(result => {
                                 console.log('结果', result);
                             });
                         }}>
