@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
-import androidx.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -31,6 +30,7 @@ import com.datizhuanqian.MainApplication;
 import com.datizhuanqian.R;
 import com.datizhuanqian.ad.ttad.TToast;
 import com.datizhuanqian.ad.ttad.config.TTAdManagerHolder;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -48,14 +48,16 @@ public class Banner extends ReactContextBaseJavaModule {
     private TTAdNative mTTAdNative;
     private FrameLayout mBannerContainer;
     private TTAdDislike mTTAdDislike;
-    private Button mButtonClose;
-    private Button mButtonBuy;
+    private Button mButtonLeft;
+    private Button mButtonRight;
     private static Dialog AdDialog;
     private static WeakReference<Activity> mActivity;
     private List<TTNativeExpressAd>  mTTAdList;
 
     private View view ;
     protected Context mContext;
+
+    static Promise promise = null;
 
 
     Point point = new Point();
@@ -76,9 +78,10 @@ public class Banner extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    protected void loadAd(ReadableMap options) {
+    protected void loadAd(ReadableMap options, boolean result, Promise promise) {
         final Activity _this = getCurrentActivity();
 
+        Banner.promise = promise;
 
         TTAdManagerHolder.init(_this,options.getString("tt_appid"));
         //step2:创建TTAdNative对象，createAdNative(Context context) banner广告context需要传入Activity对象
@@ -87,39 +90,45 @@ public class Banner extends ReactContextBaseJavaModule {
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
         TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
         mTTAdList = new ArrayList<>();
-        loadBannerAd(options, _this);
+        loadBannerAd(options,result, _this);
     }
 
 
-    private final View.OnClickListener mClickListener = new Button.OnClickListener() {
+    private final View.OnClickListener answerFailClickListener = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.btn_banner_close) {
-                Log.i("取消","结果");
+            if (v.getId() == R.id.btn_left) {
                 AdDialog.dismiss();
-
-                sendEvent("CloseAd", null);
-
-            } else if (v.getId() == R.id.btn_banner_buy) {
-                Log.i("购买","结果");
+                Banner.promise.resolve("LoadFullScreenVideo");
+            } else if (v.getId() == R.id.btn_right) {
                 AdDialog.dismiss();
-                sendEvent("BuyAd", null);
+                Banner.promise.resolve("LoadRewardVideo");
             }
 
         }
     };
 
 
-    private void loadBannerAd(ReadableMap options,final Activity _this) {
+    private final View.OnClickListener answerPassClickListener = new Button.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.btn_left) {
+                AdDialog.dismiss();
+                Banner.promise.resolve("Close");
+
+            } else if (v.getId() == R.id.btn_right) {
+                AdDialog.dismiss();
+                Banner.promise.resolve("LoadRewardVideo");
+            }
+
+        }
+    };
+
+
+    private void loadBannerAd(ReadableMap options,boolean result,final Activity _this) {
         //step4:创建广告请求参数AdSlot,具体参数含义参考文档 modules.add(new Interaction(reactContext));
         DisplayMetrics metric = new DisplayMetrics();
         _this.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metric);
-
-//        int width = metric.widthPixels;     // 屏幕宽度（像素）  
-//        int height = metric.heightPixels;   // 屏幕高度（像素）  
-//        float density = metric.density;      // 屏幕密度（0.75 / 1.0 / 1.5）  
-//        int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240） 
-
         int screenWidth = (int) (metric.widthPixels / metric.density);
 
         float expressViewWidth =  screenWidth*3/4;
@@ -134,10 +143,8 @@ public class Banner extends ReactContextBaseJavaModule {
                 .build();
         //step5:请求广告，对请求回调的广告作渲染处理
         mTTAdNative.loadBannerExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
-
             @Override
             public void onError(int code, String message) {
-//                TToast.show(_this, "load error : " + code + ", " + message);
                 Log.println(Log.ERROR,"错误结果",message);
             }
 
@@ -150,7 +157,7 @@ public class Banner extends ReactContextBaseJavaModule {
                 TTNativeExpressAd mTTAd = ads.get(0);
                 mTTAdList.add(mTTAd);
                 mTTAd.setSlideIntervalTime(30*1000);
-                bindAdListener(mTTAd,_this);
+                bindAdListener(mTTAd,_this, result);
                 startTime = System.currentTimeMillis();
                 mTTAd.render();
             }
@@ -162,69 +169,31 @@ public class Banner extends ReactContextBaseJavaModule {
     private long startTime = 0;
     private boolean mHasShowDownloadActive = false;
 
-    private void bindDownloadListener(TTBannerAd ad,final Activity _this) {
-        ad.setDownloadListener(new TTAppDownloadListener() {
-            @Override
-            public void onIdle() {
 
-//                TToast.show(_this, "点击图片开始下载", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-                if (!mHasShowDownloadActive) {
-                    mHasShowDownloadActive = true;
-//                    TToast.show(_this, "下载中，点击图片暂停", Toast.LENGTH_LONG);
-                }
-            }
-
-            @Override
-            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-//                TToast.show(_this, "下载暂停，点击图片继续", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-//                TToast.show(_this, "下载失败，点击图片重新下载", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onInstalled(String fileName, String appName) {
-//                TToast.show(_this, "安装完成，点击图片打开", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-//                TToast.show(_this, "点击图片安装", Toast.LENGTH_LONG);
-            }
-        });
-    }
-
-    private void bindAdListener(TTNativeExpressAd ad,final Activity _this) {
+    private void bindAdListener(TTNativeExpressAd ad,final Activity _this,boolean result) {
 
 
         ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
             @Override
             public void onAdClicked(View view, int type) {
-                TToast.show(mContext, "广告被点击");
+
+//                TToast.show(mContext, "广告被点击");
             }
 
             @Override
             public void onAdShow(View view, int type) {
-                TToast.show(mContext, "广告展示");
+//                TToast.show(mContext, "广告展示");
             }
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
                 Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
-                TToast.show(mContext, msg+" code:"+code);
             }
 
             @Override
             public void onRenderSuccess(View view, float width, float height) {
                 Log.e("ExpressView", "render suc:" + (System.currentTimeMillis() - startTime));
                 //返回view的宽高 单位 dp
-                TToast.show(mContext, "渲染成功");
                 mActivity = new WeakReference<Activity>(_this);
 
                 _this.runOnUiThread(new Runnable() {
@@ -239,9 +208,6 @@ public class Banner extends ReactContextBaseJavaModule {
                             Point point = new Point();
                             display.getSize(point);
 
-                            Log.d("width",""+point.x);
-                            Log.d("height",""+point.y);
-
                             WindowManager.LayoutParams params = AdDialog.getWindow().getAttributes();
 
                             params.width = point.x*3/4;
@@ -252,10 +218,18 @@ public class Banner extends ReactContextBaseJavaModule {
 
                             AdDialog.addContentView(view,new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT , FrameLayout.LayoutParams.WRAP_CONTENT));
 
-                            mButtonClose=AdDialog.findViewById(R.id.btn_banner_close);
-                            mButtonBuy=AdDialog.findViewById(R.id.btn_banner_buy);
-                            mButtonClose.setOnClickListener(mClickListener);
-                            mButtonBuy.setOnClickListener(mClickListener);
+                            mButtonLeft=AdDialog.findViewById(R.id.btn_left);
+                            mButtonRight=AdDialog.findViewById(R.id.btn_right);
+
+                            if (result){
+                                mButtonLeft.setOnClickListener(answerPassClickListener);
+                                mButtonRight.setOnClickListener(answerPassClickListener);
+
+                            }else{
+                                mButtonLeft.setText("看视频");
+                                mButtonLeft.setOnClickListener(answerFailClickListener);
+                                mButtonRight.setOnClickListener(answerFailClickListener);
+                            }
 
                             AdDialog.setCancelable(false);
 
@@ -276,9 +250,7 @@ public class Banner extends ReactContextBaseJavaModule {
         ad.setDownloadListener(new TTAppDownloadListener() {
             @Override
             public void onIdle() {
-
 //                TToast.show(_this, "点击开始下载", Toast.LENGTH_LONG);
-
             }
 
             @Override
@@ -347,10 +319,5 @@ public class Banner extends ReactContextBaseJavaModule {
 //                TToast.show(mContext, "点击取消 ");
             }
         });
-    }
-
-    public static void sendEvent(String eventName, @Nullable WritableMap params) {
-        MainApplication.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("BannerAd-" + eventName, params);
     }
 }

@@ -32,21 +32,21 @@
 
         >
         <Button
-            android:id="@+id/btn_banner_close"
+            android:id="@+id/btn_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:background="@drawable/left_border"
             android:layout_weight="1"
-            android:text="休息会"
+            android:text="继续答题"
             android:textColor="#969696"
             android:paddingBottom="10dp"
             />
         <Button
-            android:id="@+id/btn_banner_buy"
+            android:id="@+id/btn_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10智慧跳过"
+            android:text="看激励视频"
             android:textColor="#FFB100"
             android:background="@drawable/right_border"
             android:layout_weight="1"
