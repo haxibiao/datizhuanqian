@@ -2,4 +2,6 @@
 <resources>
     <color name="primary_dark">#FEFEFE</color>
     <color name="status_bar_color">#FEFEFE</color>
+    <color name="primary_color">#FFBB04</color>
+    <color name="grey_color">#969696</color>
 </resources>

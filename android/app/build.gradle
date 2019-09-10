@@ -185,10 +185,15 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            // storeFile file('debug.keystore')
+            // storePassword 'android'
+            // keyAlias 'androiddebugkey'
+            // keyPassword 'android'
+
+            storeFile file(MYAPP_RELEASE_STORE_FILE) 
+            storePassword MYAPP_RELEASE_STORE_PASSWORD 
+            keyAlias MYAPP_RELEASE_KEY_ALIAS 
+            keyPassword MYAPP_RELEASE_KEY_PASSWORD 
         }
         release {
             storeFile file(MYAPP_RELEASE_STORE_FILE) 
@@ -330,6 +335,8 @@ dependencies {
     implementation project(':jcore-react-native')  // 添加 jcore 依赖
     implementation project(':toolkits')
     implementation project(':share')
+
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.facebook.fresco:animated-gif:1.10.0'

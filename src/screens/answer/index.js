@@ -228,9 +228,10 @@ class index extends Component {
         this.answer_count = this.answer_count + 1;
         const error_rate = this.error_count / this.answer_count;
 
+        this.showBannerAd(adinfo, false);
         if (this.answer_count === 10 && config.enableQuestion) {
-            const result = error_rate >= 0.5 ? false : true;
-            this.showBannerAd(adinfo, result);
+            const answer_result = error_rate >= 0.5 ? false : true;
+            // this.showBannerAd(adinfo, answer_result);
             this.error_count = 0;
             this.answer_count = 0;
         }
@@ -351,12 +352,12 @@ class index extends Component {
 	  广告业务逻辑
 	*/
     // 加载banner广告dialog
-    async showBannerAd(adinfo, result) {
-        const click = await TtAdvert.Banner.loadBannerAd(adinfo, result);
+    async showBannerAd(adinfo, answer_result) {
+        const click = await TtAdvert.Banner.loadBannerAd(adinfo, answer_result);
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
-                this.loadRewardVideo();
+                this.loadRewardVideo(answer_result);
                 break;
 
             case 'LoadFullScreenVideo':
@@ -422,7 +423,7 @@ class index extends Component {
     };
 
     // 加载激励视频
-    loadRewardVideo = () => {
+    loadRewardVideo = answer_result => {
         const { data } = this.props;
         const adinfo = {
             tt_appid: Tools.syncGetter('user.adinfo.tt_appid', data),
@@ -434,16 +435,26 @@ class index extends Component {
             this.startRewardVideo(adinfo);
         } else {
             TtAdvert.RewardVideo.loadAd(adinfo).then(() => {
-                this.startRewardVideo(adinfo);
+                this.startRewardVideo(adinfo, answer_result);
             });
         }
     };
 
     // 展示激励视频
-    startRewardVideo = adinfo => {
+    startRewardVideo = (adinfo, answer_result) => {
+        const { UserReward } = this.props;
+
         TtAdvert.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
+                UserReward({
+                    variables: {
+                        reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
+                    },
+                    errorPolicy: 'all',
+                }).then(data => {
+                    TtAdvert.RewardDialog.loadRewardDialog(data.UserReward);
+                });
             }
         });
     };
@@ -641,4 +652,5 @@ export default compose(
     graphql(GQL.UserMeansQuery, {
         options: props => ({ variables: { id: app.me.id } }),
     }),
+    graphql(GQL.UserRewardMutation, { name: 'UserReward' }),
 )(index);

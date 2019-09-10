@@ -18,7 +18,11 @@ export const loadRewardDialog = (options?: adinfo, result?: boolean) => {
     if (options && !options.tt_appid) {
         return;
     }
-    return module.loadAd(adArgs, false);
+    return module.loadAd(adArgs, {
+        gold: 20,
+        ticket: 10,
+        contribute: 6,
+    });
 };
 
 export default { loadRewardDialog };
