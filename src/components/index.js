@@ -73,6 +73,7 @@ import Player from './Media/Player';
 import beginnerGuidance from './Guide/beginnerGuidance';
 import VideoTaskGuidance from './Guide/VideoTaskGuidance';
 import AnswerGuidance from './Guide/AnswerGuidance';
+import SetQuestionGuidance from './Guide/SetQuestionGuidance';
 
 export {
 	Iconfont,
@@ -130,5 +131,6 @@ export {
 	Player,
 	beginnerGuidance,
 	VideoTaskGuidance,
-	AnswerGuidance
+	AnswerGuidance,
+	SetQuestionGuidance
 };

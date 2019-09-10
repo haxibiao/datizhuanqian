@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	optionItem: {
 		flexDirection: 'row',
 		marginTop: PxFit(Theme.itemSpace),
-		marginBottom: PxFit(5)
+		marginBottom: PxFit(5),
 	},
 	optionLabel: {
 		width: PxFit(34),
@@ -48,32 +48,32 @@ const styles = StyleSheet.create({
 		backgroundColor: Theme.primaryColor,
 		borderRadius: PxFit(17),
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	rightOption: { backgroundColor: Theme.correctColor },
 	optionLabelText: {
 		fontSize: PxFit(17),
-		color: '#fff'
+		color: '#fff',
 	},
 	optionContent: {
 		flex: 1,
 		minHeight: PxFit(34),
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	optionContentText: {
 		fontSize: PxFit(16),
-		lineHeight: PxFit(17),
-		color: Theme.defaultTextColor
+		lineHeight: PxFit(18),
+		color: Theme.defaultTextColor,
 	},
 	correctText: {
-		color: Theme.correctColor
+		color: Theme.correctColor,
 	},
 	closeItem: {
 		width: PxFit(30),
 		height: PxFit(34),
 		justifyContent: 'center',
-		alignItems: 'center'
-	}
+		alignItems: 'center',
+	},
 });
 
 export default OptionItem;
