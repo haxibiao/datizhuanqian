@@ -13,14 +13,17 @@ import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+
 import cn.jpush.reactnativejpush.JPushPackage;
 import cn.jpush.android.api.JPushInterface;
-import com.haxibiao.UploaderPackage;
+
+import com.haxibiao.toolkits.UploaderPackage;
+import com.haxibiao.toolkits.DownloadApkPackage;
 import com.haxibiao.share.NativeSharePackage;
+import com.haxibiao.toolkits.AppUtilPackage;
+
 import com.datizhuanqian.ad.TtAdvertPackage;
 import com.datizhuanqian.wxapi.WxEntryPackage;
-import com.datizhuanqian.apkdownload.DownloadApkPackage;
-import com.datizhuanqian.utils.AppUtilPackage;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -29,56 +32,56 @@ import androidx.multidex.MultiDexApplication;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
-  public static TTAdNative mTTAdNative;
-  public static ReactApplicationContext reactContext;
-  public static TTRewardVideoAd ad = null;
-  public static TTFullScreenVideoAd fullAd = null;
-  public static ArrayBlockingQueue<String> myBlockingQueue = new ArrayBlockingQueue<String>(1);
+    public static TTAdNative mTTAdNative;
+    public static ReactApplicationContext reactContext;
+    public static TTRewardVideoAd ad = null;
+    public static TTFullScreenVideoAd fullAd = null;
+    public static ArrayBlockingQueue<String> myBlockingQueue = new ArrayBlockingQueue<String>(1);
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-   
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
+
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            @SuppressWarnings("UnnecessaryLocalVariable")
+            List<ReactPackage> packages = new PackageList(this).getPackages();
+            // Packages that cannot be autolinked yet can be added manually here, for example:
+            // packages.add(new MyReactNativePackage());
+            packages.add(new JPushPackage(true, true));
+            packages.add(new UploaderPackage());
+            packages.add(new NativeSharePackage());
+            packages.add(new TtAdvertPackage());
+            packages.add(new WxEntryPackage());
+            packages.add(new DownloadApkPackage());
+            packages.add(new AppUtilPackage());
+            return packages;
+        }
+
+        @Override
+        protected String getJSMainModuleName() {
+            return "index";
+        }
+    };
+
     @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
-
-     @Override
-    protected String getJSBundleFile(){
-      return CodePush.getJSBundleFile();
-    }
-
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-      @SuppressWarnings("UnnecessaryLocalVariable")
-      List<ReactPackage> packages = new PackageList(this).getPackages();
-      // Packages that cannot be autolinked yet can be added manually here, for example:
-      // packages.add(new MyReactNativePackage());
-      packages.add(new JPushPackage(true,true));
-      packages.add(new UploaderPackage());
-      packages.add(new NativeSharePackage());
-      packages.add(new TtAdvertPackage());
-      packages.add(new WxEntryPackage());
-      packages.add(new DownloadApkPackage());
-      packages.add(new AppUtilPackage());
-      return packages;
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
     }
 
     @Override
-    protected String getJSMainModuleName() {
-      return "index";
+    public void onCreate() {
+        super.onCreate();
+        SoLoader.init(this, /* native exopackage */ false);
+        JPushInterface.init(this);
     }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-    JPushInterface.init(this);
-  }
 }

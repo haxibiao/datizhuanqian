@@ -8,8 +8,8 @@ include ':jcore-react-native'
 project(':jcore-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/jcore-react-native/android')
 
 //本地组件
-include ':videoupload'
-project(':videoupload').projectDir = new File('/data/android/videoupload')
+include ':toolkits'
+project(':toolkits').projectDir = new File('/data/android/toolkits')
 
 include ':share'
 project(':share').projectDir = new File('/data/android/share')

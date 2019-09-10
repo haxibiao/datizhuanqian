@@ -185,10 +185,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file(MYAPP_RELEASE_STORE_FILE) 
-            storePassword MYAPP_RELEASE_STORE_PASSWORD 
-            keyAlias MYAPP_RELEASE_KEY_ALIAS 
-            keyPassword MYAPP_RELEASE_KEY_PASSWORD 
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
         }
         release {
             storeFile file(MYAPP_RELEASE_STORE_FILE) 
@@ -199,7 +199,9 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
+
+            buildConfigField "String", "CODEPUSH_KEY", '""'
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -313,17 +315,26 @@ android {
     }
 }
 
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    //  implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    compile project(':jpush-react-native')  // 添加 jpush 依赖
-    compile project(':jcore-react-native')  // 添加 jcore 依赖
-    compile project(':videoupload')
-    compile project(':share')
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    compile 'com.android.support:multidex:1.0.3'
-    compile 'com.facebook.fresco:animated-gif:1.10.0'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation project(':jpush-react-native')  // 添加 jpush 依赖
+    implementation project(':jcore-react-native')  // 添加 jcore 依赖
+    implementation project(':toolkits')
+    implementation project(':share')
+
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.facebook.fresco:animated-gif:1.10.0'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")
