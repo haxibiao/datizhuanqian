@@ -7,6 +7,6 @@
 import createIconSet from './createIconSet';
 import glyphMap from './iconfont';
 
-const Iconfont = createIconSet(glyphMap, 'iconfont', require('./fonts/iconfont.ttf'));
+const Iconfont = createIconSet(glyphMap, 'iconfont', require('../../assets/fonts/iconfont.ttf'));
 
 export default Iconfont;

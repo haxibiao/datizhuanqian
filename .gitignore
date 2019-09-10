@@ -4,6 +4,7 @@
 
 # Xcode
 #
+ios/Pods
 build/
 *.pbxuser
 !default.pbxuser
@@ -32,6 +33,7 @@ bin
 .gradle
 .project
 .settings
+.classpath
 local.properties
 *.iml
 
@@ -59,3 +61,4 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+node_modules

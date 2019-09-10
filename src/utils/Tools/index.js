@@ -3,7 +3,7 @@
  * created by wyk made in 2018-12-06 10:02:54
  */
 import { syncGetter, throttle, debounce, isContained, arrayRandomSort } from './adapter';
-import { contentNavigator } from './navigator';
+import { setRootNavigation, navigate } from './navigator';
 import {
 	NumberFormat,
 	TimeFormat,
@@ -21,7 +21,8 @@ export default {
 	debounce,
 	isContained,
 	arrayRandomSort,
-	contentNavigator,
+	setRootNavigation,
+	navigate,
 	NumberFormat,
 	TimeFormat,
 	singleImageResponse,

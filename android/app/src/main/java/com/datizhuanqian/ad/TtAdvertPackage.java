@@ -18,6 +18,7 @@ public class TtAdvertPackage implements ReactPackage {
         modules.add(new Banner(reactContext));
         modules.add(new Splash(reactContext));
         modules.add(new WithdrawBanner(reactContext));
+        modules.add(new RewardDialog(reactContext));
         return modules;
     }
 

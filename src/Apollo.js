@@ -4,11 +4,12 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { Platform } from 'react-native';
 
-import { GQL, makeClient, ApolloProvider } from 'apollo';
+import { makeClient, ApolloProvider } from 'apollo';
+
 import { observer, app } from 'store';
-import { Config } from 'utils';
+import { Config, Tools } from 'utils';
 
 import JPushModule from 'jpush-react-native';
 import Echo from 'laravel-echo';
@@ -16,12 +17,10 @@ import Socketio from 'socket.io-client';
 
 import AppRouter from './routers';
 
-import Crashes from 'appcenter-crashes';
-
 @observer
 class Apollo extends Component {
 	async componentDidMount() {
-		//挂载socklit
+		// 挂载socklit
 		this.mountWebSockit(app.me);
 
 		if (Platform.OS === 'android') {
@@ -30,7 +29,7 @@ class Apollo extends Component {
 				}
 			});
 		}
-		//注册Jpush
+		// 注册Jpush
 		JPushModule.getRegistrationID(registrationId => {});
 
 		// 添加设备来源tag;
@@ -47,7 +46,7 @@ class Apollo extends Component {
 	mountWebSockit(user) {
 		if (user.token != undefined) {
 			// 构造laravel echo及Socket Client
-			let echo = new Echo({
+			const echo = new Echo({
 				broadcaster: 'socket.io',
 				host: 'ws://socket.datizhuanqian.com:6001',
 				client: Socketio,
@@ -60,23 +59,23 @@ class Apollo extends Component {
 
 			app.setEcho(echo);
 
-			//监听公共频道
+			// 监听公共频道
 			echo.channel('notice').listen('NewNotice', this.sendLocalNotification);
 
-			//监听用户私人频道
+			// 监听用户私人频道
 			echo.private('App.User.' + user.id)
 				.listen('WithdrawalDone', this.sendLocalNotification)
 				.listen('NewLike', this.sendLocalNotification)
 				.listen('NewFollow', this.sendLocalNotification)
 				.listen('NewComment', this.sendLocalNotification)
 				.listen('NewAudit', this.sendLocalNotification);
-			//系统通知栏
+			// 系统通知栏
 		}
 	}
 
-	//本地推送通知
+	// 本地推送通知
 	sendLocalNotification(data) {
-		let currentDate = new Date();
+		const currentDate = new Date();
 		JPushModule.sendLocalNotification({
 			buildId: 1,
 			id: data.id,
@@ -88,16 +87,14 @@ class Apollo extends Component {
 	}
 
 	render() {
-		let { checkServer } = this.props;
-		let client = makeClient(app.me, checkServer); //构建apollo client
+		const { checkServer } = this.props;
+		const client = makeClient(app.me, checkServer); // 构建apollo client;
 		return (
 			<ApolloProvider client={client}>
-				<AppRouter />
+				<AppRouter ref={Tools.setRootNavigation} />
 			</ApolloProvider>
 		);
 	}
 }
-
-const styles = StyleSheet.create({});
 
 export default Apollo;

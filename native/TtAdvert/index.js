@@ -3,5 +3,6 @@ import FullScreenVideo from './FullScreenVideo';
 import RewardVideo from './RewardVideo';
 import Splash from './Splash';
 import WithdrawBanner from './WithdrawBanner';
+import RewardDialog from './RewardDialog';
 
-export default { Banner, FullScreenVideo, RewardVideo, Splash, WithdrawBanner };
+export default { Banner, FullScreenVideo, RewardVideo, Splash, WithdrawBanner, RewardDialog };

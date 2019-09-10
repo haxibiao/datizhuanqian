@@ -91,14 +91,14 @@ public class RewardVideo extends ReactContextBaseJavaModule {
             // 视频广告加载后，视频资源缓存到本地的回调，在此回调后，播放本地视频，流畅不阻塞。
             @Override
             public void onRewardVideoCached() {
-                TToast.show(_this, "奖励视频加载缓存成功");
+//                TToast.show(_this, "奖励视频加载缓存成功");
                 sendEvent("VideoCached", null);
             }
 
             // 视频广告的素材加载完毕，比如视频url等，在此回调后，可以播放在线视频，网络不好可能出现加载缓冲，影响体验。
             @Override
             public void onRewardVideoAdLoad(TTRewardVideoAd ad) {
-                TToast.show(_this, "奖励广告加载好了");
+//                TToast.show(_this, "奖励广告加载好了");
                 sendEvent("AdLoaded", null);
                 MainApplication.ad = ad;
                 if (promise != null) {

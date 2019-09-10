@@ -4,7 +4,7 @@
  */
 
 import MainTabNavigator from './MainTabNavigator';
-//登录注验证
+// 登录注验证
 import LoginScreen from '../screens/login';
 import ForgetPasswordScreen from '../screens/login/ForgetPassword';
 import RetrievePasswordScreen from '../screens/login/RetrievePassword';
@@ -12,18 +12,18 @@ import PhoneBindScreen from '../screens/login/PhoneBind';
 import VerificationPhoneScreen from '../screens/login/VerificationPhone';
 import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
-//答题
+// 答题
 import AnswerScreen from '../screens/answer';
-//题目详情
+// 题目详情
 import QuestionScreen from '../screens/question';
 import VideoExplanationScreen from '../screens/question/VideoExplanation';
-//提现
+// 提现
 import WithdrawLogDetailScreen from '../screens/withdraw/WithdrawLogDetails';
 import WithdrawApplyScreen from '../screens/withdraw/WithdrawApply';
-//任务
+// 任务
 import CpcTaskScreen from '../screens/task/CpcTask';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
-//出题
+// 出题
 import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
 import ContributeRuleScreen from '../screens/contribute/ContributeRule';
@@ -32,12 +32,12 @@ import ContributeEditCategoryScreen from '../screens/contribute/EditCategory';
 import ContributeEditOptionsScreen from '../screens/contribute/EditOptions';
 import ContributeEditExplainScreen from '../screens/contribute/EditExplain';
 
-//分享
+// 分享
 import ShareScreen from '../screens/share';
 import InviteeListScreen from '../screens/share/InviteeList';
 import AppShareCardScreen from '../screens/share/AppShareCard';
 
-//个人
+// 个人
 import EditScreen from '../screens/profile/Edit';
 import FavoritesLogScreen from '../screens/profile/FavoritesLog';
 import AnswerLogScreen from '../screens/profile/AnswerLog';
@@ -50,7 +50,7 @@ import BillingRecordScreen from '../screens/profile/BillingRecord';
 import IntroduceScreen from '../screens/profile/Introduce';
 import SocietyScreen from '../screens/profile/Society';
 import RecruitScreen from '../screens/profile/Recruit';
-//通知
+// 通知
 import NotificationScreen from '../screens/notification';
 import SystemNotificationScreen from '../screens/notification/SystemNotification';
 import OfficialNoticeScreen from '../screens/notification/OfficialNotice';
@@ -59,11 +59,11 @@ import FansNotificationScreen from '../screens/notification/FansNotification';
 import PushNotificationScreen from '../screens/notification/PushNotification';
 import LikeNotificationScreen from '../screens/notification/LikeNotification';
 import NoticeItemDetailScreen from '../screens/notification/NoticeItemDetail';
-//反馈
+// 反馈
 import FeedbackScreen from '../screens/feedback';
 import FeedbackDetails from '../screens/feedback/FeedbackDetails';
 
-//举报
+// 举报
 import ReportCommentScreen from '../screens/comment/ReportComment';
 import ReportUserScreen from '../screens/user/ReportUser';
 import ReportQuestionScreen from '../screens/question/ReportQuestion';
@@ -71,7 +71,7 @@ import ReportQuestionScreen from '../screens/question/ReportQuestion';
 //
 import UserScreen from '../screens/user';
 
-//设置
+// 设置
 import SettingScreen from '../screens/setting';
 import AccountSecurityScreen from '../screens/setting/AccountSecurity';
 import GradeDescriptionScreen from '../screens/setting/GradeDescription';
@@ -83,204 +83,201 @@ import PrivacyPolicyScreen from '../screens/setting/PrivacyPolicy';
 import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
 
 export default {
-	Main: {
-		screen: MainTabNavigator
-	},
-	//登录验证
-	Login: {
-		screen: LoginScreen
-	},
-	ForgetPassword: {
-		screen: ForgetPasswordScreen
-	},
-	RetrievePassword: {
-		screen: RetrievePasswordScreen
-	},
-	PhoneBind: {
-		screen: PhoneBindScreen
-	},
-	VerificationPhone: {
-		screen: VerificationPhoneScreen
-	},
-	RegisterSetPassword: {
-		screen: RegisterSetPasswordScreen
-	},
-	PasswordLogin: {
-		screen: PasswordLoginScreen
-	},
-	//答题
-	Answer: {
-		screen: AnswerScreen
-	},
-	//题目详情
-	Question: {
-		screen: QuestionScreen
-	},
-	VideoExplanation: {
-		screen: VideoExplanationScreen
-	},
-	//提现
-	withdrawLogDetails: {
-		screen: WithdrawLogDetailScreen
-	},
-	WithdrawApply: {
-		screen: WithdrawApplyScreen
-	},
-	//任务
-	CpcTask: {
-		screen: CpcTaskScreen
-	},
-	SubmitTask: {
-		screen: SubmitTaskScreen
-	},
-	//举报评论
-	ReportComment: {
-		screen: ReportCommentScreen
-	},
-	//出题
-	Contribute: {
-		screen: ContributeScreen
-	},
-	Contributes: {
-		screen: ContributesScreen
-	},
-	ContributeRule: {
-		screen: ContributeRuleScreen
-	},
-	ContributeSubmited: {
-		screen: ContributeSubmitedScreen
-	},
-	EditCategory: {
-		screen: ContributeEditCategoryScreen
-	},
-	EditOptions: {
-		screen: ContributeEditOptionsScreen
-	},
-	EditExplain: {
-		screen: ContributeEditExplainScreen
-	},
+    Main: {
+        screen: MainTabNavigator,
+    },
+    // 登录验证
+    Login: {
+        screen: LoginScreen,
+    },
+    ForgetPassword: {
+        screen: ForgetPasswordScreen,
+    },
+    RetrievePassword: {
+        screen: RetrievePasswordScreen,
+    },
+    PhoneBind: {
+        screen: PhoneBindScreen,
+    },
+    VerificationPhone: {
+        screen: VerificationPhoneScreen,
+    },
+    RegisterSetPassword: {
+        screen: RegisterSetPasswordScreen,
+    },
+    PasswordLogin: {
+        screen: PasswordLoginScreen,
+    },
+    // 答题
+    Answer: {
+        screen: AnswerScreen,
+    },
+    // 题目详情
+    Question: {
+        screen: QuestionScreen,
+    },
+    VideoExplanation: {
+        screen: VideoExplanationScreen,
+    },
+    // 提现
+    withdrawLogDetails: {
+        screen: WithdrawLogDetailScreen,
+    },
+    WithdrawApply: {
+        screen: WithdrawApplyScreen,
+    },
+    // 任务
+    CpcTask: {
+        screen: CpcTaskScreen,
+    },
+    SubmitTask: {
+        screen: SubmitTaskScreen,
+    },
 
-	//分享
-	Share: {
-		screen: ShareScreen
-	},
-	InviteeList: {
-		screen: InviteeListScreen
-	},
-	AppShareCard: {
-		screen: AppShareCardScreen
-	},
+    // 出题
+    Contribute: {
+        screen: ContributeScreen,
+    },
+    Contributes: {
+        screen: ContributesScreen,
+    },
+    ContributeRule: {
+        screen: ContributeRuleScreen,
+    },
+    ContributeSubmited: {
+        screen: ContributeSubmitedScreen,
+    },
+    EditCategory: {
+        screen: ContributeEditCategoryScreen,
+    },
+    EditOptions: {
+        screen: ContributeEditOptionsScreen,
+    },
+    EditExplain: {
+        screen: ContributeEditExplainScreen,
+    },
 
-	//个人
-	EditProfile: {
-		screen: EditScreen
-	},
-	FavoritesLog: {
-		screen: FavoritesLogScreen
-	},
-	AnswerLog: {
-		screen: AnswerLogScreen
-	},
+    // 分享
+    Share: {
+        screen: ShareScreen,
+    },
+    InviteeList: {
+        screen: InviteeListScreen,
+    },
+    AppShareCard: {
+        screen: AppShareCardScreen,
+    },
 
-	CommonIssue: {
-		screen: CommonIssueScreen
-	},
-	ModifyAliPay: {
-		screen: ModifyAliPayScreen
-	},
-	ModifyPassword: {
-		screen: ModifyPasswordScreen
-	},
-	ModifyAccount: {
-		screen: ModifyAccountScreen
-	},
-	VerificationCode: {
-		screen: VerificationCodeScreen
-	},
-	BillingRecord: {
-		screen: BillingRecordScreen
-	},
-	Introduce: {
-		screen: IntroduceScreen
-	},
-	Society: {
-		screen: SocietyScreen
-	},
-	Recruit: {
-		screen: RecruitScreen
-	},
-	//通知
-	Notification: {
-		screen: NotificationScreen
-	},
-	SystemNotification: {
-		screen: SystemNotificationScreen
-	},
-	OfficialNotice: {
-		screen: OfficialNoticeScreen
-	},
-	CommentNotification: {
-		screen: CommentNotificationScreen
-	},
-	FansNotification: {
-		screen: FansNotificationScreen
-	},
-	PushNotification: {
-		screen: PushNotificationScreen
-	},
-	LikeNotification: {
-		screen: LikeNotificationScreen
-	},
-	NoticeItemDetail: {
-		screen: NoticeItemDetailScreen
-	},
-	//反馈
-	Feedback: {
-		screen: FeedbackScreen
-	},
-	FeedbackDetails: {
-		screen: FeedbackDetails
-	},
-	//举报
-	ReportUser: {
-		screen: ReportUserScreen
-	},
-	ReportComment: {
-		screen: ReportCommentScreen
-	},
-	ReportQuestion: {
-		screen: ReportQuestionScreen
-	},
-	//用户
-	User: {
-		screen: UserScreen
-	},
-	//设置
-	Setting: {
-		screen: SettingScreen
-	},
-	AccountSecurity: {
-		screen: AccountSecurityScreen
-	},
-	GradeDescription: {
-		screen: GradeDescriptionScreen
-	},
-	UserProtocol: {
-		screen: UserProtocolScreen
-	},
-	ShareApp: {
-		screen: ShareAppScreen
-	},
-	AboutUs: {
-		screen: AboutUsScreen
-	},
-	UpdateLog: {
-		screen: UpdateLogScreen
-	},
-	PrivacyPolicy: {
-		screen: PrivacyPolicyScreen
-	},
-	SetLoginInfo: {
-		screen: SetLoginInfoScreen
-	}
+    // 个人
+    EditProfile: {
+        screen: EditScreen,
+    },
+    FavoritesLog: {
+        screen: FavoritesLogScreen,
+    },
+    AnswerLog: {
+        screen: AnswerLogScreen,
+    },
+
+    CommonIssue: {
+        screen: CommonIssueScreen,
+    },
+    ModifyAliPay: {
+        screen: ModifyAliPayScreen,
+    },
+    ModifyPassword: {
+        screen: ModifyPasswordScreen,
+    },
+    ModifyAccount: {
+        screen: ModifyAccountScreen,
+    },
+    VerificationCode: {
+        screen: VerificationCodeScreen,
+    },
+    BillingRecord: {
+        screen: BillingRecordScreen,
+    },
+    Introduce: {
+        screen: IntroduceScreen,
+    },
+    Society: {
+        screen: SocietyScreen,
+    },
+    Recruit: {
+        screen: RecruitScreen,
+    },
+    // 通知
+    Notification: {
+        screen: NotificationScreen,
+    },
+    SystemNotification: {
+        screen: SystemNotificationScreen,
+    },
+    OfficialNotice: {
+        screen: OfficialNoticeScreen,
+    },
+    CommentNotification: {
+        screen: CommentNotificationScreen,
+    },
+    FansNotification: {
+        screen: FansNotificationScreen,
+    },
+    PushNotification: {
+        screen: PushNotificationScreen,
+    },
+    LikeNotification: {
+        screen: LikeNotificationScreen,
+    },
+    NoticeItemDetail: {
+        screen: NoticeItemDetailScreen,
+    },
+    // 反馈
+    Feedback: {
+        screen: FeedbackScreen,
+    },
+    FeedbackDetails: {
+        screen: FeedbackDetails,
+    },
+    // 举报
+    ReportUser: {
+        screen: ReportUserScreen,
+    },
+    ReportComment: {
+        screen: ReportCommentScreen,
+    },
+    ReportQuestion: {
+        screen: ReportQuestionScreen,
+    },
+    // 用户
+    User: {
+        screen: UserScreen,
+    },
+    //  设置
+    Setting: {
+        screen: SettingScreen,
+    },
+    AccountSecurity: {
+        screen: AccountSecurityScreen,
+    },
+    GradeDescription: {
+        screen: GradeDescriptionScreen,
+    },
+    UserProtocol: {
+        screen: UserProtocolScreen,
+    },
+    ShareApp: {
+        screen: ShareAppScreen,
+    },
+    AboutUs: {
+        screen: AboutUsScreen,
+    },
+    UpdateLog: {
+        screen: UpdateLogScreen,
+    },
+    PrivacyPolicy: {
+        screen: PrivacyPolicyScreen,
+    },
+    SetLoginInfo: {
+        screen: SetLoginInfoScreen,
+    },
 };

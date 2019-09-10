@@ -9,7 +9,8 @@ export const keys = {
   commentAppStoreVersion: 'commentAppStoreVersion',
   categoryCache: 'categoryCache',
   taskCache: 'taskCache',
-  userCache: 'userCache'
+  userCache: 'userCache',
+  'BeginnerGuidance_VideoTask':'BeginnerGuidance_VideoTask'
 };
 
 async function removeItem(key) {
