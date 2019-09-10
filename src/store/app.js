@@ -71,6 +71,13 @@ class app {
     }
 
     @action.bound
+    changeUserStatus(status: boolean) {
+        this.me.isNewUser = status;
+        storage.setItem(keys.me, this.me);
+        this.updateUserCache(this.me);
+    }
+
+    @action.bound
     changeAvatar(avatarUrl) {
         this.me.avatar = avatarUrl;
     }

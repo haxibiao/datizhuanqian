@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
+import { app } from 'store';
 
 function VideoTaskGuidance({ onDismiss }) {
     const [step, setStep] = useState(0);
@@ -37,7 +38,12 @@ function VideoTaskGuidance({ onDismiss }) {
                 break;
             case 2:
                 return (
-                    <TouchableWithoutFeedback onPress={onDismiss}>
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            app.changeUserStatus(false);
+                            onDismiss();
+                        }}
+                    >
                         <View style={styles.flexCenter}>
                             <Image
                                 style={styles.stimulateVideo}
@@ -53,11 +59,14 @@ function VideoTaskGuidance({ onDismiss }) {
     return guidesView;
 }
 
-const WITHDRAW_IMAGE_WIDTH = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) * 764) / 450;
-const TASK_IMAGE_WIDTH = SCREEN_WIDTH - PxFit(Theme.itemSpace * 2);
-
-const withdrawGuideTop = PxFit(52) + PxFit(Theme.itemSpace) * 2 + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight);
+const withdrawGuideTop = PxFit(30) + PxFit(Theme.itemSpace) * 2 + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight);
 const withdrawGuideRight = (SCREEN_WIDTH / 2 - 120) / 2;
+const WITHDRAW_IMAGE_WIDTH = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2) * (746 / 450);
+
+const TASK_IMAGE_WIDTH = PxFit(84) * (800 / 252);
+const TASK_IMAGE_HEIGHT = (TASK_IMAGE_WIDTH * 423) / 800;
+const TASK_IMAGE_TOP =
+    PxFit(102) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (TASK_IMAGE_HEIGHT * 326) / 423;
 
 const styles = StyleSheet.create({
     flexCenter: {
@@ -82,10 +91,10 @@ const styles = StyleSheet.create({
     },
     stimulateVideo: {
         position: 'absolute',
-        top: PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight),
-        right: PxFit(Theme.itemSpace),
+        top: TASK_IMAGE_TOP,
+        right: PxFit(48),
         width: TASK_IMAGE_WIDTH,
-        height: (TASK_IMAGE_WIDTH * 423) / 800,
+        height: TASK_IMAGE_HEIGHT,
         resizeMode: 'contain'
     }
 });

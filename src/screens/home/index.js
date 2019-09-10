@@ -18,6 +18,7 @@ import { Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 import PlateItem from './components/PlateItem';
 
 import { observer, app, keys, storage } from 'store';
+import { when } from 'mobx';
 import { withApollo, compose, graphql, GQL } from 'apollo';
 
 import JPushModule from 'jpush-react-native';
@@ -27,6 +28,18 @@ import { Util } from 'native';
 import { Overlay } from 'teaset';
 
 import UserRewardOverlay from './components/UserRewardOverlay';
+
+// 监听新用户登录
+when(
+	() => app.me.isNewUser,
+	() => {
+		beginnerGuidance({
+			guidanceKey: 'VideoTask',
+			GuidanceView: VideoTaskGuidance,
+			dismissEnabled: false
+		});
+	}
+);
 
 @observer
 class index extends Component {
@@ -40,11 +53,6 @@ class index extends Component {
 			content: null,
 			time: new Date()
 		};
-		beginnerGuidance({
-			guidanceKey: 'VideoTask',
-			GuidanceView: VideoTaskGuidance,
-			dismissEnabled: false
-		});
 	}
 
 	async componentDidMount() {

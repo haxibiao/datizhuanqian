@@ -16,7 +16,7 @@ class RegisterSetPassword extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			password: null
+			password: null,
 		};
 	}
 
@@ -28,28 +28,29 @@ class RegisterSetPassword extends Component {
 		let result = {};
 
 		this.setState({
-			submitting: true
+			submitting: true,
 		});
 		try {
 			result = await this.props.signUpMutation({
 				variables: {
 					account: phone,
 					password: this.state.password,
-					uuid: deviceId
+					uuid: deviceId,
 				},
-				errorPolicy: 'all'
+				errorPolicy: 'all',
 			});
 		} catch (ex) {
 			result.errors = ex;
 		}
 		if (result && result.errors) {
 			this.setState({
-				submitting: false
+				submitting: false,
 			});
 			let str = result.errors[0].message;
 			Toast.show({ content: str });
 		} else {
 			const user = result.data.signUp;
+			user.isNewUser = true;
 			this._saveUserData(user);
 			Toast.show({ content: '注册成功' });
 			navigation.navigate('答题');
@@ -61,7 +62,7 @@ class RegisterSetPassword extends Component {
 		app.signIn(user);
 		app.remember(user);
 		this.setState({
-			submitting: false
+			submitting: false,
 		});
 	};
 
@@ -82,7 +83,7 @@ class RegisterSetPassword extends Component {
 							secureTextEntry={true}
 							onChangeText={value => {
 								this.setState({
-									password: value
+									password: value,
 								});
 							}}
 							maxLength={48}
@@ -105,54 +106,54 @@ class RegisterSetPassword extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Theme.white
+		backgroundColor: Theme.white,
 	},
 	header: {
 		marginTop: PxFit(30),
 		paddingHorizontal: PxFit(25),
-		marginBottom: 15
+		marginBottom: 15,
 	},
 	title: {
 		color: Theme.black,
 		fontSize: PxFit(20),
-		fontWeight: '600'
+		fontWeight: '600',
 	},
 	tipsText: {
 		color: Theme.grey,
 		fontSize: PxFit(12),
-		paddingTop: PxFit(20)
+		paddingTop: PxFit(20),
 	},
 	buttonWrap: {
 		marginHorizontal: PxFit(25),
 		marginTop: PxFit(35),
-		height: PxFit(48)
+		height: PxFit(48),
 	},
 	button: {
 		height: PxFit(42),
 		fontSize: PxFit(16),
 		backgroundColor: Theme.primaryColor,
-		borderRadius: PxFit(21)
+		borderRadius: PxFit(21),
 	},
 	textWrap: {
 		marginHorizontal: PxFit(25),
 		paddingHorizontal: 0,
 		// marginTop: PxFit(2),
 		borderBottomWidth: PxFit(0.5),
-		borderBottomColor: Theme.lightBorder
+		borderBottomColor: Theme.lightBorder,
 	},
 	textInput: {
 		fontSize: PxFit(16),
 		color: Theme.primaryFont,
 		padding: 0,
-		height: PxFit(50)
+		height: PxFit(50),
 	},
 	footer: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		marginHorizontal: PxFit(25),
-		marginTop: PxFit(15)
-	}
+		marginTop: PxFit(15),
+	},
 });
 
 export default compose(graphql(GQL.signUpMutation, { name: 'signUpMutation' }))(RegisterSetPassword);
