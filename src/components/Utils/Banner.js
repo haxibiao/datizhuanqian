@@ -146,7 +146,10 @@ class Banner extends Component {
                                 继续答题将不再奖励智慧点
                             </Text>
                             <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
-                                每日零时将重置精力点
+                                到任务中s看激励视频可恢复精力点
+                            </Text>
+                            <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
+                                每日零时也将重置精力点哦
                             </Text>
                         </View>
                     </View>

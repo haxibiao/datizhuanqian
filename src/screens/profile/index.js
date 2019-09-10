@@ -5,7 +5,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, Image, NativeModules } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge } from '../../components';
 import { Config, Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 import { GQL, Query, withApollo, compose, graphql } from 'apollo';
@@ -48,8 +48,8 @@ class index extends Component {
     }
 
     render() {
-        let { navigation, data, echo } = this.props;
-        let { login, me, userCache } = app;
+        const { navigation, data } = this.props;
+        const { login, me, userCache } = app;
         let user = me;
 
         if (login && data && data.user) {
@@ -229,8 +229,10 @@ class index extends Component {
                                         refetch();
                                     });
                                     if (data && data.user && data.user.unread_notifications_count) {
+                                        app.updateNoticeCount(data.user.unread_notifications_count);
                                         return <Badge count={data.user.unread_notifications_count} />;
                                     } else {
+                                        app.updateNoticeCount(0);
                                         return <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />;
                                     }
                                 }}

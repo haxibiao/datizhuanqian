@@ -14,6 +14,7 @@ class app {
     @observable taskCache = null;
     @observable categoryCache = null;
     @observable noTicketTips = true;
+    @observable unreadNotice = 0;
 
     @action.bound
     setFetching(isFetching) {
@@ -87,27 +88,27 @@ class app {
         this.noTicketTips = noTicketTips;
     }
 
-    //记住已查看出题规则
+    // 记住已查看出题规则
     @action.bound
     async updateContributeRuleRead(contributeRuleRead) {
         this.contributeRuleRead = contributeRuleRead;
         await storage.setItem(keys.contributeRuleRead, contributeRuleRead);
     }
 
-    //记录已查看的版本更新提示
+    // 记录已查看的版本更新提示
     @action.bound
     async updateViewedVesion(viewedVersion) {
         this.viewedVersion = viewedVersion;
         await storage.setItem(keys.viewedVersion, viewedVersion);
     }
 
-    //echo对象
+    // echo对象
     @action.bound
     setEcho(echo) {
         this.echo = echo;
     }
 
-    //用于signToken 每个版本静默重新登录一次，防止storage数据结构改动引起的错误
+    // 用于signToken 每个版本静默重新登录一次，防止storage数据结构改动引起的错误
     @action.bound
     async updateResetVersion(resetVersion) {
         this.resetVersion = resetVersion;
@@ -115,7 +116,7 @@ class app {
         await storage.setItem(keys.resetVersion, resetVersion);
     }
 
-    //用于提现后的应用商店好评提醒  每个版本只提醒一次
+    // 用于提现后的应用商店好评提醒  每个版本只提醒一次
     @action.bound
     async updateCommentAppStoreVersion(version) {
         await storage.setItem(keys.commentAppStoreVersion, version);
@@ -141,12 +142,17 @@ class app {
 
     @action.bound
     async recallCache() {
-        let resetVersion = await storage.getItem(keys.resetVersion);
+        const resetVersion = await storage.getItem(keys.resetVersion);
         if (resetVersion == Config.AppVersionNumber) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
             this.categoryCache = await storage.getItem(keys.categoryCache);
         }
+    }
+
+    @action.bound
+    async updateNoticeCount(count) {
+        this.unreadNotice = count;
     }
 }
 

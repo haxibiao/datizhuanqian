@@ -4,28 +4,15 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, NativeModules, Image, ScrollView } from 'react-native';
-import {
-    PageContainer,
-    Iconfont,
-    TouchFeedback,
-    Button,
-    SubmitLoading,
-    PopOverlay,
-    Row,
-    TipsOverlay,
-} from 'components';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
 
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, WPercent, Tools, ISIOS } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from 'utils';
 
-import { Mutation, Query, compose, graphql, GQL } from 'apollo';
-import { Overlay } from 'teaset';
+import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 
 import WithdrawGuidance from './WithdrawGuidance';
-// import CheckApkExist from '../../../../native/CheckApkExist';
-
-import DeviceInfo from 'react-native-device-info';
 
 class WithdrawBody extends Component {
     constructor(props) {
@@ -61,36 +48,38 @@ class WithdrawBody extends Component {
 
     componentDidUpdate(nextProps, nextState) {
         if (nextProps.data && nextProps.data.user) {
-            nextProps.navigation.addListener('didFocus', payload => {
+            nextProps.navigation.addListener('didFocus', () => {
                 nextProps.data.refetch();
             });
         }
     }
 
-    //发起提现请求
+    // 发起提现请求
     async handleWithdraws(amount) {
-        let { data, navigation } = this.props;
+        const { data, navigation } = this.props;
         if (data.user.today_withdraw_left < amount) {
             TipsOverlay.show({
-                title: '您的提现额度不足',
+                title: '日贡献不足',
                 content: (
                     <TouchFeedback
                         style={{ alignItems: 'center', paddingTop: 10, navigation }}
                         onPress={() => {
-                            navigation.navigate('Share');
+                            navigation.navigate('任务');
                             TipsOverlay.hide();
                         }}>
                         <Text style={{ fontSize: 13, color: Theme.theme, textDecorationLine: 'underline' }}>
-                            如何获取提现额度?
+                            去做激励任务提升贡献值！
                         </Text>
                     </TouchFeedback>
                 ),
-                onConfirm: () => navigation.navigate('Share'),
+                onConfirm: () => navigation.navigate('任务'),
             });
             // navigation.navigate('WithdrawApply', { amount: 1 });
         } else {
             this.createWithdraw(amount);
         }
+
+        // if(data.user.wallet)
     }
 
     async createWithdraw(amount) {
@@ -144,12 +133,10 @@ class WithdrawBody extends Component {
     }
 
     render() {
-        const { data, navigation, appstores } = this.props;
-        let { clickControl, isVisible, luckyMoney } = this.state;
+        const { data, navigation } = this.props;
+        let { isVisible, luckyMoney } = this.state;
         let { userCache } = app;
         let user = Tools.syncGetter('user', data);
-
-        let user_id = app.me.id.toString();
 
         if (!user) {
             if (userCache) {
@@ -185,28 +172,41 @@ class WithdrawBody extends Component {
                         {luckyMoney.map((luckyMoney, index) => {
                             let bool = this.calcExchange(user, luckyMoney.value);
                             return (
-                                <TouchFeedback
-                                    style={[
-                                        styles.withdrawItem,
-                                        bool && {
-                                            backgroundColor: Theme.primaryColor,
-                                        },
-                                    ]}
-                                    onPress={() => {
-                                        this.handleWithdraws(luckyMoney.value);
-                                    }}
-                                    key={index}>
-                                    <Text
+                                <View key={index}>
+                                    <TouchFeedback
                                         style={[
-                                            styles.content,
+                                            styles.withdrawItem,
                                             bool && {
-                                                color: '#fff',
+                                                backgroundColor: '#FFF2EB',
                                             },
-                                        ]}>
-                                        提现
-                                        {luckyMoney.value}元
-                                    </Text>
-                                </TouchFeedback>
+                                        ]}
+                                        onPress={() => {
+                                            this.handleWithdraws(luckyMoney.value);
+                                        }}>
+                                        <Text
+                                            style={[
+                                                styles.content,
+                                                bool && {
+                                                    color: Theme.themeRed,
+                                                },
+                                            ]}>
+                                            {luckyMoney.value}元
+                                        </Text>
+
+                                        <Text
+                                            style={{
+                                                fontSize: 13,
+                                                color: luckyMoney.value === 1 ? '#FFA200' : Theme.subTextColor,
+                                            }}>
+                                            {luckyMoney.value === 1 ? '无门槛' : `${luckyMoney.value * 36}日贡献`}
+                                        </Text>
+                                    </TouchFeedback>
+                                    {luckyMoney.value === 1 && (
+                                        <View style={styles.badge}>
+                                            <Text style={styles.badgeText}>秒到账</Text>
+                                        </View>
+                                    )}
+                                </View>
                             );
                         })}
                     </View>
@@ -225,7 +225,7 @@ class WithdrawBody extends Component {
                                 />
                             </TouchFeedback>
                             <Button
-                                title={'查看提现日志'}
+                                title={'提现记录'}
                                 style={{
                                     height: PxFit(38),
                                     borderRadius: PxFit(19),
@@ -314,8 +314,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     content: {
-        fontSize: PxFit(16),
-        color: Theme.subTextColor,
+        fontSize: PxFit(15),
+        color: Theme.black,
+    },
+    badge: {
+        backgroundColor: Theme.primaryColor,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: 56,
+        height: 22,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopRightRadius: PxFit(10),
+        borderBottomRightRadius: PxFit(10),
+        borderTopLeftRadius: PxFit(5),
+    },
+    badgeText: {
+        fontSize: 13,
+        color: '#FFF',
+        fontWeight: '500',
     },
     footer: {
         alignItems: 'center',
@@ -333,6 +351,6 @@ const styles = StyleSheet.create({
 export default compose(
     graphql(GQL.CreateWithdrawMutation, { name: 'CreateWithdrawMutation' }),
     graphql(GQL.UserMeansQuery, {
-        options: props => ({ variables: { id: app.me.id } }),
+        options: () => ({ variables: { id: app.me.id } }),
     }),
 )(WithdrawBody);

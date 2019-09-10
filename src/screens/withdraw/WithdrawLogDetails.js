@@ -17,9 +17,10 @@ class WithdrawLogDetails extends Component {
         super(props);
         this.state = {};
     }
+
     render() {
         const { navigation } = this.props;
-        const { withdraw_ids } = navigation.state.params;
+        const { withdraw_id } = navigation.state.params;
         return (
             <PageContainer title="提现详情" white>
                 <Query
@@ -27,7 +28,6 @@ class WithdrawLogDetails extends Component {
                     variables={{
                         id: withdraw_id,
                     }}>
-                    {' '}
                     {({ data, error, loading, refetch }) => {
                         if (error) return <ErrorView onPress={refetch} />;
                         if (loading) return <LoadingSpinner />;
@@ -49,22 +49,21 @@ class WithdrawLogDetails extends Component {
                                             source={{
                                                 uri: app.me.avatar,
                                             }}
-                                        />{' '}
-                                        <Text style={styles.name}> {app.me.name} </Text>{' '}
-                                    </View>{' '}
+                                        />
+                                        <Text style={styles.name}> {app.me.name} </Text>
+                                    </View>
                                     <View style={styles.info}>
                                         <Text style={styles.money}>
-                                            {' '}
                                             {withdraw.amount}
-                                            .00{' '}
-                                        </Text>{' '}
+                                            .00
+                                        </Text>
                                         {withdraw.status == -1 ? (
                                             <Text
                                                 style={{
                                                     fontSize: PxFit(16),
                                                     color: Theme.errorColor,
                                                 }}>
-                                                交易失败{' '}
+                                                交易失败
                                             </Text>
                                         ) : (
                                             <Text
@@ -72,19 +71,18 @@ class WithdrawLogDetails extends Component {
                                                     fontSize: PxFit(16),
                                                     color: Theme.weixin,
                                                 }}>
-                                                {' '}
-                                                交易成功{' '}
+                                                交易成功
                                             </Text>
-                                        )}{' '}
-                                    </View>{' '}
+                                        )}
+                                    </View>
                                     <View style={styles.row}>
-                                        <Text style={styles.textLeft}> 提现单号 </Text>{' '}
-                                        <Text style={styles.textRight}> {withdraw.biz_no} </Text>{' '}
-                                    </View>{' '}
+                                        <Text style={styles.textLeft}> 提现单号 </Text>
+                                        <Text style={styles.textRight}> {withdraw.biz_no} </Text>
+                                    </View>
                                     <View style={styles.row}>
-                                        <Text style={styles.textLeft}> 转账备注 </Text>{' '}
-                                        <Text style={styles.textRight}> 智慧点提现 </Text>{' '}
-                                    </View>{' '}
+                                        <Text style={styles.textLeft}> 转账备注 </Text>
+                                        <Text style={styles.textRight}> 智慧点提现 </Text>
+                                    </View>
                                     <View
                                         style={[
                                             styles.row,
@@ -92,22 +90,19 @@ class WithdrawLogDetails extends Component {
                                                 paddingBottom: PxFit(15),
                                             },
                                         ]}>
-                                        <Text style={styles.textLeft}> 收款账户 </Text>{' '}
+                                        <Text style={styles.textLeft}> 收款账户 </Text>
                                         <Text style={styles.textRight}>
-                                            {' '}
-                                            {withdraw.to_account + '(' + app.me.wallet.real_name + ')'}{' '}
-                                        </Text>{' '}
-                                    </View>{' '}
+                                            {withdraw.to_account + '(' + app.me.wallet.real_name + ')'}
+                                        </Text>
+                                    </View>
                                     <View style={styles.borderRow}>
                                         <Text style={styles.textLeft}>
-                                            {' '}
-                                            {withdraw.status == -1 ? '提现时间' : '到账时间'}{' '}
-                                        </Text>{' '}
+                                            {withdraw.status == -1 ? '提现时间' : '到账时间'}
+                                        </Text>
                                         <Text style={styles.textRight}>
-                                            {' '}
-                                            {withdraw.status == -1 ? withdraw.created_at : withdraw.updated_at}{' '}
-                                        </Text>{' '}
-                                    </View>{' '}
+                                            {withdraw.status == -1 ? withdraw.created_at : withdraw.updated_at}
+                                        </Text>
+                                    </View>
                                     <View
                                         style={[
                                             styles.row,
@@ -115,10 +110,10 @@ class WithdrawLogDetails extends Component {
                                                 paddingBottom: PxFit(15),
                                             },
                                         ]}>
-                                        <Text style={styles.textLeft}> 支付宝订单号 </Text>{' '}
-                                        <Text style={styles.text}> {withdraw.trade_no} </Text>{' '}
-                                    </View>{' '}
-                                </View>{' '}
+                                        <Text style={styles.textLeft}> 支付宝订单号 </Text>
+                                        <Text style={styles.text}> {withdraw.trade_no} </Text>
+                                    </View>
+                                </View>
                                 <View
                                     style={{
                                         paddingHorizontal: PxFit(15),
@@ -133,14 +128,14 @@ class WithdrawLogDetails extends Component {
                                                     lineHeight: PxFit(22),
                                                 },
                                             ]}>
-                                            回执信息 {'   '} <Text style={[styles.textRight]}> {withdraw.remark} </Text>{' '}
-                                        </Text>{' '}
-                                    </View>{' '}
-                                </View>{' '}
+                                            回执信息 {'   '} <Text style={[styles.textRight]}> {withdraw.remark} </Text>
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
                         );
-                    }}{' '}
-                </Query>{' '}
+                    }}
+                </Query>
             </PageContainer>
         );
     }
