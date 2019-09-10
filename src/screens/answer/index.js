@@ -461,7 +461,8 @@ class index extends Component {
                     },
                     errorPolicy: 'all',
                 }).then(data => {
-                    TtAdvert.RewardDialog.loadRewardDialog(data.UserReward);
+                    console.log('data', data);
+                    TtAdvert.RewardDialog.loadRewardDialog(data.userReward);
                 });
             }
         });

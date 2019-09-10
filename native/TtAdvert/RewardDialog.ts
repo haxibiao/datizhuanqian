@@ -14,15 +14,17 @@ interface adinfo {
     tt_codeid?: string;
 }
 
-export const loadRewardDialog = (options?: adinfo, result?: boolean) => {
+interface userReward {
+    gold?: number;
+    ticket?: number;
+    contribute?: number;
+}
+
+export const loadRewardDialog = (options?: adinfo, userReward?: userReward) => {
     if (options && !options.tt_appid) {
         return;
     }
-    return module.loadAd(adArgs, {
-        gold: 20,
-        ticket: 10,
-        contribute: 6,
-    });
+    return module.loadAd(adArgs, userReward);
 };
 
 export default { loadRewardDialog };

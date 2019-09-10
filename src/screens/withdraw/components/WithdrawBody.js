@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
 
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from 'utils';
@@ -147,100 +147,102 @@ class WithdrawBody extends Component {
         }
 
         return (
-            <View style={styles.container}>
-                <View style={styles.statistics}>
-                    <View style={styles.currentGold}>
-                        <Text style={styles.greyText1}>当前智慧点(个)</Text>
-                        <Text style={styles.boldBlackText}>{user.gold || 0}</Text>
-                    </View>
-                    <View style={styles.accumulat}>
-                        <View style={styles.accumulated}>
-                            <Text style={styles.greyText2}>今日可提现额度(元)</Text>
-                            <Text style={styles.slenderBlackText}>{user.today_withdraw_left || 0}</Text>
+            <ScrollView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <View style={styles.statistics}>
+                        <View style={styles.currentGold}>
+                            <Text style={styles.greyText1}>当前智慧点(个)</Text>
+                            <Text style={styles.boldBlackText}>{user.gold || 0}</Text>
                         </View>
-                        <View style={styles.line} />
-                        <View style={styles.accumulated}>
-                            <Text style={styles.greyText2}>当前汇率(智慧点/元)</Text>
-                            <Text style={styles.slenderBlackText}>
-                                {user.exchange_rate ? user.exchange_rate : 600}/1
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.withdraws}>
-                    <View style={styles.center}>
-                        {luckyMoney.map((luckyMoney, index) => {
-                            let bool = this.calcExchange(user, luckyMoney.value);
-                            return (
-                                <View key={index}>
-                                    <TouchFeedback
-                                        style={[
-                                            styles.withdrawItem,
-                                            bool && {
-                                                backgroundColor: '#FFF2EB',
-                                            },
-                                        ]}
-                                        onPress={() => {
-                                            this.handleWithdraws(luckyMoney.value);
-                                        }}>
-                                        <Text
-                                            style={[
-                                                styles.content,
-                                                bool && {
-                                                    color: Theme.themeRed,
-                                                },
-                                            ]}>
-                                            {luckyMoney.value}元
-                                        </Text>
-
-                                        <Text
-                                            style={{
-                                                fontSize: 13,
-                                                color: luckyMoney.value === 1 ? '#FFA200' : Theme.subTextColor,
-                                            }}>
-                                            {luckyMoney.value === 1 ? '无门槛' : `${luckyMoney.value * 36}日贡献`}
-                                        </Text>
-                                    </TouchFeedback>
-                                    {luckyMoney.value === 1 && (
-                                        <View style={styles.badge}>
-                                            <Text style={styles.badgeText}>秒到账</Text>
-                                        </View>
-                                    )}
-                                </View>
-                            );
-                        })}
-                    </View>
-                    {user.wallet && user.wallet.pay_account ? (
-                        <View style={styles.footer}>
-                            <TouchFeedback
-                                style={{ flexDirection: 'row', alignItems: 'center' }}
-                                onPress={() => navigation.navigate('Introduce')}>
-                                <Text style={styles.tips}>
-                                    总提现{user.wallet.total_withdraw_amount || 0}.00 / 今日贡献
-                                    {user.today_contributes}{' '}
+                        <View style={styles.accumulat}>
+                            <View style={styles.accumulated}>
+                                <Text style={styles.greyText2}>今日可提现额度(元)</Text>
+                                <Text style={styles.slenderBlackText}>{user.today_withdraw_left || 0}</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.accumulated}>
+                                <Text style={styles.greyText2}>当前汇率(智慧点/元)</Text>
+                                <Text style={styles.slenderBlackText}>
+                                    {user.exchange_rate ? user.exchange_rate : 600}/1
                                 </Text>
-                                <Image
-                                    source={require('../../../assets/images/question.png')}
-                                    style={{ width: 11, height: 11 }}
-                                />
-                            </TouchFeedback>
-                            <Button
-                                title={'提现记录'}
-                                style={{
-                                    height: PxFit(38),
-                                    borderRadius: PxFit(19),
-                                    backgroundColor: Theme.primaryColor,
-                                    width: WPercent(80),
-                                }}
-                                onPress={() => navigation.navigate('BillingRecord')}
-                            />
+                            </View>
                         </View>
-                    ) : (
-                        <WithdrawGuidance navigation={navigation} user={user} />
-                    )}
+                    </View>
+                    <View style={styles.withdraws}>
+                        <View style={styles.center}>
+                            {luckyMoney.map((luckyMoney, index) => {
+                                let bool = this.calcExchange(user, luckyMoney.value);
+                                return (
+                                    <View key={index}>
+                                        <TouchFeedback
+                                            style={[
+                                                styles.withdrawItem,
+                                                bool && {
+                                                    backgroundColor: '#FFF2EB',
+                                                },
+                                            ]}
+                                            onPress={() => {
+                                                this.handleWithdraws(luckyMoney.value);
+                                            }}>
+                                            <Text
+                                                style={[
+                                                    styles.content,
+                                                    bool && {
+                                                        color: Theme.themeRed,
+                                                    },
+                                                ]}>
+                                                {luckyMoney.value}元
+                                            </Text>
+
+                                            <Text
+                                                style={{
+                                                    fontSize: 13,
+                                                    color: luckyMoney.value === 1 ? '#FFA200' : Theme.subTextColor,
+                                                }}>
+                                                {luckyMoney.value === 1 ? '无门槛' : `${luckyMoney.value * 36}日贡献`}
+                                            </Text>
+                                        </TouchFeedback>
+                                        {luckyMoney.value === 1 && (
+                                            <View style={styles.badge}>
+                                                <Text style={styles.badgeText}>秒到账</Text>
+                                            </View>
+                                        )}
+                                    </View>
+                                );
+                            })}
+                        </View>
+                        {user.wallet && user.wallet.pay_account ? (
+                            <View style={styles.footer}>
+                                <TouchFeedback
+                                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                                    onPress={() => navigation.navigate('Introduce')}>
+                                    <Text style={styles.tips}>
+                                        总提现{user.wallet.total_withdraw_amount || 0}.00 / 今日贡献
+                                        {user.today_contributes}{' '}
+                                    </Text>
+                                    <Image
+                                        source={require('../../../assets/images/question.png')}
+                                        style={{ width: 11, height: 11 }}
+                                    />
+                                </TouchFeedback>
+                                <Button
+                                    title={'提现记录'}
+                                    style={{
+                                        height: PxFit(38),
+                                        borderRadius: PxFit(19),
+                                        backgroundColor: Theme.primaryColor,
+                                        width: WPercent(80),
+                                    }}
+                                    onPress={() => navigation.navigate('BillingRecord')}
+                                />
+                            </View>
+                        ) : (
+                            <WithdrawGuidance navigation={navigation} user={user} />
+                        )}
+                    </View>
+                    <SubmitLoading isVisible={isVisible} content={'加载中...'} />
                 </View>
-                <SubmitLoading isVisible={isVisible} content={'加载中...'} />
-            </View>
+            </ScrollView>
         );
     }
 }
