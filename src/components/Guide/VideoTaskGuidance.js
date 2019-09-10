@@ -1,3 +1,7 @@
+/*
+ * @flow
+ * created by wyk made in 2019-09-09 11:10:28
+ */
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
@@ -6,67 +10,52 @@ import { app } from 'store';
 function VideoTaskGuidance({ onDismiss }) {
     const [step, setStep] = useState(0);
     const guidesView = useMemo(() => {
-        switch (step) {
-            case 0:
-                return (
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            Tools.navigate('提现');
-                            setStep(1);
-                        }}
-                    >
-                        <Image style={styles.userReward} source={require('../../assets/images/new_user_reward.png')} />
-                    </TouchableWithoutFeedback>
-                );
-                break;
-            case 1:
-                return (
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            Tools.navigate('任务');
-                            setStep(2);
-                        }}
-                    >
-                        <View style={styles.flexCenter}>
-                            <Image
-                                style={styles.withdrawGuide}
-                                source={require('../../assets/images/withdraw_guide.png')}
-                            />
-                        </View>
-                    </TouchableWithoutFeedback>
-                );
-                break;
-            case 2:
-                return (
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            app.changeUserStatus(false);
-                            onDismiss();
-                        }}
-                    >
-                        <View style={styles.flexCenter}>
-                            <Image
-                                style={styles.stimulateVideo}
-                                source={require('../../assets/images/stimulate_video.png')}
-                            />
-                        </View>
-                    </TouchableWithoutFeedback>
-                );
-                break;
-        }
-    }, [step]);
+        return [
+            <TouchableWithoutFeedback
+                key={1}
+                onPress={() => {
+                    Tools.navigate('提现');
+                    setStep(1);
+                }}
+            >
+                <Image style={styles.userReward} source={require('../../assets/images/new_user_reward.png')} />
+            </TouchableWithoutFeedback>,
+            <TouchableWithoutFeedback
+                key={2}
+                onPress={() => {
+                    Tools.navigate('任务');
+                    setStep(2);
+                }}
+            >
+                <View style={styles.flexCenter}>
+                    <Image style={styles.withdrawGuide} source={require('../../assets/images/withdraw_guide.png')} />
+                </View>
+            </TouchableWithoutFeedback>,
+            <TouchableWithoutFeedback
+                key={3}
+                onPress={() => {
+                    app.changeUserStatus(false);
+                    onDismiss();
+                }}
+            >
+                <View style={styles.flexCenter}>
+                    <Image style={styles.stimulateVideo} source={require('../../assets/images/stimulate_video.png')} />
+                </View>
+            </TouchableWithoutFeedback>
+        ];
+    }, []);
 
-    return guidesView;
+    return guidesView[step];
 }
 
 const withdrawGuideTop = PxFit(30) + PxFit(Theme.itemSpace) * 2 + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight);
 const withdrawGuideRight = (SCREEN_WIDTH / 2 - 120) / 2;
-const WITHDRAW_IMAGE_WIDTH = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2) * (746 / 450);
+const withdrawGuideWidth = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2) * (746 / 450);
 
-const TASK_IMAGE_WIDTH = PxFit(84) * (800 / 252);
-const TASK_IMAGE_HEIGHT = (TASK_IMAGE_WIDTH * 423) / 800;
-const TASK_IMAGE_TOP =
-    PxFit(102) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (TASK_IMAGE_HEIGHT * 326) / 423;
+const videoTaskGuideWidth = PxFit(84) * (800 / 252);
+const videoTaskGuideHeight = (videoTaskGuideWidth * 423) / 800;
+const videoTaskGuideTop =
+    PxFit(102) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (videoTaskGuideHeight * 326) / 423;
 
 const styles = StyleSheet.create({
     flexCenter: {
@@ -85,16 +74,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: withdrawGuideTop,
         right: withdrawGuideRight,
-        width: WITHDRAW_IMAGE_WIDTH,
-        height: (WITHDRAW_IMAGE_WIDTH * 659) / 746,
+        width: withdrawGuideWidth,
+        height: (withdrawGuideWidth * 659) / 746,
         resizeMode: 'contain'
     },
     stimulateVideo: {
         position: 'absolute',
-        top: TASK_IMAGE_TOP,
+        top: videoTaskGuideTop,
         right: PxFit(48),
-        width: TASK_IMAGE_WIDTH,
-        height: TASK_IMAGE_HEIGHT,
+        width: videoTaskGuideWidth,
+        height: videoTaskGuideHeight,
         resizeMode: 'contain'
     }
 });

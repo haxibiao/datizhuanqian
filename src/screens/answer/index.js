@@ -14,6 +14,8 @@ import {
     PullChooser,
     Player,
     UpwardImage,
+    beginnerGuidance,
+    AnswerGuidance,
 } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
 
@@ -72,6 +74,12 @@ class index extends Component {
 
     componentDidMount() {
         const { me } = app;
+        // 新手指导
+        beginnerGuidance({
+            guidanceKey: 'Answer',
+            GuidanceView: AnswerGuidance,
+            dismissEnabled: true,
+        });
 
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + me.token)
             .then(response => response.json())
@@ -88,8 +96,8 @@ class index extends Component {
     }
 
     /*
-	  答题相关逻辑
-	*/
+      答题相关逻辑
+    */
     async fetchData() {
         try {
             const result = await this.props.client.query({
@@ -244,8 +252,8 @@ class index extends Component {
     }
 
     /*
-	  UI相关展示交互
-	*/
+      UI相关展示交互
+    */
     showUpward() {
         if (this.markView) {
             this.markView.measure((x, y, width, height, pageX, pageY) => {
@@ -349,8 +357,8 @@ class index extends Component {
     };
 
     /*
-	  广告业务逻辑
-	*/
+      广告业务逻辑
+    */
     // 加载banner广告dialog
     async showBannerAd(adinfo, answer_result) {
         const click = await TtAdvert.Banner.loadBannerAd(adinfo, answer_result);

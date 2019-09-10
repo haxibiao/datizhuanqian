@@ -33,6 +33,7 @@ import UserRewardOverlay from './components/UserRewardOverlay';
 when(
 	() => app.me.isNewUser,
 	() => {
+		// 新手指导
 		beginnerGuidance({
 			guidanceKey: 'VideoTask',
 			GuidanceView: VideoTaskGuidance,
