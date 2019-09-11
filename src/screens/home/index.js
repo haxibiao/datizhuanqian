@@ -12,7 +12,7 @@ import {
     Placeholder,
     Banner,
     beginnerGuidance,
-    VideoTaskGuidance,
+    VideoTaskGuidance
 } from 'components';
 import { Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 import PlateItem from './components/PlateItem';
@@ -31,15 +31,14 @@ import UserRewardOverlay from './components/UserRewardOverlay';
 
 // 监听新用户登录
 when(
-	() => app.me.isNewUser,
-	() => {
-		// 新手指导
-		beginnerGuidance({
-			guidanceKey: 'VideoTask',
-			GuidanceView: VideoTaskGuidance,
-			dismissEnabled: false
-		});
-	}
+    () => app.me.isNewUser,
+    () => {
+        // 新手指导
+        beginnerGuidance({
+            guidanceKey: 'VideoTask',
+            GuidanceView: VideoTaskGuidance
+        });
+    }
 );
 
 @observer
@@ -47,14 +46,14 @@ class index extends Component {
     constructor(props) {
         super(props);
 
-		this.state = {
-			finished: false,
-			categoryCache: null,
-			description: null,
-			content: null,
-			time: new Date()
-		};
-	}
+        this.state = {
+            finished: false,
+            categoryCache: null,
+            description: null,
+            content: null,
+            time: new Date()
+        };
+    }
 
     async componentDidMount() {
         const { navigation } = this.props;
@@ -76,7 +75,7 @@ class index extends Component {
             if (login) {
                 client
                     .query({
-                        query: GQL.UserWithdrawQuery,
+                        query: GQL.UserWithdrawQuery
                     })
                     .then(({ data }) => {})
                     .catch(error => {
@@ -100,7 +99,7 @@ class index extends Component {
             this.setState({
                 content: message.alertContent,
                 type: JSON.parse(message.extras).type,
-                time: JSON.parse(message.extras).time,
+                time: JSON.parse(message.extras).time
             });
         };
         JPushModule.addReceiveNotificationListener(this.receiveNotificationListener);
@@ -109,7 +108,7 @@ class index extends Component {
         this.openNotificationListener = map => {
             const { type, content, time } = this.state;
             // if (type == 'maintenance') {
-            // 	this.props.navigation.navigate('推送通知', { content: content, name: '系统维护', time: time });
+            //  this.props.navigation.navigate('推送通知', { content: content, name: '系统维护', time: time });
             // }
             this.props.navigation.navigate('PushNotification', { content: content, name: '官方提示', time: time });
         };
@@ -139,8 +138,8 @@ class index extends Component {
             this.props
                 .signToken({
                     variables: {
-                        token: me.token,
-                    },
+                        token: me.token
+                    }
                 })
                 .then(result => {
                     app.signIn(result.data.signInWithToken);
@@ -171,7 +170,7 @@ class index extends Component {
     _renderCategoryList = () => {
         const {
             navigation,
-            data: { loading, categories, refetch, fetchMore },
+            data: { loading, categories, refetch, fetchMore }
         } = this.props;
         let questionCategories = categories;
         const { login, categoryCache } = app;
@@ -203,7 +202,7 @@ class index extends Component {
                             onRefresh={refetch}
                             reset={() =>
                                 this.setState({
-                                    finished: false,
+                                    finished: false
                                 })
                             }
                         />
@@ -217,7 +216,7 @@ class index extends Component {
                         if (categories && questionCategories) {
                             fetchMore({
                                 variables: {
-                                    offset: questionCategories.length,
+                                    offset: questionCategories.length
                                 },
                                 updateQuery: (prev, { fetchMoreResult }) => {
                                     if (
@@ -228,14 +227,14 @@ class index extends Component {
                                         )
                                     ) {
                                         this.setState({
-                                            finished: true,
+                                            finished: true
                                         });
                                         return prev;
                                     }
                                     return Object.assign({}, prev, {
-                                        categories: [...prev.categories, ...fetchMoreResult.categories],
+                                        categories: [...prev.categories, ...fetchMoreResult.categories]
                                     });
-                                },
+                                }
                             });
                         }
                     }}
@@ -257,7 +256,7 @@ class index extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        flex: 1,
+        flex: 1
     },
 
     overlayInner: {
@@ -266,11 +265,11 @@ const styles = StyleSheet.create({
         flex: 1,
         height: SCREEN_HEIGHT,
         justifyContent: 'center',
-        width: SCREEN_WIDTH,
-    },
+        width: SCREEN_WIDTH
+    }
 });
 
 export default compose(
     graphql(GQL.CategoriesQuery, { options: props => ({ variables: { limit: 10 } }) }),
-    graphql(GQL.signToken, { name: 'signToken' }),
+    graphql(GQL.signToken, { name: 'signToken' })
 )(withApollo(index));

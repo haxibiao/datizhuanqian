@@ -14,7 +14,7 @@ function AnswerGuidance({ onDismiss }) {
 	);
 }
 
-const WIDTH = (411 * 46) / 118;
+const WIDTH = (411 * 46) / 122;
 const HEIGHT = (WIDTH * 719) / 411;
 const TOP = PxFit(NAVBAR_HEIGHT);
 const RIGHT = WIDTH / 2 - (WIDTH * 140) / 411;

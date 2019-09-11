@@ -57,10 +57,10 @@ const Contribute = observer(
 
 		componentDidMount() {
 			beginnerGuidance({
-				guidanceKey: 'SetQuestion',
-				GuidanceView: SetQuestionGuidance,
-				dismissEnabled: false,
+				guidanceKey: 'InputQuestion',
+				GuidanceView: SetQuestionGuidance.inputGuidance,
 				skipEnabled: true,
+				skipGuidanceKeys: ['InputQuestion', 'SubmitQuestion'],
 			});
 			this.loadCache();
 		}

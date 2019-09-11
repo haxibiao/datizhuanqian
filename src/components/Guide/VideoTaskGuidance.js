@@ -52,7 +52,7 @@ const withdrawGuideTop = PxFit(30) + PxFit(Theme.itemSpace) * 2 + PxFit(NAVBAR_H
 const withdrawGuideRight = (SCREEN_WIDTH / 2 - 120) / 2;
 const withdrawGuideWidth = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2) * (746 / 450);
 
-const videoTaskGuideWidth = PxFit(84) * (800 / 252);
+const videoTaskGuideWidth = PxFit(88) * (800 / 252);
 const videoTaskGuideHeight = (videoTaskGuideWidth * 423) / 800;
 const videoTaskGuideTop =
     PxFit(102) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (videoTaskGuideHeight * 326) / 423;

@@ -12,7 +12,8 @@ export const keys = {
     userCache: 'userCache',
     BeginnerGuidance_VideoTask: 'BeginnerGuidance_VideoTask',
     BeginnerGuidance_Answer: 'BeginnerGuidance_Answer',
-    BeginnerGuidance_SetQuestion: 'BeginnerGuidance_SetQuestion',
+    BeginnerGuidance_InputQuestion: 'BeginnerGuidance_InputQuestion',
+    BeginnerGuidance_SubmitQuestion: 'BeginnerGuidance_SubmitQuestion',
 };
 
 async function removeItem(key) {

@@ -3,8 +3,8 @@
  * created by wyk made in 2019-06-25 15:32:53
  */
 import { View, Image, Keyboard } from 'react-native';
-import { observable, action, runInAction, autorun, computed } from 'mobx';
-import { ProgressOverlay } from '../../components';
+import { observable, action, runInAction, autorun, computed, when } from 'mobx';
+import { ProgressOverlay, beginnerGuidance, SetQuestionGuidance } from 'components';
 import { Api } from '../../utils';
 
 const ANSWERS = ['A', 'B', 'C', 'D'];
@@ -36,6 +36,15 @@ class ContributeStore {
 		if (!ContributeStore.instance) {
 			ContributeStore.instance = this;
 		}
+		when(
+			() => this.description && this.options.size,
+			() => {
+				beginnerGuidance({
+					guidanceKey: 'SubmitQuestion',
+					GuidanceView: SetQuestionGuidance.submitGuidance,
+				});
+			},
+		);
 		return ContributeStore.instance;
 	}
 
@@ -81,7 +90,7 @@ class ContributeStore {
 		} else {
 			if (this.options.size === 2 && this.answers.size === 1) {
 				Toast.show({
-					content: '两个选项不能全为正确答案'
+					content: '两个选项不能全为正确答案',
 				});
 				return;
 			}
@@ -133,8 +142,8 @@ class ContributeStore {
 			},
 			{
 				multiple: false,
-				includeBase64: true
-			}
+				includeBase64: true,
+			},
 		);
 	}
 
@@ -154,7 +163,7 @@ class ContributeStore {
 						this[type + 'video'] = null;
 						this[type + 'video_path'] = null;
 						Toast.show({
-							content: `抱歉，视频时长需在${this[type + 'video_duration']}秒以内`
+							content: `抱歉，视频时长需在${this[type + 'video_duration']}秒以内`,
 						});
 						throw `视频时长需在${this[type + 'video_duration']}秒以内`;
 					}
@@ -177,7 +186,7 @@ class ContributeStore {
 						if (video.id) {
 							ProgressOverlay.hide();
 							Toast.show({
-								content: '视频上传成功'
+								content: '视频上传成功',
 							});
 							this.uploading = false;
 							this[type + 'video_id'] = video.id;
@@ -187,8 +196,8 @@ class ContributeStore {
 						}
 					}
 				},
-				onError: () => this.onUploadError(type)
-			}
+				onError: () => this.onUploadError(type),
+			},
 		);
 	}
 
@@ -196,7 +205,7 @@ class ContributeStore {
 	onUploadError(type: target = '') {
 		ProgressOverlay.hide();
 		Toast.show({
-			content: '视频上传失败'
+			content: '视频上传失败',
 		});
 		this.uploading = false;
 		this[type + 'video'] = null;
@@ -229,7 +238,7 @@ class ContributeStore {
 			selections,
 			video_id: this.video_id,
 			image: this.picture,
-			answers
+			answers,
 		};
 	}
 
@@ -238,7 +247,7 @@ class ContributeStore {
 			return {
 				content: this.explain_text,
 				video_id: this.explain_video_id,
-				images: [this.explain_picture]
+				images: [this.explain_picture],
 			};
 		}
 		return null;
@@ -254,13 +263,13 @@ class ContributeStore {
 				option[1] && answers.push(ANSWERS[index]);
 				return {
 					Value: ANSWERS[index],
-					Text: option[0]
+					Text: option[0],
 				};
 			}
 		});
 		return {
 			selections,
-			answers
+			answers,
 		};
 	}
 
@@ -283,13 +292,13 @@ class ContributeStore {
 			description: '请填写题干,不少于8个字',
 			selections: '请填写答案选项',
 			answers: '请设置正确答案',
-			category_id: '请选择题库'
+			category_id: '请选择题库',
 		};
 
 		for (var k in tips) {
 			if (!this.variables[k]) {
 				Toast.show({
-					content: tips[k]
+					content: tips[k],
 				});
 				verified = false;
 				break;

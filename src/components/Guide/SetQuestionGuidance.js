@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-n
 import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
 import { app } from 'store';
 
-function SetQuestionGuidance({ onDismiss }) {
+function inputGuidance({ onDismiss }) {
 	const [step, setStep] = useState(0);
 	const guidesView = useMemo(() => {
 		return [
@@ -25,18 +25,28 @@ function SetQuestionGuidance({ onDismiss }) {
 			<TouchableWithoutFeedback
 				key={2}
 				onPress={() => {
-					setStep(2);
+					onDismiss();
 				}}
 			>
 				<View style={styles.flexContainer}>
 					<Image style={styles.guideImage03} source={require('../../assets/images/set_question_2_1.png')} />
 					<Image style={styles.guideImage04} source={require('../../assets/images/set_question_2_2.png')} />
 				</View>
-			</TouchableWithoutFeedback>,
+			</TouchableWithoutFeedback>
+		];
+	}, []);
+
+	return guidesView[step];
+}
+
+function submitGuidance({ onDismiss }) {
+	const [step, setStep] = useState(0);
+	const guidesView = useMemo(() => {
+		return [
 			<TouchableWithoutFeedback
-				key={3}
+				key={1}
 				onPress={() => {
-					setStep(3);
+					setStep(1);
 				}}
 			>
 				<View style={styles.flexContainer}>
@@ -44,9 +54,9 @@ function SetQuestionGuidance({ onDismiss }) {
 				</View>
 			</TouchableWithoutFeedback>,
 			<TouchableWithoutFeedback
-				key={4}
+				key={2}
 				onPress={() => {
-					setStep(4);
+					setStep(2);
 				}}
 			>
 				<View style={styles.flexContainer}>
@@ -54,7 +64,7 @@ function SetQuestionGuidance({ onDismiss }) {
 				</View>
 			</TouchableWithoutFeedback>,
 			<TouchableWithoutFeedback
-				key={5}
+				key={3}
 				onPress={() => {
 					onDismiss();
 				}}
@@ -70,13 +80,16 @@ function SetQuestionGuidance({ onDismiss }) {
 	return guidesView[step];
 }
 
+const G3Width = SCREEN_WIDTH * 0.45;
+const G5Width = SCREEN_WIDTH - PxFit(Theme.itemSpace * 5);
+
 const isSmallHeight = SCREEN_HEIGHT < 667;
-const G3Height = ((SCREEN_WIDTH / 2) * 505) / 473;
-const G5Height = (SCREEN_WIDTH * 0.8 * 280) / 810;
+const G3Height = (G3Width * 505) / 473;
+const G5Height = (G5Width * 280) / 810;
 const G6Height = ((SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2) * 445) / 1001;
 const G7Height = ((SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2) * 357) / 1003;
 
-const G5Top = isSmallHeight ? SCREEN_HEIGHT - G5Height : NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(334);
+const G5Top = isSmallHeight ? SCREEN_HEIGHT - G5Height : NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(360);
 const G6Top = isSmallHeight ? SCREEN_HEIGHT - G6Height : NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(254);
 const G7Top = isSmallHeight
 	? SCREEN_HEIGHT - G7Height
@@ -108,7 +121,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 4 + PxFit(160) - (G3Height * 334) / 505,
 		left: PxFit(Theme.itemSpace),
-		width: SCREEN_WIDTH / 2,
+		width: G3Width,
 		height: G3Height,
 		resizeMode: 'contain'
 	},
@@ -123,8 +136,8 @@ const styles = StyleSheet.create({
 	guideImage05: {
 		position: 'absolute',
 		top: G5Top,
-		right: PxFit(Theme.itemSpace),
-		width: SCREEN_WIDTH * 0.8,
+		left: PxFit(Theme.itemSpace + 10),
+		width: G5Width,
 		height: G5Height,
 		resizeMode: 'contain'
 	},
@@ -148,10 +161,13 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: PxFit(Theme.statusBarHeight),
 		right: 0,
-		width: 68 * (266 / 150),
-		height: (68 * (266 / 150) * 285) / 266,
+		width: 60 * (266 / 150),
+		height: (60 * (266 / 150) * 285) / 266,
 		resizeMode: 'contain'
 	}
 });
 
-export default SetQuestionGuidance;
+export default {
+	inputGuidance,
+	submitGuidance
+};
