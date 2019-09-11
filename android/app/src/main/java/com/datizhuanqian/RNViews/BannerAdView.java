@@ -1,12 +1,10 @@
 package com.datizhuanqian.RNViews;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Choreographer;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,17 +23,17 @@ import com.datizhuanqian.ad.ttad.TToast;
 import com.datizhuanqian.ad.ttad.config.TTAdManagerHolder;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 public class BannerAdView extends RelativeLayout {
     private String _appid = "5016518";
     private String _codeid = "916518401";
+    private int _expectedWidth;
+    private int _expectedHeight = 0; //高度0 自适应
+    private int screenWidth; //default, 会计算的
     private TTAdNative mTTAdNative;
     protected Activity mContext;
     private static final String TAG = "banner";
@@ -43,15 +41,29 @@ public class BannerAdView extends RelativeLayout {
     public BannerAdView(Activity context) {
         super(context);
         mContext = context;
-        Log.d(TAG, "BannerAdView: ....");
+        Log.d(TAG, "New BannerAdView: ....");
         inflate(context, R.layout.view_banner, this);
-        loadAd();
+        DisplayMetrics metric = new DisplayMetrics();
+        mContext.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metric);
+        screenWidth = (int) (metric.widthPixels / metric.density);
+        _expectedWidth = screenWidth;
         setupLayoutHack();
     }
 
-    public void setTitle(String title) {
-        TextView tvTitle = findViewById(R.id.banner_title);
-        tvTitle.setText(title);
+    public void setSize(String size) {
+        Log.d(TAG,"banner size:" + size);
+        switch (size) {
+            case "small":
+                _expectedWidth = screenWidth / 2;
+                break;
+            case "middle":
+                _expectedWidth = screenWidth * 2 / 3;
+                break;
+            case "large":
+                _expectedWidth = screenWidth;
+                break;
+        }
+        loadAd();
     }
 
     public void setAppId(String appId) {
@@ -100,50 +112,39 @@ public class BannerAdView extends RelativeLayout {
         final RelativeLayout _bannerView = findViewById(R.id.banner_container);
 
         //step4:创建广告请求参数AdSlot,具体参数含义参考文档 modules.add(new Interaction(reactContext));
-        DisplayMetrics metric = new DisplayMetrics();
-        context.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int screenWidth = (int) (metric.widthPixels / metric.density);
 
-        float expressViewWidth = screenWidth * 3 / 4;
-        float expressViewHeight = 0;
+        float expressViewWidth = _expectedWidth;
+        Log.d(TAG, "expressViewWidth: "+expressViewWidth);
+        float expressViewHeight = _expectedHeight;
 
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(_codeid) //广告位id
                 .setSupportDeepLink(true)
                 .setAdCount(3) //请求广告数量为1到3条
-                .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
-                .setImageAcceptedSize(640, 100)
+                .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp,高度0自适应
+                .setImageAcceptedSize(640, 320)
                 .build();
 
         //step5:请求广告，对请求回调的广告作渲染处理
         mTTAdNative.loadBannerExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.println(Log.ERROR, "错误结果banner", message);
+                Log.d("错误结果banner", message);
             }
 
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
 
-                Log.d("banner", "onNativeExpressAdLoad loaded!!!!" + ads.size());
-
-                context.runOnUiThread(() -> {
-                    Log.d(TAG, "UiThreadUtil.runOnUiThread ... ");
-                    TextView tv1 = new TextView(context);
-                    tv1.setText("onNativeExpressAdLoad loaded");
-                    tv1.setTextColor(Color.RED);
-                    _bannerView.addView(tv1);
-                });
+                Log.d(TAG, "onNativeExpressAdLoad loaded!!!!" + ads.size());
 
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
                 TTNativeExpressAd mTTAd = ads.get(0);
-                mTTAd.setSlideIntervalTime(30 * 1000);
+                mTTAd.setSlideIntervalTime(3 * 1000);
                 bindAdListener(mTTAd, context, _bannerView);
                 startTime = System.currentTimeMillis();
-                Log.d(TAG, "onNativeExpressAdLoad: render ... ");
                 mTTAd.render();
             }
 
@@ -170,33 +171,23 @@ public class BannerAdView extends RelativeLayout {
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
-                Log.e("ExpressView", "render fail:" + (System.currentTimeMillis() - startTime));
+                Log.e(TAG, "render fail:" + (System.currentTimeMillis() - startTime));
             }
 
             @Override
             public void onRenderSuccess(View view, float width, float height) {
-                Log.e("ExpressView", "render suc:" + (System.currentTimeMillis() - startTime));
-                TextView tv = new TextView(context);
-                tv.setText("bbbbbbbbbb -----------------------------bbbbbbbbbbbbbbbbb");
-                tv.setTextColor(Color.BLUE);
-                _bannerView.addView(tv);
+                Log.e(TAG, "render suc:" + (System.currentTimeMillis() - startTime));
 
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("banner", "runOnUiThread");
-                        TextView tv = new TextView(context);
-                        tv.setText("ssss ------------------------------------sssssssssssssssssssssssssssssssss");
-                        tv.setTextColor(Color.YELLOW);
-                        _bannerView.addView(tv);
 
                         if (!context.isFinishing()) {
-                            Log.d("banner", "activity not finished " + _bannerView.toString());
+                            Log.d(TAG, "activity not finished " + _bannerView.toString());
 
-                            view.setPadding(10, 10, 10, 0);
-                            view.setMinimumWidth(300);
-                            view.setMinimumHeight(200);
-
+//                            view.setPadding(0, 0, 0, 0);
+//                            view.setMinimumWidth(300);
+//                            view.setMinimumHeight(200);
                             _bannerView.addView(view);
 
                         } else {
@@ -207,7 +198,7 @@ public class BannerAdView extends RelativeLayout {
             }
         });
         //dislike设置
-        bindDislike(ad, false, context);
+        bindDislike(ad, true, context);
         if (ad.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
             return;
         }
@@ -263,7 +254,6 @@ public class BannerAdView extends RelativeLayout {
                     TToast.show(mContext, "点击 " + filterWord.getName());
                     //用户选择不喜欢原因后，移除广告展示
 //                    AdDialog.dismiss();
-
                 }
             });
             ad.setDislikeDialog(dislikeDialog);
@@ -273,14 +263,13 @@ public class BannerAdView extends RelativeLayout {
         ad.setDislikeCallback(context, new TTAdDislike.DislikeInteractionCallback() {
             @Override
             public void onSelected(int position, String value) {
-//                TToast.show(mContext, "点击 " + value);
+                TToast.show(mContext, "点击 " + value);
                 //用户选择不喜欢原因后，移除广告展示
             }
 
             @Override
             public void onCancel() {
-
-//                TToast.show(mContext, "点击取消 ");
+                TToast.show(mContext, "点击取消 ");
             }
         });
     }

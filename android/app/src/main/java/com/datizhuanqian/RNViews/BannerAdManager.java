@@ -44,8 +44,8 @@ public class BannerAdManager extends ViewGroupManager<BannerAdView> {
         view.setCodeId(codeid);
     }
 
-    @ReactProp(name = "title")
-    public void setTitle(BannerAdView view, @Nullable String title) {
-        view.setTitle(title);
+    @ReactProp(name = "size")
+    public void setSize(BannerAdView view, @Nullable String size) {
+        view.setSize(size);
     }
 }

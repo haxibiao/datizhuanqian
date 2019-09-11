@@ -163,8 +163,10 @@ class WithdrawBody extends Component {
 
         return (
             <ScrollView style={styles.container}>
-                <View style={{ padding: 20, paddingTop: 50, borderBottomColor: 'red', borderBottomWidth: 1 }}>
-                    <ttad.BannerAd title={'测试标题'} style={{ width: 300, height: 400, backgroundColor: 'gray' }} />
+                <View>
+                    <ttad.BannerAd size="small" />
+                    <ttad.BannerAd size="middle" />
+                    <ttad.BannerAd size="large" />
                 </View>
                 <View style={styles.statistics}>
                     <View style={styles.currentGold}>
