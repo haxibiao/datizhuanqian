@@ -62,7 +62,7 @@ class Banner extends Component {
             <View>
                 <BoxShadow
                     setting={Object.assign({}, shadowOpt, {
-                        height: PxFit(showWithdraw && user.gold <= 600 ? 88 : 46),
+                        height: PxFit(46),
                     })}>
                     <View style={styles.container}>
                         <View style={styles.rowItem}>
@@ -106,15 +106,14 @@ class Banner extends Component {
                             <Text style={styles.text}>{user.gold}</Text>
                         </View>
                     </View>
-                    {showWithdraw && user.gold <= 600 ? (
-                        <View style={styles.withdrawProgress}>
-                            <ProgressWithdrawal step={parseInt(step)} data={stepData} />
-                        </View>
-                    ) : (
-                        <View style={styles.ticketUpperLimit}>
-                            <View style={[styles.ticketBar, { width: progress }]} />
-                        </View>
-                    )}
+                    <View style={styles.ticketUpperLimit}>
+                        <View style={[styles.ticketBar, { width: progress }]} />
+                    </View>
+                    {
+                        // <View style={styles.withdrawProgress}>
+                        //     <ProgressWithdrawal step={parseInt(step)} data={stepData} />
+                        // </View>
+                    }
                 </BoxShadow>
             </View>
             //考虑到精力点是实时更新的  所以不将精力点存到redux中.
