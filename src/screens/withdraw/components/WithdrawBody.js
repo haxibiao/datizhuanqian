@@ -22,6 +22,8 @@ import { Mutation, Query, compose, graphql, GQL } from 'apollo';
 import { Overlay } from 'teaset';
 import { app } from 'store';
 
+import { ttad } from 'native';
+
 import WithdrawGuidance from './WithdrawGuidance';
 // import CheckApkExist from '../../../../native/CheckApkExist';
 
@@ -160,7 +162,10 @@ class WithdrawBody extends Component {
         }
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
+                <View style={{ padding: 20, paddingTop: 50, borderBottomColor: 'red', borderBottomWidth: 1 }}>
+                    <ttad.BannerAd title={'测试标题'} style={{ width: 300, height: 400, backgroundColor: 'gray' }} />
+                </View>
                 <View style={styles.statistics}>
                     <View style={styles.currentGold}>
                         <Text style={styles.greyText1}>当前智慧点(个)</Text>
@@ -240,7 +245,7 @@ class WithdrawBody extends Component {
                     )}
                 </View>
                 <SubmitLoading isVisible={isVisible} content={'加载中...'} />
-            </View>
+            </ScrollView>
         );
     }
 }

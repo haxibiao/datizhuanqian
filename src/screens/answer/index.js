@@ -36,7 +36,7 @@ import ChooseOverlay from './components/ChooseOverlay';
 import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
 
-import { TtAdvert } from 'native';
+import { ttad } from 'native';
 import { toJS } from 'mobx';
 
 @observer
@@ -352,7 +352,7 @@ class index extends Component {
 	*/
     // 加载banner广告dialog
     async showBannerAd(adinfo, result) {
-        const click = await TtAdvert.Banner.loadBannerAd(adinfo, result);
+        const click = await ttad.Banner.loadBannerAd(adinfo, result);
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
@@ -385,11 +385,11 @@ class index extends Component {
                 uid: data.user.id,
             };
 
-            TtAdvert.FullScreenVideo.loadFullScreenVideoAd(fullScreenVideoAdinfo).then(result => {
+            ttad.FullScreenVideo.loadFullScreenVideoAd(fullScreenVideoAdinfo).then(result => {
                 this.loadFullVideoAd = result;
             });
 
-            TtAdvert.RewardVideo.loadAd(rewardVideoAdinfo).then(result => {
+            ttad.RewardVideo.loadAd(rewardVideoAdinfo).then(result => {
                 this.loadRewardVideoAd = result;
             });
         }
@@ -406,7 +406,7 @@ class index extends Component {
         if (this.loadFullVideoAd) {
             this.startFullScreenVideoAd(adinfo);
         } else {
-            TtAdvert.FullScreenVideo.loadFullScreenVideoAd(adinfo).then(() => {
+            ttad.FullScreenVideo.loadFullScreenVideoAd(adinfo).then(() => {
                 this.startFullScreenVideoAd(adinfo);
             });
         }
@@ -414,7 +414,7 @@ class index extends Component {
 
     // 展示全屏视频
     startFullScreenVideoAd = adinfo => {
-        TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
+        ttad.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
             }
@@ -433,7 +433,7 @@ class index extends Component {
         if (this.loadRewardVideoAd) {
             this.startRewardVideo(adinfo);
         } else {
-            TtAdvert.RewardVideo.loadAd(adinfo).then(() => {
+            ttad.RewardVideo.loadAd(adinfo).then(() => {
                 this.startRewardVideo(adinfo);
             });
         }
@@ -441,7 +441,7 @@ class index extends Component {
 
     // 展示激励视频
     startRewardVideo = adinfo => {
-        TtAdvert.RewardVideo.startAd(adinfo).then(result => {
+        ttad.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
             }

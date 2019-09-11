@@ -16,7 +16,7 @@ import JPushModule from 'jpush-react-native';
 import { BoxShadow } from 'react-native-shadow';
 import codePush from 'react-native-code-push';
 
-import { TtAdvert } from 'native';
+import { ttad } from 'native';
 
 @observer
 class index extends Component {
@@ -197,7 +197,7 @@ class index extends Component {
                     <TouchFeedback
                         style={styles.columnItem}
                         onPress={() => {
-                            TtAdvert.RewardDialog.loadRewardDialog().then(result => {
+                            ttad.RewardDialog.loadRewardDialog().then(result => {
                                 console.log('结果', result);
                             });
                         }}>

@@ -3,10 +3,10 @@ import { NativeModules, Platform } from 'react-native';
 const module = NativeModules.Banner;
 
 const adArgs = {
-    tt_appid: '5016518', // 正式
-    tt_codeid: '916518401',
-    // tt_appid: '5016582', // 内测
-    // tt_codeid: '916582270'
+    // tt_appid: '5016518', // 正式
+    // tt_codeid: '916518401',
+    tt_appid: '5016582', // 内测
+    tt_codeid: '916582270',
 };
 
 interface adinfo {

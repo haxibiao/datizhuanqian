@@ -13,7 +13,7 @@ import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS } from 'utils';
 
 import { Query, Mutation, graphql, withApollo, compose, GQL } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
-import { TtAdvert } from 'native';
+import { ttad } from 'native';
 
 import TaskType from './TaskType';
 
@@ -105,7 +105,7 @@ class TaskList extends Component {
 			//安卓9用户罗静的也容易卡住加载未完成，任务列表里都预加载激励视频
 			if (user) {
 				if (user.adinfo && user.adinfo.tt_appid) {
-					await TtAdvert.RewardVideo.loadAd({
+					await ttad.RewardVideo.loadAd({
 						...user.adinfo,
 						uid: user.id,
 					});
@@ -241,9 +241,9 @@ class TaskList extends Component {
 								});
 								return;
 							}
-							TtAdvert.RewardVideo.loadAd({ ...adinfo, uid: me.id }).then(() => {
+							ttad.RewardVideo.loadAd({ ...adinfo, uid: me.id }).then(() => {
 								//开始看奖励视频
-								TtAdvert.RewardVideo.startAd({
+								ttad.RewardVideo.startAd({
 									...adinfo,
 									uid: me.id,
 								})

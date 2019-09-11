@@ -8,7 +8,7 @@ import { StyleSheet, View, Image, Text, Linking } from 'react-native';
 import { Button, PageContainer, TouchFeedback } from 'components';
 import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Config, ISIOS } from 'utils';
 import { Overlay } from 'teaset';
-import { TtAdvert } from 'native';
+import { ttad } from 'native';
 
 import { observer, app, config, keys, storage } from 'store';
 
@@ -21,10 +21,10 @@ class WithdrawApply extends Component {
     componentDidMount() {
         const { navigation } = this.props;
         if (config.enableQuestion) {
-            this.Adlistener = TtAdvert.Banner.addListener('GoTask', () => {
+            this.Adlistener = ttad.Banner.addListener('GoTask', () => {
                 Linking.openURL('market://details?id=' + Config.PackageName);
             });
-            TtAdvert.WithdrawBanner.loadBannerAd();
+            ttad.WithdrawBanner.loadBannerAd();
         } else {
             this.loadCache();
         }

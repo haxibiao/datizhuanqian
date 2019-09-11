@@ -7,8 +7,8 @@
 
 import Share from './Share';
 import VideoUploader from './VideoUploader';
-import TtAdvert from './TtAdvert';
+import ttad from './ttad';
 import WeChat from './WeChat';
 import Util from './Util';
 
-export { Share, VideoUploader, TtAdvert, WeChat, Util };
+export { Share, VideoUploader, WeChat, Util, ttad };

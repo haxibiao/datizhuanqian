@@ -13,7 +13,7 @@ import { app, config } from 'store';
 
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
-import { TtAdvert, WeChat } from 'native';
+import { ttad, WeChat } from 'native';
 import { ISIOS, Config } from 'utils';
 
 import service from 'service';
@@ -46,7 +46,7 @@ class App extends Component {
             config.saveAdvertConfig(data);
             if (data.enable_splash) {
                 // 开屏广告因为时机问题直接在此判断了
-                TtAdvert.Splash.loadSplashAd();
+                // ttad.Splash.loadSplashAd();
             }
         });
         // 检查更新

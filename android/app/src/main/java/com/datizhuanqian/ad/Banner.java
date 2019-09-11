@@ -84,12 +84,16 @@ public class Banner extends ReactContextBaseJavaModule {
         Banner.promise = promise;
 
         TTAdManagerHolder.init(_this,options.getString("tt_appid"));
+
         //step2:创建TTAdNative对象，createAdNative(Context context) banner广告context需要传入Activity对象
         TTAdManager ttAdManager = TTAdManagerHolder.get();
         mTTAdNative =ttAdManager.createAdNative(_this);
+
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
-        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
+//        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
+
         mTTAdList = new ArrayList<>();
+
         loadBannerAd(options,result, _this);
     }
 
