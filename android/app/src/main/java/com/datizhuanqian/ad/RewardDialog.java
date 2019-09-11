@@ -119,7 +119,7 @@ public class RewardDialog extends ReactContextBaseJavaModule {
 
             } else if (v.getId() == R.id.btn_right) {
                 AdDialog.dismiss();
-                Banner.promise.resolve("LoadRewardVideo");
+                Banner.promise.resolve("Confirm");
             }
 
         }
@@ -289,10 +289,6 @@ public class RewardDialog extends ReactContextBaseJavaModule {
                                 rewardList.addView(imageView);
                                 rewardList.addView(textview);
                             }
-
-
-
-
 
 
 

@@ -423,9 +423,18 @@ class index extends Component {
 
     // 展示全屏视频
     startFullScreenVideoAd = adinfo => {
+        const { UserReward } = this.props;
         TtAdvert.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
+                UserReward({
+                    variables: {
+                        reward: 'FULL_SCREEN_VIDEO_REWARD;',
+                    },
+                    errorPolicy: 'all',
+                }).then(res => {
+                    this.loadRewardDialog(res);
+                });
             }
         });
     };
@@ -450,13 +459,7 @@ class index extends Component {
 
     // 展示激励视频
     startRewardVideo = (adinfo, answer_result) => {
-        const { UserReward, data } = this.props;
-
-        const rewardDialogAdinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
-        };
-
+        const { UserReward } = this.props;
         TtAdvert.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
@@ -466,11 +469,25 @@ class index extends Component {
                     },
                     errorPolicy: 'all',
                 }).then(res => {
-                    TtAdvert.RewardDialog.loadRewardDialog(rewardDialogAdinfo, res.data.userReward);
+                    this.loadRewardDialog(res);
                 });
             }
         });
     };
+
+    // 加载奖励结果提示
+    loadRewardDialog(res) {
+        const { data, navigation } = this.props;
+        const rewardDialogAdinfo = {
+            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
+            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
+        };
+        TtAdvert.RewardDialog.loadRewardDialog(rewardDialogAdinfo, res.data.userReward).then(result => {
+            if (result === 'Confirm') {
+                navigation.navigate('BillingRecord', { initialPage: 1 });
+            }
+        });
+    }
 
     renderContent = () => {
         const { answer, submited, question, finished, auditStatus, error } = this.state;
