@@ -274,7 +274,7 @@ class index extends Component {
                         </Row>
                         <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                     </TouchFeedback>
-                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Introduce')}>
+                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
                         <Row>
                             <Image
                                 style={styles.metaIcon}

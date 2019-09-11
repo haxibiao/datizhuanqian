@@ -50,6 +50,7 @@ import BillingRecordScreen from '../screens/profile/BillingRecord';
 import IntroduceScreen from '../screens/profile/Introduce';
 import SocietyScreen from '../screens/profile/Society';
 import RecruitScreen from '../screens/profile/Recruit';
+import MakeMoenyManualScreen from '../screens/profile/MakeMoenyManual';
 // 通知
 import NotificationScreen from '../screens/notification';
 import SystemNotificationScreen from '../screens/notification/SystemNotification';
@@ -205,6 +206,9 @@ export default {
     },
     Recruit: {
         screen: RecruitScreen,
+    },
+    MakeMoenyManual: {
+        screen: MakeMoenyManualScreen,
     },
     // 通知
     Notification: {
