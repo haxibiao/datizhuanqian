@@ -175,7 +175,7 @@ class index extends Component {
 
     // 提交按钮
     onSubmit = () => {
-        if (this.state.submited) {
+        if (this.state.submited || !this.state.answer) {
             this.nextQuestion();
         } else {
             this.submitAnswer();
@@ -236,10 +236,9 @@ class index extends Component {
         this.answer_count = this.answer_count + 1;
         const error_rate = this.error_count / this.answer_count;
 
-        this.showBannerAd(adinfo, false);
         if (this.answer_count === 10 && config.enableQuestion) {
             const answer_result = error_rate >= 0.5 ? false : true;
-            // this.showBannerAd(adinfo, answer_result);
+            this.showBannerAd(adinfo, answer_result);
             this.error_count = 0;
             this.answer_count = 0;
         }
