@@ -450,7 +450,12 @@ class index extends Component {
 
     // 展示激励视频
     startRewardVideo = (adinfo, answer_result) => {
-        const { UserReward } = this.props;
+        const { UserReward, data } = this.props;
+
+        const rewardDialogAdinfo = {
+            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
+            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
+        };
 
         TtAdvert.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
@@ -460,9 +465,8 @@ class index extends Component {
                         reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
                     },
                     errorPolicy: 'all',
-                }).then(data => {
-                    console.log('data', data);
-                    TtAdvert.RewardDialog.loadRewardDialog(data.userReward);
+                }).then(res => {
+                    TtAdvert.RewardDialog.loadRewardDialog(rewardDialogAdinfo, res.data.userReward);
                 });
             }
         });

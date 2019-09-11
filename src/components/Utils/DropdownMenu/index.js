@@ -101,7 +101,7 @@ class DropdownMenu extends Component {
 
     renderActivityPanel() {
         if (this.state.activityIndex >= 0) {
-            var currentTitles = this.props.data[this.state.activityIndex];
+            var currentTitles = this.props.data;
 
             return (
                 <View style={{ position: 'absolute', left: 0, right: 0, top: 40, bottom: 0 }}>
@@ -238,16 +238,16 @@ class DropdownMenu extends Component {
             <View style={[{ flexDirection: 'column', flex: 1 }, this.props.style]}>
                 <View style={dropStyle}>
                     {this.props.lable && this.props.lable}
-                    {this.props.data.map((rows, index) => (
+                    {this.props.lables.map((rows, index) => (
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={this.openOrClosePanel.bind(this, index)}
                             key={index}
                             style={[
-                                { flex: 1, height: 48, alignItems: 'center', justifyContent: 'center' },
+                                { height: 48, alignItems: 'center', justifyContent: 'center' },
                                 this.props.dropItemStyle,
                             ]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
                                 <Text
                                     style={[
                                         styles.title_style,
@@ -263,11 +263,7 @@ class DropdownMenu extends Component {
                                                     : this.defaultConfig.tintColor,
                                         },
                                     ]}>
-                                    {rows[this.state.selectIndex[index]]
-                                        ? rows[this.state.selectIndex[index]]
-                                        : this.props.lables
-                                        ? this.props.lables[index]
-                                        : rows[0]}
+                                    {this.props.lables[index]}
                                 </Text>
                                 {this.renderDropDownArrow(index)}
                             </View>

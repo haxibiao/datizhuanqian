@@ -3,7 +3,7 @@
  * created by wyk made in 2018-12-05 21:08:02
  */
 import { Dimensions, Platform } from 'react-native';
-// import Api from './Api';
+import Api from './Api';
 import Config from './Config';
 import Theme from './Theme';
 import Tools from './Tools';
@@ -32,7 +32,7 @@ export {
     // 内容高度
     CONTENT_HEIGHT,
     // 后端接口/native接口
-    // Api,
+    Api,
     // APP配置
     Config,
     // APP主题
