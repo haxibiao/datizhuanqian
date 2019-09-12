@@ -35,7 +35,7 @@ public class SplashActivity extends Activity implements WeakHandler.IHandler {
     //开屏广告加载发生超时但是SDK没有及时回调结果的时候，做的一层保护。
     private final WeakHandler mHandler = new WeakHandler(this);
     //开屏广告加载超时时间,建议大于1000,这里为了冷启动第一次加载到广告并且展示,示例设置了2000ms
-    private static final int AD_TIME_OUT = 1500;
+    private static final int AD_TIME_OUT = 1800;
     private static final int MSG_GO_MAIN = 1;
     //开屏广告是否已经加载
     private boolean mHasLoaded;

@@ -17,10 +17,10 @@ import com.facebook.soloader.SoLoader;
 import cn.jpush.reactnativejpush.JPushPackage;
 import cn.jpush.android.api.JPushInterface;
 
-import com.haxibiao.toolkits.UploaderPackage;
-import com.haxibiao.toolkits.DownloadApkPackage;
+import com.haxibiao.toolkits.UploaderModule;
+import com.haxibiao.toolkits.DownloadApk;
 import com.haxibiao.share.NativeSharePackage;
-import com.haxibiao.toolkits.AppUtilPackage;
+import com.haxibiao.toolkits.ToolkitsPackage;
 
 import com.datizhuanqian.ad.TtAdvertPackage;
 import com.datizhuanqian.wxapi.WxEntryPackage;
@@ -58,12 +58,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             // Packages that cannot be autolinked yet can be added manually here, for example:
             // packages.add(new MyReactNativePackage());
             packages.add(new JPushPackage(true, true));
-            packages.add(new UploaderPackage());
+
             packages.add(new NativeSharePackage());
             packages.add(new TtAdvertPackage());
             packages.add(new WxEntryPackage());
-            packages.add(new DownloadApkPackage());
-            packages.add(new AppUtilPackage());
+            packages.add(new ToolkitsPackage());
             return packages;
         }
 
