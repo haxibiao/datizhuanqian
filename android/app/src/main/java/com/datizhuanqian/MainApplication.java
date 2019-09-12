@@ -1,12 +1,13 @@
 package com.datizhuanqian;
 
-import android.widget.RelativeLayout;
-
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 
+//import com.datizhuanqian.ad.AdPackage;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.haxibiao.ad.AdBoss;
+import com.haxibiao.ad.AdPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
@@ -28,13 +29,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import androidx.multidex.MultiDexApplication;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
-
-    public static RelativeLayout mBannerAd;
-    public static TTAdNative mTTAdNative;
-    public static ReactApplicationContext reactContext;
-    public static TTRewardVideoAd ad = null;
-    public static TTFullScreenVideoAd fullAd = null;
-    public static ArrayBlockingQueue<String> myBlockingQueue = new ArrayBlockingQueue<String>(1);
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -81,5 +75,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         JPushInterface.init(this);
+
+        AdBoss.init(this, "5016518");  //初始化tt广告appid (正式，不容易改动的)
     }
 }

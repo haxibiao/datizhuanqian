@@ -7,8 +7,9 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 
-import com.datizhuanqian.ad.Banner;
 import com.facebook.react.ReactActivity;
+import com.haxibiao.ad.AdBoss;
+
 import org.devio.rn.splashscreen.SplashScreen;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +33,9 @@ public class MainActivity extends ReactActivity {
         return "datizhuanqian";
     }
 
-     @Override
+
+    //激励视频结果回调
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         try {
@@ -42,11 +45,11 @@ public class MainActivity extends ReactActivity {
                 json.put("ad_click", intent.getBooleanExtra("ad_click", false));
                 json.put("apk_install", intent.getBooleanExtra("apk_install", false));
                 json.put("verify_status", intent.getBooleanExtra("verify_status", false));
-                MainApplication.myBlockingQueue.add(json.toString());
+                AdBoss.myBlockingQueue.add(json.toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            MainApplication.myBlockingQueue.add(null);
+            AdBoss.myBlockingQueue.add(null);
         }
     }
 
