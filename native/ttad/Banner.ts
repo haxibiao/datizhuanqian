@@ -14,11 +14,12 @@ interface adinfo {
     tt_codeid?: string;
 }
 
-export const loadBannerAd = (options?: adinfo, result?: boolean) => {
+export const loadBannerAd = (options?: adinfo, answer_count?: number, error_count?: number) => {
     if (options && !options.tt_appid) {
         return;
     }
-    return module.loadAd(adArgs, result);
+    console.log('answer_count', answer_count, error_count);
+    return module.loadAd(adArgs, answer_count, error_count);
 };
 
 export default { loadBannerAd };

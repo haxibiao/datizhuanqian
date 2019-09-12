@@ -34,11 +34,13 @@ import AuditTitle from './components/AuditTitle';
 import Audit from './components/Audit';
 import AnswerOverlay from './components/AnswerOverlay';
 import ChooseOverlay from './components/ChooseOverlay';
+import FirstWithdrawTips from './components/FirstWithdrawTips';
 
 import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
 
 import { ttad } from 'native';
+import { Overlay } from 'teaset';
 import { toJS } from 'mobx';
 
 @observer
@@ -93,7 +95,21 @@ class index extends Component {
             });
 
         this.loadAd();
+
+        // this.loadWithdrawTips();
     }
+
+    // 新用户奖励提示
+    loadWithdrawTips = () => {
+        const overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <FirstWithdrawTips hide={() => Overlay.hide(this.OverlayKey)} navigation={this.props.navigation} />
+                </View>
+            </Overlay.View>
+        );
+        this.OverlayKey = Overlay.show(overlayView);
+    };
 
     /*
       答题相关逻辑
@@ -185,6 +201,12 @@ class index extends Component {
     // 提交答案
     submitAnswer = async () => {
         const { answer, question } = this.state;
+        const { data } = this.props;
+        const adinfo = {
+            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
+            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
+        };
+
         let result = {};
         if (answer) {
             this.showResultsOverlay();
@@ -215,6 +237,16 @@ class index extends Component {
             const str = result.errors[0].message;
             Toast.show({ content: str });
         }
+
+        this.answer_count = this.answer_count + 1;
+        const error_rate = this.error_count / this.answer_count;
+        // this.showBannerAd(adinfo, 10, 4);
+        // 广告触发
+        if (this.answer_count === 10 && config.enableQuestion) {
+            this.showBannerAd(adinfo, this.answer_count, this.error_count);
+            this.error_count = 0;
+            this.answer_count = 0;
+        }
     };
 
     // 下一题
@@ -222,25 +254,17 @@ class index extends Component {
         this.hideUpward();
         const { data } = this.props;
 
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
-        };
-
         if (this.questions.length === 0) {
             this.refetchQuery();
         } else {
             this.resetState();
         }
 
-        this.answer_count = this.answer_count + 1;
-        const error_rate = this.error_count / this.answer_count;
-
-        if (this.answer_count === 10 && config.enableQuestion) {
-            const answer_result = error_rate >= 0.5 ? false : true;
-            this.showBannerAd(adinfo, answer_result);
-            this.error_count = 0;
-            this.answer_count = 0;
+        // 提现提示
+        if (data.user && data.user.gold >= 600 && app.withdrawTips) {
+            if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {
+                this.loadWithdrawTips();
+            }
         }
     };
 
@@ -361,8 +385,9 @@ class index extends Component {
       广告业务逻辑
     */
     // 加载banner广告dialog
-    async showBannerAd(adinfo, answer_result) {
-        const click = await ttad.Banner.loadBannerAd(adinfo, answer_result);
+    async showBannerAd(adinfo, answer_count, error_count) {
+        const click = await ttad.Banner.loadBannerAd(adinfo, answer_count, error_count);
+        const answer_result = error_count / answer_count > 0.4 ? false : true;
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
@@ -429,12 +454,18 @@ class index extends Component {
                 // 发放奖励 banner弹窗
                 UserReward({
                     variables: {
-                        reward: 'FULL_SCREEN_VIDEO_REWARD;',
+                        reward: 'FULL_SCREEN_VIDEO_REWARD',
                     },
                     errorPolicy: 'all',
-                }).then(res => {
-                    this.loadRewardDialog(res);
-                });
+                })
+                    .then(res => {
+                        this.loadRewardDialog(res);
+                    })
+                    .catch(() => {
+                        Toast.show({
+                            content: '发生未知错误、领取失败',
+                        });
+                    });
             }
         });
     };
@@ -468,9 +499,15 @@ class index extends Component {
                         reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
                     },
                     errorPolicy: 'all',
-                }).then(res => {
-                    this.loadRewardDialog(res);
-                });
+                })
+                    .then(res => {
+                        this.loadRewardDialog(res);
+                    })
+                    .catch(() => {
+                        Toast.show({
+                            content: '发生未知错误、领取失败',
+                        });
+                    });
             }
         });
     };
@@ -655,8 +692,20 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     content: {
-        marginBottom: PxFit(Theme.itemSpace),
         paddingTop: PxFit(20),
+        marginBottom: PxFit(Theme.itemSpace),
+    },
+    overlayInner: {
+        alignItems: 'center',
+        backgroundColor: 'rgba(255,255,255,0)',
+        flex: 1,
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        width: SCREEN_WIDTH,
+    },
+    scrollStyle: {
+        flexGrow: 1,
+        backgroundColor: '#fefefe',
     },
     optionsButton: {
         alignItems: 'flex-end',

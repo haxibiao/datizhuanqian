@@ -55,7 +55,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             packages.add(new AdPackage());
             packages.add(new WxEntryPackage());
             packages.add(new ToolkitsPackage());
-
             return packages;
         }
 

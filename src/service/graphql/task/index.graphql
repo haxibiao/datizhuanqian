@@ -9,7 +9,7 @@ query TasksQuery($type: Int, $offset: Int, $limit: Int) {
         count
         status
         taskStatus
-        router
+        route
         submit_name
     }
 }

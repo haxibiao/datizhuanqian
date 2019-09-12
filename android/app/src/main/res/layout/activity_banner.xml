@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_corner"
     android:orientation="vertical"
     android:layout_gravity="center"
 >
@@ -13,47 +12,131 @@
 
     <!--</View>-->
 
-    <TextView
-        android:id="@+id/banner_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="答题及格，领激励奖励"
-        android:textSize="16dp"
-        android:textColor="#000"
-        android:layout_gravity="center|center_horizontal|center_vertical"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:paddingTop="75dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:id="@+id/image_title">
 
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/money"
+            android:layout_marginBottom="-40dp"
+          />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/image_title"
+        android:gravity="center_horizontal"
+        android:background="@drawable/shape_corner"
         >
-        <Button
-            android:id="@+id/btn_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:background="@drawable/left_border"
-            android:layout_weight="1"
-            android:text="继续答题"
-            android:textColor="#969696"
-            android:paddingBottom="10dp"
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/money"
+            android:layout_marginTop="-40dp"
             />
-        <Button
-            android:id="@+id/btn_right"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="看激励视频"
-            android:textColor="#FFB100"
-            android:background="@drawable/right_border"
-            android:layout_weight="1"
-            android:textSize="14dp"
-            android:paddingBottom="10dp"
-            />
+            android:orientation="vertical"
+            android:background="#FFF"
+            android:paddingVertical="20dp"
+            >
+            <TextView
+                android:id="@+id/banner_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="本轮答题不及格"
+                android:textSize="16dp"
+                android:textColor="#000"
+                android:layout_gravity="center|center_horizontal|center_vertical"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:paddingTop="10dp"/>
+
+            <TextView
+                android:id="@+id/banner_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="正确4题/错误6题"
+                android:textSize="16dp"
+                android:textColor="#000"
+                android:layout_gravity="center|center_horizontal|center_vertical"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:paddingTop="10dp"/>
+        </LinearLayout>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="30dp"
+           android:orientation="horizontal"
+           android:gravity="center">
+           <View
+               android:layout_width="100dp"
+               android:layout_height="0.6dp"
+               android:background="@color/primary_color">
+
+           </View>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="猜你喜欢"
+               android:textColor="@color/primary_color" />
+           <View
+               android:layout_width="100dp"
+               android:layout_height="0.6dp"
+               android:background="@color/primary_color">
+
+           </View>
+       </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:gravity="center">
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:gravity="center|center_vertical|center_horizontal"
+        >
+            <Button
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="看视频领奖励"
+                android:textColor="#FFF"
+                android:background="@drawable/button"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="35dp"
+                />
+            <Button
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:background="@drawable/left_border"
+                android:layout_weight="1"
+                android:text="领安慰奖励"
+                android:textColor="#969696"
+                android:paddingVertical="15dp"
+                />
+
+        </LinearLayout>
     </LinearLayout>
 
     <!-- BannerView的Container -->

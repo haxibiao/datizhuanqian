@@ -26,10 +26,8 @@ class ManualOverly {
                             alignItems: 'center',
                             justifyContent: 'center',
                             paddingVertical: 15,
-                        }}
-                        onPress={() => {
-                            this.popViewRef.close();
-                            navigation.navigate('Share');
+                            borderBottomColor: Theme.lightBorder,
+                            borderBottomWidth: PxFit(0.5),
                         }}>
                         <Text style={{ fontSize: 16 }}>{title}</Text>
                     </TouchFeedback>
