@@ -153,7 +153,7 @@ class WithdrawBody extends Component {
                 <View>
                     <ttad.BannerAd size="small" />
                     <ttad.BannerAd size="middle" />
-                    <ttad.BannerAd size="large" />
+                    <ttad.FeedAd size="large" />
                 </View>
                 <View style={styles.container}>
                     <View style={styles.statistics}>
@@ -256,53 +256,53 @@ class WithdrawBody extends Component {
 
 const styles = StyleSheet.create({
     accumulat: {
-        marginVertical: PxFit(Theme.itemSpace),
         flexDirection: 'row',
+        marginVertical: PxFit(Theme.itemSpace),
     },
     accumulated: {
+        alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
     },
     badge: {
-        backgroundColor: Theme.primaryColor,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: 56,
-        height: 22,
         alignItems: 'center',
-        justifyContent: 'center',
-        borderTopRightRadius: PxFit(10),
+        backgroundColor: Theme.primaryColor,
         borderBottomRightRadius: PxFit(10),
         borderTopLeftRadius: PxFit(5),
+        borderTopRightRadius: PxFit(10),
+        height: 22,
+        justifyContent: 'center',
+        left: 0,
+        position: 'absolute',
+        top: 0,
+        width: 56,
     },
     badgeText: {
-        fontSize: 13,
         color: '#FFF',
+        fontSize: 13,
         fontWeight: '500',
     },
     boldBlackText: {
-        marginTop: PxFit(15),
-        marginBottom: PxFit(5),
+        color: Theme.secondaryColor,
         fontSize: PxFit(30),
         fontWeight: '500',
         lineHeight: PxFit(32),
-        color: Theme.secondaryColor,
+        marginBottom: PxFit(5),
+        marginTop: PxFit(15),
     },
     center: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingHorizontal: PxFit(Theme.itemSpace),
         justifyContent: 'space-between',
+        paddingHorizontal: PxFit(Theme.itemSpace),
     },
     container: {
-        flex: 1,
         backgroundColor: '#fff',
+        flex: 1,
     },
     content: {
-        fontSize: PxFit(15),
         color: Theme.black,
+        fontSize: PxFit(15),
     },
     currentGold: {
         alignItems: 'center',
@@ -312,48 +312,48 @@ const styles = StyleSheet.create({
         paddingBottom: PxFit(30),
     },
     greyText1: {
-        fontSize: PxFit(14),
         color: Theme.subTextColor,
+        fontSize: PxFit(14),
     },
     greyText2: {
-        fontSize: PxFit(13),
         color: Theme.subTextColor,
+        fontSize: PxFit(13),
     },
     line: {
         alignSelf: 'stretch',
-        width: PxFit(1),
         backgroundColor: '#f0f0f0',
+        width: PxFit(1),
     },
     slenderBlackText: {
-        marginTop: PxFit(10),
-        fontSize: PxFit(17),
-        lineHeight: PxFit(18),
-        fontWeight: '300',
         color: Theme.defaultTextColor,
+        fontSize: PxFit(17),
+        fontWeight: '300',
+        lineHeight: PxFit(18),
+        marginTop: PxFit(10),
     },
     statistics: {
-        marginTop: PxFit(Theme.itemSpace),
         marginBottom: PxFit(Theme.itemSpace),
+        marginTop: PxFit(Theme.itemSpace),
     },
     tips: {
-        fontSize: PxFit(12),
         color: Theme.grey,
-        paddingVertical: PxFit(10),
+        fontSize: PxFit(12),
         lineHeight: PxFit(18),
+        paddingVertical: PxFit(10),
         textAlign: 'center',
     },
     withdrawItem: {
-        marginBottom: PxFit(Theme.itemSpace),
-        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5',
+        borderRadius: PxFit(5),
         height: PxFit(60),
         justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: PxFit(5),
-        backgroundColor: '#f5f5f5',
+        marginBottom: PxFit(Theme.itemSpace),
+        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
     },
     withdraws: {
-        justifyContent: 'space-between',
         flex: 1,
+        justifyContent: 'space-between',
     },
 });
 

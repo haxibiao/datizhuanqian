@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import NativeBannerAd from './NativeBannerAd';
 import { SCREEN_WIDTH } from 'utils';
 
 const BannerAd = ({ size }) => {
-    return <NativeBannerAd size={size} style={styles.banner} />;
+    return <NativeBannerAd codeid="916518401" size={size} style={styles.banner} />;
 };
 
 const styles = StyleSheet.create({

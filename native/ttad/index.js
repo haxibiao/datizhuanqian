@@ -5,5 +5,6 @@ import Splash from './Splash';
 import WithdrawBanner from './WithdrawBanner';
 import RewardDialog from './RewardDialog';
 import BannerAd from './BannerAd';
+import FeedAd from './FeedAd';
 
-export default { BannerAd, Banner, FullScreenVideo, RewardVideo, Splash, WithdrawBanner, RewardDialog };
+export default { FeedAd, BannerAd, Banner, FullScreenVideo, RewardVideo, Splash, WithdrawBanner, RewardDialog };
