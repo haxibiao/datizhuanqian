@@ -201,6 +201,12 @@ class index extends Component {
     // 提交答案
     submitAnswer = async () => {
         const { answer, question } = this.state;
+        const { data } = this.props;
+        const adinfo = {
+            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
+            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
+        };
+
         let result = {};
         if (answer) {
             this.showResultsOverlay();
@@ -231,23 +237,6 @@ class index extends Component {
             const str = result.errors[0].message;
             Toast.show({ content: str });
         }
-    };
-
-    // 下一题
-    nextQuestion = () => {
-        this.hideUpward();
-        const { data } = this.props;
-
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
-        };
-
-        if (this.questions.length === 0) {
-            this.refetchQuery();
-        } else {
-            this.resetState();
-        }
 
         this.answer_count = this.answer_count + 1;
         const error_rate = this.error_count / this.answer_count;
@@ -258,6 +247,19 @@ class index extends Component {
             this.error_count = 0;
             this.answer_count = 0;
         }
+    };
+
+    // 下一题
+    nextQuestion = () => {
+        this.hideUpward();
+        const { data } = this.props;
+
+        if (this.questions.length === 0) {
+            this.refetchQuery();
+        } else {
+            this.resetState();
+        }
+
         // 提现提示
         if (data.user && data.user.gold >= 600 && app.withdrawTips) {
             if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {

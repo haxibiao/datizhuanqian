@@ -61,7 +61,7 @@ public class Banner extends ReactContextBaseJavaModule {
     private RelativeLayout bannerLayout;
 
     static Promise promise = null;
-    private Integer right_count;
+    private Integer correct_count;
 
 
     Point point = new Point();
@@ -228,19 +228,21 @@ public class Banner extends ReactContextBaseJavaModule {
                             mTextView=AdDialog.findViewById(R.id.banner_title);
                             mConentTextView = AdDialog.findViewById(R.id.banner_content);
 
-                            right_count=answer_count-error_count;
+                            correct_count=answer_count-error_count;
 
-                            mConentTextView.setText("正确"+right_count+"题/"+"错误"+error_count+"题");
+                            mConentTextView.setText("正确"+correct_count+"题/"+"错误"+error_count+"题");
 
+                            Log.d("结果",""+correct_count/answer_count);
 
-                            if(error_count/answer_count>0.4){
-                                mButtonLeft.setOnClickListener(answerFailClickListener);
-                                mButtonRight.setOnClickListener(answerFailClickListener);
-                            }else{
+                            if((double)(Math.round(correct_count*100/answer_count)/100.0)>=0.6){
                                 mButtonLeft.setOnClickListener(answerPassClickListener);
                                 mButtonRight.setOnClickListener(answerPassClickListener);
                                 mTextView.setText("本轮答题及格");
                                 mButtonLeft.setText("继续答题");
+
+                            }else{
+                                mButtonLeft.setOnClickListener(answerFailClickListener);
+                                mButtonRight.setOnClickListener(answerFailClickListener);
 
                             }
 
