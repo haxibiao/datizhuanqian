@@ -14,6 +14,8 @@ import {
     PullChooser,
     Player,
     UpwardImage,
+    beginnerGuidance,
+    AnswerGuidance,
 } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
 
@@ -72,6 +74,12 @@ class index extends Component {
 
     componentDidMount() {
         const { me } = app;
+        // 新手指导
+        beginnerGuidance({
+            guidanceKey: 'Answer',
+            GuidanceView: AnswerGuidance,
+            dismissEnabled: true,
+        });
 
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + me.token)
             .then(response => response.json())
@@ -88,8 +96,8 @@ class index extends Component {
     }
 
     /*
-	  答题相关逻辑
-	*/
+      答题相关逻辑
+    */
     async fetchData() {
         try {
             const result = await this.props.client.query({
@@ -167,7 +175,7 @@ class index extends Component {
 
     // 提交按钮
     onSubmit = () => {
-        if (this.state.submited) {
+        if (this.state.submited || !this.state.answer) {
             this.nextQuestion();
         } else {
             this.submitAnswer();
@@ -229,8 +237,8 @@ class index extends Component {
         const error_rate = this.error_count / this.answer_count;
 
         if (this.answer_count === 10 && config.enableQuestion) {
-            const result = error_rate >= 0.5 ? false : true;
-            this.showBannerAd(adinfo, result);
+            const answer_result = error_rate >= 0.5 ? false : true;
+            this.showBannerAd(adinfo, answer_result);
             this.error_count = 0;
             this.answer_count = 0;
         }
@@ -243,8 +251,8 @@ class index extends Component {
     }
 
     /*
-	  UI相关展示交互
-	*/
+      UI相关展示交互
+    */
     showUpward() {
         if (this.markView) {
             this.markView.measure((x, y, width, height, pageX, pageY) => {
@@ -309,7 +317,9 @@ class index extends Component {
     // 单选/多选：单选会清除其它已选择的选项
     selectOption = (value, singleOption) => {
         let { answer } = this.state;
-        if (!answer) answer = [];
+        if (!answer) {
+            answer = [];
+        }
         if (singleOption) {
             if (answer.includes(value)) {
                 answer = null;
@@ -348,15 +358,15 @@ class index extends Component {
     };
 
     /*
-	  广告业务逻辑
-	*/
+      广告业务逻辑
+    */
     // 加载banner广告dialog
-    async showBannerAd(adinfo, result) {
-        const click = await ttad.Banner.loadBannerAd(adinfo, result);
+    async showBannerAd(adinfo, answer_result) {
+        const click = await ttad.Banner.loadBannerAd(adinfo, answer_result);
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
-                this.loadRewardVideo();
+                this.loadRewardVideo(answer_result);
                 break;
 
             case 'LoadFullScreenVideo':
@@ -417,12 +427,20 @@ class index extends Component {
         ttad.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
+                UserReward({
+                    variables: {
+                        reward: 'FULL_SCREEN_VIDEO_REWARD;',
+                    },
+                    errorPolicy: 'all',
+                }).then(res => {
+                    this.loadRewardDialog(res);
+                });
             }
         });
     };
 
     // 加载激励视频
-    loadRewardVideo = () => {
+    loadRewardVideo = answer_result => {
         const { data } = this.props;
         const adinfo = {
             tt_appid: Tools.syncGetter('user.adinfo.tt_appid', data),
@@ -434,19 +452,42 @@ class index extends Component {
             this.startRewardVideo(adinfo);
         } else {
             ttad.RewardVideo.loadAd(adinfo).then(() => {
-                this.startRewardVideo(adinfo);
+                this.startRewardVideo(adinfo, answer_result);
             });
         }
     };
 
     // 展示激励视频
-    startRewardVideo = adinfo => {
+    startRewardVideo = (adinfo, answer_result) => {
+        const { UserReward } = this.props;
         ttad.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
+                UserReward({
+                    variables: {
+                        reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
+                    },
+                    errorPolicy: 'all',
+                }).then(res => {
+                    this.loadRewardDialog(res);
+                });
             }
         });
     };
+
+    // 加载奖励结果提示
+    loadRewardDialog(res) {
+        const { data, navigation } = this.props;
+        const rewardDialogAdinfo = {
+            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
+            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
+        };
+        ttad.RewardDialog.loadRewardDialog(rewardDialogAdinfo, res.data.userReward).then(result => {
+            if (result === 'Confirm') {
+                navigation.navigate('BillingRecord', { initialPage: 1 });
+            }
+        });
+    }
 
     renderContent = () => {
         const { answer, submited, question, finished, auditStatus, error } = this.state;
@@ -613,24 +654,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    scrollStyle: {
-        flexGrow: 1,
-        backgroundColor: '#fefefe',
+    content: {
+        marginBottom: PxFit(Theme.itemSpace),
+        paddingTop: PxFit(20),
     },
     optionsButton: {
-        flex: 1,
-        width: PxFit(40),
         alignItems: 'flex-end',
+        flex: 1,
         justifyContent: 'center',
+        width: PxFit(40),
     },
-    content: {
-        paddingTop: PxFit(20),
-        marginBottom: PxFit(Theme.itemSpace),
+    scrollStyle: {
+        backgroundColor: '#fefefe',
+        flexGrow: 1,
     },
     withdrawProgress: {
+        bottom: PxFit(80) + Theme.HOME_INDICATOR_HEIGHT,
         position: 'absolute',
         right: PxFit(20),
-        bottom: PxFit(80) + Theme.HOME_INDICATOR_HEIGHT,
     },
 });
 
@@ -641,4 +682,5 @@ export default compose(
     graphql(GQL.UserMeansQuery, {
         options: props => ({ variables: { id: app.me.id } }),
     }),
+    graphql(GQL.UserRewardMutation, { name: 'UserReward' }),
 )(index);

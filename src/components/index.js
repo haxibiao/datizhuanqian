@@ -72,6 +72,8 @@ import Player from './Media/Player';
 // Guide
 import beginnerGuidance from './Guide/beginnerGuidance';
 import VideoTaskGuidance from './Guide/VideoTaskGuidance';
+import AnswerGuidance from './Guide/AnswerGuidance';
+import SetQuestionGuidance from './Guide/SetQuestionGuidance';
 
 export {
 	Iconfont,
@@ -128,5 +130,7 @@ export {
 	ProgressWithdrawal,
 	Player,
 	beginnerGuidance,
-	VideoTaskGuidance
+	VideoTaskGuidance,
+	AnswerGuidance,
+	SetQuestionGuidance
 };

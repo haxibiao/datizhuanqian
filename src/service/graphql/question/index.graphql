@@ -1,236 +1,236 @@
 #专题分类
 query CategoriesQuery($offset: Int, $limit: Int, $allow_submit: Int) {
-	categories(offset: $offset, limit: $limit, allow_submit: $allow_submit) {
-		id
-		name
-		description
-		icon
-		count
-		parent_id
-		status
-		is_official
-		user_id
-		created_at
-		children {
-			id
-			name
-			icon
-		}
-		shieldingAd
-	}
+    categories(offset: $offset, limit: $limit, allow_submit: $allow_submit) {
+        id
+        name
+        description
+        icon
+        count
+        parent_id
+        status
+        is_official
+        user_id
+        created_at
+        children {
+            id
+            name
+            icon
+        }
+        shieldingAd
+    }
 }
 
 # 搜索题库
 query SearchCategoriesQuery($offset: Int, $limit: Int, $keyword: String) {
-	categories(allow_submit: 1, offset: $offset, limit: $limit, keyword: $keyword) {
-		id
-		name
-		icon
-		description
-		user_can_submit
-	}
+    categories(allow_submit: 1, offset: $offset, limit: $limit, keyword: $keyword) {
+        id
+        name
+        icon
+        description
+        user_can_submit
+    }
 }
 
 #题目列表
 query QuestionListQuery($category_id: Int, $offset: Int, $limit: Int) {
-	questions(category_id: $category_id, offset: $offset, limit: $limit) {
-		id
-		description
-		answer
-		status
-		favorite_status
-		gold
-		ticket
-		liked
-		count_likes
-		count_comments
-		selections_array {
-			Text
-			Value
-		}
-		image {
-			id
-			path
-			width
-			height
-		}
-		video {
-			id
-			url
-			height
-			width
-			path
-			rotate
-			duration
-			cover
-		}
-		category {
-			id
-			name
-		}
-		explanation {
-			id
-			content
-			video {
-				width
-				height
-				cover
-				url
-			}
-			images {
-				width
-				path
-			}
-		}
-		type
-		correct_count
-		count
-		wrong_count
-		user {
-			id
-			name
-			avatar
-			followers_count
-			question_count
-		}
-		submit
-		audits {
-			id
-			user {
-				id
-				name
-				avatar
-			}
-			status
-		}
-		# answer_logs {
-		# 	id
-		# 	user {
-		# 		id
-		# 		name
-		# 		avatar
-		# 	}
-		# 	time
-		# }
-	}
+    questions(category_id: $category_id, offset: $offset, limit: $limit) {
+        id
+        description
+        answer
+        status
+        favorite_status
+        gold
+        ticket
+        liked
+        count_likes
+        count_comments
+        selections_array {
+            Text
+            Value
+        }
+        image {
+            id
+            path
+            width
+            height
+        }
+        video {
+            id
+            url
+            height
+            width
+            path
+            rotate
+            duration
+            cover
+        }
+        category {
+            id
+            name
+        }
+        explanation {
+            id
+            content
+            video {
+                width
+                height
+                cover
+                url
+            }
+            images {
+                width
+                path
+            }
+        }
+        type
+        correct_count
+        count
+        wrong_count
+        user {
+            id
+            name
+            avatar
+            followers_count
+            question_count
+        }
+        submit
+        audits {
+            id
+            user {
+                id
+                name
+                avatar
+            }
+            status
+        }
+        # answer_logs {
+        # 	id
+        # 	user {
+        # 		id
+        # 		name
+        # 		avatar
+        # 	}
+        # 	time
+        # }
+    }
 }
 
 #题目查询
 query QuestionQuery($id: Int) {
-	question(id: $id) {
-		id
-		description
-		answer
-		status
-		favorite_status
-		gold
-		ticket
-		liked
-		count_likes
-		count_comments
-		selections_array {
-			Text
-			Value
-		}
-		image {
-			id
-			path
-			width
-			height
-		}
-		video {
-			id
-			url
-			height
-			width
-			path
-			rotate
-			duration
-			cover
-		}
-		category {
-			id
-			name
-		}
-		explanation {
-			id
-			content
-			video {
-				width
-				height
-				cover
-				url
-			}
-			images {
-				width
-				path
-			}
-		}
-		type
-		correct_count
-		count
-		wrong_count
-		user {
-			id
-			name
-			avatar
-			followers_count
-			question_count
-		}
-		submit
-		audits {
-			id
-			user {
-				id
-				name
-				avatar
-			}
-			status
-		}
-		# answer_logs {
-		# 	id
-		# 	user {
-		# 		id
-		# 		name
-		# 		avatar
-		# 	}
-		# 	time
-		# }
-	}
+    question(id: $id) {
+        id
+        description
+        answer
+        status
+        favorite_status
+        gold
+        ticket
+        liked
+        count_likes
+        count_comments
+        selections_array {
+            Text
+            Value
+        }
+        image {
+            id
+            path
+            width
+            height
+        }
+        video {
+            id
+            url
+            height
+            width
+            path
+            rotate
+            duration
+            cover
+        }
+        category {
+            id
+            name
+        }
+        explanation {
+            id
+            content
+            video {
+                width
+                height
+                cover
+                url
+            }
+            images {
+                width
+                path
+            }
+        }
+        type
+        correct_count
+        count
+        wrong_count
+        user {
+            id
+            name
+            avatar
+            followers_count
+            question_count
+        }
+        submit
+        audits {
+            id
+            user {
+                id
+                name
+                avatar
+            }
+            status
+        }
+        # answer_logs {
+        # 	id
+        # 	user {
+        # 		id
+        # 		name
+        # 		avatar
+        # 	}
+        # 	time
+        # }
+    }
 }
 
 #答题
 mutation QuestionAnswerMutation($id: Int!, $answer: String!) {
-	answerQuestion(id: $id, answer: $answer)
+    answerQuestion(id: $id, answer: $answer)
 }
 
 # 收藏题目
 mutation toggleFavoriteMutation($data: ToggleFavoriteInputType) {
-	toggleFavorite(data: $data) {
-		id
-	}
+    toggleFavorite(data: $data) {
+        id
+    }
 }
 
 # 喜欢题目
 mutation toggleLikeMutation($likable_id: Int, $likable_type: LikableEnumType) {
-	toggleLike(likable_id: $likable_id, likable_type: $likable_type) {
-		id
-	}
+    toggleLike(likable_id: $likable_id, likable_type: $likable_type) {
+        id
+    }
 }
 
 #审题
 mutation auditMutation($question_id: Int!, $status: Boolean) {
-	audit(question_id: $question_id, status: $status) {
-		id
-		status
-		question {
-			id
-			description
-		}
-	}
+    audit(question_id: $question_id, status: $status) {
+        id
+        status
+        question {
+            id
+            description
+        }
+    }
 }
 
 #取消广告服务
 mutation ShieldingCategoryAdMutation($category_id: Int!) {
-	shieldingCategoryAd(category_id: $category_id)
+    shieldingCategoryAd(category_id: $category_id)
 }

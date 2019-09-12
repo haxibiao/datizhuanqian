@@ -318,18 +318,23 @@ android {
 
 repositories {
     flatDir {
-        dirs 'libs'
+        dirs 'libs', project(':toolkits').file('libs')
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':jpush-react-native')  // 添加 jpush 依赖
     implementation project(':jcore-react-native')  // 添加 jcore 依赖
+    
     implementation project(':toolkits')
     implementation project(':share')
+
+    //穿山甲必须
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.facebook.fresco:animated-gif:1.10.0'

@@ -15,9 +15,17 @@ import {
 	Keyboard,
 	Animated,
 	BackHandler,
-	Platform
+	Platform,
 } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, CustomTextInput } from 'components';
+import {
+	PageContainer,
+	TouchFeedback,
+	Iconfont,
+	Row,
+	CustomTextInput,
+	beginnerGuidance,
+	SetQuestionGuidance,
+} from 'components';
 import { Theme, PxFit, Api, Config, Tools, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
 import { storage, keys } from 'store';
@@ -43,11 +51,17 @@ const Contribute = observer(
 			contributeStore.setVideoDuration(app.me.video_duration);
 			contributeStore.setExplainVideoDuration(app.me.explanation_video_duration);
 			this.state = {
-				submitting: false
+				submitting: false,
 			};
 		}
 
 		componentDidMount() {
+			beginnerGuidance({
+				guidanceKey: 'InputQuestion',
+				GuidanceView: SetQuestionGuidance.inputGuidance,
+				skipEnabled: true,
+				skipGuidanceKeys: ['InputQuestion', 'SubmitQuestion'],
+			});
 			this.loadCache();
 		}
 
@@ -73,7 +87,7 @@ const Contribute = observer(
 		onSubmit = () => {
 			if (contributeStore.validator(contributeStore.variables)) {
 				this.setState({
-					submitting: true
+					submitting: true,
 				});
 				let { explanationVariables } = contributeStore;
 				if (explanationVariables) {
@@ -91,9 +105,9 @@ const Contribute = observer(
 					variables: {
 						data: {
 							...variables,
-							explanation_id: Tools.syncGetter('data.createExplanation.id', this.explanation) || null
-						}
-					}
+							explanation_id: Tools.syncGetter('data.createExplanation.id', this.explanation) || null,
+						},
+					},
 				});
 				this.onCompleted();
 			} catch (error) {
@@ -103,12 +117,12 @@ const Contribute = observer(
 
 		onError = error => {
 			this.setState({
-				submitting: false
+				submitting: false,
 			});
 			console.log('error', error);
 			let str = error.toString().replace(/Error: GraphQL error: /, '');
 			Toast.show({
-				content: str
+				content: str,
 			});
 		};
 
@@ -116,30 +130,30 @@ const Contribute = observer(
 			let { client, navigation } = this.props;
 			let { userCache } = app;
 			this.setState({
-				submitting: false
+				submitting: false,
 			});
 			client.query({
 				query: GQL.UserMetaQuery,
 				variables: {
-					id: app.me.id
+					id: app.me.id,
 				},
-				fetchPolicy: 'network-only'
+				fetchPolicy: 'network-only',
 			});
 			contributeStore.removeInstance();
 			navigation.replace('ContributeSubmited', {
-				noTicket: userCache.ticket === 0
+				noTicket: userCache.ticket === 0,
 			});
 		}
 
 		async createExplanation(explanationVariables) {
 			try {
 				this.explanation = await this.props.createExplanation({
-					variables: explanationVariables
+					variables: explanationVariables,
 				});
 				this.createQuestion();
 			} catch (error) {
 				this.setState({
-					submitting: false
+					submitting: false,
 				});
 				let str = error.toString().replace(/Error: GraphQL error: /, '');
 				Toast.show({ content: str });
@@ -163,7 +177,7 @@ const Contribute = observer(
 				explain_text,
 				explain_picture,
 				explain_video,
-				explain_video_path
+				explain_video_path,
 			} = contributeStore;
 			let disableAddButton = options.size >= 4 || !optionValue;
 			return (
@@ -176,16 +190,14 @@ const Contribute = observer(
 							<TouchFeedback style={styles.saveButton} onPress={this.onSubmit}>
 								<Text style={styles.saveText}> 提交 </Text>
 							</TouchFeedback>
-						}
-					>
+						}>
 						<View style={styles.container}>
 							<ScrollView
 								showsVerticalScrollIndicator={false}
 								keyboardShouldPersistTaps="handled"
 								style={styles.container}
 								contentContainerStyle={styles.scrollStyle}
-								ref={ref => (this._scrollView = ref)}
-							>
+								ref={ref => (this._scrollView = ref)}>
 								<View style={styles.question}>
 									<View style={styles.questionBody}>
 										<View style={styles.borderItem}>
@@ -194,9 +206,8 @@ const Contribute = observer(
 												<Text
 													style={{
 														fontSize: PxFit(14),
-														color: Theme.primaryColor
-													}}
-												>
+														color: Theme.primaryColor,
+													}}>
 													#出题规则
 												</Text>
 											</TouchFeedback>
@@ -217,8 +228,7 @@ const Contribute = observer(
 											<Row>
 												<TouchFeedback
 													onPress={() => imagePicke()}
-													disabled={!!(picture || video_path)}
-												>
+													disabled={!!(picture || video_path)}>
 													<Image
 														style={styles.mediaIcon}
 														source={require('../../assets/images/superb_ic_publish_pic.png')}
@@ -226,8 +236,7 @@ const Contribute = observer(
 												</TouchFeedback>
 												<TouchFeedback
 													onPress={() => videoPicke()}
-													disabled={!!(picture || video_path)}
-												>
+													disabled={!!(picture || video_path)}>
 													<Image
 														style={styles.mediaIcon}
 														source={require('../../assets/images/superb_ic_publish_video.png')}
@@ -238,9 +247,8 @@ const Contribute = observer(
 										<View
 											style={[
 												styles.borderItem,
-												{ justifyContent: 'flex-start', marginBottom: 0 }
-											]}
-										>
+												{ justifyContent: 'flex-start', marginBottom: 0 },
+											]}>
 											<Text style={styles.itemTypeText}>答案选项</Text>
 											<Text style={styles.tips}>(*依次添加答案选项)</Text>
 										</View>
@@ -300,34 +308,34 @@ const Contribute = observer(
 				</Provider>
 			);
 		}
-	}
+	},
 );
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Theme.groundColour
+		backgroundColor: Theme.groundColour,
 	},
 	saveButton: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	saveText: {
 		fontSize: PxFit(15),
 		textAlign: 'center',
-		color: Theme.primaryColor
+		color: Theme.primaryColor,
 	},
 	scrollStyle: {
 		flexGrow: 1,
-		paddingBottom: Theme.HOME_INDICATOR_HEIGHT + 50
+		paddingBottom: Theme.HOME_INDICATOR_HEIGHT + 50,
 	},
 	question: {
 		backgroundColor: '#fff',
-		paddingLeft: PxFit(Theme.itemSpace)
+		paddingLeft: PxFit(Theme.itemSpace),
 	},
 	questionBody: {
 		marginTop: PxFit(Theme.itemSpace),
-		marginRight: PxFit(Theme.itemSpace)
+		marginRight: PxFit(Theme.itemSpace),
 	},
 	borderItem: {
 		flexDirection: 'row',
@@ -336,46 +344,46 @@ const styles = StyleSheet.create({
 		marginBottom: PxFit(10),
 		paddingLeft: PxFit(6),
 		borderLeftWidth: PxFit(3),
-		borderLeftColor: Theme.primaryColor
+		borderLeftColor: Theme.primaryColor,
 	},
 	tips: {
 		marginLeft: PxFit(5),
 		fontSize: PxFit(12),
-		color: Theme.subTextColor
+		color: Theme.subTextColor,
 	},
 	questionContainer: {
 		padding: PxFit(10),
 		borderWidth: PxFit(1),
 		borderRadius: PxFit(5),
 		borderColor: Theme.borderColor,
-		alignItems: 'flex-end'
+		alignItems: 'flex-end',
 	},
 	questionInput: {
 		alignSelf: 'stretch',
 		height: PxFit(100),
 		fontSize: PxFit(14),
 		lineHeight: PxFit(20),
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
 	},
 	mediaPicker: {
 		marginTop: PxFit(10),
 		marginBottom: PxFit(Theme.itemSpace),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'flex-end'
+		alignItems: 'flex-end',
 	},
 	optionInputWrap: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		height: PxFit(50),
 		borderBottomWidth: PxFit(0.5),
-		borderColor: Theme.borderColor
+		borderColor: Theme.borderColor,
 	},
 	optionInput: {
 		flex: 1,
 		alignSelf: 'stretch',
 		fontSize: PxFit(14),
-		lineHeight: PxFit(20)
+		lineHeight: PxFit(20),
 	},
 	addOptionButton: {
 		width: PxFit(52),
@@ -384,11 +392,11 @@ const styles = StyleSheet.create({
 		backgroundColor: Theme.primaryColor,
 		borderRadius: PxFit(5),
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	addOptionText: {
 		fontSize: PxFit(15),
-		color: '#fff'
+		color: '#fff',
 	},
 	operationItem: {
 		height: PxFit(52),
@@ -398,36 +406,36 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	mediaIcon: {
 		width: PxFit(30),
 		height: PxFit(30),
 		marginRight: PxFit(15),
-		resizeMode: 'cover'
+		resizeMode: 'cover',
 	},
 	metaIcon: {
 		width: PxFit(25),
 		height: PxFit(25),
 		marginRight: PxFit(5),
-		resizeMode: 'cover'
+		resizeMode: 'cover',
 	},
 	itemTypeText: {
 		fontSize: PxFit(14),
-		color: Theme.defaultTextColor
+		color: Theme.defaultTextColor,
 	},
 	categoryText: {
 		fontSize: PxFit(14),
 		color: Theme.primaryColor,
-		marginRight: PxFit(5)
+		marginRight: PxFit(5),
 	},
 	overlayInner: {
 		flex: 1,
 		width: SCREEN_WIDTH,
 		height: SCREEN_HEIGHT,
 		justifyContent: 'center',
-		alignItems: 'center'
-	}
+		alignItems: 'center',
+	},
 });
 
 export default compose(
@@ -435,10 +443,10 @@ export default compose(
 	graphql(GQL.SearchCategoriesQuery, {
 		options: props => ({
 			variables: {
-				limit: 999
-			}
-		})
+				limit: 999,
+			},
+		}),
 	}),
 	graphql(GQL.createExplanationMutation, { name: 'createExplanation' }),
-	graphql(GQL.createQuestionMutation, { name: 'createQuestion' })
+	graphql(GQL.createQuestionMutation, { name: 'createQuestion' }),
 )(Contribute);

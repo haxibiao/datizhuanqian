@@ -4,25 +4,16 @@
  */
 
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    TextInput,
-    Image,
-    Keyboard,
-    Linking,
-} from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Keyboard, Linking } from 'react-native';
 import {
     Button,
     Iconfont,
     PageContainer,
     CustomTextInput,
-    KeyboardSpacer,
     SubmitLoading,
     TouchFeedback,
+    DropdownMenu,
+    Row,
 } from 'components';
 
 import { Theme, PxFit, SCREEN_WIDTH, Api, Config } from 'utils';
@@ -31,24 +22,26 @@ import { graphql, compose, withApollo, GQL } from 'apollo';
 
 import { BoxShadow } from 'react-native-shadow';
 
-let arr = {};
+const arr = {};
 
 class SubmitTaskScreen extends Component {
     constructor(props) {
         super(props);
+        this.appstores = ['OPPO', 'VIVO', '小米', '华为', '魅族', '百度', '豌豆荚', '应用宝'];
         this.state = {
             content: null,
             pictures: [],
             images: [],
             isVisible: false,
+            appstore: null,
         };
     }
 
-    //打开相册
+    // 打开相册
     openPhotos = () => {
         Api.imagePicker(
             images => {
-                let { pictures } = this.state;
+                const { pictures } = this.state;
                 images.map(image => {
                     pictures.push(`data:${image.mime};base64,${image.data}`);
                 });
@@ -67,18 +60,18 @@ class SubmitTaskScreen extends Component {
         );
     };
 
-    //上传图片
+    // 上传图片
     startUploadImage = async () => {
-        let { pictures, isVisible } = this.state;
-        let { client } = this.props;
+        const { pictures } = this.state;
+        const { client } = this.props;
 
         Keyboard.dismiss();
         this.setState({
             isVisible: true,
         });
-        //等待提示
+        // 等待提示
 
-        let promises = [
+        const promises = [
             client.mutate({
                 mutation: GQL.UploadImage,
                 variables: {
@@ -89,7 +82,7 @@ class SubmitTaskScreen extends Component {
                 setTimeout(() => reject(new Error('网络超时')), 30000);
             }),
         ];
-        //超时检测
+        // 超时检测
 
         Promise.race(promises)
             .then(result => {
@@ -100,18 +93,20 @@ class SubmitTaskScreen extends Component {
                     isVisible: false,
                 });
 
-                let str = rejected.toString().replace(/Error: GraphQL error: /, '');
+                const str = rejected.toString().replace(/Error: GraphQL error: /, '');
                 Methods.toast(str, -100);
             });
     };
 
-    //提交任务
+    // 提交任务
     async submitTask(images) {
         const { navigation } = this.props;
         const { task } = navigation.state.params;
+        const { appstore, content } = this.state;
         let result = {};
 
-        arr['screenshots'] = images;
+        arr.screenshots = images;
+        arr.content = appstore + '(' + content + ')';
         try {
             result = await this.props.ReplyTaskMutation({
                 variables: {
@@ -142,8 +137,14 @@ class SubmitTaskScreen extends Component {
             this.props.navigation.goBack();
         }
     }
+
+    dropHandler = name => {
+        this.setState({ appstore: name });
+        console.log('name', name);
+    };
+
     render() {
-        let { content, pictures, isVisible } = this.state;
+        const { content, pictures, isVisible, appstore } = this.state;
         const { navigation } = this.props;
         const { task } = navigation.state.params;
         return (
@@ -163,75 +164,98 @@ class SubmitTaskScreen extends Component {
                         })}>
                         <View style={styles.header}>
                             <View>
-                                {/*<Text>请截图评价内容和星级，并提供应用商店账号</Text>*/}
                                 <Text style={{}}>{task.details}</Text>
                             </View>
                             <TouchFeedback
                                 style={styles.row}
                                 onPress={() => Linking.openURL('market://details?id=' + Config.PackageName)}>
                                 <Text style={{ fontSize: 12, color: Theme.grey }}>去应用商店评价</Text>
-                                <Iconfont name="right" size={PxFit(15)} />
+                                <Iconfont name="right" size={PxFit(14)} color={Theme.grey} />
                             </TouchFeedback>
                         </View>
                     </BoxShadow>
-                    <View style={styles.main}>
-                        <CustomTextInput
-                            style={styles.input}
-                            maxLength={48}
-                            placeholder={'请上传评论内容和星级截图，并提供应用商店名以及账号名'}
-                            multiline
-                            underline
-                            textAlignVertical={'top'}
-                            defaultValue={content}
-                            onChangeText={value => {
-                                this.setState({
-                                    content: value,
-                                });
-                            }}
-                        />
+                    <DropdownMenu
+                        style={{ marginTop: PxFit(20) }}
+                        dropStyle={{
+                            paddingHorizontal: PxFit(20),
+                            borderBottomWidth: PxFit(0.5),
+                            borderColor: Theme.borderColor,
+                            justifyContent: 'space-between',
+                        }}
+                        dropItemStyle={{ alignItems: 'flex-end' }}
+                        lables={[appstore ? appstore : '请选择应用商店']}
+                        lable={<Text style={styles.lableText}>应用商店</Text>}
+                        bgColor={'white'}
+                        tintColor={'#666666'}
+                        activityTintColor={Theme.primaryColor}
+                        handler={(selection, row) => this.dropHandler(this.appstores[row])}
+                        data={this.appstores}>
+                        <View style={styles.main}>
+                            <View
+                                style={{
+                                    paddingVertical: PxFit(14),
+                                    borderBottomWidth: PxFit(0.5),
+                                    borderColor: Theme.borderColor,
+                                }}>
+                                <CustomTextInput
+                                    style={styles.input}
+                                    placeholder={'应用商店账号(手机号或邮箱)'}
+                                    multiline
+                                    underline
+                                    textAlignVertical={'top'}
+                                    defaultValue={content}
+                                    onChangeText={value => {
+                                        this.setState({
+                                            content: value,
+                                        });
+                                    }}
+                                />
+                            </View>
 
-                        <View style={styles.center}>
-                            <Text style={{ fontSize: PxFit(16), color: Theme.primaryFont }}>上传截图</Text>
-                            <Text style={{ fontSize: PxFit(15), color: Theme.grey }}>（{pictures.length}/6）</Text>
-                        </View>
-                        <View style={styles.images}>
-                            {pictures.map((image, index) => {
-                                return (
-                                    <View key={index}>
-                                        <Image source={{ uri: image }} style={styles.image} />
-                                        <TouchableOpacity
-                                            style={styles.delete}
-                                            onPress={() => {
-                                                pictures.splice(index, 1);
-                                                this.setState({
-                                                    pictures,
-                                                });
-                                            }}>
-                                            <Iconfont name={'close'} size={12} color={Theme.white} />
-                                        </TouchableOpacity>
-                                    </View>
-                                );
-                            })}
+                            <View style={styles.center}>
+                                <Text style={{ fontSize: PxFit(16), color: Theme.primaryFont }}>评论内容截图</Text>
+                                <Text style={{ fontSize: PxFit(15), color: Theme.grey }}>（{pictures.length}/6）</Text>
+                            </View>
+                            <View style={styles.images}>
+                                {pictures.map((image, index) => {
+                                    return (
+                                        <View key={index}>
+                                            <Image source={{ uri: image }} style={styles.image} />
+                                            <TouchableOpacity
+                                                style={styles.delete}
+                                                onPress={() => {
+                                                    pictures.splice(index, 1);
+                                                    this.setState({
+                                                        pictures,
+                                                    });
+                                                }}>
+                                                <Iconfont name={'close'} size={12} color={Theme.white} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    );
+                                })}
 
-                            {!(pictures.length > 5) && (
-                                <TouchableOpacity style={styles.add} onPress={this.openPhotos}>
-                                    <Iconfont name={'add'} size={26} color={Theme.tintGray} />
-                                </TouchableOpacity>
-                            )}
+                                {!(pictures.length > 5) && (
+                                    <TouchableOpacity style={styles.add} onPress={this.openPhotos}>
+                                        <Iconfont name={'add'} size={26} color={Theme.tintGray} />
+                                    </TouchableOpacity>
+                                )}
+                            </View>
                         </View>
-                        <View style={styles.mainBottom} />
-                    </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Button
-                            title={<Text style={{ color: Theme.white, fontSize: PxFit(15) }}>提交</Text>}
-                            style={styles.button}
-                            onPress={this.startUploadImage}
-                            disabled={!(pictures.length > 0 && content)}
-                            // disabled={!(pictures.length > 0 && content)}
-                            //提交的时候再上传图片
-                        />
-                    </View>
+
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Button
+                                title={<Text style={{ color: Theme.white, fontSize: PxFit(15) }}>提交</Text>}
+                                style={styles.button}
+                                onPress={this.startUploadImage}
+                                disabled={!(pictures.length > 0 && content && appstore)}
+                                // disabled={!(pictures.length > 0 && content)}
+                                //提交的时候再上传图片
+                            />
+                        </View>
+                    </DropdownMenu>
                 </ScrollView>
+
                 <SubmitLoading isVisible={isVisible} content={'提交中...'} />
             </PageContainer>
         );
@@ -280,15 +304,14 @@ const styles = StyleSheet.create({
         fontSize: PxFit(16),
     },
     main: {
-        marginTop: 20,
-        paddingVertical: PxFit(15),
+        paddingBottom: PxFit(15),
         marginBottom: PxFit(15),
         borderBottomWidth: PxFit(1),
         borderBottomColor: Theme.lightBorder,
     },
     center: {
         marginHorizontal: PxFit(25),
-        paddingBottom: PxFit(30),
+        paddingVertical: PxFit(20),
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -299,15 +322,15 @@ const styles = StyleSheet.create({
     },
     input: {
         backgroundColor: 'transparent',
-        fontSize: PxFit(13),
+        fontSize: PxFit(14),
         padding: 0,
-        height: PxFit(60),
+        height: PxFit(20),
         paddingHorizontal: PxFit(20),
         justifyContent: 'flex-start',
     },
     add: {
-        width: (SCREEN_WIDTH - PxFit(60)) / 3,
-        height: (SCREEN_WIDTH - PxFit(60)) / 3,
+        width: (SCREEN_WIDTH - PxFit(60)) / 4,
+        height: (SCREEN_WIDTH - PxFit(60)) / 4,
         borderColor: Theme.lightBorder,
         borderWidth: PxFit(1),
         justifyContent: 'center',

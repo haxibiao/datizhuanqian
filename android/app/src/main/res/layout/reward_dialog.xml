@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/shape_corner"
     android:orientation="vertical"
-    android:layout_gravity="center"
+    android:layout_gravity="center|center_vertical"
+
     >
 
 
@@ -18,105 +19,121 @@
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:orientation="vertical"
+       android:orientation="horizontal"
        android:gravity="center"
+       android:layout_marginBottom="15dp"
+       android:paddingTop="15dp"
        >
 
+       <ImageView
+           android:layout_width="58dp"
+           android:layout_height="58dp"
+           android:src="@drawable/money"/>
        <LinearLayout
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:orientation="vertical"
-           android:layout_marginTop="20dp">
-           <TextView
-               android:id="@+id/banner_title"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="恭喜您获得"
-               android:textSize="24dp"
-               android:textColor="#f00"
-               android:layout_gravity="center|center_horizontal|center_vertical"
-               android:gravity="center"
-               android:textAlignment="center"
-              />
+           android:layout_marginLeft="15dp"
+           android:layout_gravity="center_vertical"
+           >
            <LinearLayout
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:orientation="horizontal"
-               android:layout_gravity="center"
-               android:layout_marginTop="20dp">
-               <ImageView
-                   android:layout_width="24dp"
-                   android:layout_height="24dp"
-                   android:src="@drawable/gold"
-                />
+               android:orientation="horizontal">
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="恭喜获得"
+                   android:textSize="18dp"
+                   android:textFontWeight="500"
+                   android:textColor="#000"
+                   android:layout_gravity="center|center_horizontal|center_vertical"
+                   android:gravity="center"
+                   android:textAlignment="center"
+                   />
                <TextView
                    android:id="@+id/reward_gold"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:text="20"
-                   android:textSize="16dp"
-                   android:textColor="#000"
+                   android:text="20智慧点"
+                   android:textFontWeight="500"
+                   android:textSize="18dp"
+                   android:textColor="#FFB100"
                    android:layout_gravity="center|center_horizontal|center_vertical"
                    android:gravity="center"
                    android:textAlignment="center"
                    android:paddingLeft="5dp"
                    />
-               <ImageView
-                   android:layout_width="24dp"
-                   android:layout_height="24dp"
-                   android:src="@drawable/heart"
-                   android:layout_marginLeft="15dp"
 
-                  />
-               <TextView
-                   android:id="@+id/reward_ticket"
-                   android:layout_width="match_parent"
+           </LinearLayout>
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_gravity="bottom"
+               android:layout_marginTop="5dp"
+               android:id="@+id/reward_list"
+               >
+
+               <!--<TextView
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="10"
+                   android:text="同时奖励"
                    android:textSize="16dp"
-                   android:textColor="#000"
-                   android:layout_gravity="center|center_horizontal|center_vertical"
-                   android:gravity="center"
-                   android:textAlignment="center"
-                   android:paddingLeft="5dp"
-                   />
-               <ImageView
+                   android:textColor="#969696"
+                   />-->
+              <!-- <ImageView
                    android:layout_width="20dp"
                    android:layout_height="20dp"
+                   android:src="@drawable/heart"
+                   />
+               <TextView
+                   android:id="@+id/reward_ticket"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="+10"
+                   android:textSize="15dp"
+                   android:textColor="#FFB100"
+                   android:paddingLeft="2dp"
+                   />-->
+             <!--  <ImageView
+                   android:id="@+id/reward_contribute_img"
+                   android:layout_width="16dp"
+                   android:layout_height="16dp"
                    android:src="@drawable/contribute"
-                   android:layout_marginLeft="15dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_marginTop="2dp"
 
                    />
                <TextView
                    android:id="@+id/reward_contribute"
-                   android:layout_width="match_parent"
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="6"
-                   android:textSize="16dp"
-                   android:textColor="#000"
-                   android:layout_gravity="center|center_horizontal|center_vertical"
-                   android:gravity="center"
-                   android:textAlignment="center"
-                   android:paddingLeft="5dp"
-                   />
+                   android:text="+6"
+                   android:textSize="15dp"
+                   android:textColor="#FFB100"
+                   android:paddingLeft="2dp"
+                   />-->
            </LinearLayout>
        </LinearLayout>
 
-           />
+       />
    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+
+        >
         <RelativeLayout
             android:id="@+id/banner_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal|center_vertical"
             android:gravity="center"
-            android:paddingBottom="25dp">
+            android:paddingBottom="15dp">
 
         </RelativeLayout>
         <LinearLayout
@@ -135,7 +152,7 @@
                 android:layout_weight="1"
                 android:text="忽略"
                 android:textColor="#969696"
-                android:paddingBottom="10dp"
+                android:paddingBottom="15dp"
                 />
             <Button
                 android:id="@+id/btn_right"

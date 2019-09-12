@@ -46,7 +46,7 @@ class App extends Component {
             config.saveAdvertConfig(data);
             if (data.enable_splash) {
                 // 开屏广告因为时机问题直接在此判断了
-                // ttad.Splash.loadSplashAd();
+                ttad.Splash.loadSplashAd();
             }
         });
         // 检查更新

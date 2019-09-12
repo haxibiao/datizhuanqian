@@ -11,39 +11,67 @@ import { storage, keys } from 'store';
 import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
 
 type Props = {
-    guidanceKey: string,
-    GuidanceView: JSX.Element,
-    dismissEnabled?: boolean
+    guidanceKey: string, //指导标识
+    GuidanceView: JSX.Element, //内部指导视图
+    dismissEnabled?: boolean, //外部能否关闭
+    recordable?: boolean, //是否记录到storage，再次进来将不会触发,默认为true
+    skipEnabled?: boolean, //能否跳过
+    skipGuidanceKeys?: Array //跳过的指导，方便跳过其它步骤
 };
 
 const beginnerGuidance = (props: Props) => {
-    const { guidanceKey, GuidanceView, dismissEnabled } = props;
+    const {
+        guidanceKey,
+        GuidanceView,
+        recordable = true,
+        dismissEnabled,
+        skipEnabled,
+        skipGuidanceKeys = [guidanceKey]
+    } = props;
     const guidanceType = `BeginnerGuidance_${guidanceKey}`;
     let OverlayKey;
 
     const overlayView = (
         <Overlay.View animated={true}>
-            <View style={styles.container}>
-                <TouchableWithoutFeedback disabled={!dismissEnabled} onPress={handleDismiss}>
+            <TouchableWithoutFeedback disabled={!dismissEnabled} onPress={handleDismiss}>
+                <View style={styles.container}>
                     <GuidanceView onDismiss={handleDismiss} />
-                </TouchableWithoutFeedback>
-            </View>
+                    {skipEnabled && (
+                        <View style={styles.header}>
+                            <TouchableWithoutFeedback onPress={skipGuidance}>
+                                <View style={styles.closeBtn}>
+                                    <Text style={styles.closeBtnText}>跳过引导</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )}
+                </View>
+            </TouchableWithoutFeedback>
         </Overlay.View>
     );
 
     init();
 
     function handleDismiss() {
+        recordable && storage.setItem(guidanceType, JSON.stringify({}));
         Overlay.hide(OverlayKey);
-        storage.setItem(guidanceType, JSON.stringify({}));
+    }
+
+    function skipGuidance() {
+        if (recordable) {
+            skipGuidanceKeys.forEach(skipGuidanceKey => {
+                storage.setItem(`BeginnerGuidance_${skipGuidanceKey}`, JSON.stringify({}));
+            });
+        }
+        Overlay.hide(OverlayKey);
     }
 
     async function init() {
-        console.log('useEffect');
+        // OverlayKey = Overlay.show(overlayView);
         const result = await storage.getItem(guidanceType);
-        console.log('result', result);
-        OverlayKey = Overlay.show(overlayView);
-        storage.setItem(guidanceType, JSON.stringify({}));
+        if (!result) {
+            OverlayKey = Overlay.show(overlayView);
+        }
     }
 };
 
@@ -88,6 +116,26 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.6)'
+    },
+    header: {
+        position: 'absolute',
+        top: PxFit(Theme.statusBarHeight + 10),
+        paddingHorizontal: PxFit(Theme.itemSpace),
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    closeBtn: {
+        height: PxFit(28),
+        paddingHorizontal: PxFit(10),
+        borderRadius: PxFit(14),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255,255,255,0.6)'
+    },
+    closeBtnText: {
+        fontSize: PxFit(15),
+        color: '#fff'
     }
 });
 

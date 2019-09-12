@@ -62,7 +62,7 @@ class Banner extends Component {
             <View>
                 <BoxShadow
                     setting={Object.assign({}, shadowOpt, {
-                        height: PxFit(showWithdraw && user.gold <= 600 ? 88 : 46),
+                        height: PxFit(46),
                     })}>
                     <View style={styles.container}>
                         <View style={styles.rowItem}>
@@ -106,15 +106,14 @@ class Banner extends Component {
                             <Text style={styles.text}>{user.gold}</Text>
                         </View>
                     </View>
-                    {showWithdraw && user.gold <= 600 ? (
-                        <View style={styles.withdrawProgress}>
-                            <ProgressWithdrawal step={parseInt(step)} data={stepData} />
-                        </View>
-                    ) : (
-                        <View style={styles.ticketUpperLimit}>
-                            <View style={[styles.ticketBar, { width: progress }]} />
-                        </View>
-                    )}
+                    <View style={styles.ticketUpperLimit}>
+                        <View style={[styles.ticketBar, { width: progress }]} />
+                    </View>
+                    {
+                        // <View style={styles.withdrawProgress}>
+                        //     <ProgressWithdrawal step={parseInt(step)} data={stepData} />
+                        // </View>
+                    }
                 </BoxShadow>
             </View>
             //考虑到精力点是实时更新的  所以不将精力点存到redux中.
@@ -146,7 +145,10 @@ class Banner extends Component {
                                 继续答题将不再奖励智慧点
                             </Text>
                             <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
-                                每日零时将重置精力点
+                                到任务中s看激励视频可恢复精力点
+                            </Text>
+                            <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
+                                每日零时也将重置精力点哦
                             </Text>
                         </View>
                     </View>

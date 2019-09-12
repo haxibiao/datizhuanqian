@@ -12,11 +12,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Gravity;
+import android.view.ViewGroup.LayoutParams;
+import android.util.TypedValue;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.FilterWord;
@@ -51,7 +54,11 @@ public class RewardDialog extends ReactContextBaseJavaModule {
     private TTAdNative mTTAdNative;
     private Button mButtonLeft;
     private Button mButtonRight;
-    private TextView mTextView;
+    private TextView mGoldTextView;
+    private TextView mTicketTextView;
+    private TextView mContributeTextView;
+    private ImageView mTicketImageView;
+    private ImageView mContributeImageView;
     private static Dialog AdDialog;
     private static WeakReference<Activity> mActivity;
     private List<TTNativeExpressAd>  mTTAdList;
@@ -59,8 +66,13 @@ public class RewardDialog extends ReactContextBaseJavaModule {
     protected Context mContext;
 
     static Promise promise = null;
+    private Integer gold = 0;
+    private Integer ticket = 0;
+    private Integer contribute = 0;
+
 
     private RelativeLayout rewardLayout;
+    private LinearLayout rewardList;
 
 
     Point point = new Point();
@@ -81,7 +93,7 @@ public class RewardDialog extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    protected void loadAd(ReadableMap options, boolean result, Promise promise) {
+    protected void loadAd(ReadableMap options, ReadableMap userReward, Promise promise) {
         final Activity _this = getCurrentActivity();
 
         Banner.promise = promise;
@@ -93,26 +105,12 @@ public class RewardDialog extends ReactContextBaseJavaModule {
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
         TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
         mTTAdList = new ArrayList<>();
-        loadBannerAd(options,result, _this);
+        loadBannerAd(options,userReward, _this);
     }
 
 
-    private final View.OnClickListener answerFailClickListener = new Button.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.btn_left) {
-                AdDialog.dismiss();
-                Banner.promise.resolve("LoadFullScreenVideo");
-            } else if (v.getId() == R.id.btn_right) {
-                AdDialog.dismiss();
-                Banner.promise.resolve("LoadRewardVideo");
-            }
 
-        }
-    };
-
-
-    private final View.OnClickListener answerPassClickListener = new Button.OnClickListener() {
+    private final View.OnClickListener ClickListener = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.btn_left) {
@@ -121,14 +119,14 @@ public class RewardDialog extends ReactContextBaseJavaModule {
 
             } else if (v.getId() == R.id.btn_right) {
                 AdDialog.dismiss();
-                Banner.promise.resolve("LoadRewardVideo");
+                Banner.promise.resolve("Confirm");
             }
 
         }
     };
 
 
-    private void loadBannerAd(ReadableMap options,boolean result,final Activity _this) {
+    private void loadBannerAd(ReadableMap options,ReadableMap userReward,final Activity _this) {
         //step4:创建广告请求参数AdSlot,具体参数含义参考文档 modules.add(new Interaction(reactContext));
         DisplayMetrics metric = new DisplayMetrics();
         _this.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -160,7 +158,7 @@ public class RewardDialog extends ReactContextBaseJavaModule {
                 TTNativeExpressAd mTTAd = ads.get(0);
                 mTTAdList.add(mTTAd);
                 mTTAd.setSlideIntervalTime(30*1000);
-                bindAdListener(mTTAd,_this, result);
+                bindAdListener(mTTAd,_this,userReward);
                 startTime = System.currentTimeMillis();
                 mTTAd.render();
             }
@@ -173,7 +171,7 @@ public class RewardDialog extends ReactContextBaseJavaModule {
     private boolean mHasShowDownloadActive = false;
 
 
-    private void bindAdListener(TTNativeExpressAd ad,final Activity _this,boolean result) {
+    private void bindAdListener(TTNativeExpressAd ad,final Activity _this,ReadableMap userReward) {
 
 
         ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
@@ -206,15 +204,6 @@ public class RewardDialog extends ReactContextBaseJavaModule {
                             AdDialog = new Dialog(_this,R.style.SelfDialog);
                             AdDialog.setContentView(R.layout.reward_dialog);
 
-                            rewardLayout = (RelativeLayout)AdDialog.findViewById(R.id.banner_container);
-
-                            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT
-                                    ,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                            rewardLayout.addView(view,lp);
-
-
-
 
                             Display display = _this.getWindow().getWindowManager().getDefaultDisplay();
                             Point point = new Point();
@@ -222,34 +211,94 @@ public class RewardDialog extends ReactContextBaseJavaModule {
 
                             WindowManager.LayoutParams params = AdDialog.getWindow().getAttributes();
 
-                            params.width = point.x*9/10;
-                            params.height =  point.x*9/10 *9/10;
+                            params.width = point.x*5/6;
+                            params.height =  point.x*5/6 *7/8;
+                            //dialog宽高
 
 
-//                            view.setPadding(10,10,10,0);
+                            rewardLayout = (RelativeLayout)AdDialog.findViewById(R.id.banner_container);
+                            rewardList = (LinearLayout)AdDialog.findViewById(R.id.reward_list);
 
 
-//                            AdDialog.addContentView(view,new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT , LinearLayout.LayoutParams.WRAP_CONTENT));
+                            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    ,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                            rewardLayout.addView(view,lp);
 
 
                             mButtonLeft=AdDialog.findViewById(R.id.btn_left);
                             mButtonRight=AdDialog.findViewById(R.id.btn_right);
-                            mTextView=AdDialog.findViewById(R.id.banner_title);
+                            mGoldTextView=AdDialog.findViewById(R.id.reward_gold);
 
 
-                            if (result){
-                                mButtonLeft.setOnClickListener(answerPassClickListener);
-                                mButtonRight.setOnClickListener(answerPassClickListener);
+                            Log.d("gold result",""+userReward.getInt("gold"));
 
-                            }else{
 
-                                mButtonLeft.setOnClickListener(answerFailClickListener);
-                                mButtonRight.setOnClickListener(answerFailClickListener);
+                            gold=userReward.getInt("gold");
+                            ticket=userReward.getInt("ticket");
+                            contribute=userReward.getInt("contribute");
+
+                            mGoldTextView.setText(gold+"智慧点");
+
+                            if(ticket>0||contribute>0){
+                                TextView textview=new TextView(mContext);
+                                textview.setText("同时奖励");
+                                textview.setTextSize(14);
+                                textview.setTextColor(mContext.getResources().getColor(R.color.grey_color));
+                                //添加 ticket奖励数
+
+                                rewardList.addView(textview);
                             }
+
+                            if(ticket>0){
+                                ImageView imageView= new ImageView(mContext);
+                                imageView.setImageResource(R.drawable.heart);
+//                                imageView.setPadding(0,10,0,0);
+                                int TicketImageSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 19, _this.getResources().getDisplayMetrics());
+                                imageView.setLayoutParams(new LayoutParams(TicketImageSize,TicketImageSize));
+                                //添加 ticket 图标
+
+                                TextView textview=new TextView(mContext);
+                                textview.setText("+"+ticket);
+                                textview.setTextSize(14);
+                                textview.setTextColor(mContext.getResources().getColor(R.color.primary_color));
+                                //添加 ticket奖励数
+
+                                rewardList.addView(imageView);
+                                rewardList.addView(textview);
+
+
+                            }
+
+
+                            if(contribute>0){
+                                ImageView imageView= new ImageView(mContext);
+                                int ContributeImageSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, _this.getResources().getDisplayMetrics());
+                                imageView.setImageResource(R.drawable.contribute);
+                                imageView.setPadding(0,5,0,0);
+
+                                imageView.setLayoutParams(new LayoutParams(ContributeImageSize,ContributeImageSize));
+                                //添加 ticket 图标
+
+                                TextView textview=new TextView(mContext);
+                                textview.setText("+"+contribute);
+                                textview.setTextSize(14);
+                                textview.setTextColor(mContext.getResources().getColor(R.color.primary_color));
+                                //添加 ticket奖励数
+
+                                rewardList.addView(imageView);
+                                rewardList.addView(textview);
+                            }
+
+
+
+                            mButtonLeft.setOnClickListener(ClickListener);
+                            mButtonRight.setOnClickListener(ClickListener);
+
 
                             AdDialog.setCancelable(false);
 
-                            Log.d("dialog status",AdDialog.isShowing()+"");
+
                             if (!AdDialog.isShowing()) {
                                 AdDialog.show();
                                 AdDialog.getWindow().setAttributes(params);
@@ -317,6 +366,7 @@ public class RewardDialog extends ReactContextBaseJavaModule {
                     //用户选择不喜欢原因后，移除广告展示
 //                    AdDialog.dismiss();
 
+
                 }
             });
             ad.setDislikeDialog(dislikeDialog);
@@ -328,7 +378,8 @@ public class RewardDialog extends ReactContextBaseJavaModule {
             public void onSelected(int position, String value) {
 //                TToast.show(mContext, "点击 " + value);
                 //用户选择不喜欢原因后，移除广告展示
-                AdDialog.dismiss();
+//                AdDialog.dismiss();
+                rewardLayout.removeAllViews();
             }
 
             @Override

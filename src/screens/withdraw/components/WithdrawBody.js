@@ -4,30 +4,17 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, NativeModules, Image, ScrollView } from 'react-native';
-import {
-    PageContainer,
-    Iconfont,
-    TouchFeedback,
-    Button,
-    SubmitLoading,
-    PopOverlay,
-    Row,
-    TipsOverlay,
-} from 'components';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
 
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, WPercent, Tools, ISIOS } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from 'utils';
 
-import { Mutation, Query, compose, graphql, GQL } from 'apollo';
-import { Overlay } from 'teaset';
+import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 
 import { ttad } from 'native';
 
 import WithdrawGuidance from './WithdrawGuidance';
-// import CheckApkExist from '../../../../native/CheckApkExist';
-
-import DeviceInfo from 'react-native-device-info';
 
 class WithdrawBody extends Component {
     constructor(props) {
@@ -63,36 +50,38 @@ class WithdrawBody extends Component {
 
     componentDidUpdate(nextProps, nextState) {
         if (nextProps.data && nextProps.data.user) {
-            nextProps.navigation.addListener('didFocus', payload => {
+            nextProps.navigation.addListener('didFocus', () => {
                 nextProps.data.refetch();
             });
         }
     }
 
-    //发起提现请求
+    // 发起提现请求
     async handleWithdraws(amount) {
-        let { data, navigation } = this.props;
+        const { data, navigation } = this.props;
         if (data.user.today_withdraw_left < amount) {
             TipsOverlay.show({
-                title: '您的提现额度不足',
+                title: '日贡献不足',
                 content: (
                     <TouchFeedback
                         style={{ alignItems: 'center', paddingTop: 10, navigation }}
                         onPress={() => {
-                            navigation.navigate('Share');
+                            navigation.navigate('任务');
                             TipsOverlay.hide();
                         }}>
                         <Text style={{ fontSize: 13, color: Theme.theme, textDecorationLine: 'underline' }}>
-                            如何获取提现额度?
+                            去做激励任务提升贡献值！
                         </Text>
                     </TouchFeedback>
                 ),
-                onConfirm: () => navigation.navigate('Share'),
+                onConfirm: () => navigation.navigate('任务'),
             });
             // navigation.navigate('WithdrawApply', { amount: 1 });
         } else {
             this.createWithdraw(amount);
         }
+
+        // if(data.user.wallet)
     }
 
     async createWithdraw(amount) {
@@ -122,7 +111,7 @@ class WithdrawBody extends Component {
             result.errors = ex;
         }
         if (result && result.errors) {
-            let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+            const str = result.errors.toString().replace(/Error: GraphQL error: /, '');
             Toast.show({ content: str });
             this.setState({
                 clickControl: false,
@@ -146,12 +135,10 @@ class WithdrawBody extends Component {
     }
 
     render() {
-        const { data, navigation, appstores } = this.props;
-        let { clickControl, isVisible, luckyMoney } = this.state;
-        let { userCache } = app;
+        const { data, navigation } = this.props;
+        const { isVisible, luckyMoney } = this.state;
+        const { userCache } = app;
         let user = Tools.syncGetter('user', data);
-
-        let user_id = app.me.id.toString();
 
         if (!user) {
             if (userCache) {
@@ -162,130 +149,112 @@ class WithdrawBody extends Component {
         }
 
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView style={{ flex: 1 }}>
                 <View>
                     <ttad.BannerAd size="small" />
                     <ttad.BannerAd size="middle" />
                     <ttad.BannerAd size="large" />
                 </View>
-                <View style={styles.statistics}>
-                    <View style={styles.currentGold}>
-                        <Text style={styles.greyText1}>当前智慧点(个)</Text>
-                        <Text style={styles.boldBlackText}>{user.gold || 0}</Text>
-                    </View>
-                    <View style={styles.accumulat}>
-                        <View style={styles.accumulated}>
-                            <Text style={styles.greyText2}>今日可提现额度(元)</Text>
-                            <Text style={styles.slenderBlackText}>{user.today_withdraw_left || 0}</Text>
+                <View style={styles.container}>
+                    <View style={styles.statistics}>
+                        <View style={styles.currentGold}>
+                            <Text style={styles.greyText1}>当前智慧点(个)</Text>
+                            <Text style={styles.boldBlackText}>{user.gold || 0}</Text>
                         </View>
-                        <View style={styles.line} />
-                        <View style={styles.accumulated}>
-                            <Text style={styles.greyText2}>当前汇率(智慧点/元)</Text>
-                            <Text style={styles.slenderBlackText}>
-                                {user.exchange_rate ? user.exchange_rate : 600}/1
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.withdraws}>
-                    <View style={styles.center}>
-                        {luckyMoney.map((luckyMoney, index) => {
-                            let bool = this.calcExchange(user, luckyMoney.value);
-                            return (
-                                <TouchFeedback
-                                    style={[
-                                        styles.withdrawItem,
-                                        bool && {
-                                            backgroundColor: Theme.primaryColor,
-                                        },
-                                    ]}
-                                    onPress={() => {
-                                        this.handleWithdraws(luckyMoney.value);
-                                    }}
-                                    key={index}>
-                                    <Text
-                                        style={[
-                                            styles.content,
-                                            bool && {
-                                                color: '#fff',
-                                            },
-                                        ]}>
-                                        提现
-                                        {luckyMoney.value}元
-                                    </Text>
-                                </TouchFeedback>
-                            );
-                        })}
-                    </View>
-                    {user.wallet && user.wallet.pay_account ? (
-                        <View style={styles.footer}>
-                            <TouchFeedback
-                                style={{ flexDirection: 'row', alignItems: 'center' }}
-                                onPress={() => navigation.navigate('Introduce')}>
-                                <Text style={styles.tips}>
-                                    总提现{user.wallet.total_withdraw_amount || 0}.00 / 今日贡献
-                                    {user.today_contributes}{' '}
+                        <View style={styles.accumulat}>
+                            <View style={styles.accumulated}>
+                                <Text style={styles.greyText2}>今日可提现额度(元)</Text>
+                                <Text style={styles.slenderBlackText}>{user.today_withdraw_left || 0}</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.accumulated}>
+                                <Text style={styles.greyText2}>当前汇率(智慧点/元)</Text>
+                                <Text style={styles.slenderBlackText}>
+                                    {user.exchange_rate ? user.exchange_rate : 600}/1
                                 </Text>
-                                <Image
-                                    source={require('../../../assets/images/question.png')}
-                                    style={{ width: 11, height: 11 }}
-                                />
-                            </TouchFeedback>
-                            <Button
-                                title={'查看提现日志'}
-                                style={{
-                                    height: PxFit(38),
-                                    borderRadius: PxFit(19),
-                                    backgroundColor: Theme.primaryColor,
-                                    width: WPercent(80),
-                                }}
-                                onPress={() => navigation.navigate('BillingRecord')}
-                            />
+                            </View>
                         </View>
-                    ) : (
-                        <WithdrawGuidance navigation={navigation} user={user} />
-                    )}
+                    </View>
+                    <View style={styles.withdraws}>
+                        <View style={styles.center}>
+                            {luckyMoney.map((luckyMoney, index) => {
+                                const bool = this.calcExchange(user, luckyMoney.value);
+                                return (
+                                    <View key={index}>
+                                        <TouchFeedback
+                                            style={[
+                                                styles.withdrawItem,
+                                                bool && {
+                                                    backgroundColor: '#FFF2EB',
+                                                },
+                                            ]}
+                                            onPress={() => {
+                                                this.handleWithdraws(luckyMoney.value);
+                                            }}>
+                                            <Text
+                                                style={[
+                                                    styles.content,
+                                                    bool && {
+                                                        color: Theme.themeRed,
+                                                    },
+                                                ]}>
+                                                {luckyMoney.value}元
+                                            </Text>
+
+                                            <Text
+                                                style={{
+                                                    fontSize: 13,
+                                                    color: luckyMoney.value === 1 ? '#FFA200' : Theme.subTextColor,
+                                                }}>
+                                                {luckyMoney.value === 1 ? '无门槛' : `${luckyMoney.value * 36}日贡献`}
+                                            </Text>
+                                        </TouchFeedback>
+                                        {luckyMoney.value === 1 && (
+                                            <View style={styles.badge}>
+                                                <Text style={styles.badgeText}>秒到账</Text>
+                                            </View>
+                                        )}
+                                    </View>
+                                );
+                            })}
+                        </View>
+                        {user.wallet && user.wallet.pay_account ? (
+                            <View style={styles.footer}>
+                                <TouchFeedback
+                                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                                    onPress={() => navigation.navigate('Introduce')}>
+                                    <Text style={styles.tips}>
+                                        总提现{user.wallet.total_withdraw_amount || 0}.00 / 今日贡献
+                                        {user.today_contributes}{' '}
+                                    </Text>
+                                    <Image
+                                        source={require('../../../assets/images/question.png')}
+                                        style={{ width: 11, height: 11 }}
+                                    />
+                                </TouchFeedback>
+                                <Button
+                                    title={'提现记录'}
+                                    style={{
+                                        height: PxFit(38),
+                                        borderRadius: PxFit(19),
+                                        backgroundColor: Theme.primaryColor,
+                                        width: WPercent(80),
+                                    }}
+                                    onPress={() => navigation.navigate('BillingRecord')}
+                                />
+                            </View>
+                        ) : (
+                            <WithdrawGuidance navigation={navigation} user={user} />
+                        )}
+                    </View>
+                    <SubmitLoading isVisible={isVisible} content={'加载中...'} />
                 </View>
-                <SubmitLoading isVisible={isVisible} content={'加载中...'} />
             </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    withdraws: {
-        justifyContent: 'space-between',
-        flex: 1,
-    },
-    center: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        paddingHorizontal: PxFit(Theme.itemSpace),
-        justifyContent: 'space-between',
-    },
-    statistics: {
-        marginTop: PxFit(Theme.itemSpace),
-        marginBottom: PxFit(Theme.itemSpace),
-    },
-    currentGold: {
-        alignItems: 'center',
-    },
-    greyText1: {
-        fontSize: PxFit(14),
-        color: Theme.subTextColor,
-    },
-    boldBlackText: {
-        marginTop: PxFit(15),
-        marginBottom: PxFit(5),
-        fontSize: PxFit(30),
-        fontWeight: '500',
-        lineHeight: PxFit(32),
-        color: Theme.secondaryColor,
-    },
     accumulat: {
         marginVertical: PxFit(Theme.itemSpace),
         flexDirection: 'row',
@@ -295,14 +264,65 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    line: {
-        alignSelf: 'stretch',
-        width: PxFit(1),
-        backgroundColor: '#f0f0f0',
+    badge: {
+        backgroundColor: Theme.primaryColor,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: 56,
+        height: 22,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopRightRadius: PxFit(10),
+        borderBottomRightRadius: PxFit(10),
+        borderTopLeftRadius: PxFit(5),
+    },
+    badgeText: {
+        fontSize: 13,
+        color: '#FFF',
+        fontWeight: '500',
+    },
+    boldBlackText: {
+        marginTop: PxFit(15),
+        marginBottom: PxFit(5),
+        fontSize: PxFit(30),
+        fontWeight: '500',
+        lineHeight: PxFit(32),
+        color: Theme.secondaryColor,
+    },
+    center: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingHorizontal: PxFit(Theme.itemSpace),
+        justifyContent: 'space-between',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    content: {
+        fontSize: PxFit(15),
+        color: Theme.black,
+    },
+    currentGold: {
+        alignItems: 'center',
+    },
+    footer: {
+        alignItems: 'center',
+        paddingBottom: PxFit(30),
+    },
+    greyText1: {
+        fontSize: PxFit(14),
+        color: Theme.subTextColor,
     },
     greyText2: {
         fontSize: PxFit(13),
         color: Theme.subTextColor,
+    },
+    line: {
+        alignSelf: 'stretch',
+        width: PxFit(1),
+        backgroundColor: '#f0f0f0',
     },
     slenderBlackText: {
         marginTop: PxFit(10),
@@ -310,6 +330,17 @@ const styles = StyleSheet.create({
         lineHeight: PxFit(18),
         fontWeight: '300',
         color: Theme.defaultTextColor,
+    },
+    statistics: {
+        marginTop: PxFit(Theme.itemSpace),
+        marginBottom: PxFit(Theme.itemSpace),
+    },
+    tips: {
+        fontSize: PxFit(12),
+        color: Theme.grey,
+        paddingVertical: PxFit(10),
+        lineHeight: PxFit(18),
+        textAlign: 'center',
     },
     withdrawItem: {
         marginBottom: PxFit(Theme.itemSpace),
@@ -320,26 +351,15 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(5),
         backgroundColor: '#f5f5f5',
     },
-    content: {
-        fontSize: PxFit(16),
-        color: Theme.subTextColor,
-    },
-    footer: {
-        alignItems: 'center',
-        paddingBottom: PxFit(30),
-    },
-    tips: {
-        fontSize: PxFit(12),
-        color: Theme.grey,
-        paddingVertical: PxFit(10),
-        lineHeight: PxFit(18),
-        textAlign: 'center',
+    withdraws: {
+        justifyContent: 'space-between',
+        flex: 1,
     },
 });
 
 export default compose(
     graphql(GQL.CreateWithdrawMutation, { name: 'CreateWithdrawMutation' }),
     graphql(GQL.UserMeansQuery, {
-        options: props => ({ variables: { id: app.me.id } }),
+        options: () => ({ variables: { id: app.me.id } }),
     }),
 )(WithdrawBody);
