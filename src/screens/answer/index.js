@@ -34,11 +34,13 @@ import AuditTitle from './components/AuditTitle';
 import Audit from './components/Audit';
 import AnswerOverlay from './components/AnswerOverlay';
 import ChooseOverlay from './components/ChooseOverlay';
+import FirstWithdrawTips from './components/FirstWithdrawTips';
 
 import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
 
 import { TtAdvert } from 'native';
+import { Overlay } from 'teaset';
 import { toJS } from 'mobx';
 
 @observer
@@ -93,7 +95,21 @@ class index extends Component {
             });
 
         this.loadAd();
+
+        // this.loadWithdrawTips();
     }
+
+    // 新用户奖励提示
+    loadWithdrawTips = () => {
+        const overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <FirstWithdrawTips hide={() => Overlay.hide(this.OverlayKey)} navigation={this.props.navigation} />
+                </View>
+            </Overlay.View>
+        );
+        this.OverlayKey = Overlay.show(overlayView);
+    };
 
     /*
       答题相关逻辑
@@ -236,10 +252,17 @@ class index extends Component {
         this.answer_count = this.answer_count + 1;
         const error_rate = this.error_count / this.answer_count;
         // this.showBannerAd(adinfo, 10, 4);
+        // 广告触发
         if (this.answer_count === 10 && config.enableQuestion) {
             this.showBannerAd(adinfo, this.answer_count, this.error_count);
             this.error_count = 0;
             this.answer_count = 0;
+        }
+        // 提现提示
+        if (data.user && data.user.gold >= 600 && app.withdrawTips) {
+            if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {
+                this.loadWithdrawTips();
+            }
         }
     };
 
@@ -664,6 +687,14 @@ class index extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    overlayInner: {
+        alignItems: 'center',
+        backgroundColor: 'rgba(255,255,255,0)',
+        flex: 1,
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        width: SCREEN_WIDTH,
     },
     scrollStyle: {
         flexGrow: 1,

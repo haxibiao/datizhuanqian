@@ -15,6 +15,7 @@ class app {
     @observable categoryCache = null;
     @observable noTicketTips = true;
     @observable unreadNotice = 0;
+    @observable withdrawTips = true;
 
     @action.bound
     setFetching(isFetching) {
@@ -153,6 +154,12 @@ class app {
     @action.bound
     async updateNoticeCount(count) {
         this.unreadNotice = count;
+    }
+
+    @action.bound
+    updateWithdrawTips(boolean) {
+        console.log('boolean', boolean);
+        this.withdrawTips = boolean;
     }
 }
 
