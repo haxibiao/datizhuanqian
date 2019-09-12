@@ -235,10 +235,9 @@ class index extends Component {
 
         this.answer_count = this.answer_count + 1;
         const error_rate = this.error_count / this.answer_count;
-
+        // this.showBannerAd(adinfo, 10, 4);
         if (this.answer_count === 10 && config.enableQuestion) {
-            const answer_result = error_rate >= 0.5 ? false : true;
-            this.showBannerAd(adinfo, answer_result);
+            this.showBannerAd(adinfo, this.answer_count, this.error_count);
             this.error_count = 0;
             this.answer_count = 0;
         }
@@ -359,8 +358,9 @@ class index extends Component {
       广告业务逻辑
     */
     // 加载banner广告dialog
-    async showBannerAd(adinfo, answer_result) {
-        const click = await TtAdvert.Banner.loadBannerAd(adinfo, answer_result);
+    async showBannerAd(adinfo, answer_count, error_count) {
+        const click = await TtAdvert.Banner.loadBannerAd(adinfo, answer_count, error_count);
+        const answer_result = error_count / answer_count > 0.4 ? false : true;
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
@@ -428,12 +428,18 @@ class index extends Component {
                 // 发放奖励 banner弹窗
                 UserReward({
                     variables: {
-                        reward: 'FULL_SCREEN_VIDEO_REWARD;',
+                        reward: 'FULL_SCREEN_VIDEO_REWARD',
                     },
                     errorPolicy: 'all',
-                }).then(res => {
-                    this.loadRewardDialog(res);
-                });
+                })
+                    .then(res => {
+                        this.loadRewardDialog(res);
+                    })
+                    .catch(() => {
+                        Toast.show({
+                            content: '发生未知错误、领取失败',
+                        });
+                    });
             }
         });
     };
@@ -467,9 +473,15 @@ class index extends Component {
                         reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
                     },
                     errorPolicy: 'all',
-                }).then(res => {
-                    this.loadRewardDialog(res);
-                });
+                })
+                    .then(res => {
+                        this.loadRewardDialog(res);
+                    })
+                    .catch(() => {
+                        Toast.show({
+                            content: '发生未知错误、领取失败',
+                        });
+                    });
             }
         });
     };

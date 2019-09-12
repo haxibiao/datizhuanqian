@@ -1,207 +1,209 @@
 #评论通知
 query commentNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
-	notifications(filter: $filter, limit: $limit, offset: $offset, read_filter: 0) {
-		type
-		created_at
-		comment {
-			id
-			content
-			time_ago
-			parent_comment {
-				id
-				content
-			}
-			user {
-				id
-				name
-				gender
-				avatar
-				is_admin
-				level {
-					id
-					level
-				}
-			}
-			feedback {
-				id
-				title
-			}
-			question {
-				id
-				description
-			}
-		}
-	}
+    notifications(filter: $filter, limit: $limit, offset: $offset, read_filter: 0) {
+        type
+        created_at
+        comment {
+            id
+            content
+            time_ago
+            parent_comment {
+                id
+                content
+            }
+            user {
+                id
+                name
+                gender
+                avatar
+                is_admin
+                level {
+                    id
+                    level
+                }
+            }
+            feedback {
+                id
+                title
+            }
+            question {
+                id
+                description
+            }
+        }
+    }
 }
 
 #系统通知
 query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
-	notifications(filter: $filter, limit: $limit, offset: $offset, read_filter: 0) {
-		type
-		created_at
-		data
-		report {
-			id
-			created_at
-			reason
-			question {
-				id
-				description
-			}
-		}
-		user {
-			id
-			name
-			gender
-			level {
-				id
-				level
-				ticket_max
-			}
-			ticket
-			next_level_exp
-		}
-		withdraw {
-			id
-			status
-			amount
-			to_account
-			updated_at
-			biz_no
-			remark
-		}
-		curation {
-			id
-			created_at
-			type
-			question {
-				id
-				description
-			}
-			remark
-			gold_awarded
-		}
-		question {
-			id
-			submit
-			description
-			created_at
-			category {
-				id
-				name
-			}
-		}
-	}
+    notifications(filter: $filter, limit: $limit, offset: $offset, read_filter: 0) {
+        type
+        created_at
+        data
+        report {
+            id
+            created_at
+            reason
+            question {
+                id
+                description
+            }
+        }
+        user {
+            id
+            name
+            gender
+            level {
+                id
+                level
+                ticket_max
+            }
+            ticket
+            next_level_exp
+        }
+        withdraw {
+            id
+            status
+            amount
+            to_account
+            updated_at
+            biz_no
+            remark
+        }
+        curation {
+            id
+            created_at
+            type
+            question {
+                id
+                description
+            }
+            remark
+            gold_awarded
+        }
+        question {
+            id
+            submit
+            description
+            created_at
+            category {
+                id
+                name
+            }
+        }
+    }
 }
 
 #粉丝通知
 query FansNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: Int) {
-	notifications(filter: $filter, limit: $limit, offset: $offset, read_filter: 0) {
-		type
-		created_at
-		follow {
-			id
-			created_at
-			user {
-				id
-				name
-				avatar
-				gender
-				followed_user_status
-				level {
-					id
-					level
-				}
-			}
-		}
-	}
+    notifications(filter: $filter, limit: $limit, offset: $offset, read_filter: 0) {
+        type
+        created_at
+        follow {
+            id
+            created_at
+            user {
+                id
+                name
+                avatar
+                gender
+                followed_user_status
+                level {
+                    id
+                    level
+                }
+            }
+        }
+    }
 }
 
 #点赞通知
 query likeNotificationsQuery($offset: Int, $limit: Int, $filter: [NotificationEnum]) {
-	notifications(offset: $offset, limit: $limit, filter: $filter, read_filter: 0) {
-		type
-		like {
-			id
-			question {
-				id
-				description
-				created_at
-				image {
-					id
-					path
-				}
-				video {
-					id
-					url
-					path
-					cover
-				}
-				category {
-					id
-					name
-				}
-				count
-			}
-			user {
-				id
-				name
-				gender
-				avatar
-				is_admin
-				level {
-					id
-					level
-				}
-			}
-			comment {
-				id
-				content
-				time_ago
-				parent_comment {
-					id
-					content
-				}
-				feedback {
-					id
-					title
-				}
-			}
-			created_at
-		}
-		read_at
-		created_at
-	}
+    notifications(offset: $offset, limit: $limit, filter: $filter, read_filter: 0) {
+        type
+        like {
+            id
+            question {
+                id
+                description
+                created_at
+                image {
+                    id
+                    path
+                }
+                video {
+                    id
+                    url
+                    path
+                    cover
+                }
+                category {
+                    id
+                    name
+                }
+                count
+            }
+            user {
+                id
+                name
+                gender
+                avatar
+                is_admin
+                level {
+                    id
+                    level
+                }
+            }
+            comment {
+                id
+                content
+                time_ago
+                parent_comment {
+                    id
+                    content
+                }
+                feedback {
+                    id
+                    title
+                }
+            }
+            created_at
+        }
+        read_at
+        created_at
+    }
 }
 
 query userUnreadQuery($id: Int) {
-	user(id: $id) {
-		id
-		unread_comment_notifications_count
-		unread_withdraw_notifications_count
-		unread_notifications_count
-		unread_user_follow_notifications_count
-		unread_like_notifications_count
-		unread_notices_count
-	}
+    user(id: $id) {
+        id
+        unread_comment_notifications_count
+        unread_withdraw_notifications_count
+        unread_notifications_count
+        unread_user_follow_notifications_count
+        unread_like_notifications_count
+        unread_notices_count
+    }
 }
 
 #官方公告
 query NoticesQuery($limit: Int, $offset: Int) {
-	notices(limit: $limit, offset: $offset) {
-		id
-		title
-		content
-		created_at
-	}
+    notices(limit: $limit, offset: $offset) {
+        id
+        title
+        content
+        created_at
+        route
+    }
 }
 
 #官方公告详情
 query NoticeQuery($id: Int!) {
-	notice(id: $id) {
-		id
-		title
-		content
-		created_at
-	}
+    notice(id: $id) {
+        id
+        title
+        content
+        created_at
+        route
+    }
 }

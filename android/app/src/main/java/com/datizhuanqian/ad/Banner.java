@@ -50,6 +50,7 @@ public class Banner extends ReactContextBaseJavaModule {
     private Button mButtonLeft;
     private Button mButtonRight;
     private TextView mTextView;
+    private TextView mConentTextView;
     private static Dialog AdDialog;
     private static WeakReference<Activity> mActivity;
     private List<TTNativeExpressAd>  mTTAdList;
@@ -57,7 +58,10 @@ public class Banner extends ReactContextBaseJavaModule {
     private View view ;
     protected Context mContext;
 
+    private RelativeLayout bannerLayout;
+
     static Promise promise = null;
+    private Integer right_count;
 
 
     Point point = new Point();
@@ -78,7 +82,7 @@ public class Banner extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    protected void loadAd(ReadableMap options, boolean result, Promise promise) {
+    protected void loadAd(ReadableMap options,Integer answer_count, Integer error_count, Promise promise) {
         final Activity _this = getCurrentActivity();
 
         Banner.promise = promise;
@@ -90,7 +94,7 @@ public class Banner extends ReactContextBaseJavaModule {
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
         TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
         mTTAdList = new ArrayList<>();
-        loadBannerAd(options,result, _this);
+        loadBannerAd(options,answer_count,error_count, _this);
     }
 
 
@@ -125,7 +129,7 @@ public class Banner extends ReactContextBaseJavaModule {
     };
 
 
-    private void loadBannerAd(ReadableMap options,boolean result,final Activity _this) {
+    private void loadBannerAd(ReadableMap options,Integer answer_count, Integer error_count,final Activity _this) {
         //step4:创建广告请求参数AdSlot,具体参数含义参考文档 modules.add(new Interaction(reactContext));
         DisplayMetrics metric = new DisplayMetrics();
         _this.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -157,7 +161,7 @@ public class Banner extends ReactContextBaseJavaModule {
                 TTNativeExpressAd mTTAd = ads.get(0);
                 mTTAdList.add(mTTAd);
                 mTTAd.setSlideIntervalTime(30*1000);
-                bindAdListener(mTTAd,_this, result);
+                bindAdListener(mTTAd,_this, answer_count,error_count);
                 startTime = System.currentTimeMillis();
                 mTTAd.render();
             }
@@ -170,7 +174,7 @@ public class Banner extends ReactContextBaseJavaModule {
     private boolean mHasShowDownloadActive = false;
 
 
-    private void bindAdListener(TTNativeExpressAd ad,final Activity _this,boolean result) {
+    private void bindAdListener(TTNativeExpressAd ad,final Activity _this,Integer answer_count, Integer error_count) {
 
 
         ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
@@ -201,7 +205,6 @@ public class Banner extends ReactContextBaseJavaModule {
                     public void run() {
                         if (!_this.isFinishing()) {
                             AdDialog = new Dialog(_this,R.style.SelfDialog);
-
                             AdDialog.setContentView(R.layout.activity_banner);
 
                             Display display = _this.getWindow().getWindowManager().getDefaultDisplay();
@@ -209,29 +212,38 @@ public class Banner extends ReactContextBaseJavaModule {
                             display.getSize(point);
 
                             WindowManager.LayoutParams params = AdDialog.getWindow().getAttributes();
+                            params.width = point.x*5/6;
+                            params.height =  point.x*5/6 *14/9;
 
-                            params.width = point.x*3/4;
-                            params.height =  point.x*3/4 *4/5;
+                            bannerLayout = (RelativeLayout)AdDialog.findViewById(R.id.banner_container);
 
+                            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    ,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                            bannerLayout.addView(view,lp);
 
-                            view.setPadding(10,10,10,0);
-
-                            AdDialog.addContentView(view,new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT , FrameLayout.LayoutParams.WRAP_CONTENT));
 
                             mButtonLeft=AdDialog.findViewById(R.id.btn_left);
                             mButtonRight=AdDialog.findViewById(R.id.btn_right);
                             mTextView=AdDialog.findViewById(R.id.banner_title);
+                            mConentTextView = AdDialog.findViewById(R.id.banner_content);
+
+                            right_count=answer_count-error_count;
+
+                            mConentTextView.setText("正确"+right_count+"题/"+"错误"+error_count+"题");
 
 
-                            if (result){
-                                mButtonLeft.setOnClickListener(answerPassClickListener);
-                                mButtonRight.setOnClickListener(answerPassClickListener);
-
-                            }else{
-
+                            if(error_count/answer_count>0.4){
                                 mButtonLeft.setOnClickListener(answerFailClickListener);
                                 mButtonRight.setOnClickListener(answerFailClickListener);
+                            }else{
+                                mButtonLeft.setOnClickListener(answerPassClickListener);
+                                mButtonRight.setOnClickListener(answerPassClickListener);
+                                mTextView.setText("本轮答题及格");
+                                mButtonLeft.setText("继续答题");
+
                             }
+
 
                             AdDialog.setCancelable(false);
 

@@ -280,7 +280,7 @@ class index extends Component {
                                 style={styles.metaIcon}
                                 source={require('../../assets/images/profile_explain.png')}
                             />
-                            <Text style={styles.itemTypeText}>答题须知</Text>
+                            <Text style={styles.itemTypeText}>赚钱攻略</Text>
                         </Row>
                         <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                     </TouchFeedback>
