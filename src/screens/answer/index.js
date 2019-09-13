@@ -605,6 +605,7 @@ class index extends Component {
                                 answer={question.answer}
                                 selectedOption={answer}
                             />
+                            <ttad.BannerAd size="middle" />
                         </View>
                     </View>
                     <View
@@ -692,8 +693,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     content: {
-        paddingTop: PxFit(20),
         marginBottom: PxFit(Theme.itemSpace),
+        paddingTop: PxFit(20),
+    },
+    optionsButton: {
+        alignItems: 'flex-end',
+        flex: 1,
+        justifyContent: 'center',
+        width: PxFit(40),
     },
     overlayInner: {
         alignItems: 'center',
@@ -704,14 +711,8 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH,
     },
     scrollStyle: {
-        flexGrow: 1,
         backgroundColor: '#fefefe',
-    },
-    optionsButton: {
-        alignItems: 'flex-end',
-        flex: 1,
-        justifyContent: 'center',
-        width: PxFit(40),
+        flexGrow: 1,
     },
     scrollStyle: {
         backgroundColor: '#fefefe',

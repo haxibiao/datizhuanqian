@@ -35,7 +35,7 @@ export default createBottomTabNavigator(
         },
     },
     {
-        initialRouteName: '提现',
+        initialRouteName: '答题',
         lazy: false,
         backBehavior: 'none',
         tabBarComponent: MainTabBar,

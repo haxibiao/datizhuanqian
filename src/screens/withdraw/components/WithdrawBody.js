@@ -150,11 +150,6 @@ class WithdrawBody extends Component {
 
         return (
             <ScrollView style={{ flex: 1 }}>
-                <View>
-                    <ttad.BannerAd size="small" />
-                    <ttad.BannerAd size="middle" />
-                    <ttad.FeedAd size="large" />
-                </View>
                 <View style={styles.container}>
                     <View style={styles.statistics}>
                         <View style={styles.currentGold}>
@@ -218,6 +213,11 @@ class WithdrawBody extends Component {
                                 );
                             })}
                         </View>
+
+                        <View style={{ paddingLeft: 20 }}>
+                            <ttad.BannerAd size="middle" />
+                        </View>
+
                         {user.wallet && user.wallet.pay_account ? (
                             <View style={styles.footer}>
                                 <TouchFeedback
