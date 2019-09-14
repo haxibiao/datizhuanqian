@@ -35,6 +35,7 @@ import Audit from './components/Audit';
 import AnswerOverlay from './components/AnswerOverlay';
 import ChooseOverlay from './components/ChooseOverlay';
 import FirstWithdrawTips from './components/FirstWithdrawTips';
+import AnswerResult from './components/AnswerResult';
 
 import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
@@ -240,10 +241,10 @@ class index extends Component {
 
         this.answer_count = this.answer_count + 1;
         const error_rate = this.error_count / this.answer_count;
-        // this.showBannerAd(adinfo, 10, 4);
+        // this.showAnswerResult(this.answer_count, this.error_count);
         // 广告触发
         if (this.answer_count === 10 && config.enableQuestion) {
-            this.showBannerAd(adinfo, this.answer_count, this.error_count);
+            this.showAnswerResult(this.answer_count, this.error_count);
             this.error_count = 0;
             this.answer_count = 0;
         }
@@ -384,23 +385,43 @@ class index extends Component {
     /*
       广告业务逻辑
     */
+
+    // 答题结果
+    showAnswerResult(answer_count, error_count) {
+        const { data, client } = this.props;
+        const overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <AnswerResult
+                        hide={() => Overlay.hide(this.OverlayKey)}
+                        navigation={this.props.navigation}
+                        answer_count={answer_count}
+                        error_count={error_count}
+                        showBannerAd={this.showBannerAd}
+                        loadFullVideoAd={this.loadFullVideoAd}
+                        loadRewardVideoAd={this.loadRewardVideoAd}
+                        data={data}
+                        client={client}
+                    />
+                </View>
+            </Overlay.View>
+        );
+        this.OverlayKey = Overlay.show(overlayView);
+    }
+
     // 加载banner广告dialog
-    async showBannerAd(adinfo, answer_count, error_count) {
-        const click = await ttad.Banner.loadBannerAd(adinfo, answer_count, error_count);
-        const answer_result = error_count / answer_count > 0.4 ? false : true;
+    showBannerAd(click, answer_result) {
+        console.log('click', click, this);
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
+                console.log(' this.loadRewardVideo', this.loadRewardVideo, this.loadFullScreenVideo);
                 this.loadRewardVideo(answer_result);
                 break;
 
             case 'LoadFullScreenVideo':
                 // 加载全屏视频
                 this.loadFullScreenVideo();
-                break;
-            case 'Close':
-                // 跳过广告
-                // 做数据上报
                 break;
         }
     }
@@ -428,102 +449,6 @@ class index extends Component {
                 this.loadRewardVideoAd = result;
             });
         }
-    }
-
-    // 加载全屏视频广告
-    loadFullScreenVideo = () => {
-        const { data } = this.props;
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.codeid', data),
-        };
-
-        if (this.loadFullVideoAd) {
-            this.startFullScreenVideoAd(adinfo);
-        } else {
-            ttad.FullScreenVideo.loadFullScreenVideoAd(adinfo).then(() => {
-                this.startFullScreenVideoAd(adinfo);
-            });
-        }
-    };
-
-    // 展示全屏视频
-    startFullScreenVideoAd = adinfo => {
-        ttad.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
-            if (result) {
-                // 发放奖励 banner弹窗
-                UserReward({
-                    variables: {
-                        reward: 'FULL_SCREEN_VIDEO_REWARD',
-                    },
-                    errorPolicy: 'all',
-                })
-                    .then(res => {
-                        this.loadRewardDialog(res);
-                    })
-                    .catch(() => {
-                        Toast.show({
-                            content: '发生未知错误、领取失败',
-                        });
-                    });
-            }
-        });
-    };
-
-    // 加载激励视频
-    loadRewardVideo = answer_result => {
-        const { data } = this.props;
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.tt_appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.tt_codeid', data),
-            uid: data.user.id,
-        };
-
-        if (this.loadRewardVideoAd) {
-            this.startRewardVideo(adinfo);
-        } else {
-            ttad.RewardVideo.loadAd(adinfo).then(() => {
-                this.startRewardVideo(adinfo, answer_result);
-            });
-        }
-    };
-
-    // 展示激励视频
-    startRewardVideo = (adinfo, answer_result) => {
-        const { UserReward } = this.props;
-        ttad.RewardVideo.startAd(adinfo).then(result => {
-            if (result) {
-                // 发放奖励 banner弹窗
-                UserReward({
-                    variables: {
-                        reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
-                    },
-                    errorPolicy: 'all',
-                })
-                    .then(res => {
-                        this.loadRewardDialog(res);
-                    })
-                    .catch(() => {
-                        Toast.show({
-                            content: '发生未知错误、领取失败',
-                        });
-                    });
-            }
-        });
-    };
-
-    // 加载奖励结果提示
-    loadRewardDialog(res) {
-        const { data, navigation } = this.props;
-        const rewardDialogAdinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
-        };
-        ttad.RewardDialog.loadRewardDialog(rewardDialogAdinfo, res.data.userReward).then(result => {
-            if (result === 'Confirm') {
-                navigation.navigate('BillingRecord', { initialPage: 1 });
-            }
-        });
     }
 
     renderContent = () => {
