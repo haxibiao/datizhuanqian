@@ -5,14 +5,14 @@ import { SCREEN_WIDTH } from 'utils';
 
 const FeedAd = ({ size }) => {
     let [visible, setVisible] = useState(true);
-    // let height = size === 'small' ? 160 : 240;
     let [height, setHeight] = useState(160); //默认高度
-    // 916518830 自渲染
-    // 916518779 模板渲染
+    // 916518830 自渲染不屏蔽
+    // 916518779 自渲染屏蔽成人保健
+    // 916518115 Express模板渲染
     return (
         visible && (
             <NativeFeedAd
-                codeid="916518830"
+                codeid="916518115"
                 size={size}
                 style={{ ...styles.container, height }}
                 onAdClosed={e => {

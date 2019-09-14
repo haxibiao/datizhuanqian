@@ -44,7 +44,6 @@ class AnswerBar extends Component {
         }
         return (
             <>
-                {/* <ttad.FeedAd size="middle" /> */}
                 <View style={styles.shadowView} elevation={20}>
                     <View style={styles.statisticsItem}>
                         <Text style={styles.itemName}>作答人数</Text>
@@ -63,6 +62,7 @@ class AnswerBar extends Component {
                         <Text style={{ fontSize: PxFit(14), color: Theme.correctColor }}>{question.answer}</Text>
                     </View>
                 </View>
+                <ttad.BannerAd size="large" />
             </>
         );
     }

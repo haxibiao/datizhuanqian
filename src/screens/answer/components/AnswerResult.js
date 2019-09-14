@@ -187,7 +187,7 @@ class AnswerResult extends Component {
                         />
                     </View>
                     <View>
-                        <ttad.BannerAd size="middle" />
+                        <ttad.BannerAd size="small" />
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <Button

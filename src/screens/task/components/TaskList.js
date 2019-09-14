@@ -226,9 +226,6 @@ class TaskList extends Component {
             <View style={{ flex: 1 }}>
                 <Banner />
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                    <View>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
                     <TaskType
                         tasks={adtasks}
                         user={UserQuery.user}
@@ -306,6 +303,9 @@ class TaskList extends Component {
                             });
                         }}
                     />
+                    <View style={{ padding: 10 }}>
+                        <ttad.FeedAd size={'small'} />
+                    </View>
                     {growUpTask.length > 0 && (
                         <TaskType
                             tasks={growUpTask}
@@ -315,6 +315,9 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
+                    <View style={{ padding: 10 }}>
+                        <ttad.FeedAd size={'small'} />
+                    </View>
                     {newUserTask.length > 0 && (
                         <TaskType
                             tasks={newUserTask}
@@ -324,7 +327,9 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-
+                    <View style={{ padding: 10 }}>
+                        <ttad.FeedAd size={'small'} />
+                    </View>
                     {dailyTask.length > 0 && (
                         <TaskType
                             tasks={dailyTask}

@@ -32,6 +32,7 @@ class App extends Component {
         };
 
         YellowBox.ignoreWarnings([
+            'Accessing view manager configs',
             'Remote debugger is in a background tab',
             'Task orphaned',
             'Warning: componentWillReceiveProps is deprecated',
