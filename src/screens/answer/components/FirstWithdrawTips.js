@@ -5,9 +5,9 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform } from 'react-native';
-import { TouchFeedback } from 'components';
-import { Config, PxFit, SCREEN_WIDTH } from 'utils';
+import { StyleSheet, Image, View } from 'react-native';
+import { TouchFeedback, Iconfont } from 'components';
+import { Config, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from 'utils';
 
 import { app } from 'store';
 
@@ -23,16 +23,28 @@ class FirstWithdrawTips extends Component {
             <TouchFeedback
                 style={styles.container}
                 onPress={() => {
-                    hide();
-                    navigation.navigate('提现');
                     app.updateWithdrawTips(false);
-                    // this.props.hide();
-                    console.log('this.props.hide();', this.props.hide);
+                    hide();
                 }}>
-                <Image
-                    source={require('../../../assets/images/first_withdraw_tips.png')}
-                    style={{ width: (SCREEN_WIDTH * 4) / 5, height: (((SCREEN_WIDTH * 4) / 5) * 984) / 800 }}
-                />
+                <TouchFeedback
+                    onPress={() => {
+                        app.updateWithdrawTips(false);
+                        navigation.navigate('提现');
+                        hide();
+                    }}>
+                    <Image
+                        source={require('../../../assets/images/first_withdraw_tips.png')}
+                        style={{ width: (SCREEN_WIDTH * 4) / 5, height: (((SCREEN_WIDTH * 4) / 5) * 984) / 800 }}
+                    />
+                </TouchFeedback>
+                <TouchFeedback
+                    style={styles.close}
+                    onPress={() => {
+                        app.updateWithdrawTips(false);
+                        hide();
+                    }}>
+                    <Iconfont name={'close'} color={Theme.white} size={24} />
+                </TouchFeedback>
             </TouchFeedback>
         );
     }
@@ -40,10 +52,21 @@ class FirstWithdrawTips extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH - PxFit(90),
-        borderRadius: PxFit(15),
-        backgroundColor: 'transparent',
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        backgroundColor: 'rgba(255,255,255,0)',
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    close: {
+        borderColor: Theme.white,
+        borderWidth: 1,
+        borderRadius: 18,
+        height: 36,
+        width: 36,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30,
     },
 });
 

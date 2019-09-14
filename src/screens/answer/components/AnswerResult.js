@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, View, Text } from 'react-native';
-import { TouchFeedback, Button } from 'components';
+import { TouchFeedback, Button, Row } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { ttad } from 'native';
 import { GQL } from 'apollo';
@@ -136,17 +136,12 @@ class AnswerResult extends Component {
             tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
             tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
         };
-        // ttad.RewardDialog.loadRewardDialog(rewardDialogAdinfo, res.data.userReward).then(result => {
-        //     if (result === 'Confirm') {
-        //         navigation.navigate('BillingRecord', { initialPage: 1 });
-        //     }
-        // });
     }
 
     render() {
         const { navigation, hide, answer_count, error_count } = this.props;
 
-        const answer_result = this.error_count / this.answer_count < 0.4;
+        const answer_result = error_count / answer_count < 0.4;
 
         return (
             <View
@@ -157,35 +152,19 @@ class AnswerResult extends Component {
                     app.updateWithdrawTips(false);
                 }}>
                 <View>
-                    <View style={{ alignItems: 'center', paddingBottom: 20 }}>
-                        <Image
-                            source={require('../../../assets/images/money_.png')}
-                            style={{ width: 80, height: 80, marginTop: -40 }}
-                        />
+                    <View style={styles.wrap}>
+                        <Image source={require('../../../assets/images/money_.png')} style={styles.headerImage} />
                     </View>
-                    <View style={{ alignItems: 'center', paddingBottom: 20 }}>
+                    <View style={styles.wrap}>
                         <Text style={{ fontSize: PxFit(15) }}>{answer_result ? '本轮答题及格' : '本轮答题不及格'}</Text>
                         <Text style={{ paddingVertical: PxFit(8) }}>{`正确${answer_count -
                             error_count}/错误${error_count}`}</Text>
                     </View>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                        <View
-                            style={{
-                                backgroundColor: Theme.theme,
-                                height: PxFit(0.5),
-                                width: SCREEN_WIDTH / 4,
-                            }}
-                        />
-                        <Text style={{ color: Theme.theme }}>{'猜你喜欢'}</Text>
-
-                        <View
-                            style={{
-                                backgroundColor: Theme.theme,
-                                height: PxFit(0.5),
-                                width: SCREEN_WIDTH / 4,
-                            }}
-                        />
-                    </View>
+                    <Row>
+                        <View style={styles.line} />
+                        <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
+                        <View style={styles.line} />
+                    </Row>
                     <View>
                         <ttad.BannerAd size="small" />
                     </View>
@@ -221,11 +200,25 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         alignItems: 'center',
     },
+    wrap: {
+        alignItems: 'center',
+        paddingBottom: 20,
+    },
+    headerImage: {
+        width: 80,
+        height: 80,
+        marginTop: -40,
+    },
     button: {
         backgroundColor: Theme.themeRed,
         borderRadius: PxFit(19),
         height: PxFit(38),
         width: (SCREEN_WIDTH * 5) / 12,
+    },
+    line: {
+        backgroundColor: Theme.theme,
+        height: PxFit(0.5),
+        width: SCREEN_WIDTH / 4,
     },
 });
 

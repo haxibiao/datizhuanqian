@@ -23,10 +23,7 @@ class RewardTips {
                             <View style={styles.header}>
                                 <Image
                                     source={require('../../../assets/images/money_old.png')}
-                                    style={{
-                                        width: 62,
-                                        height: 62,
-                                    }}
+                                    style={styles.headerImage}
                                 />
 
                                 <View style={{ marginLeft: PxFit(15) }}>
@@ -34,7 +31,7 @@ class RewardTips {
                                         恭喜获得<Text style={{ color: Theme.themeRed }}>{userReward.gold}智慧点</Text>
                                     </Text>
 
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 5 }}>
+                                    <View style={styles.rewardContainer}>
                                         {userReward.ticket || userReward.contribute ? (
                                             <Text style={{ color: Theme.grey }}>同时奖励</Text>
                                         ) : null}
@@ -42,12 +39,7 @@ class RewardTips {
                                             <Fragment>
                                                 <Image
                                                     source={require('../../../assets/images/heart.png')}
-                                                    style={{
-                                                        width: 19,
-                                                        height: 19,
-                                                        marginLeft: 3,
-                                                        marginRight: 2,
-                                                    }}
+                                                    style={styles.ticketImage}
                                                 />
                                                 <Text>+{userReward.ticket}</Text>
                                             </Fragment>
@@ -56,13 +48,7 @@ class RewardTips {
                                             <Fragment>
                                                 <Image
                                                     source={require('../../../assets/images/gongxian.png')}
-                                                    style={{
-                                                        width: 15,
-                                                        height: 15,
-                                                        marginLeft: 3,
-                                                        paddingTop: 2,
-                                                        marginRight: 2,
-                                                    }}
+                                                    style={styles.contributeImage}
                                                 />
                                                 <Text>+{userReward.contribute}</Text>
                                             </Fragment>
@@ -113,12 +99,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    headerImage: {
+        width: 62,
+        height: 62,
+    },
+    rewardContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 5,
+    },
     content: {
         width: SCREEN_WIDTH - PxFit(40),
         borderRadius: PxFit(5),
         backgroundColor: Theme.white,
         padding: 0,
         // alignItems: 'center',
+    },
+    ticketImage: {
+        width: 19,
+        height: 19,
+        marginLeft: 3,
+        marginRight: 2,
+    },
+    contributeImage: {
+        width: 15,
+        height: 15,
+        marginLeft: 3,
+        paddingTop: 2,
+        marginRight: 2,
     },
     header: {
         flexDirection: 'row',
