@@ -44,7 +44,7 @@ class AnswerBar extends Component {
         }
         return (
             <>
-                <ttad.FeedAd size="middle" />
+                {/* <ttad.FeedAd size="middle" /> */}
                 <View style={styles.shadowView} elevation={20}>
                     <View style={styles.statisticsItem}>
                         <Text style={styles.itemName}>作答人数</Text>

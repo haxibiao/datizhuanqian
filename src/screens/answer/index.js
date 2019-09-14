@@ -515,6 +515,8 @@ class index extends Component {
                                 shieldingAd={this.state.shieldingAd}
                                 category={category}
                             />
+                            <ttad.BannerAd size="small" qid={question.id} />
+
                             <QuestionBody question={question} audit={audit} />
                         </Animated.View>
                         {question.video && question.video.url && (
@@ -522,8 +524,6 @@ class index extends Component {
                         )}
 
                         <View style={{ marginHorizontal: PxFit(Theme.itemSpace), marginTop: PxFit(20) }}>
-                            <ttad.BannerAd size="large" />
-
                             <QuestionOptions
                                 questionId={question.id}
                                 selections={question.selections_array}
@@ -540,7 +540,10 @@ class index extends Component {
                         {audit ? (
                             <AuditTitle navigation={navigation} />
                         ) : (
-                            <AnswerBar isShow={audit || submited} question={question} navigation={navigation} />
+                            <>
+                                <ttad.BannerAd size="small" qid={question.id} />
+                                <AnswerBar isShow={audit || submited} question={question} navigation={navigation} />
+                            </>
                         )}
                         {(audit || submited) && (
                             <VideoExplain video={Tools.syncGetter('explanation.video', question)} />

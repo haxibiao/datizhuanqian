@@ -226,6 +226,9 @@ class TaskList extends Component {
             <View style={{ flex: 1 }}>
                 <Banner />
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                    <View>
+                        <ttad.FeedAd size={'large'} />
+                    </View>
                     <TaskType
                         tasks={adtasks}
                         user={UserQuery.user}
@@ -312,7 +315,6 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    <ttad.FeedAd size="large" />
                     {newUserTask.length > 0 && (
                         <TaskType
                             tasks={newUserTask}

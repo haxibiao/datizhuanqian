@@ -1,31 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import NativeBannerAd from './NativeBannerAd';
 import { SCREEN_WIDTH } from 'utils';
 
 const BannerAd = ({ size }) => {
-    let style = styles.large;
-    if (size === 'middle') {
-        style = styles.middle;
-    }
-    if (size === 'small') {
-        style = styles.small;
-    }
-    return <NativeBannerAd codeid="916518401" size={size} style={style} />;
+    let [visible, setVisible] = useState(true);
+    // let height = size === 'small' ? 80 : 120;
+    let [height, setHeight] = useState(80); //默认高度
+    return (
+        visible && (
+            <NativeBannerAd
+                codeid="916518401"
+                size={size}
+                style={{ ...styles.container, height }}
+                onAdClosed={e => {
+                    console.log('onAdClosed', e.nativeEvent);
+                    setVisible(false);
+                }}
+                onLayoutChanged={e => {
+                    console.log('onLayoutChanged', e.nativeEvent);
+                    setHeight(e.nativeEvent.height);
+                }}
+            />
+        )
+    );
 };
 
 const styles = StyleSheet.create({
-    large: {
+    container: {
+        width: SCREEN_WIDTH,
         height: 80,
-        width: SCREEN_WIDTH,
-    },
-    middle: {
-        height: 70,
-        width: SCREEN_WIDTH,
-    },
-    small: {
-        height: 60,
-        width: SCREEN_WIDTH,
     },
 });
 
