@@ -23,13 +23,10 @@ class index extends Component {
                 {login ? (
                     <TaskList navigation={navigation} />
                 ) : (
-                    <>
-                        <ttad.FeedAd size="large" />
-                        <EmptyView
-                            imageSource={require('../../assets/images/default_message.png')}
-                            title="登录之后才能查看任务哦"
-                        />
-                    </>
+                    <EmptyView
+                        imageSource={require('../../assets/images/default_message.png')}
+                        title="登录之后才能查看任务哦"
+                    />
                 )}
             </PageContainer>
         );

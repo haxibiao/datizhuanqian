@@ -215,7 +215,7 @@ class WithdrawBody extends Component {
                         </View>
 
                         <View style={{ paddingLeft: 20 }}>
-                            <ttad.BannerAd size="middle" />
+                            <ttad.BannerAd size="large" />
                         </View>
 
                         {user.wallet && user.wallet.pay_account ? (

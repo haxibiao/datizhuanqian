@@ -26,6 +26,8 @@ public class MainActivity extends ReactActivity {
      protected void onCreate(Bundle savedInstanceState) {
      	super.onCreate(savedInstanceState);
 //         SplashScreen.show(this, R.style.SplashScreenTheme);  // here
+
+         AdBoss.init(this, "5016518");  //初始化tt广告appid (正式，不容易改动的)
      }
 
     @Override

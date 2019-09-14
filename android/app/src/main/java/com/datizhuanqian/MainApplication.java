@@ -74,7 +74,5 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         JPushInterface.init(this);
-
-        AdBoss.init(this, "5016518");  //初始化tt广告appid (正式，不容易改动的)
     }
 }
