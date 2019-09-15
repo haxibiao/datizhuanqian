@@ -13,10 +13,6 @@
             {
                 "paths": [
                     {
-                        "rootPathPrefix": "@apollo",
-                        "rootPathSuffix": "./src/apollo"
-                    },
-                    {
                         "rootPathPrefix": "@utils",
                         "rootPathSuffix": "./src/utils"
                     },

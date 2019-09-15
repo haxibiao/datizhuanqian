@@ -15,6 +15,7 @@ import { Query, Mutation, graphql, withApollo, compose, GQL } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
 import { ttad } from 'native';
 
+import AttendanceBook from './AttendanceBook';
 import TaskType from './TaskType';
 
 @observer
