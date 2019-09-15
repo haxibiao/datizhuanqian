@@ -64,14 +64,24 @@ class WithdrawBody extends Component {
                 title: '日贡献不足',
                 content: (
                     <TouchFeedback
-                        style={{ alignItems: 'center', paddingTop: 10, navigation }}
+                        style={{ paddingTop: PxFit(10) }}
                         onPress={() => {
                             navigation.navigate('任务');
                             TipsOverlay.hide();
                         }}>
-                        <Text style={{ fontSize: 13, color: Theme.theme, textDecorationLine: 'underline' }}>
+                        <Text
+                            style={{
+                                fontSize: PxFit(13),
+                                color: Theme.theme,
+                                textDecorationLine: 'underline',
+                                textAlign: 'center',
+                                marginBottom: 15,
+                            }}>
                             去做激励任务提升贡献值！
                         </Text>
+                        <View style={{ paddingLeft: 10 }}>
+                            <ttad.BannerAd size="large" />
+                        </View>
                     </TouchFeedback>
                 ),
                 onConfirm: () => navigation.navigate('任务'),

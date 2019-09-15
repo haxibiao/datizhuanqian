@@ -5,16 +5,16 @@
 import imagePicker from './imagePicker';
 import videoPicker from './videoPicker';
 import videoUpload, { cancelUpload } from './videoUpload';
-import checkUpdate from './checkUpdate';
+// import checkUpdate from './checkUpdate';
 import viewShotUtil from './viewShotUtil';
 import checkLoginInfo from './checkLoginInfo';
 
 export default {
-	imagePicker,
-	videoPicker,
-	videoUpload,
-	cancelUpload,
-	checkUpdate,
-	viewShotUtil,
-	checkLoginInfo
+    imagePicker,
+    videoPicker,
+    videoUpload,
+    cancelUpload,
+    // checkUpdate,
+    viewShotUtil,
+    checkLoginInfo,
 };

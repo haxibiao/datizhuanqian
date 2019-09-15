@@ -250,7 +250,7 @@ class index extends Component {
         }
 
         // 提现提示
-        if (data.user && data.user.gold >= 600 && app.withdrawTips) {
+        if (data.user && data.user.gold >= 600 && !app.withdrawTips && this.answer_count !== 10) {
             if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {
                 this.loadWithdrawTips();
             }

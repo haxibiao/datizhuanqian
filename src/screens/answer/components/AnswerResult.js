@@ -6,14 +6,12 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, View, Text } from 'react-native';
-import { TouchFeedback, Button, Row } from 'components';
+import { TouchFeedback, Button, Row, RewardTipsOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { ttad } from 'native';
 import { GQL } from 'apollo';
 
 import { app } from 'store';
-
-import RewardTips from './RewardTips';
 
 class AnswerResult extends Component {
     constructor(props) {
@@ -144,7 +142,7 @@ class AnswerResult extends Component {
 
     loadRewardTips(res) {
         const { navigation } = this.props;
-        RewardTips.show(res.data.userReward, navigation);
+        RewardTipsOverlay.show(res.data.userReward, navigation);
     }
 
     loadRewardDialog(res) {
@@ -162,15 +160,9 @@ class AnswerResult extends Component {
         const answer_result = error_count / answer_count < 0.4;
 
         return (
-            <View
-                style={styles.container}
-                onPress={() => {
-                    hide();
-                    navigation.navigate('提现');
-                    app.updateWithdrawTips(false);
-                }}>
+            <View style={styles.container}>
                 <View>
-                    <View style={styles.wrap}>
+                    <View style={{ alignItems: 'center' }}>
                         <Image source={require('../../../assets/images/money_.png')} style={styles.headerImage} />
                     </View>
                     <View style={styles.wrap}>
@@ -230,9 +222,9 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     headerImage: {
-        width: 80,
-        height: 80,
-        marginTop: -40,
+        width: 120,
+        height: 120,
+        marginTop: -60,
     },
     button: {
         backgroundColor: Theme.themeRed,

@@ -15,7 +15,7 @@ class app {
     @observable categoryCache = null;
     @observable noTicketTips = true;
     @observable unreadNotice = 0;
-    @observable withdrawTips = true;
+    @observable withdrawTips = false;
 
     @action.bound
     setFetching(isFetching) {
@@ -144,7 +144,7 @@ class app {
     @action.bound
     async recallCache() {
         const resetVersion = await storage.getItem(keys.resetVersion);
-        this.withdrawTips = (await storage.getItem(keys.withdrawTips)) || true;
+        this.withdrawTips = await storage.getItem(keys.withdrawTips);
         if (resetVersion === Config.AppVersionNumber) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);

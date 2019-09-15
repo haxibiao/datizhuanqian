@@ -23,12 +23,12 @@ class FirstWithdrawTips extends Component {
             <TouchFeedback
                 style={styles.container}
                 onPress={() => {
-                    app.updateWithdrawTips(false);
+                    app.updateWithdrawTips(true);
                     hide();
                 }}>
                 <TouchFeedback
                     onPress={() => {
-                        app.updateWithdrawTips(false);
+                        app.updateWithdrawTips(true);
                         navigation.navigate('提现');
                         hide();
                     }}>
@@ -40,7 +40,7 @@ class FirstWithdrawTips extends Component {
                 <TouchFeedback
                     style={styles.close}
                     onPress={() => {
-                        app.updateWithdrawTips(false);
+                        app.updateWithdrawTips(true);
                         hide();
                     }}>
                     <Iconfont name={'close'} color={Theme.white} size={24} />

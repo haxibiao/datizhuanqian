@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image } from 'react-native';
 
-import { SubmitLoading, Banner, TouchFeedback } from 'components';
+import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay } from 'components';
 import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS } from 'utils';
 
 // import { Storage, ItemKeys } from '../../../store/localStorage';
@@ -259,12 +259,15 @@ class TaskList extends Component {
                                             if (video.video_play || video.ad_click || video.verify_status) {
                                                 if (video.ad_click) {
                                                     adClicked = true;
-                                                    Toast.show({
-                                                        content:
-                                                            `看视频+看详情: +${task.ticket}精力 ` +
-                                                            (task.gold != 0 ? `+${task.gold}智慧` : '') +
-                                                            (task.contribute != 0 ? `+${task.contribute}贡献` : ''),
-                                                    });
+
+                                                    RewardTipsOverlay.show(
+                                                        {
+                                                            gold: task.gold,
+                                                            ticket: task.ticket,
+                                                            contribute: task.contribute,
+                                                        },
+                                                        navigation,
+                                                    );
                                                 } else {
                                                     Toast.show({
                                                         content: `看完视频 +${task.ticket}精力`,
