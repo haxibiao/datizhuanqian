@@ -304,7 +304,7 @@ class TaskList extends Component {
                         }}
                     />
                     <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'small'} />
+                        <ttad.FeedAd size={'large'} />
                     </View>
                     {growUpTask.length > 0 && (
                         <TaskType
@@ -316,7 +316,7 @@ class TaskList extends Component {
                         />
                     )}
                     <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'small'} />
+                        <ttad.FeedAd size={'large'} />
                     </View>
                     {newUserTask.length > 0 && (
                         <TaskType
@@ -328,7 +328,7 @@ class TaskList extends Component {
                         />
                     )}
                     <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'small'} />
+                        <ttad.FeedAd size={'large'} />
                     </View>
                     {dailyTask.length > 0 && (
                         <TaskType

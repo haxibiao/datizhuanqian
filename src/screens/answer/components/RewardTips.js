@@ -58,7 +58,7 @@ class RewardTips {
                             </View>
                         </View>
                         <View>
-                            <ttad.FeedAd size="small" />
+                            <ttad.FeedAd size="large" />
                         </View>
                         <View style={styles.modalFooter}>
                             <TouchableOpacity
