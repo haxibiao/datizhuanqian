@@ -144,7 +144,8 @@ class app {
     @action.bound
     async recallCache() {
         const resetVersion = await storage.getItem(keys.resetVersion);
-        if (resetVersion == Config.AppVersionNumber) {
+        this.withdrawTips = (await storage.getItem(keys.withdrawTips)) || true;
+        if (resetVersion === Config.AppVersionNumber) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
             this.categoryCache = await storage.getItem(keys.categoryCache);
@@ -157,9 +158,9 @@ class app {
     }
 
     @action.bound
-    updateWithdrawTips(boolean) {
-        console.log('boolean', boolean);
+    async updateWithdrawTips(boolean) {
         this.withdrawTips = boolean;
+        await storage.setItem(keys.withdrawTips, boolean);
     }
 }
 

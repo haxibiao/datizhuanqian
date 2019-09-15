@@ -18,7 +18,9 @@ import RewardTips from './RewardTips';
 class AnswerResult extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            adShow: true,
+        };
     }
 
     // 加载banner广告dialog
@@ -66,7 +68,15 @@ class AnswerResult extends Component {
                             reward: 'FULL_SCREEN_VIDEO_REWARD',
                         },
                         errorPolicy: 'all',
+                        refetchQueries: () => [
+                            {
+                                query: GQL.UserMetaQuery,
+                                variables: { id: app.me.id },
+                                fetchPolicy: 'network-only',
+                            },
+                        ],
                     })
+
                     .then(res => {
                         this.loadRewardTips(res);
                     })
@@ -110,6 +120,13 @@ class AnswerResult extends Component {
                             reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
                         },
                         errorPolicy: 'all',
+                        refetchQueries: () => [
+                            {
+                                query: GQL.UserMetaQuery,
+                                variables: { id: app.me.id },
+                                fetchPolicy: 'network-only',
+                            },
+                        ],
                     })
                     .then(res => {
                         this.loadRewardTips(res);
@@ -139,6 +156,7 @@ class AnswerResult extends Component {
     }
 
     render() {
+        const { adShow } = this.state;
         const { navigation, hide, answer_count, error_count } = this.props;
 
         const answer_result = error_count / answer_count < 0.4;
@@ -160,15 +178,22 @@ class AnswerResult extends Component {
                         <Text style={{ paddingVertical: PxFit(8) }}>{`正确${answer_count -
                             error_count}/错误${error_count}`}</Text>
                     </View>
-                    <Row>
-                        <View style={styles.line} />
-                        <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
-                        <View style={styles.line} />
-                    </Row>
+                    {adShow && (
+                        <Row style={{ marginBottom: PxFit(10) }}>
+                            <View style={styles.line} />
+                            <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
+                            <View style={styles.line} />
+                        </Row>
+                    )}
                     <View>
-                        <ttad.BannerAd size="small" />
+                        <ttad.BannerAd
+                            size="small"
+                            onError={e => {
+                                this.setState({ adShow: false });
+                            }}
+                        />
                     </View>
-                    <View style={{ alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
                         <Button
                             style={styles.button}
                             textColor={Theme.white}

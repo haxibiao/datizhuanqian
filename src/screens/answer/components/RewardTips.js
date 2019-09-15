@@ -31,29 +31,29 @@ class RewardTips {
                                         恭喜获得<Text style={{ color: Theme.themeRed }}>{userReward.gold}智慧点</Text>
                                     </Text>
 
-                                    <View style={styles.rewardContainer}>
-                                        {userReward.ticket || userReward.contribute ? (
+                                    {userReward.ticket || userReward.contribute ? (
+                                        <View style={styles.rewardContainer}>
                                             <Text style={{ color: Theme.grey }}>同时奖励</Text>
-                                        ) : null}
-                                        {userReward.ticket ? (
-                                            <Fragment>
-                                                <Image
-                                                    source={require('../../../assets/images/heart.png')}
-                                                    style={styles.ticketImage}
-                                                />
-                                                <Text>+{userReward.ticket}</Text>
-                                            </Fragment>
-                                        ) : null}
-                                        {userReward.contribute ? (
-                                            <Fragment>
-                                                <Image
-                                                    source={require('../../../assets/images/gongxian.png')}
-                                                    style={styles.contributeImage}
-                                                />
-                                                <Text>+{userReward.contribute}</Text>
-                                            </Fragment>
-                                        ) : null}
-                                    </View>
+                                            {userReward.ticket ? (
+                                                <Fragment>
+                                                    <Image
+                                                        source={require('../../../assets/images/heart.png')}
+                                                        style={styles.ticketImage}
+                                                    />
+                                                    <Text>+{userReward.ticket}</Text>
+                                                </Fragment>
+                                            ) : null}
+                                            {userReward.contribute ? (
+                                                <Fragment>
+                                                    <Image
+                                                        source={require('../../../assets/images/gongxian.png')}
+                                                        style={styles.contributeImage}
+                                                    />
+                                                    <Text>+{userReward.contribute}</Text>
+                                                </Fragment>
+                                            ) : null}
+                                        </View>
+                                    ) : null}
                                 </View>
                             </View>
                         </View>
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: PxFit(18),
         color: Theme.black,
-        lineHeight: PxFit(20),
         fontWeight: '600',
     },
     modalFooter: {

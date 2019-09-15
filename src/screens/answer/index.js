@@ -248,6 +248,13 @@ class index extends Component {
             this.error_count = 0;
             this.answer_count = 0;
         }
+
+        // 提现提示
+        if (data.user && data.user.gold >= 600 && app.withdrawTips) {
+            if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {
+                this.loadWithdrawTips();
+            }
+        }
     };
 
     // 下一题
@@ -259,13 +266,6 @@ class index extends Component {
             this.refetchQuery();
         } else {
             this.resetState();
-        }
-
-        // 提现提示
-        if (data.user && data.user.gold >= 600 && app.withdrawTips) {
-            if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {
-                this.loadWithdrawTips();
-            }
         }
     };
 
@@ -494,7 +494,7 @@ class index extends Component {
         const audit = question.status === 0;
         return (
             <React.Fragment>
-                {!config.isFullScreen && <Banner isAnswer showWithdraw />}
+                {!config.isFullScreen && <Banner isAnswer showWithdraw navigation={navigation} />}
                 <ScrollView
                     contentContainerStyle={[
                         styles.scrollStyle,

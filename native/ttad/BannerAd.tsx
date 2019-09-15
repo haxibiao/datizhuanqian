@@ -6,10 +6,11 @@ import { SCREEN_WIDTH } from 'utils';
 type BannerSize = 'small' | 'large';
 type Props = {
     size: BannerSize;
+    onError: Function;
 };
 
 const BannerAd = (props: Props) => {
-    let { size } = props;
+    let { size, onError } = props;
     let [visible, setVisible] = useState(true);
     let [height, setHeight] = useState(80); //默认高度
     return (
@@ -20,6 +21,7 @@ const BannerAd = (props: Props) => {
                 style={{ ...styles.container, height }}
                 onError={e => {
                     console.log('onError', e.nativeEvent);
+                    onError && onError(e.nativeEvent);
                     setVisible(false);
                 }}
                 onAdClosed={e => {
