@@ -1,12 +1,7 @@
 package com.datizhuanqian;
 
-import com.bytedance.sdk.openadsdk.TTAdNative;
-import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
-import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 
-//import com.datizhuanqian.ad.AdPackage;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.haxibiao.ad.AdBoss;
+import com.facebook.react.BuildConfig;
 import com.haxibiao.ad.AdPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -24,7 +19,6 @@ import com.haxibiao.toolkits.ToolkitsPackage;
 import com.datizhuanqian.wxapi.WxEntryPackage;
 
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import androidx.multidex.MultiDexApplication;
 
