@@ -196,22 +196,6 @@ class index extends Component {
                     </View>
                     <TouchFeedback
                         style={styles.columnItem}
-                        onPress={() => {
-                            ttad.RewardDialog.loadRewardDialog().then(result => {
-                                console.log('结果', result);
-                            });
-                        }}>
-                        <Row>
-                            <Image
-                                style={styles.metaIcon}
-                                source={require('../../assets/images/profile_setting.png')}
-                            />
-                            <Text style={styles.itemTypeText}>测试Bannerr</Text>
-                        </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>
-                    <TouchFeedback
-                        style={styles.columnItem}
                         authenticated
                         navigation={navigation}
                         onPress={() => navigation.navigate('Notification')}>
