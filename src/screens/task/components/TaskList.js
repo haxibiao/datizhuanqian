@@ -38,7 +38,7 @@ class TaskList extends Component {
             cpcGold: 0,
             cpcContribute: 0,
             invitationStatus: 1,
-            invitationGold: 100,
+            invitationGold: 600,
             invitationContribute: 36,
             tasksCache: null,
             min_level: 2,
@@ -63,6 +63,7 @@ class TaskList extends Component {
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + token)
             .then(response => response.json())
             .then(data => {
+                console.log('data', data);
                 this.setState({
                     // 后端出题配置
                     ticket: data.chuti.ticket,
@@ -83,7 +84,7 @@ class TaskList extends Component {
                     // 后端邀请配置
                     invitationStatus: data.invitation.status,
                     invitationGold: data.invitation.gold,
-                    invitationContribute: data.invitation.invitationContribute,
+                    invitationContribute: data.invitation.contribute,
                 });
             })
             .catch(err => {

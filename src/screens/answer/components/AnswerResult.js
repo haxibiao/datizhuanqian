@@ -17,7 +17,7 @@ class AnswerResult extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            adShow: true,
+            adShow: false,
         };
     }
 
@@ -179,9 +179,9 @@ class AnswerResult extends Component {
                     )}
                     <View>
                         <ttad.BannerAd
-                            size="small"
-                            onError={e => {
-                                this.setState({ adShow: false });
+                            adWidth={SCREEN_WIDTH - PxFit(120)}
+                            onLoad={e => {
+                                this.setState({ adShow: true });
                             }}
                         />
                     </View>

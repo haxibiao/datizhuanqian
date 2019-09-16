@@ -1,7 +1,6 @@
 package com.datizhuanqian;
 
 
-import com.facebook.react.BuildConfig;
 import com.haxibiao.ad.AdPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;

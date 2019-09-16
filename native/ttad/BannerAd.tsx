@@ -3,21 +3,21 @@ import { StyleSheet, requireNativeComponent } from 'react-native';
 const NativeBannerAd = requireNativeComponent('BannerAd');
 import { SCREEN_WIDTH } from 'utils';
 
-type BannerSize = 'small' | 'large';
 type Props = {
-    size: BannerSize;
-    onError: Function;
+    adWidth: number;
+    onError?: Function;
+    onLoad?: Function;
 };
 
 const BannerAd = (props: Props) => {
-    let { size, onError } = props;
+    let { adWidth = SCREEN_WIDTH - 30, onError, onLoad } = props;
     let [visible, setVisible] = useState(true);
-    let [height, setHeight] = useState(80); //默认高度
+    let [height, setHeight] = useState(0); //默认高度
     return (
         visible && (
             <NativeBannerAd
                 codeid="916518401"
-                size={size}
+                adWidth={adWidth}
                 style={{ ...styles.container, height }}
                 onError={e => {
                     console.log('onError', e.nativeEvent);
@@ -30,7 +30,10 @@ const BannerAd = (props: Props) => {
                 }}
                 onLayoutChanged={e => {
                     console.log('onLayoutChanged', e.nativeEvent);
-                    setHeight(e.nativeEvent.height);
+                    if (e.nativeEvent.height) {
+                        setHeight(e.nativeEvent.height);
+                        onLoad && onLoad(e.nativeEvent);
+                    }
                 }}
             />
         )
@@ -40,7 +43,7 @@ const BannerAd = (props: Props) => {
 const styles = StyleSheet.create({
     container: {
         width: SCREEN_WIDTH,
-        height: 80,
+        height: 0,
     },
 });
 
