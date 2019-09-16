@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         alignItems: 'center',
-        paddingBottom: PxFit(30),
+        paddingTop: PxFit(30),
     },
     greyText1: {
         color: Theme.subTextColor,

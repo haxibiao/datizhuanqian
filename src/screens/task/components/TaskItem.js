@@ -301,17 +301,7 @@ class TaskItem extends Component {
 								</Text>
 							</View>
 						)}
-						{task.invitationLines > 0 && (
-							<View style={styles.reword}>
-								<Image
-									source={require('../../../assets/images/reward.png')}
-									style={{ width: PxFit(16), height: PxFit(16) }}
-								/>
-								<Text style={styles.rewordText}>
-									{task.invitationLines > 0 ? '+' + task.invitationLines : ''}
-								</Text>
-							</View>
-						)}
+						
 					</View>
 				</View>
 			);
@@ -384,7 +374,7 @@ class TaskItem extends Component {
 	_showTaskContent = task => {
 		if (task.type == 6) {
 			return (
-				<Text style={styles.taskDetailText}>{`每成功分享一个用户注册登录，既可获取智慧点和提现额度奖励`}</Text>
+				<Text style={styles.taskDetailText}>{`每成功分享一个用户注册登录，即可获取智慧点和贡献点奖励`}</Text>
 			);
 		}
 		if (task.type == 4) {
@@ -507,7 +497,7 @@ class TaskItem extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		marginLeft: PxFit(15),
+		marginLeft: PxFit(12),
 		paddingVertical: PxFit(12),
 		// borderTopWidth: PxFit(1),
 		// borderTopColor: Theme.lightBorder,
@@ -527,7 +517,7 @@ const styles = StyleSheet.create({
 	reword: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: PxFit(3)
+		marginLeft: PxFit(2)
 	},
 	rewordText: {
 		color: Theme.primaryColor,

@@ -20,18 +20,11 @@ class WithdrawApply extends Component {
 
     componentDidMount() {
         const { navigation } = this.props;
-        if (config.enableQuestion) {
-            this.Adlistener = ttad.Banner.addListener('GoTask', () => {
-                Linking.openURL('market://details?id=' + Config.PackageName);
-            });
-            ttad.WithdrawBanner.loadBannerAd();
-        } else {
-            this.loadCache();
-        }
+
+        this.loadCache();
     }
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
-        this.Adlistener && this.Adlistener.remove();
     }
 
     async loadCache() {
@@ -55,7 +48,7 @@ class WithdrawApply extends Component {
                             borderRadius: 5,
                         }}>
                         <View style={{ paddingBottom: 25, paddingTop: 10 }}>
-                            <Text style={{ fontSize: 15, fontWeight: '500' }}>应用商店鼓励一下{Config.AppName}</Text>
+                            <Text style={{ fontSize: 15, fontWeight: '500' }}>做应用商店好评任务</Text>
                         </View>
                         <View
                             style={{

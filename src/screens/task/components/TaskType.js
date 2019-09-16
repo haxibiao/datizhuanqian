@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         shadowRadius: PxFit(10),
     },
     header: {
-        marginHorizontal: PxFit(15),
+        marginHorizontal: PxFit(12),
         paddingVertical: PxFit(10),
     },
     text: {

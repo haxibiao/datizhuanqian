@@ -4,10 +4,10 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
 
-import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay } from 'components';
-import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS } from 'utils';
+import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay, TipsOverlay } from 'components';
+import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit } from 'utils';
 
 // import { Storage, ItemKeys } from '../../../store/localStorage';
 
@@ -39,7 +39,7 @@ class TaskList extends Component {
             cpcContribute: 0,
             invitationStatus: 1,
             invitationGold: 100,
-            invitationLines: 1,
+            invitationContribute: 36,
             tasksCache: null,
             min_level: 2,
         };
@@ -83,7 +83,7 @@ class TaskList extends Component {
                     // 后端邀请配置
                     invitationStatus: data.invitation.status,
                     invitationGold: data.invitation.gold,
-                    invitationLines: data.invitation.withdraw_lines,
+                    invitationContribute: data.invitation.invitationContribute,
                 });
             })
             .catch(err => {
@@ -141,7 +141,7 @@ class TaskList extends Component {
             cpcContribute,
             invitationStatus,
             invitationGold,
-            invitationLines,
+            invitationContribute,
         } = this.state;
 
         const refetchUserQuery = UserQuery && UserQuery.refetch;
@@ -171,12 +171,11 @@ class TaskList extends Component {
                 type: 3,
             },
             {
-                name: '分享给好友',
+                name: '分享领现金',
                 status: invitationStatus,
                 taskAction: 7,
                 gold: invitationGold,
-                // contribute: 60,
-                invitationLines: invitationLines,
+                contribute: invitationContribute,
                 type: 6,
             },
         ];
@@ -259,7 +258,6 @@ class TaskList extends Component {
                                             if (video.video_play || video.ad_click || video.verify_status) {
                                                 if (video.ad_click) {
                                                     adClicked = true;
-
                                                     RewardTipsOverlay.show(
                                                         {
                                                             gold: task.gold,
@@ -269,8 +267,31 @@ class TaskList extends Component {
                                                         navigation,
                                                     );
                                                 } else {
-                                                    Toast.show({
-                                                        content: `看完视频 +${task.ticket}精力`,
+                                                    TipsOverlay.show({
+                                                        title: '仅浏览视频',
+                                                        content: (
+                                                            <View style={{ paddingTop: PxFit(10) }}>
+                                                                <View
+                                                                    style={{
+                                                                        flexDirection: 'row',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        marginBottom: 15,
+                                                                    }}>
+                                                                    <Text>奖励</Text>
+                                                                    <Image
+                                                                        source={require('../../../assets/images/heart.png')}
+                                                                        style={styles.ticketImage}
+                                                                    />
+                                                                    <Text>+{task.ticket}</Text>
+                                                                </View>
+                                                                <View style={{ paddingLeft: 10 }}>
+                                                                    <ttad.BannerAd size="large" />
+                                                                </View>
+                                                            </View>
+                                                        ),
+                                                        onConfirm: () =>
+                                                            navigation.navigate('BillingRecord', { initialPage: 1 }),
                                                     });
                                                 }
 
@@ -359,6 +380,12 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#FFFEFC',
         flex: 1,
+    },
+    ticketImage: {
+        width: 19,
+        height: 19,
+        marginLeft: 5,
+        marginRight: 2,
     },
 });
 

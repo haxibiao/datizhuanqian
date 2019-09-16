@@ -57,7 +57,7 @@ class MakeMoenyManual extends Component {
                             title: '被限制提现怎么办？',
                             content: `一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现,系统将判定涉嫌恶意刷取智慧点，${Config.AppName}官方将限制提现功能。`,
                         },
-                        { title: '如何提升提现额度？', content: '参加分享活动邀请好友或做激励任务即可提升提现额度。' },
+                        { title: '如何提升提现额度？', content: '提升贡献值即可提升提现额度' },
                     ],
                 },
                 {

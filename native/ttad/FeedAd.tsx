@@ -22,7 +22,7 @@ const FeedAd = (props: Props) => {
                 size={size}
                 style={{ ...styles.container, height }}
                 onError={e => {
-                    console.log('onError', e.nativeEvent);
+                    console.log('onError feed', e.nativeEvent);
                     setVisible(false);
                 }}
                 onAdClosed={e => {
@@ -30,7 +30,7 @@ const FeedAd = (props: Props) => {
                     setVisible(false);
                 }}
                 onLayoutChanged={e => {
-                    console.log('onLayoutChanged', e.nativeEvent);
+                    console.log('onLayoutChanged feed', e.nativeEvent);
                     if (e.nativeEvent.height > 0) {
                         setHeight(e.nativeEvent.height);
                     }
