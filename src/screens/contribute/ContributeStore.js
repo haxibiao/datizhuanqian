@@ -37,7 +37,7 @@ class ContributeStore {
 			ContributeStore.instance = this;
 		}
 		when(
-			() => this.description && this.options.size,
+			() => this.options.size,
 			() => {
 				beginnerGuidance({
 					guidanceKey: 'SubmitQuestion',
