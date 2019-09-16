@@ -5,10 +5,10 @@
 'use strict';
 
 import React, { Component, useState, useCallback, useMemo, useEffect } from 'react';
-import { StyleSheet, View, TouchableWithoutFeedback, Text } from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback, Text, BackHandler } from 'react-native';
 import { Overlay } from 'teaset';
 import { storage, keys } from 'store';
-import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
+import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT, ISAndroid } from '../../utils';
 
 type Props = {
     guidanceKey: string, //指导标识
@@ -16,7 +16,7 @@ type Props = {
     dismissEnabled?: boolean, //外部能否关闭
     recordable?: boolean, //是否记录到storage，再次进来将不会触发,默认为true
     skipEnabled?: boolean, //能否跳过
-    skipGuidanceKeys?: Array //跳过的指导，方便跳过其它步骤
+    skipGuidanceKeys?: Array, //跳过的指导，方便跳过其它步骤
 };
 
 const beginnerGuidance = (props: Props) => {
@@ -26,13 +26,13 @@ const beginnerGuidance = (props: Props) => {
         recordable = true,
         dismissEnabled,
         skipEnabled,
-        skipGuidanceKeys = [guidanceKey]
+        skipGuidanceKeys = [guidanceKey],
     } = props;
     const guidanceType = `BeginnerGuidance_${guidanceKey}`;
-    let OverlayKey;
+    let OverlayKey, backListener;
 
     const overlayView = (
-        <Overlay.View animated={true}>
+        <Overlay.View animated={false}>
             <TouchableWithoutFeedback disabled={!dismissEnabled} onPress={handleDismiss}>
                 <View style={styles.container}>
                     <GuidanceView onDismiss={handleDismiss} />
@@ -50,10 +50,22 @@ const beginnerGuidance = (props: Props) => {
         </Overlay.View>
     );
 
-    init();
+    (async function() {
+        // OverlayKey = Overlay.show(overlayView);
+        const result = await storage.getItem(guidanceType);
+        if (!result) {
+            OverlayKey = Overlay.show(overlayView);
+            if (ISAndroid) {
+                backListener = BackHandler.addEventListener('hardwareBackPress', () => {
+                    return true;
+                });
+            }
+        }
+    })();
 
     function handleDismiss() {
         recordable && storage.setItem(guidanceType, JSON.stringify({}));
+        removeBackListener();
         Overlay.hide(OverlayKey);
     }
 
@@ -63,14 +75,13 @@ const beginnerGuidance = (props: Props) => {
                 storage.setItem(`BeginnerGuidance_${skipGuidanceKey}`, JSON.stringify({}));
             });
         }
+        removeBackListener();
         Overlay.hide(OverlayKey);
     }
 
-    async function init() {
-        // OverlayKey = Overlay.show(overlayView);
-        const result = await storage.getItem(guidanceType);
-        if (!result) {
-            OverlayKey = Overlay.show(overlayView);
+    function removeBackListener() {
+        if (ISAndroid) {
+            backListener.remove();
         }
     }
 };
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.6)'
+        backgroundColor: 'rgba(0,0,0,0.6)',
     },
     header: {
         position: 'absolute',
@@ -123,7 +134,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: PxFit(Theme.itemSpace),
         width: '100%',
         justifyContent: 'center',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     closeBtn: {
         height: PxFit(28),
@@ -131,12 +142,12 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(14),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.6)'
+        backgroundColor: 'rgba(255,255,255,0.6)',
     },
     closeBtnText: {
         fontSize: PxFit(15),
-        color: '#fff'
-    }
+        color: '#fff',
+    },
 });
 
 export default beginnerGuidance;

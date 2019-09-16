@@ -6,9 +6,11 @@ import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
 import { app } from 'store';
+import { ttad } from 'native';
 
 function VideoTaskGuidance({ onDismiss }) {
     const [step, setStep] = useState(0);
+    const me = useMemo(() => app.me, [app]);
     const guidesView = useMemo(() => {
         return [
             <TouchableWithoutFeedback
@@ -16,8 +18,7 @@ function VideoTaskGuidance({ onDismiss }) {
                 onPress={() => {
                     Tools.navigate('提现');
                     setStep(1);
-                }}
-            >
+                }}>
                 <Image style={styles.userReward} source={require('../../assets/images/new_user_reward.png')} />
             </TouchableWithoutFeedback>,
             <TouchableWithoutFeedback
@@ -25,8 +26,7 @@ function VideoTaskGuidance({ onDismiss }) {
                 onPress={() => {
                     Tools.navigate('任务');
                     setStep(2);
-                }}
-            >
+                }}>
                 <View style={styles.flexCenter}>
                     <Image style={styles.withdrawGuide} source={require('../../assets/images/withdraw_guide.png')} />
                 </View>
@@ -35,13 +35,19 @@ function VideoTaskGuidance({ onDismiss }) {
                 key={3}
                 onPress={() => {
                     app.changeUserStatus(false);
+                    ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
+                        // 开始看奖励视频
+                        ttad.RewardVideo.startAd({
+                            ...me.adinfo,
+                            uid: me.id,
+                        });
+                    });
                     onDismiss();
-                }}
-            >
+                }}>
                 <View style={styles.flexCenter}>
                     <Image style={styles.stimulateVideo} source={require('../../assets/images/stimulate_video.png')} />
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>,
         ];
     }, []);
 
@@ -63,12 +69,12 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH,
         height: SCREEN_HEIGHT,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     userReward: {
         width: (SCREEN_WIDTH * 4) / 5,
         height: (((SCREEN_WIDTH * 4) / 5) * 640) / 519,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     withdrawGuide: {
         position: 'absolute',
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
         right: withdrawGuideRight,
         width: withdrawGuideWidth,
         height: (withdrawGuideWidth * 659) / 746,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     stimulateVideo: {
         position: 'absolute',
@@ -84,8 +90,8 @@ const styles = StyleSheet.create({
         right: PxFit(48),
         width: videoTaskGuideWidth,
         height: videoTaskGuideHeight,
-        resizeMode: 'contain'
-    }
+        resizeMode: 'contain',
+    },
 });
 
 export default VideoTaskGuidance;
