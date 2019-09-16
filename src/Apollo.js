@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 
 import { makeClient, ApolloProvider } from 'apollo';
+import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 
 import { observer, app } from 'store';
 import { Config, Tools } from 'utils';
@@ -91,7 +92,9 @@ class Apollo extends Component {
 		const client = makeClient(app.me, checkServer); // 构建apollo client;
 		return (
 			<ApolloProvider client={client}>
-				<AppRouter ref={Tools.setRootNavigation} />
+				<ApolloHooksProvider client={client}>
+					<AppRouter ref={Tools.setRootNavigation} />
+				</ApolloHooksProvider>
 			</ApolloProvider>
 		);
 	}

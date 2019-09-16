@@ -41,3 +41,11 @@ mutation UserRewardMutation($reward: RewardEnum) {
         contribute
     }
 }
+
+mutation CreateSignInMutation {
+    createSignIn {
+        id
+        gold_reward
+        contribute_reward
+    }
+}

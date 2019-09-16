@@ -57,3 +57,4 @@ export function makeClient(user = {}, checkServer) {
 
 export { GQL } from 'graphql';
 export { Query, Mutation, compose, graphql, withApollo, ApolloProvider } from 'react-apollo';
+export * from '@apollo/react-hooks';
