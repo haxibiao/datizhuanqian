@@ -152,7 +152,7 @@ class TaskList extends Component {
 
         const adtasks = [
             {
-                name: '看激励视频',
+                name: '看视频赚钱',
                 status: rewardStatus,
                 taskAction: rewardTaskAction,
                 gold: rewardGold,
@@ -161,7 +161,7 @@ class TaskList extends Component {
                 type: 4,
             },
             {
-                name: '出题被采纳',
+                name: '出题赚钱',
                 status: 1,
                 taskAction: 4,
                 gold,

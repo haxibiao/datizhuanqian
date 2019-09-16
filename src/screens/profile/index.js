@@ -251,13 +251,14 @@ class index extends Component {
                         <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                     </TouchFeedback>
                     <View style={{ height: 10 }} />
-                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Recruit')}>
+                    {/*
+                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Recruit')}>
                         <Row>
                             <Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
                             <Text style={styles.itemTypeText}>版主招募</Text>
                         </Row>
                         <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>
+                    </TouchFeedback>*/}
                     <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
                         <Row>
                             <Image

@@ -49,10 +49,10 @@ class App extends Component {
         // 获取广告开放状态
         service.enableAdvert(data => {
             config.saveAdvertConfig(data);
-            if (data.enable_splash) {
-                // 开屏广告因为时机问题直接在此判断了
-                // ttad.Splash.loadSplashAd();
-            }
+            // if (data.enable_splash) {
+            //     // 开屏广告因为时机问题直接在此判断了
+            //     ttad.Splash.loadSplashAd();
+            // }
         });
 
         ttad.Splash.loadSplashAd();

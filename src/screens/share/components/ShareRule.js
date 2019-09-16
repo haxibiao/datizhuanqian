@@ -13,6 +13,7 @@ class ShareRule extends Component {
         super(props);
         this.state = {};
     }
+
     render() {
         return (
             <View style={styles.container}>
@@ -35,21 +36,12 @@ class ShareRule extends Component {
                             <Text style={{ color: Theme.white }}>2</Text>
                         </View>
                         <Text style={styles.text}>
-                            邀请人数越多，单次可提现额度越高，使用不同额度提现后将扣除相应额度数（如今日邀请到2位好友 ，
-                            可提现1+2次=3元，今日提现3元后扣除相应额度次数），邀请好友人数无上限，邀请越多奖励越多。
-                        </Text>
-                    </View>
-                    <View style={styles.item}>
-                        <View style={styles.badge}>
-                            <Text style={{ color: Theme.white }}>3</Text>
-                        </View>
-                        <Text style={styles.text}>
                             您邀请的好友必须是答题赚钱新用户才能邀请成功，即手机号/支付宝/QQ邮箱均未注册登录使用过答题赚钱APP，同一个手机号、同一个设备或同一个提现账号都视为一个用户，每个新用户只能被邀请一次，已经被他人邀请过的好友不能重复邀请。
                         </Text>
                     </View>
                     <View style={styles.item}>
                         <View style={styles.badge}>
-                            <Text style={{ color: Theme.white }}>4</Text>
+                            <Text style={{ color: Theme.white }}>3</Text>
                         </View>
                         <Text style={styles.text}>
                             为了保证广大答友的收益不被影响，对于非正常邀请行为的用户（如刷机等违规手段），答题赚钱官方有权取消其参与分享活动的资格，并扣除奖励不予结算。
