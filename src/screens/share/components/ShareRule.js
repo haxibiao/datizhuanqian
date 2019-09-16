@@ -28,7 +28,7 @@ class ShareRule extends Component {
                             <Text style={{ color: Theme.white }}>1</Text>
                         </View>
                         <Text style={styles.text}>
-                            每成功邀请一位新用户下载并使用APP，您将获得600智慧点奖励和36贡献点，您可以将活动页面通过微信、QQ、微博等方式分享给好友，好友下载注册登录APP您将获得奖励，同时您邀请的好友登录后也将获得新人福利智慧点奖励。
+                            每成功邀请一位新用户下载并使用APP，您将获得600智慧点和36贡献点奖励，您可以将活动页面通过微信、QQ、微博等方式分享给好友，好友下载注册登录APP您将获得奖励，同时您邀请的好友登录后也将获得新人福利智慧点奖励。
                         </Text>
                     </View>
                     <View style={styles.item}>

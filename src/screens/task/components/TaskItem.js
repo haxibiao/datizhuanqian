@@ -374,8 +374,11 @@ class TaskItem extends Component {
 	_showTaskContent = task => {
 		if (task.type == 6) {
 			return (
-				<Text style={styles.taskDetailText}>{`每成功分享一个用户注册登录，即可获取智慧点和贡献点奖励`}</Text>
-			);
+                <Text
+                    style={
+                        styles.taskDetailText
+                    }>{`每成功分享一个用户注册登录，即可获取600智慧点和36贡献点奖励`}</Text>
+            );
 		}
 		if (task.type == 4) {
 			return (
