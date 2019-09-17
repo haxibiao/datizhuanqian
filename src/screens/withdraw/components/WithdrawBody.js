@@ -272,7 +272,6 @@ const styles = StyleSheet.create({
         marginVertical: PxFit(Theme.itemSpace),
     },
     accumulated: {
-        alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
     },
@@ -295,6 +294,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     boldBlackText: {
+        textAlign: 'center',
         color: Theme.secondaryColor,
         fontSize: PxFit(30),
         fontWeight: '500',
@@ -316,18 +316,18 @@ const styles = StyleSheet.create({
         color: Theme.black,
         fontSize: PxFit(15),
     },
-    currentGold: {
-        alignItems: 'center',
-    },
+    currentGold: {},
     footer: {
         alignItems: 'center',
         paddingTop: PxFit(30),
     },
     greyText1: {
+        textAlign: 'center',
         color: Theme.subTextColor,
         fontSize: PxFit(14),
     },
     greyText2: {
+        textAlign: 'center',
         color: Theme.subTextColor,
         fontSize: PxFit(13),
     },
@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
         width: PxFit(1),
     },
     slenderBlackText: {
+        textAlign: 'center',
         color: Theme.defaultTextColor,
         fontSize: PxFit(17),
         fontWeight: '300',
