@@ -227,6 +227,7 @@ class TaskList extends Component {
             <View style={{ flex: 1 }}>
                 <Banner />
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                    <AttendanceBook />
                     <TaskType
                         tasks={adtasks}
                         user={UserQuery.user}

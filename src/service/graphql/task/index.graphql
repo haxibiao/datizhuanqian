@@ -41,11 +41,27 @@ mutation UserRewardMutation($reward: RewardEnum) {
         contribute
     }
 }
-
+# 签到
 mutation CreateSignInMutation {
     createSignIn {
         id
         gold_reward
         contribute_reward
+    }
+}
+# 签到记录
+query SignInsQuery($days: Int) {
+    signIns(days: $days) {
+        today_signed
+        keep_signin_days
+        signs {
+            id
+            year
+            date
+            created_at
+            signed
+            gold_reward
+            contribute_reward
+        }
     }
 }

@@ -1,7 +1,3 @@
-/*
- * @flow
- * created by wyk made in 2019-09-12 10:44:16
- */
 'use strict';
 
 import React, { useMemo, useCallback, useState, useLayoutEffect, useEffect } from 'react';
@@ -13,7 +9,7 @@ import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
 import SignedReturn from './SignedReturn';
 
-type signIn = {
+type Sign = {
     id: any,
     created_at: string,
     day: string | number,
@@ -24,33 +20,39 @@ type signIn = {
     signed: boolean,
 };
 
-const signInItem = {
-    id: null,
-    created_at: 111,
-    day: 12,
-    month: 9,
-    year: 2019,
-    gold_reward: 30,
-    withdraw_lines: 0,
-    signed: false, //布尔值
+type SignInReturns = {
+    id: any,
+    gold_reward: string | number,
+    contribute_reward: string | number,
 };
 
-const signs = (function() {
-    return Array(7)
-        .fill(0)
-        .map(function(elem, index) {
-            return Object.assign({}, signInItem, {
-                id: index,
-                signed: index < 1,
-                withdraw_lines: index === 4 ? 1 : 0,
-                gold_reward: index * 10,
-            });
-        });
-})();
+// const sign = {
+//     id: null,
+//     created_at: 111,
+//     day: 12,
+//     month: 9,
+//     year: 2019,
+//     gold_reward: 30,
+//     withdraw_lines: 0,
+//     signed: false, //布尔值
+// };
 
-const data = {
-    signInQuery: { keep_signin_days: 7, today_signed: false, signs },
-};
+// const signs = (function() {
+//     return Array(7)
+//         .fill(0)
+//         .map(function(elem, index) {
+//             return Object.assign({}, sign, {
+//                 id: index,
+//                 signed: index < 1,
+//                 withdraw_lines: index === 4 ? 1 : 0,
+//                 gold_reward: index * 10,
+//             });
+//         });
+// })();
+
+// const data = {
+//     signIns: { keep_signin_days: 7, today_signed: false, signs },
+// };
 
 const AttendanceBook = props => {
     const [boxShadowHeight, setBoxShadowHeight] = useState(150);
@@ -59,15 +61,15 @@ const AttendanceBook = props => {
         setBoxShadowHeight(event.nativeEvent.layout.height);
     }, []);
 
-    // const { data } = useQuery(GQL.SignInsQuery);
-    const [todaySignIn] = useMutation(GQL.CreateSignInMutation);
-    // {
-    // 	refetchQueries: () => [
-    // 		{
-    // 			query: GQL.signInQuery,
-    // 		},
-    // 	],
-    // }
+    const { data } = useQuery(GQL.SignInsQuery);
+    const [createSignIn] = useMutation(GQL.CreateSignInMutation, {
+        refetchQueries: () => [
+            {
+                query: GQL.SignInsQuery,
+            },
+        ],
+    });
+
     const signInData = useMemo(() => {
         return Tools.syncGetter('signIns', data) || {};
     }, [data]);
@@ -78,28 +80,30 @@ const AttendanceBook = props => {
     const toDaySignIn = useCallback(
         Tools.throttle(async () => {
             if (!today_signed) {
-                console.log('todaySignIn', todaySignIn);
                 try {
-                    const result = await todaySignIn();
+                    const result = await createSignIn();
                     console.log('test result', result, signIns);
-                    const todayReturns = signIns[Tools.syncGetter('createSignIn.id', result)];
+                    const todayReturns = Tools.syncGetter('data.createSignIn', result);
                     onSignInSuccess(todayReturns);
                 } catch (e) {
                     Toast.show({ content: '签到失败' });
                 }
-                onSignInSuccess({ gold: 10, withdraw_lines: 0 });
             }
         }),
         [signIns, today_signed],
     );
 
-    const onSignInSuccess = useCallback((returns: signIn) => {
+    const onSignInSuccess = useCallback((returns: SignInReturns) => {
         Overlay.show(
-            <Overlay.View style={{ alignItems: 'center', justifyContent: 'center' }} animated={true}>
-                <SignedReturn gold={returns.gold} withdraw={returns.withdraw_lines} />
-            </Overlay.View>,
+            <Overlay.PopView style={{ alignItems: 'center', justifyContent: 'center' }} animated={true}>
+                <SignedReturn gold={returns.gold_reward} reward={returns.contribute_reward} />
+            </Overlay.PopView>,
         );
     }, []);
+
+    if (!signIns) {
+        return null;
+    }
 
     return (
         <BoxShadow
@@ -108,34 +112,51 @@ const AttendanceBook = props => {
             })}>
             <View style={styles.attendanceBook} onLayout={onLayoutEffect}>
                 <View style={styles.header}>
-                    <Text style={styles.titleText}>已签到{`${1}/${signIns.length}`}天</Text>
+                    <Text style={styles.signInText}>
+                        已连续签到<Text style={styles.keepSignInText}>{`${keep_signin_days}/${signIns.length}`}</Text>天
+                    </Text>
                     <TouchableWithoutFeedback onPress={() => Tools.navigate('Share')}>
                         <Row style={styles.shareButton}>
-                            <Text style={styles.shareText}>分享日签</Text>
+                            <Text style={styles.shareText}>去分享</Text>
                         </Row>
                     </TouchableWithoutFeedback>
                 </View>
                 <TouchableWithoutFeedback onPress={toDaySignIn}>
                     <View style={styles.attendance}>
                         {signIns.map((elem, index) => {
+                            if (index === signIns.length - 1) {
+                                return (
+                                    <View style={styles.signItem} key={index}>
+                                        {!elem.signed && (
+                                            <Image
+                                                style={styles.mysticGift}
+                                                source={require('../../../assets/images/mystic_gift.png')}
+                                            />
+                                        )}
+                                        <Image
+                                            style={styles.giftImage}
+                                            source={
+                                                elem.signed
+                                                    ? require('../../../assets/images/open_gift.png')
+                                                    : require('../../../assets/images/gift.png')
+                                            }></Image>
+                                        <Text style={styles.recordDayText}>
+                                            {elem.signed ? '已签' : `${index + 1}天`}
+                                        </Text>
+                                    </View>
+                                );
+                            }
                             return (
-                                <View style={styles.recordDate} key={index}>
-                                    {elem.withdraw_lines > 0 && (
-                                        <ImageBackground
-                                            style={styles.extraRewardImage}
-                                            source={require('../../../assets/images/attendance_reward.png')}>
-                                            <Text style={styles.extraRewardText}>+{elem.withdraw_lines}</Text>
-                                        </ImageBackground>
-                                    )}
+                                <View style={styles.signItem} key={index}>
                                     <ImageBackground
-                                        style={styles.recordBg}
+                                        style={styles.coinImage}
                                         source={
                                             elem.signed
-                                                ? require('../../../assets/images/attendance_coin_grey.png')
-                                                : require('../../../assets/images/attendance_coin.png')
+                                                ? require('../../../assets/images/coin_grey.png')
+                                                : require('../../../assets/images/coin_yellow.png')
                                         }>
                                         <Text style={[styles.rewardGoldText, elem.signed && { color: '#a0a0a0' }]}>
-                                            {elem.gold_reward}
+                                            {elem.gold_reward || 0}
                                         </Text>
                                     </ImageBackground>
                                     <Text style={styles.recordDayText}>{elem.signed ? '已签' : `${index + 1}天`}</Text>
@@ -150,8 +171,8 @@ const AttendanceBook = props => {
     );
 };
 
-const rewardGoldWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2)) / 7;
-const rewardGoldImageWidth = rewardGoldWidth * 0.8;
+const signItemWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2)) / 7;
+const coinImageWidth = signItemWidth * 0.8;
 
 const shadowOpt = {
     width: SCREEN_WIDTH - PxFit(Theme.itemSpace * 2),
@@ -169,7 +190,7 @@ const shadowOpt = {
 
 const styles = StyleSheet.create({
     attendanceBook: {
-        paddingVertical: PxFit(10),
+        paddingVertical: PxFit(15),
         backgroundColor: '#fff',
         borderRadius: PxFit(10),
         shadowOffset: { width: PxFit(5), height: PxFit(5) },
@@ -188,10 +209,14 @@ const styles = StyleSheet.create({
         height: PxFit(20),
         marginRight: PxFit(4),
     },
-    titleText: {
-        fontSize: PxFit(18),
+    signInText: {
+        fontSize: PxFit(17),
         color: Theme.defaultTextColor,
         fontWeight: 'bold',
+    },
+    keepSignInText: {
+        fontSize: PxFit(18),
+        color: Theme.primaryColor,
     },
     shareButton: {
         justifyContent: 'center',
@@ -207,39 +232,37 @@ const styles = StyleSheet.create({
     attendance: {
         flexDirection: 'row',
         alignItems: 'flex-end',
-        paddingVertical: PxFit(15),
+        paddingTop: PxFit(15),
     },
-    recordDate: {
-        paddingHorizontal: rewardGoldWidth * 0.1,
+    signItem: {
+        paddingHorizontal: signItemWidth * 0.1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    extraRewardImage: {
-        width: rewardGoldImageWidth,
-        height: (rewardGoldImageWidth * 108) / 168,
-        paddingBottom: ((rewardGoldImageWidth * 108) / 168) * 0.31,
+    coinImage: {
+        width: coinImageWidth,
+        height: coinImageWidth,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    extraRewardText: {
-        fontSize: PxFit(12),
-        color: '#fff',
+    giftImage: {
+        width: coinImageWidth,
+        height: coinImageWidth,
     },
-    recordBg: {
-        width: rewardGoldImageWidth,
-        height: rewardGoldImageWidth,
+    mysticGift: {
+        width: coinImageWidth,
+        height: (coinImageWidth * 86) / 164,
         justifyContent: 'center',
         alignItems: 'center',
     },
     rewardGoldText: {
         fontSize: PxFit(12),
-        color: '#9E6124', // #ADADAD
-        fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: coinImageWidth * 0.07,
     },
     recordDayText: {
-        marginTop: PxFit(6),
-        fontSize: PxFit(14),
-        color: Theme.defaultTextColor,
+        fontSize: PxFit(13),
+        color: Theme.secondaryTextColor,
     },
     footer: {
         justifyContent: 'center',
