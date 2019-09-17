@@ -10,7 +10,7 @@ import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
-import { app } from 'store';
+import { app, config } from 'store';
 
 import { ttad } from 'native';
 
@@ -226,9 +226,11 @@ class WithdrawBody extends Component {
                             })}
                         </View>
 
-                        <View style={{ paddingLeft: 20 }}>
-                            <ttad.BannerAd size="large" />
-                        </View>
+                        {config.enableBanner && (
+                            <View style={{ paddingLeft: 20 }}>
+                                <ttad.BannerAd size="large" />
+                            </View>
+                        )}
 
                         {user.wallet && user.wallet.pay_account ? (
                             <View style={styles.footer}>
