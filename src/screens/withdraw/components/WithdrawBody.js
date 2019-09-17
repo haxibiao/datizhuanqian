@@ -79,9 +79,11 @@ class WithdrawBody extends Component {
                             }}>
                             去做激励任务提升贡献值！
                         </Text>
-                        <View style={{ paddingLeft: 10 }}>
-                            <ttad.BannerAd size="large" />
-                        </View>
+                        {config.enableBanner && (
+                            <View style={{ paddingLeft: 10 }}>
+                                <ttad.BannerAd adWidth={(SCREEN_WIDTH * 3) / 4 - PxFit(10)} />
+                            </View>
+                        )}
                     </TouchFeedback>
                 ),
                 onConfirm: () => navigation.navigate('任务'),

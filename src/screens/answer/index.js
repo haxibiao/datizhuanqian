@@ -530,7 +530,7 @@ class index extends Component {
                                 answer={question.answer}
                                 selectedOption={answer}
                             />
-                            <ttad.BannerAd size="small" qid={question.id} />
+                            {config.enableBanner && <ttad.BannerAd size="small" qid={question.id} />}
                         </View>
                     </View>
                     <View

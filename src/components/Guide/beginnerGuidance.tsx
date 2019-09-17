@@ -29,7 +29,7 @@ const beginnerGuidance = (props: Props) => {
         skipGuidanceKeys = [guidanceKey],
     } = props;
     const guidanceType = `BeginnerGuidance_${guidanceKey}`;
-    const backListener;
+    let backListener;
     let OverlayKey;
 
     const overlayView = (

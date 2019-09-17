@@ -157,7 +157,7 @@ class AnswerResult extends Component {
         const { adShow } = this.state;
         const { navigation, hide, answer_count, error_count } = this.props;
 
-        const answer_result = error_count / answer_count < 0.4;
+        const answer_result = error_count / answer_count <= 0.4;
 
         return (
             <View style={styles.container}>

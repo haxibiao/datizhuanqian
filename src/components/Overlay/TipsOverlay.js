@@ -5,12 +5,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { Overlay } from 'teaset';
 import Theme from '../../utils/Theme';
 import { WPercent, HPercent, PxFit, FontSize } from '../../utils/Scale';
 import SafeText from '../Basics/SafeText';
 import TouchFeedback from '../TouchableView/TouchFeedback';
+const { height, width } = Dimensions.get('window');
 
 type args = {
     title: string,
@@ -74,11 +75,11 @@ class TipsOverlay {
 
 const styles = StyleSheet.create({
     overlayInner: {
-        minWidth: PxFit(200),
-        width: WPercent(70),
+        // minWidth: PxFit(200),
+        width: (width * 3) / 4,
         padding: 0,
         backgroundColor: '#fff',
-        borderRadius: PxFit(10),
+        borderRadius: PxFit(5),
     },
     headerText: {
         fontSize: PxFit(15),

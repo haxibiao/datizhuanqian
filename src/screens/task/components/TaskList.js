@@ -287,7 +287,9 @@ class TaskList extends Component {
                                                                     <Text>+{task.ticket}</Text>
                                                                 </View>
                                                                 <View style={{ paddingLeft: 10 }}>
-                                                                    <ttad.BannerAd size="large" />
+                                                                    <ttad.BannerAd
+                                                                        adWidth={(SCREEN_WIDTH * 3) / 4 - PxFit(10)}
+                                                                    />
                                                                 </View>
                                                             </View>
                                                         ),
@@ -328,9 +330,11 @@ class TaskList extends Component {
                             });
                         }}
                     />
-                    <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
+                    {config.enableFeed && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {growUpTask.length > 0 && (
                         <TaskType
                             tasks={growUpTask}
@@ -340,9 +344,11 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
+                    {config.enableFeed && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {newUserTask.length > 0 && (
                         <TaskType
                             tasks={newUserTask}
@@ -352,9 +358,11 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
+                    {config.enableFeed && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {dailyTask.length > 0 && (
                         <TaskType
                             tasks={dailyTask}
