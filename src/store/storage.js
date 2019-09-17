@@ -10,6 +10,7 @@ export const keys = {
     categoryCache: 'categoryCache',
     taskCache: 'taskCache',
     userCache: 'userCache',
+    withdrawTips: 'withdrawTips',
     BeginnerGuidance_VideoTask: 'BeginnerGuidance_VideoTask',
     BeginnerGuidance_Answer: 'BeginnerGuidance_Answer',
     BeginnerGuidance_InputQuestion: 'BeginnerGuidance_InputQuestion',

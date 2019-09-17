@@ -4,7 +4,8 @@
  */
 import React, { Component, Fragment } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, NativeModules, Dimensions, Image } from 'react-native';
-import { WPercent, HPercent, PxFit, FontSize, Theme } from 'utils';
+import Theme from '../../utils/Theme';
+import { WPercent, HPercent, PxFit, FontSize } from '../../utils/Scale';
 
 import { Overlay } from 'teaset';
 import { ttad } from 'native';
@@ -22,7 +23,7 @@ class RewardTips {
                         <View>
                             <View style={styles.header}>
                                 <Image
-                                    source={require('../../../assets/images/money_old.png')}
+                                    source={require('../../assets/images/money_old.png')}
                                     style={styles.headerImage}
                                 />
 
@@ -37,7 +38,7 @@ class RewardTips {
                                             {userReward.ticket ? (
                                                 <Fragment>
                                                     <Image
-                                                        source={require('../../../assets/images/heart.png')}
+                                                        source={require('../../assets/images/heart.png')}
                                                         style={styles.ticketImage}
                                                     />
                                                     <Text>+{userReward.ticket}</Text>
@@ -46,7 +47,7 @@ class RewardTips {
                                             {userReward.contribute ? (
                                                 <Fragment>
                                                     <Image
-                                                        source={require('../../../assets/images/gongxian.png')}
+                                                        source={require('../../assets/images/gongxian.png')}
                                                         style={styles.contributeImage}
                                                     />
                                                     <Text>+{userReward.contribute}</Text>
@@ -58,7 +59,7 @@ class RewardTips {
                             </View>
                         </View>
                         <View>
-                            <ttad.FeedAd size="large" />
+                            <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
                         </View>
                         <View style={styles.modalFooter}>
                             <TouchableOpacity

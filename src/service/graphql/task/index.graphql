@@ -45,5 +45,7 @@ mutation UserRewardMutation($reward: RewardEnum) {
 mutation CreateSignInMutation {
     createSignIn {
         id
+        gold_reward
+        contribute_reward
     }
 }

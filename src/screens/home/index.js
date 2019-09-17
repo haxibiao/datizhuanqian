@@ -12,7 +12,7 @@ import {
     Placeholder,
     Banner,
     beginnerGuidance,
-    VideoTaskGuidance
+    VideoTaskGuidance,
 } from 'components';
 import { Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 import PlateItem from './components/PlateItem';
@@ -36,9 +36,9 @@ when(
         // 新手指导
         beginnerGuidance({
             guidanceKey: 'VideoTask',
-            GuidanceView: VideoTaskGuidance
+            GuidanceView: VideoTaskGuidance,
         });
-    }
+    },
 );
 
 @observer
@@ -51,7 +51,7 @@ class index extends Component {
             categoryCache: null,
             description: null,
             content: null,
-            time: new Date()
+            time: new Date(),
         };
     }
 
@@ -68,14 +68,14 @@ class index extends Component {
             if (!app.login && !userCache) {
                 this.loadUserReword(phone);
             }
-        }, 5000);
+        }, 3000);
 
         this.didFocusSubscription = navigation.addListener('didFocus', payload => {
             const { client, login } = this.props;
             if (login) {
                 client
                     .query({
-                        query: GQL.UserWithdrawQuery
+                        query: GQL.UserWithdrawQuery,
                     })
                     .then(({ data }) => {})
                     .catch(error => {
@@ -99,7 +99,7 @@ class index extends Component {
             this.setState({
                 content: message.alertContent,
                 type: JSON.parse(message.extras).type,
-                time: JSON.parse(message.extras).time
+                time: JSON.parse(message.extras).time,
             });
         };
         JPushModule.addReceiveNotificationListener(this.receiveNotificationListener);
@@ -138,8 +138,8 @@ class index extends Component {
             this.props
                 .signToken({
                     variables: {
-                        token: me.token
-                    }
+                        token: me.token,
+                    },
                 })
                 .then(result => {
                     app.signIn(result.data.signInWithToken);
@@ -170,7 +170,7 @@ class index extends Component {
     _renderCategoryList = () => {
         const {
             navigation,
-            data: { loading, categories, refetch, fetchMore }
+            data: { loading, categories, refetch, fetchMore },
         } = this.props;
         let questionCategories = categories;
         const { login, categoryCache } = app;
@@ -202,7 +202,7 @@ class index extends Component {
                             onRefresh={refetch}
                             reset={() =>
                                 this.setState({
-                                    finished: false
+                                    finished: false,
                                 })
                             }
                         />
@@ -216,7 +216,7 @@ class index extends Component {
                         if (categories && questionCategories) {
                             fetchMore({
                                 variables: {
-                                    offset: questionCategories.length
+                                    offset: questionCategories.length,
                                 },
                                 updateQuery: (prev, { fetchMoreResult }) => {
                                     if (
@@ -227,14 +227,14 @@ class index extends Component {
                                         )
                                     ) {
                                         this.setState({
-                                            finished: true
+                                            finished: true,
                                         });
                                         return prev;
                                     }
                                     return Object.assign({}, prev, {
-                                        categories: [...prev.categories, ...fetchMoreResult.categories]
+                                        categories: [...prev.categories, ...fetchMoreResult.categories],
                                     });
-                                }
+                                },
                             });
                         }
                     }}
@@ -256,7 +256,7 @@ class index extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        flex: 1
+        flex: 1,
     },
 
     overlayInner: {
@@ -265,11 +265,11 @@ const styles = StyleSheet.create({
         flex: 1,
         height: SCREEN_HEIGHT,
         justifyContent: 'center',
-        width: SCREEN_WIDTH
-    }
+        width: SCREEN_WIDTH,
+    },
 });
 
 export default compose(
     graphql(GQL.CategoriesQuery, { options: props => ({ variables: { limit: 10 } }) }),
-    graphql(GQL.signToken, { name: 'signToken' })
+    graphql(GQL.signToken, { name: 'signToken' }),
 )(withApollo(index));

@@ -43,27 +43,24 @@ class AnswerBar extends Component {
             return null;
         }
         return (
-            <>
-                <View style={styles.shadowView} elevation={20}>
-                    <View style={styles.statisticsItem}>
-                        <Text style={styles.itemName}>作答人数</Text>
-                        <Text style={{ fontSize: PxFit(14), color: Theme.secondaryColor }}>
-                            {Tools.NumberFormat(count)}
-                        </Text>
-                    </View>
-                    <View style={styles.statisticsItem}>
-                        <Text style={styles.itemName}>正确率</Text>
-                        <Text style={{ fontSize: PxFit(14), color: Theme.primaryColor }}>
-                            {correctRate(correct_count, count)}
-                        </Text>
-                    </View>
-                    <View style={styles.statisticsItem}>
-                        <Text style={styles.itemName}>正确答案</Text>
-                        <Text style={{ fontSize: PxFit(14), color: Theme.correctColor }}>{question.answer}</Text>
-                    </View>
+            <View style={styles.shadowView} elevation={20}>
+                <View style={styles.statisticsItem}>
+                    <Text style={styles.itemName}>作答人数</Text>
+                    <Text style={{ fontSize: PxFit(14), color: Theme.secondaryColor }}>
+                        {Tools.NumberFormat(count)}
+                    </Text>
                 </View>
-                <ttad.BannerAd size="large" />
-            </>
+                <View style={styles.statisticsItem}>
+                    <Text style={styles.itemName}>正确率</Text>
+                    <Text style={{ fontSize: PxFit(14), color: Theme.primaryColor }}>
+                        {correctRate(correct_count, count)}
+                    </Text>
+                </View>
+                <View style={styles.statisticsItem}>
+                    <Text style={styles.itemName}>正确答案</Text>
+                    <Text style={{ fontSize: PxFit(14), color: Theme.correctColor }}>{question.answer}</Text>
+                </View>
+            </View>
         );
     }
 }

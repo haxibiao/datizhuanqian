@@ -10,7 +10,7 @@ import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
-import { app } from 'store';
+import { app, config } from 'store';
 
 import { ttad } from 'native';
 
@@ -64,14 +64,26 @@ class WithdrawBody extends Component {
                 title: '日贡献不足',
                 content: (
                     <TouchFeedback
-                        style={{ alignItems: 'center', paddingTop: 10, navigation }}
+                        style={{ paddingTop: PxFit(10) }}
                         onPress={() => {
                             navigation.navigate('任务');
                             TipsOverlay.hide();
                         }}>
-                        <Text style={{ fontSize: 13, color: Theme.theme, textDecorationLine: 'underline' }}>
+                        <Text
+                            style={{
+                                fontSize: PxFit(13),
+                                color: Theme.theme,
+                                textDecorationLine: 'underline',
+                                textAlign: 'center',
+                                marginBottom: 15,
+                            }}>
                             去做激励任务提升贡献值！
                         </Text>
+                        {config.enableBanner && (
+                            <View style={{ paddingLeft: 10 }}>
+                                <ttad.BannerAd adWidth={(SCREEN_WIDTH * 3) / 4 - PxFit(10)} />
+                            </View>
+                        )}
                     </TouchFeedback>
                 ),
                 onConfirm: () => navigation.navigate('任务'),
@@ -214,9 +226,11 @@ class WithdrawBody extends Component {
                             })}
                         </View>
 
-                        <View style={{ paddingLeft: 20 }}>
-                            <ttad.BannerAd size="large" />
-                        </View>
+                        {config.enableBanner && (
+                            <View style={{ paddingLeft: 20 }}>
+                                <ttad.BannerAd size="large" />
+                            </View>
+                        )}
 
                         {user.wallet && user.wallet.pay_account ? (
                             <View style={styles.footer}>
@@ -260,7 +274,6 @@ const styles = StyleSheet.create({
         marginVertical: PxFit(Theme.itemSpace),
     },
     accumulated: {
-        alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
     },
@@ -283,6 +296,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     boldBlackText: {
+        textAlign: 'center',
         color: Theme.secondaryColor,
         fontSize: PxFit(30),
         fontWeight: '500',
@@ -304,18 +318,18 @@ const styles = StyleSheet.create({
         color: Theme.black,
         fontSize: PxFit(15),
     },
-    currentGold: {
-        alignItems: 'center',
-    },
+    currentGold: {},
     footer: {
         alignItems: 'center',
-        paddingBottom: PxFit(30),
+        paddingTop: PxFit(30),
     },
     greyText1: {
+        textAlign: 'center',
         color: Theme.subTextColor,
         fontSize: PxFit(14),
     },
     greyText2: {
+        textAlign: 'center',
         color: Theme.subTextColor,
         fontSize: PxFit(13),
     },
@@ -325,6 +339,7 @@ const styles = StyleSheet.create({
         width: PxFit(1),
     },
     slenderBlackText: {
+        textAlign: 'center',
         color: Theme.defaultTextColor,
         fontSize: PxFit(17),
         fontWeight: '300',

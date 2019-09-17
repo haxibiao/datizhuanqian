@@ -188,7 +188,7 @@ class Introduce extends Component {
 									如何提升提现额度？
 								</Text>
 							</Row>
-							<Text style={styles.answerText}>参加分享活动即可提升提现额度。</Text>
+							<Text style={styles.answerText}>赚取贡献点既可提升提现额度。</Text>
 						</View>
 					</View>
 				</ScrollView>

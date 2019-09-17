@@ -10,11 +10,11 @@ const adArgs = {
 };
 
 interface adinfo {
-    tt_appid?: string;
-    tt_codeid?: string;
+    tt_appid: string;
+    tt_codeid: string;
 }
 
-export const loadBannerAd = (options?: adinfo, answer_count?: number, error_count?: number) => {
+export const loadBannerAd = (options: adinfo, answer_count: number, error_count: number) => {
     if (options && !options.tt_appid) {
         return;
     }

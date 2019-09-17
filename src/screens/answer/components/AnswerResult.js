@@ -6,19 +6,19 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, View, Text } from 'react-native';
-import { TouchFeedback, Button, Row } from 'components';
+import { TouchFeedback, Button, Row, RewardTipsOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { ttad } from 'native';
 import { GQL } from 'apollo';
 
 import { app } from 'store';
 
-import RewardTips from './RewardTips';
-
 class AnswerResult extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            adShow: false,
+        };
     }
 
     // 加载banner广告dialog
@@ -66,7 +66,15 @@ class AnswerResult extends Component {
                             reward: 'FULL_SCREEN_VIDEO_REWARD',
                         },
                         errorPolicy: 'all',
+                        refetchQueries: () => [
+                            {
+                                query: GQL.UserMetaQuery,
+                                variables: { id: app.me.id },
+                                fetchPolicy: 'network-only',
+                            },
+                        ],
                     })
+
                     .then(res => {
                         this.loadRewardTips(res);
                     })
@@ -110,6 +118,13 @@ class AnswerResult extends Component {
                             reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
                         },
                         errorPolicy: 'all',
+                        refetchQueries: () => [
+                            {
+                                query: GQL.UserMetaQuery,
+                                variables: { id: app.me.id },
+                                fetchPolicy: 'network-only',
+                            },
+                        ],
                     })
                     .then(res => {
                         this.loadRewardTips(res);
@@ -127,7 +142,7 @@ class AnswerResult extends Component {
 
     loadRewardTips(res) {
         const { navigation } = this.props;
-        RewardTips.show(res.data.userReward, navigation);
+        RewardTipsOverlay.show(res.data.userReward, navigation);
     }
 
     loadRewardDialog(res) {
@@ -139,20 +154,15 @@ class AnswerResult extends Component {
     }
 
     render() {
+        const { adShow } = this.state;
         const { navigation, hide, answer_count, error_count } = this.props;
 
-        const answer_result = error_count / answer_count < 0.4;
+        const answer_result = error_count / answer_count <= 0.4;
 
         return (
-            <View
-                style={styles.container}
-                onPress={() => {
-                    hide();
-                    navigation.navigate('提现');
-                    app.updateWithdrawTips(false);
-                }}>
+            <View style={styles.container}>
                 <View>
-                    <View style={styles.wrap}>
+                    <View style={{ alignItems: 'center' }}>
                         <Image source={require('../../../assets/images/money_.png')} style={styles.headerImage} />
                     </View>
                     <View style={styles.wrap}>
@@ -160,15 +170,22 @@ class AnswerResult extends Component {
                         <Text style={{ paddingVertical: PxFit(8) }}>{`正确${answer_count -
                             error_count}/错误${error_count}`}</Text>
                     </View>
-                    <Row>
-                        <View style={styles.line} />
-                        <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
-                        <View style={styles.line} />
-                    </Row>
+                    {adShow && (
+                        <Row style={{ marginBottom: PxFit(10) }}>
+                            <View style={styles.line} />
+                            <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
+                            <View style={styles.line} />
+                        </Row>
+                    )}
                     <View>
-                        <ttad.BannerAd size="small" />
+                        <ttad.BannerAd
+                            adWidth={SCREEN_WIDTH - PxFit(120)}
+                            onLoad={e => {
+                                this.setState({ adShow: true });
+                            }}
+                        />
                     </View>
-                    <View style={{ alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
                         <Button
                             style={styles.button}
                             textColor={Theme.white}
@@ -205,9 +222,9 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     headerImage: {
-        width: 80,
-        height: 80,
-        marginTop: -40,
+        width: 120,
+        height: 120,
+        marginTop: -60,
     },
     button: {
         backgroundColor: Theme.themeRed,

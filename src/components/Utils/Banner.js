@@ -8,6 +8,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'rea
 import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
 import ProgressWithdrawal from './ProgressWithdrawal';
+import Iconfont from '../Iconfont';
 
 import { BoxShadow } from 'react-native-shadow';
 
@@ -38,9 +39,10 @@ class Banner extends Component {
     }
 
     componentDidMount() {
-        const { isAnswer, data, noTicketTips } = this.props;
-        if (isAnswer && noTicketTips && data.user && data.user.ticket == 0) {
-            this.showTips();
+        const { isAnswer, data, navigation } = this.props;
+        const { noTicketTips } = app;
+        if (isAnswer && noTicketTips && data.user && data.user.ticket === 0) {
+            this.showTips(navigation);
         }
     }
 
@@ -120,7 +122,7 @@ class Banner extends Component {
         );
     }
 
-    showTips = () => {
+    showTips = navigation => {
         let overlayView = (
             <Overlay.View animated>
                 <View style={styles.overlay}>
@@ -142,14 +144,29 @@ class Banner extends Component {
                         />
                         <View style={{ alignItems: 'center', paddingBottom: PxFit(10) }}>
                             <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
-                                继续答题将不再奖励智慧点
+                                答题将不再奖励智慧点
                             </Text>
                             <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
-                                到任务中s看激励视频可恢复精力点
+                                每日零时将重置精力点
                             </Text>
-                            <Text style={{ fontSize: PxFit(13), color: Theme.black, lineHeight: 22 }}>
-                                每日零时也将重置精力点哦
-                            </Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('任务');
+                                    Overlay.hide(this.OverlayKey);
+                                    app.recordOperation(false);
+                                }}
+                                style={{ marginTop: PxFit(5) }}>
+                                <Text
+                                    style={{
+                                        fontSize: PxFit(13),
+                                        color: Theme.black,
+                                        lineHeight: 22,
+                                        textDecorationLine: 'underline',
+                                        color: Theme.themeRed,
+                                    }}>
+                                    看激励视频可快速恢复精力点
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={{ alignItems: 'center' }}>
@@ -168,7 +185,7 @@ class Banner extends Component {
                                 Overlay.hide(this.OverlayKey);
                                 app.recordOperation(false);
                             }}>
-                            {/*<Iconfont name={'close'} color={'#F0F0F0'} size={28} />*/}
+                            <Iconfont name={'close'} color={'#F0F0F0'} size={28} />
                         </TouchableOpacity>
                     </View>
                 </View>

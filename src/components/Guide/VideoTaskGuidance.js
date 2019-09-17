@@ -45,7 +45,23 @@ function VideoTaskGuidance({ onDismiss }) {
                     onDismiss();
                 }}>
                 <View style={styles.flexCenter}>
-                    <Image style={styles.stimulateVideo} source={require('../../assets/images/stimulate_video.png')} />
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            app.changeUserStatus(false);
+                            ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
+                                // 开始看奖励视频
+                                ttad.RewardVideo.startAd({
+                                    ...me.adinfo,
+                                    uid: me.id,
+                                });
+                            });
+                            onDismiss();
+                        }}>
+                        <Image
+                            style={styles.stimulateVideo}
+                            source={require('../../assets/images/stimulate_video.png')}
+                        />
+                    </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>,
         ];

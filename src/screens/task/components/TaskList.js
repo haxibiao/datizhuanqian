@@ -4,10 +4,10 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
 
-import { SubmitLoading, Banner, TouchFeedback } from 'components';
-import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS } from 'utils';
+import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay, TipsOverlay } from 'components';
+import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit } from 'utils';
 
 // import { Storage, ItemKeys } from '../../../store/localStorage';
 
@@ -39,8 +39,8 @@ class TaskList extends Component {
             cpcGold: 0,
             cpcContribute: 0,
             invitationStatus: 1,
-            invitationGold: 100,
-            invitationLines: 1,
+            invitationGold: 600,
+            invitationContribute: 36,
             tasksCache: null,
             min_level: 2,
         };
@@ -64,6 +64,7 @@ class TaskList extends Component {
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + token)
             .then(response => response.json())
             .then(data => {
+                console.log('data', data);
                 this.setState({
                     // 后端出题配置
                     ticket: data.chuti.ticket,
@@ -84,7 +85,7 @@ class TaskList extends Component {
                     // 后端邀请配置
                     invitationStatus: data.invitation.status,
                     invitationGold: data.invitation.gold,
-                    invitationLines: data.invitation.withdraw_lines,
+                    invitationContribute: data.invitation.contribute,
                 });
             })
             .catch(err => {
@@ -142,7 +143,7 @@ class TaskList extends Component {
             cpcContribute,
             invitationStatus,
             invitationGold,
-            invitationLines,
+            invitationContribute,
         } = this.state;
 
         const refetchUserQuery = UserQuery && UserQuery.refetch;
@@ -153,7 +154,7 @@ class TaskList extends Component {
 
         const adtasks = [
             {
-                name: '看激励视频',
+                name: '看视频赚钱',
                 status: rewardStatus,
                 taskAction: rewardTaskAction,
                 gold: rewardGold,
@@ -162,7 +163,7 @@ class TaskList extends Component {
                 type: 4,
             },
             {
-                name: '出题被采纳',
+                name: '出题赚钱',
                 status: 1,
                 taskAction: 4,
                 gold,
@@ -172,12 +173,11 @@ class TaskList extends Component {
                 type: 3,
             },
             {
-                name: '分享给好友',
+                name: '分享领现金',
                 status: invitationStatus,
                 taskAction: 7,
                 gold: invitationGold,
-                // contribute: 60,
-                invitationLines: invitationLines,
+                contribute: invitationContribute,
                 type: 6,
             },
         ];
@@ -260,15 +260,42 @@ class TaskList extends Component {
                                             if (video.video_play || video.ad_click || video.verify_status) {
                                                 if (video.ad_click) {
                                                     adClicked = true;
-                                                    Toast.show({
-                                                        content:
-                                                            `看视频+看详情: +${task.ticket}精力 ` +
-                                                            (task.gold != 0 ? `+${task.gold}智慧` : '') +
-                                                            (task.contribute != 0 ? `+${task.contribute}贡献` : ''),
-                                                    });
+                                                    RewardTipsOverlay.show(
+                                                        {
+                                                            gold: task.gold,
+                                                            ticket: task.ticket,
+                                                            contribute: task.contribute,
+                                                        },
+                                                        navigation,
+                                                    );
                                                 } else {
-                                                    Toast.show({
-                                                        content: `看完视频 +${task.ticket}精力`,
+                                                    TipsOverlay.show({
+                                                        title: '仅浏览视频',
+                                                        content: (
+                                                            <View style={{ paddingTop: PxFit(10) }}>
+                                                                <View
+                                                                    style={{
+                                                                        flexDirection: 'row',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        marginBottom: 15,
+                                                                    }}>
+                                                                    <Text>奖励</Text>
+                                                                    <Image
+                                                                        source={require('../../../assets/images/heart.png')}
+                                                                        style={styles.ticketImage}
+                                                                    />
+                                                                    <Text>+{task.ticket}</Text>
+                                                                </View>
+                                                                <View style={{ paddingLeft: 10 }}>
+                                                                    <ttad.BannerAd
+                                                                        adWidth={(SCREEN_WIDTH * 3) / 4 - PxFit(10)}
+                                                                    />
+                                                                </View>
+                                                            </View>
+                                                        ),
+                                                        onConfirm: () =>
+                                                            navigation.navigate('BillingRecord', { initialPage: 1 }),
                                                     });
                                                 }
 
@@ -304,9 +331,11 @@ class TaskList extends Component {
                             });
                         }}
                     />
-                    <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
+                    {config.enableFeed && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {growUpTask.length > 0 && (
                         <TaskType
                             tasks={growUpTask}
@@ -316,9 +345,11 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
+                    {config.enableFeed && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {newUserTask.length > 0 && (
                         <TaskType
                             tasks={newUserTask}
@@ -328,9 +359,11 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    <View style={{ padding: 10 }}>
-                        <ttad.FeedAd size={'large'} />
-                    </View>
+                    {config.enableFeed && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {dailyTask.length > 0 && (
                         <TaskType
                             tasks={dailyTask}
@@ -357,6 +390,12 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#FFFEFC',
         flex: 1,
+    },
+    ticketImage: {
+        width: 19,
+        height: 19,
+        marginLeft: 5,
+        marginRight: 2,
     },
 });
 

@@ -10,14 +10,14 @@ import { Overlay } from 'teaset';
 import { storage, keys } from 'store';
 import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT, ISAndroid } from '../../utils';
 
-type Props = {
-    guidanceKey: string, //指导标识
-    GuidanceView: JSX.Element, //内部指导视图
-    dismissEnabled?: boolean, //外部能否关闭
-    recordable?: boolean, //是否记录到storage，再次进来将不会触发,默认为true
-    skipEnabled?: boolean, //能否跳过
-    skipGuidanceKeys?: Array, //跳过的指导，方便跳过其它步骤
-};
+interface Props {
+    guidanceKey: string; //指导标识
+    GuidanceView: JSX.Element; //内部指导视图
+    dismissEnabled?: boolean; //外部能否关闭
+    recordable?: boolean; //是否记录到storage，再次进来将不会触发,默认为true
+    skipEnabled?: boolean; //能否跳过
+    skipGuidanceKeys?: Array; //跳过的指导，方便跳过其它步骤
+}
 
 const beginnerGuidance = (props: Props) => {
     const {
@@ -29,7 +29,8 @@ const beginnerGuidance = (props: Props) => {
         skipGuidanceKeys = [guidanceKey],
     } = props;
     const guidanceType = `BeginnerGuidance_${guidanceKey}`;
-    let OverlayKey, backListener;
+    let backListener;
+    let OverlayKey;
 
     const overlayView = (
         <Overlay.View animated={false}>
