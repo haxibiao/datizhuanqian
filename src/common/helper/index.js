@@ -30,3 +30,4 @@
 
 export * from './adapter';
 export * from './calculate';
+export { default as exceptionCapture } from './exceptionCapture';
