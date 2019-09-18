@@ -55,7 +55,6 @@ query SignInsQuery($days: Int) {
         today_signed
         keep_signin_days
         signs {
-            id
             year
             date
             created_at

@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { useMemo, useCallback, useState, useLayoutEffect, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { Row, Iconfont } from 'components';
@@ -9,52 +7,24 @@ import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
 import SignedReturn from './SignedReturn';
 
-type Sign = {
-    id: any,
-    created_at: string,
-    day: string | number,
-    month: string | number,
-    year: string | number,
-    gold_reward: number,
-    withdraw_lines: number,
-    signed: boolean,
-};
+interface Sign {
+    id: any;
+    created_at: string;
+    day: string | number;
+    month: string | number;
+    year: string | number;
+    gold_reward: number;
+    withdraw_lines: number;
+    signed: boolean;
+}
 
-type SignInReturns = {
-    id: any,
-    gold_reward: string | number,
-    contribute_reward: string | number,
-};
+interface SignInReturns {
+    id: any;
+    gold_reward: string | number;
+    contribute_reward: string | number;
+}
 
-// const sign = {
-//     id: null,
-//     created_at: 111,
-//     day: 12,
-//     month: 9,
-//     year: 2019,
-//     gold_reward: 30,
-//     withdraw_lines: 0,
-//     signed: false, //布尔值
-// };
-
-// const signs = (function() {
-//     return Array(7)
-//         .fill(0)
-//         .map(function(elem, index) {
-//             return Object.assign({}, sign, {
-//                 id: index,
-//                 signed: index < 1,
-//                 withdraw_lines: index === 4 ? 1 : 0,
-//                 gold_reward: index * 10,
-//             });
-//         });
-// })();
-
-// const data = {
-//     signIns: { keep_signin_days: 7, today_signed: false, signs },
-// };
-
-const AttendanceBook = props => {
+const AttendanceBook = (props): JSX.Element => {
     const [boxShadowHeight, setBoxShadowHeight] = useState(150);
 
     const onLayoutEffect = useCallback(event => {
@@ -63,7 +33,7 @@ const AttendanceBook = props => {
 
     const { data } = useQuery(GQL.SignInsQuery);
     const [createSignIn] = useMutation(GQL.CreateSignInMutation, {
-        refetchQueries: () => [
+        refetchQueries: (): array => [
             {
                 query: GQL.SignInsQuery,
             },
@@ -73,6 +43,9 @@ const AttendanceBook = props => {
     const signInData = useMemo(() => {
         return Tools.syncGetter('signIns', data) || {};
     }, [data]);
+    console.log('====================================');
+    console.log('signInDatasignInData', signInData, data);
+    console.log('====================================');
     const keep_signin_days = Tools.syncGetter('keep_signin_days', signInData);
     const today_signed = Tools.syncGetter('today_signed', signInData);
     const signIns = Tools.syncGetter('signs', signInData);
@@ -104,7 +77,9 @@ const AttendanceBook = props => {
     if (!signIns) {
         return null;
     }
-
+    console.log('====================================');
+    console.log('signIns', signIns);
+    console.log('====================================');
     return (
         <BoxShadow
             setting={Object.assign({}, shadowOpt, {
@@ -139,7 +114,8 @@ const AttendanceBook = props => {
                                                 elem.signed
                                                     ? require('../../../assets/images/open_gift.png')
                                                     : require('../../../assets/images/gift.png')
-                                            }></Image>
+                                            }
+                                        />
                                         <Text style={styles.recordDayText}>
                                             {elem.signed ? '已签' : `${index + 1}天`}
                                         </Text>
@@ -189,88 +165,88 @@ const shadowOpt = {
 };
 
 const styles = StyleSheet.create({
+    attendance: {
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        paddingTop: PxFit(15),
+    },
     attendanceBook: {
-        paddingVertical: PxFit(15),
         backgroundColor: '#fff',
         borderRadius: PxFit(10),
-        shadowOffset: { width: PxFit(5), height: PxFit(5) },
+        paddingVertical: PxFit(15),
         shadowColor: '#E8E8E8',
+        shadowOffset: { width: PxFit(5), height: PxFit(5) },
         shadowOpacity: 0.8,
         shadowRadius: PxFit(10),
     },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: PxFit(10),
-    },
     coinImage: {
-        width: PxFit(20),
         height: PxFit(20),
         marginRight: PxFit(4),
-    },
-    signInText: {
-        fontSize: PxFit(17),
-        color: Theme.defaultTextColor,
-        fontWeight: 'bold',
-    },
-    keepSignInText: {
-        fontSize: PxFit(18),
-        color: Theme.primaryColor,
-    },
-    shareButton: {
-        justifyContent: 'center',
-        borderRadius: PxFit(20),
-        paddingVertical: PxFit(4),
-        paddingHorizontal: PxFit(10),
-        backgroundColor: '#f4f4f4',
-    },
-    shareText: {
-        fontSize: PxFit(13),
-        color: Theme.secondaryTextColor,
-    },
-    attendance: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        paddingTop: PxFit(15),
-    },
-    signItem: {
-        paddingHorizontal: signItemWidth * 0.1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: PxFit(20),
     },
     coinImage: {
-        width: coinImageWidth,
+        alignItems: 'center',
         height: coinImageWidth,
         justifyContent: 'center',
-        alignItems: 'center',
-    },
-    giftImage: {
         width: coinImageWidth,
-        height: coinImageWidth,
-    },
-    mysticGift: {
-        width: coinImageWidth,
-        height: (coinImageWidth * 86) / 164,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    rewardGoldText: {
-        fontSize: PxFit(12),
-        color: '#fff',
-        marginBottom: coinImageWidth * 0.07,
-    },
-    recordDayText: {
-        fontSize: PxFit(13),
-        color: Theme.secondaryTextColor,
     },
     footer: {
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     footerText: {
-        fontSize: PxFit(15),
         color: '#9E6124',
+        fontSize: PxFit(15),
+    },
+    giftImage: {
+        height: coinImageWidth,
+        width: coinImageWidth,
+    },
+    header: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: PxFit(10),
+    },
+    keepSignInText: {
+        color: Theme.primaryColor,
+        fontSize: PxFit(18),
+    },
+    mysticGift: {
+        alignItems: 'center',
+        height: (coinImageWidth * 86) / 164,
+        justifyContent: 'center',
+        width: coinImageWidth,
+    },
+    recordDayText: {
+        color: Theme.secondaryTextColor,
+        fontSize: PxFit(13),
+    },
+    rewardGoldText: {
+        color: '#fff',
+        fontSize: PxFit(12),
+        marginBottom: coinImageWidth * 0.07,
+    },
+    shareButton: {
+        backgroundColor: '#f4f4f4',
+        borderRadius: PxFit(20),
+        justifyContent: 'center',
+        paddingHorizontal: PxFit(10),
+        paddingVertical: PxFit(4),
+    },
+    shareText: {
+        color: Theme.secondaryTextColor,
+        fontSize: PxFit(13),
+    },
+    signInText: {
+        color: Theme.defaultTextColor,
+        fontSize: PxFit(17),
+        fontWeight: 'bold',
+    },
+    signItem: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: signItemWidth * 0.1,
     },
 });
 
