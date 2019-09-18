@@ -35,7 +35,7 @@ target 'datizhuanqian' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
-  
+  pod 'Bytedance-UnionAD', '~> 1.9.8.2'
 
   target 'datizhuanqianTests' do
     inherit! :search_paths
