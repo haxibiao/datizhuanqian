@@ -13,7 +13,8 @@ import VerificationPhoneScreen from '../screens/login/VerificationPhone';
 import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
-import AnswerScreen from '../screens/answer';
+// import AnswerScreen from '../screens/answer';
+import AnswerScreen from '../screens/answer/answer';
 // 题目详情
 import QuestionScreen from '../screens/question';
 import VideoExplanationScreen from '../screens/question/VideoExplanation';
