@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, TouchFeedback } from 'react-native';
 import {
     PageContainer,
     CustomRefreshControl,
@@ -28,6 +28,7 @@ import { Util } from 'native';
 import { Overlay } from 'teaset';
 
 import UserRewardOverlay from './components/UserRewardOverlay';
+import TimeReward from './components/TimeReward';
 
 // 监听新用户登录
 when(
@@ -246,7 +247,10 @@ class index extends Component {
 
     render() {
         return (
-            <PageContainer title={Config.AppName} isTopNavigator>
+            <PageContainer
+                title={Config.AppName}
+                isTopNavigator
+                rightView={<TimeReward navigation={this.props.navigation} />}>
                 {this._renderCategoryList()}
             </PageContainer>
         );

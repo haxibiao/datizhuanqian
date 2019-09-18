@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
 
-import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
 import { app, config } from 'store';
@@ -226,7 +226,7 @@ class WithdrawBody extends Component {
                             })}
                         </View>
 
-                        {config.enableBanner && (
+                        {config.enableBanner && ISAndroid && (
                             <View style={{ paddingLeft: 20 }}>
                                 <ttad.BannerAd size="large" />
                             </View>

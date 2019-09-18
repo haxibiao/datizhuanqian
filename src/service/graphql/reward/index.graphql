@@ -1,0 +1,6 @@
+mutation TimeRewardMutation($reward_type: TimeRewardEnum) {
+    timeReward(reward_type: $reward_type) {
+        gold_reward
+        ticket_reward
+    }
+}

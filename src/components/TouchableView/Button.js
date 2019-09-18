@@ -37,7 +37,7 @@ class Button extends Component {
     }
 
     buildProps() {
-        let { size, style, disabled, title, children, textColor, ...others } = this.props;
+        let { size, style, disabled, title, children, textColor, FontSize, ...others } = this.props;
         let borderRadius, paddingVertical, paddingHorizontal, textFontSize, titleStyle;
         let borderColor = Theme.primaryColor;
         // let textColor = '#fff';
@@ -58,7 +58,7 @@ class Button extends Component {
                 borderRadius = PxFit(4);
                 paddingVertical = PxFit(6);
                 paddingHorizontal = PxFit(12);
-                textFontSize = PxFit(13);
+                textFontSize = FontSize ? FontSize : PxFit(13);
         }
         style = {
             borderColor,

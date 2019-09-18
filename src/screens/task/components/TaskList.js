@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
 
 import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay, TipsOverlay } from 'components';
-import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit } from 'utils';
+import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, ISAndroid } from 'utils';
 
 // import { Storage, ItemKeys } from '../../../store/localStorage';
 
@@ -332,7 +332,7 @@ class TaskList extends Component {
                             });
                         }}
                     />
-                    {config.enableFeed && (
+                    {config.enableFeed && ISAndroid && (
                         <View style={{ paddingHorizontal: PxFit(15) }}>
                             <ttad.FeedAd />
                         </View>
@@ -346,7 +346,7 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    {config.enableFeed && (
+                    {config.enableFeed && ISAndroid && (
                         <View style={{ paddingHorizontal: PxFit(15) }}>
                             <ttad.FeedAd />
                         </View>
@@ -360,7 +360,7 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
-                    {config.enableFeed && (
+                    {config.enableFeed && ISAndroid && (
                         <View style={{ paddingHorizontal: PxFit(15) }}>
                             <ttad.FeedAd />
                         </View>

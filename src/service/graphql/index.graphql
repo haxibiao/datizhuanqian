@@ -9,9 +9,10 @@
 #import './task/index.graphql'
 #import './user/index.graphql'
 #import './withdraw/index.graphql'
+#import './reward/index.graphql'
 
 query me {
-	user {
-		id
-	}
+    user {
+        id
+    }
 }
