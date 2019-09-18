@@ -1,13 +1,12 @@
 import React, { Component, useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, Device } from 'react-native';
 
 import { GQL, useQuery, useLazyQuery, useMutation, useApolloClient } from 'apollo';
 import { observer } from 'store';
 import { exceptionCapture } from 'common';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from 'utils';
+import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from 'utils';
 
 import VideoItem from './components/VideoItem';
-import Guide from './components/Guide';
 import Footer from './components/Footer';
 import VideoStore from './VideoStore';
 
@@ -20,27 +19,27 @@ export default observer(props => {
         waitForInteraction: true,
         viewAreaCoveragePercentThreshold: 95,
     });
-    const [viewportHeight, setViewportHeight] = useState(Device.HEIGHT);
+    const [viewportHeight, setViewportHeight] = useState(SCREEN_HEIGHT);
 
-    const recommendVideosQuery = useCallback(() => {
+    const VideosQuery = useCallback(() => {
         return client.query({
-            query: GQL.RecommendVideosQuery,
+            query: GQL.VideosQuery,
             variables: { page: VideoStore.currentPage, count: 10 },
         });
-    }, []);
+    }, [client]);
 
     const videoPlayReward = useCallback(() => {
         return client.mutate({
             mutation: GQL.videoPlayRewardMutation,
             variables: {
                 input: {
-                    video_id: Helper.syncGetter('video.id', prevMedia.current),
-                    play_duration: Helper.syncGetter('currentTime', prevMedia.current),
+                    video_id: Tools.syncGetter('video.id', prevMedia.current),
+                    play_duration: Tools.syncGetter('currentTime', prevMedia.current),
                 },
             },
             errorPolicy: 'all',
         });
-    }, [client, prevMedia.current]);
+    }, [client]);
 
     // const singUp = useCallback(() => {
     //     return client.mutate({
@@ -56,8 +55,8 @@ export default observer(props => {
 
     const fetchData = useCallback(async () => {
         VideoStore.isLoadMore = true;
-        const [error, result] = await exceptionCapture(recommendVideosQuery);
-        const videoSource = Helper.syncGetter('data.recommendVideos.data', result);
+        const [error, result] = await exceptionCapture(VideosQuery);
+        const videoSource = Tools.syncGetter('data.videos', result);
         if (error) {
             VideoStore.isError = true;
         } else {
@@ -71,18 +70,18 @@ export default observer(props => {
             }
         }
         VideoStore.isLoadMore = false;
-    }, []);
+    }, [VideosQuery]);
 
     const submitPlayDuration = useCallback(async () => {
         const [error, result] = await exceptionCapture(videoPlayReward);
         console.log('====================================');
         console.log(error, result);
         console.log('====================================');
-        const reward = Helper.syncGetter('data.videoPlayReward.gold', result);
+        const reward = Tools.syncGetter('data.videoPlayReward.gold', result);
         if (reward) {
             Toast.show({ content: `获得${reward}墨币奖励` });
         }
-    }, []);
+    }, [videoPlayReward]);
 
     const onLayout = useCallback(event => {
         const { height } = event.nativeEvent.layout;
@@ -99,20 +98,23 @@ export default observer(props => {
         }
     }, []);
 
-    const onMomentumScrollEnd = useCallback(event => {
-        console.log('====================================');
-        console.log('TOKEN', TOKEN);
-        console.log('====================================');
-        if (TOKEN) {
-            submitPlayDuration();
-        }
-        if (activeItem.current + 3 > VideoStore.dataSource.length) {
-            if (!TOKEN) {
-                Toast.show({ content: `登录才能获取奖励哦` });
+    const onMomentumScrollEnd = useCallback(
+        event => {
+            console.log('====================================');
+            console.log('TOKEN', TOKEN);
+            console.log('====================================');
+            if (TOKEN) {
+                // submitPlayDuration();
             }
-            fetchData();
-        }
-    }, []);
+            if (activeItem.current + 3 > VideoStore.dataSource.length) {
+                if (!TOKEN) {
+                    Toast.show({ content: `登录才能获取奖励哦` });
+                }
+                fetchData();
+            }
+        },
+        [fetchData, submitPlayDuration],
+    );
 
     useEffect(() => {
         fetchData();
@@ -123,7 +125,7 @@ export default observer(props => {
         return () => {
             navWillFocusListener.remove();
         };
-    }, []);
+    }, [fetchData, props.navigation]);
 
     return (
         <View style={styles.container} onLayout={onLayout}>
@@ -155,17 +157,17 @@ export default observer(props => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#000',
+        flex: 1,
     },
     header: {
         backgroundColor: 'transparent',
-        position: 'absolute',
-        top: 48,
-        left: 15,
         bottom: 0,
-        right: 0,
         height: 50,
+        left: 15,
+        position: 'absolute',
+        right: 0,
+        top: 48,
         width: 50,
     },
 });

@@ -15,10 +15,10 @@ export default observer(props => {
             <View style={styles.videoInfo}>
                 <View style={styles.left}>
                     <View>
-                        <Text style={styles.name}>@{media.user.name}</Text>
+                        <Text style={styles.name}>@{media.question.user.name}</Text>
                     </View>
                     <View>
-                        <Text style={styles.body}>{media.body}</Text>
+                        <Text style={styles.body}>{media.question.description}</Text>
                     </View>
                 </View>
                 <SideBar media={media} />

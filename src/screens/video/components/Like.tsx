@@ -4,13 +4,14 @@ import { exceptionCapture, useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
 import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from 'utils';
+import _ from 'lodash';
 
 const imageSource = {
     liked: require('../../../assets/images/ic_liked.png'),
     unlike: require('../../../assets/images/ic_like.png'),
 };
 
-interface Media {
+interface Question {
     id: number | string;
     liked: boolean;
     count_likes: number | string;
@@ -18,34 +19,31 @@ interface Media {
 }
 
 interface Props {
-    media: Media;
     [key: string]: any;
 }
 
 export default observer((props: Props) => {
     const { media } = props;
-    const store = useContext(StoreContext);
-    const animation = useBounceAnimation(media.liked);
-    const [likeArticle, { data }] = useMutation(GQL.likeVideoMutation, {
+    const animation = useBounceAnimation(media.question.liked);
+    const [likeArticle, { data }] = useMutation(GQL.toggleLikeMutation, {
         variables: {
-            like_id: media.id,
-            like_type: 'articles',
-            user_id: Helper.syncGetter('userStore.me.id', store),
+            likable_id: media.id,
+            likable_type: 'question',
         },
     });
 
-    const likeHandler = __.debounce(async function() {
+    const likeHandler = _.debounce(async function() {
         const [error, res] = await exceptionCapture(likeArticle);
         if (error) {
-            media.liked ? media.count_likes-- : media.count_likes++;
-            media.liked = !media.liked;
+            media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
+            media.question.liked = !media.question.liked;
             Toast.show({ content: '操作失败' });
         }
     }, 500);
 
-    function toggleLike() {
-        media.liked ? media.count_likes-- : media.count_likes++;
-        media.liked = !media.liked;
+    function toggleLike(): void {
+        media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
+        media.question.liked = !media.question.liked;
         likeHandler();
     }
 
@@ -56,8 +54,11 @@ export default observer((props: Props) => {
     return (
         <Animated.View style={{ transform: [{ scale }] }}>
             <TouchableOpacity style={styles.center} onPress={toggleLike}>
-                <Image source={media.liked ? imageSource.liked : imageSource.unlike} style={styles.imageStyle} />
-                <Text style={styles.countLikes}>{media.count_likes}</Text>
+                <Image
+                    source={media.question.liked ? imageSource.liked : imageSource.unlike}
+                    style={styles.imageStyle}
+                />
+                <Text style={styles.countLikes}>{media.question.count_likes}</Text>
             </TouchableOpacity>
         </Animated.View>
     );

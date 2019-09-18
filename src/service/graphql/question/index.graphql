@@ -199,6 +199,30 @@ query QuestionQuery($id: Int) {
     }
 }
 
+# 视频流列表
+query VideosQuery($type: VideoTypeEnum, $limit: Int, $offset: Int) {
+    videos(type: $type, limit: $limit, offset: $offset) {
+        id
+        width
+        height
+        url
+        cover
+        question {
+            id
+            description
+            count_likes
+            count_comments
+            liked
+            user {
+                id
+                name
+                avatar
+                followed_user_status
+            }
+        }
+    }
+}
+
 #答题
 mutation QuestionAnswerMutation($id: Int!, $answer: String!) {
     answerQuestion(id: $id, answer: $answer)
@@ -233,4 +257,13 @@ mutation auditMutation($question_id: Int!, $status: Boolean) {
 #取消广告服务
 mutation ShieldingCategoryAdMutation($category_id: Int!) {
     shieldingCategoryAd(category_id: $category_id)
+}
+
+# 视频奖励
+mutation UserRewardMutation($reward: RewardEnum) {
+    userReward(reward: $reward) {
+        gold
+        ticket
+        contribute
+    }
 }

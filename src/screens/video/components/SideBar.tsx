@@ -13,9 +13,13 @@ export default observer(props => {
             <View style={[styles.itemWrap, { marginBottom: 26 }]}>
                 <TouchableOpacity
                     onPress={() => {
-                        Tools.navigate('用户详情', { user: media.user });
+                        Tools.navigate('用户详情', { user: media.question.user });
                     }}>
-                    <Avatar source={media.user.avatar} size={52} style={{ borderColor: Theme.white, borderWidth: 1 }} />
+                    <Avatar
+                        source={media.question.user.avatar}
+                        size={52}
+                        style={{ borderColor: Theme.white, borderWidth: 1 }}
+                    />
                 </TouchableOpacity>
             </View>
 

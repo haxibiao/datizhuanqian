@@ -33,9 +33,10 @@ class TabBarComponent extends React.Component {
 
     render() {
         const { navigation } = this.props;
-        const { routes } = navigation.state;
+        const { routes, index: currentIndex } = navigation.state;
+        const darkModel = currentIndex === 1;
         const routerItem = routes && routes.map((route, index) => this.renderItem(route, index));
-        return <View style={styles.tabBar}>{routerItem}</View>;
+        return <View style={[styles.tabBar, darkModel && styles.darkStyle]}>{routerItem}</View>;
     }
 }
 
@@ -48,6 +49,10 @@ const styles = {
         borderTopColor: Theme.borderColor,
         backgroundColor: '#fff',
         paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+    },
+    darkStyle: {
+        backgroundColor: '#000000',
+        borderTopColor: '#000000',
     },
     tabItem: {
         flex: 1,

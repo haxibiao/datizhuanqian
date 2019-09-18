@@ -14,6 +14,8 @@ import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
 import AnswerScreen from '../screens/answer';
+// 小视频
+import MediumScreen from '../screens/video';
 // 题目详情
 import QuestionScreen from '../screens/question';
 import VideoExplanationScreen from '../screens/question/VideoExplanation';
@@ -112,6 +114,10 @@ export default {
     // 答题
     Answer: {
         screen: AnswerScreen,
+    },
+    // 短视频
+    Medium: {
+        screen: MediumScreen,
     },
     // 题目详情
     Question: {

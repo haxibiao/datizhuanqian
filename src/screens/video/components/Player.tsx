@@ -1,11 +1,12 @@
 import React, { PureComponent, useRef, useMemo, useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Animated, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import Video from 'react-native-video';
-import { Iconfont } from '@src/components';
-import { observer } from '@src/store/mobx';
+import { Iconfont } from 'components';
+import { observer } from 'store';
+import { PxFit, Theme, Tools } from 'utils';
 import VideoStore from '../VideoStore';
 import VideoLoading from './VideoLoading';
-import { useNavigation } from '@src/router';
+import { useNavigation } from 'react-navigation-hooks';
 
 export default observer(props => {
     const { media } = props;
@@ -14,11 +15,10 @@ export default observer(props => {
     const videoRef = useRef();
     const [paused, setPause] = useState(true);
     const [loading, setLoaded] = useState(true);
-    const duration = useMemo(() => Helper.syncGetter('video.duration', media), [media]);
     const intoView = useMemo(() => !(media.id === VideoStore.intoViewVideoId), [VideoStore.intoViewVideoId]);
     const resizeMode = useMemo(() => {
-        const videoHeight = Helper.syncGetter('video.info.height', media);
-        const videoWidth = Helper.syncGetter('video.info.width', media);
+        const videoHeight = media.height;
+        const videoWidth = media.width;
         return videoHeight > videoWidth * 1.3 ? 'cover' : 'contain';
     }, [media]);
 
@@ -26,7 +26,7 @@ export default observer(props => {
         setPause(v => !v);
     }, []);
 
-    const videoEvents = useMemo(() => {
+    const videoEvents = useMemo((): object => {
         return {
             onLoadStart() {},
 
@@ -56,13 +56,12 @@ export default observer(props => {
     }, []);
 
     useEffect(() => {
-        if (media.currentTime && duration) {
-            progress.current = (media.currentTime / duration) * 100;
+        if (media.currentTime) {
+            progress.current = media.currentTime;
         }
     }, [media.currentTime]);
 
     useEffect(() => {
-        setPause(intoView);
         const navWillFocusListener = navigation.addListener('willFocus', () => {
             setPause(intoView);
         });
@@ -80,12 +79,12 @@ export default observer(props => {
             <View style={styles.playContainer}>
                 <Video
                     ref={videoRef}
-                    poster={Helper.syncGetter('cover', media)}
+                    poster={media.cover}
                     posterResizeMode={resizeMode}
                     resizeMode={resizeMode}
                     paused={paused}
                     source={{
-                        uri: Helper.syncGetter('video.url', media),
+                        uri: media.url,
                     }}
                     style={styles.fullScreen}
                     rate={1} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
@@ -98,7 +97,7 @@ export default observer(props => {
                     ignoreSilentSwitch="obey"
                     {...videoEvents}
                 />
-                {paused && <Iconfont name="play" size={Font(70)} color="#fff" style={{ opacity: 0.8 }} />}
+                {paused && <Iconfont name="play" size={PxFit(70)} color="#fff" style={{ opacity: 0.8 }} />}
                 <VideoLoading loading={loading} />
                 <View style={[styles.progress, { width: progress.current + '%' }]} />
             </View>
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         width: 0,
-        height: PxDp(1),
+        height: PxFit(1),
         backgroundColor: '#fff',
     },
 });
