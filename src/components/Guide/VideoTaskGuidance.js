@@ -35,13 +35,6 @@ function VideoTaskGuidance({ onDismiss }) {
                 key={3}
                 onPress={() => {
                     app.changeUserStatus(false);
-                    ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
-                        // 开始看奖励视频
-                        ttad.RewardVideo.startAd({
-                            ...me.adinfo,
-                            uid: me.id,
-                        });
-                    });
                     onDismiss();
                 }}>
                 <View style={styles.flexCenter}>
