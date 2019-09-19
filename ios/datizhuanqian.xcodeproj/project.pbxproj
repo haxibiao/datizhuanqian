@@ -36,7 +36,12 @@
 		2C50A3B22331DD4900046CAA /* BUDFeedNormalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */; };
 		2C50A3B32331DD4900046CAA /* RewardVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A39B2331DD4900046CAA /* RewardVideo.m */; };
 		2C50A3B42331DD4900046CAA /* VideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A39C2331DD4900046CAA /* VideoUploader.m */; };
-		2CDFBE992332010B000B8EC5 /* DrawFeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE982332010B000B8EC5 /* DrawFeedAd.m */; };
+		2C7C0A4F23332EF2007E43D3 /* AdBoss.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A4E23332EF2007E43D3 /* AdBoss.m */; };
+		2C7C0A542333587B007E43D3 /* BannerAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A532333587B007E43D3 /* BannerAd.m */; };
+		2C7C0A5623335890007E43D3 /* SplashAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A5523335890007E43D3 /* SplashAd.m */; };
+		2C7C0A58233358DD007E43D3 /* BannerAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A57233358DD007E43D3 /* BannerAdManager.m */; };
+		2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */; };
+		2CDFBE9B23320CCF000B8EC5 /* DrawFeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -131,7 +136,16 @@
 		2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalModel.m; sourceTree = "<group>"; };
 		2C50A39B2331DD4900046CAA /* RewardVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardVideo.m; sourceTree = "<group>"; };
 		2C50A39C2331DD4900046CAA /* VideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoUploader.m; sourceTree = "<group>"; };
-		2CDFBE982332010B000B8EC5 /* DrawFeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAd.m; sourceTree = "<group>"; };
+		2C7C0A4E23332EF2007E43D3 /* AdBoss.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdBoss.m; sourceTree = "<group>"; };
+		2C7C0A50233332B6007E43D3 /* AdBoss.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdBoss.h; sourceTree = "<group>"; };
+		2C7C0A532333587B007E43D3 /* BannerAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAd.m; sourceTree = "<group>"; };
+		2C7C0A5523335890007E43D3 /* SplashAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashAd.m; sourceTree = "<group>"; };
+		2C7C0A57233358DD007E43D3 /* BannerAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAdManager.m; sourceTree = "<group>"; };
+		2C7C0A5923335927007E43D3 /* BannerAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerAd.h; sourceTree = "<group>"; };
+		2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAdManager.m; sourceTree = "<group>"; };
+		2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAd.m; sourceTree = "<group>"; };
+		2CDFBE9C23320CFE000B8EC5 /* DrawFeedAdManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawFeedAdManager.h; sourceTree = "<group>"; };
+		2CDFBE9D23320D80000B8EC5 /* DrawFeedAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawFeedAd.h; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* datizhuanqian-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "datizhuanqian-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* datizhuanqian-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "datizhuanqian-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEBDA527EB58E96CB985C4E /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOSTests/Pods-datizhuanqian-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -256,13 +270,14 @@
 		2C50A3682331DD4900046CAA /* ttad */ = {
 			isa = PBXGroup;
 			children = (
+				2C7C0A5A23335D12007E43D3 /* model */,
+				2C7C0A5223335853007E43D3 /* rnviews */,
+				2C7C0A5123335846007E43D3 /* rnmodules */,
 				2C50A3692331DD4900046CAA /* viewmodel */,
-				2C50A36D2331DD4900046CAA /* BUDFeedNormalModel.h */,
 				2C50A36E2331DD4900046CAA /* Until */,
 				2C50A37D2331DD4900046CAA /* controller */,
 				2C50A3822331DD4900046CAA /* Macros */,
 				2C50A3862331DD4900046CAA /* view */,
-				2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */,
 			);
 			path = ttad;
 			sourceTree = "<group>";
@@ -363,9 +378,41 @@
 			children = (
 				2C50A39B2331DD4900046CAA /* RewardVideo.m */,
 				2C50A39C2331DD4900046CAA /* VideoUploader.m */,
-				2CDFBE982332010B000B8EC5 /* DrawFeedAd.m */,
+				2C7C0A4E23332EF2007E43D3 /* AdBoss.m */,
+				2C7C0A50233332B6007E43D3 /* AdBoss.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		2C7C0A5123335846007E43D3 /* rnmodules */ = {
+			isa = PBXGroup;
+			children = (
+				2C7C0A5523335890007E43D3 /* SplashAd.m */,
+			);
+			path = rnmodules;
+			sourceTree = "<group>";
+		};
+		2C7C0A5223335853007E43D3 /* rnviews */ = {
+			isa = PBXGroup;
+			children = (
+				2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */,
+				2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */,
+				2CDFBE9C23320CFE000B8EC5 /* DrawFeedAdManager.h */,
+				2CDFBE9D23320D80000B8EC5 /* DrawFeedAd.h */,
+				2C7C0A532333587B007E43D3 /* BannerAd.m */,
+				2C7C0A57233358DD007E43D3 /* BannerAdManager.m */,
+				2C7C0A5923335927007E43D3 /* BannerAd.h */,
+			);
+			path = rnviews;
+			sourceTree = "<group>";
+		};
+		2C7C0A5A23335D12007E43D3 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */,
+				2C50A36D2331DD4900046CAA /* BUDFeedNormalModel.h */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -819,6 +866,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C7C0A542333587B007E43D3 /* BannerAd.m in Sources */,
+				2CDFBE9B23320CCF000B8EC5 /* DrawFeedAd.m in Sources */,
 				2C50A39F2331DD4900046CAA /* BUDSlotViewModel.m in Sources */,
 				2C50A3A62331DD4900046CAA /* BUDRewardedVideoAdViewController.m in Sources */,
 				2C50A3A22331DD4900046CAA /* NSString+Json.m in Sources */,
@@ -829,16 +878,19 @@
 				2C50A3AF2331DD4900046CAA /* BUDPlayerController.m in Sources */,
 				2C50A3B12331DD4900046CAA /* BUDActionAreaView.m in Sources */,
 				2C50A3AE2331DD4900046CAA /* BUDDrawTableViewCell.m in Sources */,
-				2CDFBE992332010B000B8EC5 /* DrawFeedAd.m in Sources */,
+				2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */,
+				2C7C0A5623335890007E43D3 /* SplashAd.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2C50A3A52331DD4900046CAA /* BUDCocoaSecurity.m in Sources */,
 				2C50A3A32331DD4900046CAA /* NSString+LocalizedString.m in Sources */,
 				2C50A3A12331DD4900046CAA /* UIView+Draw.m in Sources */,
 				2C50A3AA2331DD4900046CAA /* BUDRefreshButton.m in Sources */,
+				2C7C0A4F23332EF2007E43D3 /* AdBoss.m in Sources */,
 				2C50A3AC2331DD4900046CAA /* BUDSettingTableView.m in Sources */,
 				2C50A3A92331DD4900046CAA /* BUDFeedNormalTableViewCell.m in Sources */,
 				2C50A3AB2331DD4900046CAA /* BUDNormalButton.m in Sources */,
 				2C50A3AD2331DD4900046CAA /* BUDFeedStyleHelper.m in Sources */,
+				2C7C0A58233358DD007E43D3 /* BannerAdManager.m in Sources */,
 				2C50A3B02331DD4900046CAA /* BUDdemoDislikeCollectionCell.m in Sources */,
 				2C50A3B32331DD4900046CAA /* RewardVideo.m in Sources */,
 				2C50A3B42331DD4900046CAA /* VideoUploader.m in Sources */,

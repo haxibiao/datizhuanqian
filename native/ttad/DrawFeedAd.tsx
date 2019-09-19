@@ -8,6 +8,16 @@ type Props = {
     onLoad?: Function;
 };
 
+// 内测 无论android ios 都可以用 下面的appid, codeid;
+// 5016582;
+
+// 内测_Draw信息流;
+// 916582757;
+// 内测_信息流;
+// 916582486;
+// 内测_Banner;
+// 916582063;
+
 const DrawFeedAd = (props: Props) => {
     let { onError, onLoad } = props;
     let [visible, setVisible] = useState(true);
