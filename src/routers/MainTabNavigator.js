@@ -10,7 +10,6 @@ import { createBottomTabNavigator } from 'react-navigation';
 import HomeScreen from '../screens/home';
 import TaskScreen from '../screens/task';
 import WithdrawScreen from '../screens/withdraw';
-import VideoScreen from '../screens/video';
 import ProfileScreen from '../screens/profile';
 import MainTabBar from './MainTabBar';
 import { Theme, PxFit } from '../utils';
@@ -22,13 +21,13 @@ export default createBottomTabNavigator(
             screen: HomeScreen,
             navigationOptions: () => TabOptions('答题'),
         },
-        视频: {
-            screen: VideoScreen,
-            navigationOptions: () => TabOptions('视频'),
-        },
         任务: {
             screen: TaskScreen,
             navigationOptions: () => TabOptions('任务'),
+        },
+        提现: {
+            screen: WithdrawScreen,
+            navigationOptions: () => TabOptions('提现'),
         },
         我的: {
             screen: ProfileScreen,
@@ -93,18 +92,14 @@ const TabOptions = routeName => {
                 iconName = `brush${focused ? '-fill' : ''}`;
                 iconSize = PxFit(23);
                 break;
-            case '视频':
-                iconName = `wallet${focused ? '-fill' : ''}`;
-                iconSize = PxFit(19);
-                break;
             case '任务':
                 iconName = `order${focused ? '-fill' : ''}`;
                 iconSize = PxFit(21);
                 break;
-            // case '提现':
-            //     iconName = `wallet${focused ? '-fill' : ''}`;
-            //     iconSize = PxFit(19);
-            //     break;
+            case '提现':
+                iconName = `wallet${focused ? '-fill' : ''}`;
+                iconSize = PxFit(19);
+                break;
             case '我的':
                 iconName = `person${focused ? '-fill' : ''}`;
                 iconSize = PxFit(22);
