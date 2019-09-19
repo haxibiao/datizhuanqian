@@ -1,12 +1,12 @@
 import TipsOverlay from '../../components/Overlay/TipsOverlay';
 import { ttad } from 'native';
 import { app } from 'store';
-import { ISIOS } from 'utils';
+import { ISIOS, ISAndroid } from 'utils';
 import { RewardTipsOverlay } from 'components';
 
 interface adinfo {
-    tt_appid?: string;
-    tt_codeid?: string;
+    tt_appid: string;
+    tt_codeid: string;
 }
 
 interface reward {
@@ -24,7 +24,7 @@ export function rewardVideo(adinfo?: adinfo, reward?: reward, navigation?: any) 
             .then(result => {
                 let didWatched = true;
                 let adClicked = false;
-                if (!ISIOS) {
+                if (ISAndroid) {
                     let video = {};
                     if (result) {
                         video = JSON.parse(result);
@@ -66,7 +66,7 @@ export function rewardVideo(adinfo?: adinfo, reward?: reward, navigation?: any) 
                 }
             })
             .catch(error => {
-                console.log('启动奖励视频error:', error);
+                console.log('加载奖励视频出错:', error);
             });
     });
 }

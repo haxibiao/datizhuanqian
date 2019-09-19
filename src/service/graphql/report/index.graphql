@@ -1,15 +1,23 @@
 # 举报   type:  question  user comment
 mutation reportMutation($report_id: Int, $report_type: ReportableEnum, $reason: String) {
-	report(data: { reportable_id: $report_id, reportable_type: $report_type, reason: $reason }) {
-		id
-		reason
-		created_at
-		user {
-			id
-			name
-		}
-		question {
-			description
-		}
-	}
+    report(data: { reportable_id: $report_id, reportable_type: $report_type, reason: $reason }) {
+        id
+        reason
+        created_at
+        user {
+            id
+            name
+        }
+        question {
+            description
+        }
+    }
+}
+
+query systemConfigQuery {
+    systemConfig {
+        next_time_hour_reward {
+            time_unix
+        }
+    }
 }

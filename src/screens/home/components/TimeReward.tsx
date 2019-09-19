@@ -3,21 +3,14 @@ import { Text, View, StyleSheet } from 'react-native';
 import { TouchFeedback, RewardTipsOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools } from 'utils';
-import { app } from 'store';
 
 interface Props {
     navigation: Function;
 }
 
 const TimeReward = (props: Props) => {
-    const [time, setTime] = useState(3600);
+    const [time, setTime] = useState(Date.now());
     const { navigation } = props;
-    const userInfo = useQuery(GQL.UserMeansQuery, {
-        variables: {
-            id: app.me.id,
-        },
-    });
-
     const [timeReward] = useMutation(GQL.TimeRewardMutation, {
         variables: {
             reward_type: 'HOUR_REWARD',
@@ -30,16 +23,23 @@ const TimeReward = (props: Props) => {
         ],
     });
 
+    const { data, loading, error } = useQuery(GQL.systemConfigQuery);
+
     useEffect(() => {
         countDown();
     }, []);
 
+    useEffect(() => {
+        if (data && data.systemConfig) {
+            setTime(data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000));
+        }
+    }, [loading]);
+
     const countDown = () => {
         let timer: any = null;
-        // console.log('data', data);
         if (time > 0) {
             timer = setInterval(() => {
-                setTime(time => time - 1);
+                setTime((time: number) => time - 1);
             }, 1000);
         }
         return () => {
@@ -69,9 +69,9 @@ const TimeReward = (props: Props) => {
     const minute = Math.floor(time / 60);
     const second = time % 60 > 0 ? time % 60 : '00';
 
-    // if (loading || error) {
-    //     return null;
-    // }
+    if (loading || error) {
+        return null;
+    }
     return (
         <TouchFeedback style={styles.container} onPress={getReward}>
             <View>
