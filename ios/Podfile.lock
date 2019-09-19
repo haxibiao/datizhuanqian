@@ -19,7 +19,7 @@ PODS:
     - AppCenter/Core (= 1.12.0)
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
-  - Bytedance-UnionAD (1.9.8.5)
+  - Bytedance-UnionAD (2.3.1.0)
   - CodePush (5.7.0):
     - Base64 (~> 1.1)
     - JWT (~> 3.0.0-beta.7)
@@ -161,7 +161,7 @@ DEPENDENCIES:
   - appcenter (from `../node_modules/appcenter`)
   - appcenter-analytics (from `../node_modules/appcenter-analytics`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes`)
-  - Bytedance-UnionAD (~> 1.9.8.2)
+  - Bytedance-UnionAD
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -314,7 +314,7 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 74a1c684b8183b3edef0a7e41d567fe8bd31075d
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  Bytedance-UnionAD: a977fe9f56cd0832ea2e0c88ed9944f560e52935
+  Bytedance-UnionAD: 66d0bed5cbaeff1c1d4b6b2ca483e5e653a90f84
   CodePush: d2e54ad42df82a8db65b2d23d8191b950ba945e1
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -361,6 +361,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: f19a4167d5ae4476314f100ef9ecc9885d7d2224
+PODFILE CHECKSUM: 53c368da2c6e9ddc62e48e4f3c23869440ec8925
 
 COCOAPODS: 1.7.5

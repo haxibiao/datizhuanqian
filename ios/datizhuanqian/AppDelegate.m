@@ -52,10 +52,10 @@
   [self.window makeKeyAndVisible];
 
   //穿山甲 init appid
-  [AdBoss init: @"5016582"]; //答赚ios appid 没上线，暂时用答妹内测
+  [AdBoss init: @"5016582"]; //答赚ios appid 没上线，暂时用内测appid
+  [AdBoss hookWindow:self.window];
   
 //  //开屏广告代码 //TODO： 重构后还有问题，无法关闭， 但是后面是需要重构的 react-native的 modules里，给js决定是否唤起splash ad ...
-//  [AdBoss hookWindow:self.window];
 //  AdBoss *boss = [AdBoss new];
 //  [boss loadSplashAd:@"816582039"];
 

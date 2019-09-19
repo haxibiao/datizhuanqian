@@ -49,7 +49,8 @@ class index extends Component {
                         <Text>规则说明</Text>
                     </TouchFeedback>
                 }>
-                <ttad.DrawFeedAd />
+                {/* <ttad.BannerAd /> */}
+                <ttad.FeedAd />
                 {/* {login ? <WithdrawBody navigation={navigation} /> : <NotLogin navigation={navigation} />} */}
             </PageContainer>
         );
