@@ -13,7 +13,7 @@ export default observer(props => {
             <View style={[styles.itemWrap, { marginBottom: 26 }]}>
                 <TouchableOpacity
                     onPress={() => {
-                        Tools.navigate('用户详情', { user: media.question.user });
+                        Tools.navigate('User', { user: media.question.user });
                     }}>
                     <Avatar
                         source={media.question.user.avatar}
@@ -32,12 +32,8 @@ export default observer(props => {
 
 const styles = StyleSheet.create({
     center: {
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
-    },
-    itemWrap: {
-        alignItems: 'center',
-        marginBottom: 12,
     },
     countText: {
         fontSize: 12,
@@ -46,5 +42,9 @@ const styles = StyleSheet.create({
     iconStyle: {
         width: 40,
         height: 40,
+    },
+    itemWrap: {
+        alignItems: 'center',
+        marginBottom: 12,
     },
 });
