@@ -11,14 +11,13 @@
         [
             "babel-plugin-root-import",
             {
-                "paths": [
-                    {
-                        "rootPathPrefix": "@utils",
-                        "rootPathSuffix": "./src/utils"
+                "paths": [{
+                        "rootPathPrefix": "@app",
+                        "rootPathSuffix": "./"
                     },
                     {
-                        "rootPathPrefix": "@store",
-                        "rootPathSuffix": "./src/store"
+                        "rootPathPrefix": "@src",
+                        "rootPathSuffix": "./src"
                     }
                 ]
             }

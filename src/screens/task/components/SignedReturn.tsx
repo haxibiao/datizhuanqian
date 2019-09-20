@@ -2,34 +2,55 @@
  * @flow
  * created by wyk made in 2019-09-12 11:19:10
  */
-'use strict';
 
 import React, { useMemo, useCallback, useState, useLayoutEffect, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools, WPercent } from 'utils';
+import { GQL, useMutation, useQuery } from 'apollo';
 import { ttad } from 'native';
 import { app } from 'store';
 
-type Props = {
-    gold: number,
-    reward: number,
-};
+interface Props {
+    gold: number;
+    reward: number;
+    close: () => void;
+}
 
 const SignedReturn = (props: Props) => {
-    const { gold, reward } = props;
-    const me = useMemo(() => app.me, [app]);
+    const { gold, reward, close } = props;
+    const me = useMemo(() => app.me, []);
 
-    const overlayRef = useRef();
+    const [doubleReward] = useMutation(GQL.UserRewardMutation, {
+        variables: {
+            reward: 'SIGNIN_VIDEO_REWARD',
+        },
+        refetchQueries: (): array => [
+            {
+                query: GQL.SignInsQuery,
+            },
+            {
+                query: GQL.UserMetaQuery,
+                variables: { id: app.me.id },
+            },
+        ],
+    });
 
     const loadAd = useCallback(() => {
+        close();
         ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
             // 开始看奖励视频
             ttad.RewardVideo.startAd({
                 ...me.adinfo,
                 uid: me.id,
-            });
+            })
+                .then(result => {
+                    doubleReward();
+                })
+                .catch(error => {
+                    Toast.show({ content: '视频出错' });
+                });
         });
-    }, []);
+    }, [close, doubleReward, me.adinfo, me.id]);
 
     return (
         <ImageBackground style={styles.overlayImage} source={require('../../../assets/images/attendance_overlay.png')}>
@@ -67,52 +88,52 @@ const OVERLAY_WIDTH = WPercent(80);
 const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 2655) / 1819;
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: PxFit(Theme.itemSpace),
-    },
-    overlayImage: {
-        width: OVERLAY_WIDTH,
-        height: OVERLAY_HEIGHT,
-        paddingTop: (OVERLAY_HEIGHT * 510) / 2655,
-        paddingHorizontal: OVERLAY_WIDTH * 0.1,
-    },
-    overlayHeader: {
-        height: (OVERLAY_HEIGHT * 1100) / 2655,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    whiteText1: {
-        fontSize: PxFit(18),
-        color: '#fff',
-        fontWeight: 'bold',
-        paddingBottom: PxFit(5),
-    },
-    whiteText2: {
-        fontSize: PxFit(16),
-        color: '#fff',
-    },
-    highlightText: {
-        fontWeight: 'bold',
-        color: '#FFCC01',
-    },
     TTAD: {
+        alignItems: 'center',
         flex: 1,
         justifyContent: 'space-around',
-        alignItems: 'center',
     },
     bannerAd: {
         alignSelf: 'stretch',
     },
+    buttonText: {
+        color: '#fff',
+        fontSize: PxFit(16),
+        fontWeight: 'bold',
+    },
+    container: {
+        paddingHorizontal: PxFit(Theme.itemSpace),
+    },
+    highlightText: {
+        color: '#FFCC01',
+        fontWeight: 'bold',
+    },
     loadAdButton: {
-        width: OVERLAY_WIDTH * 0.6,
+        alignItems: 'center',
         height: (OVERLAY_WIDTH * 0.6 * 258) / 995,
         justifyContent: 'center',
-        alignItems: 'center',
+        width: OVERLAY_WIDTH * 0.6,
     },
-    buttonText: {
-        fontSize: PxFit(16),
+    overlayHeader: {
+        alignItems: 'center',
+        height: (OVERLAY_HEIGHT * 1100) / 2655,
+        justifyContent: 'center',
+    },
+    overlayImage: {
+        height: OVERLAY_HEIGHT,
+        paddingHorizontal: OVERLAY_WIDTH * 0.1,
+        paddingTop: (OVERLAY_HEIGHT * 510) / 2655,
+        width: OVERLAY_WIDTH,
+    },
+    whiteText1: {
         color: '#fff',
+        fontSize: PxFit(18),
         fontWeight: 'bold',
+        paddingBottom: PxFit(5),
+    },
+    whiteText2: {
+        color: '#fff',
+        fontSize: PxFit(16),
     },
 });
 

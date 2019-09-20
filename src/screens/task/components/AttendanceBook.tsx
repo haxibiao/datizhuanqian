@@ -1,8 +1,9 @@
-import React, { useMemo, useCallback, useState, useLayoutEffect, useEffect } from 'react';
+import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { Row, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
 import { GQL, useMutation, useQuery } from 'apollo';
+import { app } from 'store';
 import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
 import SignedReturn from './SignedReturn';
@@ -31,11 +32,17 @@ const AttendanceBook = (props): JSX.Element => {
         setBoxShadowHeight(event.nativeEvent.layout.height);
     }, []);
 
+    const overlayRef = useRef();
+
     const { data } = useQuery(GQL.SignInsQuery);
     const [createSignIn] = useMutation(GQL.CreateSignInMutation, {
         refetchQueries: (): array => [
             {
                 query: GQL.SignInsQuery,
+            },
+            {
+                query: GQL.UserMetaQuery,
+                variables: { id: app.me.id },
             },
         ],
     });
@@ -68,8 +75,15 @@ const AttendanceBook = (props): JSX.Element => {
 
     const onSignInSuccess = useCallback((returns: SignInReturns) => {
         Overlay.show(
-            <Overlay.PopView style={{ alignItems: 'center', justifyContent: 'center' }} animated={true}>
-                <SignedReturn gold={returns.gold_reward} reward={returns.contribute_reward} />
+            <Overlay.PopView
+                style={{ alignItems: 'center', justifyContent: 'center' }}
+                animated={true}
+                ref={overlayRef}>
+                <SignedReturn
+                    gold={returns.gold_reward}
+                    reward={returns.contribute_reward}
+                    close={() => overlayRef.current.close()}
+                />
             </Overlay.PopView>,
         );
     }, []);
