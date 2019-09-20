@@ -5,12 +5,13 @@ import { Avatar, Iconfont } from 'components';
 import { observer } from 'store';
 import { PxFit, Theme, Tools } from 'utils';
 import Like from './Like';
+import VideoStore from '../VideoStore';
 
 export default observer(props => {
     const { media } = props;
     return (
-        <View>
-            <View style={[styles.itemWrap, { marginBottom: 26 }]}>
+        <View style={styles.sideBar}>
+            <View style={styles.itemWrap}>
                 <TouchableOpacity
                     onPress={() => {
                         Tools.navigate('User', { user: media.question.user });
@@ -22,29 +23,37 @@ export default observer(props => {
                     />
                 </TouchableOpacity>
             </View>
-
             <View style={styles.itemWrap}>
                 <Like media={media} />
+            </View>
+            <View style={styles.itemWrap}>
+                <TouchableOpacity onPress={VideoStore.showComment}>
+                    <Image source={require('@src/assets/images/comment_item.png')} style={styles.imageStyle} />
+                    <Text style={styles.countText}>
+                        {Tools.NumberFormat(Tools.syncGetter('question.count_comments', media))}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
 });
 
 const styles = StyleSheet.create({
-    center: {
+    sideBar: {
         alignItems: 'center',
         justifyContent: 'center',
     },
-    countText: {
-        fontSize: 12,
-        color: 'rgba(255,255,255,0.8)',
-    },
-    iconStyle: {
-        width: 40,
-        height: 40,
-    },
     itemWrap: {
-        alignItems: 'center',
-        marginBottom: 12,
+        marginTop: PxFit(20),
+    },
+    imageStyle: {
+        width: PxFit(40),
+        height: PxFit(40),
+    },
+    countText: {
+        textAlign: 'center',
+        marginTop: PxFit(10),
+        fontSize: PxFit(12),
+        color: 'rgba(255,255,255,0.8)',
     },
 });

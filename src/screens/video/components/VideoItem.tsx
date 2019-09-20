@@ -5,7 +5,6 @@ import { PxFit, Theme, SCREEN_HEIGHT } from 'utils';
 import { observer } from 'store';
 import Player from './Player';
 import SideBar from './SideBar';
-import RewardProgress from './RewardProgress';
 import VideoStore from '../VideoStore';
 
 export default observer(props => {
@@ -21,9 +20,6 @@ export default observer(props => {
             <Player media={media} index={index} />
             <View style={styles.videoInfo}>
                 <View style={styles.left}>
-                    <View style={styles.rewardProgress}>
-                        <RewardProgress />
-                    </View>
                     <View>
                         <Text style={styles.name}>@{media.question.user.name}</Text>
                     </View>
@@ -75,8 +71,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: PxFit(Theme.itemSpace),
         position: 'absolute',
         right: 0,
-    },
-    rewardProgress: {
-        marginBottom: PxFit(Theme.itemSpace * 2),
     },
 });

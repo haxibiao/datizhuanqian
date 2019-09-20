@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react
 import { exceptionCapture, useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from 'utils';
+import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from 'utils';
 import _ from 'lodash';
 
 const imageSource = {
@@ -24,16 +24,16 @@ interface Props {
 
 export default observer((props: Props) => {
     const { media } = props;
-    const animation = useBounceAnimation(media.question.liked);
-    const [likeArticle, { data }] = useMutation(GQL.toggleLikeMutation, {
+    const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
+    const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
-            likable_id: media.id,
-            likable_type: 'question',
+            likable_id: Tools.syncGetter('question.id', media),
+            likable_type: 'QUESTION',
         },
     });
 
     const likeHandler = _.debounce(async function() {
-        const [error, res] = await exceptionCapture(likeArticle);
+        const [error] = await exceptionCapture(likeArticle);
         if (error) {
             media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
             media.question.liked = !media.question.liked;
@@ -44,6 +44,7 @@ export default observer((props: Props) => {
     function toggleLike(): void {
         media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
         media.question.liked = !media.question.liked;
+        startAnimation();
         likeHandler();
     }
 
@@ -53,7 +54,7 @@ export default observer((props: Props) => {
     });
     return (
         <Animated.View style={{ transform: [{ scale }] }}>
-            <TouchableOpacity style={styles.center} onPress={toggleLike}>
+            <TouchableOpacity onPress={toggleLike}>
                 <Image
                     source={media.question.liked ? imageSource.liked : imageSource.unlike}
                     style={styles.imageStyle}
@@ -65,16 +66,12 @@ export default observer((props: Props) => {
 });
 
 const styles = StyleSheet.create({
-    center: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     imageStyle: {
         width: PxFit(40),
         height: PxFit(40),
-        borderRadius: PxFit(40) / 2,
     },
     countLikes: {
+        textAlign: 'center',
         marginTop: PxFit(10),
         fontSize: PxFit(12),
         color: 'rgba(255,255,255,0.8)',

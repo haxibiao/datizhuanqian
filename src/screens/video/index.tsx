@@ -8,16 +8,28 @@ import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils'
 
 import VideoItem from './components/VideoItem';
 import Footer from './components/Footer';
+import RewardProgress from './components/RewardProgress';
 import VideoStore from './VideoStore';
+import CommentOverlay from '../comment/CommentOverlay';
+import { useNavigation } from 'react-navigation-hooks';
 
 export default observer(props => {
     const client = useApolloClient();
-    const currentMedia = useRef();
+    const navigation = useNavigation();
+    const commentRef = useRef();
     const activeItem = useRef(0);
     const config = useRef({
         waitForInteraction: true,
         viewAreaCoveragePercentThreshold: 95,
     });
+
+    VideoStore.showComment = useCallback(() => {
+        commentRef.current.slideUp();
+    }, [commentRef]);
+
+    const hideComment = useCallback(() => {
+        commentRef.current.slideDown();
+    }, [commentRef]);
 
     const onLayout = useCallback(event => {
         const { height } = event.nativeEvent.layout;
@@ -51,7 +63,6 @@ export default observer(props => {
         if (info.viewableItems[0]) {
             activeItem.current = info.viewableItems[0].index;
             VideoStore.viewableItemIndex = activeItem.current;
-            currentMedia.current = info.viewableItems[0];
         }
     }, []);
 
@@ -65,8 +76,19 @@ export default observer(props => {
     );
 
     useEffect(() => {
+        const navWillBlurListener = navigation.addListener('willBlur', () => {
+            hideComment();
+        });
         fetchData();
+        return () => {
+            navWillBlurListener.remove();
+        };
     }, []);
+
+    const question = useMemo(() => {
+        const media = VideoStore.dataSource[VideoStore.viewableItemIndex];
+        return media ? media.question : {};
+    }, [VideoStore.viewableItemIndex]);
 
     return (
         <View style={styles.container} onLayout={onLayout}>
@@ -97,6 +119,10 @@ export default observer(props => {
                 onViewableItemsChanged={getVisibleRows}
                 viewabilityConfig={config.current}
             />
+            <View style={styles.rewardProgress}>
+                <RewardProgress />
+            </View>
+            <CommentOverlay ref={commentRef} question={question} />
         </View>
     );
 });
@@ -115,5 +141,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: null,
         height: null,
+    },
+    rewardProgress: {
+        position: 'absolute',
+        left: PxFit(Theme.itemSpace),
+        bottom: PxFit(140 + Theme.HOME_INDICATOR_HEIGHT),
     },
 });

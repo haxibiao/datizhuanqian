@@ -1,9 +1,9 @@
 import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Animated, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Video from 'react-native-video';
 import { Iconfont } from 'components';
 import { observer } from 'store';
-import { PxFit, Theme, Tools } from 'utils';
+import { PxFit } from 'utils';
 import VideoStore from '../VideoStore';
 import VideoLoading from './VideoLoading';
 import { useNavigation } from 'react-navigation-hooks';
@@ -29,7 +29,9 @@ export default observer(props => {
 
     const videoEvents = useMemo((): object => {
         return {
-            onLoadStart() {},
+            onLoadStart() {
+                media.currentTime = 0;
+            },
 
             onLoad(data) {
                 duration.current = data.duration;
@@ -37,15 +39,22 @@ export default observer(props => {
             },
 
             onProgress(data) {
-                if (!media.playOver) {
-                    VideoStore.progress += data.currentTime - (media.currentTime || 0);
+                // 每个视频初次播放才加载奖励进度，根据播放时长控制
+                // if (Math.abs(media.currentTime - duration.current) > 1) {
+                //     VideoStore.rewardProgress += data.currentTime - media.currentTime;
+                //     media.currentTime = data.currentTime;
+                // }
+
+                if (!media.watched) {
+                    VideoStore.rewardProgress += data.currentTime - media.currentTime;
+                    if (Math.abs(media.currentTime - duration.current) <= 1) {
+                        media.watched = true;
+                    }
                 }
                 media.currentTime = data.currentTime;
             },
 
-            onEnd() {
-                media.playOver = true;
-            },
+            onEnd() {},
 
             onError() {},
 
@@ -55,9 +64,6 @@ export default observer(props => {
 
             onAudioFocusChanged(event: { hasAudioFocus: boolean }) {
                 videoRef.current.seek(0);
-                // if (!paused && !event.hasAudioFocus) {
-                // setPause(true);
-                // }
             },
         };
     }, []);
