@@ -1,20 +1,22 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Animated} from 'react-native';
+import { useCallback, useState } from 'react';
+import { Animated } from 'react-native';
 
-export const useBounceAnimation = (isStart: boolean) => {
-    const animation = new Animated.Value(1);
-    const isFirstRun = useRef(true);
+interface Props {
+    value: number;
+    toValue: number;
+}
 
-    useEffect(() => {
-        if (isFirstRun.current) {
-            isFirstRun.current = false;
-        } else {
-            Animated.spring(animation, {
-                toValue: 1.2,
-                friction: 2,
-                tension: 40,
-            }).start();
-        }
-    }, [isStart]);
-    return animation;
+export const useBounceAnimation = (props: Props) => {
+    const [animation] = useState(new Animated.Value(props.value));
+
+    const startAnimation = useCallback(() => {
+        animation.setValue(props.value);
+        Animated.spring(animation, {
+            toValue: props.toValue,
+            friction: 2,
+            tension: 40,
+        }).start();
+    }, []);
+
+    return [animation, startAnimation];
 };
