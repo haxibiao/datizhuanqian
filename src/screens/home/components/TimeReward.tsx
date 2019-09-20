@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
 import { TouchFeedback, RewardTipsOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
-import { Tools } from 'utils';
+import { Tools, Theme } from 'utils';
 
 interface Props {
     navigation: Function;
@@ -10,6 +10,7 @@ interface Props {
 
 const TimeReward = (props: Props) => {
     const [time, setTime] = useState(Date.now());
+    const [received, setReceived] = useState(false);
     const { navigation } = props;
     const [timeReward] = useMutation(GQL.TimeRewardMutation, {
         variables: {
@@ -35,6 +36,13 @@ const TimeReward = (props: Props) => {
         }
     }, [loading]);
 
+    useEffect(() => {
+        console.log('kkkkkkkkk');
+        if (time === 60) {
+            setReceived(false);
+        }
+    });
+
     const countDown = () => {
         let timer: any = null;
         if (time > 0) {
@@ -52,7 +60,9 @@ const TimeReward = (props: Props) => {
             const { result, error } = await timeReward();
             const goldReward = Tools.syncGetter('data.timeReward', result);
             showRewardTips(goldReward);
+            setReceived(true);
         } catch (e) {
+            console.log('eeero', e);
             Toast.show({ content: '领取失败' });
         }
     };
@@ -66,27 +76,37 @@ const TimeReward = (props: Props) => {
         RewardTipsOverlay.show(reward, navigation, title, isRewardVideo);
     };
 
-    const minute = Math.floor(time / 60);
-    const second = time % 60 > 0 ? time % 60 : '00';
+    const minute = Math.floor(time / 60) > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);
+    const second = time % 60 > 9 ? time % 60 : '0' + (time % 60);
 
     if (loading || error) {
         return null;
     }
     return (
         <TouchFeedback style={styles.container} onPress={getReward}>
-            <View>
-                <Text style={{ fontSize: 11, textAlign: 'center' }}>时段奖励</Text>
-                {minute < 1 || minute > 58 ? (
-                    <Text style={{ fontSize: 10, letterSpacing: 1 }}>领取奖励</Text>
-                ) : (
-                    <Text
-                        style={{
-                            fontSize: 10,
-                            letterSpacing: 3,
-                            textAlign: 'center',
-                        }}>{`${minute}:${second}`}</Text>
-                )}
-            </View>
+            <Image
+                source={require('../../../assets/images/time_reward.png')}
+                style={{ width: (24 * 568) / 251, height: 24, marginBottom: -16 }}></Image>
+            {(minute < 1 || minute > 58) && !received ? (
+                <Text
+                    style={{
+                        fontSize: 8,
+                        height: 9,
+                        paddingLeft: 14,
+                        color: Theme.primaryColor,
+                    }}>
+                    领取奖励
+                </Text>
+            ) : (
+                <Text
+                    style={{
+                        fontSize: 8,
+                        height: 9,
+                        textAlign: 'center',
+                        paddingLeft: 14,
+                        color: Theme.primaryColor,
+                    }}>{`${minute}:${second}`}</Text>
+            )}
         </TouchFeedback>
     );
 };
