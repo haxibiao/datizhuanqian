@@ -75,8 +75,6 @@ export default observer(props => {
     }, [media.currentTime]);
 
     useEffect(() => {
-        setPause(!isIntoView);
-
         const navWillFocusListener = navigation.addListener('willFocus', () => {
             setPause(!isIntoView);
         });
@@ -101,7 +99,7 @@ export default observer(props => {
                     style={styles.fullScreen}
                     rate={1} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
                     volume={1} // 声音的放大倍数，0 代表没有声音，就是静音muted, 1 代表正常音量 normal，更大的数字表示放大的倍数
-                    muted={true} // true代表静音，默认为false.
+                    muted={false} // true代表静音，默认为false.
                     progressUpdateInterval={150}
                     disableFocus={true}
                     useTextureView={false}

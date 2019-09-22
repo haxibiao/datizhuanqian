@@ -116,9 +116,9 @@ export default {
         screen: AnswerScreen,
     },
     // 短视频
-    Medium: {
-        screen: MediumScreen,
-    },
+    // Medium: {
+    //     screen: MediumScreen,
+    // },
     // 题目详情
     Question: {
         screen: QuestionScreen,

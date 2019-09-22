@@ -9,7 +9,7 @@ import { Theme, PxFit } from '../utils';
 import { app } from 'store';
 
 class TabBarComponent extends React.Component {
-    public renderItem = (route, index) => {
+    public renderItem = (route:any, index:number) => {
         const { navigation, onTabPress, renderIcon, activeTintColor, inactiveTintColor } = this.props;
         const focused = index === navigation.state.index;
         const color = focused ? activeTintColor : inactiveTintColor;
@@ -18,6 +18,15 @@ class TabBarComponent extends React.Component {
             focused,
             route,
         };
+        if(index === 2){
+            return (
+                <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
+                    <View style={styles.tabItem}>
+                        <Image style={styles.videoPlayer} source={require('@src/assets/images/video_player.png')} />
+                    </View>
+                </TouchableWithoutFeedback>
+            );
+        }
         return (
             <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
                 <View style={styles.tabItem}>
@@ -31,24 +40,13 @@ class TabBarComponent extends React.Component {
         );
     };
 
-    public renderCreation() {
-        const { navigation } = this.props;
-        return (
-            <TouchableWithoutFeedback key={'video'} onPress={() => navigation.navigate('Medium')}>
-                <View style={styles.tabItem}>
-                    <Image style={styles.videoPlayer} source={require('@src/assets/images/video_player.png')} />
-                </View>
-            </TouchableWithoutFeedback>
-        );
-    }
-
     public render() {
         const { navigation } = this.props;
-        const { routes } = navigation.state;
-        const creationItem = this.renderCreation();
+        const { routes, index: currentIndex} = navigation.state;
+        const darkModel = currentIndex === 2;
         const routerItem = routes && routes.map((route, index) => this.renderItem(route, index));
-        routerItem.splice(2, 0, creationItem);
-        return <View style={styles.tabBar}>{routerItem}</View>;
+
+        return <View style={[styles.tabBar, darkModel && styles.darkStyle]}>{routerItem}</View>;
     }
 }
 
@@ -61,6 +59,10 @@ const styles = {
         borderTopColor: Theme.borderColor,
         backgroundColor: '#fff',
         paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+    },
+    darkStyle: {
+        backgroundColor: '#000000',
+        borderTopColor: '#000000',
     },
     videoPlayer: {
         width: (PxFit(48) * 96) / 111,

@@ -11,6 +11,7 @@ import HomeScreen from '../screens/home';
 import TaskScreen from '../screens/task';
 import WithdrawScreen from '../screens/withdraw';
 import ProfileScreen from '../screens/profile';
+import MediumScreen from '../screens/video';
 import MainTabBar from './MainTabBar';
 import { Theme, PxFit } from '../utils';
 import { Iconfont } from 'components';
@@ -24,6 +25,10 @@ export default createBottomTabNavigator(
         任务: {
             screen: TaskScreen,
             navigationOptions: () => TabOptions('任务'),
+        },
+        视频: {
+            screen: MediumScreen,
+            navigationOptions: () => TabOptions('视频'),
         },
         提现: {
             screen: WithdrawScreen,
