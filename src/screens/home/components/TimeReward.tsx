@@ -32,7 +32,14 @@ const TimeReward = (props: Props) => {
 
     useEffect(() => {
         if (data && data.systemConfig) {
-            setTime(data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000));
+            console.log(
+                'systemConfig',
+                data.systemConfig,
+                data.systemConfig.next_time_hour_reward.time_unix,
+                data.systemConfig.time_unix,
+                data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix,
+            );
+            setTime(data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix);
         }
         if (!loading) {
             AppState.addEventListener('change', handleAppStateChange);
@@ -52,17 +59,17 @@ const TimeReward = (props: Props) => {
         console.log('nextAppState', nextAppState);
         if (nextAppState === 'active') {
             refetch();
-            setTime(data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000));
+            let timeRemain = data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix || 3600;
+            console.log('timeRemain', timeRemain);
+            setTime(timeRemain);
         }
     };
 
     const countDown = () => {
-        let timer: any = null;
-        if (time > 0) {
-            timer = setInterval(() => {
-                setTime((time: number) => time - 1);
-            }, 1000);
-        }
+        const timer = setInterval(() => {
+            setTime((time: number) => time - 1);
+        }, 1000);
+
         return () => {
             clearInterval(timer);
         };
@@ -71,21 +78,35 @@ const TimeReward = (props: Props) => {
     const getReward = async () => {
         try {
             const { result, error } = await timeReward();
-            const goldReward = Tools.syncGetter('data.timeReward', result);
-            showRewardTips(goldReward);
+            const reward = Tools.syncGetter('data.timeReward', result);
+            showRewardTips(reward);
             setReceived(true);
         } catch (e) {
             Toast.show({ content: '领取失败' });
         }
     };
 
-    const showRewardTips = (goldReward: number) => {
-        const reward = {
-            gold: goldReward,
+    const showRewardTips = (reward: { reward_type: any; reward_value: number }) => {
+        const rewardContent = {
+            gold: 0,
+            ticket: 0,
+            contribute: 0,
         };
+        switch (reward.reward_type) {
+            case 'gold':
+                rewardContent.gold = reward.reward_value;
+                break;
+            case 'ticket':
+                rewardContent.ticket = reward.reward_value;
+                break;
+            case 'contribute':
+                rewardContent.contribute = reward.reward_value;
+                break;
+        }
+
         const title = '时段奖励领取成功';
         const isRewardVideo = true;
-        RewardTipsOverlay.show(reward, navigation, title, isRewardVideo);
+        RewardTipsOverlay.show(rewardContent, navigation, title, isRewardVideo);
     };
 
     const minute = Math.floor(time / 60) > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);
@@ -101,7 +122,7 @@ const TimeReward = (props: Props) => {
                 <Image
                     source={require('../../../assets/images/time_reward.png')}
                     style={{ width: (24 * 568) / 251, height: 24, marginRight: -35 }}></Image>
-                {(minute < 1 || minute > 58) && !received ? (
+                {minute > 58 && !received ? (
                     <Text style={styles.received}>领取奖励</Text>
                 ) : (
                     <Text style={styles.time}>{`${minute}:${second}`}</Text>

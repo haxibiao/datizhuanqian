@@ -27,7 +27,7 @@ import SearchBar from './Header/SearchBar';
 // StatusView
 import StatusView from './StatusView';
 import EmptyView from './StatusView/EmptyView';
-// import ErrorView from './StatusView/ErrorView';
+import ErrorView from './StatusView/ErrorView';
 import LoadingSpinner from './StatusView/LoadingSpinner';
 // Overlay
 import Toast from './Overlay/Toast';
@@ -95,7 +95,7 @@ export {
     NavigatorBar,
     SearchBar,
     EmptyView,
-    // ErrorView,
+    ErrorView,
     LoadingSpinner,
     StatusView,
     Toast,

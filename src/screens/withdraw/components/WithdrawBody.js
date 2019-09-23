@@ -207,7 +207,6 @@ class WithdrawBody extends Component {
                                                 ]}>
                                                 {luckyMoney.value}元
                                             </Text>
-
                                             <Text
                                                 style={{
                                                     fontSize: 13,
@@ -274,10 +273,10 @@ const styles = StyleSheet.create({
     badge: {
         alignItems: 'center',
         backgroundColor: Theme.primaryColor,
-        borderBottomRightRadius: PxFit(10),
+        borderBottomRightRadius: PxFit(9),
         borderTopLeftRadius: PxFit(5),
-        borderTopRightRadius: PxFit(10),
-        height: 22,
+        borderTopRightRadius: PxFit(9),
+        height: 18,
         justifyContent: 'center',
         left: 0,
         position: 'absolute',
@@ -286,7 +285,7 @@ const styles = StyleSheet.create({
     },
     badgeText: {
         color: '#FFF',
-        fontSize: 13,
+        fontSize: PxFit(12),
         fontWeight: '500',
     },
     boldBlackText: {

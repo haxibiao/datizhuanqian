@@ -1,13 +1,17 @@
 mutation TimeRewardMutation($reward_type: TimeRewardEnum) {
     timeReward(reward_type: $reward_type) {
-        gold_reward
-        ticket_reward
+        id
+        reward_type
+        reward_value
     }
 }
 
 query systemConfigQuery {
     systemConfig {
+        time
+        time_unix
         next_time_hour_reward {
+            time
             time_unix
         }
     }

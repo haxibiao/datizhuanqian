@@ -1,10 +1,12 @@
 import { NativeModules, Platform, DeviceEventEmitter } from 'react-native';
+import { app } from 'store';
 
 const module = NativeModules.RewardDialog;
 
 const adArgs = {
     tt_appid: '5016518', // 正式
     tt_codeid: '916518401',
+    uid: app.me.id,
     // tt_appid: '5016582', // 内测
     // tt_codeid: '916582270'
 };

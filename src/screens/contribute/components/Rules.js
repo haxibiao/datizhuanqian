@@ -30,7 +30,15 @@ class Rules extends Component {
                     backgroundColor: '#fff',
                 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={{ color: '#A46E38', fontSize: PxFit(18), textAlign: 'center' }}>出题规范</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                        <Image
+                            source={require('../../../assets/images/tag.png')}
+                            style={{ width: PxFit(46), height: PxFit(46) }}
+                        />
+                        <Text style={{ color: '#A46E38', fontSize: PxFit(18), marginLeft: 10, paddingTop: 5 }}>
+                            出题规范
+                        </Text>
+                    </View>
 
                     <View style={{ marginTop: PxFit(5) }}>
                         <Text
