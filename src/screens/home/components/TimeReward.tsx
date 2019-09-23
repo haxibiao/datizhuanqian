@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, AppState } from 'react-native';
 import { TouchFeedback, RewardTipsOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools, Theme } from 'utils';
@@ -24,7 +24,7 @@ const TimeReward = (props: Props) => {
         ],
     });
 
-    const { data, loading, error } = useQuery(GQL.systemConfigQuery);
+    const { data, loading, error, refetch } = useQuery(GQL.systemConfigQuery);
 
     useEffect(() => {
         countDown();
@@ -34,14 +34,27 @@ const TimeReward = (props: Props) => {
         if (data && data.systemConfig) {
             setTime(data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000));
         }
+        if (!loading) {
+            AppState.addEventListener('change', handleAppStateChange);
+        }
     }, [loading]);
 
     useEffect(() => {
-        console.log('kkkkkkkkk');
         if (time === 60) {
             setReceived(false);
         }
+        if (time === 0) {
+            setTime(3600);
+        }
     });
+
+    const handleAppStateChange = (nextAppState: any) => {
+        console.log('nextAppState', nextAppState);
+        if (nextAppState === 'active') {
+            refetch();
+            setTime(data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000));
+        }
+    };
 
     const countDown = () => {
         let timer: any = null;
@@ -62,7 +75,6 @@ const TimeReward = (props: Props) => {
             showRewardTips(goldReward);
             setReceived(true);
         } catch (e) {
-            console.log('eeero', e);
             Toast.show({ content: '领取失败' });
         }
     };
@@ -82,31 +94,19 @@ const TimeReward = (props: Props) => {
     if (loading || error) {
         return null;
     }
+
     return (
         <TouchFeedback style={styles.container} onPress={getReward}>
-            <Image
-                source={require('../../../assets/images/time_reward.png')}
-                style={{ width: (24 * 568) / 251, height: 24, marginBottom: -16 }}></Image>
-            {(minute < 1 || minute > 58) && !received ? (
-                <Text
-                    style={{
-                        fontSize: 8,
-                        height: 9,
-                        paddingLeft: 14,
-                        color: Theme.primaryColor,
-                    }}>
-                    领取奖励
-                </Text>
-            ) : (
-                <Text
-                    style={{
-                        fontSize: 8,
-                        height: 9,
-                        textAlign: 'center',
-                        paddingLeft: 14,
-                        color: Theme.primaryColor,
-                    }}>{`${minute}:${second}`}</Text>
-            )}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image
+                    source={require('../../../assets/images/time_reward.png')}
+                    style={{ width: (24 * 568) / 251, height: 24, marginRight: -35 }}></Image>
+                {(minute < 1 || minute > 58) && !received ? (
+                    <Text style={styles.received}>领取奖励</Text>
+                ) : (
+                    <Text style={styles.time}>{`${minute}:${second}`}</Text>
+                )}
+            </View>
         </TouchFeedback>
     );
 };
@@ -115,6 +115,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+    },
+    received: {
+        fontSize: 8,
+        width: 35,
+        color: Theme.theme,
+        textAlign: 'center',
+    },
+    time: {
+        fontSize: 8,
+        width: 35,
+        paddingRight: 2,
+        textAlign: 'center',
+        color: Theme.theme,
     },
 });
 

@@ -4,3 +4,11 @@ mutation TimeRewardMutation($reward_type: TimeRewardEnum) {
         ticket_reward
     }
 }
+
+query systemConfigQuery {
+    systemConfig {
+        next_time_hour_reward {
+            time_unix
+        }
+    }
+}

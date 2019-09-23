@@ -13,11 +13,3 @@ mutation reportMutation($report_id: Int, $report_type: ReportableEnum, $reason: 
         }
     }
 }
-
-query systemConfigQuery {
-    systemConfig {
-        next_time_hour_reward {
-            time_unix
-        }
-    }
-}

@@ -59,6 +59,10 @@ class index extends Component {
     async componentDidMount() {
         const { navigation } = this.props;
 
+        // setInterval(() => {
+        //     console.log("测试主页销毁")
+        // }, 1000);
+
         this.resetUser();
 
         this.registerTimer = setTimeout(async () => {
