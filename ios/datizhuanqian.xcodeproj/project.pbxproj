@@ -1017,7 +1017,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dazhuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.datizhuanqian;
 				PRODUCT_NAME = datizhuanqian;
 				PROVISIONING_PROFILE_SPECIFIER = dazhuan_test;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1041,7 +1041,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dazhuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.datizhuanqian;
 				PRODUCT_NAME = datizhuanqian;
 				PROVISIONING_PROFILE_SPECIFIER = dazhuan_test;
 				VERSIONING_SYSTEM = "apple-generic";

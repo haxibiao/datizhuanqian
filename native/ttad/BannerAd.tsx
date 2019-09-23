@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, requireNativeComponent } from 'react-native';
+import { Platform, StyleSheet, requireNativeComponent } from 'react-native';
 const NativeBannerAd = requireNativeComponent('BannerAd');
 import { SCREEN_WIDTH } from 'utils';
 
@@ -9,6 +9,8 @@ type Props = {
     onLoad?: Function;
 };
 
+let codeid = Platform.OS === 'android' ? '916518401' : '';
+
 const BannerAd = (props: Props) => {
     let { adWidth = SCREEN_WIDTH - 30, onError, onLoad } = props;
     let [visible, setVisible] = useState(true);
@@ -16,7 +18,7 @@ const BannerAd = (props: Props) => {
     return (
         visible && (
             <NativeBannerAd
-                codeid="916518401"
+                codeid={codeid} //ios ?
                 adWidth={adWidth}
                 style={{ ...styles.container, height }}
                 onError={e => {
