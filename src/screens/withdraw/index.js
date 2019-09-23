@@ -38,7 +38,7 @@ class index extends Component {
 
     render() {
         const { navigation } = this.props;
-        let { login } = app;
+        const { login } = app;
         return (
             <PageContainer
                 title="提现"
