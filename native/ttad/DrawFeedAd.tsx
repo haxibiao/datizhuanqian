@@ -5,7 +5,7 @@ const NativeDrawFeedAd = requireNativeComponent('DrawFeedAd');
 
 type Props = {
     onError?: Function;
-    onLoad?: Function;
+    onAdShow?: Function;
 };
 
 // 内测 无论android ios 都可以用 下面的appid, codeid;
@@ -19,29 +19,29 @@ type Props = {
 // 916582063;
 
 const DrawFeedAd = (props: Props) => {
-    let { onError, onLoad } = props;
+    let { onError, onAdShow } = props;
     let [visible, setVisible] = useState(true);
+
+    if (!visible) return null;
     return (
-        visible && (
-            <NativeDrawFeedAd
-                codeid="916518247"
-                style={{ ...styles.container }}
-                onError={e => {
-                    console.log('onError feed', e.nativeEvent);
-                    setVisible(false);
-                    onError && onError(e.nativeEvent);
-                }}
-                onTitleClick={e => {
-                    console.log('onTitleClick', e.nativeEvent);
-                }}
-                onDownloadClick={e => {
-                    console.log('onDownloadClick', e.nativeEvent);
-                }}
-                onAdShow={e => {
-                    console.log('onAdShow', e.nativeEvent);
-                }}
-            />
-        )
+        <NativeDrawFeedAd
+            codeid="916518247"
+            style={{ ...styles.container }}
+            onError={e => {
+                console.log('onError feed', e.nativeEvent);
+                setVisible(false);
+                onError && onError(e.nativeEvent);
+            }}
+            onTitleClick={e => {
+                console.log('onTitleClick', e.nativeEvent);
+            }}
+            onDownloadClick={e => {
+                console.log('onDownloadClick', e.nativeEvent);
+            }}
+            onAdShow={e => {
+                console.log('onAdShow', e.nativeEvent);
+            }}
+        />
     );
 };
 

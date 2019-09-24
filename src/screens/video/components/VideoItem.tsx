@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PxFit, Theme, SCREEN_HEIGHT } from 'utils';
+import { ttad } from 'native';
 
 import { observer } from 'store';
 import Player from './Player';
@@ -9,7 +10,19 @@ import VideoStore from '../VideoStore';
 
 export default observer(props => {
     const { media, index } = props;
-    console.log('VideoStore.viewportHeight', VideoStore.viewportHeight);
+    const [adShow, setAdShow] = useState(true);
+    // console.log('VideoStore.viewportHeight', VideoStore.viewportHeight);
+    console.log('media', media.is_ad_video, media.question.description, media.id);
+    if (media.is_ad_video && adShow)
+        return (
+            <View style={{ height: VideoStore.viewportHeight }}>
+                <ttad.DrawFeedAd
+                    onError={(error: any) => {
+                        setAdShow(false);
+                    }}
+                />
+            </View>
+        );
     return (
         <View style={{ height: VideoStore.viewportHeight }}>
             {media.cover && (

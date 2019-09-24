@@ -207,6 +207,7 @@ query VideosQuery($type: VideoTypeEnum, $limit: Int, $offset: Int) {
         height
         url
         cover
+        is_ad_video
         question {
             id
             description

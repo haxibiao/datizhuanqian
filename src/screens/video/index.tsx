@@ -37,6 +37,7 @@ export default observer(props => {
     }, []);
 
     const VideosQuery = useCallback(() => {
+        console.log('VideoStore.dataSource.length', VideoStore.dataSource.length);
         return client.query({
             query: GQL.VideosQuery,
             variables: { limit: 5, offset: VideoStore.dataSource.length },
@@ -46,6 +47,7 @@ export default observer(props => {
     const fetchData = useCallback(async () => {
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
+        console.log('result', result.data);
         const videoSource = Tools.syncGetter('data.videos', result);
         if (error) {
             VideoStore.isError = true;
@@ -98,7 +100,7 @@ export default observer(props => {
         const media = VideoStore.dataSource[VideoStore.viewableItemIndex];
         return media ? media.question : {};
     }, [VideoStore.viewableItemIndex]);
-
+    console.log('VideoStore.dataSource', VideoStore.dataSource);
     return (
         app.login && (
             <View style={styles.container} onLayout={onLayout}>
@@ -112,7 +114,7 @@ export default observer(props => {
                     keyboardShouldPersistTaps="always"
                     pagingEnabled={true}
                     removeClippedSubviews={true}
-                    keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => <VideoItem media={item} index={index} />}
                     getItemLayout={(data, index) => ({
                         length: VideoStore.viewportHeight,
