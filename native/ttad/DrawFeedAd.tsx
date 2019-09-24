@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const NativeDrawFeedAd = requireNativeComponent('DrawFeedAd');
@@ -21,6 +21,7 @@ type Props = {
 const DrawFeedAd = (props: Props) => {
     let { onError, onAdShow } = props;
     let [visible, setVisible] = useState(true);
+    const [time, setTime] = useState(0);
 
     if (!visible) return null;
     return (
@@ -32,14 +33,12 @@ const DrawFeedAd = (props: Props) => {
                 setVisible(false);
                 onError && onError(e.nativeEvent);
             }}
-            onTitleClick={e => {
-                console.log('onTitleClick', e.nativeEvent);
-            }}
-            onDownloadClick={e => {
-                console.log('onDownloadClick', e.nativeEvent);
+            onAdClick={e => {
+                console.log('onClick', e.nativeEvent);
             }}
             onAdShow={e => {
                 console.log('onAdShow', e.nativeEvent);
+                onAdShow && onAdShow();
             }}
         />
     );

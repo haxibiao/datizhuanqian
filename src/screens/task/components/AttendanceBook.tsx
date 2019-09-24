@@ -70,7 +70,7 @@ const AttendanceBook = (props): JSX.Element => {
                     Toast.show({ content: '签到失败' });
                 }
             } else {
-                Toast.show({ content: '今天已经签过到了哦' });
+                Toast.show({ content: '今天已经签到过了哦' });
             }
         }),
         [signIns, today_signed],

@@ -72,13 +72,15 @@ const TimeReward = (props: Props) => {
     const getReward = async () => {
         try {
             const { result, error } = await timeReward();
+            console.log('result', result);
             const reward = Tools.syncGetter('data.timeReward', result);
+            console.log('reward', reward);
             showRewardTips(reward);
-            setReceived(true);
         } catch (e) {
             let str = e.toString().replace(/Error: GraphQL error: /, '');
             Toast.show({ content: str });
         }
+        setReceived(true);
     };
 
     const showRewardTips = (reward: { reward_type: any; reward_value: number }) => {
@@ -112,13 +114,13 @@ const TimeReward = (props: Props) => {
     }
 
     return (
-        <TouchFeedback style={styles.container} navigation={navigation} authenticated onPress={getReward}>
+        <TouchFeedback style={styles.container} navigation={navigation} authenticated onPress={time > 600 && getReward}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image
                     source={require('../../../assets/images/time_reward.png')}
                     style={{ width: (24 * 357) / 150, height: 24, marginRight: -35 }}></Image>
                 {minute > 50 && !received ? (
-                    <Text style={styles.received}>领取奖励</Text>
+                    <Text style={styles.received}>领取</Text>
                 ) : (
                     <Text style={styles.time}>{`${minute}:${second}`}</Text>
                 )}

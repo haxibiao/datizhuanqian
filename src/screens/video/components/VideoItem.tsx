@@ -11,14 +11,15 @@ import VideoStore from '../VideoStore';
 export default observer(props => {
     const { media, index } = props;
     const [adShow, setAdShow] = useState(true);
-    // console.log('VideoStore.viewportHeight', VideoStore.viewportHeight);
-    console.log('media', media.is_ad_video, media.question.description, media.id);
     if (media.is_ad_video && adShow)
         return (
             <View style={{ height: VideoStore.viewportHeight }}>
                 <ttad.DrawFeedAd
                     onError={(error: any) => {
                         setAdShow(false);
+                    }}
+                    onAdShow={() => {
+                        VideoStore.rewardProgress = 100;
                     }}
                 />
             </View>
