@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { PageContainer, TabBar, EmptyView } from 'components';
+import { Theme } from 'utils';
 
 import TaskList from './components/TaskList';
 import { app, observer } from 'store';
@@ -19,7 +20,16 @@ class index extends Component {
         const { login } = app;
 
         return (
-            <PageContainer isTopNavigator title="任务">
+            <PageContainer
+                isTopNavigator
+                titleStyle={{ color: Theme.defaultTextColor }}
+                navBarStyle={{
+                    borderBottomWidth: 0,
+                    borderBottomColor: '#fff',
+                    backgroundColor: '#fff',
+                }}
+                backButtonColor={Theme.defaultTextColor}
+                title="任务">
                 {login ? (
                     <TaskList navigation={navigation} />
                 ) : (

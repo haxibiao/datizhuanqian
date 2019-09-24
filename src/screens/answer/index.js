@@ -590,6 +590,7 @@ class index extends Component {
             <React.Fragment>
                 <PageContainer
                     title={category.name || '答题'}
+                    white
                     autoKeyboardInsets={false}
                     onWillBlur={this.hideComment}
                     rightView={
@@ -597,13 +598,19 @@ class index extends Component {
                             disabled={!this.state.question}
                             style={styles.optionsButton}
                             onPress={this.showOptions}>
-                            <Iconfont name="more-vertical" color="#fff" size={PxFit(18)} />
+                            <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
                         </TouchFeedback>
                     }
                     hiddenNavBar={config.isFullScreen}
-                    onLayout={this.onContainerLayout}>
+                    onLayout={this.onContainerLayout}
+                    titleStyle={{ color: Theme.defaultTextColor }}
+                    navBarStyle={{
+                        borderBottomWidth: 0,
+                        borderBottomColor: '#fff',
+                        backgroundColor: '#fff',
+                    }}
+                    backButtonColor={Theme.defaultTextColor}>
                     {config.isFullScreen && <StatusBar translucent={true} hidden />}
-
                     <View style={styles.container}>{this.renderContent()}</View>
                 </PageContainer>
                 <CommentOverlay ref={ref => (this._commentOverlay = ref)} question={this.state.question} />

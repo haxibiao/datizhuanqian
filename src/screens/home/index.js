@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, TouchFeedback } from 'react-native';
+import { StyleSheet, View, FlatList, StatusBar } from 'react-native';
 import {
     PageContainer,
     CustomRefreshControl,
@@ -14,7 +14,7 @@ import {
     beginnerGuidance,
     VideoTaskGuidance,
 } from 'components';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from 'utils';
 import PlateItem from './components/PlateItem';
 
 import { observer, app, keys, storage } from 'store';
@@ -254,6 +254,13 @@ class index extends Component {
             <PageContainer
                 title={Config.AppName}
                 isTopNavigator
+                titleStyle={{ color: Theme.defaultTextColor }}
+                navBarStyle={{
+                    borderBottomWidth: 0,
+                    borderBottomColor: '#fff',
+                    backgroundColor: '#fff',
+                }}
+                backButtonColor={Theme.defaultTextColor}
                 rightView={<TimeReward navigation={this.props.navigation} />}>
                 {this._renderCategoryList()}
             </PageContainer>

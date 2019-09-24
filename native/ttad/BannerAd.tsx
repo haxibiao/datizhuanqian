@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Platform, StyleSheet, requireNativeComponent } from 'react-native';
+import { Platform, StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
+const { height, width } = Dimensions.get('window');
+
 const NativeBannerAd = requireNativeComponent('BannerAd');
-import { SCREEN_WIDTH } from 'utils';
 
 type Props = {
     adWidth: number;
@@ -12,7 +13,7 @@ type Props = {
 let codeid = Platform.OS === 'android' ? '916518401' : '';
 
 const BannerAd = (props: Props) => {
-    let { adWidth = SCREEN_WIDTH - 30, onError, onLoad } = props;
+    let { adWidth = width - 30, onError, onLoad } = props;
     let [visible, setVisible] = useState(true);
     let [height, setHeight] = useState(0); //默认高度
     return (
@@ -44,7 +45,7 @@ const BannerAd = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH,
+        width: width,
         height: 0,
     },
 });

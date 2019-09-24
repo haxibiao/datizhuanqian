@@ -4,7 +4,7 @@
     "Version": "2.2.0",
     "AppVersionNumber": 2.2,
     "Build": 1,
-    "ServerRoot": "http://staging.datizhuanqian.com",
+    "ServerRoot": "http://hotfix.datizhuanqian.com",
     "UploadServer": "http://upload.datizhuanqian.com",
     "SocketServer": "ws://socket.datizhuanqian.cn:6001",
     "PackageName": "com.datizhuanqian",

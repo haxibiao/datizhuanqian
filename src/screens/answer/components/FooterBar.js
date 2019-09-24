@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'stretch',
-        borderTopWidth: PxFit(1),
-        borderColor: Theme.borderColor,
+        // borderTopWidth: PxFit(1),
+        // borderColor: Theme.borderColor,
     },
     toolItem: {
         flex: 1,
@@ -178,8 +178,11 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
+        marginVertical: PxFit(5),
+        marginRight: PxFit(10),
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: PxFit(19),
     },
     buttonText: {
         fontSize: PxFit(14),

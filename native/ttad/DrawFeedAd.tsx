@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, requireNativeComponent } from 'react-native';
+import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
+const { height, width } = Dimensions.get('window');
 const NativeDrawFeedAd = requireNativeComponent('DrawFeedAd');
-import { SCREEN_WIDTH, PxFit } from 'utils';
 
 type Props = {
     onError?: Function;
@@ -47,7 +47,7 @@ const DrawFeedAd = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH,
+        width: width,
         flex: 1,
     },
 });

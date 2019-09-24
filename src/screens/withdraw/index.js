@@ -44,6 +44,7 @@ class index extends Component {
             <PageContainer
                 title="提现"
                 isTopNavigator
+                white
                 rightView={
                     <TouchFeedback onPress={this.showRule} style={styles.rule}>
                         <Text>规则说明</Text>

@@ -32,13 +32,6 @@ const TimeReward = (props: Props) => {
 
     useEffect(() => {
         if (data && data.systemConfig) {
-            console.log(
-                'systemConfig',
-                data.systemConfig,
-                data.systemConfig.next_time_hour_reward.time_unix,
-                data.systemConfig.time_unix,
-                data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix,
-            );
             setTime(data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix);
         }
         if (!loading) {
@@ -47,7 +40,7 @@ const TimeReward = (props: Props) => {
     }, [loading]);
 
     useEffect(() => {
-        if (time === 60) {
+        if (time === 600) {
             setReceived(false);
         }
         if (time === 0) {
@@ -58,9 +51,10 @@ const TimeReward = (props: Props) => {
     const handleAppStateChange = (nextAppState: any) => {
         console.log('nextAppState', nextAppState);
         if (nextAppState === 'active') {
-            refetch();
-            let timeRemain = data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix || 3600;
-            console.log('timeRemain', timeRemain);
+            let timeRemain =
+                data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000) > 0
+                    ? data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000)
+                    : 3600;
             setTime(timeRemain);
         }
     };
@@ -122,7 +116,7 @@ const TimeReward = (props: Props) => {
                 <Image
                     source={require('../../../assets/images/time_reward.png')}
                     style={{ width: (24 * 568) / 251, height: 24, marginRight: -35 }}></Image>
-                {minute > 58 && !received ? (
+                {minute > 50 && !received ? (
                     <Text style={styles.received}>领取奖励</Text>
                 ) : (
                     <Text style={styles.time}>{`${minute}:${second}`}</Text>

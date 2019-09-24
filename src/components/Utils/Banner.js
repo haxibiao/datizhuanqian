@@ -21,16 +21,15 @@ import { Overlay } from 'teaset';
 const shadowOpt = {
     width: SCREEN_WIDTH,
     color: '#E8E8E8',
-    border: 3,
-    radius: 10,
-    opacity: 0.5,
+    border: 5,
+    radius: 5,
+    opacity: 0.2,
     x: 0,
-    y: 1,
+    y: 5,
     style: {
         marginTop: 0,
     },
 };
-
 class Banner extends Component {
     constructor(props) {
         super(props);
@@ -61,63 +60,59 @@ class Banner extends Component {
         let step = (data.user.gold / data.user.exchange_rate) * 5;
         let stepData = ['¥0.2', '¥0.4', '¥0.6', '¥0.8', '¥1.0'];
         return (
-            <View>
-                <BoxShadow
-                    setting={Object.assign({}, shadowOpt, {
-                        height: PxFit(46),
-                    })}>
-                    <View style={styles.container}>
-                        <View style={styles.rowItem}>
-                            <View
-                                style={{
-                                    width: PxFit(28),
-                                    height: PxFit(28),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                <Image source={require('../../assets/images/heart.png')} style={styles.iconImage} />
-                            </View>
-                            <Text style={styles.text}>精力点 </Text>
-                            <Text
-                                style={{
-                                    fontSize: PxFit(15),
-                                    color: user.ticket > 10 ? Theme.black : Theme.themeRed,
-                                }}>
-                                {user.ticket ? user.ticket : '0'}
-                            </Text>
-                            <Text style={styles.text}>/{user.level ? user.level.ticket_max : '180'}</Text>
-                        </View>
-                        <View style={styles.rowItem}>
-                            <View
-                                style={{
-                                    width: PxFit(28),
-                                    height: PxFit(28),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                <Image
-                                    source={require('../../assets/images/diamond.png')}
-                                    style={{
-                                        width: PxFit(23),
-                                        height: PxFit(25),
-                                        marginBottom: PxFit(2),
-                                    }}
-                                />
-                            </View>
-                            <Text style={styles.text}>智慧点 </Text>
-                            <Text style={styles.text}>{user.gold}</Text>
-                        </View>
+            <View style={styles.container}>
+                <View style={styles.rowItem}>
+                    <View
+                        style={{
+                            width: PxFit(28),
+                            height: PxFit(28),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                        <Image source={require('../../assets/images/heart.png')} style={styles.iconImage} />
                     </View>
-                    <View style={styles.ticketUpperLimit}>
-                        <View style={[styles.ticketBar, { width: progress }]} />
+                    <Text style={styles.text}>精力点 </Text>
+                    <Text
+                        style={{
+                            fontSize: PxFit(15),
+                            color: user.ticket > 10 ? Theme.black : Theme.themeRed,
+                        }}>
+                        {user.ticket ? user.ticket : '0'}
+                    </Text>
+                    <Text style={styles.text}>/{user.level ? user.level.ticket_max : '180'}</Text>
+                </View>
+                <View style={styles.rowItem}>
+                    <View
+                        style={{
+                            width: PxFit(28),
+                            height: PxFit(28),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                        <Image
+                            source={require('../../assets/images/diamond.png')}
+                            style={{
+                                width: PxFit(23),
+                                height: PxFit(25),
+                                marginBottom: PxFit(2),
+                            }}
+                        />
                     </View>
-                    {
-                        // <View style={styles.withdrawProgress}>
-                        //     <ProgressWithdrawal step={parseInt(step)} data={stepData} />
-                        // </View>
-                    }
-                </BoxShadow>
+                    <Text style={styles.text}>智慧点 </Text>
+                    <Text style={styles.text}>{user.gold}</Text>
+                </View>
+                {
+                    // <View style={styles.ticketUpperLimit}>
+                    // <View style={[styles.ticketBar, { width: progress }]} />
+                    // </View>
+                }
+                {
+                    // <View style={styles.withdrawProgress}>
+                    //     <ProgressWithdrawal step={parseInt(step)} data={stepData} />
+                    // </View>
+                }
             </View>
+
             //考虑到精力点是实时更新的  所以不将精力点存到redux中.
         );
     }
@@ -197,14 +192,13 @@ class Banner extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: PxFit(44),
+        height: PxFit(40),
         backgroundColor: Theme.white,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowOffset: { width: 0, height: PxFit(2) },
-        shadowColor: '#F0F0F0',
-        shadowOpacity: 1,
+        borderBottomColor: Theme.lightBorder,
+        borderBottomWidth: PxFit(0.5),
     },
     rowItem: {
         flex: 1,
