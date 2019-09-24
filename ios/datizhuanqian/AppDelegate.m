@@ -19,15 +19,13 @@
 
 #include "AdBoss.h"
 
-//穿山甲广告SDK
-//#import <BUAdSDK/BUAdSDKManager.h>
-//#import "BUAdSDK/BUSplashAdView.h"
+//穿山甲
+#import "BUAdSDK/BUSplashAdView.h"
 
 
-
-//@interface AppDelegate () <BUSplashAdDelegate>
-//@property (nonatomic, assign) CFTimeInterval startTime;
-//@end
+@interface AppDelegate () <BUSplashAdDelegate>
+@property (nonatomic, assign) CFTimeInterval startTime;
+@end
 
 @implementation AppDelegate
 
@@ -55,14 +53,11 @@
   #if DEBUG
     [AdBoss init: @"5016582"]; //内测appid
   #else
-  [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
+    [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
   #endif
   
   [AdBoss hookWindow:self.window];
-  
-//  //开屏广告代码 //TODO： 重构后还有问题，无法关闭， 但是后面是需要重构的 react-native的 modules里，给js决定是否唤起splash ad ...
-//  AdBoss *boss = [AdBoss new];
-//  [boss loadSplashAd:@"816582039"];
+  [AdBoss hookApp:self];
 
   return YES;
 }
@@ -76,17 +71,15 @@
   #endif
 }
 
-////穿山甲开屏广告 回调 ==== start
-//- (void)splashAdDidClose:(BUSplashAdView *)splashAd {
-//  [splashAd removeFromSuperview];
-//  CFTimeInterval endTime = CACurrentMediaTime();
-//}
-//
-//- (void)splashAd:(BUSplashAdView *)splashAd didFailWithError:(NSError *)error {
-//  [splashAd removeFromSuperview];
-//  CFTimeInterval endTime = CACurrentMediaTime();
-//}
-////穿山甲开屏广告 回调 ==== end
+//穿山甲开屏广告 回调 ==== start
+- (void)splashAdDidClose:(BUSplashAdView *)splashAd {
+  [splashAd removeFromSuperview];
+}
+
+- (void)splashAd:(BUSplashAdView *)splashAd didFailWithError:(NSError *)error {
+  [splashAd removeFromSuperview];
+}
+//穿山甲开屏广告 回调 ==== end
 
 
 @end

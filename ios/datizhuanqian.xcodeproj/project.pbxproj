@@ -603,7 +603,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 44232M6892;
+						DevelopmentTeam = 3W7L7CX92N;
 						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1008,7 +1008,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 44232M6892;
+				DEVELOPMENT_TEAM = 3W7L7CX92N;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = datizhuanqian/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1019,7 +1019,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.datizhuanqian;
 				PRODUCT_NAME = datizhuanqian;
-				PROVISIONING_PROFILE_SPECIFIER = dazhuan_test;
+				PROVISIONING_PROFILE_SPECIFIER = datizhuanqian_test;
 				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1032,7 +1032,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 44232M6892;
+				DEVELOPMENT_TEAM = 3W7L7CX92N;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = datizhuanqian/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1043,7 +1043,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.datizhuanqian;
 				PRODUCT_NAME = datizhuanqian;
-				PROVISIONING_PROFILE_SPECIFIER = dazhuan_test;
+				PROVISIONING_PROFILE_SPECIFIER = datizhuanqian_test;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
