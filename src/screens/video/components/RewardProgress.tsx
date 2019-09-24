@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { StyleSheet, View, Image, TouchableWithoutFeedback, Animated } from 'react-native';
 import { observer, app } from 'store';
-import { PxFit, Tools } from '../../../utils';
+import { PxFit, Tools, ISIOS } from '../../../utils';
 import * as Progress from 'react-native-progress';
 import VideoStore from '../VideoStore';
 import { GQL, useMutation } from 'apollo';
@@ -77,7 +77,7 @@ const RewardProgress = observer(props => {
                     {rewardGold}
                 </Animated.Text>
                 <Image source={require('@src/assets/images/video_reward_progress.png')} style={styles.rewardImage} />
-                {progress > 0 && (
+                {progress > 0 && !ISIOS && (
                     <Progress.Circle
                         progress={progress / 100}
                         size={PxFit(60)}

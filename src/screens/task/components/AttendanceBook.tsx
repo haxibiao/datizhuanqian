@@ -50,9 +50,9 @@ const AttendanceBook = (props): JSX.Element => {
     const signInData = useMemo(() => {
         return Tools.syncGetter('signIns', data) || {};
     }, [data]);
-    console.log('====================================');
-    console.log('signInDatasignInData', signInData, data);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log('signInDatasignInData', signInData, data);
+    // console.log('====================================');
     const keep_signin_days = Tools.syncGetter('keep_signin_days', signInData);
     const today_signed = Tools.syncGetter('today_signed', signInData);
     const signIns = Tools.syncGetter('signs', signInData);
@@ -91,9 +91,9 @@ const AttendanceBook = (props): JSX.Element => {
     if (!signIns) {
         return null;
     }
-    console.log('====================================');
-    console.log('signIns', signIns);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log('signIns', signIns);
+    // console.log('====================================');
     return (
         <BoxShadow
             setting={Object.assign({}, shadowOpt, {

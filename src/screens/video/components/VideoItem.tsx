@@ -9,6 +9,7 @@ import VideoStore from '../VideoStore';
 
 export default observer(props => {
     const { media, index } = props;
+    console.log('VideoStore.viewportHeight', VideoStore.viewportHeight);
     return (
         <View style={{ height: VideoStore.viewportHeight }}>
             {media.cover && (

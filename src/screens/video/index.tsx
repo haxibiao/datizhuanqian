@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 
 import { GQL, useQuery, useLazyQuery, useMutation, useApolloClient } from 'apollo';
-import { observer } from 'store';
+import { observer, app } from 'store';
 import { exceptionCapture } from 'common';
 import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils';
 
@@ -76,11 +76,20 @@ export default observer(props => {
     );
 
     useEffect(() => {
+        const navWillFocusListener = navigation.addListener('willFocus', () => {
+            console.log('====================================');
+            console.log('VideoStore.viewableItemIndex');
+            console.log('====================================');
+            if (VideoStore.viewableItemIndex < 0) {
+                VideoStore.viewableItemIndex = 0;
+            }
+        });
         const navWillBlurListener = navigation.addListener('willBlur', () => {
             hideComment();
         });
         fetchData();
         return () => {
+            navWillFocusListener.remove();
             navWillBlurListener.remove();
         };
     }, []);
@@ -91,39 +100,41 @@ export default observer(props => {
     }, [VideoStore.viewableItemIndex]);
 
     return (
-        <View style={styles.container} onLayout={onLayout}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'light-content'} />
-            <FlatList
-                data={VideoStore.dataSource}
-                contentContainerStyle={{ flexGrow: 1 }}
-                bounces={false}
-                scrollsToTop={false}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="always"
-                pagingEnabled={true}
-                removeClippedSubviews={true}
-                keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-                renderItem={({ item, index }) => <VideoItem media={item} index={index} />}
-                getItemLayout={(data, index) => ({
-                    length: VideoStore.viewportHeight,
-                    offset: VideoStore.viewportHeight * index,
-                    index,
-                })}
-                ListEmptyComponent={
-                    <View style={styles.cover}>
-                        <Image style={styles.curtain} source={require('@src/assets/images/curtain.png')} />
-                    </View>
-                }
-                ListFooterComponent={<Footer />}
-                onMomentumScrollEnd={onMomentumScrollEnd}
-                onViewableItemsChanged={getVisibleRows}
-                viewabilityConfig={config.current}
-            />
-            <View style={styles.rewardProgress}>
-                <RewardProgress />
+        app.login && (
+            <View style={styles.container} onLayout={onLayout}>
+                <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'} />
+                <FlatList
+                    data={VideoStore.dataSource}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    bounces={false}
+                    scrollsToTop={false}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="always"
+                    pagingEnabled={true}
+                    removeClippedSubviews={true}
+                    keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+                    renderItem={({ item, index }) => <VideoItem media={item} index={index} />}
+                    getItemLayout={(data, index) => ({
+                        length: VideoStore.viewportHeight,
+                        offset: VideoStore.viewportHeight * index,
+                        index,
+                    })}
+                    ListEmptyComponent={
+                        <View style={styles.cover}>
+                            <Image style={styles.curtain} source={require('@src/assets/images/curtain.png')} />
+                        </View>
+                    }
+                    ListFooterComponent={<Footer />}
+                    onMomentumScrollEnd={onMomentumScrollEnd}
+                    onViewableItemsChanged={getVisibleRows}
+                    viewabilityConfig={config.current}
+                />
+                <View style={styles.rewardProgress}>
+                    <RewardProgress />
+                </View>
+                <CommentOverlay ref={commentRef} question={question} />
             </View>
-            <CommentOverlay ref={commentRef} question={question} />
-        </View>
+        )
     );
 });
 

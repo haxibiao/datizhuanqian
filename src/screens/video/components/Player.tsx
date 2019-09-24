@@ -39,12 +39,6 @@ export default observer(props => {
             },
 
             onProgress(data) {
-                // 每个视频初次播放才加载奖励进度，根据播放时长控制
-                // if (Math.abs(media.currentTime - duration.current) > 1) {
-                //     VideoStore.rewardProgress += data.currentTime - media.currentTime;
-                //     media.currentTime = data.currentTime;
-                // }
-
                 if (!media.watched) {
                     VideoStore.rewardProgress += data.currentTime - media.currentTime;
                     if (Math.abs(media.currentTime - duration.current) <= 1) {
@@ -75,6 +69,7 @@ export default observer(props => {
     }, [media.currentTime]);
 
     useEffect(() => {
+        setPause(!isIntoView);
         const navWillFocusListener = navigation.addListener('willFocus', () => {
             setPause(!isIntoView);
         });
@@ -86,6 +81,7 @@ export default observer(props => {
             navWillBlurListener.remove();
         };
     }, [isIntoView]);
+
     return (
         <TouchableWithoutFeedback onPress={togglePause}>
             <View style={styles.playContainer}>
