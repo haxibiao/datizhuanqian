@@ -225,6 +225,12 @@ class WithdrawBody extends Component {
                             })}
                         </View>
 
+                        {config.enableBanner && ISAndroid && (
+                            <View style={{ paddingLeft: 20 }}>
+                                <ttad.BannerAd size="large" />
+                            </View>
+                        )}
+
                         {user.wallet && user.wallet.pay_account ? (
                             <View style={styles.footer}>
                                 <TouchFeedback

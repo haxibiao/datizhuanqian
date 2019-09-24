@@ -1,4 +1,4 @@
-import Banner from './Banner';
+import Banner from './BannerDialog';
 import FullScreenVideo from './FullScreenVideo';
 import RewardVideo from './RewardVideo';
 import Splash from './Splash';

@@ -17,13 +17,17 @@
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
 
-//穿山甲广告SDK
-#import <BUAdSDK/BUAdSDKManager.h>
-#import "BUAdSDK/BUSplashAdView.h"
+#include "AdBoss.h"
 
-@interface AppDelegate () <BUSplashAdDelegate>
-@property (nonatomic, assign) CFTimeInterval startTime;
-@end
+//穿山甲广告SDK
+//#import <BUAdSDK/BUAdSDKManager.h>
+//#import "BUAdSDK/BUSplashAdView.h"
+
+
+
+//@interface AppDelegate () <BUSplashAdDelegate>
+//@property (nonatomic, assign) CFTimeInterval startTime;
+//@end
 
 @implementation AppDelegate
 
@@ -47,27 +51,18 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
-  //穿山甲开屏广告
-#if DEBUG
-  //Whether to open log. default is none.
-  [BUAdSDKManager setLoglevel:BUAdSDKLogLevelDebug];
-#endif
-  [BUAdSDKManager setAppID:@"5016582"]; //答赚ios appid 没上线，暂时用答妹内测
-  [BUAdSDKManager setIsPaidApp:NO];
-
-  CGRect frame = [UIScreen mainScreen].bounds;
-  BUSplashAdView *splashView = [[BUSplashAdView alloc] initWithSlotID:@"816582039" frame:frame]; //答赚ios 开屏广告位
+  //穿山甲 init appid
+  #if DEBUG
+    [AdBoss init: @"5016582"]; //内测appid
+  #else
+  [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
+  #endif
   
-  // tolerateTimeout = CGFLOAT_MAX , The conversion time to milliseconds will be equal to 0
-  splashView.tolerateTimeout = 10;
-  splashView.delegate = self;
-
-  UIWindow *keyWindow = self.window;
-  self.startTime = CACurrentMediaTime();
-  [splashView loadAdData];
-  [keyWindow.rootViewController.view addSubview:splashView];
-  splashView.rootViewController = keyWindow.rootViewController;
-   //穿山甲开屏广告 ======== end
+  [AdBoss hookWindow:self.window];
+  
+//  //开屏广告代码 //TODO： 重构后还有问题，无法关闭， 但是后面是需要重构的 react-native的 modules里，给js决定是否唤起splash ad ...
+//  AdBoss *boss = [AdBoss new];
+//  [boss loadSplashAd:@"816582039"];
 
   return YES;
 }
@@ -81,18 +76,17 @@
   #endif
 }
 
-//穿山甲开屏广告 回调 ==== start
-- (void)splashAdDidClose:(BUSplashAdView *)splashAd {
-  [splashAd removeFromSuperview];
-  CFTimeInterval endTime = CACurrentMediaTime();
-}
-
-- (void)splashAd:(BUSplashAdView *)splashAd didFailWithError:(NSError *)error {
-  [splashAd removeFromSuperview];
-  CFTimeInterval endTime = CACurrentMediaTime();
-}
-//穿山甲开屏广告 回调 ==== end
-
+////穿山甲开屏广告 回调 ==== start
+//- (void)splashAdDidClose:(BUSplashAdView *)splashAd {
+//  [splashAd removeFromSuperview];
+//  CFTimeInterval endTime = CACurrentMediaTime();
+//}
+//
+//- (void)splashAd:(BUSplashAdView *)splashAd didFailWithError:(NSError *)error {
+//  [splashAd removeFromSuperview];
+//  CFTimeInterval endTime = CACurrentMediaTime();
+//}
+////穿山甲开屏广告 回调 ==== end
 
 
 @end

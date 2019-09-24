@@ -17,6 +17,7 @@ import RuleDescription from './components/RuleDescription';
 
 import { Overlay } from 'teaset';
 import { app, observer } from 'store';
+import { ttad } from 'native';
 
 @observer
 class index extends Component {
@@ -48,7 +49,10 @@ class index extends Component {
                         <Text>规则说明</Text>
                     </TouchFeedback>
                 }>
-                {login ? <WithdrawBody navigation={navigation} /> : <NotLogin navigation={navigation} />}
+                {/* <ttad.DrawFeedAd /> */}
+                {/* <ttad.BannerAd /> */}
+                <ttad.FeedAd />
+                {/* {login ? <WithdrawBody navigation={navigation} /> : <NotLogin navigation={navigation} />} */}
             </PageContainer>
         );
     }

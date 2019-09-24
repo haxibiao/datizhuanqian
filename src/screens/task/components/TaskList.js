@@ -332,7 +332,11 @@ class TaskList extends Component {
                             });
                         }}
                     />
-
+                    {config.enableFeed && ISAndroid && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {growUpTask.length > 0 && (
                         <TaskType
                             tasks={growUpTask}
@@ -342,6 +346,11 @@ class TaskList extends Component {
                             handlerLoading={this.handlerLoading}
                         />
                     )}
+                    {config.enableFeed && ISAndroid && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
+                    )}
                     {newUserTask.length > 0 && (
                         <TaskType
                             tasks={newUserTask}
@@ -350,6 +359,11 @@ class TaskList extends Component {
                             name={'新人任务'}
                             handlerLoading={this.handlerLoading}
                         />
+                    )}
+                    {config.enableFeed && ISAndroid && (
+                        <View style={{ paddingHorizontal: PxFit(15) }}>
+                            <ttad.FeedAd />
+                        </View>
                     )}
                     {dailyTask.length > 0 && (
                         <TaskType

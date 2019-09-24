@@ -14,14 +14,43 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		154AB7AD5FACF7331944925A /* libPods-datizhuanqian-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D342D97E3872FB9B6F22F62F /* libPods-datizhuanqian-tvOS.a */; };
 		2C3378844F24649C9D2DCEEA /* libPods-datizhuanqianTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4AA499D7C2C9D10BE6A03D5 /* libPods-datizhuanqianTests.a */; };
+		2C50A39F2331DD4900046CAA /* BUDSlotViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A36A2331DD4900046CAA /* BUDSlotViewModel.m */; };
+		2C50A3A02331DD4900046CAA /* BUDBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A36F2331DD4900046CAA /* BUDBase64.m */; };
+		2C50A3A12331DD4900046CAA /* UIView+Draw.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3722331DD4900046CAA /* UIView+Draw.m */; };
+		2C50A3A22331DD4900046CAA /* NSString+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3732331DD4900046CAA /* NSString+Json.m */; };
+		2C50A3A32331DD4900046CAA /* NSString+LocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3742331DD4900046CAA /* NSString+LocalizedString.m */; };
+		2C50A3A42331DD4900046CAA /* RRFPSBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A37A2331DD4900046CAA /* RRFPSBar.m */; };
+		2C50A3A52331DD4900046CAA /* BUDCocoaSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A37C2331DD4900046CAA /* BUDCocoaSecurity.m */; };
+		2C50A3A62331DD4900046CAA /* BUDRewardedVideoAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A37E2331DD4900046CAA /* BUDRewardedVideoAdViewController.m */; };
+		2C50A3A72331DD4900046CAA /* BUDSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3812331DD4900046CAA /* BUDSplashViewController.m */; };
+		2C50A3A82331DD4900046CAA /* BUDConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3842331DD4900046CAA /* BUDConfigHelper.m */; };
+		2C50A3A92331DD4900046CAA /* BUDFeedNormalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3872331DD4900046CAA /* BUDFeedNormalTableViewCell.m */; };
+		2C50A3AA2331DD4900046CAA /* BUDRefreshButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3882331DD4900046CAA /* BUDRefreshButton.m */; };
+		2C50A3AB2331DD4900046CAA /* BUDNormalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3892331DD4900046CAA /* BUDNormalButton.m */; };
+		2C50A3AC2331DD4900046CAA /* BUDSettingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A38C2331DD4900046CAA /* BUDSettingTableView.m */; };
+		2C50A3AD2331DD4900046CAA /* BUDFeedStyleHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A38D2331DD4900046CAA /* BUDFeedStyleHelper.m */; };
+		2C50A3AE2331DD4900046CAA /* BUDDrawTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A38E2331DD4900046CAA /* BUDDrawTableViewCell.m */; };
+		2C50A3AF2331DD4900046CAA /* BUDPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A38F2331DD4900046CAA /* BUDPlayerController.m */; };
+		2C50A3B02331DD4900046CAA /* BUDdemoDislikeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3932331DD4900046CAA /* BUDdemoDislikeCollectionCell.m */; };
+		2C50A3B12331DD4900046CAA /* BUDActionAreaView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3942331DD4900046CAA /* BUDActionAreaView.m */; };
+		2C50A3B22331DD4900046CAA /* BUDFeedNormalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */; };
+		2C50A3B32331DD4900046CAA /* RewardVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A39B2331DD4900046CAA /* RewardVideo.m */; };
+		2C50A3B42331DD4900046CAA /* VideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A39C2331DD4900046CAA /* VideoUploader.m */; };
+		2C7C0A4F23332EF2007E43D3 /* AdBoss.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A4E23332EF2007E43D3 /* AdBoss.m */; };
+		2C7C0A542333587B007E43D3 /* BannerAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A532333587B007E43D3 /* BannerAd.m */; };
+		2C7C0A5623335890007E43D3 /* SplashAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A5523335890007E43D3 /* SplashAd.m */; };
+		2C7C0A58233358DD007E43D3 /* BannerAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A57233358DD007E43D3 /* BannerAdManager.m */; };
+		2C7C0A5C233382B7007E43D3 /* AppUtilModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A5B233382B7007E43D3 /* AppUtilModule.m */; };
+		2C7C0A652333AAC8007E43D3 /* FeedAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A642333AAC8007E43D3 /* FeedAdManager.m */; };
+		2C7C0A682333AB2B007E43D3 /* FeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A672333AB2B007E43D3 /* FeedAd.m */; };
+		2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */; };
+		2CDFBE9B23320CCF000B8EC5 /* DrawFeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* datizhuanqianTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* datizhuanqianTests.m */; };
 		4ADF539430084AB9592CEEB7 /* libPods-datizhuanqian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAC5C74146B56875F3C9EEE2 /* libPods-datizhuanqian.a */; };
 		8326C7B72FFB45CEB4C18A03 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65BFE09E2B844B25A20FFFEB /* iconfont.ttf */; };
-		B7DC401B2322131600406F34 /* BUAdSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B7DC40192322131600406F34 /* BUAdSDK.bundle */; };
-		B7DC401C2322131600406F34 /* BUAdSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC401A2322131600406F34 /* BUAdSDK.framework */; };
 		B7DC401E2322137700406F34 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC401D2322137700406F34 /* StoreKit.framework */; };
 		B7DC40202322137E00406F34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC401F2322137E00406F34 /* MobileCoreServices.framework */; };
 		B7DC40222322138400406F34 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC40212322138400406F34 /* WebKit.framework */; };
@@ -34,28 +63,6 @@
 		B7DC4030232213C600406F34 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC402F232213C600406F34 /* libresolv.9.tbd */; };
 		B7DC4032232213D000406F34 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC4031232213D000406F34 /* libc++.tbd */; };
 		B7DC4034232213D700406F34 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC4033232213D700406F34 /* libz.tbd */; };
-		B7DC40702322221500406F34 /* BUDSlotViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC403F2322221500406F34 /* BUDSlotViewModel.m */; };
-		B7DC40712322221500406F34 /* BUDBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40442322221500406F34 /* BUDBase64.m */; };
-		B7DC40722322221500406F34 /* UIView+Draw.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40472322221500406F34 /* UIView+Draw.m */; };
-		B7DC40732322221500406F34 /* NSString+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40482322221500406F34 /* NSString+Json.m */; };
-		B7DC40742322221500406F34 /* NSString+LocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40492322221500406F34 /* NSString+LocalizedString.m */; };
-		B7DC40752322221500406F34 /* RRFPSBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC404F2322221500406F34 /* RRFPSBar.m */; };
-		B7DC40762322221500406F34 /* BUDCocoaSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40512322221500406F34 /* BUDCocoaSecurity.m */; };
-		B7DC40772322221500406F34 /* RewardVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40522322221500406F34 /* RewardVideo.m */; };
-		B7DC40782322221500406F34 /* BUDRewardedVideoAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40542322221500406F34 /* BUDRewardedVideoAdViewController.m */; };
-		B7DC40792322221500406F34 /* BUDSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40572322221500406F34 /* BUDSplashViewController.m */; };
-		B7DC407A2322221500406F34 /* BUDConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC405A2322221500406F34 /* BUDConfigHelper.m */; };
-		B7DC407B2322221500406F34 /* BUDFeedNormalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC405D2322221500406F34 /* BUDFeedNormalTableViewCell.m */; };
-		B7DC407C2322221500406F34 /* BUDRefreshButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC405E2322221500406F34 /* BUDRefreshButton.m */; };
-		B7DC407D2322221500406F34 /* BUDNormalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC405F2322221500406F34 /* BUDNormalButton.m */; };
-		B7DC407E2322221500406F34 /* BUDSettingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40622322221500406F34 /* BUDSettingTableView.m */; };
-		B7DC407F2322221500406F34 /* BUDFeedStyleHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40632322221500406F34 /* BUDFeedStyleHelper.m */; };
-		B7DC40802322221500406F34 /* BUDDrawTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40642322221500406F34 /* BUDDrawTableViewCell.m */; };
-		B7DC40812322221500406F34 /* BUDPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40652322221500406F34 /* BUDPlayerController.m */; };
-		B7DC40822322221500406F34 /* BUDdemoDislikeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC40692322221500406F34 /* BUDdemoDislikeCollectionCell.m */; };
-		B7DC40832322221500406F34 /* BUDActionAreaView.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC406A2322221500406F34 /* BUDActionAreaView.m */; };
-		B7DC40842322221500406F34 /* BUDFeedNormalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC406F2322221500406F34 /* BUDFeedNormalModel.m */; };
-		B7DC4115232228AC00406F34 /* VideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = B7DC4114232228AC00406F34 /* VideoUploader.m */; };
 		FEFAB7EB96ABB0E31A342FAB /* libPods-datizhuanqian-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40584EFE0FFD9922393793FB /* libPods-datizhuanqian-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +95,63 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = datizhuanqian/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = datizhuanqian/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = datizhuanqian/main.m; sourceTree = "<group>"; };
+		2C50A36A2331DD4900046CAA /* BUDSlotViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSlotViewModel.m; sourceTree = "<group>"; };
+		2C50A36B2331DD4900046CAA /* BUDDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDDefs.h; sourceTree = "<group>"; };
+		2C50A36C2331DD4900046CAA /* BUDSlotViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSlotViewModel.h; sourceTree = "<group>"; };
+		2C50A36D2331DD4900046CAA /* BUDFeedNormalModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedNormalModel.h; sourceTree = "<group>"; };
+		2C50A36F2331DD4900046CAA /* BUDBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDBase64.m; sourceTree = "<group>"; };
+		2C50A3712331DD4900046CAA /* NSString+LocalizedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+LocalizedString.h"; sourceTree = "<group>"; };
+		2C50A3722331DD4900046CAA /* UIView+Draw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Draw.m"; sourceTree = "<group>"; };
+		2C50A3732331DD4900046CAA /* NSString+Json.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Json.m"; sourceTree = "<group>"; };
+		2C50A3742331DD4900046CAA /* NSString+LocalizedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+LocalizedString.m"; sourceTree = "<group>"; };
+		2C50A3752331DD4900046CAA /* NSString+Json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Json.h"; sourceTree = "<group>"; };
+		2C50A3762331DD4900046CAA /* UIView+Draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Draw.h"; sourceTree = "<group>"; };
+		2C50A3772331DD4900046CAA /* BUDCocoaSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDCocoaSecurity.h; sourceTree = "<group>"; };
+		2C50A3792331DD4900046CAA /* RRFPSBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRFPSBar.h; sourceTree = "<group>"; };
+		2C50A37A2331DD4900046CAA /* RRFPSBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RRFPSBar.m; sourceTree = "<group>"; };
+		2C50A37B2331DD4900046CAA /* BUDBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDBase64.h; sourceTree = "<group>"; };
+		2C50A37C2331DD4900046CAA /* BUDCocoaSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDCocoaSecurity.m; sourceTree = "<group>"; };
+		2C50A37E2331DD4900046CAA /* BUDRewardedVideoAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDRewardedVideoAdViewController.m; sourceTree = "<group>"; };
+		2C50A37F2331DD4900046CAA /* BUDSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSplashViewController.h; sourceTree = "<group>"; };
+		2C50A3802331DD4900046CAA /* BUDRewardedVideoAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDRewardedVideoAdViewController.h; sourceTree = "<group>"; };
+		2C50A3812331DD4900046CAA /* BUDSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSplashViewController.m; sourceTree = "<group>"; };
+		2C50A3832331DD4900046CAA /* BUDMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDMacros.h; sourceTree = "<group>"; };
+		2C50A3842331DD4900046CAA /* BUDConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDConfigHelper.m; sourceTree = "<group>"; };
+		2C50A3852331DD4900046CAA /* BUDConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDConfigHelper.h; sourceTree = "<group>"; };
+		2C50A3872331DD4900046CAA /* BUDFeedNormalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalTableViewCell.m; sourceTree = "<group>"; };
+		2C50A3882331DD4900046CAA /* BUDRefreshButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDRefreshButton.m; sourceTree = "<group>"; };
+		2C50A3892331DD4900046CAA /* BUDNormalButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDNormalButton.m; sourceTree = "<group>"; };
+		2C50A38A2331DD4900046CAA /* BUDActionAreaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDActionAreaView.h; sourceTree = "<group>"; };
+		2C50A38B2331DD4900046CAA /* BUDdemoDislikeCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDdemoDislikeCollectionCell.h; sourceTree = "<group>"; };
+		2C50A38C2331DD4900046CAA /* BUDSettingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSettingTableView.m; sourceTree = "<group>"; };
+		2C50A38D2331DD4900046CAA /* BUDFeedStyleHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedStyleHelper.m; sourceTree = "<group>"; };
+		2C50A38E2331DD4900046CAA /* BUDDrawTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDDrawTableViewCell.m; sourceTree = "<group>"; };
+		2C50A38F2331DD4900046CAA /* BUDPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDPlayerController.m; sourceTree = "<group>"; };
+		2C50A3902331DD4900046CAA /* BUDRefreshButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDRefreshButton.h; sourceTree = "<group>"; };
+		2C50A3912331DD4900046CAA /* BUDFeedNormalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedNormalTableViewCell.h; sourceTree = "<group>"; };
+		2C50A3922331DD4900046CAA /* BUDSettingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSettingTableView.h; sourceTree = "<group>"; };
+		2C50A3932331DD4900046CAA /* BUDdemoDislikeCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDdemoDislikeCollectionCell.m; sourceTree = "<group>"; };
+		2C50A3942331DD4900046CAA /* BUDActionAreaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDActionAreaView.m; sourceTree = "<group>"; };
+		2C50A3952331DD4900046CAA /* BUDNormalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDNormalButton.h; sourceTree = "<group>"; };
+		2C50A3962331DD4900046CAA /* BUDPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDPlayerController.h; sourceTree = "<group>"; };
+		2C50A3972331DD4900046CAA /* BUDDrawTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDDrawTableViewCell.h; sourceTree = "<group>"; };
+		2C50A3982331DD4900046CAA /* BUDFeedStyleHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedStyleHelper.h; sourceTree = "<group>"; };
+		2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalModel.m; sourceTree = "<group>"; };
+		2C50A39B2331DD4900046CAA /* RewardVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardVideo.m; sourceTree = "<group>"; };
+		2C50A39C2331DD4900046CAA /* VideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoUploader.m; sourceTree = "<group>"; };
+		2C7C0A4E23332EF2007E43D3 /* AdBoss.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdBoss.m; sourceTree = "<group>"; };
+		2C7C0A50233332B6007E43D3 /* AdBoss.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdBoss.h; sourceTree = "<group>"; };
+		2C7C0A532333587B007E43D3 /* BannerAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAd.m; sourceTree = "<group>"; };
+		2C7C0A5523335890007E43D3 /* SplashAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashAd.m; sourceTree = "<group>"; };
+		2C7C0A57233358DD007E43D3 /* BannerAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAdManager.m; sourceTree = "<group>"; };
+		2C7C0A5923335927007E43D3 /* BannerAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerAd.h; sourceTree = "<group>"; };
+		2C7C0A5B233382B7007E43D3 /* AppUtilModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppUtilModule.m; sourceTree = "<group>"; };
+		2C7C0A642333AAC8007E43D3 /* FeedAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedAdManager.m; sourceTree = "<group>"; };
+		2C7C0A662333AAF6007E43D3 /* FeedAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedAd.h; sourceTree = "<group>"; };
+		2C7C0A672333AB2B007E43D3 /* FeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedAd.m; sourceTree = "<group>"; };
+		2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAdManager.m; sourceTree = "<group>"; };
+		2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAd.m; sourceTree = "<group>"; };
+		2CDFBE9D23320D80000B8EC5 /* DrawFeedAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawFeedAd.h; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* datizhuanqian-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "datizhuanqian-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* datizhuanqian-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "datizhuanqian-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEBDA527EB58E96CB985C4E /* Pods-datizhuanqian-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOSTests/Pods-datizhuanqian-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -99,8 +163,6 @@
 		70088C9662D34A4F8A8057A9 /* Pods-datizhuanqian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.debug.xcconfig"; sourceTree = "<group>"; };
 		A4AA499D7C2C9D10BE6A03D5 /* libPods-datizhuanqianTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqianTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B64735298AB520A0B2AC456F /* Pods-datizhuanqianTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.debug.xcconfig"; sourceTree = "<group>"; };
-		B7DC40192322131600406F34 /* BUAdSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BUAdSDK.bundle; path = datizhuanqian/sdk/BUAdSDK.bundle; sourceTree = SOURCE_ROOT; };
-		B7DC401A2322131600406F34 /* BUAdSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BUAdSDK.framework; path = datizhuanqian/sdk/BUAdSDK.framework; sourceTree = SOURCE_ROOT; };
 		B7DC401D2322137700406F34 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B7DC401F2322137E00406F34 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B7DC40212322138400406F34 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -114,50 +176,6 @@
 		B7DC4031232213D000406F34 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		B7DC4033232213D700406F34 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		B7DC4035232213F800406F34 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		B7DC403F2322221500406F34 /* BUDSlotViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSlotViewModel.m; sourceTree = "<group>"; };
-		B7DC40402322221500406F34 /* BUDDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDDefs.h; sourceTree = "<group>"; };
-		B7DC40412322221500406F34 /* BUDSlotViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSlotViewModel.h; sourceTree = "<group>"; };
-		B7DC40422322221500406F34 /* BUDFeedNormalModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedNormalModel.h; sourceTree = "<group>"; };
-		B7DC40442322221500406F34 /* BUDBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDBase64.m; sourceTree = "<group>"; };
-		B7DC40462322221500406F34 /* NSString+LocalizedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+LocalizedString.h"; sourceTree = "<group>"; };
-		B7DC40472322221500406F34 /* UIView+Draw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Draw.m"; sourceTree = "<group>"; };
-		B7DC40482322221500406F34 /* NSString+Json.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Json.m"; sourceTree = "<group>"; };
-		B7DC40492322221500406F34 /* NSString+LocalizedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+LocalizedString.m"; sourceTree = "<group>"; };
-		B7DC404A2322221500406F34 /* NSString+Json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Json.h"; sourceTree = "<group>"; };
-		B7DC404B2322221500406F34 /* UIView+Draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Draw.h"; sourceTree = "<group>"; };
-		B7DC404C2322221500406F34 /* BUDCocoaSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDCocoaSecurity.h; sourceTree = "<group>"; };
-		B7DC404E2322221500406F34 /* RRFPSBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRFPSBar.h; sourceTree = "<group>"; };
-		B7DC404F2322221500406F34 /* RRFPSBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RRFPSBar.m; sourceTree = "<group>"; };
-		B7DC40502322221500406F34 /* BUDBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDBase64.h; sourceTree = "<group>"; };
-		B7DC40512322221500406F34 /* BUDCocoaSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDCocoaSecurity.m; sourceTree = "<group>"; };
-		B7DC40522322221500406F34 /* RewardVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardVideo.m; sourceTree = "<group>"; };
-		B7DC40542322221500406F34 /* BUDRewardedVideoAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDRewardedVideoAdViewController.m; sourceTree = "<group>"; };
-		B7DC40552322221500406F34 /* BUDSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSplashViewController.h; sourceTree = "<group>"; };
-		B7DC40562322221500406F34 /* BUDRewardedVideoAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDRewardedVideoAdViewController.h; sourceTree = "<group>"; };
-		B7DC40572322221500406F34 /* BUDSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSplashViewController.m; sourceTree = "<group>"; };
-		B7DC40592322221500406F34 /* BUDMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDMacros.h; sourceTree = "<group>"; };
-		B7DC405A2322221500406F34 /* BUDConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDConfigHelper.m; sourceTree = "<group>"; };
-		B7DC405B2322221500406F34 /* BUDConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDConfigHelper.h; sourceTree = "<group>"; };
-		B7DC405D2322221500406F34 /* BUDFeedNormalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalTableViewCell.m; sourceTree = "<group>"; };
-		B7DC405E2322221500406F34 /* BUDRefreshButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDRefreshButton.m; sourceTree = "<group>"; };
-		B7DC405F2322221500406F34 /* BUDNormalButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDNormalButton.m; sourceTree = "<group>"; };
-		B7DC40602322221500406F34 /* BUDActionAreaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDActionAreaView.h; sourceTree = "<group>"; };
-		B7DC40612322221500406F34 /* BUDdemoDislikeCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDdemoDislikeCollectionCell.h; sourceTree = "<group>"; };
-		B7DC40622322221500406F34 /* BUDSettingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSettingTableView.m; sourceTree = "<group>"; };
-		B7DC40632322221500406F34 /* BUDFeedStyleHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedStyleHelper.m; sourceTree = "<group>"; };
-		B7DC40642322221500406F34 /* BUDDrawTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDDrawTableViewCell.m; sourceTree = "<group>"; };
-		B7DC40652322221500406F34 /* BUDPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDPlayerController.m; sourceTree = "<group>"; };
-		B7DC40662322221500406F34 /* BUDRefreshButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDRefreshButton.h; sourceTree = "<group>"; };
-		B7DC40672322221500406F34 /* BUDFeedNormalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedNormalTableViewCell.h; sourceTree = "<group>"; };
-		B7DC40682322221500406F34 /* BUDSettingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSettingTableView.h; sourceTree = "<group>"; };
-		B7DC40692322221500406F34 /* BUDdemoDislikeCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDdemoDislikeCollectionCell.m; sourceTree = "<group>"; };
-		B7DC406A2322221500406F34 /* BUDActionAreaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDActionAreaView.m; sourceTree = "<group>"; };
-		B7DC406B2322221500406F34 /* BUDNormalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDNormalButton.h; sourceTree = "<group>"; };
-		B7DC406C2322221500406F34 /* BUDPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDPlayerController.h; sourceTree = "<group>"; };
-		B7DC406D2322221500406F34 /* BUDDrawTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDDrawTableViewCell.h; sourceTree = "<group>"; };
-		B7DC406E2322221500406F34 /* BUDFeedStyleHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFeedStyleHelper.h; sourceTree = "<group>"; };
-		B7DC406F2322221500406F34 /* BUDFeedNormalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalModel.m; sourceTree = "<group>"; };
-		B7DC4114232228AC00406F34 /* VideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoUploader.m; sourceTree = "<group>"; };
 		BAC5C74146B56875F3C9EEE2 /* libPods-datizhuanqian.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C07064FB237BAAA7BB3DC2FA /* Pods-datizhuanqian-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOS/Pods-datizhuanqian-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D342D97E3872FB9B6F22F62F /* libPods-datizhuanqian-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,7 +210,6 @@
 				B7DC40202322137E00406F34 /* MobileCoreServices.framework in Frameworks */,
 				B7DC401E2322137700406F34 /* StoreKit.framework in Frameworks */,
 				4ADF539430084AB9592CEEB7 /* libPods-datizhuanqian.a in Frameworks */,
-				B7DC401C2322131600406F34 /* BUAdSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,9 +252,6 @@
 		13B07FAE1A68108700A75B9A /* datizhuanqian */ = {
 			isa = PBXGroup;
 			children = (
-				B7DC4113232228AC00406F34 /* toolkits */,
-				B7DC403D2322221500406F34 /* ttad */,
-				B7DC40182322130200406F34 /* sdk */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -247,6 +261,167 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = datizhuanqian;
+			sourceTree = "<group>";
+		};
+		2C50A3642331DD4900046CAA /* toolkits */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3682331DD4900046CAA /* ttad */,
+				2C50A39A2331DD4900046CAA /* src */,
+			);
+			name = toolkits;
+			path = ../../../ios/toolkits;
+			sourceTree = "<group>";
+		};
+		2C50A3682331DD4900046CAA /* ttad */ = {
+			isa = PBXGroup;
+			children = (
+				2C7C0A5A23335D12007E43D3 /* model */,
+				2C7C0A5223335853007E43D3 /* rnviews */,
+				2C7C0A5123335846007E43D3 /* rnmodules */,
+				2C50A3692331DD4900046CAA /* viewmodel */,
+				2C50A36E2331DD4900046CAA /* Until */,
+				2C50A37D2331DD4900046CAA /* controller */,
+				2C50A3822331DD4900046CAA /* Macros */,
+				2C50A3862331DD4900046CAA /* view */,
+			);
+			path = ttad;
+			sourceTree = "<group>";
+		};
+		2C50A3692331DD4900046CAA /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A36A2331DD4900046CAA /* BUDSlotViewModel.m */,
+				2C50A36B2331DD4900046CAA /* BUDDefs.h */,
+				2C50A36C2331DD4900046CAA /* BUDSlotViewModel.h */,
+			);
+			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		2C50A36E2331DD4900046CAA /* Until */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A36F2331DD4900046CAA /* BUDBase64.m */,
+				2C50A3702331DD4900046CAA /* Category */,
+				2C50A3772331DD4900046CAA /* BUDCocoaSecurity.h */,
+				2C50A3782331DD4900046CAA /* FPSLabel */,
+				2C50A37B2331DD4900046CAA /* BUDBase64.h */,
+				2C50A37C2331DD4900046CAA /* BUDCocoaSecurity.m */,
+			);
+			path = Until;
+			sourceTree = "<group>";
+		};
+		2C50A3702331DD4900046CAA /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3712331DD4900046CAA /* NSString+LocalizedString.h */,
+				2C50A3722331DD4900046CAA /* UIView+Draw.m */,
+				2C50A3732331DD4900046CAA /* NSString+Json.m */,
+				2C50A3742331DD4900046CAA /* NSString+LocalizedString.m */,
+				2C50A3752331DD4900046CAA /* NSString+Json.h */,
+				2C50A3762331DD4900046CAA /* UIView+Draw.h */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		2C50A3782331DD4900046CAA /* FPSLabel */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3792331DD4900046CAA /* RRFPSBar.h */,
+				2C50A37A2331DD4900046CAA /* RRFPSBar.m */,
+			);
+			path = FPSLabel;
+			sourceTree = "<group>";
+		};
+		2C50A37D2331DD4900046CAA /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A37E2331DD4900046CAA /* BUDRewardedVideoAdViewController.m */,
+				2C50A37F2331DD4900046CAA /* BUDSplashViewController.h */,
+				2C50A3802331DD4900046CAA /* BUDRewardedVideoAdViewController.h */,
+				2C50A3812331DD4900046CAA /* BUDSplashViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		2C50A3822331DD4900046CAA /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3832331DD4900046CAA /* BUDMacros.h */,
+				2C50A3842331DD4900046CAA /* BUDConfigHelper.m */,
+				2C50A3852331DD4900046CAA /* BUDConfigHelper.h */,
+			);
+			path = Macros;
+			sourceTree = "<group>";
+		};
+		2C50A3862331DD4900046CAA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3872331DD4900046CAA /* BUDFeedNormalTableViewCell.m */,
+				2C50A3882331DD4900046CAA /* BUDRefreshButton.m */,
+				2C50A3892331DD4900046CAA /* BUDNormalButton.m */,
+				2C50A38A2331DD4900046CAA /* BUDActionAreaView.h */,
+				2C50A38B2331DD4900046CAA /* BUDdemoDislikeCollectionCell.h */,
+				2C50A38C2331DD4900046CAA /* BUDSettingTableView.m */,
+				2C50A38D2331DD4900046CAA /* BUDFeedStyleHelper.m */,
+				2C50A38E2331DD4900046CAA /* BUDDrawTableViewCell.m */,
+				2C50A38F2331DD4900046CAA /* BUDPlayerController.m */,
+				2C50A3902331DD4900046CAA /* BUDRefreshButton.h */,
+				2C50A3912331DD4900046CAA /* BUDFeedNormalTableViewCell.h */,
+				2C50A3922331DD4900046CAA /* BUDSettingTableView.h */,
+				2C50A3932331DD4900046CAA /* BUDdemoDislikeCollectionCell.m */,
+				2C50A3942331DD4900046CAA /* BUDActionAreaView.m */,
+				2C50A3952331DD4900046CAA /* BUDNormalButton.h */,
+				2C50A3962331DD4900046CAA /* BUDPlayerController.h */,
+				2C50A3972331DD4900046CAA /* BUDDrawTableViewCell.h */,
+				2C50A3982331DD4900046CAA /* BUDFeedStyleHelper.h */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		2C50A39A2331DD4900046CAA /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2C7C0A4E23332EF2007E43D3 /* AdBoss.m */,
+				2C7C0A50233332B6007E43D3 /* AdBoss.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		2C7C0A5123335846007E43D3 /* rnmodules */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A39C2331DD4900046CAA /* VideoUploader.m */,
+				2C50A39B2331DD4900046CAA /* RewardVideo.m */,
+				2C7C0A5523335890007E43D3 /* SplashAd.m */,
+				2C7C0A5B233382B7007E43D3 /* AppUtilModule.m */,
+			);
+			path = rnmodules;
+			sourceTree = "<group>";
+		};
+		2C7C0A5223335853007E43D3 /* rnviews */ = {
+			isa = PBXGroup;
+			children = (
+				2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */,
+				2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */,
+				2CDFBE9D23320D80000B8EC5 /* DrawFeedAd.h */,
+				2C7C0A532333587B007E43D3 /* BannerAd.m */,
+				2C7C0A57233358DD007E43D3 /* BannerAdManager.m */,
+				2C7C0A5923335927007E43D3 /* BannerAd.h */,
+				2C7C0A642333AAC8007E43D3 /* FeedAdManager.m */,
+				2C7C0A662333AAF6007E43D3 /* FeedAd.h */,
+				2C7C0A672333AB2B007E43D3 /* FeedAd.m */,
+			);
+			path = rnviews;
+			sourceTree = "<group>";
+		};
+		2C7C0A5A23335D12007E43D3 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */,
+				2C50A36D2331DD4900046CAA /* BUDFeedNormalModel.h */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -284,6 +459,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2C50A3642331DD4900046CAA /* toolkits */,
 				13B07FAE1A68108700A75B9A /* datizhuanqian */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* datizhuanqianTests */,
@@ -306,131 +482,6 @@
 				2D02E4901E0B4A5D006451C7 /* datizhuanqian-tvOSTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B7DC40182322130200406F34 /* sdk */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC40192322131600406F34 /* BUAdSDK.bundle */,
-				B7DC401A2322131600406F34 /* BUAdSDK.framework */,
-			);
-			path = sdk;
-			sourceTree = "<group>";
-		};
-		B7DC403D2322221500406F34 /* ttad */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC403E2322221500406F34 /* viewmodel */,
-				B7DC40422322221500406F34 /* BUDFeedNormalModel.h */,
-				B7DC40432322221500406F34 /* Until */,
-				B7DC40522322221500406F34 /* RewardVideo.m */,
-				B7DC40532322221500406F34 /* controller */,
-				B7DC40582322221500406F34 /* Macros */,
-				B7DC405C2322221500406F34 /* view */,
-				B7DC406F2322221500406F34 /* BUDFeedNormalModel.m */,
-			);
-			name = ttad;
-			path = datizhuanqian/ttad;
-			sourceTree = "<group>";
-		};
-		B7DC403E2322221500406F34 /* viewmodel */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC403F2322221500406F34 /* BUDSlotViewModel.m */,
-				B7DC40402322221500406F34 /* BUDDefs.h */,
-				B7DC40412322221500406F34 /* BUDSlotViewModel.h */,
-			);
-			path = viewmodel;
-			sourceTree = "<group>";
-		};
-		B7DC40432322221500406F34 /* Until */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC40442322221500406F34 /* BUDBase64.m */,
-				B7DC40452322221500406F34 /* Category */,
-				B7DC404C2322221500406F34 /* BUDCocoaSecurity.h */,
-				B7DC404D2322221500406F34 /* FPSLabel */,
-				B7DC40502322221500406F34 /* BUDBase64.h */,
-				B7DC40512322221500406F34 /* BUDCocoaSecurity.m */,
-			);
-			path = Until;
-			sourceTree = "<group>";
-		};
-		B7DC40452322221500406F34 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC40462322221500406F34 /* NSString+LocalizedString.h */,
-				B7DC40472322221500406F34 /* UIView+Draw.m */,
-				B7DC40482322221500406F34 /* NSString+Json.m */,
-				B7DC40492322221500406F34 /* NSString+LocalizedString.m */,
-				B7DC404A2322221500406F34 /* NSString+Json.h */,
-				B7DC404B2322221500406F34 /* UIView+Draw.h */,
-			);
-			path = Category;
-			sourceTree = "<group>";
-		};
-		B7DC404D2322221500406F34 /* FPSLabel */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC404E2322221500406F34 /* RRFPSBar.h */,
-				B7DC404F2322221500406F34 /* RRFPSBar.m */,
-			);
-			path = FPSLabel;
-			sourceTree = "<group>";
-		};
-		B7DC40532322221500406F34 /* controller */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC40542322221500406F34 /* BUDRewardedVideoAdViewController.m */,
-				B7DC40552322221500406F34 /* BUDSplashViewController.h */,
-				B7DC40562322221500406F34 /* BUDRewardedVideoAdViewController.h */,
-				B7DC40572322221500406F34 /* BUDSplashViewController.m */,
-			);
-			path = controller;
-			sourceTree = "<group>";
-		};
-		B7DC40582322221500406F34 /* Macros */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC40592322221500406F34 /* BUDMacros.h */,
-				B7DC405A2322221500406F34 /* BUDConfigHelper.m */,
-				B7DC405B2322221500406F34 /* BUDConfigHelper.h */,
-			);
-			path = Macros;
-			sourceTree = "<group>";
-		};
-		B7DC405C2322221500406F34 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC405D2322221500406F34 /* BUDFeedNormalTableViewCell.m */,
-				B7DC405E2322221500406F34 /* BUDRefreshButton.m */,
-				B7DC405F2322221500406F34 /* BUDNormalButton.m */,
-				B7DC40602322221500406F34 /* BUDActionAreaView.h */,
-				B7DC40612322221500406F34 /* BUDdemoDislikeCollectionCell.h */,
-				B7DC40622322221500406F34 /* BUDSettingTableView.m */,
-				B7DC40632322221500406F34 /* BUDFeedStyleHelper.m */,
-				B7DC40642322221500406F34 /* BUDDrawTableViewCell.m */,
-				B7DC40652322221500406F34 /* BUDPlayerController.m */,
-				B7DC40662322221500406F34 /* BUDRefreshButton.h */,
-				B7DC40672322221500406F34 /* BUDFeedNormalTableViewCell.h */,
-				B7DC40682322221500406F34 /* BUDSettingTableView.h */,
-				B7DC40692322221500406F34 /* BUDdemoDislikeCollectionCell.m */,
-				B7DC406A2322221500406F34 /* BUDActionAreaView.m */,
-				B7DC406B2322221500406F34 /* BUDNormalButton.h */,
-				B7DC406C2322221500406F34 /* BUDPlayerController.h */,
-				B7DC406D2322221500406F34 /* BUDDrawTableViewCell.h */,
-				B7DC406E2322221500406F34 /* BUDFeedStyleHelper.h */,
-			);
-			path = view;
-			sourceTree = "<group>";
-		};
-		B7DC4113232228AC00406F34 /* toolkits */ = {
-			isa = PBXGroup;
-			children = (
-				B7DC4114232228AC00406F34 /* VideoUploader.m */,
-			);
-			name = toolkits;
-			path = datizhuanqian/toolkits;
 			sourceTree = "<group>";
 		};
 		BDD3C07F71ABF46AD18D2FBE /* Pods */ = {
@@ -574,6 +625,7 @@
 				English,
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -602,7 +654,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				B7DC401B2322131600406F34 /* BUAdSDK.bundle in Resources */,
 				8326C7B72FFB45CEB4C18A03 /* iconfont.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -637,7 +688,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		01EAD6EB46F92412B130C87C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -731,7 +782,8 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian-resources.sh",
+				"${PODS_ROOT}/Bytedance-UnionAD/Bytedance-UnionAd/Frameworks/BUAdSDK.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -753,6 +805,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BUAdSDK.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
@@ -774,7 +827,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -822,30 +875,39 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7DC407B2322221500406F34 /* BUDFeedNormalTableViewCell.m in Sources */,
-				B7DC40822322221500406F34 /* BUDdemoDislikeCollectionCell.m in Sources */,
-				B7DC40782322221500406F34 /* BUDRewardedVideoAdViewController.m in Sources */,
-				B7DC40702322221500406F34 /* BUDSlotViewModel.m in Sources */,
-				B7DC40732322221500406F34 /* NSString+Json.m in Sources */,
-				B7DC407A2322221500406F34 /* BUDConfigHelper.m in Sources */,
+				2C7C0A542333587B007E43D3 /* BannerAd.m in Sources */,
+				2CDFBE9B23320CCF000B8EC5 /* DrawFeedAd.m in Sources */,
+				2C50A39F2331DD4900046CAA /* BUDSlotViewModel.m in Sources */,
+				2C50A3A62331DD4900046CAA /* BUDRewardedVideoAdViewController.m in Sources */,
+				2C50A3A22331DD4900046CAA /* NSString+Json.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				B7DC40712322221500406F34 /* BUDBase64.m in Sources */,
-				B7DC407F2322221500406F34 /* BUDFeedStyleHelper.m in Sources */,
-				B7DC40792322221500406F34 /* BUDSplashViewController.m in Sources */,
-				B7DC407E2322221500406F34 /* BUDSettingTableView.m in Sources */,
-				B7DC40832322221500406F34 /* BUDActionAreaView.m in Sources */,
-				B7DC40842322221500406F34 /* BUDFeedNormalModel.m in Sources */,
-				B7DC407C2322221500406F34 /* BUDRefreshButton.m in Sources */,
-				B7DC40802322221500406F34 /* BUDDrawTableViewCell.m in Sources */,
-				B7DC40812322221500406F34 /* BUDPlayerController.m in Sources */,
-				B7DC40772322221500406F34 /* RewardVideo.m in Sources */,
+				2C7C0A682333AB2B007E43D3 /* FeedAd.m in Sources */,
+				2C50A3A72331DD4900046CAA /* BUDSplashViewController.m in Sources */,
+				2C50A3A82331DD4900046CAA /* BUDConfigHelper.m in Sources */,
+				2C50A3A02331DD4900046CAA /* BUDBase64.m in Sources */,
+				2C50A3AF2331DD4900046CAA /* BUDPlayerController.m in Sources */,
+				2C50A3B12331DD4900046CAA /* BUDActionAreaView.m in Sources */,
+				2C50A3AE2331DD4900046CAA /* BUDDrawTableViewCell.m in Sources */,
+				2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */,
+				2C7C0A5623335890007E43D3 /* SplashAd.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				B7DC40762322221500406F34 /* BUDCocoaSecurity.m in Sources */,
-				B7DC407D2322221500406F34 /* BUDNormalButton.m in Sources */,
-				B7DC40742322221500406F34 /* NSString+LocalizedString.m in Sources */,
-				B7DC4115232228AC00406F34 /* VideoUploader.m in Sources */,
-				B7DC40722322221500406F34 /* UIView+Draw.m in Sources */,
-				B7DC40752322221500406F34 /* RRFPSBar.m in Sources */,
+				2C50A3A52331DD4900046CAA /* BUDCocoaSecurity.m in Sources */,
+				2C50A3A32331DD4900046CAA /* NSString+LocalizedString.m in Sources */,
+				2C7C0A5C233382B7007E43D3 /* AppUtilModule.m in Sources */,
+				2C50A3A12331DD4900046CAA /* UIView+Draw.m in Sources */,
+				2C50A3AA2331DD4900046CAA /* BUDRefreshButton.m in Sources */,
+				2C7C0A4F23332EF2007E43D3 /* AdBoss.m in Sources */,
+				2C50A3AC2331DD4900046CAA /* BUDSettingTableView.m in Sources */,
+				2C50A3A92331DD4900046CAA /* BUDFeedNormalTableViewCell.m in Sources */,
+				2C50A3AB2331DD4900046CAA /* BUDNormalButton.m in Sources */,
+				2C50A3AD2331DD4900046CAA /* BUDFeedStyleHelper.m in Sources */,
+				2C7C0A58233358DD007E43D3 /* BannerAdManager.m in Sources */,
+				2C50A3B02331DD4900046CAA /* BUDdemoDislikeCollectionCell.m in Sources */,
+				2C50A3B32331DD4900046CAA /* RewardVideo.m in Sources */,
+				2C50A3B42331DD4900046CAA /* VideoUploader.m in Sources */,
+				2C50A3B22331DD4900046CAA /* BUDFeedNormalModel.m in Sources */,
+				2C7C0A652333AAC8007E43D3 /* FeedAdManager.m in Sources */,
+				2C50A3A42331DD4900046CAA /* RRFPSBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -947,10 +1009,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 44232M6892;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/datizhuanqian/sdk",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = datizhuanqian/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -958,9 +1017,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dazhuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.datizhuanqian;
 				PRODUCT_NAME = datizhuanqian;
 				PROVISIONING_PROFILE_SPECIFIER = dazhuan_test;
+				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -973,10 +1033,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44232M6892;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/datizhuanqian/sdk",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = datizhuanqian/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -984,7 +1041,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dazhuan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.datizhuanqian;
 				PRODUCT_NAME = datizhuanqian;
 				PROVISIONING_PROFILE_SPECIFIER = dazhuan_test;
 				VERSIONING_SYSTEM = "apple-generic";
