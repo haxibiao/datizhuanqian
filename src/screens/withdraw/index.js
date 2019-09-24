@@ -52,8 +52,9 @@ class index extends Component {
                 }>
                 {/* <ttad.DrawFeedAd /> */}
                 {/* <ttad.BannerAd /> */}
-                <ttad.FeedAd />
-                {/* {login ? <WithdrawBody navigation={navigation} /> : <NotLogin navigation={navigation} />} */}
+
+                {login ? <WithdrawBody navigation={navigation} /> : <NotLogin navigation={navigation} />}
+                {/* {login ?  <ttad.FeedAd />} */}
             </PageContainer>
         );
     }

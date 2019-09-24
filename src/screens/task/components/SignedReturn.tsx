@@ -6,7 +6,8 @@
 import React, { useMemo, useCallback, useState, useLayoutEffect, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools, WPercent } from 'utils';
-import { GQL, useMutation, useQuery } from 'apollo';
+import { TouchFeedback } from 'components';
+import { GQL, useMutation } from 'apollo';
 import { ttad } from 'native';
 import { app } from 'store';
 
@@ -14,29 +15,32 @@ interface Props {
     gold: number;
     reward: number;
     close: () => void;
+    client: any;
 }
 
 const SignedReturn = (props: Props) => {
-    const { gold, reward, close } = props;
+    const { gold, reward, close, client } = props;
     const me = useMemo(() => app.me, []);
 
-    const [doubleReward] = useMutation(GQL.UserRewardMutation, {
-        variables: {
-            reward: 'SIGNIN_VIDEO_REWARD',
-        },
-        refetchQueries: (): array => [
-            {
-                query: GQL.SignInsQuery,
-            },
-            {
-                query: GQL.UserMetaQuery,
-                variables: { id: app.me.id },
-            },
-        ],
-    });
+    const doubleReward = useCallback(() => {
+        return client.mutate({
+            mutation: GQL.UserRewardMutation,
+            variables: { reward: 'SIGNIN_VIDEO_REWARD' },
+            refetchQueries: (): array => [
+                {
+                    query: GQL.SignInsQuery,
+                },
+                {
+                    query: GQL.UserMetaQuery,
+                    variables: { id: app.me.id },
+                },
+            ],
+        });
+    }, [client]);
 
     const loadAd = useCallback(() => {
         close();
+        console.log('start');
         ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
             // 开始看奖励视频
             ttad.RewardVideo.startAd({
@@ -47,6 +51,7 @@ const SignedReturn = (props: Props) => {
                     doubleReward();
                 })
                 .catch(error => {
+                    console.log('error', error);
                     Toast.show({ content: '视频出错' });
                 });
         });
@@ -68,17 +73,17 @@ const SignedReturn = (props: Props) => {
                     )}
                 </Text>
             </View>
+            <View style={{ marginTop: PxFit(25) }}>
+                <ttad.BannerAd adWidth={WPercent(80)} />
+            </View>
             <View style={styles.TTAD}>
-                <View style={styles.bannerAd}>
-                    <ttad.BannerAd size="small" />
-                </View>
-                <TouchableWithoutFeedback onPress={loadAd}>
+                <TouchFeedback onPress={loadAd}>
                     <ImageBackground
                         style={styles.loadAdButton}
                         source={require('../../../assets/images/attendance_button.png')}>
                         <Text style={styles.buttonText}>获取双倍奖励</Text>
                     </ImageBackground>
-                </TouchableWithoutFeedback>
+                </TouchFeedback>
             </View>
         </ImageBackground>
     );
@@ -92,9 +97,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         justifyContent: 'space-around',
-    },
-    bannerAd: {
-        alignSelf: 'stretch',
     },
     buttonText: {
         color: '#fff',

@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react'
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { Row, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
-import { GQL, useMutation, useQuery } from 'apollo';
+import { GQL, useMutation, useQuery, useApolloClient } from 'apollo';
 import { app } from 'store';
 import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
@@ -27,6 +27,7 @@ interface SignInReturns {
 
 const AttendanceBook = (props): JSX.Element => {
     const [boxShadowHeight, setBoxShadowHeight] = useState(150);
+    const client = useApolloClient();
 
     const onLayoutEffect = useCallback(event => {
         setBoxShadowHeight(event.nativeEvent.layout.height);
@@ -68,6 +69,8 @@ const AttendanceBook = (props): JSX.Element => {
                 } catch (e) {
                     Toast.show({ content: '签到失败' });
                 }
+            } else {
+                Toast.show({ content: '今天已经签过到了哦' });
             }
         }),
         [signIns, today_signed],
@@ -83,6 +86,7 @@ const AttendanceBook = (props): JSX.Element => {
                     gold={returns.gold_reward}
                     reward={returns.contribute_reward}
                     close={() => overlayRef.current.close()}
+                    client={client}
                 />
             </Overlay.PopView>,
         );
