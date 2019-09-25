@@ -90,8 +90,8 @@ const TimeReward = (props: Props) => {
         };
 
         const title = '时段奖励领取成功';
-        const isRewardVideo = true;
-        RewardTipsOverlay.show(rewardContent, navigation, title, isRewardVideo);
+
+        RewardTipsOverlay.show(rewardContent, navigation, title);
     };
 
     const minute = Math.floor(time / 60) > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);

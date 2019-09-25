@@ -38,11 +38,15 @@ class RewardTips {
                                     <Text style={styles.title}>
                                         恭喜获得<Text style={{ color: Theme.themeRed }}>{reward.gold}智慧点</Text>
                                     </Text>
-                                ) : null}
+                                ) : (
+                                    <Text style={styles.title}>
+                                        恭喜获得<Text style={{ color: Theme.themeRed }}>{reward.ticket}精力点</Text>
+                                    </Text>
+                                )}
 
                                 <View style={styles.rewardContainer}>
                                     <Text style={{ color: Theme.grey }}>{title ? title : '同时奖励'}</Text>
-                                    {reward.ticket ? (
+                                    {reward.ticket && reward.gold ? (
                                         <Fragment>
                                             <Image
                                                 source={require('../../assets/images/heart.png')}
@@ -69,7 +73,7 @@ class RewardTips {
                         </View>
                         {rewardVideo ? (
                             <Button
-                                title={'立即查看'}
+                                title={'知道了'}
                                 onPress={() => RewardTips.hide()}
                                 FontSize={14}
                                 textColor={Theme.primaryColor}
@@ -84,7 +88,6 @@ class RewardTips {
                                     }}>
                                     <Text style={styles.operationText}>忽略</Text>
                                 </TouchableOpacity>
-
                                 <TouchableOpacity
                                     style={[
                                         styles.operation,

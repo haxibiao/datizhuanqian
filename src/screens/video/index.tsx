@@ -40,7 +40,7 @@ export default observer(props => {
         console.log('VideoStore.dataSource.length', VideoStore.dataSource.length);
         return client.query({
             query: GQL.VideosQuery,
-            variables: { limit: 5, offset: VideoStore.dataSource.length },
+            // variables: { limit: 5, offset: VideoStore.dataSource.length },
         });
     }, [client]);
 

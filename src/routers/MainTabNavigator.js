@@ -40,7 +40,7 @@ export default createBottomTabNavigator(
         },
     },
     {
-        initialRouteName: '提现',
+        initialRouteName: '答题',
         lazy: false,
         backBehavior: 'none',
         tabBarComponent: MainTabBar,
@@ -103,7 +103,7 @@ const TabOptions = routeName => {
                 break;
             case '学习':
                 iconName = `video${focused ? '-fill' : ''}`;
-                iconSize = focused ? PxFit(23) : PxFit(21);
+                iconSize = focused ? PxFit(22) : PxFit(20);
                 break;
             case '提现':
                 iconName = `wallet${focused ? '-fill' : ''}`;

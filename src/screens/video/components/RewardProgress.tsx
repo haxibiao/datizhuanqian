@@ -37,7 +37,7 @@ const RewardProgress = observer(props => {
                 setReward('领取失败');
             } else {
                 const gold = Tools.syncGetter('data.userReward.gold', res);
-                setReward(`+${gold}`);
+                setReward(`+${gold}智慧点`);
                 startTextAnimation();
             }
         }

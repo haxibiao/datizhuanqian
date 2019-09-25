@@ -42,7 +42,11 @@
         <!--广告sdk-->
         <activity android:name="com.haxibiao.ad.ttadsdk.RewardActivity"></activity>
         <activity android:name="com.haxibiao.ad.ttadsdk.FullScreenActivity"></activity>
-        <activity android:name="com.haxibiao.ad.ttadsdk.SplashActivity"  android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
+        <activity android:name="com.haxibiao.ad.ttadsdk.SplashActivity"  
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+                  <meta-data android:name="splash_title" android:value="答题赚钱" />
+                  <meta-data android:name="splash_title_color" android:value="#FFB100" />
+        </activity>
 
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <activity android:name="com.datizhuanqian.wxapi.WXEntryActivity"

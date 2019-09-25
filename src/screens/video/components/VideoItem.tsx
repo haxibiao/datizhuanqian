@@ -18,7 +18,7 @@ export default observer(props => {
                     onError={(error: any) => {
                         setAdShow(false);
                     }}
-                    onAdShow={() => {
+                    onAdClick={() => {
                         VideoStore.rewardProgress = 100;
                     }}
                 />

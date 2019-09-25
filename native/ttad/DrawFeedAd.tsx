@@ -6,6 +6,7 @@ const NativeDrawFeedAd = requireNativeComponent('DrawFeedAd');
 type Props = {
     onError?: Function;
     onAdShow?: Function;
+    onAdClick?: Function;
 };
 
 // 内测 无论android ios 都可以用 下面的appid, codeid;
@@ -19,7 +20,7 @@ type Props = {
 // 916582063;
 
 const DrawFeedAd = (props: Props) => {
-    let { onError, onAdShow } = props;
+    let { onError, onAdShow, onAdClick } = props;
     let [visible, setVisible] = useState(true);
     const [time, setTime] = useState(0);
 
@@ -35,6 +36,7 @@ const DrawFeedAd = (props: Props) => {
             }}
             onAdClick={e => {
                 console.log('onClick', e.nativeEvent);
+                onAdClick && onAdClick();
             }}
             onAdShow={e => {
                 console.log('onAdShow', e.nativeEvent);

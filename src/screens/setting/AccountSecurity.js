@@ -136,6 +136,8 @@ class AccountSecurity extends Component {
             auto_uuid_user = data.user.auto_uuid_user;
             auto_phone_user = data.user.auto_phone_user;
         }
+
+        console.log('user', user);
         return (
             <PageContainer title="账号与安全" white loading={!user}>
                 <View style={styles.container}>

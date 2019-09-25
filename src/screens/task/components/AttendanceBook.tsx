@@ -108,11 +108,11 @@ const AttendanceBook = (props): JSX.Element => {
                     <Text style={styles.signInText}>
                         已连续签到<Text style={styles.keepSignInText}>{`${keep_signin_days}/${signIns.length}`}</Text>天
                     </Text>
-                    <TouchableWithoutFeedback onPress={() => Tools.navigate('Share')}>
+                    {/*  <TouchableWithoutFeedback onPress={() => Tools.navigate('Share')}>
                         <Row style={styles.shareButton}>
                             <Text style={styles.shareText}>去分享</Text>
                         </Row>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
                 </View>
                 <TouchableWithoutFeedback onPress={toDaySignIn}>
                     <View style={styles.attendance}>

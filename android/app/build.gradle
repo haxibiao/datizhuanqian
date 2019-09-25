@@ -166,8 +166,8 @@ android {
         applicationId "com.datizhuanqian"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 15
-        versionName "2.2.0"
+        versionCode 16
+        versionName "2.3.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         manifestPlaceholders = [
