@@ -43,6 +43,7 @@
 		2C7C0A652333AAC8007E43D3 /* FeedAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A642333AAC8007E43D3 /* FeedAdManager.m */; };
 		2C7C0A682333AB2B007E43D3 /* FeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A672333AB2B007E43D3 /* FeedAd.m */; };
 		2CAFA6E4233B6B9700C20E17 /* FullScreenVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAFA6E3233B6B9700C20E17 /* FullScreenVideo.m */; };
+		2CAFA6E6233C2F5600C20E17 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAFA6E5233C2F3E00C20E17 /* libsqlite3.0.tbd */; };
 		2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */; };
 		2CDFBE9B23320CCF000B8EC5 /* DrawFeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -149,6 +150,7 @@
 		2C7C0A662333AAF6007E43D3 /* FeedAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedAd.h; sourceTree = "<group>"; };
 		2C7C0A672333AB2B007E43D3 /* FeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedAd.m; sourceTree = "<group>"; };
 		2CAFA6E3233B6B9700C20E17 /* FullScreenVideo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FullScreenVideo.m; sourceTree = "<group>"; };
+		2CAFA6E5233C2F3E00C20E17 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAdManager.m; sourceTree = "<group>"; };
 		2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAd.m; sourceTree = "<group>"; };
 		2CDFBE9D23320D80000B8EC5 /* DrawFeedAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawFeedAd.h; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				B7DC402E232213BD00406F34 /* CoreMotion.framework in Frameworks */,
 				B7DC402C232213B100406F34 /* AdSupport.framework in Frameworks */,
 				B7DC402A232213A900406F34 /* SystemConfiguration.framework in Frameworks */,
+				2CAFA6E6233C2F5600C20E17 /* libsqlite3.0.tbd in Frameworks */,
 				B7DC40282322139E00406F34 /* CoreTelephony.framework in Frameworks */,
 				B7DC40262322139200406F34 /* AVFoundation.framework in Frameworks */,
 				B7DC40242322138A00406F34 /* CoreMedia.framework in Frameworks */,
@@ -426,6 +429,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2CAFA6E5233C2F3E00C20E17 /* libsqlite3.0.tbd */,
 				B7DC4033232213D700406F34 /* libz.tbd */,
 				B7DC4031232213D000406F34 /* libc++.tbd */,
 				B7DC402F232213C600406F34 /* libresolv.9.tbd */,

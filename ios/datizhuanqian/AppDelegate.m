@@ -11,6 +11,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
 
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 #import <AppCenterReactNative.h>
@@ -73,6 +74,13 @@
   #else
     return [CodePush bundleURL];
   #endif
+}
+
+// ios 9.0+ 微信sdk
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 //穿山甲开屏广告 回调 ==== start
