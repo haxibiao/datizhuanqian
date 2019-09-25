@@ -9,7 +9,7 @@ import { Theme, PxFit } from '../utils';
 import { app } from 'store';
 
 class TabBarComponent extends React.Component {
-    public renderItem = (route:any, index:number) => {
+    public renderItem = (route: any, index: number) => {
         const { navigation, onTabPress, renderIcon, activeTintColor, inactiveTintColor } = this.props;
         const focused = index === navigation.state.index;
         const color = focused ? activeTintColor : inactiveTintColor;
@@ -18,15 +18,16 @@ class TabBarComponent extends React.Component {
             focused,
             route,
         };
-        if(index === 2){
-            return (
-                <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
-                    <View style={styles.tabItem}>
-                        <Image style={styles.videoPlayer} source={require('@src/assets/images/video_player.png')} />
-                    </View>
-                </TouchableWithoutFeedback>
-            );
-        }
+
+        // if(index === 2){
+        //     return (
+        //         <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
+        //             <View style={styles.tabItem}>
+        //                 <Image style={styles.videoPlayer} source={require('@src/assets/images/video_player.png')} />
+        //             </View>
+        //         </TouchableWithoutFeedback>
+        //     );
+        // }
         return (
             <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
                 <View style={styles.tabItem}>
@@ -42,7 +43,8 @@ class TabBarComponent extends React.Component {
 
     public render() {
         const { navigation } = this.props;
-        const { routes, index: currentIndex} = navigation.state;
+        const { routes, index: currentIndex } = navigation.state;
+
         const darkModel = currentIndex === 2;
         const routerItem = routes && routes.map((route, index) => this.renderItem(route, index));
 

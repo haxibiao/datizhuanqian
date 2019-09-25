@@ -34,9 +34,11 @@ class RewardTips {
                             <Image source={require('../../assets/images/money_old.png')} style={styles.headerImage} />
 
                             <View style={{ marginLeft: PxFit(15) }}>
-                                <Text style={styles.title}>
-                                    恭喜获得<Text style={{ color: Theme.themeRed }}>{reward.gold}智慧点</Text>
-                                </Text>
+                                {reward.gold ? (
+                                    <Text style={styles.title}>
+                                        恭喜获得<Text style={{ color: Theme.themeRed }}>{reward.gold}智慧点</Text>
+                                    </Text>
+                                ) : null}
 
                                 <View style={styles.rewardContainer}>
                                     <Text style={{ color: Theme.grey }}>{title ? title : '同时奖励'}</Text>

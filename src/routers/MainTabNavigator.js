@@ -26,9 +26,9 @@ export default createBottomTabNavigator(
             screen: TaskScreen,
             navigationOptions: () => TabOptions('任务'),
         },
-        视频: {
+        学习: {
             screen: MediumScreen,
-            navigationOptions: () => TabOptions('视频'),
+            navigationOptions: () => TabOptions('学习'),
         },
         提现: {
             screen: WithdrawScreen,
@@ -100,6 +100,10 @@ const TabOptions = routeName => {
             case '任务':
                 iconName = `order${focused ? '-fill' : ''}`;
                 iconSize = PxFit(21);
+                break;
+            case '学习':
+                iconName = `video${focused ? '-fill' : ''}`;
+                iconSize = focused ? PxFit(23) : PxFit(21);
                 break;
             case '提现':
                 iconName = `wallet${focused ? '-fill' : ''}`;

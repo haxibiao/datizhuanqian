@@ -59,7 +59,7 @@ class WithdrawBody extends Component {
     // 发起提现请求
     async handleWithdraws(amount) {
         const { data, navigation } = this.props;
-        if (data.user.today_withdraw_left < amount) {
+        if (data.user.today_withdraw_left < amount && amount > 1) {
             TipsOverlay.show({
                 title: '日贡献不足',
                 content: (
@@ -215,11 +215,12 @@ class WithdrawBody extends Component {
                                                 {luckyMoney.value === 1 ? '无门槛' : `${luckyMoney.value * 36}日贡献`}
                                             </Text>
                                         </TouchFeedback>
-                                        {luckyMoney.value === 1 && (
-                                            <View style={styles.badge}>
-                                                <Text style={styles.badgeText}>秒到账</Text>
-                                            </View>
-                                        )}
+
+                                        <View style={styles.badge}>
+                                            <Text style={styles.badgeText}>
+                                                {luckyMoney.value === 1 ? '秒到账' : '限量抢'}
+                                            </Text>
+                                        </View>
                                     </View>
                                 );
                             })}

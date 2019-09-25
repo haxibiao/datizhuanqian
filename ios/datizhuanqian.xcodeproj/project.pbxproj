@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* datizhuanqianTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* datizhuanqianTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -50,7 +49,6 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* datizhuanqianTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* datizhuanqianTests.m */; };
 		4ADF539430084AB9592CEEB7 /* libPods-datizhuanqian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAC5C74146B56875F3C9EEE2 /* libPods-datizhuanqian.a */; };
-		8326C7B72FFB45CEB4C18A03 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65BFE09E2B844B25A20FFFEB /* iconfont.ttf */; };
 		B7DC401E2322137700406F34 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC401D2322137700406F34 /* StoreKit.framework */; };
 		B7DC40202322137E00406F34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC401F2322137E00406F34 /* MobileCoreServices.framework */; };
 		B7DC40222322138400406F34 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC40212322138400406F34 /* WebKit.framework */; };
@@ -64,6 +62,7 @@
 		B7DC4032232213D000406F34 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC4031232213D000406F34 /* libc++.tbd */; };
 		B7DC4034232213D700406F34 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC4033232213D700406F34 /* libz.tbd */; };
 		FEFAB7EB96ABB0E31A342FAB /* libPods-datizhuanqian-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40584EFE0FFD9922393793FB /* libPods-datizhuanqian-tvOSTests.a */; };
+		BFBBC2D812124DE68A24B2AD /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D96D660813304F3B959E4470 /* iconfont.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,7 +158,6 @@
 		40584EFE0FFD9922393793FB /* libPods-datizhuanqian-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqian-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6381252283BED28B20598B43 /* Pods-datizhuanqianTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.release.xcconfig"; sourceTree = "<group>"; };
 		64047225AD427458512FEEC1 /* Pods-datizhuanqian-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian-tvOSTests/Pods-datizhuanqian-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		65BFE09E2B844B25A20FFFEB /* iconfont.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = iconfont.ttf; path = ../src/assets/fonts/iconfont.ttf; sourceTree = "<group>"; };
 		70088C9662D34A4F8A8057A9 /* Pods-datizhuanqian.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.debug.xcconfig"; sourceTree = "<group>"; };
 		A4AA499D7C2C9D10BE6A03D5 /* libPods-datizhuanqianTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-datizhuanqianTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B64735298AB520A0B2AC456F /* Pods-datizhuanqianTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqianTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqianTests/Pods-datizhuanqianTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -182,6 +180,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F28BBF40C4289EBE6C7B5F7F /* Pods-datizhuanqian.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-datizhuanqian.release.xcconfig"; path = "Pods/Target Support Files/Pods-datizhuanqian/Pods-datizhuanqian.release.xcconfig"; sourceTree = "<group>"; };
+		D96D660813304F3B959E4470 /* iconfont.ttf */ = {isa = PBXFileReference; name = "iconfont.ttf"; path = "../src/assets/fonts/iconfont.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,7 +501,7 @@
 		BDFB0BE38C5E44E894E8E9B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				65BFE09E2B844B25A20FFFEB /* iconfont.ttf */,
+				D96D660813304F3B959E4470 /* iconfont.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -654,7 +653,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				8326C7B72FFB45CEB4C18A03 /* iconfont.ttf in Resources */,
+				BFBBC2D812124DE68A24B2AD /* iconfont.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

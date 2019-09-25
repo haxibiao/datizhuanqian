@@ -71,10 +71,9 @@ const TimeReward = (props: Props) => {
 
     const getReward = async () => {
         try {
-            const { result, error } = await timeReward();
-            console.log('result', result);
+            const result = await timeReward();
             const reward = Tools.syncGetter('data.timeReward', result);
-            console.log('reward', reward);
+            console.log('result', result);
             showRewardTips(reward);
         } catch (e) {
             let str = e.toString().replace(/Error: GraphQL error: /, '');
@@ -83,23 +82,12 @@ const TimeReward = (props: Props) => {
         setReceived(true);
     };
 
-    const showRewardTips = (reward: { reward_type: any; reward_value: number }) => {
+    const showRewardTips = (reward: { gold_reward: any; ticket_reward: any; contribute_reward: any }) => {
         const rewardContent = {
-            gold: 0,
-            ticket: 0,
-            contribute: 0,
+            gold: reward.gold_reward,
+            ticket: reward.ticket_reward,
+            contribute: reward.contribute_reward,
         };
-        switch (reward.reward_type) {
-            case 'gold':
-                rewardContent.gold = reward.reward_value;
-                break;
-            case 'ticket':
-                rewardContent.ticket = reward.reward_value;
-                break;
-            case 'contribute':
-                rewardContent.contribute = reward.reward_value;
-                break;
-        }
 
         const title = '时段奖励领取成功';
         const isRewardVideo = true;
@@ -114,7 +102,13 @@ const TimeReward = (props: Props) => {
     }
 
     return (
-        <TouchFeedback style={styles.container} navigation={navigation} authenticated onPress={time > 600 && getReward}>
+        <TouchFeedback
+            style={styles.container}
+            navigation={navigation}
+            authenticated
+            onPress={() => {
+                getReward();
+            }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image
                     source={require('../../../assets/images/time_reward.png')}

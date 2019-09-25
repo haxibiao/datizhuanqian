@@ -1,8 +1,8 @@
 mutation TimeRewardMutation($reward_type: TimeRewardEnum) {
     timeReward(reward_type: $reward_type) {
-        id
-        reward_type
-        reward_value
+        gold_reward
+        ticket_reward
+        contribute_reward
     }
 }
 
