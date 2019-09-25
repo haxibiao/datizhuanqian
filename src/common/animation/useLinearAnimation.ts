@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { Animated } from 'react-native';
 
 interface Props {
@@ -6,15 +6,15 @@ interface Props {
 }
 
 export const useLinearAnimation = (props: Props) => {
-    const [animation] = useState(new Animated.Value(props.duration));
+    const animation = useRef(new Animated.Value(props.duration));
 
     const startAnimation = useCallback(() => {
-        animation.setValue(0);
-        Animated.timing(animation, {
+        animation.current.setValue(0);
+        Animated.timing(animation.current, {
             toValue: 1,
             duration: props.duration,
         }).start();
     }, [props.duration]);
 
-    return [animation, startAnimation];
+    return [animation.current, startAnimation];
 };

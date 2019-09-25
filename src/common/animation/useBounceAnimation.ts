@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { Animated } from 'react-native';
 
 interface Props {
@@ -7,16 +7,16 @@ interface Props {
 }
 
 export const useBounceAnimation = (props: Props) => {
-    const [animation] = useState(new Animated.Value(props.value));
+    const animation = useRef(new Animated.Value(props.value));
 
     const startAnimation = useCallback(() => {
-        animation.setValue(props.value);
-        Animated.spring(animation, {
+        animation.current.setValue(props.value);
+        Animated.spring(animation.current, {
             toValue: props.toValue,
             friction: 2,
             tension: 40,
         }).start();
     }, []);
 
-    return [animation, startAnimation];
+    return [animation.current, startAnimation];
 };

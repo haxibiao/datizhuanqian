@@ -39,9 +39,10 @@ export default observer(props => {
             },
 
             onProgress(data) {
-                if (!media.watched) {
-                    VideoStore.rewardProgress += data.currentTime - media.currentTime;
-                    if (Math.abs(media.currentTime - duration.current) <= 1) {
+                if (!media.watched && media.watchedTime < data.currentTime) {
+                    VideoStore.rewardProgress += data.currentTime - media.watchedTime;
+                    media.watchedTime = data.currentTime;
+                    if (Math.abs(media.watchedTime - duration.current) <= 1) {
                         media.watched = true;
                     }
                 }
@@ -81,6 +82,11 @@ export default observer(props => {
             navWillBlurListener.remove();
         };
     }, [isIntoView]);
+
+    useEffect(() => {
+        // 记录已经观看的时间，避免重新播放时重复计入奖励时间
+        media.watchedTime = 0;
+    }, []);
 
     return (
         <TouchableWithoutFeedback onPress={togglePause}>
