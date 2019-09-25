@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     container: {
         width: SCREEN_WIDTH,
         height: 0,
-        backgroundColor: '#f00',
     },
 });
 

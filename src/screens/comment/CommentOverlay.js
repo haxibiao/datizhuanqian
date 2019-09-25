@@ -187,7 +187,8 @@ class CommentOverlay extends Component {
 	switchReplyType = () => {
 		this.setState({
 			reply: null,
-			comment_id: null
+			comment_id: null,
+			parent_comment_id: null
 		});
 	};
 

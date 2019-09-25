@@ -41,10 +41,8 @@ class ChooseOverly {
 							navigation.navigate('Share');
 						}}
 					>
-						<Text style={{ fontSize: 16, color: Theme.themeRed }}>分享有奖</Text>
-						<View>
-							<Iconfont name={'question'} size={16} color={Theme.themeRed} />
-						</View>
+						<Text style={{ fontSize: 16, color: Theme.grey }}>去分享</Text>
+			
 					</TouchFeedback>
 					<View style={styles.top}>
 						<TouchFeedback

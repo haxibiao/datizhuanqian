@@ -31,6 +31,7 @@ const AttendanceBook = (props): JSX.Element => {
 
     const onLayoutEffect = useCallback(event => {
         setBoxShadowHeight(event.nativeEvent.layout.height);
+        console.log('event.nativeEvent.layout.height', event.nativeEvent.layout.height);
     }, []);
 
     const overlayRef = useRef();

@@ -236,13 +236,6 @@ mutation toggleFavoriteMutation($data: ToggleFavoriteInputType) {
     }
 }
 
-# 喜欢题目
-mutation toggleLikeMutation($likable_id: Int, $likable_type: LikableEnumType) {
-    toggleLike(likable_id: $likable_id, likable_type: $likable_type) {
-        id
-    }
-}
-
 #审题
 mutation auditMutation($question_id: Int!, $status: Boolean) {
     audit(question_id: $question_id, status: $status) {

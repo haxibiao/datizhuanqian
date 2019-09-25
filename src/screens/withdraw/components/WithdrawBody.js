@@ -216,7 +216,14 @@ class WithdrawBody extends Component {
                                             </Text>
                                         </TouchFeedback>
 
-                                        <View style={styles.badge}>
+                                        <View
+                                            style={[
+                                                styles.badge,
+                                                {
+                                                    backgroundColor:
+                                                        luckyMoney.value === 1 ? Theme.themeRed : Theme.primaryColor,
+                                                },
+                                            ]}>
                                             <Text style={styles.badgeText}>
                                                 {luckyMoney.value === 1 ? '秒到账' : '限量抢'}
                                             </Text>
@@ -273,7 +280,6 @@ const styles = StyleSheet.create({
     },
     badge: {
         alignItems: 'center',
-        backgroundColor: Theme.primaryColor,
         borderBottomRightRadius: PxFit(9),
         borderTopLeftRadius: PxFit(5),
         borderTopRightRadius: PxFit(9),

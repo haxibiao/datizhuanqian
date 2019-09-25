@@ -70,7 +70,7 @@ const withdrawGuideWidth = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2) * (
 const videoTaskGuideWidth = PxFit(88) * (800 / 252);
 const videoTaskGuideHeight = (videoTaskGuideWidth * 423) / 800;
 const videoTaskGuideTop =
-    PxFit(102) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (videoTaskGuideHeight * 326) / 423;
+    PxFit(265) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (videoTaskGuideHeight * 326) / 423;
 
 const styles = StyleSheet.create({
     flexCenter: {

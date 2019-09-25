@@ -33,8 +33,10 @@ export default observer((props: Props) => {
     });
 
     const likeHandler = _.debounce(async function() {
-        const [error] = await exceptionCapture(likeArticle);
-        if (error) {
+        try {
+            const result = await exceptionCapture(likeArticle);
+            console.log('result', result);
+        } catch (error) {
             media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
             media.question.liked = !media.question.liked;
             Toast.show({ content: '操作失败' });

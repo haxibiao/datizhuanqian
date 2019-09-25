@@ -40,7 +40,8 @@ export default observer(props => {
         console.log('VideoStore.dataSource.length', VideoStore.dataSource.length);
         return client.query({
             query: GQL.VideosQuery,
-            // variables: { limit: 5, offset: VideoStore.dataSource.length },
+            variables: { limit: 5, offset: VideoStore.dataSource.length },
+            fetchPolicy: 'network-only',
         });
     }, [client]);
 
@@ -49,6 +50,7 @@ export default observer(props => {
         const [error, result] = await exceptionCapture(VideosQuery);
         console.log('result', result.data);
         const videoSource = Tools.syncGetter('data.videos', result);
+
         if (error) {
             VideoStore.isError = true;
         } else {
@@ -102,41 +104,39 @@ export default observer(props => {
     }, [VideoStore.viewableItemIndex]);
     console.log('VideoStore.dataSource', VideoStore.dataSource);
     return (
-        app.login && (
-            <View style={styles.container} onLayout={onLayout}>
-                <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'} />
-                <FlatList
-                    data={VideoStore.dataSource}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    bounces={false}
-                    scrollsToTop={false}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="always"
-                    pagingEnabled={true}
-                    removeClippedSubviews={true}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => <VideoItem media={item} index={index} />}
-                    getItemLayout={(data, index) => ({
-                        length: VideoStore.viewportHeight,
-                        offset: VideoStore.viewportHeight * index,
-                        index,
-                    })}
-                    ListEmptyComponent={
-                        <View style={styles.cover}>
-                            <Image style={styles.curtain} source={require('@src/assets/images/curtain.png')} />
-                        </View>
-                    }
-                    ListFooterComponent={<Footer />}
-                    onMomentumScrollEnd={onMomentumScrollEnd}
-                    onViewableItemsChanged={getVisibleRows}
-                    viewabilityConfig={config.current}
-                />
-                <View style={styles.rewardProgress}>
-                    <RewardProgress />
-                </View>
-                <CommentOverlay ref={commentRef} question={question} />
+        <View style={styles.container} onLayout={onLayout}>
+            <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'} />
+            <FlatList
+                data={VideoStore.dataSource}
+                contentContainerStyle={{ flexGrow: 1 }}
+                bounces={false}
+                scrollsToTop={false}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="always"
+                pagingEnabled={true}
+                removeClippedSubviews={true}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => <VideoItem media={item} index={index} />}
+                getItemLayout={(data, index) => ({
+                    length: VideoStore.viewportHeight,
+                    offset: VideoStore.viewportHeight * index,
+                    index,
+                })}
+                ListEmptyComponent={
+                    <View style={styles.cover}>
+                        <Image style={styles.curtain} source={require('@src/assets/images/curtain.png')} />
+                    </View>
+                }
+                ListFooterComponent={<Footer />}
+                onMomentumScrollEnd={onMomentumScrollEnd}
+                onViewableItemsChanged={getVisibleRows}
+                viewabilityConfig={config.current}
+            />
+            <View style={styles.rewardProgress}>
+                <RewardProgress />
             </View>
-        )
+            <CommentOverlay ref={commentRef} question={question} />
+        </View>
     );
 });
 

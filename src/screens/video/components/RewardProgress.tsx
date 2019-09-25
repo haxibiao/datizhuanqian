@@ -23,7 +23,7 @@ const RewardProgress = observer(props => {
         refetchQueries: (): array => [
             {
                 query: GQL.UserMetaQuery,
-                variables: { id: me.id },
+                variables: { id: app.me.id },
             },
         ],
     });
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     circleProgress: {
         position: 'relative',
         height: PxFit(60),
-        width: PxFit(60),
+        width: PxFit(100),
     },
     rewardText: {
         position: 'absolute',

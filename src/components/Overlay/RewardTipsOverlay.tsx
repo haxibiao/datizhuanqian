@@ -68,9 +68,16 @@ class RewardTips {
                             </View>
                         </View>
 
-                        <View>
-                            <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
-                        </View>
+                        {title ? (
+                            <View style={{ paddingLeft: 10 }}>
+                                <ttad.BannerAd adWidth={SCREEN_WIDTH - PxFit(60)} />
+                            </View>
+                        ) : (
+                            <View>
+                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
+                            </View>
+                        )}
+
                         {rewardVideo ? (
                             <Button
                                 title={'知道了'}
@@ -156,7 +163,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: PxFit(25),
-        marginBottom: PxFit(10),
+        marginBottom: PxFit(15),
     },
     headerText: {
         color: Theme.grey,

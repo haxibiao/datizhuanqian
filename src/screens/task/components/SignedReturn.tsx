@@ -49,7 +49,7 @@ const SignedReturn = (props: Props) => {
             })
                 .then(result => {
                     doubleReward();
-                    Toast.show('领取双倍奖励成功');
+                    Toast.show({ content: '领取双倍奖励成功' });
                 })
                 .catch(error => {
                     console.log('error', error);

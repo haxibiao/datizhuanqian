@@ -16,11 +16,12 @@ export default observer(props => {
             <View style={{ height: VideoStore.viewportHeight }}>
                 <ttad.DrawFeedAd
                     onError={(error: any) => {
+                        console.log('error', error);
                         setAdShow(false);
                     }}
-                    onAdClick={() => {
-                        VideoStore.rewardProgress = 100;
-                    }}
+                    // onAdClick={() => {
+                    //     VideoStore.rewardProgress = 100;
+                    // }}
                 />
             </View>
         );
