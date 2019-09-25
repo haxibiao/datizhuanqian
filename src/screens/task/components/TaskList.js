@@ -333,7 +333,7 @@ class TaskList extends Component {
                         }}
                     />
 
-                    {growUpTask.length > 0 && (
+                    {!ISIOS && growUpTask.length > 0 && (
                         <TaskType
                             tasks={growUpTask}
                             user={UserQuery.user}
@@ -381,10 +381,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     ticketImage: {
-        width: 19,
         height: 19,
         marginLeft: 5,
         marginRight: 2,
+        width: 19,
     },
 });
 
