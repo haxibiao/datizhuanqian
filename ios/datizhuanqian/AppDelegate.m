@@ -17,10 +17,12 @@
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
 
-#include "AdBoss.h"
+//启动屏图片
+#import "RNSplashScreen.h"  
 
 //穿山甲
-#import "BUAdSDK/BUSplashAdView.h"
+#include "AdBoss.h"
+#import "BUAdSDK/BUSplashAdView.h" //启动屏广告
 
 
 @interface AppDelegate () <BUSplashAdDelegate>
@@ -58,6 +60,8 @@
   
   [AdBoss hookWindow:self.window];
   [AdBoss hookApp:self];
+
+  [RNSplashScreen show];
 
   return YES;
 }

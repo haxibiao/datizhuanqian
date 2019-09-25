@@ -11,6 +11,7 @@ import { StyleSheet, YellowBox, View, Image, Text } from 'react-native';
 import { Toast, ErrorBoundary } from 'components';
 import { app, config } from 'store';
 
+import SplashScreen from 'react-native-splash-screen';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
 import { ttad, WeChat } from 'native';
@@ -42,6 +43,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        SplashScreen.hide();
         // 恢复用户身份信息
         app.recallUser();
         // 恢复缓存
@@ -125,37 +127,37 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         flex: 1,
     },
-    maintenance: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#fff',
-    },
     image: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
         bottom: 0,
-        width: null,
         height: null,
-    },
-    textWrap: {
-        position: 'absolute',
-        top: '65%',
         left: 0,
+        position: 'absolute',
         right: 0,
-        paddingHorizontal: PxFit(20),
+        top: 0,
+        width: null,
+    },
+    maintenance: {
         alignItems: 'center',
+        backgroundColor: '#fff',
+        bottom: 0,
+        justifyContent: 'center',
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
     },
     text: {
+        color: Theme.subTextColor,
         fontSize: PxFit(15),
         lineHeight: PxFit(18),
-        color: Theme.subTextColor,
+    },
+    textWrap: {
+        alignItems: 'center',
+        left: 0,
+        paddingHorizontal: PxFit(20),
+        position: 'absolute',
+        right: 0,
+        top: '65%',
     },
 });
 

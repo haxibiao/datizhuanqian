@@ -59,12 +59,17 @@
         "teaset": "^0.6.3"
     },
     "devDependencies": {
+        "@babel/core": "^7.5.5",
+        "@babel/runtime": "^7.5.5",
+        "@react-native-community/eslint-config": "^0.0.5",
         "@types/jest": "^24.0.17",
         "@types/react": "^16.9.2",
         "@types/react-native": "^0.60.6",
         "@types/react-test-renderer": "^16.9.0",
-        "react-native-typescript-transformer": "^1.2.13",
-        "typescript": "^3.5.3",
+        "babel-jest": "^24.8.0",
+        "babel-plugin-import-graphql": "^2.6.2",
+        "babel-plugin-root-import": "^6.4.1",
+        "cos-nodejs-sdk-v5": "^2.5.7",
         "eslint": "^6.2.0",
         "eslint-config-airbnb": "^18.0.1",
         "eslint-config-prettier": "^6.0.0",
@@ -72,17 +77,12 @@
         "eslint-plugin-prettier": "^3.1.0",
         "eslint-plugin-react": "^7.14.3",
         "eslint-plugin-react-native": "^3.7.0",
-        "@babel/core": "^7.5.5",
-        "@babel/runtime": "^7.5.5",
-        "@react-native-community/eslint-config": "^0.0.5",
-        "babel-jest": "^24.8.0",
-        "babel-plugin-import-graphql": "^2.6.2",
-        "babel-plugin-root-import": "^6.4.1",
-        "cos-nodejs-sdk-v5": "^2.5.7",
         "graphql": "^14.4.2",
         "jest": "^24.8.0",
         "metro-react-native-babel-preset": "^0.55.0",
-        "react-test-renderer": "16.8.6"
+        "react-native-typescript-transformer": "^1.2.13",
+        "react-test-renderer": "16.8.6",
+        "typescript": "^3.5.3"
     },
     "jest": {
         "preset": "react-native"
