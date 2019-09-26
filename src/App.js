@@ -63,9 +63,7 @@ class App extends Component {
         // 检查GQL接口状态
         this.checkServer();
         // 微信注册
-        if (!ISIOS) {
-            WeChat.registerApp('wx6fee77d331d42a27');
-        }
+        WeChat.registerApp('wx6fee77d331d42a27');
         // 注册全局变量Toast
         global.Toast = this.toast;
         // 禁止横屏

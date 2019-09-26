@@ -75,7 +75,7 @@ const SignedReturn = (props: Props) => {
                 </Text>
             </View>
             <View style={{ marginTop: PxFit(25) }}>
-                <ttad.BannerAd adWidth={WPercent(80)} />
+                <ttad.BannerAd adWidth={WPercent(50)} />
             </View>
             <View style={styles.TTAD}>
                 <TouchFeedback onPress={loadAd}>

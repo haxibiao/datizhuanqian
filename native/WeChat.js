@@ -6,7 +6,8 @@
  */
 import { NativeModules, Alert } from 'react-native';
 import { ISIOS } from 'utils';
-import * as WeChatIOS from 'react-native-wechat';
+// import * as WeChatIOS from 'react-native-wechat';
+const WeChatIOS = {};
 
 class WeChat {
     static shareMiniProgram(data) {

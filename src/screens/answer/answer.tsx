@@ -260,10 +260,10 @@ const answer = (props: Props) => {
                       title: '举报',
                       onPress: () => props.navigation.navigate('ReportQuestion', { question }),
                   },
-                  {
-                      title: '分享',
-                      onPress: () => props.navigation.navigate('ShareCard', { question }),
-                  },
+                  //   {
+                  //       title: '分享',
+                  //       onPress: () => props.navigation.navigate('ShareCard', { question }),
+                  //   },
               ])
             : ChooseOverlay.show(question, props.navigation, category, 2, userMeans.data.user); //2 ： min_level 需写到config
     };

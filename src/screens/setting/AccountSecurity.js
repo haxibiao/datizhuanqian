@@ -2,12 +2,12 @@
  * @flow
  * created by wyk made in 2019-03-22 11:55:07
  */
-'use strict';
+
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, ListItem, Avatar, ItemSeparator, TipsOverlay } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Api } from 'utils';
+import { Theme, PxFit, Config, ISIOS } from 'utils';
 
 import UserPanel from './components/UserPanel';
 import { WeChat } from 'native';
@@ -20,7 +20,7 @@ import { checkLoginInfo } from 'common';
 class AccountSecurity extends Component {
     constructor(props) {
         super(props);
-        let user = this.props.navigation.getParam('user');
+        const user = this.props.navigation.getParam('user');
         this.state = {
             is_bind_wechat: user.is_bind_wechat,
         };
@@ -31,7 +31,7 @@ class AccountSecurity extends Component {
             .then(isSupported => {
                 if (isSupported) {
                     WeChat.wechatLogin().then(code => {
-                        var data = new FormData();
+                        let data = new FormData();
                         data.append('code', code);
                         fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
                             method: 'POST',
@@ -178,25 +178,27 @@ class AccountSecurity extends Component {
                     )}
 
                     <ItemSeparator />
-                    <ListItem
-                        onPress={() => {
-                            if (is_bind_wechat) {
-                                Toast.show({
-                                    content: '已绑定微信',
-                                });
-                            } else {
-                                this.bindWechat();
+                    {!ISIOS && (
+                        <ListItem
+                            onPress={() => {
+                                if (is_bind_wechat) {
+                                    Toast.show({
+                                        content: '已绑定微信',
+                                    });
+                                } else {
+                                    this.bindWechat();
+                                }
+                            }}
+                            style={styles.listItem}
+                            leftComponent={<Text style={styles.itemText}>微信账号</Text>}
+                            rightComponent={
+                                <View style={styles.rightWrap}>
+                                    <Text style={styles.linkText}>{is_bind_wechat ? '已绑定' : '去绑定'}</Text>
+                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                </View>
                             }
-                        }}
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>微信账号</Text>}
-                        rightComponent={
-                            <View style={styles.rightWrap}>
-                                <Text style={styles.linkText}>{is_bind_wechat ? '已绑定' : '去绑定'}</Text>
-                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                            </View>
-                        }
-                    />
+                        />
+                    )}
                     <ListItem
                         onPress={() => {
                             if (user.wallet && user.wallet.pay_info_change_count === -1) {
@@ -230,32 +232,51 @@ class AccountSecurity extends Component {
 }
 
 const styles = StyleSheet.create({
+    avatarTip: {
+        marginVertical: PxFit(15),
+        fontSize: PxFit(13),
+        color: Theme.subTextColor,
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
     },
-    userPanel: {
+    field: {
+        fontSize: PxFit(14),
+        color: '#666',
+    },
+    fieldGroup: {
+        marginBottom: PxFit(30),
+        paddingHorizontal: Theme.itemSpace,
+    },
+    genderGroup: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        height: PxFit(80),
+        width: PxFit(100),
+    },
+    genderItem: { width: PxFit(20), height: PxFit(20), marginRight: PxFit(8) },
+    inputStyle: {
+        flex: 1,
+        fontSize: PxFit(15),
+        color: Theme.defaultTextColor,
+        paddingVertical: PxFit(10),
+        marginTop: PxFit(6),
+    },
+    inputWrap: {
+        flexDirection: 'row',
+        alignItems: 'center',
         borderBottomWidth: PxFit(1),
         borderBottomColor: Theme.borderColor,
     },
-    panelLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    itemText: {
+        fontSize: PxFit(15),
+        color: Theme.defaultTextColor,
+        marginRight: PxFit(15),
     },
-    panelContent: {
-        height: 34,
-        justifyContent: 'space-between',
-        marginLeft: 15,
-    },
-    userLevel: {
-        fontSize: 12,
-        color: Theme.subTextColor,
-        fontWeight: '300',
-        paddingTop: 3,
+    linkText: {
+        fontSize: PxFit(15),
+        color: '#407FCF',
+        marginRight: PxFit(6),
     },
     listItem: {
         height: PxFit(50),
@@ -263,10 +284,14 @@ const styles = StyleSheet.create({
         borderBottomColor: Theme.borderColor,
         paddingHorizontal: PxFit(Theme.itemSpace),
     },
-    itemText: {
-        fontSize: PxFit(15),
-        color: Theme.defaultTextColor,
-        marginRight: PxFit(15),
+    panelContent: {
+        height: 34,
+        justifyContent: 'space-between',
+        marginLeft: 15,
+    },
+    panelLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     rightText: {
         fontSize: PxFit(15),
@@ -276,43 +301,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    linkText: {
-        fontSize: PxFit(15),
-        color: '#407FCF',
-        marginRight: PxFit(6),
-    },
-    avatarTip: {
-        marginVertical: PxFit(15),
-        fontSize: PxFit(13),
+    userLevel: {
+        fontSize: 12,
         color: Theme.subTextColor,
+        fontWeight: '300',
+        paddingTop: 3,
     },
-    fieldGroup: {
-        marginBottom: PxFit(30),
-        paddingHorizontal: Theme.itemSpace,
-    },
-    field: {
-        fontSize: PxFit(14),
-        color: '#666',
-    },
-    inputWrap: {
+    userPanel: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        height: PxFit(80),
         borderBottomWidth: PxFit(1),
         borderBottomColor: Theme.borderColor,
     },
-    inputStyle: {
-        flex: 1,
-        fontSize: PxFit(15),
-        color: Theme.defaultTextColor,
-        paddingVertical: PxFit(10),
-        marginTop: PxFit(6),
-    },
-    genderGroup: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: PxFit(100),
-    },
-    genderItem: { width: PxFit(20), height: PxFit(20), marginRight: PxFit(8) },
 });
 
 export default compose(

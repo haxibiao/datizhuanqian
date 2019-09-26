@@ -337,135 +337,131 @@ class index extends Component {
 		// let disabled = signIn ? !(account && password) : !account;
 		let disabled = !account;
 		return (
-			<PageContainer
-				submitting={submitting}
-				submitTips={submitTips}
-				contentViewStyle={{ marginTop: 0 }}
-				navBarStyle={{ zIndex: 1, backgroundColor: 'transparent' }}
-				leftView={
-					<TouchFeedback onPress={() => this.props.navigation.pop()}>
-						<Iconfont name="close" size={PxFit(24)} color={Theme.primaryColor} />
-					</TouchFeedback>
-				}
-				autoKeyboardInsets
-			>
-				<View style={styles.container} bounces={false}>
-					<View style={styles.formContainer}>
-						<View style={{ alignItems: 'center' }}>
-							<Image
-								source={require('../../../icon.png')}
-								style={{ width: 90, height: 90, marginTop: SCREEN_HEIGHT / 12 }}
-							/>
-							<View style={{ alignItems: 'center', marginVertical: 40 }}>
-								<View
-									style={[
-										styles.inputWrap,
-										showThumb == showThumbType[0] && {
-											borderBottomColor: Theme.primaryColor
-										}
-									]}
-								>
-									<Iconfont name={'phone'} color={'#D0D0D0'} size={17} style={{ paddingRight: 10 }} />
-									<CustomTextInput
-										placeholderTextColor={Theme.subTextColor}
-										autoCorrect={false}
-										placeholder="请输入手机号"
-										autoFocus={true}
-										style={styles.inputStyle}
-										value={account}
-										onChangeText={this.changeAccount}
-										onFocus={() =>
-											this.setState({
-												showThumb: showThumbType[0]
-											})
-										}
-									/>
+            <PageContainer
+                submitting={submitting}
+                submitTips={submitTips}
+                contentViewStyle={{ marginTop: 0 }}
+                navBarStyle={{ zIndex: 1, backgroundColor: 'transparent' }}
+                leftView={
+                    <TouchFeedback onPress={() => this.props.navigation.pop()}>
+                        <Iconfont name="close" size={PxFit(24)} color={Theme.primaryColor} />
+                    </TouchFeedback>
+                }
+                autoKeyboardInsets>
+                <View style={styles.container} bounces={false}>
+                    <View style={styles.formContainer}>
+                        <View style={{ alignItems: 'center' }}>
+                            <Image
+                                source={require('../../../icon.png')}
+                                style={{ width: 90, height: 90, marginTop: SCREEN_HEIGHT / 12 }}
+                            />
+                            <View style={{ alignItems: 'center', marginVertical: 40 }}>
+                                <View
+                                    style={[
+                                        styles.inputWrap,
+                                        showThumb == showThumbType[0] && {
+                                            borderBottomColor: Theme.primaryColor,
+                                        },
+                                    ]}>
+                                    <Iconfont name={'phone'} color={'#D0D0D0'} size={17} style={{ paddingRight: 10 }} />
+                                    <CustomTextInput
+                                        placeholderTextColor={Theme.subTextColor}
+                                        autoCorrect={false}
+                                        placeholder="请输入手机号"
+                                        autoFocus={true}
+                                        style={styles.inputStyle}
+                                        value={account}
+                                        onChangeText={this.changeAccount}
+                                        onFocus={() =>
+                                            this.setState({
+                                                showThumb: showThumbType[0],
+                                            })
+                                        }
+                                    />
 
-									{showThumb == showThumbType[0] && (
-										<TouchFeedback onPress={() => this.changeAccount('')}>
-											<Iconfont name={'close'} size={PxFit(18)} color={Theme.tintTextColor} />
-										</TouchFeedback>
-									)}
-								</View>
-							</View>
-							<Button style={styles.button} disabled={disabled} onPress={this.onSubmit}>
-								<Text style={styles.buttonText}>{signIn ? '登 录' : '注 册'}</Text>
-							</Button>
+                                    {showThumb == showThumbType[0] && (
+                                        <TouchFeedback onPress={() => this.changeAccount('')}>
+                                            <Iconfont name={'close'} size={PxFit(18)} color={Theme.tintTextColor} />
+                                        </TouchFeedback>
+                                    )}
+                                </View>
+                            </View>
+                            <Button style={styles.button} disabled={disabled} onPress={this.onSubmit}>
+                                <Text style={styles.buttonText}>{signIn ? '登 录' : '注 册'}</Text>
+                            </Button>
 
-							<View style={styles.bottomInfo}>
-								<TouchFeedback onPress={this.toggleMutation}>
-									<Text style={styles.bottomLinkText}>{signIn ? '注册' : '登录'}</Text>
-								</TouchFeedback>
-							</View>
-						</View>
-						<View style={{ alignItems: 'center' }}>
-							<View
-								style={{
-									marginBottom: 55,
-									width: SCREEN_WIDTH
-								}}
-							>
-								<Row style={styles.rowCenter}>
-									<View style={styles.line} />
-									<Text style={{ marginHorizontal: 20 }}>其他登录方式</Text>
-									<View style={styles.line} />
-								</Row>
-								<Row
-									style={{
-										alignItems: 'stretch'
-									}}
-								>
-									<TouchFeedback style={styles.otherLogin} onPress={this.wechatLogin}>
-										<Image
-											source={require('../../assets/images/wechat.png')}
-											style={{ width: 26, height: 26, marginBottom: 8 }}
-										/>
-										<Text>微信登录</Text>
-									</TouchFeedback>
-									<TouchFeedback style={styles.otherLogin} onPress={this.autoSign}>
-										<Image
-											source={require('../../assets/images/phone.png')}
-											style={{ width: 28, height: 28, marginBottom: 8 }}
-										/>
-										<Text>一键登录</Text>
-									</TouchFeedback>
-								</Row>
-							</View>
-							<Row style={styles.rowCenter}>
-								<TouchFeedback
-									style={styles.bageWrap}
-									onPress={() => {
-										this.setState({
-											readed: !readed
-										});
-									}}
-								>
-									{readed ? (
-										<View style={styles.bage}>
-											<Iconfont name={'correct'} color={Theme.white} size={10} />
-										</View>
-									) : null}
-								</TouchFeedback>
+                            <View style={styles.bottomInfo}>
+                                <TouchFeedback onPress={this.toggleMutation}>
+                                    <Text style={styles.bottomLinkText}>{signIn ? '注册' : '登录'}</Text>
+                                </TouchFeedback>
+                            </View>
+                        </View>
+                        <View style={{ alignItems: 'center' }}>
+                            <View
+                                style={{
+                                    marginBottom: 55,
+                                    width: SCREEN_WIDTH,
+                                }}>
+                                <Row style={styles.rowCenter}>
+                                    <View style={styles.line} />
+                                    <Text style={{ marginHorizontal: 20 }}>其他登录方式</Text>
+                                    <View style={styles.line} />
+                                </Row>
+                                <Row
+                                    style={{
+                                        alignItems: 'stretch',
+                                    }}>
+                                    {!ISIOS && (
+                                        <TouchFeedback style={styles.otherLogin} onPress={this.wechatLogin}>
+                                            <Image
+                                                source={require('../../assets/images/wechat.png')}
+                                                style={{ width: 26, height: 26, marginBottom: 8 }}
+                                            />
+                                            <Text>微信登录</Text>
+                                        </TouchFeedback>
+                                    )}
+                                    <TouchFeedback style={styles.otherLogin} onPress={this.autoSign}>
+                                        <Image
+                                            source={require('../../assets/images/phone.png')}
+                                            style={{ width: 28, height: 28, marginBottom: 8 }}
+                                        />
+                                        <Text>一键登录</Text>
+                                    </TouchFeedback>
+                                </Row>
+                            </View>
+                            <Row style={styles.rowCenter}>
+                                <TouchFeedback
+                                    style={styles.bageWrap}
+                                    onPress={() => {
+                                        this.setState({
+                                            readed: !readed,
+                                        });
+                                    }}>
+                                    {readed ? (
+                                        <View style={styles.bage}>
+                                            <Iconfont name={'correct'} color={Theme.white} size={10} />
+                                        </View>
+                                    ) : null}
+                                </TouchFeedback>
 
-								<Text style={styles.bottomInfoText}>同意</Text>
-								<View
-									onPress={() => navigation.navigate('UserProtocol')}
-									style={{ flexDirection: 'row', alignItems: 'center' }}
-								>
-									<TouchFeedback onPress={() => navigation.navigate('UserProtocol')}>
-										<Text style={{ fontSize: PxFit(12), color: Theme.theme }}> 用户协议</Text>
-									</TouchFeedback>
-									<Text style={styles.bottomLinkText}> 和 </Text>
-									<TouchFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
-										<Text style={{ fontSize: PxFit(12), color: Theme.theme }}> 隐私政策</Text>
-									</TouchFeedback>
-								</View>
-							</Row>
-						</View>
-					</View>
-				</View>
-			</PageContainer>
-		);
+                                <Text style={styles.bottomInfoText}>同意</Text>
+                                <View
+                                    onPress={() => navigation.navigate('UserProtocol')}
+                                    style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <TouchFeedback onPress={() => navigation.navigate('UserProtocol')}>
+                                        <Text style={{ fontSize: PxFit(12), color: Theme.theme }}> 用户协议</Text>
+                                    </TouchFeedback>
+                                    <Text style={styles.bottomLinkText}> 和 </Text>
+                                    <TouchFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
+                                        <Text style={{ fontSize: PxFit(12), color: Theme.theme }}> 隐私政策</Text>
+                                    </TouchFeedback>
+                                </View>
+                            </Row>
+                        </View>
+                    </View>
+                </View>
+            </PageContainer>
+        );
 	}
 }
 
