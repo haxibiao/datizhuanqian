@@ -34,7 +34,7 @@ const TimeReward = (props: Props) => {
         if (data && data.systemConfig) {
             setTime(data.systemConfig.next_time_hour_reward.time_unix - data.systemConfig.time_unix);
         }
-        if (!loading) {
+        if (!loading && data && data.systemConfig) {
             AppState.addEventListener('change', handleAppStateChange);
         }
     }, [loading]);

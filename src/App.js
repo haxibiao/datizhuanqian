@@ -49,15 +49,22 @@ class App extends Component {
         // 恢复缓存
         app.recallCache();
         // 获取广告开放状态
+
         service.enableAdvert(data => {
+            // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
+            if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
+                ttad.Splash.loadSplashAd();
+            }
             config.saveAdvertConfig(data);
             // if (data.enable_splash) {
-            //     // 开屏广告因为时机问题直接在此判断了
+            //     // 开屏广告因为时机问题不再此判断了
             //     ttad.Splash.loadSplashAd();
             // }
         });
 
-        ttad.Splash.loadSplashAd();
+        if (Config.AppStore !== 'huawei') {
+            ttad.Splash.loadSplashAd();
+        }
         // 检查更新
         checkUpdate('autoCheck');
         // 检查GQL接口状态

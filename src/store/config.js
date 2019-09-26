@@ -26,6 +26,7 @@ class config {
     @observable enableReward: boolean = false; //开启激励视频
     @observable enableFeed: boolean = false; //开启信息流广告
     @observable enableBanner: boolean = false; //开启Banner广告
+    @observable disableAd: boolean = false;
 
     constructor() {
         NetInfo.addEventListener(this.handleConnectivityChange);
@@ -84,11 +85,14 @@ class config {
 
     @action.bound
     saveAdvertConfig(data) {
+        console.log('saveAdvertConfig data', data);
         this.enableSplash = data.enable_splash;
         this.enableQuestion = data.enable_question;
         this.enableReward = data.enable_reward;
         this.enableFeed = data.enable_feed;
         this.enableBanner = data.enable_banner;
+        this.disableAd = data.disable[Config.AppStore];
+        console.log('this.disableAd', this.disableAd);
     }
 }
 

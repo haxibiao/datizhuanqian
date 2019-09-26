@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
 import { SCREEN_WIDTH } from '../../src/utils';
+import { config } from 'store';
 
 const NativeBannerAd = requireNativeComponent('BannerAd');
 
@@ -17,32 +18,32 @@ const BannerAd = (props: Props) => {
     let [visible, setVisible] = useState(true);
     let [height, setHeight] = useState(Platform.OS === 'android' ? 0 : 40); //默认高度
 
+    const disableAd = config.disableAd;
+    if (!visible || disableAd) return null;
     return (
-        visible && (
-            <NativeBannerAd
-                codeid={codeid} //ios ?
-                adWidth={adWidth}
-                style={{ ...styles.container, height }}
-                onError={e => {
-                    console.log('onError', e.nativeEvent);
-                    onError && onError(e.nativeEvent);
+        <NativeBannerAd
+            codeid={codeid} //ios ?
+            adWidth={adWidth}
+            style={{ ...styles.container, height }}
+            onError={e => {
+                console.log('onError', e.nativeEvent);
+                onError && onError(e.nativeEvent);
+                setVisible(false);
+            }}
+            onAdClosed={e => {
+                console.log('onAdClosed', e.nativeEvent);
+                setVisible(false);
+            }}
+            onLayoutChanged={e => {
+                console.log('onLayoutChanged', e.nativeEvent);
+                if (e.nativeEvent.height) {
+                    setHeight(e.nativeEvent.height);
+                    onLoad && onLoad(e.nativeEvent);
+                } else {
                     setVisible(false);
-                }}
-                onAdClosed={e => {
-                    console.log('onAdClosed', e.nativeEvent);
-                    setVisible(false);
-                }}
-                onLayoutChanged={e => {
-                    console.log('onLayoutChanged', e.nativeEvent);
-                    if (e.nativeEvent.height) {
-                        setHeight(e.nativeEvent.height);
-                        onLoad && onLoad(e.nativeEvent);
-                    } else {
-                        setVisible(false);
-                    }
-                }}
-            />
-        )
+                }
+            }}
+        />
     );
 };
 

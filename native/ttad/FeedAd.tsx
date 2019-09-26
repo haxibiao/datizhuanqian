@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
 import { SCREEN_WIDTH } from '../../src/utils';
+import { config } from 'store';
 const NativeFeedAd = requireNativeComponent('FeedAd');
 
 interface Props {
@@ -16,7 +17,8 @@ const FeedAd = (props: Props) => {
     // 916518830 自渲染不屏蔽
     // 916518779 自渲染屏蔽成人保健
     // 916518115 Express模板渲染
-    if (!visible) return null;
+    const disableAd = config.disableAd;
+    if (!visible || disableAd) return null;
     return (
         <NativeFeedAd
             codeid="916518115"
