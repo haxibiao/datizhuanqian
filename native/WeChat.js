@@ -12,28 +12,28 @@ const WeChatIOS = {};
 class WeChat {
     static shareMiniProgram(data) {
         if (ISIOS) {
-            return WeChatIOS.shareToSession(data);
+            return 1; // WeChatIOS.shareToSession(data);
         }
         return NativeModules.WxEntryModule.shareMiniProgram(data);
     }
 
     static isSupported() {
         if (ISIOS) {
-            return WeChatIOS.isWXAppSupportApi();
+            return 1; // WeChatIOS.isWXAppSupportApi();
         }
         return NativeModules.WxEntryModule.isSupported();
     }
 
     static wechatLogin() {
         if (ISIOS) {
-            return WXLogin();
+            return 1; // WXLogin();
         }
         return NativeModules.WxEntryModule.wxLogin();
     }
 
     static registerApp(AppID) {
         if (ISIOS) {
-            return WeChatIOS.registerApp(AppID);
+            return 1; // WeChatIOS.registerApp(AppID);
         }
         return NativeModules.WxEntryModule.registerApp(AppID);
     }

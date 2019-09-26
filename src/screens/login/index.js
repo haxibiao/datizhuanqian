@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, PopOverlay, Button, CustomTextInput } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, Config } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Config } from 'utils';
 
 import { Query, withApollo, compose, graphql, GQL } from 'apollo';
 import { app } from 'store';

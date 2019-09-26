@@ -47,8 +47,6 @@ PODS:
   - Picker/Core (4.3.7):
     - React
   - QBImagePickerController (3.4.0)
-  - RCTWeChat (1.9.12):
-    - React
   - React (0.60.4):
     - React-Core (= 0.60.4)
     - React-DevSupport (= 0.60.4)
@@ -171,7 +169,6 @@ DEPENDENCIES:
   - JCoreRN (from `../node_modules/jcore-react-native`)
   - JPushRN (from `../node_modules/jpush-react-native`)
   - Picker (from `../node_modules/react-native-picker`)
-  - RCTWeChat (from `../node_modules/react-native-wechat`)
   - React (from `../node_modules/react-native/`)
   - React-Core (from `../node_modules/react-native/React`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -240,8 +237,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/jpush-react-native"
   Picker:
     :path: "../node_modules/react-native-picker"
-  RCTWeChat:
-    :path: "../node_modules/react-native-wechat"
   React:
     :path: "../node_modules/react-native/"
   React-Core:
@@ -329,7 +324,6 @@ SPEC CHECKSUMS:
   JWT: 05028b9624591bba9681bb57df2c5f95fa258bad
   Picker: 37554355aef82a532ea95b71b6eeba66bc86182b
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  RCTWeChat: edb02d76aaf9b2e698e515e3c57bf143a290d9d7
   React: ff7ee2ae5ee1c1d9ae2183b4111045b25294bb01
   React-Core: 8e0ea421cae5609d2562850f98421b15030476fa
   React-cxxreact: 326880209990151a7182a813311054e9772ba510
