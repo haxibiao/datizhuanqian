@@ -39,6 +39,7 @@ class VideoStore {
     @observable public viewableItemIndex: number = -1;
     @observable public viewportHeight: number = SCREEN_HEIGHT;
     @observable public rewardProgress: number = 0;
+    @observable public getReward = [];
 
     @action.bound
     public addSource(source: Video[]) {
@@ -53,6 +54,12 @@ class VideoStore {
     @action.bound
     public pause() {
         this.videoPaused = true;
+    }
+
+    @action.bound
+    public addGetRewardId(id: any) {
+        this.getReward = this.getReward.concat(id);
+        console.log('this.getReward', this.getReward);
     }
 }
 

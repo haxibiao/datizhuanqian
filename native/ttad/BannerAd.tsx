@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
+import { SCREEN_WIDTH } from 'utils';
 import { config } from 'store';
 const NativeBannerAd = requireNativeComponent('BannerAd');
 
@@ -53,7 +54,7 @@ const BannerAd = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width,
+        width: SCREEN_WIDTH, //很奇怪  Dimensions.get('window') 和SCREEN_WIDTH 值一样  但是使用前者时广告会溢出
         height: 0,
     },
 });

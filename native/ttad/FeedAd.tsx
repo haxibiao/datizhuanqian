@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
+import { SCREEN_WIDTH } from 'utils';
 import { config } from 'store';
 const NativeFeedAd = requireNativeComponent('FeedAd');
 
@@ -52,7 +53,7 @@ const FeedAd = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width,
+        width: SCREEN_WIDTH,
         height: 0,
     },
 });

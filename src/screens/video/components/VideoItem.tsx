@@ -1,16 +1,51 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { PxFit, Theme, SCREEN_HEIGHT } from 'utils';
+import { PxFit, Theme, SCREEN_HEIGHT, Tools } from 'utils';
 import { ttad } from 'native';
 
-import { observer } from 'store';
+import { observer, app } from 'store';
 import Player from './Player';
 import SideBar from './SideBar';
 import VideoStore from '../VideoStore';
+import { GQL, useMutation } from 'apollo';
+import { exceptionCapture } from 'common';
 
 export default observer(props => {
     const { media, index } = props;
     const [adShow, setAdShow] = useState(true);
+
+    const [onClickReward] = useMutation(GQL.UserRewardMutation, {
+        variables: {
+            reward: 'DRAW_FEED_ADVIDEO_REWARD',
+        },
+        refetchQueries: () => [
+            {
+                query: GQL.UserMetaQuery,
+                variables: { id: app.me.id },
+            },
+        ],
+    });
+
+    const getReward = async (media: any) => {
+        const drawFeedAdId = media.id.toString();
+
+        if (VideoStore.getReward.indexOf(drawFeedAdId) === -1) {
+            VideoStore.addGetRewardId(drawFeedAdId);
+            //发放给精力奖励
+            const [error, res] = await exceptionCapture(onClickReward);
+            if (error) {
+                Toast.show({
+                    content: '遇到未知错误，领取失败',
+                });
+            } else {
+                const contribute = Tools.syncGetter('data.userReward.contribute', res);
+                Toast.show({
+                    content: `恭喜你获得+${contribute}贡献值`,
+                });
+            }
+        }
+    };
+
     if (media.is_ad_video && adShow)
         return (
             <View style={{ height: VideoStore.viewportHeight }}>
@@ -19,9 +54,7 @@ export default observer(props => {
                         console.log('error', error);
                         setAdShow(false);
                     }}
-                    // onAdClick={() => {
-                    //     VideoStore.rewardProgress = 100;
-                    // }}
+                    onAdClick={() => getReward(media)}
                 />
             </View>
         );
