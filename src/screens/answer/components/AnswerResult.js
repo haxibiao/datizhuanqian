@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, View, Text } from 'react-native';
 import { TouchFeedback, Button, Row, RewardTipsOverlay } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools, ISIOS } from 'utils';
 import { ttad } from 'native';
 import { GQL } from 'apollo';
 
@@ -179,21 +179,23 @@ class AnswerResult extends Component {
                         <Text style={{ paddingVertical: PxFit(8) }}>{`正确${answer_count -
                             error_count}/错误${error_count}`}</Text>
                     </View>
-                    {adShow && (
+                    {adShow && !ISIOS && (
                         <Row style={{ marginBottom: PxFit(10) }}>
                             <View style={styles.line} />
                             <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
                             <View style={styles.line} />
                         </Row>
                     )}
-                    <View>
-                        <ttad.BannerAd
-                            adWidth={SCREEN_WIDTH - PxFit(120)}
-                            onLoad={e => {
-                                this.setState({ adShow: true });
-                            }}
-                        />
-                    </View>
+                    {!ISIOS && (
+                        <View>
+                            <ttad.BannerAd
+                                adWidth={SCREEN_WIDTH - PxFit(120)}
+                                onLoad={e => {
+                                    this.setState({ adShow: true });
+                                }}
+                            />
+                        </View>
+                    )}
                     <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
                         <Button
                             style={styles.button}
