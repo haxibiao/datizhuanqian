@@ -259,7 +259,8 @@ class TaskList extends Component {
                                                 video = JSON.parse(result);
                                             }
                                             if (video.video_play || video.ad_click || video.verify_status) {
-                                                if (video.ad_click) {
+                                                // 必须激励视频播放完成并点击了广告才算查看详情成功，才有贡献奖励
+                                                if (video.ad_click && video.video_play) {
                                                     adClicked = true;
                                                     RewardTipsOverlay.show(
                                                         {
