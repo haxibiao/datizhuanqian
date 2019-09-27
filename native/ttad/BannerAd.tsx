@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { Platform, StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 import { config } from 'store';
-
 const NativeBannerAd = requireNativeComponent('BannerAd');
 
+let codeid = Platform.OS === 'android' ? '916518401' : ''; //TODO: ios上架后更新ios的
 interface Props {
     adWidth: number;
+    onAdClicked?: Function;
+    onAdClosed?: Function;
+    onAdShow?: Function;
     onError?: Function;
-    onLoad?: Function;
 }
 
-let codeid = Platform.OS === 'android' ? '916518401' : '';
-
 const BannerAd = (props: Props) => {
-    let { adWidth = width - 30, onError, onLoad } = props;
+    let { adWidth = width - 30, onError, onAdShow, onAdClosed, onAdClicked } = props;
     let [visible, setVisible] = useState(true);
     let [height, setHeight] = useState(Platform.OS === 'android' ? 0 : 40); //默认高度
 
@@ -25,20 +25,24 @@ const BannerAd = (props: Props) => {
             codeid={codeid} //ios ?
             adWidth={adWidth}
             style={{ ...styles.container, height }}
-            onError={e => {
+            onAdClicked={(e: { nativeEvent: any }) => {
+                onAdClicked && onAdClicked(e.nativeEvent);
+            }}
+            onError={(e: { nativeEvent: any }) => {
                 console.log('onError', e.nativeEvent);
                 onError && onError(e.nativeEvent);
                 setVisible(false);
             }}
-            onAdClosed={e => {
+            onAdClosed={(e: { nativeEvent: any }) => {
                 console.log('onAdClosed', e.nativeEvent);
+                onAdClosed && onAdClosed(e.nativeEvent);
                 setVisible(false);
             }}
-            onLayoutChanged={e => {
+            onLayoutChanged={(e: { nativeEvent: { height: React.SetStateAction<number> } }) => {
                 console.log('onLayoutChanged', e.nativeEvent);
                 if (e.nativeEvent.height) {
                     setHeight(e.nativeEvent.height);
-                    onLoad && onLoad(e.nativeEvent);
+                    onAdShow && onAdShow(e.nativeEvent);
                 } else {
                     setVisible(false);
                 }
