@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
-import { SCREEN_WIDTH } from '../../src/utils';
+const { width } = Dimensions.get('window');
 import { config } from 'store';
 const NativeFeedAd = requireNativeComponent('FeedAd');
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const FeedAd = (props: Props) => {
-    const { adWidth = SCREEN_WIDTH - 30, onError, onLoad } = props;
+    const { adWidth = width - 30, onError, onLoad } = props;
     let [visible, setVisible] = useState(true);
     let [height, setHeight] = useState(0); //默认高度
     // 916518830 自渲染不屏蔽
@@ -46,7 +46,7 @@ const FeedAd = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH,
+        width,
         height: 0,
     },
 });

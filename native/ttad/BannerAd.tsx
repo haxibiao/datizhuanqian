@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
-import { SCREEN_WIDTH } from '../../src/utils';
+const { width } = Dimensions.get('window');
 import { config } from 'store';
 
 const NativeBannerAd = requireNativeComponent('BannerAd');
@@ -14,7 +14,7 @@ interface Props {
 let codeid = Platform.OS === 'android' ? '916518401' : '';
 
 const BannerAd = (props: Props) => {
-    let { adWidth = SCREEN_WIDTH - 30, onError, onLoad } = props;
+    let { adWidth = width - 30, onError, onLoad } = props;
     let [visible, setVisible] = useState(true);
     let [height, setHeight] = useState(Platform.OS === 'android' ? 0 : 40); //默认高度
 
@@ -49,7 +49,7 @@ const BannerAd = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH,
+        width,
         height: 0,
     },
 });

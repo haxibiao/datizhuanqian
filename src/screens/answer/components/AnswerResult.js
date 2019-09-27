@@ -57,34 +57,42 @@ class AnswerResult extends Component {
     startFullScreenVideoAd = adinfo => {
         const { client } = this.props;
         console.log('adinfo', adinfo);
-        ttad.FullScreenVideo.startFullScreenVideoAd(adinfo).then(result => {
-            if (result) {
-                client
-                    .mutate({
-                        mutation: GQL.UserRewardMutation,
-                        variables: {
-                            reward: 'FULL_SCREEN_VIDEO_REWARD',
-                        },
-                        errorPolicy: 'all',
-                        refetchQueries: () => [
-                            {
-                                query: GQL.UserMetaQuery,
-                                variables: { id: app.me.id },
-                                fetchPolicy: 'network-only',
+        ttad.FullScreenVideo.startFullScreenVideoAd(adinfo)
+            .then(result => {
+                if (result) {
+                    client
+                        .mutate({
+                            mutation: GQL.UserRewardMutation,
+                            variables: {
+                                reward: 'FULL_SCREEN_VIDEO_REWARD',
                             },
-                        ],
-                    })
+                            errorPolicy: 'all',
+                            refetchQueries: () => [
+                                {
+                                    query: GQL.UserMetaQuery,
+                                    variables: { id: app.me.id },
+                                    fetchPolicy: 'network-only',
+                                },
+                            ],
+                        })
 
-                    .then(res => {
-                        this.loadRewardTips(res);
-                    })
-                    .catch(err => {
-                        Toast.show({
-                            content: '发生未知错误、领取失败',
+                        .then(res => {
+                            this.loadRewardTips(res);
+                        })
+                        .catch(err => {
+                            console.log('full screen video result error', err);
+                            Toast.show({
+                                content: '发生未知错误、领取失败',
+                            });
                         });
-                    });
-            }
-        });
+                }
+            })
+            .catch(err => {
+                console.log('full screen video error', err);
+                Toast.show({
+                    content: '发生未知错误、领取失败',
+                });
+            });
     };
 
     // 加载激励视频
@@ -130,6 +138,7 @@ class AnswerResult extends Component {
                         this.loadRewardTips(res);
                     })
                     .catch(err => {
+                        console.log('reward video error', err);
                         Toast.show({
                             content: '发生未知错误、领取失败',
                         });

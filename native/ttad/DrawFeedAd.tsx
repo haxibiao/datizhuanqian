@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
-const { height, width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const NativeDrawFeedAd = requireNativeComponent('DrawFeedAd');
 
 type Props = {

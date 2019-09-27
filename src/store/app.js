@@ -1,7 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import user from './user';
 import { keys, storage } from './storage';
-import { Config } from 'utils';
+import Config from '../utils/Config';
 
 class app {
     @observable me = {};
@@ -24,8 +24,8 @@ class app {
 
     @action.bound
     async recallUser() {
-        let json = await storage.getItem(keys.me);
-        let resetVersion = await storage.getItem(keys.resetVersion);
+        const json = await storage.getItem(keys.me);
+        const resetVersion = await storage.getItem(keys.resetVersion);
 
         if (json && resetVersion == Config.AppVersionNumber) {
             runInAction(() => {

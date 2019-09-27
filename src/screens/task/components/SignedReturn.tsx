@@ -78,11 +78,14 @@ const SignedReturn = (props: Props) => {
                 <ttad.BannerAd adWidth={ISIOS ? WPercent(60) : WPercent(80)} />
             </View>
             <View style={styles.TTAD}>
-                <TouchFeedback onPress={loadAd}>
+                <TouchFeedback
+                    onPress={() => {
+                        ISIOS ? close() : loadAd();
+                    }}>
                     <ImageBackground
                         style={styles.loadAdButton}
                         source={require('../../../assets/images/attendance_button.png')}>
-                        <Text style={styles.buttonText}>获取双倍奖励</Text>
+                        <Text style={styles.buttonText}>{ISIOS ? '知道了' : '获取双倍奖励'}</Text>
                     </ImageBackground>
                 </TouchFeedback>
             </View>

@@ -21,7 +21,6 @@
 		2C50A3A42331DD4900046CAA /* RRFPSBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A37A2331DD4900046CAA /* RRFPSBar.m */; };
 		2C50A3A52331DD4900046CAA /* BUDCocoaSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A37C2331DD4900046CAA /* BUDCocoaSecurity.m */; };
 		2C50A3A62331DD4900046CAA /* BUDRewardedVideoAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A37E2331DD4900046CAA /* BUDRewardedVideoAdViewController.m */; };
-		2C50A3A72331DD4900046CAA /* BUDSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3812331DD4900046CAA /* BUDSplashViewController.m */; };
 		2C50A3A82331DD4900046CAA /* BUDConfigHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3842331DD4900046CAA /* BUDConfigHelper.m */; };
 		2C50A3A92331DD4900046CAA /* BUDFeedNormalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3872331DD4900046CAA /* BUDFeedNormalTableViewCell.m */; };
 		2C50A3AA2331DD4900046CAA /* BUDRefreshButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3882331DD4900046CAA /* BUDRefreshButton.m */; };
@@ -44,6 +43,7 @@
 		2C7C0A682333AB2B007E43D3 /* FeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A672333AB2B007E43D3 /* FeedAd.m */; };
 		2CAFA6E4233B6B9700C20E17 /* FullScreenVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAFA6E3233B6B9700C20E17 /* FullScreenVideo.m */; };
 		2CAFA6E6233C2F5600C20E17 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAFA6E5233C2F3E00C20E17 /* libsqlite3.0.tbd */; };
+		2CAFA7C0233D9FED00C20E17 /* BUDFullscreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CAFA7BF233D9FED00C20E17 /* BUDFullscreenViewController.m */; };
 		2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */; };
 		2CDFBE9B23320CCF000B8EC5 /* DrawFeedAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -112,9 +112,7 @@
 		2C50A37B2331DD4900046CAA /* BUDBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDBase64.h; sourceTree = "<group>"; };
 		2C50A37C2331DD4900046CAA /* BUDCocoaSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDCocoaSecurity.m; sourceTree = "<group>"; };
 		2C50A37E2331DD4900046CAA /* BUDRewardedVideoAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDRewardedVideoAdViewController.m; sourceTree = "<group>"; };
-		2C50A37F2331DD4900046CAA /* BUDSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDSplashViewController.h; sourceTree = "<group>"; };
 		2C50A3802331DD4900046CAA /* BUDRewardedVideoAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDRewardedVideoAdViewController.h; sourceTree = "<group>"; };
-		2C50A3812331DD4900046CAA /* BUDSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDSplashViewController.m; sourceTree = "<group>"; };
 		2C50A3832331DD4900046CAA /* BUDMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDMacros.h; sourceTree = "<group>"; };
 		2C50A3842331DD4900046CAA /* BUDConfigHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDConfigHelper.m; sourceTree = "<group>"; };
 		2C50A3852331DD4900046CAA /* BUDConfigHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDConfigHelper.h; sourceTree = "<group>"; };
@@ -151,6 +149,8 @@
 		2C7C0A672333AB2B007E43D3 /* FeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedAd.m; sourceTree = "<group>"; };
 		2CAFA6E3233B6B9700C20E17 /* FullScreenVideo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FullScreenVideo.m; sourceTree = "<group>"; };
 		2CAFA6E5233C2F3E00C20E17 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		2CAFA7BE233D9FED00C20E17 /* BUDFullscreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUDFullscreenViewController.h; sourceTree = "<group>"; };
+		2CAFA7BF233D9FED00C20E17 /* BUDFullscreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFullscreenViewController.m; sourceTree = "<group>"; };
 		2CDFBE982332010B000B8EC5 /* DrawFeedAdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAdManager.m; sourceTree = "<group>"; };
 		2CDFBE9A23320CCF000B8EC5 /* DrawFeedAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawFeedAd.m; sourceTree = "<group>"; };
 		2CDFBE9D23320D80000B8EC5 /* DrawFeedAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawFeedAd.h; sourceTree = "<group>"; };
@@ -337,10 +337,10 @@
 		2C50A37D2331DD4900046CAA /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				2CAFA7BE233D9FED00C20E17 /* BUDFullscreenViewController.h */,
+				2CAFA7BF233D9FED00C20E17 /* BUDFullscreenViewController.m */,
 				2C50A37E2331DD4900046CAA /* BUDRewardedVideoAdViewController.m */,
-				2C50A37F2331DD4900046CAA /* BUDSplashViewController.h */,
 				2C50A3802331DD4900046CAA /* BUDRewardedVideoAdViewController.h */,
-				2C50A3812331DD4900046CAA /* BUDSplashViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -884,13 +884,13 @@
 				2C50A3A22331DD4900046CAA /* NSString+Json.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				2C7C0A682333AB2B007E43D3 /* FeedAd.m in Sources */,
-				2C50A3A72331DD4900046CAA /* BUDSplashViewController.m in Sources */,
 				2C50A3A82331DD4900046CAA /* BUDConfigHelper.m in Sources */,
 				2C50A3A02331DD4900046CAA /* BUDBase64.m in Sources */,
 				2C50A3AF2331DD4900046CAA /* BUDPlayerController.m in Sources */,
 				2C50A3B12331DD4900046CAA /* BUDActionAreaView.m in Sources */,
 				2C50A3AE2331DD4900046CAA /* BUDDrawTableViewCell.m in Sources */,
 				2CDFBE992332010B000B8EC5 /* DrawFeedAdManager.m in Sources */,
+				2CAFA7C0233D9FED00C20E17 /* BUDFullscreenViewController.m in Sources */,
 				2C7C0A5623335890007E43D3 /* SplashAd.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2C50A3A52331DD4900046CAA /* BUDCocoaSecurity.m in Sources */,

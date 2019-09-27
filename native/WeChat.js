@@ -4,8 +4,8 @@
  * @Last Modified by:   Gaoxuan
  * @Last Modified time: 2019-08-16 15:59:52
  */
-import { NativeModules, Alert } from 'react-native';
-import { ISIOS } from 'utils';
+import { NativeModules, Alert, Platform } from 'react-native';
+const ISIOS = Platform.OS === 'ios';
 // import * as WeChatIOS from 'react-native-wechat';
 const WeChatIOS = {};
 

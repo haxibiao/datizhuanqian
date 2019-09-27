@@ -1,27 +1,29 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const adArgs = {
-    tt_appid: '5016518', //正式
-    tt_codeid: '916518198',
-    // tt_appid: '5016582', //内测
-    // tt_codeid: '916582815'
+    //默认一个app一个全屏视频的广告为， 未上架的用内测 （答赚目前ios未上架，用内测codeid: 916582815 ）
+    tt_codeid: Platform.OS == 'android' ? '916518198' : '916582815',
 };
 
 const module = NativeModules.FullScreenVideo;
 
 interface adinfo {
-    tt_appid?: string;
     tt_codeid?: string;
 }
 
 export const loadFullScreenVideoAd = (options: adinfo): Promise<string> => {
+    options = {
+        ...adArgs,
+        // ...options, 
+    };
     return module.loadAd(options);
 };
 
 export const startFullScreenVideoAd = (options: adinfo) => {
-    if (!options.tt_appid) {
-        return;
-    }
+    options = {
+        ...adArgs,
+        // ...options,
+    };
     return module.startAd(options);
 };
 

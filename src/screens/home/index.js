@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, StatusBar } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import {
     PageContainer,
     CustomRefreshControl,
@@ -29,6 +29,7 @@ import { Overlay } from 'teaset';
 
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
+import { ISIOS } from 'utils';
 
 // 监听新用户登录
 when(
@@ -261,7 +262,7 @@ class index extends Component {
                     backgroundColor: '#fff',
                 }}
                 backButtonColor={Theme.defaultTextColor}
-                rightView={<TimeReward navigation={this.props.navigation} />}>
+                rightView={!ISIOS ? <TimeReward navigation={this.props.navigation} /> : null}>
                 {this._renderCategoryList()}
             </PageContainer>
         );
