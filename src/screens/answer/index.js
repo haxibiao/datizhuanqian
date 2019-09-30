@@ -243,7 +243,7 @@ class index extends Component {
         const error_rate = this.error_count / this.answer_count;
         // this.showAnswerResult(this.answer_count, this.error_count);
         // 广告触发
-        const adWillShowCount = Platform.OS === 'ios' ? 5 : 10;
+        const adWillShowCount = Platform.OS === 'ios' ? 100 : 10; // 暂时相对关闭ios的广告
         if (this.answer_count === adWillShowCount && config.enableQuestion) {
             this.showAnswerResult(this.answer_count, this.error_count);
             this.error_count = 0;
