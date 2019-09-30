@@ -4,7 +4,7 @@
  * created by wyk made in 2019-03-19 11:22:26
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Animated, StatusBar } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, StatusBar, Platform } from 'react-native';
 import {
     PageContainer,
     TouchFeedback,
@@ -243,7 +243,8 @@ class index extends Component {
         const error_rate = this.error_count / this.answer_count;
         // this.showAnswerResult(this.answer_count, this.error_count);
         // 广告触发
-        if (this.answer_count === 10 && config.enableQuestion) {
+        const adWillShowCount = Platform.OS === 'ios' ? 5 : 10;
+        if (this.answer_count === adWillShowCount && config.enableQuestion) {
             this.showAnswerResult(this.answer_count, this.error_count);
             this.error_count = 0;
             this.answer_count = 0;
