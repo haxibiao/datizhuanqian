@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { PxFit, Theme, SCREEN_HEIGHT, Tools } from 'utils';
+import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ttad } from 'native';
 
 import { observer, app } from 'store';
@@ -46,7 +46,7 @@ export default observer(props => {
         }
     };
 
-    if (media.is_ad_video && adShow)
+    if (media.is_ad_video && adShow && !ISIOS)
         return (
             <View style={{ height: VideoStore.viewportHeight }}>
                 <ttad.DrawFeedAd
