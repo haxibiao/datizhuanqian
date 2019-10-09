@@ -134,7 +134,7 @@ class AnswerResult extends Component {
         };
 
         if (loadRewardVideoAd) {
-            this.startRewardVideo(adinfo);
+            this.startRewardVideo(adinfo, answer_result);
         } else {
             ttad.RewardVideo.loadAd(adinfo).then(() => {
                 this.startRewardVideo(adinfo, answer_result);
@@ -151,6 +151,7 @@ class AnswerResult extends Component {
             console.warn('result', result);
         }); // 数据上报
 
+        console.log('answer_result', answer_result);
         ttad.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
@@ -170,6 +171,7 @@ class AnswerResult extends Component {
                         ],
                     })
                     .then(res => {
+                        console.log('res', res);
                         this.loadRewardTips(res);
                     })
                     .catch(err => {
