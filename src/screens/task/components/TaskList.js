@@ -4,10 +4,11 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, Platform } from 'react-native';
 
 import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay, TipsOverlay } from 'components';
 import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, ISAndroid } from 'utils';
+import service from 'service';
 
 // import { Storage, ItemKeys } from '../../../store/localStorage';
 
@@ -43,6 +44,19 @@ class TaskList extends Component {
             invitationContribute: 36,
             tasksCache: null,
             min_level: 2,
+            // 上报激励视频任务
+            reportContent: {
+                category: '广告点击',
+                action: 'user_click_task_reward_ad',
+                name: '点击看激励视频任务',
+                value: '1',
+                package: Config.PackageName,
+                os: Platform.OS,
+                version: Config.Version,
+                build: Config.Build,
+                user_id: app.me.id,
+                referrer: Config.AppStore,
+            },
         };
     }
 
@@ -244,8 +258,15 @@ class TaskList extends Component {
                                     });
                                     return;
                                 }
+
+                                const data = JSON.stringify(this.state.reportContent);
+                                service.dataReport(data, result => {
+                                    console.log('result', result);
+                                });
+
                                 ttad.RewardVideo.loadAd({ ...adinfo, uid: me.id }).then(() => {
                                     // 开始看奖励视频
+
                                     ttad.RewardVideo.startAd({
                                         ...adinfo,
                                         uid: me.id,

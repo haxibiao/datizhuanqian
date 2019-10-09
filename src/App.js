@@ -43,13 +43,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        SplashScreen.hide();
-        // 恢复用户身份信息
-        app.recallUser();
-        // 恢复缓存
-        app.recallCache();
         // 获取广告开放状态
-
         service.enableAdvert(data => {
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
@@ -65,6 +59,12 @@ class App extends Component {
         if (Config.AppStore !== 'huawei') {
             ttad.Splash.loadSplashAd();
         }
+
+        // SplashScreen.hide();
+        // 恢复用户身份信息
+        app.recallUser();
+        // 恢复缓存
+        app.recallCache();
         // 检查更新
         checkUpdate('autoCheck');
         // 检查GQL接口状态

@@ -16,7 +16,6 @@ query CategoriesQuery($offset: Int, $limit: Int, $allow_submit: Int) {
             name
             icon
         }
-        shieldingAd
     }
 }
 

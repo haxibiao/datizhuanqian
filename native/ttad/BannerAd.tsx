@@ -25,7 +25,7 @@ const BannerAd = (props: Props) => {
         <NativeBannerAd
             codeid={codeid} //ios ?
             adWidth={adWidth}
-            style={{ ...styles.container, height }}
+            style={{ width: adWidth, height: height + 10 }}
             onAdClicked={(e: { nativeEvent: any }) => {
                 onAdClicked && onAdClicked(e.nativeEvent);
             }}

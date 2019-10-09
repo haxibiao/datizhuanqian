@@ -525,7 +525,8 @@ const styles = StyleSheet.create({
 	rewordText: {
 		color: Theme.primaryColor,
 		fontSize: PxFit(13),
-		fontWeight: '200'
+		fontWeight: '200',
+		fontFamily: '',
 	},
 	greyButton: {
 		backgroundColor: Theme.borderColor,

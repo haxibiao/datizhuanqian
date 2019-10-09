@@ -212,7 +212,9 @@ class WithdrawBody extends Component {
                                                     fontSize: 13,
                                                     color: luckyMoney.value === 1 ? '#FFA200' : Theme.subTextColor,
                                                 }}>
-                                                {luckyMoney.value === 1 ? '无门槛' : `${luckyMoney.value * 36}日贡献`}
+                                                {luckyMoney.value === 1
+                                                    ? '新人无门槛'
+                                                    : `${luckyMoney.value * 36}日贡献`}
                                             </Text>
                                         </TouchFeedback>
 

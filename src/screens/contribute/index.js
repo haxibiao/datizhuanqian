@@ -41,6 +41,7 @@ import VideoExplain from '../question/components/VideoExplain';
 
 import { Overlay } from 'teaset';
 import { app } from 'store';
+import service from 'service';
 
 let contributeStore;
 const Contribute = observer(
@@ -52,6 +53,18 @@ const Contribute = observer(
             contributeStore.setExplainVideoDuration(app.me.explanation_video_duration);
             this.state = {
                 submitting: false,
+                reportContent: {
+                    category: '用户行为',
+                    action: 'user_click_contribute',
+                    name: '进入出题页面',
+                    value: '1',
+                    package: Config.PackageName,
+                    os: Platform.OS,
+                    version: Config.Version,
+                    build: Config.Build,
+                    user_id: app.me.id,
+                    referrer: Config.AppStore,
+                },
             };
         }
 
@@ -63,6 +76,12 @@ const Contribute = observer(
                 skipGuidanceKeys: ['InputQuestion', 'SubmitQuestion'],
             });
             this.loadCache();
+
+            const data = JSON.stringify(this.state.reportContent);
+
+            service.dataReport(data, result => {
+                console.warn('result', result);
+            });
         }
 
         componentWillMount() {

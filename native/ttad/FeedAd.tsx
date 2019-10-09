@@ -24,7 +24,7 @@ const FeedAd = (props: Props) => {
         <NativeFeedAd
             codeid={codeid}
             adWidth={adWidth}
-            style={{ ...styles.container, height }}
+            style={{ width: adWidth, height }}
             onAdClicked={(e: { nativeEvent: any }) => {
                 onAdClicked && onAdClicked(e.nativeEvent);
             }}

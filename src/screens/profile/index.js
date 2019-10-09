@@ -345,6 +345,7 @@ const styles = StyleSheet.create({
         fontSize: PxFit(17),
         color: '#fff',
         fontWeight: '500',
+        fontFamily: '',
     },
     introduction: {
         marginTop: PxFit(8),
@@ -373,6 +374,7 @@ const styles = StyleSheet.create({
         fontSize: PxFit(15),
         color: '#fff',
         fontWeight: '500',
+        fontFamily: '',
     },
     metaLabel: {
         fontSize: PxFit(13),

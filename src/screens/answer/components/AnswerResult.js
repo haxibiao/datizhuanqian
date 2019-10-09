@@ -7,10 +7,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, View, Text } from 'react-native';
 import { TouchFeedback, Button, Row, RewardTipsOverlay } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools, ISIOS } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools, ISIOS, Config } from 'utils';
 import { ttad } from 'native';
 import { GQL } from 'apollo';
-
+import service from 'service';
 import { app } from 'store';
 
 class AnswerResult extends Component {
@@ -18,6 +18,30 @@ class AnswerResult extends Component {
         super(props);
         this.state = {
             adShow: false,
+            rewardReport: {
+                category: '广告点击',
+                action: 'user_click_answer_reward_ad',
+                name: '答题结果选择看激励视频',
+                value: '1',
+                package: Config.PackageName,
+                os: Platform.OS,
+                version: Config.Version,
+                build: Config.Build,
+                user_id: app.me.id,
+                referrer: Config.AppStore,
+            },
+            fullScreenReport: {
+                category: '广告点击',
+                action: 'user_click_answer_fullscreen_ad',
+                name: '答题结果选择看全屏视频',
+                value: '1',
+                package: Config.PackageName,
+                os: Platform.OS,
+                version: Config.Version,
+                build: Config.Build,
+                user_id: app.me.id,
+                referrer: Config.AppStore,
+            },
         };
     }
 
@@ -56,7 +80,12 @@ class AnswerResult extends Component {
     // 展示全屏视频
     startFullScreenVideoAd = adinfo => {
         const { client } = this.props;
-        console.log('adinfo', adinfo);
+
+        const data = JSON.stringify(this.state.fullScreenReport);
+        service.dataReport(data, result => {
+            console.warn('result', result);
+        }); // 数据上报
+
         ttad.FullScreenVideo.startFullScreenVideoAd(adinfo)
             .then(result => {
                 if (result) {
@@ -116,6 +145,12 @@ class AnswerResult extends Component {
     // 展示激励视频
     startRewardVideo = (adinfo, answer_result) => {
         const { client } = this.props;
+
+        const data = JSON.stringify(this.state.rewardReport);
+        service.dataReport(data, result => {
+            console.warn('result', result);
+        }); // 数据上报
+
         ttad.RewardVideo.startAd(adinfo).then(result => {
             if (result) {
                 // 发放奖励 banner弹窗
@@ -176,11 +211,11 @@ class AnswerResult extends Component {
                     </View>
                     <View style={styles.wrap}>
                         <Text style={{ fontSize: PxFit(15) }}>{answer_result ? '本轮答题及格' : '本轮答题不及格'}</Text>
-                        <Text style={{ paddingVertical: PxFit(8) }}>{`正确${answer_count -
+                        <Text style={{ paddingVertical: PxFit(5) }}>{`正确${answer_count -
                             error_count}/错误${error_count}`}</Text>
                     </View>
                     {adShow && !ISIOS && (
-                        <Row style={{ marginBottom: PxFit(10) }}>
+                        <Row style={{ marginBottom: PxFit(1), justifyContent: 'center' }}>
                             <View style={styles.line} />
                             <Text style={{ color: Theme.theme, fontSize: PxFit(13) }}>{'猜你喜欢'}</Text>
                             <View style={styles.line} />
@@ -188,15 +223,17 @@ class AnswerResult extends Component {
                     )}
                     {!ISIOS && (
                         <View>
-                            <ttad.BannerAd
-                                adWidth={SCREEN_WIDTH - PxFit(120)}
-                                onLoad={e => {
-                                    this.setState({ adShow: true });
+                            <ttad.FeedAd
+                                adWidth={SCREEN_WIDTH - PxFit(48)}
+                                onAdShow={e => {
+                                    this.setState({
+                                        adShow: true,
+                                    });
                                 }}
                             />
                         </View>
                     )}
-                    <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
+                    <View style={{ alignItems: 'center', marginTop: PxFit(5) }}>
                         <Button
                             style={styles.button}
                             textColor={Theme.white}
@@ -223,8 +260,8 @@ class AnswerResult extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH - PxFit(90),
-        borderRadius: PxFit(15),
+        width: SCREEN_WIDTH - PxFit(48),
+        borderRadius: PxFit(6),
         backgroundColor: '#FFF',
         alignItems: 'center',
     },
