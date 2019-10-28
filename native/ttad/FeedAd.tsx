@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
+import { StyleSheet, requireNativeComponent, Dimensions, Platform } from 'react-native';
 const { width } = Dimensions.get('window');
 import { SCREEN_WIDTH } from 'utils';
 import { config } from 'store';
 const NativeFeedAd = requireNativeComponent('FeedAd');
 
-let codeid = '916518115'; //TODO: ios上架后更新ios的
+import { CodeIdFeed, CodeIdFeedIOS } from '@app/app.json';
+
+const codeid = Platform.OS === 'ios' ? CodeIdFeedIOS : CodeIdFeed;
 interface Props {
     adWidth: number;
     onAdClicked?: Function;

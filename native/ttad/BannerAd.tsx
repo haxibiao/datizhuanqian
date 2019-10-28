@@ -4,8 +4,9 @@ const { width } = Dimensions.get('window');
 import { SCREEN_WIDTH } from 'utils';
 import { config } from 'store';
 const NativeBannerAd = requireNativeComponent('BannerAd');
+import { CodeIdBanner, CodeIdBannerIOS } from '@app/app.json';
 
-let codeid = Platform.OS === 'android' ? '916518401' : ''; //TODO: ios上架后更新ios的
+const codeid = Platform.OS === 'ios' ? CodeIdBannerIOS : CodeIdBanner;
 interface Props {
     adWidth: number;
     onAdClicked?: Function;

@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, requireNativeComponent, Dimensions } from 'react-native';
+import { StyleSheet, requireNativeComponent, Dimensions, Platform } from 'react-native';
 const { width } = Dimensions.get('window');
 const NativeDrawFeedAd = requireNativeComponent('DrawFeedAd');
+
+import { CodeIdDrawFeed, CodeIdDrawFeedIOS } from '@app/app.json';
+
+const codeid = Platform.OS === 'ios' ? CodeIdDrawFeedIOS : CodeIdDrawFeed;
 
 type Props = {
     onError?: Function;
     onAdShow?: Function;
     onAdClick?: Function;
 };
-
-// 内测 无论android ios 都可以用 下面的appid, codeid;
-// 5016582;
-
-// 内测_Draw信息流;
-// 916582757;
-// 内测_信息流;
-// 916582486;
-// 内测_Banner;
-// 916582063;
 
 const DrawFeedAd = (props: Props) => {
     let { onError, onAdShow, onAdClick } = props;
@@ -27,7 +21,7 @@ const DrawFeedAd = (props: Props) => {
     if (!visible) return null;
     return (
         <NativeDrawFeedAd
-            codeid="916518247"
+            codeid={codeid}
             style={{ ...styles.container }}
             onError={e => {
                 console.log('onError feed', e.nativeEvent);
