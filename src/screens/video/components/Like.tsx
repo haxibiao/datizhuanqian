@@ -1,10 +1,12 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useRef, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react-native';
+import { SafeText } from 'components';
 import { exceptionCapture, useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
 import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from 'utils';
 import _ from 'lodash';
+import { useNavigation } from 'react-navigation-hooks';
 
 const imageSource = {
     liked: require('../../../assets/images/ic_liked.png'),
@@ -24,6 +26,8 @@ interface Props {
 
 export default observer((props: Props) => {
     const { media } = props;
+    const firstMount = useRef(true);
+    const navigation = useNavigation();
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
@@ -33,10 +37,8 @@ export default observer((props: Props) => {
     });
 
     const likeHandler = _.debounce(async function() {
-        try {
-            const result = await exceptionCapture(likeArticle);
-            console.log('result', result);
-        } catch (error) {
+        const [error] = await exceptionCapture(likeArticle);
+        if (error) {
             media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
             media.question.liked = !media.question.liked;
             Toast.show({ content: '操作失败' });
@@ -44,11 +46,21 @@ export default observer((props: Props) => {
     }, 500);
 
     function toggleLike(): void {
-        media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
-        media.question.liked = !media.question.liked;
-        startAnimation();
-        likeHandler();
+        if (TOKEN) {
+            media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
+            media.question.liked = !media.question.liked;
+        } else {
+            navigation.navigate('Login');
+        }
     }
+
+    useEffect(() => {
+        if (!firstMount.current) {
+            startAnimation();
+            likeHandler();
+        }
+        firstMount.current = false;
+    }, [media.question.liked]);
 
     const scale = animation.interpolate({
         inputRange: [1, 1.1, 1.2],
@@ -61,21 +73,23 @@ export default observer((props: Props) => {
                     source={media.question.liked ? imageSource.liked : imageSource.unlike}
                     style={styles.imageStyle}
                 />
-                <Text style={styles.countLikes}>{media.question.count_likes}</Text>
+                <SafeText style={styles.countLikes} shadowText={true}>
+                    {media.question.count_likes}
+                </SafeText>
             </TouchableOpacity>
         </Animated.View>
     );
 });
 
 const styles = StyleSheet.create({
-    imageStyle: {
-        width: PxFit(40),
-        height: PxFit(40),
-    },
     countLikes: {
-        textAlign: 'center',
-        marginTop: PxFit(10),
-        fontSize: PxFit(12),
         color: 'rgba(255,255,255,0.8)',
+        fontSize: PxFit(12),
+        marginTop: PxFit(10),
+        textAlign: 'center',
+    },
+    imageStyle: {
+        height: PxFit(40),
+        width: PxFit(40),
     },
 });

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import { SafeText } from 'components';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ttad } from 'native';
-
 import { observer, app } from 'store';
+import { GQL, useMutation } from 'apollo';
+import { exceptionCapture } from 'common';
+
 import Player from './Player';
 import SideBar from './SideBar';
 import VideoStore from '../VideoStore';
-import { GQL, useMutation } from 'apollo';
-import { exceptionCapture } from 'common';
 
 export default observer(props => {
     const { media, index } = props;
@@ -31,7 +32,7 @@ export default observer(props => {
 
         if (VideoStore.getReward.indexOf(drawFeedAdId) === -1) {
             VideoStore.addGetRewardId(drawFeedAdId);
-            //发放给精力奖励
+            // 发放给精力奖励
             const [error, res] = await exceptionCapture(onClickReward);
             if (error) {
                 Toast.show({
@@ -45,21 +46,21 @@ export default observer(props => {
             }
         }
     };
-
-    if (media.is_ad_video && adShow && !ISIOS)
+    if (media.is_ad_video && adShow && !ISIOS) {
         return (
-            <View style={{ height: VideoStore.viewportHeight }}>
+            <View style={{ height: app.viewportHeight }}>
                 <ttad.DrawFeedAd
                     onError={(error: any) => {
-                        console.log('error', error);
                         setAdShow(false);
                     }}
                     onAdClick={() => getReward(media)}
                 />
             </View>
         );
+    }
+
     return (
-        <View style={{ height: VideoStore.viewportHeight }}>
+        <View style={{ height: app.viewportHeight }}>
             {media.cover && (
                 <View style={styles.cover}>
                     <Image style={styles.curtain} source={{ uri: media.cover }} resizeMode="cover" blurRadius={4} />
@@ -67,15 +68,19 @@ export default observer(props => {
                 </View>
             )}
             <Player media={media} index={index} />
-            <View style={styles.videoInfo}>
-                <View style={styles.left}>
-                    <View>
-                        <Text style={styles.name}>@{media.question.user.name}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.body}>{media.question.description}</Text>
-                    </View>
+            <View style={styles.videoContent}>
+                <View>
+                    <SafeText shadowText={true} style={styles.name}>
+                        @{Tools.syncGetter('question.user.name', media)}
+                    </SafeText>
                 </View>
+                <View>
+                    <SafeText shadowText={true} style={styles.body} numberOfLines={3}>
+                        {Tools.syncGetter('question.description', media)}
+                    </SafeText>
+                </View>
+            </View>
+            <View style={styles.videoSideBar}>
                 <SideBar media={media} />
             </View>
         </View>
@@ -84,41 +89,41 @@ export default observer(props => {
 
 const styles = StyleSheet.create({
     body: { color: 'rgba(255,255,255,0.9)', fontSize: PxFit(15), paddingTop: PxFit(10) },
+    categoryName: {
+        fontWeight: 'bold',
+    },
     cover: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
         bottom: 0,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
     },
     curtain: {
-        flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        width: null,
+        flex: 1,
         height: null,
+        justifyContent: 'center',
+        width: null,
     },
     mask: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.1)',
-    },
-    left: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingBottom: 10,
-        paddingRight: 40,
+        bottom: 0,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
     },
     name: { color: 'rgba(255,255,255,0.9)', fontSize: PxFit(16), fontWeight: 'bold' },
-    videoInfo: {
-        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(50),
-        flexDirection: 'row',
-        left: 0,
-        paddingHorizontal: PxFit(Theme.itemSpace),
+    videoContent: {
+        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(80),
+        left: PxFit(Theme.itemSpace),
         position: 'absolute',
-        right: 0,
+        right: PxFit(90),
+    },
+    videoSideBar: {
+        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(80),
+        position: 'absolute',
+        right: PxFit(Theme.itemSpace),
     },
 });

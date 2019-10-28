@@ -1,7 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import user from './user';
 import { keys, storage } from './storage';
-import Config from '../utils/Config';
+import { Config, SCREEN_HEIGHT } from '../utils';
 
 class app {
     @observable me = {};
@@ -16,6 +16,9 @@ class app {
     @observable noTicketTips = true;
     @observable unreadNotice = 0;
     @observable withdrawTips = false;
+    @observable launched: boolean = false;
+    @observable modalIsShow: boolean = false;
+    @observable viewportHeight: number = SCREEN_HEIGHT;
 
     @action.bound
     setFetching(isFetching) {
@@ -35,6 +38,7 @@ class app {
                 global.TOKEN = json.token;
             });
         }
+        this.launched = true;
     }
 
     @action.bound

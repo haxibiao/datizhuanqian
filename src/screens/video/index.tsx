@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
-
-import { GQL, useQuery, useLazyQuery, useMutation, useApolloClient } from 'apollo';
+import { GQL, useApolloClient } from 'apollo';
 import { observer, app } from 'store';
 import { exceptionCapture } from 'common';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils';
+import { PxFit, Tools, Theme } from 'utils';
 
 import VideoItem from './components/VideoItem';
 import Footer from './components/Footer';
@@ -14,33 +13,40 @@ import CommentOverlay from '../comment/CommentOverlay';
 import { useNavigation } from 'react-navigation-hooks';
 
 export default observer(props => {
+    const { launched } = app;
     const client = useApolloClient();
     const navigation = useNavigation();
     const commentRef = useRef();
-    const activeItem = useRef(0);
     const config = useRef({
         waitForInteraction: true,
         viewAreaCoveragePercentThreshold: 95,
     });
+    const question = useMemo(() => {
+        const activeItem = VideoStore.dataSource[VideoStore.viewableItemIndex >= 0 ? VideoStore.viewableItemIndex : 0];
+        return activeItem ? activeItem.question : {};
+    }, [VideoStore.dataSource, VideoStore.viewableItemIndex]);
+
+    const onLayout = useCallback(event => {
+        const { height } = event.nativeEvent.layout;
+        app.viewportHeight = height;
+    }, []);
 
     VideoStore.showComment = useCallback(() => {
-        commentRef.current.slideUp();
+        if (TOKEN) {
+            commentRef.current.slideUp();
+        } else {
+            navigation.navigate('Login');
+        }
     }, [commentRef]);
 
     const hideComment = useCallback(() => {
         commentRef.current.slideDown();
     }, [commentRef]);
 
-    const onLayout = useCallback(event => {
-        const { height } = event.nativeEvent.layout;
-        VideoStore.viewportHeight = height;
-    }, []);
-
     const VideosQuery = useCallback(() => {
-        console.log('VideoStore.dataSource.length', VideoStore.dataSource.length);
         return client.query({
             query: GQL.VideosQuery,
-            variables: { limit: 5, offset: VideoStore.dataSource.length },
+            variables: { offset: VideoStore.dataSource.length, limit: 5 },
             fetchPolicy: 'network-only',
         });
     }, [client]);
@@ -48,9 +54,7 @@ export default observer(props => {
     const fetchData = useCallback(async () => {
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
-        console.log('result', result.data);
         const videoSource = Tools.syncGetter('data.videos', result);
-
         if (error) {
             VideoStore.isError = true;
         } else {
@@ -65,14 +69,13 @@ export default observer(props => {
 
     const getVisibleRows = useCallback(info => {
         if (info.viewableItems[0]) {
-            activeItem.current = info.viewableItems[0].index;
-            VideoStore.viewableItemIndex = activeItem.current;
+            VideoStore.viewableItemIndex = info.viewableItems[0].index;
         }
     }, []);
 
     const onMomentumScrollEnd = useCallback(
         event => {
-            if (VideoStore.dataSource.length - activeItem.current <= 3) {
+            if (VideoStore.dataSource.length - VideoStore.viewableItemIndex <= 3) {
                 fetchData();
             }
         },
@@ -80,32 +83,27 @@ export default observer(props => {
     );
 
     useEffect(() => {
-        const navWillFocusListener = navigation.addListener('willFocus', () => {
-            console.log('====================================');
-            console.log('VideoStore.viewableItemIndex');
-            console.log('====================================');
-            if (VideoStore.viewableItemIndex < 0) {
-                VideoStore.viewableItemIndex = 0;
-            }
+        const navWillFocusListener = props.navigation.addListener('willFocus', () => {
+            StatusBar.setBarStyle('light-content');
         });
         const navWillBlurListener = navigation.addListener('willBlur', () => {
+            StatusBar.setBarStyle('dark-content');
             hideComment();
         });
-        fetchData();
         return () => {
             navWillFocusListener.remove();
             navWillBlurListener.remove();
         };
     }, []);
 
-    const question = useMemo(() => {
-        const media = VideoStore.dataSource[VideoStore.viewableItemIndex];
-        return media ? media.question : {};
-    }, [VideoStore.viewableItemIndex]);
-    console.log('VideoStore.dataSource', VideoStore.dataSource);
+    useEffect(() => {
+        if (launched) {
+            fetchData();
+        }
+    }, [launched]);
+
     return (
         <View style={styles.container} onLayout={onLayout}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'} />
             <FlatList
                 data={VideoStore.dataSource}
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -115,11 +113,11 @@ export default observer(props => {
                 keyboardShouldPersistTaps="always"
                 pagingEnabled={true}
                 removeClippedSubviews={true}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
                 renderItem={({ item, index }) => <VideoItem media={item} index={index} />}
                 getItemLayout={(data, index) => ({
-                    length: VideoStore.viewportHeight,
-                    offset: VideoStore.viewportHeight * index,
+                    length: app.viewportHeight,
+                    offset: app.viewportHeight * index,
                     index,
                 })}
                 ListEmptyComponent={
@@ -135,6 +133,7 @@ export default observer(props => {
             <View style={styles.rewardProgress}>
                 <RewardProgress />
             </View>
+
             <CommentOverlay ref={commentRef} question={question} />
         </View>
     );
@@ -146,18 +145,19 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cover: {
-        ...StyleSheet.absoluteFill,
+        flex: 1,
+        // ...StyleSheet.absoluteFill,
     },
     curtain: {
-        flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        width: null,
+        flex: 1,
         height: null,
+        justifyContent: 'center',
+        width: null,
     },
     rewardProgress: {
+        bottom: PxFit(340 + Theme.HOME_INDICATOR_HEIGHT),
         position: 'absolute',
-        left: PxFit(Theme.itemSpace),
-        bottom: PxFit(140 + Theme.HOME_INDICATOR_HEIGHT),
+        right: PxFit(Theme.itemSpace),
     },
 });

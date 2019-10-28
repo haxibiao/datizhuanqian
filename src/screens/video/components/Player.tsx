@@ -2,8 +2,9 @@ import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Video from 'react-native-video';
 import { Iconfont } from 'components';
+import { useDoubleAction, syncGetter } from 'common';
 import { observer } from 'store';
-import { PxFit } from 'utils';
+import { PxFit, Theme } from 'utils';
 import VideoStore from '../VideoStore';
 import VideoLoading from './VideoLoading';
 import { useNavigation } from 'react-navigation-hooks';
@@ -11,7 +12,8 @@ import { useNavigation } from 'react-navigation-hooks';
 export default observer(props => {
     const { media, index } = props;
     const navigation = useNavigation();
-    const progress = useRef(0);
+    const [progress, setProgress] = useState(0);
+    const currentTime = useRef(0);
     const duration = useRef(100);
     const videoRef = useRef();
     const isIntoView = index === VideoStore.viewableItemIndex;
@@ -27,10 +29,20 @@ export default observer(props => {
         setPause(v => !v);
     }, []);
 
+    const giveALike = useCallback(() => {
+        if (TOKEN && !media.question.liked) {
+            media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
+            media.question.liked = !media.question.liked;
+        }
+    }, [TOKEN, media]);
+    // 双击点赞、单击暂停视频
+    const onPress = useDoubleAction(giveALike, 200, togglePause);
+
     const videoEvents = useMemo((): object => {
         return {
             onLoadStart() {
-                media.currentTime = 0;
+                setProgress(0);
+                currentTime.current = 0;
             },
 
             onLoad(data) {
@@ -39,14 +51,14 @@ export default observer(props => {
             },
 
             onProgress(data) {
-                if (!media.watched && media.watchedTime < data.currentTime) {
-                    VideoStore.rewardProgress += data.currentTime - media.watchedTime;
-                    media.watchedTime = data.currentTime;
-                    if (Math.abs(media.watchedTime - duration.current) <= 1) {
+                if (!media.watched) {
+                    VideoStore.rewardProgress += data.currentTime - currentTime.current;
+                    if (Math.abs(currentTime.current - duration.current) <= 1) {
                         media.watched = true;
                     }
                 }
-                media.currentTime = data.currentTime;
+                setProgress(data.currentTime);
+                currentTime.current = data.currentTime;
             },
 
             onEnd() {},
@@ -64,12 +76,6 @@ export default observer(props => {
     }, []);
 
     useEffect(() => {
-        if (media.currentTime) {
-            progress.current = (media.currentTime / duration.current) * 100;
-        }
-    }, [media.currentTime]);
-
-    useEffect(() => {
         setPause(!isIntoView);
         const navWillFocusListener = navigation.addListener('willFocus', () => {
             setPause(!isIntoView);
@@ -83,20 +89,15 @@ export default observer(props => {
         };
     }, [isIntoView]);
 
-    useEffect(() => {
-        // 记录已经观看的时间，避免重新播放时重复计入奖励时间
-        media.watchedTime = 0;
-    }, []);
-
     return (
-        <TouchableWithoutFeedback onPress={togglePause}>
+        <TouchableWithoutFeedback onPress={onPress}>
             <View style={styles.playContainer}>
                 <Video
                     ref={videoRef}
                     resizeMode={resizeMode}
                     paused={paused}
                     source={{
-                        uri: media.url,
+                        uri: syncGetter('url', media),
                     }}
                     style={styles.fullScreen}
                     rate={1} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
@@ -111,15 +112,26 @@ export default observer(props => {
                     playInBackground={false}
                     {...videoEvents}
                 />
+
                 {paused && <Iconfont name="paused" size={PxFit(70)} color="rgba(255,255,255,0.8)" />}
-                <VideoLoading loading={loading} />
-                <View style={[styles.progress, { width: progress.current + '%' }]} />
+                <View style={styles.bottom}>
+                    <VideoLoading loading={loading} />
+                    <View style={[styles.progress, { width: (progress / duration.current) * 100 + '%' }]} />
+                </View>
             </View>
         </TouchableWithoutFeedback>
     );
 });
 
 const styles = StyleSheet.create({
+    bottom: {
+        backgroundColor: 'rgba(255,255,255,0.5)',
+        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+        height: PxFit(1),
+        left: 0,
+        position: 'absolute',
+        right: 0,
+    },
     fullScreen: {
         bottom: 0,
         left: 0,
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     },
     progress: {
         backgroundColor: '#fff',
-        bottom: 1,
+        bottom: 0,
         height: PxFit(1),
         left: 0,
         position: 'absolute',

@@ -7,7 +7,9 @@ import React from 'react';
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import { Theme, PxFit } from '../utils';
 import { app } from 'store';
+import { observer } from 'mobx-react';
 
+@observer
 class TabBarComponent extends React.Component {
     public renderItem = (route: any, index: number) => {
         const { navigation, onTabPress, renderIcon, activeTintColor, inactiveTintColor } = this.props;
@@ -19,15 +21,6 @@ class TabBarComponent extends React.Component {
             route,
         };
 
-        // if(index === 2){
-        //     return (
-        //         <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
-        //             <View style={styles.tabItem}>
-        //                 <Image style={styles.videoPlayer} source={require('@src/assets/images/video_player.png')} />
-        //             </View>
-        //         </TouchableWithoutFeedback>
-        //     );
-        // }
         return (
             <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
                 <View style={styles.tabItem}>
@@ -45,30 +38,36 @@ class TabBarComponent extends React.Component {
         const { navigation } = this.props;
         const { routes, index: currentIndex } = navigation.state;
 
-        const darkModel = currentIndex === 2;
+        const lightModel = currentIndex === 2;
         const routerItem = routes && routes.map((route, index) => this.renderItem(route, index));
 
-        return <View style={[styles.tabBar, darkModel && styles.darkStyle]}>{routerItem}</View>;
+        return (
+            <View style={[styles.tabBar, lightModel && styles.lightStyle, app.modalIsShow && styles.hidden]}>
+                {routerItem}
+            </View>
+        );
     }
 }
 
 const styles = {
     tabBar: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
         flexDirection: 'row',
-        alignItems: 'stretch',
-        height: Theme.HOME_INDICATOR_HEIGHT + PxFit(50),
+        alignItems: 'center',
+        height: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+        backgroundColor: '#ffffff',
         borderTopWidth: PxFit(0.5),
         borderTopColor: Theme.borderColor,
-        backgroundColor: '#fff',
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
     },
-    darkStyle: {
-        backgroundColor: '#000000',
-        borderTopColor: '#000000',
+    hidden: {
+        zIndex: -1,
     },
-    videoPlayer: {
-        width: (PxFit(48) * 96) / 111,
-        height: PxFit(48),
+    lightStyle: {
+        backgroundColor: 'transparent',
+        borderTopColor: 'transparent',
     },
     tabItem: {
         flex: 1,

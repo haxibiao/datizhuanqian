@@ -37,7 +37,6 @@ class VideoStore {
     @observable public isLoadMore: boolean = false;
     @observable public videoPaused: boolean = false;
     @observable public viewableItemIndex: number = -1;
-    @observable public viewportHeight: number = SCREEN_HEIGHT;
     @observable public rewardProgress: number = 0;
     @observable public getReward = [];
 

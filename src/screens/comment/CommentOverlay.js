@@ -28,11 +28,14 @@ import {
 } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Tools } from 'utils';
 import { Query, Mutation, compose, withApollo, graphql, GQL } from 'apollo';
+import { app } from 'store';
 import CommentItem from './CommentItem';
 import InputCommentModal from './InputCommentModal';
-
 import { BoxShadow } from 'react-native-shadow';
+import { observer } from 'mobx-react';
 
+
+@observer
 class CommentOverlay extends Component {
 	constructor(props) {
 		super(props);
@@ -51,6 +54,7 @@ class CommentOverlay extends Component {
 
 	//显示动画
 	slideUp = () => {
+		app.modalIsShow = true;
 		this.setState(
 			() => ({ visible: true }),
 			() => {
@@ -73,7 +77,10 @@ class CommentOverlay extends Component {
 				duration: 200,
 				toValue: 0
 			})
-		]).start(() => this.setState({ visible: false }));
+		]).start(() => {
+			this.setState({ visible: false });
+			app.modalIsShow = false;
+		});
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -83,7 +90,6 @@ class CommentOverlay extends Component {
 				this.setState({ finished: false, count_comments: nextProps.question.count_comments });
 			}
 		} catch {
-			console.log('componentWillReceiveProps error');
 		}
 	}
 
@@ -222,6 +228,9 @@ class CommentOverlay extends Component {
 								fetchPolicy="network-only"
 							>
 								{({ data, loading, error, refetch, fetchMore }) => {
+									console.log('====================================');
+									console.log('data.comments',data,error);
+									console.log('====================================');
 									if (!(data && data.comments)) return null;
 									let comments = Tools.syncGetter('comments', data);
 									return (
@@ -296,7 +305,8 @@ const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		right: 0,
-		bottom: 0
+		bottom: 0,
+		zIndex: 1000,
 	},
 	modal: {
 		position: 'absolute',

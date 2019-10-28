@@ -156,7 +156,7 @@ module.exports = {
             },
         ],
         'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
-        'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+        'react-hooks/exhaustive-deps': 'off', // Checks effect dependencies
         '@typescript-eslint/explicit-member-accessibility': 1,
         '@typescript-eslint/no-empty-interface': 1,
         '@typescript-eslint/explicit-function-return-type': [
