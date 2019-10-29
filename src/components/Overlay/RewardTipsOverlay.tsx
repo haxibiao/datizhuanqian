@@ -99,7 +99,7 @@ class RewardTips {
                                     if (rewardVideo) {
                                         navigation.navigate('BillingRecord', { initialPage: 1 });
                                     } else {
-                                        playRewardVideo({ navigation, type: 'Sigin' });
+                                        playRewardVideo({ navigation });
                                     }
                                 }}>
                                 <Text style={[styles.operationText, { color: Theme.theme }]}>

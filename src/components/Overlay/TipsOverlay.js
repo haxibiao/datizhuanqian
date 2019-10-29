@@ -76,7 +76,7 @@ class TipsOverlay {
 const styles = StyleSheet.create({
     overlayInner: {
         // minWidth: PxFit(200),
-        width: (width * 3) / 4,
+        width: width - PxFit(40),
         padding: 0,
         backgroundColor: '#fff',
         borderRadius: PxFit(5),

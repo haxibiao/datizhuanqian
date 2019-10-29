@@ -392,9 +392,7 @@ class TaskItem extends Component {
 		}
 		if (task.type == 3) {
 			return (
-				<Text style={styles.taskDetailText}>{`每出一题要${task.ticket}精力点和${
-					task.cost
-				}智慧点,出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，没有解析将只能获得${
+				<Text style={styles.taskDetailText}>{`出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，没有解析将只能获得${
 					task.gold
 				}智慧点的奖励。恶意刷题和乱出解析将会受到惩罚哦！`}</Text>
 			);

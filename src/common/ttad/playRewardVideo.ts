@@ -25,7 +25,7 @@ interface Props {
     callback?: Function;
     refresh?: any;
     answerResult?: Boolean;
-    type: Type;
+    type?: Type;
 }
 
 export function playRewardVideo(props: Props) {
@@ -38,7 +38,6 @@ export function playRewardVideo(props: Props) {
     }
 }
 
-// 加载激励视频
 function loadRewardVideo(props: Props) {
     ttad.RewardVideo.loadAd().then(result => {
         config.rewardVideoAdCache = result; //更新缓存
@@ -113,7 +112,10 @@ function oldGetReward(video: Video, reward: Reward, navigation: any, refresh: ()
 function getReward(props: Props) {
     const { navigation, answerResult, type } = props;
 
-    let rewardType = 'SIGNIN_VIDEO_REWARD'; //签到奖励
+    let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
+    if (type === 'Sigin') {
+        rewardType = 'SIGNIN_VIDEO_REWARD'; //签到奖励
+    }
     if (type === 'Answer' && answerResult) {
         rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //答题及格奖励
     }

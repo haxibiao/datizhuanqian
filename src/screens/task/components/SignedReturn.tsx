@@ -59,25 +59,34 @@ const SignedReturn = (props: Props) => {
     }, [close, doubleReward, me.adinfo, me.id]);
 
     return (
-        <ImageBackground style={styles.overlayImage} source={require('../../../assets/images/attendance_overlay.png')}>
-            <View style={styles.overlayHeader}>
-                <Text style={styles.whiteText1}>签到成功</Text>
-                <Text style={styles.whiteText2}>
-                    恭喜获得
-                    <Text style={styles.highlightText}>{gold}</Text>
-                    智慧点
-                    {reward > 0 && (
-                        <>
-                            ，<Text style={styles.highlightText}>{reward}</Text>
-                            贡献值
-                        </>
-                    )}
-                </Text>
-            </View>
-            <View style={{ marginTop: PxFit(25) }}>
-                <ttad.BannerAd adWidth={ISIOS ? WPercent(60) : WPercent(80)} />
-            </View>
+        <View
+            style={{
+                // backgroundColor: '#FFF',
+
+                width: OVERLAY_WIDTH,
+            }}>
+            <ImageBackground
+                style={styles.overlayImage}
+                source={require('../../../assets/images/attendance_overlay.png')}>
+                <View style={styles.overlayHeader}>
+                    <Text style={styles.whiteText1}>签到成功</Text>
+                    <Text style={styles.whiteText2}>
+                        恭喜获得
+                        <Text style={styles.highlightText}>{gold}</Text>
+                        智慧点
+                        {reward > 0 && (
+                            <>
+                                ，<Text style={styles.highlightText}>{reward}</Text>
+                                贡献值
+                            </>
+                        )}
+                    </Text>
+                </View>
+            </ImageBackground>
             <View style={styles.TTAD}>
+                <View>
+                    <ttad.FeedAd adWidth={WPercent(90)} />
+                </View>
                 <TouchFeedback
                     onPress={() => {
                         ISIOS ? close() : loadAd();
@@ -89,18 +98,25 @@ const SignedReturn = (props: Props) => {
                     </ImageBackground>
                 </TouchFeedback>
             </View>
-        </ImageBackground>
+        </View>
     );
 };
 
-const OVERLAY_WIDTH = WPercent(80);
+const OVERLAY_WIDTH = WPercent(90);
 const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 2655) / 1819;
 
 const styles = StyleSheet.create({
     TTAD: {
         alignItems: 'center',
-        flex: 1,
+        // flex: 1,
         justifyContent: 'space-around',
+        backgroundColor: '#FFF',
+        // height: 80,
+        width: OVERLAY_WIDTH,
+        marginTop: -(OVERLAY_HEIGHT / 3 + 10),
+        borderRadius: PxFit(10),
+        paddingBottom: PxFit(10),
+        minHeight: OVERLAY_HEIGHT / 3,
     },
     buttonText: {
         color: '#fff',
@@ -126,8 +142,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     overlayImage: {
+        marginTop: PxFit(-50),
         height: OVERLAY_HEIGHT,
-        paddingHorizontal: OVERLAY_WIDTH * 0.1,
         paddingTop: (OVERLAY_HEIGHT * 510) / 2655,
         width: OVERLAY_WIDTH,
     },

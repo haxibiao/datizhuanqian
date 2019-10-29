@@ -74,7 +74,7 @@ class WithdrawBody extends Component {
                         <Text style={styles.tipsContent}>去做激励任务提升贡献值！</Text>
                         {config.enableBanner && (
                             <View>
-                                <ttad.FeedAd adWidth={(SCREEN_WIDTH * 3) / 4} />
+                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
                             </View>
                         )}
                     </TouchFeedback>

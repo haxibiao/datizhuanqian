@@ -52,12 +52,16 @@ const AttendanceBook = (props): JSX.Element => {
     const signInData = useMemo(() => {
         return Tools.syncGetter('signIns', data) || {};
     }, [data]);
-    // console.log('====================================');
-    // console.log('signInDatasignInData', signInData, data);
-    // console.log('====================================');
+
     const keep_signin_days = Tools.syncGetter('keep_signin_days', signInData);
     const today_signed = Tools.syncGetter('today_signed', signInData);
     const signIns = Tools.syncGetter('signs', signInData);
+
+    useEffect(() => {
+        if (today_signed === false) {
+            toDaySignIn();
+        }
+    }, [signIns]);
 
     const toDaySignIn = useCallback(
         Tools.throttle(async () => {
@@ -68,9 +72,14 @@ const AttendanceBook = (props): JSX.Element => {
                     const todayReturns = Tools.syncGetter('data.createSignIn', result);
                     onSignInSuccess(todayReturns);
                 } catch (e) {
+                    console.log('error', e);
                     Toast.show({ content: '签到失败' });
                 }
             } else {
+                onSignInSuccess({
+                    gold_reward: 10,
+                    contribute_reward: 10,
+                });
                 Toast.show({ content: '今天已经签到过了哦' });
             }
         }),
@@ -96,9 +105,7 @@ const AttendanceBook = (props): JSX.Element => {
     if (!signIns) {
         return null;
     }
-    // console.log('====================================');
-    // console.log('signIns', signIns);
-    // console.log('====================================');
+
     return (
         <BoxShadow
             setting={Object.assign({}, shadowOpt, {
