@@ -19,10 +19,13 @@ import { ttad } from 'native';
 import AttendanceBook from './AttendanceBook';
 import TaskType from './TaskType';
 
+import { playRewardVideo } from 'common';
+
 @observer
 class TaskList extends Component {
     constructor(props) {
         super(props);
+        this.rewardVideoAdCache = null;
         this.state = {
             isVisible: false,
             status: 1, // 是否开启出题,
@@ -124,6 +127,8 @@ class TaskList extends Component {
                     await ttad.RewardVideo.loadAd({
                         ...user.adinfo,
                         uid: user.id,
+                    }).then(data => {
+                        this.rewardVideoAdCache = data;
                     });
                 }
             }
@@ -133,6 +138,14 @@ class TaskList extends Component {
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     }
+
+    setRewardStatus = () => {
+        if (this.state.rewardStatus < 2) {
+            this.setState({
+                rewardTaskAction: 3,
+            });
+        }
+    };
 
     render() {
         const { navigation, TasksQuery, UserQuery, taskReward } = this.props;
@@ -251,109 +264,22 @@ class TaskList extends Component {
                             adinfo={adinfo}
                             min_level={this.state.min_level}
                             goTask={task => {
-                                const _this = this;
-                                if (!adinfo) {
-                                    Toast.show({
-                                        content: '激励视频没加载成功!',
-                                    });
-                                    return;
-                                }
-
                                 const data = JSON.stringify(this.state.reportContent);
                                 service.dataReport(data, result => {
                                     console.log('result', result);
                                 });
-
-                                ttad.RewardVideo.loadAd({ ...adinfo, uid: me.id }).then(() => {
-                                    // 开始看奖励视频
-
-                                    ttad.RewardVideo.startAd({
-                                        ...adinfo,
-                                        uid: me.id,
-                                    })
-                                        .then(result => {
-                                            // TODO:ios还不能确定用户的行为做了哪些行为,只奖励精力
-                                            let didWatched = true;
-                                            let adClicked = false;
-                                            if (!ISIOS) {
-                                                let video = {};
-                                                if (result) {
-                                                    video = JSON.parse(result);
-                                                }
-                                                if (video.video_play || video.ad_click || video.verify_status) {
-                                                    // 必须激励视频播放完成并点击了广告才算查看详情成功，才有贡献奖励
-                                                    if (video.ad_click && video.video_play) {
-                                                        adClicked = true;
-                                                        RewardTipsOverlay.show(
-                                                            {
-                                                                gold: task.gold,
-                                                                ticket: task.ticket,
-                                                                contribute: task.contribute,
-                                                            },
-                                                            navigation,
-                                                        );
-                                                    } else {
-                                                        TipsOverlay.show({
-                                                            title: '仅浏览视频',
-                                                            content: (
-                                                                <View style={{ paddingTop: PxFit(10) }}>
-                                                                    <View
-                                                                        style={{
-                                                                            flexDirection: 'row',
-                                                                            alignItems: 'center',
-                                                                            justifyContent: 'center',
-                                                                            marginBottom: 15,
-                                                                        }}>
-                                                                        <Text>奖励</Text>
-                                                                        <Image
-                                                                            source={require('../../../assets/images/heart.png')}
-                                                                            style={styles.ticketImage}
-                                                                        />
-                                                                        <Text>+{task.ticket}</Text>
-                                                                    </View>
-                                                                    <View style={{ paddingLeft: 10 }}>
-                                                                        <ttad.BannerAd
-                                                                            adWidth={(SCREEN_WIDTH * 3) / 4 - PxFit(10)}
-                                                                        />
-                                                                    </View>
-                                                                </View>
-                                                            ),
-                                                            onConfirm: () =>
-                                                                navigation.navigate('BillingRecord', {
-                                                                    initialPage: 1,
-                                                                }),
-                                                        });
-                                                    }
-
-                                                    // 后端通过rewardStatus来控制允许重复激励
-                                                    if (rewardStatus < 2) {
-                                                        _this.setState({
-                                                            rewardTaskAction: 3,
-                                                        });
-                                                    }
-                                                } else {
-                                                    didWatched = false;
-                                                    Toast.show({
-                                                        content: '没看完视频,或没看详情，或其他异常...',
-                                                    });
-                                                }
-                                            }
-
-                                            // 后端真的给奖励了
-                                            if (didWatched) {
-                                                const task_id = adClicked ? -2 : 0;
-                                                taskReward({
-                                                    variables: {
-                                                        task_id,
-                                                    },
-                                                }).then(() => {
-                                                    refetchUserQuery && refetchUserQuery();
-                                                });
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.log('启动奖励视频error:', error);
-                                        });
+                                const reward = {
+                                    gold: task.gold,
+                                    ticket: task.ticket,
+                                    contribute: task.contribute,
+                                };
+                                playRewardVideo({
+                                    reward,
+                                    rewardVideoAdCache: this.rewardVideoAdCache,
+                                    navigation,
+                                    callback: this.setRewardStatus,
+                                    refresh: refetchUserQuery,
+                                    type: 'Task',
                                 });
                             }}
                         />
@@ -400,19 +326,6 @@ class TaskList extends Component {
         });
     };
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#FFFEFC',
-        flex: 1,
-    },
-    ticketImage: {
-        height: 19,
-        marginLeft: 5,
-        marginRight: 2,
-        width: 19,
-    },
-});
 
 export default compose(
     graphql(GQL.TasksQuery, {

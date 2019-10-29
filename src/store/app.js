@@ -19,6 +19,7 @@ class app {
     @observable launched: boolean = false;
     @observable modalIsShow: boolean = false;
     @observable viewportHeight: number = SCREEN_HEIGHT;
+    @observable client = {};
 
     @action.bound
     setFetching(isFetching) {
