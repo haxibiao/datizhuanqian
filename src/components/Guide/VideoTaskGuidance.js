@@ -7,6 +7,7 @@ import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-n
 import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
 import { app } from 'store';
 import { ttad } from 'native';
+import { playRewardVideo } from 'common';
 
 function VideoTaskGuidance({ onDismiss }) {
     const [step, setStep] = useState(0);
@@ -41,13 +42,7 @@ function VideoTaskGuidance({ onDismiss }) {
                     <TouchableWithoutFeedback
                         onPress={() => {
                             app.changeUserStatus(false);
-                            ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
-                                // 开始看奖励视频
-                                ttad.RewardVideo.startAd({
-                                    ...me.adinfo,
-                                    uid: me.id,
-                                });
-                            });
+                            playRewardVideo({ type: 'Task' });
                             onDismiss();
                         }}>
                         <Image

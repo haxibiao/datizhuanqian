@@ -4,6 +4,7 @@ import { GQL, useApolloClient } from 'apollo';
 import { observer, app } from 'store';
 import { exceptionCapture } from 'common';
 import { PxFit, Tools, Theme } from 'utils';
+import { beginnerGuidance, VideoGuidance } from 'components';
 
 import VideoItem from './components/VideoItem';
 import Footer from './components/Footer';
@@ -85,11 +86,17 @@ export default observer(props => {
     useEffect(() => {
         const navWillFocusListener = props.navigation.addListener('willFocus', () => {
             StatusBar.setBarStyle('light-content');
+            beginnerGuidance({
+                guidanceKey: 'Video',
+                GuidanceView: VideoGuidance,
+                dismissEnabled: true,
+            });
         });
         const navWillBlurListener = navigation.addListener('willBlur', () => {
             StatusBar.setBarStyle('dark-content');
             hideComment();
         });
+
         return () => {
             navWillFocusListener.remove();
             navWillBlurListener.remove();

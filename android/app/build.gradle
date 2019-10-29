@@ -337,7 +337,12 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
 
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.facebook.fresco:animated-gif:1.10.0'
+
+    //react-native>=0.60
+    implementation 'com.facebook.fresco:fresco:2.0.0'
+    implementation 'com.facebook.fresco:animated-gif:2.0.0'
+
+
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
     if (enableHermes) {

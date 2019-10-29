@@ -75,6 +75,7 @@ import beginnerGuidance from './Guide/beginnerGuidance';
 import VideoTaskGuidance from './Guide/VideoTaskGuidance';
 import AnswerGuidance from './Guide/AnswerGuidance';
 import SetQuestionGuidance from './Guide/SetQuestionGuidance';
+import VideoGuidance from './Guide/VideoGuidance';
 
 export {
     Iconfont,
@@ -135,4 +136,5 @@ export {
     VideoTaskGuidance,
     AnswerGuidance,
     SetQuestionGuidance,
+    VideoGuidance,
 };

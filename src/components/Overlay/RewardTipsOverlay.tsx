@@ -9,6 +9,7 @@ import Button from '../TouchableView/Button';
 
 import Theme from '../../utils/Theme';
 import { PxFit } from '../../utils/Scale';
+import Tools from '../../utils/Tools';
 
 import { Overlay } from 'teaset';
 import { ttad } from 'native';
@@ -26,7 +27,6 @@ interface Reward {
 
 interface Props {
     reward: Reward;
-    navigation: any;
     title: string;
     rewardVideo: boolean;
 }
@@ -34,7 +34,7 @@ interface Props {
 class RewardTips {
     static OverlayKey: any;
     static show(props: Props) {
-        const { reward, navigation, title, rewardVideo } = props;
+        const { reward, title, rewardVideo } = props;
         const body = !reward.gold && (reward.ticket || reward.contribute) ? '同时奖励' : '领取奖励成功';
 
         const overlayView = (
@@ -97,7 +97,7 @@ class RewardTips {
                                 onPress={() => {
                                     RewardTips.hide();
                                     if (rewardVideo) {
-                                        navigation.navigate('BillingRecord', { initialPage: 1 });
+                                        Tools.navigate('BillingRecord', { initialPage: 1 });
                                     } else {
                                         playRewardVideo({ navigation });
                                     }

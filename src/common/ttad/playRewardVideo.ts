@@ -21,7 +21,6 @@ type Type = 'Task' | 'Answer' | 'Sigin';
 interface Props {
     reward?: Reward;
     rewardVideoAdCache?: any;
-    navigation?: any;
     callback?: Function;
     refresh?: any;
     answerResult?: Boolean;
@@ -46,7 +45,7 @@ function loadRewardVideo(props: Props) {
 }
 
 function startRewardVideo(props: Props) {
-    const { navigation, callback, reward, refresh, type } = props;
+    const { callback, reward, refresh, type } = props;
     let video = {
         video_play: false,
         ad_click: false,
@@ -59,7 +58,7 @@ function startRewardVideo(props: Props) {
                 if (result) {
                     video = JSON.parse(result);
                     if (type === 'Task' && reward) {
-                        oldGetReward(video, reward, navigation, refresh);
+                        oldGetReward(video, reward, refresh);
                         callback && callback();
                     } else {
                         getReward(props);
@@ -71,7 +70,7 @@ function startRewardVideo(props: Props) {
                 }
             } else {
                 if (reward) {
-                    oldGetReward(video, reward, navigation, refresh);
+                    oldGetReward(video, reward, refresh);
                 } else {
                     getReward(props);
                 }
@@ -82,7 +81,7 @@ function startRewardVideo(props: Props) {
         });
 }
 
-function oldGetReward(video: Video, reward: Reward, navigation: any, refresh: () => void) {
+function oldGetReward(video: Video, reward: Reward, refresh: () => void) {
     const task_id = video.ad_click && video.video_play ? -2 : 0;
     const title = video.ad_click && video.video_play ? '查看详情' : '仅看完视频';
     const rewardContent = video.ad_click && video.video_play ? reward : { ticket: 10 };
@@ -102,7 +101,7 @@ function oldGetReward(video: Video, reward: Reward, navigation: any, refresh: ()
         })
         .then(() => {
             refresh();
-            RewardTipsOverlay.show({ reward: rewardContent, navigation, rewardVideo: true, title: title });
+            RewardTipsOverlay.show({ reward: rewardContent, rewardVideo: true, title: title });
         })
         .catch((err: any) => {
             console.log('err', err);
@@ -110,7 +109,7 @@ function oldGetReward(video: Video, reward: Reward, navigation: any, refresh: ()
 }
 
 function getReward(props: Props) {
-    const { navigation, answerResult, type } = props;
+    const { answerResult, type } = props;
 
     let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
     if (type === 'Sigin') {
@@ -141,7 +140,7 @@ function getReward(props: Props) {
         .then((res: any) => {
             console.log('res', res);
             const reward = Tools.syncGetter('data.userReward', res);
-            RewardTipsOverlay.show({ reward, navigation, rewardVideo: true });
+            RewardTipsOverlay.show({ reward, rewardVideo: true });
         })
         .catch((err: any) => {
             console.log('reward video error', err);
