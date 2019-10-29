@@ -13,6 +13,7 @@ import { compose, graphql, GQL } from 'apollo';
 import { app, config } from 'store';
 
 import { ttad } from 'native';
+import { playRewardVideo } from 'common';
 
 import WithdrawGuidance from './WithdrawGuidance';
 
@@ -67,26 +68,22 @@ class WithdrawBody extends Component {
                         style={{ paddingTop: PxFit(10) }}
                         onPress={() => {
                             navigation.navigate('任务');
+                            playRewardVideo({ navigation, type: 'Task' });
                             TipsOverlay.hide();
                         }}>
-                        <Text
-                            style={{
-                                fontSize: PxFit(13),
-                                color: Theme.theme,
-                                textDecorationLine: 'underline',
-                                textAlign: 'center',
-                                marginBottom: 15,
-                            }}>
-                            去做激励任务提升贡献值！
-                        </Text>
+                        <Text style={styles.tipsContent}>去做激励任务提升贡献值！</Text>
                         {config.enableBanner && (
-                            <View style={{ paddingLeft: 10 }}>
-                                <ttad.BannerAd adWidth={(SCREEN_WIDTH * 3) / 4 - PxFit(10)} />
+                            <View>
+                                <ttad.FeedAd adWidth={(SCREEN_WIDTH * 3) / 4} />
                             </View>
                         )}
                     </TouchFeedback>
                 ),
-                onConfirm: () => navigation.navigate('任务'),
+                onConfirm: () => {
+                    navigation.navigate('任务');
+                    playRewardVideo({ navigation, type: 'Task' });
+                    TipsOverlay.hide();
+                },
             });
             // navigation.navigate('WithdrawApply', { amount: 1 });
         } else {
@@ -272,6 +269,13 @@ class WithdrawBody extends Component {
 }
 
 const styles = StyleSheet.create({
+    tipsContent: {
+        fontSize: PxFit(13),
+        color: Theme.theme,
+        textDecorationLine: 'underline',
+        textAlign: 'center',
+        marginBottom: 15,
+    },
     accumulat: {
         flexDirection: 'row',
         marginVertical: PxFit(Theme.itemSpace),
@@ -368,6 +372,7 @@ const styles = StyleSheet.create({
         marginBottom: PxFit(Theme.itemSpace),
         width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
     },
+
     withdraws: {
         flex: 1,
         justifyContent: 'space-between',

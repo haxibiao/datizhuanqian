@@ -28,6 +28,7 @@ class config {
     @observable enableFeed: boolean = false; // 开启信息流广告
     @observable enableBanner: boolean = false; // 开启Banner广告
     @observable disableAd: boolean = false;
+    @observable rewardVideoAdCache: boolean = false;
 
     constructor() {
         NetInfo.addEventListener(this.handleConnectivityChange);

@@ -12,6 +12,7 @@ import { PxFit } from '../../utils/Scale';
 
 import { Overlay } from 'teaset';
 import { ttad } from 'native';
+import { playRewardVideo } from '../../common/ttad/playRewardVideo';
 
 const { height, width } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -23,9 +24,19 @@ interface Reward {
     contribute?: Number;
 }
 
+interface Props {
+    reward: Reward;
+    navigation: any;
+    title: string;
+    rewardVideo: boolean;
+}
+
 class RewardTips {
     static OverlayKey: any;
-    static show(reward: Reward, navigation: any, title: string, rewardVideo: boolean) {
+    static show(props: Props) {
+        const { reward, navigation, title, rewardVideo } = props;
+        const body = !reward.gold && (reward.ticket || reward.contribute) ? '同时奖励' : '领取奖励成功';
+
         const overlayView = (
             <Overlay.View animated>
                 <View style={styles.container}>
@@ -45,7 +56,7 @@ class RewardTips {
                                 )}
 
                                 <View style={styles.rewardContainer}>
-                                    <Text style={{ color: Theme.grey }}>{title ? title : '同时奖励'}</Text>
+                                    <Text style={{ color: Theme.grey }}>{title ? title : body}</Text>
                                     {reward.ticket && reward.gold ? (
                                         <Fragment>
                                             <Image
@@ -68,46 +79,34 @@ class RewardTips {
                             </View>
                         </View>
 
-                        {title ? (
-                            <View style={{ paddingLeft: 10 }}>
-                                <ttad.BannerAd adWidth={SCREEN_WIDTH - PxFit(60)} />
-                            </View>
-                        ) : (
-                            <View>
-                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
-                            </View>
-                        )}
+                        <View>
+                            <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
+                        </View>
 
-                        {rewardVideo ? (
-                            <Button
-                                title={'知道了'}
-                                onPress={() => RewardTips.hide()}
-                                FontSize={14}
-                                textColor={Theme.primaryColor}
-                                style={styles.buttonStyle}
-                            />
-                        ) : (
-                            <View style={styles.modalFooter}>
-                                <TouchableOpacity
-                                    style={styles.operation}
-                                    onPress={() => {
-                                        RewardTips.hide();
-                                    }}>
-                                    <Text style={styles.operationText}>忽略</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={[
-                                        styles.operation,
-                                        { borderLeftColor: Theme.lightBorder, borderLeftWidth: 0.5 },
-                                    ]}
-                                    onPress={() => {
-                                        RewardTips.hide();
+                        <View style={styles.modalFooter}>
+                            <TouchableOpacity
+                                style={styles.operation}
+                                onPress={() => {
+                                    RewardTips.hide();
+                                }}>
+                                <Text style={styles.operationText}>忽略</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.operation, { borderLeftColor: Theme.lightBorder, borderLeftWidth: 0.5 }]}
+                                onPress={() => {
+                                    RewardTips.hide();
+                                    if (rewardVideo) {
                                         navigation.navigate('BillingRecord', { initialPage: 1 });
-                                    }}>
-                                    <Text style={[styles.operationText, { color: Theme.theme }]}>查看</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
+                                    } else {
+                                        playRewardVideo({ navigation, type: 'Sigin' });
+                                    }
+                                }}>
+                                <Text style={[styles.operationText, { color: Theme.theme }]}>
+                                    {rewardVideo ? '查看' : '领更多奖励'}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Overlay.View>
@@ -198,8 +197,8 @@ const styles = StyleSheet.create({
         marginTop: PxFit(10),
         marginBottom: PxFit(20),
         marginHorizontal: PxFit(40),
-        borderColor: Theme.primaryColor,
-        borderWidth: PxFit(1),
+        backgroundColor: Theme.themeRed,
+
         // backgroundColor: Theme.primaryColor,
     },
     modalFooter: {

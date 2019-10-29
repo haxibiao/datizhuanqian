@@ -74,6 +74,7 @@ const TimeReward = (props: Props) => {
             const result = await timeReward();
             const reward = Tools.syncGetter('data.timeReward', result);
             console.log('result', result);
+            // const reward = { gold_reward: 10, ticket_reward: 0, contribute_reward: 0 };
             showRewardTips(reward);
         } catch (e) {
             let str = e.toString().replace(/Error: GraphQL error: /, '');
@@ -91,7 +92,7 @@ const TimeReward = (props: Props) => {
 
         const title = '时段奖励领取成功';
 
-        RewardTipsOverlay.show(rewardContent, navigation, title);
+        RewardTipsOverlay.show({ reward: rewardContent, navigation, title });
     };
 
     const minute = Math.floor(time / 60) > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);

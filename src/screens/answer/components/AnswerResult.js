@@ -12,6 +12,7 @@ import { ttad } from 'native';
 import { GQL } from 'apollo';
 import service from 'service';
 import { app } from 'store';
+import { playRewardVideo } from 'common';
 
 class AnswerResult extends Component {
     constructor(props) {
@@ -47,11 +48,13 @@ class AnswerResult extends Component {
 
     // 加载banner广告dialog
     showBannerAd(click, answer_result) {
-        console.log('click', click);
+        // console.log('click', click);
+        const { navigation, loadRewardVideoAd } = this.props;
         switch (click) {
             case 'LoadRewardVideo':
                 // 加载激励视频
-                this.loadRewardVideo(answer_result);
+                // this.loadRewardVideo(answer_result);
+                playRewardVideo({ navigation, answerResult: answer_result, rewardVideoAdCache: loadRewardVideoAd });
                 break;
 
             case 'LoadFullScreenVideo':
@@ -125,78 +128,70 @@ class AnswerResult extends Component {
     };
 
     // 加载激励视频
-    loadRewardVideo = answer_result => {
-        const { data, loadRewardVideoAd } = this.props;
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.tt_appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.tt_codeid', data),
-            uid: data.user.id,
-        };
+    // loadRewardVideo = answer_result => {
+    //     const { data, loadRewardVideoAd } = this.props;
+    //     const adinfo = {
+    //         tt_appid: Tools.syncGetter('user.adinfo.tt_appid', data),
+    //         tt_codeid: Tools.syncGetter('user.adinfo.tt_codeid', data),
+    //         uid: data.user.id,
+    //     };
 
-        if (loadRewardVideoAd) {
-            this.startRewardVideo(adinfo, answer_result);
-        } else {
-            ttad.RewardVideo.loadAd(adinfo).then(() => {
-                this.startRewardVideo(adinfo, answer_result);
-            });
-        }
-    };
+    //     if (loadRewardVideoAd) {
+    //         this.startRewardVideo(adinfo, answer_result);
+    //     } else {
+    //         ttad.RewardVideo.loadAd(adinfo).then(() => {
+    //             this.startRewardVideo(adinfo, answer_result);
+    //         });
+    //     }
+    // };
 
     // 展示激励视频
-    startRewardVideo = (adinfo, answer_result) => {
-        const { client } = this.props;
+    // startRewardVideo = (adinfo, answer_result) => {
+    //     const { client } = this.props;
 
-        const data = JSON.stringify(this.state.rewardReport);
-        service.dataReport(data, result => {
-            console.warn('result', result);
-        }); // 数据上报
+    //     const data = JSON.stringify(this.state.rewardReport);
+    //     service.dataReport(data, result => {
+    //         console.warn('result', result);
+    //     }); // 数据上报
 
-        console.log('answer_result', answer_result);
-        ttad.RewardVideo.startAd(adinfo).then(result => {
-            if (result) {
-                // 发放奖励 banner弹窗
-                client
-                    .mutate({
-                        mutation: GQL.UserRewardMutation,
-                        variables: {
-                            reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
-                        },
-                        errorPolicy: 'all',
-                        refetchQueries: () => [
-                            {
-                                query: GQL.UserMetaQuery,
-                                variables: { id: app.me.id },
-                                fetchPolicy: 'network-only',
-                            },
-                        ],
-                    })
-                    .then(res => {
-                        console.log('res', res);
-                        this.loadRewardTips(res);
-                    })
-                    .catch(err => {
-                        console.log('reward video error', err);
-                        Toast.show({
-                            content: '发生未知错误、领取失败',
-                        });
-                    });
-            }
-        });
-    };
+    //     console.log('answer_result', answer_result);
+    //     ttad.RewardVideo.startAd(adinfo).then(result => {
+    //         if (result) {
+    //             // 发放奖励 banner弹窗
+    //             client
+    //                 .mutate({
+    //                     mutation: GQL.UserRewardMutation,
+    //                     variables: {
+    //                         reward: answer_result ? 'SUCCESS_ANSWER_VIDEO_REWARD' : 'FAIL_ANSWER_VIDEO_REWARD',
+    //                     },
+    //                     errorPolicy: 'all',
+    //                     refetchQueries: () => [
+    //                         {
+    //                             query: GQL.UserMetaQuery,
+    //                             variables: { id: app.me.id },
+    //                             fetchPolicy: 'network-only',
+    //                         },
+    //                     ],
+    //                 })
+    //                 .then(res => {
+    //                     console.log('res', res);
+    //                     this.loadRewardTips(res);
+    //                 })
+    //                 .catch(err => {
+    //                     console.log('reward video error', err);
+    //                     Toast.show({
+    //                         content: '发生未知错误、领取失败',
+    //                     });
+    //                 });
+    //         }
+    //     });
+    // };
 
     // 加载奖励结果提示
 
     loadRewardTips(res) {
         const { navigation } = this.props;
         RewardTipsOverlay.show(res.data.userReward, navigation);
-    }
-
-    loadRewardDialog(res) {
-        const { data, navigation } = this.props;
-        const rewardDialogAdinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
-        };
     }
 
     render() {
