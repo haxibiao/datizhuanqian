@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { SafeText } from 'components';
+import { SafeText, RewardTipsOverlay } from 'components';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ttad } from 'native';
 import { observer, app } from 'store';
@@ -42,6 +42,7 @@ export default observer(props => {
                 const contribute = Tools.syncGetter('data.userReward.contribute', res);
                 Toast.show({
                     content: `恭喜你获得+${contribute}贡献值`,
+                    duration: 2000,
                 });
             }
         }
@@ -55,6 +56,29 @@ export default observer(props => {
                     }}
                     onAdClick={() => getReward(media)}
                 />
+                {VideoStore.getReward.length < 1 && (
+                    <View
+                        style={{
+                            bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(75),
+                            position: 'absolute',
+                            right: PxFit(Theme.itemSpace),
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
+                        <Image
+                            source={require('../../../assets/images/click_tips.png')}
+                            style={{ width: (20 * 208) / 118, height: 20 }}
+                        />
+                        <Text
+                            style={{
+                                color: '#C0CBD4',
+                                fontSize: PxFit(12),
+                                marginHorizontal: PxFit(10),
+                            }}>
+                            戳一戳，获取更多奖励
+                        </Text>
+                    </View>
+                )}
             </View>
         );
     }

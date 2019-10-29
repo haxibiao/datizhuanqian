@@ -65,7 +65,14 @@ const RewardProgress = observer(props => {
     });
 
     return (
-        <TouchableWithoutFeedback onPress={(): void => Tools.navigate('Withdraw')}>
+        <TouchableWithoutFeedback
+            onPress={() => {
+                if (app.login) {
+                    Tools.navigate('BillingRecord', { initialPage: 1 });
+                } else {
+                    Tools.navigate('Login');
+                }
+            }}>
             <Animated.View style={[styles.circleProgress, { transform: [{ scale: imageScale }] }]}>
                 <Animated.Text
                     style={[
