@@ -23,6 +23,7 @@ class InputModal extends Component {
             reply,
             switchReplyType,
             parent_comment_id,
+            increaseCountComments,
         } = this.props;
         return (
             <Modal
@@ -48,6 +49,7 @@ class InputModal extends Component {
                         reply={reply}
                         hideModal={hideModal}
                         switchReplyType={switchReplyType}
+                        increaseCountComments={increaseCountComments}
                     />
                     {ISIOS && <KeyboardSpacer />}
                 </View>

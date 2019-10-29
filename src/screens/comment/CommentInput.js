@@ -68,6 +68,7 @@ class CommentInput extends Component {
 
     onCompleted = comment => {
         this.props.onCommented();
+        this.props.increaseCountComments();
         Toast.show({ content: '评论成功', layout: 'top' });
     };
 
