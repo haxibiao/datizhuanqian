@@ -135,6 +135,9 @@ function getReward(props: Props) {
                     variables: { id: app.me.id },
                     fetchPolicy: 'network-only',
                 },
+                type === 'Sigin' && {
+                    query: GQL.SignInsQuery,
+                },
             ],
         })
         .then((res: any) => {

@@ -76,10 +76,10 @@ const AttendanceBook = (props): JSX.Element => {
                     Toast.show({ content: '签到失败' });
                 }
             } else {
-                onSignInSuccess({
-                    gold_reward: 10,
-                    contribute_reward: 10,
-                });
+                // onSignInSuccess({
+                //     gold_reward: 10,
+                //     contribute_reward: 10,
+                // });
                 Toast.show({ content: '今天已经签到过了哦' });
             }
         }),

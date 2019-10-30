@@ -10,6 +10,7 @@ import { TouchFeedback } from 'components';
 import { GQL, useMutation } from 'apollo';
 import { ttad } from 'native';
 import { app } from 'store';
+import { playRewardVideo } from 'common';
 
 interface Props {
     gold: number;
@@ -22,41 +23,12 @@ const SignedReturn = (props: Props) => {
     const { gold, reward, close, client } = props;
     const me = useMemo(() => app.me, []);
 
-    const doubleReward = useCallback(() => {
-        return client.mutate({
-            mutation: GQL.UserRewardMutation,
-            variables: { reward: 'SIGNIN_VIDEO_REWARD' },
-            refetchQueries: (): array => [
-                {
-                    query: GQL.SignInsQuery,
-                },
-                {
-                    query: GQL.UserMetaQuery,
-                    variables: { id: app.me.id },
-                },
-            ],
-        });
-    }, [client]);
-
     const loadAd = useCallback(() => {
         close();
+
         console.log('start');
-        ttad.RewardVideo.loadAd({ ...me.adinfo, uid: me.id }).then(() => {
-            // 开始看奖励视频
-            ttad.RewardVideo.startAd({
-                ...me.adinfo,
-                uid: me.id,
-            })
-                .then(result => {
-                    doubleReward();
-                    Toast.show({ content: '领取双倍奖励成功' });
-                })
-                .catch(error => {
-                    console.log('error', error);
-                    Toast.show({ content: '视频出错' });
-                });
-        });
-    }, [close, doubleReward, me.adinfo, me.id]);
+        playRewardVideo({ type: 'Sigin' });
+    }, [close, me.adinfo, me.id]);
 
     return (
         <View

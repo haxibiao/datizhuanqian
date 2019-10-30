@@ -99,7 +99,7 @@ class RewardTips {
                                     if (rewardVideo) {
                                         Tools.navigate('BillingRecord', { initialPage: 1 });
                                     } else {
-                                        playRewardVideo({ navigation });
+                                        playRewardVideo({});
                                     }
                                 }}>
                                 <Text style={[styles.operationText, { color: Theme.theme }]}>
