@@ -27,6 +27,7 @@ class config {
     @observable enableReward: boolean = false; // 开启激励视频
     @observable enableFeed: boolean = false; // 开启信息流广告
     @observable enableBanner: boolean = false; // 开启Banner广告
+    @observable enableDrawFeed: boolean = false;
     @observable disableAd: boolean = false;
     @observable rewardVideoAdCache: boolean = false;
 
@@ -93,6 +94,7 @@ class config {
         this.enableReward = data.enable_reward;
         this.enableFeed = data.enable_feed;
         this.enableBanner = data.enable_banner;
+        this.enableDrawFeed = data.enable_drawfeed;
         this.disableAd = data.disable[Config.AppStore];
         console.log('this.disableAd', this.disableAd);
     }

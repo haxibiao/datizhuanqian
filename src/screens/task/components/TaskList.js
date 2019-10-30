@@ -251,7 +251,7 @@ class TaskList extends Component {
 
         // 成长任务
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingBottom: PxFit(50) }}>
                 <Banner />
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                     <AttendanceBook />

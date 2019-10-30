@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { SafeText, RewardTipsOverlay } from 'components';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ttad } from 'native';
-import { observer, app } from 'store';
+import { observer, app, config } from 'store';
 import { GQL, useMutation } from 'apollo';
 import { exceptionCapture } from 'common';
 
@@ -47,7 +47,7 @@ export default observer(props => {
             }
         }
     };
-    if (media.is_ad_video && adShow && !ISIOS) {
+    if (media.is_ad_video && adShow && !ISIOS && config.enableDrawFeed) {
         return (
             <View style={{ height: app.viewportHeight }}>
                 <ttad.DrawFeedAd

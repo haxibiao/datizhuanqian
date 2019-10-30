@@ -21,7 +21,7 @@ const BannerAd = (props: Props) => {
     let [height, setHeight] = useState(Platform.OS === 'android' ? 0 : 40); //默认高度
 
     const disableAd = config.disableAd;
-    if (!visible || disableAd) return null;
+    if (!visible || disableAd || !config.enableBanner) return null;
     return (
         <NativeBannerAd
             codeid={codeid} //ios ?

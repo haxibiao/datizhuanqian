@@ -50,17 +50,11 @@ class App extends Component {
                 ttad.Splash.loadSplashAd();
             }
             config.saveAdvertConfig(data);
-            // if (data.enable_splash) {
-            //     // 开屏广告因为时机问题不再此判断了
-            //     ttad.Splash.loadSplashAd();
-            // }
         });
 
         if (Config.AppStore !== 'huawei') {
             ttad.Splash.loadSplashAd();
         }
-
-        // SplashScreen.hide();
         // 恢复用户身份信息
         app.recallUser();
         // 恢复缓存
