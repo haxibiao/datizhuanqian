@@ -14,7 +14,7 @@ function VideoGuidance({ onDismiss }) {
     );
 }
 
-const WIDTH = SCREEN_WIDTH;
+const WIDTH = SCREEN_WIDTH / 2;
 const HEIGHT = (WIDTH * 1026) / 772;
 const TOP = PxFit(NAVBAR_HEIGHT);
 const RIGHT = WIDTH / 2 - (WIDTH * 140) / 411;
