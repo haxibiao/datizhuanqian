@@ -35,7 +35,7 @@ class RewardTips {
     static OverlayKey: any;
     static show(props: Props) {
         const { reward, title, rewardVideo } = props;
-        const body = !reward.gold && (reward.ticket || reward.contribute) ? '同时奖励' : '领取奖励成功';
+        const body = reward.gold && (reward.ticket || reward.contribute) ? '同时奖励' : '领取奖励成功';
 
         const overlayView = (
             <Overlay.View animated>

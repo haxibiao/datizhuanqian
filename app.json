@@ -1,8 +1,8 @@
 {
     "name": "datizhuanqian",
     "AppName": "答题赚钱",
-    "Version": "2.3.1",
-    "AppVersionNumber": 2.31,
+    "Version": "2.3.2",
+    "AppVersionNumber": 2.32,
     "Build": 1,
     "ServerRoot": "http://gql.datizhuanqian.com",
     "UploadServer": "http://upload.datizhuanqian.com",

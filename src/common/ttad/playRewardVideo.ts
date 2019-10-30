@@ -110,7 +110,7 @@ function oldGetReward(video: Video, reward: Reward, refresh: () => void) {
 
 function getReward(props: Props) {
     const { answerResult, type } = props;
-
+    console.log('type', type);
     let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
     if (type === 'Sigin') {
         rewardType = 'SIGNIN_VIDEO_REWARD'; //签到奖励
@@ -122,6 +122,26 @@ function getReward(props: Props) {
         rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
     }
 
+    const refetchQuery =
+        type === 'Sigin'
+            ? [
+                  {
+                      query: GQL.UserMetaQuery,
+                      variables: { id: app.me.id },
+                      fetchPolicy: 'network-only',
+                  },
+                  {
+                      query: GQL.SignInsQuery,
+                  },
+              ]
+            : [
+                  {
+                      query: GQL.UserMetaQuery,
+                      variables: { id: app.me.id },
+                      fetchPolicy: 'network-only',
+                  },
+              ];
+
     app.client
         .mutate({
             mutation: GQL.UserRewardMutation,
@@ -129,16 +149,7 @@ function getReward(props: Props) {
                 reward: rewardType,
             },
             errorPolicy: 'all',
-            refetchQueries: () => [
-                {
-                    query: GQL.UserMetaQuery,
-                    variables: { id: app.me.id },
-                    fetchPolicy: 'network-only',
-                },
-                type === 'Sigin' && {
-                    query: GQL.SignInsQuery,
-                },
-            ],
+            refetchQueries: () => refetchQuery,
         })
         .then((res: any) => {
             console.log('res', res);

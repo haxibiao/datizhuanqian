@@ -14,8 +14,8 @@ function VideoGuidance({ onDismiss }) {
     );
 }
 
-const WIDTH = (411 * 46) / 122;
-const HEIGHT = (WIDTH * 719) / 411;
+const WIDTH = SCREEN_WIDTH;
+const HEIGHT = (WIDTH * 1026) / 772;
 const TOP = PxFit(NAVBAR_HEIGHT);
 const RIGHT = WIDTH / 2 - (WIDTH * 140) / 411;
 
@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     answerGuide: {
-        position: 'absolute',
-        top: TOP,
-        right: RIGHT,
         width: WIDTH,
         height: HEIGHT,
         resizeMode: 'contain',
