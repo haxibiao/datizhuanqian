@@ -57,11 +57,13 @@ function startRewardVideo(props: Props) {
             if (ISAndroid) {
                 if (result) {
                     video = JSON.parse(result);
-                    if (type === 'Task' && reward) {
-                        oldGetReward(video, reward, refresh);
-                        callback && callback();
-                    } else {
-                        getReward(props);
+                    if (video.video_play) {
+                        if (type === 'Task' && reward) {
+                            oldGetReward(video, reward, refresh);
+                            callback && callback();
+                        } else {
+                            getReward(props);
+                        }
                     }
                 } else {
                     Toast.show({
