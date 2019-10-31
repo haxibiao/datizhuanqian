@@ -1,1 +1,1 @@
-export * from './playRewardVideo';
+export * from './playVideo';

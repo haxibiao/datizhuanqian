@@ -13,7 +13,7 @@ import { compose, graphql, GQL } from 'apollo';
 import { app, config } from 'store';
 
 import { ttad } from 'native';
-import { playRewardVideo } from 'common';
+import { playVideo } from 'common';
 
 import WithdrawGuidance from './WithdrawGuidance';
 
@@ -68,7 +68,7 @@ class WithdrawBody extends Component {
                         style={{ paddingTop: PxFit(10) }}
                         onPress={() => {
                             navigation.navigate('任务');
-                            playRewardVideo({ navigation, type: 'Task' });
+                            playVideo({ navigation, type: 'Task' });
                             TipsOverlay.hide();
                         }}>
                         <Text style={styles.tipsContent}>去做激励任务提升贡献值！</Text>
@@ -81,7 +81,7 @@ class WithdrawBody extends Component {
                 ),
                 onConfirm: () => {
                     navigation.navigate('任务');
-                    playRewardVideo({ navigation, type: 'Task' });
+                    playVideo({ navigation, type: 'Task' });
                     TipsOverlay.hide();
                 },
             });

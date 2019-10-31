@@ -19,7 +19,7 @@ import { ttad } from 'native';
 import AttendanceBook from './AttendanceBook';
 import TaskType from './TaskType';
 
-import { playRewardVideo } from 'common';
+import { playVideo } from 'common';
 
 @observer
 class TaskList extends Component {
@@ -47,19 +47,6 @@ class TaskList extends Component {
             invitationContribute: 36,
             tasksCache: null,
             min_level: 2,
-            // 上报激励视频任务
-            reportContent: {
-                category: '广告点击',
-                action: 'user_click_task_reward_ad',
-                name: '点击看激励视频任务',
-                value: '1',
-                package: Config.PackageName,
-                os: Platform.OS,
-                version: Config.Version,
-                build: Config.Build,
-                user_id: app.me.id,
-                referrer: Config.AppStore,
-            },
         };
     }
 
@@ -264,16 +251,12 @@ class TaskList extends Component {
                             adinfo={adinfo}
                             min_level={this.state.min_level}
                             goTask={task => {
-                                const data = JSON.stringify(this.state.reportContent);
-                                service.dataReport(data, result => {
-                                    console.log('result', result);
-                                });
                                 const reward = {
                                     gold: task.gold,
                                     ticket: task.ticket,
                                     contribute: task.contribute,
                                 };
-                                playRewardVideo({
+                                playVideo({
                                     reward,
                                     rewardVideoAdCache: this.rewardVideoAdCache,
                                     navigation,

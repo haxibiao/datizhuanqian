@@ -10,7 +10,7 @@ import { TouchFeedback } from 'components';
 import { GQL, useMutation } from 'apollo';
 import { ttad } from 'native';
 import { app } from 'store';
-import { playRewardVideo } from 'common';
+import { playVideo } from 'common';
 
 interface Props {
     gold: number;
@@ -27,7 +27,7 @@ const SignedReturn = (props: Props) => {
         close();
 
         console.log('start');
-        playRewardVideo({ type: 'Sigin' });
+        playVideo({ type: 'Sigin' });
     }, [close, me.adinfo, me.id]);
 
     return (

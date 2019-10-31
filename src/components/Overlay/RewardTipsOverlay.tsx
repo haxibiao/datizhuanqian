@@ -13,7 +13,7 @@ import Tools from '../../utils/Tools';
 
 import { Overlay } from 'teaset';
 import { ttad } from 'native';
-import { playRewardVideo } from '../../common/ttad/playRewardVideo';
+import { playVideo } from '../../common/ttad/playVideo';
 
 const { height, width } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -99,7 +99,7 @@ class RewardTips {
                                     if (rewardVideo) {
                                         Tools.navigate('BillingRecord', { initialPage: 1 });
                                     } else {
-                                        playRewardVideo({});
+                                        playVideo({});
                                     }
                                 }}>
                                 <Text style={[styles.operationText, { color: Theme.theme }]}>

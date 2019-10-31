@@ -91,7 +91,7 @@ import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
 
 export default {
     Main: {
-        screen: Waver,
+        screen: MainTabNavigator,
     },
     // 登录验证
     Login: {
@@ -146,7 +146,7 @@ export default {
     },
     //排行
     Rank: {
-        screen : RankScreen
+        screen: RankScreen,
     },
     // 出题
     Contribute: {

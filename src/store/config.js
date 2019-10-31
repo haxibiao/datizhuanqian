@@ -29,7 +29,8 @@ class config {
     @observable enableBanner: boolean = false; // 开启Banner广告
     @observable enableDrawFeed: boolean = false;
     @observable disableAd: boolean = false;
-    @observable rewardVideoAdCache: boolean = false;
+    @observable rewardVideoAdCache: boolean = false; //激励视频广告cache 过期时间60min
+    @observable fullScreenVideoAdCache: boolean = false;
 
     constructor() {
         NetInfo.addEventListener(this.handleConnectivityChange);
