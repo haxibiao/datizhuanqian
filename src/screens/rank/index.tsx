@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView, ImageBackground,Text,Dimensions, Easing,Image,Platform,Animated,PanResponder, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, ImageBackground,Text,Dimensions } from 'react-native';
 
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { ScrollTabBar, PageContainer } from 'components';
@@ -18,44 +18,11 @@ interface Props{
 
 export default function rank(props: Props){
 
-    const [position,setPosition] = useState(new Animated.ValueXY());
-    const [originPos,setOriginPos] = useState({bottom:120,left:13})
     const navigation = props.navigation;
 
-    const _panResponder = PanResponder.create({
-
-        onPanResponderGrant: () => {
-            console.log("hhhhhhhhhhhhhhhhhh : 手势授权拿到啦")
-        },
-
-        onStartShouldSetPanResponder: (evt) => true,
-        onMoveShouldSetPanResponder: (evt,gestureState) => true ,
-
-        // onPanResponderMove: (evt,gestureState) => {
-        //     // console.log(gestureState.dx,gestureState.dy)
-        //     setPosition(new Animated.ValueXY({x: gestureState.dx,y: gestureState.dy}))
-        // }
-        onPanResponderMove: Animated.event([
-            null,
-            {
-                dx: position.x,
-                dy: position.y 
-            }
-        ]),
-        onPanResponderRelease: (evt,gestureState) => {
-            let {x0,y0} = gestureState;
-            if(x0 < width/2){
-                Animated.timing(position,{
-                    toValue: {x:130,y:500},
-                    duration: 1000,
-                    easing: Easing.linear
-                }).start();
-            }
-        }
-    })
     return (
         <PageContainer white title={"排行榜"}>
-            <ImageBackground source={require('../../assets/images/background.jpeg')} style={{width:'100%',height:'100%'}} resizeMode={"cover"}>
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={{width:'100%',height:'100%'}} resizeMode={"cover"}>
             <View style={styles.container}>
                 <ScrollableTabView
                     initialPage={0}

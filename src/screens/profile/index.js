@@ -191,6 +191,20 @@ class index extends Component {
                                         答题记录
                                     </Text>
                                 </TouchFeedback>
+                                <TouchFeedback
+                                    navigation={navigation}
+                                    authenticated
+                                    activeOpacity={1}
+                                    style={styles.metaItem}
+                                    onPress={() => navigation.navigate('Rank')}>
+                                    <Image
+                                        style={styles.metaIcon}
+                                        source={require('../../assets/images/rank.png')}
+                                    />
+                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                        答题排行
+                                    </Text>
+                                </TouchFeedback>
                             </View>
                         </BoxShadow>
                     </View>
@@ -279,7 +293,7 @@ class index extends Component {
                     <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Setting', { user })}>
                         <Row>
                             <Image
-                                style={styles.metaIcon}
+                                style={styles.metaIconRank}
                                 source={require('../../assets/images/profile_setting.png')}
                             />
                             <Text style={styles.itemTypeText}>设置</Text>
@@ -383,6 +397,11 @@ const styles = StyleSheet.create({
     metaIcon: {
         width: PxFit(25),
         height: PxFit(25),
+        resizeMode: 'cover',
+    },
+    metaIconRank: {
+        width: PxFit(24),
+        height: PxFit(24),
         resizeMode: 'cover',
     },
     metaIconLabel: {

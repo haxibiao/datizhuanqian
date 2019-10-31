@@ -25,6 +25,10 @@ import WithdrawApplyScreen from '../screens/withdraw/WithdrawApply';
 // 任务
 import CpcTaskScreen from '../screens/task/CpcTask';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
+
+// 排行
+import RankScreen from '../screens/rank';
+
 // 出题
 import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
@@ -87,7 +91,7 @@ import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
 
 export default {
     Main: {
-        screen: MainTabNavigator,
+        screen: Waver,
     },
     // 登录验证
     Login: {
@@ -140,7 +144,10 @@ export default {
     SubmitTask: {
         screen: SubmitTaskScreen,
     },
-
+    //排行
+    Rank: {
+        screen : RankScreen
+    },
     // 出题
     Contribute: {
         screen: ContributeScreen,

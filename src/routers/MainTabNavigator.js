@@ -16,6 +16,10 @@ import MainTabBar from './MainTabBar';
 import { Theme, PxFit } from '../utils';
 import { Iconfont } from 'components';
 
+//test
+import RankScreen from '../screens/rank';
+
+
 export default createBottomTabNavigator(
     {
         答题: {
