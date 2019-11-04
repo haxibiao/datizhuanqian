@@ -53,6 +53,7 @@ const SignedReturn = (props: Props) => {
                             </>
                         )}
                     </Text>
+                    <Text style={[styles.whiteText1, { paddingTop: PxFit(5) }]}>明日继续签到奖励翻倍</Text>
                 </View>
             </ImageBackground>
             <View style={styles.TTAD}>

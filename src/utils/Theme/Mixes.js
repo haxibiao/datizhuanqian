@@ -3,7 +3,7 @@
  * wyk created it in 2018-12-04 15:27:58
  */
 
-const theme = '#FFB100';
+const theme = '#FFBB04';
 const themeRed = '#EF514A';
 //primary color
 const primaryColor = '#FFBB04';
@@ -46,41 +46,41 @@ const grey = '#969696';
 const weixin = '#47D850';
 //sheet
 export default {
-	theme,
-	themeRed,
-	primaryColor,
-	primaryColorRgb,
-	secondaryColor,
-	secondaryColorRgb,
-	defaultTextColor,
-	secondaryTextColor,
-	subTextColor,
-	tintTextColor,
-	borderColor,
-	groundColour,
-	navBarBackground,
-	navBarTitleColor,
-	navBarSeparatorColor,
-	boyColor: '#00C8FF',
-	girlColor: '#FF5C9D',
-	linkColor: '#407FCF',
-	cancelColor: '#b6c2e1',
-	confirmColor: '#3E65E8',
-	correctColor: '#1CACF9',
-	errorColor: '#FF4C4C',
-	teaGreen: '#12E2BB',
-	itemSpace: 15,
+    theme,
+    themeRed,
+    primaryColor,
+    primaryColorRgb,
+    secondaryColor,
+    secondaryColorRgb,
+    defaultTextColor,
+    secondaryTextColor,
+    subTextColor,
+    tintTextColor,
+    borderColor,
+    groundColour,
+    navBarBackground,
+    navBarTitleColor,
+    navBarSeparatorColor,
+    boyColor: '#00C8FF',
+    girlColor: '#FF5C9D',
+    linkColor: '#407FCF',
+    cancelColor: '#b6c2e1',
+    confirmColor: '#3E65E8',
+    correctColor: '#1CACF9',
+    errorColor: '#FF4C4C',
+    teaGreen: '#12E2BB',
+    itemSpace: 15,
 
-	//old
-	white,
-	orange,
-	black,
-	pink,
-	blue,
-	primaryFont,
-	tintGray,
-	lightBorder,
-	lightGray,
-	grey,
-	weixin
+    //old
+    white,
+    orange,
+    black,
+    pink,
+    blue,
+    primaryFont,
+    tintGray,
+    lightBorder,
+    lightGray,
+    grey,
+    weixin,
 };
