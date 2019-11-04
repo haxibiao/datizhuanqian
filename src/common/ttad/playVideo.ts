@@ -279,12 +279,15 @@ function dataReport(type: string | undefined, playType: number) {
     }
 
     const mergeData = {
+        category: '广告点击',
         action,
         name,
     };
-    const data = JSON.stringify({ ...reportContent, ...mergeData });
-    console.log('data', data);
-    service.dataReport(data, result => {
-        console.warn('result', result);
+
+    service.dataReport({
+        data: mergeData,
+        callback: (result: any) => {
+            console.warn('result', result);
+        },
     }); // 数据上报
 }

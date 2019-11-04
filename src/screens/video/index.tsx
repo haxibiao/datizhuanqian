@@ -12,6 +12,7 @@ import RewardProgress from './components/RewardProgress';
 import VideoStore from './VideoStore';
 import CommentOverlay from '../comment/CommentOverlay';
 import { useNavigation } from 'react-navigation-hooks';
+import service from 'service';
 
 export default observer(props => {
     const { launched } = app;
@@ -90,6 +91,13 @@ export default observer(props => {
                 guidanceKey: 'Video',
                 GuidanceView: VideoGuidance,
                 dismissEnabled: true,
+            });
+
+            service.dataReport({
+                data: { category: '用户行为', action: 'user_click_video_screen_', name: '用户点击进入学习视频页' },
+                callback: (result: any) => {
+                    console.warn('result', result);
+                },
             });
         });
         const navWillBlurListener = navigation.addListener('willBlur', () => {

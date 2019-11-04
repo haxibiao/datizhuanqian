@@ -55,15 +55,8 @@ const Contribute = observer(
                 submitting: false,
                 reportContent: {
                     category: '用户行为',
-                    action: 'user_click_contribute',
+                    action: 'user_click_contribute_screen',
                     name: '进入出题页面',
-                    value: '1',
-                    package: Config.PackageName,
-                    os: Platform.OS,
-                    version: Config.Version,
-                    build: Config.Build,
-                    user_id: app.me.id,
-                    referrer: Config.AppStore,
                 },
             };
         }
@@ -77,10 +70,11 @@ const Contribute = observer(
             });
             this.loadCache();
 
-            const data = JSON.stringify(this.state.reportContent);
-
-            service.dataReport(data, result => {
-                console.warn('result', result);
+            service.dataReport({
+                data: this.state.reportContent,
+                callback: result => {
+                    console.warn('result', result);
+                },
             });
         }
 

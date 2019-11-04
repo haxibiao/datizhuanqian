@@ -25,21 +25,16 @@ class index extends Component {
                 category: '分享',
                 action: 'user_shared',
                 name: '打开分享页面',
-                value: '1',
-                package: Config.PackageName,
-                os: Platform.OS,
-                version: Config.Version,
-                build: Config.Build,
-                user_id: app.me.id,
-                referrer: Config.AppStore,
             },
         };
     }
 
     componentDidMount() {
-        const data = JSON.stringify(this.state.reportContent);
-        service.dataReport(data, result => {
-            console.warn('result', result);
+        service.dataReport({
+            data: this.state.reportContent,
+            callback: result => {
+                console.warn('result', result);
+            },
         });
         // 分享数据上报
     }
