@@ -500,8 +500,7 @@ const styles = StyleSheet.create({
 	container: {
 		marginLeft: PxFit(12),
 		paddingVertical: PxFit(12),
-		// borderTopWidth: PxFit(1),
-		// borderTopColor: Theme.lightBorder,
+
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'

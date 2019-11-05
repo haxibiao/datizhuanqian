@@ -22,7 +22,6 @@ import AppRouter from './routers';
 class Apollo extends Component {
     async componentDidMount() {
         // 挂载socklit
-        this.mountWebSockit(app.me);
 
         if (Platform.OS === 'android') {
             JPushModule.notifyJSDidLoad(resultCode => {
@@ -89,6 +88,7 @@ class Apollo extends Component {
 
     render() {
         const { checkServer } = this.props;
+        this.mountWebSockit(app.me);
         const client = makeClient(app.me, checkServer); // 构建apollo client;
         app.client = client;
         return (

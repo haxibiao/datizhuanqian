@@ -47,7 +47,7 @@ class TaskType extends Component {
     }
 
     render() {
-        const { navigation, tasks, user, name, handlerLoading, goTask, min_level } = this.props;
+        const { navigation, tasks, name, goTask } = this.props;
         let { taskTypeHeight } = this.state;
         return (
             <BoxShadow
@@ -73,7 +73,6 @@ class TaskType extends Component {
                         }
                         return (
                             <TaskItem
-                                user={user}
                                 key={index}
                                 handler={() => {
                                     this.doTask(task);
