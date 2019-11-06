@@ -27,10 +27,10 @@ class index extends Component {
                 backButtonColor={Theme.defaultTextColor}
                 title="任务">
                 {login ? (
-                    <Fragment>
+                    <View style={styles.container}>
                         <Banner />
                         <TaskBody navigation={navigation} />
-                    </Fragment>
+                    </View>
                 ) : (
                     <EmptyView
                         imageSource={require('../../assets/images/default_message.png')}
@@ -47,6 +47,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0,
         borderBottomColor: '#fff',
         backgroundColor: '#fff',
+    },
+    container: {
+        flex: 1,
+        paddingBottom: 50,
     },
 });
 

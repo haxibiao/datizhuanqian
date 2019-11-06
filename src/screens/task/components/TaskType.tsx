@@ -5,11 +5,14 @@ import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
 import { BoxShadow } from 'react-native-shadow';
 import TaskItem from './TaskItem';
 import { playVideo } from 'common';
+import { config } from 'store';
 
 interface Props {
     tasks: Array<object>;
     typeName: String;
     userData: User;
+    setLoading: Function;
+    setUnLoading: Function;
 }
 
 interface Task {
@@ -38,10 +41,11 @@ interface Level {
 
 const TaskType = (props: Props) => {
     const [taskTypeHeight, setTaskTypeHeight] = useState(70);
-    const { typeName, tasks, userData } = props;
+    const { typeName, tasks, userData, setLoading, setUnLoading } = props;
 
     const handler = (task: Task) => {
         //TODO: 后端无业务逻辑的任务需完善task.route
+        console.log('userData', userData);
         switch (task.type) {
             case 0:
                 Tools.navigate('EditProfile', { user: userData });
@@ -61,9 +65,9 @@ const TaskType = (props: Props) => {
                 });
                 break;
             case 5:
-                if (userData.level.level < 2) {
+                if (userData.level.level < config.taskConfig.chuti.min_level) {
                     Toast.show({
-                        content: `2级之后才可以出题哦`,
+                        content: `${config.taskConfig.chuti.min_level}级之后才可以出题哦`,
                     });
                 } else {
                     Tools.navigate('Contribute');
@@ -96,16 +100,21 @@ const TaskType = (props: Props) => {
                     </View>
 
                     {tasks.map((task, index) => {
-                        return (
-                            <TaskItem
-                                key={index}
-                                handler={() => {
-                                    console.log(' handler task', task);
-                                    handler(task);
-                                }}
-                                task={task}
-                            />
-                        );
+                        // task status == 1 的时候展示任务
+                        if (task.status > 0) {
+                            return (
+                                <TaskItem
+                                    key={index}
+                                    handler={() => {
+                                        console.log(' handler task', task);
+                                        handler(task);
+                                    }}
+                                    task={task}
+                                    setLoading={setLoading}
+                                    setUnLoading={setUnLoading}
+                                />
+                            );
+                        }
                     })}
                 </View>
             </BoxShadow>

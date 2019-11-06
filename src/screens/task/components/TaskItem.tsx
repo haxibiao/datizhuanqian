@@ -11,6 +11,8 @@ import { app } from 'store';
 interface Props {
     handler: Function;
     task: Task;
+    setLoading: Function;
+    setUnLoading: Function;
 }
 
 interface Task {
@@ -27,7 +29,7 @@ interface Task {
 }
 
 const TaskItem = (props: Props) => {
-    const { handler, task } = props;
+    const { handler, task, setLoading, setUnLoading } = props;
     const [taskDetailVisiable, setTaskDetailVisiable] = useState(false);
     const [rotateValue, setRotateValue] = useState(new Animated.Value(0));
     const [fadeValue, setFadeValue] = useState(new Animated.Value(0));
@@ -58,11 +60,13 @@ const TaskItem = (props: Props) => {
 
     //领取奖励
     const getReward = async () => {
+        setLoading();
         const [error, res] = await exceptionCapture(taskReward);
         if (error) {
             let str = error.toString().replace(/Error: GraphQL error: /, '');
             Toast.show({ content: str });
         }
+        setUnLoading();
         if (res.data.taskReward == 1) {
             Toast.show({ content: '领取成功' });
         } else {
@@ -75,12 +79,13 @@ const TaskItem = (props: Props) => {
         const {
             task: { type },
         } = props;
-
+        setLoading();
         const [error, res] = await exceptionCapture(receiveTask);
         if (error) {
             let str = error.toString().replace(/Error: GraphQL error: /, '');
             Toast.show({ content: str });
         }
+        setUnLoading();
         if (res.data.receiveTask == 1) {
             Toast.show({ content: '领取成功' });
             if (type == 2) {
@@ -136,7 +141,6 @@ const TaskItem = (props: Props) => {
         let backgroundColor = Theme.primaryColor;
         let disabled = false;
 
-        console.log('task taskStatus', task.taskStatus);
         switch (task.taskStatus) {
             case -1:
                 name = '任务失败';
@@ -158,15 +162,18 @@ const TaskItem = (props: Props) => {
                         content: '正在努力审核中。。',
                     });
                 };
+                break;
             case 2:
                 name = '领取奖励';
                 doTask = getReward;
+                break;
             case 3:
                 name = '已完成';
                 doTask = taskReward;
                 disabled = true;
                 textColor = Theme.grey;
                 backgroundColor = Theme.borderColor;
+                break;
             //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
         }
 
@@ -224,12 +231,17 @@ const TaskItem = (props: Props) => {
 
     return (
         <Fragment>
-            <TouchFeedback style={styles.container} onPress={handler}>
+            <TouchFeedback
+                style={styles.container}
+                onPress={() => {
+                    if (!(task.taskStatus === 1 || 3)) {
+                        handler();
+                    }
+                }}>
                 <Row>
                     <Text style={styles.name}>{task.name}</Text>
                     {RewardContent()}
                 </Row>
-
                 <Row>
                     {TaskButton()}
                     <TouchFeedback onPress={showTaskDetail} style={styles.taskRight}>

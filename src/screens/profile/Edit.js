@@ -25,13 +25,13 @@ class index extends Component {
 		console.log('edit user', user);
 		this.user = user;
 		this.name = user.name;
-		this.introduction = user.profile.introduction;
+		this.introduction = Tools.syncGetter('profile.introduction', user);
 		this.state = {
 			submitting: false,
 			avatar: user.avatar,
 			gender: user.gender,
-			age: user.profile.age,
-			birthday: user.profile.birthday || ''
+			age: Tools.syncGetter('profile.age', user) ,
+			birthday:  Tools.syncGetter('profile.birthday', user)
 		};
 	}
 

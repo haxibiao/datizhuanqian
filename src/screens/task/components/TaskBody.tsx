@@ -13,20 +13,33 @@ import service from 'service';
 import AttendanceBook from './AttendanceBook';
 import TaskType from './TaskType';
 
-const TaskBody = () => {
+const TaskBody = props => {
     const [userTasks, setUserTasks] = useState();
+    const [isVisible, setIsVisible] = useState(false);
 
     const TasksQuery = useQuery(GQL.TasksQuery, {
         variables: { offest: 0, limit: 20 },
     });
 
-    const UserQuery = useQuery(GQL.UserQuery, {
+    const { data: userData, refetch: refetchChatsQuery } = useQuery(GQL.UserQuery, {
         variables: { id: app.me.id },
     });
 
     useEffect(() => {
+        console.log('触发');
         constructTask();
-    }, [TasksQuery.loading]);
+        if (TasksQuery && TasksQuery.tasks) {
+            app.updateTaskCache(TasksQuery.tasks);
+        }
+
+        const navWillBlurListener = props.navigation.addListener('didFocus', (payload: any) => {
+            TasksQuery.refetch();
+            console.log('didFocus');
+        });
+        return () => {
+            navWillBlurListener.remove();
+        };
+    }, [TasksQuery.loading, TasksQuery.refetch]);
 
     useEffect(() => {
         // 获取任务配置
@@ -60,8 +73,6 @@ const TaskBody = () => {
             const growUpTask = tasks.filter((elem, i) => {
                 return elem.type == 2;
             });
-
-            console.log('taskConfig', taskConfig);
 
             //自定义任务模板
             const customTask = [
@@ -111,8 +122,8 @@ const TaskBody = () => {
                     doTask: null,
                 },
                 {
-                    typeName: '新人任务',
-                    tasks: newUserTask,
+                    typeName: '成长任务',
+                    tasks: growUpTask,
                     doTask: null,
                 },
                 {
@@ -121,8 +132,8 @@ const TaskBody = () => {
                     doTask: null,
                 },
                 {
-                    typeName: '成长任务',
-                    tasks: growUpTask,
+                    typeName: '新人任务',
+                    tasks: newUserTask,
                     doTask: null,
                 },
             ];
@@ -140,12 +151,14 @@ const TaskBody = () => {
                             tasks={data.tasks}
                             typeName={data.typeName}
                             key={index}
-                            userData={Tools.syncGetter('data.user', UserQuery) || app.me}
+                            userData={userData.user || app.me}
+                            setLoading={() => setIsVisible(true)}
+                            setUnLoading={() => setIsVisible(false)}
                         />
                     );
                 })}
 
-            <SubmitLoading isVisible={false} content={'领取中'} />
+            <SubmitLoading isVisible={isVisible} content={'领取中'} />
         </ScrollView>
     );
 };
