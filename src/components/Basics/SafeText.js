@@ -1,8 +1,3 @@
-/*
- * @flow
- * created by wyk made in 2018-12-12 12:02:46
- */
-
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
@@ -17,7 +12,7 @@ class SafeText extends Component<Props> {
         const map = { String: 'String', Number: 'Number', Array: 'Array' };
         if (React.isValidElement(children) || map[Object.prototype.toString.call(children).slice(8, -1)]) {
             return (
-                <Text {...other} style={[style, shadowText && styles.textShadow]}>
+                <Text {...other} style={[styles.fontFamily, style, shadowText && styles.textShadow]}>
                     {children}
                 </Text>
             );
@@ -26,6 +21,14 @@ class SafeText extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+    fontFamily: {
+        ...Platform.select({
+            ios: {},
+            android: {
+                fontFamily: ' ',
+            },
+        }),
+    },
     textShadow: {
         textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: { width: 0, height: 0 },

@@ -68,12 +68,11 @@ const AttendanceBook = (props): JSX.Element => {
             if (!today_signed) {
                 try {
                     const result = await createSignIn();
-                    console.log('test result', result, signIns);
                     const todayReturns = Tools.syncGetter('data.createSignIn', result);
                     onSignInSuccess(todayReturns);
                 } catch (e) {
-                    console.log('error', e);
-                    Toast.show({ content: '签到失败' });
+                    const str = e.toString().replace(/Error: GraphQL error: /, '');
+                    Toast.show({ content: str || '签到失败' });
                 }
             } else {
                 // onSignInSuccess({
