@@ -7,7 +7,7 @@ import { Query, Mutation, graphql, withApollo, compose, GQL, useQuery } from 'ap
 import { observer, app, config, keys, storage } from 'store';
 
 import { ttad } from 'native';
-import { playVideo } from 'common';
+
 import service from 'service';
 
 import AttendanceBook from './AttendanceBook';
@@ -20,12 +20,34 @@ const TaskBody = () => {
         variables: { offest: 0, limit: 20 },
     });
 
+    const UserQuery = useQuery(GQL.UserQuery, {
+        variables: { id: app.me.id },
+    });
+
     useEffect(() => {
+        constructTask();
+    }, [TasksQuery.loading]);
+
+    useEffect(() => {
+        // 获取任务配置
+        service.taskConfig({
+            callback: (data: any) => {
+                config.saveTaskConfig(data);
+            },
+        });
+    }, []);
+
+    const constructTask = () => {
         const {
             data: { tasks },
             loading,
         } = TasksQuery;
-        if (!loading && tasks.length > 0) {
+
+        const {
+            taskConfig: { chuti, reward, cpc, invitation },
+            taskConfig,
+        } = config;
+        if (!loading && tasks.length > 0 && taskConfig) {
             // 新人任务
             const newUserTask = tasks.filter((elem, i) => {
                 return elem.type == 0;
@@ -38,37 +60,54 @@ const TaskBody = () => {
             const growUpTask = tasks.filter((elem, i) => {
                 return elem.type == 2;
             });
+
+            console.log('taskConfig', taskConfig);
+
+            //自定义任务模板
+            const customTask = [
+                {
+                    name: '看视频赚钱',
+                    status: Tools.syncGetter('status', reward),
+                    taskStatus: 4,
+                    gold: Tools.syncGetter('gold', reward),
+                    ticket: Tools.syncGetter('ticket', reward),
+                    contribute: Tools.syncGetter('contribute', reward),
+                    type: 4,
+                    submit_name: '看视频',
+                    details: `看完视频才可获取精力点奖励,点击下载、查看详情才能够获取智慧点或贡献点奖励`,
+                },
+                {
+                    name: '出题赚钱',
+                    status: Tools.syncGetter('status', chuti),
+                    taskStatus: 5,
+                    gold: Tools.syncGetter('gold', chuti) + '~20',
+                    ticket: Tools.syncGetter('ticket', chuti),
+                    contribute: Tools.syncGetter('contribute', chuti),
+                    type: 5,
+                    submit_name: '去出题',
+                    details: `出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，没有解析将只能获得${Tools.syncGetter(
+                        'gold',
+                        chuti,
+                    )}智慧点的奖励。恶意刷题和乱出解析将会受到惩罚哦！`,
+                },
+                {
+                    name: '分享领现金',
+                    status: Tools.syncGetter('status', invitation),
+                    taskStatus: 6,
+                    gold: Tools.syncGetter('gold', invitation),
+                    ticket: Tools.syncGetter('ticket', invitation),
+                    contribute: Tools.syncGetter('contribute', invitation),
+                    type: 6,
+                    submit_name: '去分享',
+                    details: '每成功分享一个用户注册登录，即可获取600智慧点和36贡献点奖励',
+                },
+            ];
+
+            // 任务列表
             const arry = [
                 {
                     typeName: '激励任务',
-                    tasks: [
-                        // {
-                        //     name: '看视频赚钱',
-                        //     status: rewardStatus,
-                        //     taskStatus: rewardTaskAction,
-                        //     gold: rewardGold,
-                        //     ticket: rewardTicket,
-                        //     contribute: rewardContribute,
-                        //     type: 4,
-                        // },
-                        // {
-                        //     name: '出题赚钱',
-                        //     status: 1,
-                        //     taskStatus: 4,
-                        //     gold,
-                        //     ticket,
-                        //     contribute,
-                        //     type: 3,
-                        // },
-                        // {
-                        //     name: '分享领现金',
-                        //     status: invitationStatus,
-                        //     taskStatus: 7,
-                        //     gold: invitationGold,
-                        //     contribute: invitationContribute,
-                        //     type: 6,
-                        // },
-                    ],
+                    tasks: customTask,
                     doTask: null,
                 },
                 {
@@ -89,9 +128,7 @@ const TaskBody = () => {
             ];
             setUserTasks(arry);
         }
-    }, [TasksQuery.loading]);
-
-    const doTask = () => {};
+    };
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -103,20 +140,7 @@ const TaskBody = () => {
                             tasks={data.tasks}
                             typeName={data.typeName}
                             key={index}
-                            doTask={task => {
-                                const reward = {
-                                    gold: task.gold,
-                                    ticket: task.ticket,
-                                    contribute: task.contribute,
-                                };
-                                playVideo({
-                                    reward,
-                                    rewardVideoAdCache: rewardVideoAdCache,
-                                    callback: setRewardStatus,
-                                    refresh: refetchUserQuery,
-                                    type: 'Task',
-                                });
-                            }}
+                            userData={Tools.syncGetter('data.user', UserQuery) || app.me}
                         />
                     );
                 })}

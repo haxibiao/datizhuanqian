@@ -39,11 +39,9 @@ interface Video {
 }
 
 interface Props {
-    reward?: Reward; //奖励值（兼容任务入口）
     rewardVideoAdCache?: any; //激励视频cache
     fullScreenVideoAdCache?: any; //全屏视频cache
     callback?: Function; //兼容任务列表刷新
-    refresh?: any; //兼容任务列表入口刷新
     type?: Type; //看视频来源
 }
 
@@ -83,7 +81,7 @@ function loadRewardVideo(props: Props) {
 
 //播放激励视频
 function startRewardVideo(props: Props) {
-    const { callback, reward, refresh, type } = props;
+    const { callback, reward } = props;
     let video = {
         video_play: false,
         ad_click: false,
@@ -96,12 +94,12 @@ function startRewardVideo(props: Props) {
                 if (result) {
                     video = JSON.parse(result);
                     if (video.video_play) {
-                        if (type === 'Task' && reward) {
-                            oldGetReward(video, reward, refresh);
-                            callback && callback();
-                        } else {
-                            getReward(props);
-                        }
+                        callback && callback();
+                        getReward(props, video);
+                    } else {
+                        Toast.show({
+                            content: '没看完视频,或没看详情，或其他异常...',
+                        });
                     }
                 } else {
                     Toast.show({
@@ -109,11 +107,7 @@ function startRewardVideo(props: Props) {
                     });
                 }
             } else {
-                if (reward) {
-                    oldGetReward(video, reward, refresh);
-                } else {
-                    getReward(props);
-                }
+                getReward(props, video);
             }
         })
         .catch(error => {
@@ -161,36 +155,8 @@ function startFullScreenVideo(props: Props) {
         });
 }
 
-//兼容任务老接口看视频奖励方法
-function oldGetReward(video: Video, reward: Reward, refresh: () => void) {
-    const task_id = video.ad_click && video.video_play ? -2 : 0;
-    const title = video.ad_click && video.video_play ? '查看详情' : '仅看完视频';
-    const rewardContent = video.ad_click && video.video_play ? reward : { ticket: 10 };
-
-    app.client
-        .mutate({
-            mutation: GQL.TaskRewardMutation,
-            variables: {
-                task_id,
-            },
-            refetchQueries: () => [
-                {
-                    query: GQL.UserQuery,
-                    variables: { id: app.me.id },
-                },
-            ],
-        })
-        .then(() => {
-            refresh();
-            RewardTipsOverlay.show({ reward: rewardContent, rewardVideo: true, title: title });
-        })
-        .catch((err: any) => {
-            console.log('err', err);
-        });
-}
-
 //新看视频奖励发放
-function getReward(props: Props) {
+function getReward(props: Props, video: Video) {
     const { type } = props;
     console.log('type', type);
     let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
@@ -202,6 +168,12 @@ function getReward(props: Props) {
     }
     if (type === 'AnswerFail') {
         rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
+    }
+    if (type === 'Task' && video.ad_click && video.video_play) {
+        rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //激励视频查看详情
+    }
+    if (type === 'Task' && !video.ad_click && video.video_play) {
+        rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //激励视频未看详情
     }
 
     const refetchQuery =

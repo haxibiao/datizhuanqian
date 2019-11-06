@@ -94,15 +94,6 @@ const TaskItem = (props: Props) => {
     const RewardContent = () => {
         return (
             <Row>
-                {task.gold > 0 && (
-                    <Row style={styles.reword}>
-                        <Image
-                            source={require('../../../assets/images/heart.png')}
-                            style={{ width: PxFit(18), height: PxFit(18) }}
-                        />
-                        <Text style={styles.rewordText}>{`+${task.gold}`}</Text>
-                    </Row>
-                )}
                 {task.ticket > 0 && (
                     <Row style={styles.reword}>
                         <Image
@@ -112,11 +103,20 @@ const TaskItem = (props: Props) => {
                         <Text style={styles.rewordText}>{`+${task.ticket}`}</Text>
                     </Row>
                 )}
+                {task.gold && (
+                    <Row style={styles.reword}>
+                        <Image
+                            source={require('../../../assets/images/diamond.png')}
+                            style={{ width: PxFit(18), height: PxFit(18) }}
+                        />
+                        <Text style={styles.rewordText}>{`+${task.gold}`}</Text>
+                    </Row>
+                )}
                 {task.contribute > 0 && (
                     <Row style={styles.reword}>
                         <Image
-                            source={require('../../../assets/images/heart.png')}
-                            style={{ width: PxFit(18), height: PxFit(18) }}
+                            source={require('../../../assets/images/gongxian.png')}
+                            style={{ width: PxFit(14), height: PxFit(14) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.contribute}`}</Text>
                     </Row>
@@ -130,7 +130,7 @@ const TaskItem = (props: Props) => {
     const TaskButton = () => {
         let { handler, task } = props;
 
-        let name = '做任务';
+        let name = task.submit_name;
         let textColor = Theme.white;
         let doTask = handler;
         let backgroundColor = Theme.primaryColor;
@@ -151,9 +151,6 @@ const TaskItem = (props: Props) => {
                 name = '领取';
                 doTask = getTask;
                 break;
-            case 0:
-                name = task.submit_name;
-                break;
             case 1:
                 name = '审核中';
                 doTask = () => {
@@ -171,21 +168,6 @@ const TaskItem = (props: Props) => {
                 textColor = Theme.grey;
                 backgroundColor = Theme.borderColor;
             //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
-            case 4:
-                name = '去出题';
-                break;
-            case 5:
-                name = '看视频';
-                break;
-            case 6:
-                name = '去阅读';
-                break;
-            case 7:
-                name = '去分享';
-                break;
-            case 8:
-                name = '去好评';
-                break;
         }
 
         return (

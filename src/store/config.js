@@ -31,6 +31,7 @@ class config {
     @observable disableAd: boolean = false;
     @observable rewardVideoAdCache: boolean = false; //激励视频广告cache 过期时间60min
     @observable fullScreenVideoAdCache: boolean = false;
+    @observable taskConfig: object = {};
 
     constructor() {
         NetInfo.addEventListener(this.handleConnectivityChange);
@@ -89,7 +90,6 @@ class config {
 
     @action.bound
     saveAdvertConfig(data) {
-        console.log('saveAdvertConfig data', data);
         this.enableSplash = data.enable_splash;
         this.enableQuestion = data.enable_question;
         this.enableReward = data.enable_reward;
@@ -97,7 +97,11 @@ class config {
         this.enableBanner = data.enable_banner;
         this.enableDrawFeed = data.enable_drawfeed;
         this.disableAd = data.disable[Config.AppStore];
-        console.log('this.disableAd', this.disableAd);
+    }
+
+    @action.bound
+    saveTaskConfig(data) {
+        this.taskConfig = data;
     }
 }
 

@@ -4,30 +4,48 @@ import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
 
 import { BoxShadow } from 'react-native-shadow';
 import TaskItem from './TaskItem';
+import { playVideo } from 'common';
 
 interface Props {
     tasks: Array<object>;
     typeName: String;
-    doTask: Function;
+    userData: User;
 }
 
 interface Task {
+    id: Number;
+    name: String;
+    gold: Number;
+    ticket: Number;
+    contribute: Number;
+    taskStatus: Number;
+    submit_name: string;
+    details: string;
     type?: Number;
     route?: String;
 }
 
+interface User {
+    id: Number;
+    name: String;
+    level: Level;
+}
+
+interface Level {
+    id: Number;
+    level: Number;
+}
+
 const TaskType = (props: Props) => {
     const [taskTypeHeight, setTaskTypeHeight] = useState(70);
-    const { typeName, tasks, doTask } = props;
+    const { typeName, tasks, userData } = props;
 
     const handler = (task: Task) => {
-        if (task.route) {
-            Tools.navigate(task.route, {
-                task: task,
-            });
-        }
         //TODO: 后端无业务逻辑的任务需完善task.route
         switch (task.type) {
+            case 0:
+                Tools.navigate('EditProfile', { user: userData });
+                break;
             case 1:
                 Tools.navigate('答题');
                 break;
@@ -36,28 +54,29 @@ const TaskType = (props: Props) => {
                     task: task,
                 });
                 break;
+            // TODO: type 4/5/6 属于前端自定义任务由taskconfig动态配置  需调整为gql
+            case 4:
+                playVideo({
+                    type: 'Task',
+                });
+                break;
+            case 5:
+                if (userData.level.level < 2) {
+                    Toast.show({
+                        content: `2级之后才可以出题哦`,
+                    });
+                } else {
+                    Tools.navigate('Contribute');
+                }
+                break;
+            case 6:
+                Tools.navigate('Share');
             default:
-                doTask && doTask();
+                Tools.navigate(task.route, {
+                    task: task,
+                });
                 break;
         }
-
-        // else if (task.type == 3) {
-        //     if (user.level.level < 2) {
-        //         Toast.show({
-        //             content: `2级之后才可以出题哦`,
-        //         });
-        //     } else {
-        //         Tools.navigate('Contribute', { category: {} });
-        //     }
-        // } else if (task.type == 4) {
-        //     // goTask && goTask(task);
-        // } else if (task.type == 5) {
-        //     Tools.navigate('CpcTask');
-        // } else if (task.type == 6) {
-        //     Tools.navigate('Share');
-        // } else {
-        //     Tools.navigate('EditProfile', { user: user });
-        // }
     };
 
     if (tasks && tasks.length > 0) {
@@ -81,6 +100,7 @@ const TaskType = (props: Props) => {
                             <TaskItem
                                 key={index}
                                 handler={() => {
+                                    console.log(' handler task', task);
                                     handler(task);
                                 }}
                                 task={task}
