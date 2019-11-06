@@ -26,22 +26,6 @@ const TaskBody = props => {
     });
 
     useEffect(() => {
-        console.log('触发');
-        constructTask();
-        if (TasksQuery && TasksQuery.tasks) {
-            app.updateTaskCache(TasksQuery.tasks);
-        }
-
-        const navWillBlurListener = props.navigation.addListener('didFocus', (payload: any) => {
-            TasksQuery.refetch();
-            console.log('didFocus');
-        });
-        return () => {
-            navWillBlurListener.remove();
-        };
-    }, [TasksQuery.loading, TasksQuery.refetch]);
-
-    useEffect(() => {
         // 获取任务配置
         service.taskConfig({
             callback: (data: any) => {
@@ -49,6 +33,22 @@ const TaskBody = props => {
             },
         });
     }, []);
+
+    useEffect(() => {
+        //构建tasklist
+        constructTask();
+        //更新缓存
+        if (TasksQuery && TasksQuery.tasks) {
+            app.updateTaskCache(TasksQuery.tasks);
+        }
+        //命中刷新
+        const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
+            TasksQuery.refetch();
+        });
+        return () => {
+            navDidFocusListener.remove();
+        };
+    }, [TasksQuery.loading, TasksQuery.refetch]);
 
     const constructTask = () => {
         const {

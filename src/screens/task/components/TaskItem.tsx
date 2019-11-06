@@ -292,26 +292,7 @@ const styles = StyleSheet.create({
         color: Theme.primaryColor,
         fontSize: PxFit(13),
         fontWeight: '200',
-        fontFamily: '',
-    },
-    greyButton: {
-        backgroundColor: Theme.borderColor,
-        borderRadius: PxFit(45),
-        height: PxFit(32),
-        width: PxFit(84),
-    },
-    themeButton: {
-        backgroundColor: Theme.primaryColor,
-        borderRadius: PxFit(16),
-        height: PxFit(32),
-        width: PxFit(84),
-    },
-    redButton: {
-        borderRadius: PxFit(45),
-        height: PxFit(32),
-        width: PxFit(84),
-        borderWidth: PxFit(1),
-        borderColor: Theme.secondaryColor,
+        // fontFamily: '',
     },
     taskDetail: {
         marginHorizontal: PxFit(15),

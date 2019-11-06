@@ -69,6 +69,10 @@ class App extends Component {
         global.Toast = this.toast;
         // 禁止横屏
         Orientation.lockToPortrait();
+
+        ttad.RewardVideo.loadAd().then(data => {
+            config.rewardVideoAdCache = data;
+        });
     }
 
     checkServer = () => {
