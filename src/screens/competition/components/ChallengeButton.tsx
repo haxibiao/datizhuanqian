@@ -1,19 +1,20 @@
 import React, { useMemo, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated } from 'react-native';
-import { Avatar, Row, Center, Iconfont } from '@src/components';
+import { Avatar, Row, Center, Iconfont, WaveView } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { BoxShadow } from 'react-native-shadow';
 import { GQL, useMutation } from '@src/apollo';
 import { observer, app } from 'store';
 
 const challenge = observer(props => {
-    const { onPress, matching } = props;
+    const { onPress, matching, matched } = props;
     return (
         <BoxShadow setting={shadowOpt}>
             <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={onPress} style={styles.matchingButton}>
+                {matching && <WaveView containerStyle={styles.waveContainer} style={styles.wave} />}
+                <TouchableOpacity disabled={matching || matched} onPress={onPress} style={styles.matchingButton}>
                     <Image style={styles.battle} source={require('@src/assets/images/battle.png')} />
-                    <Text style={styles.text}>{matching ? '取消匹配' : '立即PK'}</Text>
+                    <Text style={styles.text}>{matched ? '匹配成功' : matching ? '正在匹配' : '立即PK'}</Text>
                 </TouchableOpacity>
             </View>
         </BoxShadow>

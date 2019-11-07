@@ -15,6 +15,7 @@ import PageContainer from './Container/PageContainer';
 import Row from './Container/Row';
 import Center from './Container/Center';
 import ErrorBoundary from './Container/ErrorBoundary';
+import WaveView from './Container/WaveView';
 // Content
 import UserItem from './Content/UserItem';
 import GridImage from './Content/GridImage';
@@ -88,6 +89,7 @@ export {
     Row,
     Center,
     ErrorBoundary,
+    WaveView,
     UserItem,
     GridImage,
     Placeholder,

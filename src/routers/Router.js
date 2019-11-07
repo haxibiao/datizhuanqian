@@ -92,10 +92,10 @@ import AboutUsScreen from '../screens/setting/AboutUs';
 import UpdateLogScreen from '../screens/setting/UpdateLog';
 import PrivacyPolicyScreen from '../screens/setting/PrivacyPolicy';
 import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
-// MainTabNavigator
+// MainTabNavigator CompetitionMatchingScreen
 export default {
     Main: {
-        screen: CompetitionMatchingScreen,
+        screen: MainTabNavigator,
     },
     // 登录验证
     Login: {
@@ -160,7 +160,7 @@ export default {
     SubmitTask: {
         screen: SubmitTaskScreen,
     },
-    //排行
+    // 排行
     Rank: {
         screen: RankScreen,
     },
