@@ -10,30 +10,20 @@ import ChallengeButton from './components/ChallengeButton';
 import Competitor from './components/Competitor';
 
 export default observer(props => {
-    const store = useRef({});
-
-    useEffect(() => {
-        store.current = new localStore();
-        return (): void => {
-            return null;
-        };
-    }, []);
+    const store = useRef(new localStore()).current;
 
     return (
         <PageContainer hiddenNavBar>
             <ImageBackground style={styles.background} source={require('@src/assets/images/matching_bg.png')}>
                 <View style={styles.container}>
                     <View style={styles.competitorLeft}>
-                        <Competitor fadeIn={store.current.matching} user={app.me} theLeft={true} />
+                        <Competitor fadeIn={store.matching} user={app.me} theLeft={true} />
                     </View>
                     <View style={styles.challengeWrap}>
-                        <ChallengeButton
-                            matching={store.current.matching}
-                            onPress={() => (store.current.matching = !store.current.matching)}
-                        />
+                        <ChallengeButton matching={store.matching} onPress={store.matchGame} />
                     </View>
                     <View style={styles.competitorRight}>
-                        <Competitor fadeIn={store.current.matching} user={app.me} />
+                        <Competitor fadeIn={store.matching} user={store.rival} />
                     </View>
                 </View>
             </ImageBackground>
@@ -42,25 +32,25 @@ export default observer(props => {
 });
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     background: {
         height: '100%',
         resizeMode: 'cover',
         width: '100%',
     },
     challengeWrap: {
-        marginVertical: PxFit(30),
+        marginVertical: PxFit(40),
     },
     competitorLeft: {
-        width: SCREEN_WIDTH,
         alignItems: 'flex-start',
+        width: SCREEN_WIDTH,
     },
     competitorRight: {
-        width: SCREEN_WIDTH,
         alignItems: 'flex-end',
+        width: SCREEN_WIDTH,
+    },
+    container: {
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
     },
 });

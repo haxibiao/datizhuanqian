@@ -46,16 +46,20 @@ const competitor = observer(props => {
     return (
         <Animated.View style={[styles.competitor, animateStyles]}>
             <ImageBackground style={styles.background} source={source}>
-                <Avatar source={user.avatar} size={height * 0.76} style={styles.avatar} />
+                <Avatar
+                    source={user.avatar || require('@src/assets/images/default_avatar.png')}
+                    size={height * 0.76}
+                    style={styles.avatar}
+                />
             </ImageBackground>
         </Animated.View>
     );
 });
 
 const styles = StyleSheet.create({
-    competitor: {
-        width,
-        height,
+    avatar: {
+        borderWidth: PxFit(2),
+        borderColor: '#fff',
     },
     background: {
         width: '100%',
@@ -64,9 +68,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    avatar: {
-        borderWidth: PxFit(2),
-        borderColor: '#fff',
+    competitor: {
+        width,
+        height,
     },
 });
 

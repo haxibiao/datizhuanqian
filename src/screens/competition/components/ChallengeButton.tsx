@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useMemo, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import { Avatar, Row, Center, Iconfont } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { BoxShadow } from 'react-native-shadow';
@@ -10,10 +10,12 @@ const challenge = observer(props => {
     const { onPress, matching } = props;
     return (
         <BoxShadow setting={shadowOpt}>
-            <TouchableOpacity onPress={onPress} style={styles.matchingButton}>
-                <Image style={styles.battle} source={require('@src/assets/images/battle.png')} />
-                <Text style={styles.text}>{matching ? '取消匹配' : '立即PK'}</Text>
-            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+                <TouchableOpacity onPress={onPress} style={styles.matchingButton}>
+                    <Image style={styles.battle} source={require('@src/assets/images/battle.png')} />
+                    <Text style={styles.text}>{matching ? '取消匹配' : '立即PK'}</Text>
+                </TouchableOpacity>
+            </View>
         </BoxShadow>
     );
 });
@@ -31,29 +33,31 @@ const shadowOpt = {
 
 const styles = StyleSheet.create({
     battle: {
-        width: PxFit(40),
         height: PxFit(40),
-    },
-    challenge: {
-        width: PxFit(140),
-        height: PxFit(140),
-        padding: PxFit(10),
-        overflow: 'hidden',
-        borderRadius: PxFit(70),
+        width: PxFit(40),
     },
     matchingButton: {
-        width: PxFit(120),
-        height: PxFit(120),
-        borderRadius: PxFit(60),
-        backgroundColor: '#fff',
-        justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: PxFit(60),
+        flex: 1,
+        justifyContent: 'center',
     },
     text: {
-        marginTop: PxFit(10),
         color: Theme.defaultTextColor,
-        fontWeight: 'bold',
         fontSize: PxFit(16),
+        fontWeight: 'bold',
+        marginTop: PxFit(10),
+    },
+    wave: {
+        borderRadius: PxFit(100),
+    },
+    waveContainer: {
+        bottom: 0,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
     },
 });
 

@@ -160,7 +160,7 @@ module.exports = {
         '@typescript-eslint/explicit-member-accessibility': 1,
         '@typescript-eslint/no-empty-interface': 1,
         '@typescript-eslint/explicit-function-return-type': [
-            'error',
+            'off',
             {
                 allowTypedFunctionExpressions: true,
             },

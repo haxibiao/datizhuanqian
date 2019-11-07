@@ -1,0 +1,27 @@
+# 1.PK匹配对手GQL
+mutation MatchGameMutation {
+    matchGame {
+        user {
+            id
+            name
+            gender
+            avatar
+        }
+        game {
+            id
+        }
+    }
+}
+
+# 2.中途退出,离开比赛GQL
+mutation LeaveGameMutation {
+    leaveGame {
+        id
+        status
+        end_at
+        winner {
+            id
+        }
+        reward
+    }
+}
