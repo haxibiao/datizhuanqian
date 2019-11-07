@@ -5,22 +5,22 @@
 
 const theme = '#FFBB04';
 const themeRed = '#EF514A';
-//primary color
+// primary color
 const primaryColor = '#FFBB04';
 const primaryColorRgb = '255,187,4';
-//secondary color
+// secondary color
 const secondaryColor = '#FE4342';
 const secondaryColorRgb = '254,67,66';
-//default text color
+// default text color
 // #201e33
 const defaultTextColor = '#212121';
-//highlight text color
+// highlight text color
 const secondaryTextColor = '#414A52';
-//sub text color
+// sub text color
 const subTextColor = '#A0A0A0';
-//tint text color
+// tint text color
 const tintTextColor = '#CBD7E1';
-//default Border color
+// default Border color
 const borderColor = '#F1EFFA';
 // background color
 const groundColour = '#f9f9f9';
@@ -29,7 +29,7 @@ const navBarBackground = '#FFBB04';
 const navBarTitleColor = '#fff';
 const navBarSeparatorColor = 'transparent';
 
-//old
+// old
 const white = '#fff';
 const orange = '#CD6839';
 const black = '#000';
@@ -44,7 +44,7 @@ const lightGray = '#F6F6F6';
 
 const grey = '#969696';
 const weixin = '#47D850';
-//sheet
+// sheet
 export default {
     theme,
     themeRed,
@@ -61,6 +61,7 @@ export default {
     navBarBackground,
     navBarTitleColor,
     navBarSeparatorColor,
+    watermelon: '#FF5E7D',
     boyColor: '#00C8FF',
     girlColor: '#FF5C9D',
     linkColor: '#407FCF',
@@ -71,7 +72,7 @@ export default {
     teaGreen: '#12E2BB',
     itemSpace: 15,
 
-    //old
+    // old
     white,
     orange,
     black,

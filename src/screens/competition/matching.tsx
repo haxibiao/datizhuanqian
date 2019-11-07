@@ -12,13 +12,10 @@ export default observer(props => {
     const navigation = useNavigation();
 
     const store = useRef(new localStore()).current;
-
+    // Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })
     const rightView = useMemo(() => {
         return (
-            <TouchableOpacity
-                style={styles.rightView}
-                activeOpacity={1}
-                onPress={() => Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })}>
+            <TouchableOpacity style={styles.rightView} activeOpacity={1} onPress={() => navigation.navigate('Compete')}>
                 <Image style={styles.medal} source={require('@src/assets/images/medal.png')} />
             </TouchableOpacity>
         );
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
         width: PxFit(180),
     },
     cancelMatchText: {
-        color: '#FF5E7D',
+        color: Theme.watermelon,
         fontSize: PxFit(16),
         fontWeight: 'bold',
     },
