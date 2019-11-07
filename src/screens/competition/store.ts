@@ -24,7 +24,7 @@ export default class CompetitionStore {
         this.matching = true;
         app.echo.private('App.User.' + app.me.id).listen('NewGame', (newGame: object) => {
             console.log('====================================');
-            console.log('newGame', newGame);
+            console.log('NewGame', newGame);
             console.log('====================================');
             this.game = newGame.game;
             this.rival = newGame.game.rival;
@@ -33,15 +33,15 @@ export default class CompetitionStore {
         });
 
         const [error, result] = await exceptionCapture(() => {
-            app.client.mutate({
+            return app.client.mutate({
                 mutation: GQL.MatchGameMutation,
             });
         });
         const matchGame = syncGetter('data.matchGame', result);
+        console.log('====================================');
+        console.log('matchGame', matchGame);
+        console.log('====================================');
         if (matchGame) {
-            console.log('====================================');
-            console.log('matchGame', matchGame);
-            console.log('====================================');
             this.game = matchGame.game;
             this.rival = matchGame.user;
             this.matching = false;
@@ -53,20 +53,39 @@ export default class CompetitionStore {
     }
 
     @action.bound
-    public cancelMatch() {
-        this.matching = false;
+    public async cancelMatch() {
+        const [error, result] = await exceptionCapture(() => {
+            return app.client.mutate({
+                mutation: GQL.OfflineGameMutation,
+            });
+        });
+        const offlineGame = syncGetter('data.offlineGame', result);
+        if (offlineGame) {
+            this.game = {};
+            this.rival = {};
+            this.matching = false;
+        } else if (error) {
+            Toast.show({ content: '取消失败', layout: 'top' });
+        }
+    }
+
+    private async leaveGameMutate(user_id: number, game_id: number) {
+        const [error, result] = await exceptionCapture(() => {
+            return app.client.mutate({
+                mutation: GQL.LeaveGameMutation,
+                variables: { user_id, game_id },
+            });
+        });
+        console.log('====================================');
+        console.log('leaveGameMutate', error, result);
+        console.log('====================================');
     }
 
     @action.bound
-    public async leaveGame() {
-        const [error, result] = await exceptionCapture(() => {
-            app.client.mutate({
-                mutation: GQL.LeaveGameMutation,
-            });
-        });
-        const leaveGame = syncGetter('data.leaveGame', result);
-        if (leaveGame) {
-            this.gameOver();
+    public leaveGame() {
+        if (this.game.id) {
+            app.echo.leave(`game.${this.game.id}`);
+            this.leaveGameMutate(app.me.id, this.game.id);
         }
     }
 
@@ -81,23 +100,22 @@ export default class CompetitionStore {
     public playGame() {
         app.echo
             .join(`game.${this.game.id}`)
-            .here(users => {
-                console.log('echo join here users:', users);
-            })
+            // .here(users => {
+            //     console.log('here:', users);
+            // })
             .joining(user => {
-                console.log(user.name);
+                console.log('joining:', user);
                 this.rival = user;
             })
             .leaving(user => {
-                console.log(user.name);
+                console.log('leaving:', user);
+                this.leaveGameMutate(user.id, app.me.id, this.game.id);
             })
-            .listen('score', score => {
+            .listen('score', (score: number) => {
                 this.score[1] += score;
             });
     }
 
     @action.bound
-    public gameOver() {
-        app.echo.leave(`game.${this.game.id}`);
-    }
+    public gameOver() {}
 }

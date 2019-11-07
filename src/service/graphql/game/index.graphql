@@ -14,8 +14,8 @@ mutation MatchGameMutation {
 }
 
 # 2.中途退出,离开比赛GQL
-mutation LeaveGameMutation {
-    leaveGame {
+mutation LeaveGameMutation($user_id: Int!, $game_id: Int!) {
+    leaveGame(user_id: $user_id, game_id: $game_id) {
         id
         status
         end_at
@@ -23,5 +23,14 @@ mutation LeaveGameMutation {
             id
         }
         reward
+    }
+}
+
+# 3.取消匹配GQL
+mutation OfflineGameMutation {
+    offlineGame {
+        id
+        online_at
+        online_status
     }
 }

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useCallback } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { PageContainer, NavigatorBar } from '@src/components';
 import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
@@ -6,8 +6,11 @@ import { observer, app } from 'store';
 import localStore from './store';
 import ChallengeButton from './components/ChallengeButton';
 import Competitor from './components/Competitor';
+import { useNavigation } from 'react-navigation-hooks';
 
 export default observer(props => {
+    const navigation = useNavigation();
+
     const store = useRef(new localStore()).current;
 
     const rightView = useMemo(() => {
@@ -19,6 +22,16 @@ export default observer(props => {
                 <Image style={styles.medal} source={require('@src/assets/images/medal.png')} />
             </TouchableOpacity>
         );
+    }, []);
+
+    useEffect(() => {
+        const navWillBlurListener = navigation.addListener('willBlur', () => {
+            store.leaveGame();
+        });
+
+        return () => {
+            navWillBlurListener.remove();
+        };
     }, []);
 
     return (
@@ -49,6 +62,7 @@ export default observer(props => {
             </ImageBackground>
             <View style={styles.header}>
                 <NavigatorBar
+                    navigation={navigation}
                     style={styles.navigatorBar}
                     titleStyle={styles.titleStyle}
                     title="双人对战"
