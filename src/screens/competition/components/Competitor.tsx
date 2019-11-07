@@ -9,7 +9,7 @@ const width = SCREEN_WIDTH / 2 + PxFit(60);
 const height = (width * 150) / 492;
 
 const competitor = observer(props => {
-    const { user, fadeIn, theLeft } = props;
+    const { user, fadeIn, theLeft, compete, competeLeft } = props;
     const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 500 });
 
     const source = useMemo(
@@ -43,6 +43,22 @@ const competitor = observer(props => {
         [animation],
     );
 
+    if (compete) {
+        return (
+            <Animated.View style={[{ alignItems: 'center' }, animateStyles]}>
+                <ImageBackground
+                    style={theLeft ? styles.leftUser : styles.rightUser}
+                    source={
+                        theLeft
+                            ? require('@src/assets/images/compete_blue.png')
+                            : require('@src/assets/images/compete_yellow.png')
+                    }>
+                    <Avatar source={app.me.avatar} size={height - PxFit(10)} style={styles.competeAvatar} />
+                </ImageBackground>
+            </Animated.View>
+        );
+    }
+
     return (
         <Animated.View style={[styles.competitor, animateStyles]}>
             <ImageBackground style={styles.background} source={source}>
@@ -71,6 +87,22 @@ const styles = StyleSheet.create({
     competitor: {
         width,
         height,
+    },
+    leftUser: {
+        width: SCREEN_WIDTH / 3,
+        height: ((SCREEN_WIDTH / 3) * 123) / 221,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+    competeAvatar: {
+        marginRight: PxFit(7),
+        borderWidth: PxFit(3),
+        borderColor: '#fff',
+    },
+    rightUser: {
+        width: SCREEN_WIDTH / 3,
+        height: ((SCREEN_WIDTH / 3) * 123) / 221,
+        justifyContent: 'center',
     },
 });
 
