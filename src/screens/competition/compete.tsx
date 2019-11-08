@@ -9,6 +9,7 @@ import Progress from './components/Progress';
 import Competitor from './components/Competitor';
 import { useCountDown } from 'common';
 import { useQuery, GQL } from 'apollo';
+import question from '../question';
 
 const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
@@ -17,7 +18,8 @@ const compete = () => {
     const [subTime, setSubTime] = useState(10); //倒计时
     const [index, setIndex] = useState(0); //题目下标值
     const [score, setScore] = useState(0); //分数
-    const [fadeIn, setFadeIn] = useState(true);
+    const [fadeIn, setFadeIn] = useState(true); //
+    const [submit, setSubmit] = useState(false);
 
     useEffect(() => {
         // const timer = setInterval(() => {
@@ -44,7 +46,17 @@ const compete = () => {
         if (data.questions[index].answer === value) {
             setScore(data.questions[index].gold * 10);
         }
-        resetState();
+
+        if (index + 1 === data.questions.length) {
+            //结算
+            // Tools.navigate('');
+        } else {
+            resetState();
+        }
+    };
+
+    const onSelectOption = () => {
+        setSubmit(true);
     };
 
     const resetState = () => {
@@ -54,6 +66,7 @@ const compete = () => {
         setTimeout(() => {
             setFadeIn(true);
         }, 100);
+        setSubmit(false);
     };
 
     if (loading)
@@ -75,14 +88,19 @@ const compete = () => {
                         <Competitor fadeIn={fadeIn} user={app.me} compete />
                     </View>
                     <Row style={styles.textWrap}>
-                        <Text style={styles.name}>大美女</Text>
-                        <Text style={styles.name}>大美女</Text>
+                        <Text style={styles.name}>{app.me.name}</Text>
+                        <Text style={styles.name}>{app.me.name}</Text>
                     </Row>
                     <Row style={styles.textWrap}>
                         <Text style={[styles.score, { color: '#70E9F3' }]}>{score}</Text>
                         <Text style={styles.score}>{score}</Text>
                     </Row>
-                    <QuestionBody question={data.questions[index]} selectOption={selectOption} />
+                    <QuestionBody
+                        question={data.questions[index]}
+                        selectOption={selectOption}
+                        submit={submit}
+                        onSelectOption={onSelectOption}
+                    />
                 </ScrollView>
             </PageContainer>
         </ImageBackground>

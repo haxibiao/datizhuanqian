@@ -6,6 +6,8 @@ import OptionItem from './OptionItem';
 interface Props {
     question: Question;
     selectOption: Function;
+    submit: Boolean;
+    onSelectOption: Function;
 }
 
 interface Question {
@@ -16,7 +18,7 @@ interface Question {
 
 const QuestionBody = (props: Props) => {
     const _animated = new Animated.Value(0);
-    const { selectOption, question } = props;
+    const { selectOption, question, submit, onSelectOption } = props;
     const { selections_array, description, id } = question;
 
     useEffect(() => {}, []);
@@ -34,6 +36,8 @@ const QuestionBody = (props: Props) => {
                         option={option}
                         selectOption={selectOption}
                         question={question}
+                        submit={submit}
+                        onSelectOption={onSelectOption}
                     />
                 );
             })}
