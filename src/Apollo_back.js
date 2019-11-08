@@ -18,6 +18,8 @@ import Socketio from 'socket.io-client';
 
 import AppRouter from './routers';
 
+import { useCaptureVideo } from '@src/common';
+
 @observer
 class Apollo extends Component {
     async componentDidMount() {
@@ -41,6 +43,8 @@ class Apollo extends Component {
 
         // const enabled = await Crashes.isEnabled();
         // console.log('enabled', enabled);
+
+        // useCaptureVideo({ client, onSuccess, onFailed });
     }
 
     mountWebSockit(user) {
@@ -86,11 +90,20 @@ class Apollo extends Component {
         });
     }
 
+    onFailed = () => {
+        Toast.show('上传失败');
+    };
+
+    onSuccess = () => {
+        Toast.show('上传成功');
+    };
+
     render() {
         const { checkServer } = this.props;
         this.mountWebSockit(app.me);
         const client = makeClient(app.me, checkServer); // 构建apollo client;
         app.client = client;
+        // useCaptureVideo({ client, onSuccess: this.onSuccess, onFailed: this.onFailed });
         return (
             <ApolloProvider client={client}>
                 <ApolloHooksProvider client={client}>

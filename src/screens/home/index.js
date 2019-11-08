@@ -19,7 +19,7 @@ import PlateItem from './components/PlateItem';
 
 import { observer, app, keys, storage } from 'store';
 import { when } from 'mobx';
-import { withApollo, compose, graphql, GQL } from 'apollo';
+import { withApollo, compose, graphql, GQL, ISIOS } from 'apollo';
 
 import JPushModule from 'jpush-react-native';
 import NetInfo from '@react-native-community/netinfo';
@@ -29,7 +29,6 @@ import { Overlay } from 'teaset';
 
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
-import { ISIOS } from 'utils';
 
 // 监听新用户登录
 when(
@@ -60,15 +59,11 @@ class index extends Component {
     async componentDidMount() {
         const { navigation } = this.props;
 
-        // setInterval(() => {
-        //     console.log("测试主页销毁")
-        // }, 1000);
-
         this.resetUser();
 
         this.registerTimer = setTimeout(async () => {
             // 再次请求权限防止未获取到手机号
-            const phone = await Util.getPhoneNumber();
+            const phone = ISIOS ? '' : await Util.getPhoneNumber();
             const userCache = await storage.getItem(keys.userCache);
 
             if (!app.login && !userCache) {

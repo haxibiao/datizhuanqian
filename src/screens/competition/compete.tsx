@@ -22,12 +22,12 @@ const compete = () => {
     const [submit, setSubmit] = useState(false);
 
     useEffect(() => {
-        // const timer = setInterval(() => {
-        //     setSubTime(prevCount => prevCount - 1);
-        // }, 1000);
-        // return () => {
-        //     clearInterval(timer);
-        // };
+        const timer = setInterval(() => {
+            setSubTime(prevCount => prevCount - 1);
+        }, 1000);
+        return () => {
+            clearInterval(timer);
+        };
     }, []);
 
     useEffect(() => {

@@ -1,0 +1,1 @@
+export { useCaptureVideo } from './useCaptureVideo';
