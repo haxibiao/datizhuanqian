@@ -53,7 +53,11 @@ const competitor = observer(props => {
                             ? require('@src/assets/images/compete_blue.png')
                             : require('@src/assets/images/compete_yellow.png')
                     }>
-                    <Avatar source={app.me.avatar} size={height - PxFit(10)} style={styles.competeAvatar} />
+                    <Avatar
+                        source={app.me.avatar}
+                        size={height - PxFit(16)}
+                        style={theLeft ? styles.competeLeftAvatar : styles.competeRightAvatar}
+                    />
                 </ImageBackground>
             </Animated.View>
         );
@@ -94,8 +98,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-end',
     },
-    competeAvatar: {
+    competeLeftAvatar: {
         marginRight: PxFit(7),
+        borderWidth: PxFit(3),
+        borderColor: '#fff',
+    },
+    competeRightAvatar: {
+        marginLeft: PxFit(7),
         borderWidth: PxFit(3),
         borderColor: '#fff',
     },

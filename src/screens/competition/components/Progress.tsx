@@ -15,20 +15,21 @@ interface Props {
 
 const Progress = (props: Props) => {
     const { questions, index } = props;
+
     return (
         <View style={styles.container}>
             <View
                 style={{
                     height: PxFit(16),
-                    width: SCREEN_WIDTH - PxFit(60),
-                    backgroundColor: 'rgba(0,0,255,0.2)',
+                    width: SCREEN_WIDTH - PxFit(65),
+                    backgroundColor: 'rgba(110,148,247,0.4)',
                     borderRadius: PxFit(8),
                 }}>
                 <View
                     style={{
                         height: PxFit(16),
-                        width: (SCREEN_WIDTH - PxFit(60)) / 4,
-                        backgroundColor: Theme.primaryColor,
+                        width: ((SCREEN_WIDTH - PxFit(65)) * (index + 1)) / questions.length,
+                        backgroundColor: '#F5D461',
                         borderRadius: PxFit(8),
                     }}></View>
             </View>

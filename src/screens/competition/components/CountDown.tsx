@@ -24,7 +24,7 @@ const CountDown = (props: Props) => {
             }}>
             <View
                 style={{
-                    backgroundColor: Theme.primaryColor,
+                    backgroundColor: '#FCA838',
                     width: height - PxFit(20),
                     height: height - PxFit(20),
                     borderRadius: (height - PxFit(20)) / 2,
@@ -42,7 +42,7 @@ const CountDown = (props: Props) => {
                     }}>
                     <View
                         style={{
-                            backgroundColor: Theme.blue,
+                            backgroundColor: '#4E84E6',
                             width: height - PxFit(34),
                             height: height - PxFit(34),
                             borderRadius: (height - PxFit(34)) / 2,

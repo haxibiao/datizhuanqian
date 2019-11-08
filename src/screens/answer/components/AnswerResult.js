@@ -70,7 +70,7 @@ class AnswerResult extends Component {
                             textColor={Theme.white}
                             title={'看视频领奖励'}
                             onPress={() => {
-                                this.showBannerAd();
+                                this.showBannerAd(answer_result);
                                 hide();
                             }}
                         />

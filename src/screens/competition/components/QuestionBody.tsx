@@ -16,8 +16,8 @@ interface Question {
 
 const QuestionBody = (props: Props) => {
     const _animated = new Animated.Value(0);
-    const { selectOption } = props;
-    const { selections_array, description, id } = props.question;
+    const { selectOption, question } = props;
+    const { selections_array, description, id } = question;
 
     useEffect(() => {}, []);
 
@@ -33,6 +33,7 @@ const QuestionBody = (props: Props) => {
                         even={index % 2 === 0}
                         option={option}
                         selectOption={selectOption}
+                        question={question}
                     />
                 );
             })}

@@ -20,22 +20,17 @@ const compete = () => {
     const [fadeIn, setFadeIn] = useState(true);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setSubTime(prevCount => prevCount - 1);
-        }, 1000);
-        return () => {
-            clearInterval(timer);
-        };
+        // const timer = setInterval(() => {
+        //     setSubTime(prevCount => prevCount - 1);
+        // }, 1000);
+        // return () => {
+        //     clearInterval(timer);
+        // };
     }, []);
 
     useEffect(() => {
         if (subTime === 0) {
-            setFadeIn(false);
-            setIndex(index + 1);
-            setSubTime(10);
-            setTimeout(() => {
-                setFadeIn(true);
-            }, 100);
+            resetState();
         }
     }, [subTime]);
 
@@ -46,10 +41,14 @@ const compete = () => {
     });
 
     const selectOption = (value: any) => {
-        setFadeIn(false);
         if (data.questions[index].answer === value) {
             setScore(data.questions[index].gold * 10);
         }
+        resetState();
+    };
+
+    const resetState = () => {
+        setFadeIn(false);
         setIndex(index + 1);
         setSubTime(10);
         setTimeout(() => {
@@ -80,10 +79,9 @@ const compete = () => {
                         <Text style={styles.name}>大美女</Text>
                     </Row>
                     <Row style={styles.textWrap}>
-                        <Text style={styles.score}>{score}</Text>
+                        <Text style={[styles.score, { color: '#70E9F3' }]}>{score}</Text>
                         <Text style={styles.score}>{score}</Text>
                     </Row>
-
                     <QuestionBody question={data.questions[index]} selectOption={selectOption} />
                 </ScrollView>
             </PageContainer>
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
     score: {
         marginTop: PxFit(5),
         fontSize: PxFit(22),
-        color: Theme.blue,
+        color: '#FFEB7A',
     },
     background: {
         height: '100%',
