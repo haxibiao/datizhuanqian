@@ -9,7 +9,6 @@ import Progress from './components/Progress';
 import Competitor from './components/Competitor';
 import { useCountDown } from 'common';
 import { useQuery, GQL } from 'apollo';
-import question from '../question';
 
 const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
@@ -19,7 +18,8 @@ const compete = () => {
     const [index, setIndex] = useState(0); //题目下标值
     const [score, setScore] = useState(0); //分数
     const [fadeIn, setFadeIn] = useState(true); //
-    const [submit, setSubmit] = useState(false);
+
+    const [answerStatus, setAnswerStatus] = useState('');
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -31,8 +31,14 @@ const compete = () => {
     }, []);
 
     useEffect(() => {
+        console.log('subTime', subTime);
         if (subTime === 0) {
-            resetState();
+            if (index + 1 === data.questions.length) {
+                //结算
+                Tools.navigate('Settlement');
+            } else {
+                resetState();
+            }
         }
     }, [subTime]);
 
@@ -46,17 +52,6 @@ const compete = () => {
         if (data.questions[index].answer === value) {
             setScore(data.questions[index].gold * 10);
         }
-
-        if (index + 1 === data.questions.length) {
-            //结算
-            // Tools.navigate('');
-        } else {
-            resetState();
-        }
-    };
-
-    const onSelectOption = () => {
-        setSubmit(true);
     };
 
     const resetState = () => {
@@ -66,7 +61,7 @@ const compete = () => {
         setTimeout(() => {
             setFadeIn(true);
         }, 100);
-        setSubmit(false);
+        setAnswerStatus('');
     };
 
     if (loading)
@@ -98,8 +93,8 @@ const compete = () => {
                     <QuestionBody
                         question={data.questions[index]}
                         selectOption={selectOption}
-                        submit={submit}
-                        onSelectOption={onSelectOption}
+                        setAnswerStatus={setAnswerStatus}
+                        answerStatus={answerStatus}
                     />
                 </ScrollView>
             </PageContainer>

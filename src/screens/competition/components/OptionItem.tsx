@@ -1,84 +1,74 @@
-/*
- * @flow
- * created by wyk made in 2019-03-28 11:52:05
- */
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
-class OptionItem extends Component {
-    constructor(props) {
-        super(props);
+interface Props {
+    questionId: Number;
+    question: Question;
+    selectOption: Function;
+    setAnswerStatus: Function;
+    answerStatus: String;
+    option: Option;
+    index: number;
+}
 
-        this.state = {
-            status: null,
-        };
-    }
-    _animated = new Animated.Value(0);
+interface Question {
+    id: Number;
+    selections_array: Array<object>;
+    description: String;
+    answer: String;
+}
 
-    componentDidMount() {
-        this.animation();
-    }
+interface Option {
+    Value: String;
+    Text: String;
+}
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.questionId !== this.props.questionId) {
-            this.animation();
-        }
-    }
+const OptionItem = (props: Props) => {
+    const [animated, setAnimated] = useState(new Animated.Value(0));
+    const [optionIndex, setOptionIndex] = useState(-1);
 
-    componentWillUnmount() {
-        this.timer && clearInterval(this.timer);
-    }
+    useEffect(() => {
+        animation();
+    }, []);
 
-    animation() {
-        this.disable = true;
-        this._animated.setValue(0);
-        Animated.timing(this._animated, {
+    useEffect(() => {
+        animation();
+        setOptionIndex(-1);
+    }, [props.questionId]);
+
+    const animation = () => {
+        animated.setValue(0);
+        Animated.timing(animated, {
             toValue: 1,
             velocity: 10,
             tension: -10,
             friction: 5,
             delay: 350,
-        }).start(() => {
-            this.disable = false;
-        });
-    }
-
-    onPress = () => {
-        let { option, selectOption, question, onSelectOption } = this.props;
-
-        this.setState({
-            status: question.answer === option.Value ? 'correct' : 'error',
-        });
-
-        onSelectOption();
-
-        this.timer = setTimeout(() => {
-            selectOption(option.Value);
-            this.setState({
-                status: null,
-            });
-        }, 500);
+        }).start(() => {});
     };
 
-    buildProps = () => {
-        let { selectedOption, option, correct, question } = this.props;
-        let labelStyle, contentStyle, label, focused;
+    const onPress = () => {
+        let { option, question, selectOption, setAnswerStatus, index } = props;
+        setOptionIndex(index);
+        setAnswerStatus(question.answer === option.Value ? 'correct' : 'error');
+        selectOption(option.Value);
+    };
 
-        // focused = selectedOption && selectedOption.includes(option.Value);
+    const buildProps = () => {
+        let { option, answerStatus, index } = props;
+        let labelStyle, contentStyle, label, status;
 
-        // if (focused) {
-        //     if (correct) {
-        //         status = 'correct';
-        //     } else {
-        //         status = 'error';
-        //     }
-        // } else if (correct) {
-        //     status = 'missing';
-        // }
+        let focused = optionIndex == index;
 
-        switch (this.state.status) {
+        if (focused) {
+            status = answerStatus;
+        } else {
+            status = 'missing';
+        }
+
+        switch (status) {
             case 'correct':
                 labelStyle = { backgroundColor: Theme.correctColor, borderWidth: 0 };
                 contentStyle = { color: Theme.correctColor };
@@ -97,37 +87,34 @@ class OptionItem extends Component {
         return { labelStyle, contentStyle, label };
     };
 
-    render() {
-        let { option, even, submit } = this.props;
-        let { labelStyle, contentStyle, label } = this.buildProps();
-        const animateStyles = {
-            opacity: this._animated,
-            transform: [
-                {
-                    translateX: this._animated.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [even ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
-                        // extrapolate: 'clamp',
-                    }),
-                },
-            ],
-        };
+    const { option, even, answerStatus } = props;
+    const { labelStyle, contentStyle, label } = buildProps();
 
-        console.log('submit', submit);
-        return (
-            <Animated.View style={animateStyles}>
-                <View style={styles.optionItemWrap}>
-                    <TouchFeedback style={styles.optionItem} onPress={this.onPress} disabled={submit}>
-                        <View style={[styles.optionLabel, labelStyle]}>{label}</View>
-                        <View style={styles.optionContent}>
-                            <Text style={[styles.optionContentText, contentStyle]}>{option.Text}</Text>
-                        </View>
-                    </TouchFeedback>
-                </View>
-            </Animated.View>
-        );
-    }
-}
+    const animateStyles = {
+        opacity: animated,
+        transform: [
+            {
+                translateX: animated.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [even ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                }),
+            },
+        ],
+    };
+
+    return (
+        <Animated.View style={animateStyles}>
+            <View style={styles.optionItemWrap}>
+                <TouchFeedback style={styles.optionItem} onPress={onPress} disabled={answerStatus.length > 0}>
+                    <View style={[styles.optionLabel, labelStyle]}>{label}</View>
+                    <View style={styles.optionContent}>
+                        <Text style={[styles.optionContentText, contentStyle]}>{option.Text}</Text>
+                    </View>
+                </TouchFeedback>
+            </View>
+        </Animated.View>
+    );
+};
 
 const styles = StyleSheet.create({
     optionItemWrap: {

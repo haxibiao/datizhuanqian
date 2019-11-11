@@ -6,22 +6,20 @@ import OptionItem from './OptionItem';
 interface Props {
     question: Question;
     selectOption: Function;
-    submit: Boolean;
-    onSelectOption: Function;
+    setAnswerStatus: Function;
+    answerStatus: String;
 }
 
 interface Question {
     id: Number;
     selections_array: Array<object>;
     description: String;
+    answer: String;
 }
 
 const QuestionBody = (props: Props) => {
-    const _animated = new Animated.Value(0);
-    const { selectOption, question, submit, onSelectOption } = props;
+    const { selectOption, question, setAnswerStatus, answerStatus } = props;
     const { selections_array, description, id } = question;
-
-    useEffect(() => {}, []);
 
     return (
         <View style={{ paddingHorizontal: PxFit(25), marginTop: PxFit(25) }}>
@@ -32,12 +30,13 @@ const QuestionBody = (props: Props) => {
                     <OptionItem
                         questionId={id}
                         key={index}
+                        index={index}
                         even={index % 2 === 0}
                         option={option}
                         selectOption={selectOption}
                         question={question}
-                        submit={submit}
-                        onSelectOption={onSelectOption}
+                        setAnswerStatus={setAnswerStatus}
+                        answerStatus={answerStatus}
                     />
                 );
             })}
