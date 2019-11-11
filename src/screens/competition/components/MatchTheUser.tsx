@@ -8,20 +8,29 @@ import { observer, app } from 'store';
 const width = SCREEN_WIDTH / 2 + PxFit(60);
 const height = (width * 150) / 492;
 
-const competitor = observer(props => {
-    const { user, theLeft } = props;
+const MatchTheUser = observer(props => {
+    const { user, fadeIn, theLeft } = props;
+    const firstRender = useRef(true);
     const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 500 });
 
     const source = useMemo(
         () =>
             props.theLeft
-                ? require('@src/assets/images/compete_blue.png')
-                : require('@src/assets/images/compete_yellow.png'),
+                ? require('@src/assets/images/matching_blue.png')
+                : require('@src/assets/images/matching_yellow.png'),
         [props],
     );
     useEffect(() => {
-        startAnimation();
-    }, []);
+        if (firstRender.current) {
+            firstRender.current = false;
+        } else {
+            if (fadeIn) {
+                startAnimation();
+            } else {
+                startAnimation(1, 0);
+            }
+        }
+    }, [fadeIn]);
 
     const animateStyles = useMemo(
         () => ({
@@ -40,12 +49,12 @@ const competitor = observer(props => {
     );
 
     return (
-        <Animated.View style={[{ alignItems: 'center' }, animateStyles]}>
-            <ImageBackground style={theLeft ? styles.leftUser : styles.rightUser} source={source}>
+        <Animated.View style={[styles.MatchTheUser, animateStyles]}>
+            <ImageBackground style={styles.background} source={source}>
                 <Avatar
-                    source={app.me.avatar}
-                    size={height - PxFit(16)}
-                    style={theLeft ? styles.competeLeftAvatar : styles.competeRightAvatar}
+                    source={user.avatar || require('@src/assets/images/default_avatar.png')}
+                    size={height * 0.76}
+                    style={styles.avatar}
                 />
             </ImageBackground>
         </Animated.View>
@@ -53,27 +62,21 @@ const competitor = observer(props => {
 });
 
 const styles = StyleSheet.create({
-    competeLeftAvatar: {
+    avatar: {
         borderColor: '#fff',
-        borderWidth: PxFit(3),
-        marginRight: PxFit(7),
+        borderWidth: PxFit(2),
     },
-    competeRightAvatar: {
-        borderColor: '#fff',
-        borderWidth: PxFit(3),
-        marginLeft: PxFit(7),
-    },
-    leftUser: {
-        alignItems: 'flex-end',
-        height: ((SCREEN_WIDTH / 3) * 123) / 221,
+    background: {
+        alignItems: 'center',
+        height: '100%',
         justifyContent: 'center',
-        width: SCREEN_WIDTH / 3,
+        resizeMode: 'cover',
+        width: '100%',
     },
-    rightUser: {
-        height: ((SCREEN_WIDTH / 3) * 123) / 221,
-        justifyContent: 'center',
-        width: SCREEN_WIDTH / 3,
+    competitor: {
+        height,
+        width,
     },
 });
 
-export default competitor;
+export default MatchTheUser;

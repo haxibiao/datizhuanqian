@@ -6,11 +6,29 @@ import { observer, app } from 'store';
 import localStore from './store';
 import { useNavigation } from 'react-navigation-hooks';
 
+const avatarWidget = {
+    victory: [
+        require('@src/assets/images/avatar_frame_blue_win.png'),
+        require('@src/assets/images/avatar_frame_yellow.png'),
+    ],
+    defeat: [
+        require('@src/assets/images/avatar_frame_blue.png'),
+        require('@src/assets/images/avatar_frame_yellow_win.png'),
+    ],
+    draw: [require('@src/assets/images/avatar_frame_blue.png'), require('@src/assets/images/avatar_frame_yellow.png')],
+};
+
+const competitionResult = {
+    victory: require('@src/assets/images/competition_victory.png'),
+    defeat: require('@src/assets/images/competition_defeat.png'),
+    draw: require('@src/assets/images/competition_draw.png'),
+};
+
 const over = observer(props => {
     const navigation = useNavigation();
+    const result = navigation.getParam('result', 'victory');
     const store = useRef(new localStore()).current;
     const { me } = app;
-    const victory = true;
 
     return (
         <PageContainer hiddenNavBar>
@@ -20,23 +38,13 @@ const over = observer(props => {
                     style={styles.container}
                     contentContainerStyle={styles.content}>
                     <View style={styles.competitor}>
-                        <ImageBackground
-                            style={styles.playerBg}
-                            source={
-                                victory
-                                    ? require('@src/assets/images/avatar_frame_blue_win.png')
-                                    : require('@src/assets/images/avatar_frame_blue.png')
-                            }>
+                        <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
                             <Avatar source={app.me.avatar} size={PxFit(100)} style={styles.playerAvatar} />
                         </ImageBackground>
                         <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
                         <ImageBackground
                             style={[styles.playerBg, { alignItems: 'flex-start' }]}
-                            source={
-                                victory
-                                    ? require('@src/assets/images/avatar_frame_yellow_win.png')
-                                    : require('@src/assets/images/avatar_frame_yellow.png')
-                            }>
+                            source={avatarWidget[result][1]}>
                             <Avatar source={store.rival.avatar} size={PxFit(100)} style={styles.playerAvatar} />
                         </ImageBackground>
                     </View>
@@ -52,10 +60,7 @@ const over = observer(props => {
                     </View>
                     <View style={styles.main}>
                         <View style={styles.gameResult}>
-                            <Image
-                                style={styles.gameResultBg}
-                                source={require('@src/assets/images/competition_victory.png')}
-                            />
+                            <Image style={styles.gameResultBg} source={competitionResult[result]} />
                         </View>
                         <View style={styles.statisticPanel}>
                             <View style={styles.statisticItem}>
