@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge } from '../../components';
+import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '../../components';
 import { Config, Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 import { GQL, Query, withApollo, compose, graphql } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
@@ -89,9 +89,9 @@ class index extends Component {
                                     />
                                 </TouchFeedback>
                                 <View style={styles.textInfo}>
-                                    <Text style={styles.userName} numberOfLines={1}>
+                                    <SafeText style={styles.userName} numberOfLines={1}>
                                         {login ? user.name : '登录/注册'}
-                                    </Text>
+                                    </SafeText>
                                     <Text style={styles.introduction} numberOfLines={1}>
                                         {login
                                             ? user.profile.introduction || '快去完善个人资料吧'
@@ -107,9 +107,9 @@ class index extends Component {
                                     authenticated
                                     activeOpacity={1}
                                     style={styles.metaItem}>
-                                    <Text style={styles.metaCount} numberOfLines={1}>
+                                    <SafeText style={styles.metaCount} numberOfLines={1}>
                                         {user.level ? user.level.level : 0}
-                                    </Text>
+                                    </SafeText>
                                     <Text style={styles.metaLabel} numberOfLines={1}>
                                         等级
                                     </Text>
@@ -197,10 +197,7 @@ class index extends Component {
                                     activeOpacity={1}
                                     style={styles.metaItem}
                                     onPress={() => navigation.navigate('Rank')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/rank.png')}
-                                    />
+                                    <Image style={styles.metaIcon} source={require('../../assets/images/rank.png')} />
                                     <Text style={styles.metaIconLabel} numberOfLines={1}>
                                         答题排行
                                     </Text>
@@ -359,7 +356,6 @@ const styles = StyleSheet.create({
         fontSize: PxFit(17),
         color: '#fff',
         fontWeight: '500',
-        fontFamily: '',
     },
     introduction: {
         marginTop: PxFit(8),
@@ -388,7 +384,6 @@ const styles = StyleSheet.create({
         fontSize: PxFit(15),
         color: '#fff',
         fontWeight: '500',
-        fontFamily: '',
     },
     metaLabel: {
         fontSize: PxFit(13),

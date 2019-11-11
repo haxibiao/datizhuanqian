@@ -62,7 +62,7 @@
   [AdBoss hookWindow:self.window];
   [AdBoss hookApp:self];
 
-  [RNSplashScreen show];
+  // [RNSplashScreen show];
 
   return YES;
 }

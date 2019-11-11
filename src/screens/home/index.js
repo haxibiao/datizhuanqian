@@ -14,12 +14,12 @@ import {
     beginnerGuidance,
     VideoTaskGuidance,
 } from 'components';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from 'utils';
+import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, Theme, ISIOS } from 'utils';
 import PlateItem from './components/PlateItem';
 
 import { observer, app, keys, storage } from 'store';
 import { when } from 'mobx';
-import { withApollo, compose, graphql, GQL, ISIOS } from 'apollo';
+import { withApollo, compose, graphql, GQL } from 'apollo';
 
 import JPushModule from 'jpush-react-native';
 import NetInfo from '@react-native-community/netinfo';
