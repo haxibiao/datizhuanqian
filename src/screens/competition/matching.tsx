@@ -1,17 +1,21 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { PageContainer, NavigatorBar } from '@src/components';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app } from 'store';
 import localStore from './store';
 import ChallengeButton from './components/ChallengeButton';
-import Competitor from './components/Competitor';
+import MatchTheUser from './components/MatchTheUser';
 import { useNavigation } from 'react-navigation-hooks';
+import { Overlay } from 'teaset';
 
 export default observer(props => {
     const navigation = useNavigation();
 
     const store = useRef(new localStore()).current;
+    const overlayRef = useRef();
+    const timer = useRef();
+
     // Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })
     const rightView = useMemo(() => {
         return (
@@ -22,8 +26,30 @@ export default observer(props => {
     }, []);
 
     useEffect(() => {
+        if (store.rival.id) {
+            Overlay.show(
+                <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (overlayRef.current = ref)}>
+                    <View style={styles.modal} />
+                </Overlay.PopView>,
+            );
+            timer.current = setInterval(() => {
+                timer.current = 0;
+                navigation.navigate('Compete');
+                overlayRef.current.close();
+            }, 500);
+        } else {
+            clearInterval(timer.current);
+        }
+    }, [store.rival.id]);
+
+    useEffect(() => {
         const navWillBlurListener = navigation.addListener('willBlur', () => {
-            store.leaveGame();
+            if (store.rival.id && timer.current) {
+                store.leaveGame();
+            }
+            if (!store.rival.id && store.matching) {
+                store.cancelMatch();
+            }
         });
 
         return () => {
@@ -36,7 +62,7 @@ export default observer(props => {
             <ImageBackground style={styles.background} source={require('@src/assets/images/matching_bg.png')}>
                 <View style={styles.container}>
                     <View style={styles.competitorLeft}>
-                        <Competitor fadeIn={store.rival.id} user={app.me} theLeft={true} />
+                        <MatchTheUser fadeIn={store.rival.id} user={app.me} theLeft={true} />
                     </View>
                     <View style={styles.challengeWrap}>
                         <ChallengeButton
@@ -45,7 +71,7 @@ export default observer(props => {
                             onPress={store.matchGame}
                         />
                     </View>
-                    {store.matching && (
+                    {store.matching && !store.rival.id && (
                         <View style={styles.cancelMatchWrap}>
                             <TouchableOpacity style={styles.cancelMatch} onPress={store.cancelMatch}>
                                 <Text style={styles.cancelMatchText}>取消匹配</Text>
@@ -53,7 +79,7 @@ export default observer(props => {
                         </View>
                     )}
                     <View style={styles.competitorRight}>
-                        <Competitor fadeIn={store.rival.id} user={store.rival} />
+                        <MatchTheUser fadeIn={store.rival.id} user={store.rival} />
                     </View>
                 </View>
             </ImageBackground>
@@ -118,6 +144,7 @@ const styles = StyleSheet.create({
         marginRight: PxFit(5),
         width: PxFit(22),
     },
+    modal: { backgroundColor: 'rgba(255,255,255,0)', flex: 1 },
     navigatorBar: {
         backgroundColor: 'transparent',
     },

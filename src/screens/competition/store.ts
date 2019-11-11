@@ -21,6 +21,9 @@ export default class CompetitionStore {
 
     @action.bound
     public async matchGame() {
+        console.log('====================================');
+        console.log('matchGame');
+        console.log('====================================');
         this.matching = true;
         app.echo.private('App.User.' + app.me.id).listen('NewGame', (newGame: object) => {
             console.log('====================================');
