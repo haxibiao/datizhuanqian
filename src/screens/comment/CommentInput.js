@@ -16,11 +16,12 @@ class CommentInput extends Component {
     }
 
     update = (cache, { data: { createComment } }) => {
-        let { questionId } = this.props;
+        let { questionId, isPost } = this.props;
+        console.log('creat commemt', isPost);
         let prev = cache.readQuery({
             query: GQL.questionCommentsQuery,
             variables: {
-                commentable_type: 'questions',
+                commentable_type: isPost ? 'videos' : 'questions',
                 commentable_id: questionId,
                 limit: 10,
             },
@@ -28,7 +29,7 @@ class CommentInput extends Component {
         cache.writeQuery({
             query: GQL.questionCommentsQuery,
             variables: {
-                commentable_type: 'questions',
+                commentable_type: isPost ? 'videos' : 'questions',
                 commentable_id: questionId,
                 limit: 10,
             },
@@ -104,6 +105,7 @@ class CommentInput extends Component {
             createComment,
             createChildComment,
             parent_comment_id,
+            isPost,
         } = this.props;
         let { content } = this.state;
         let disabled = !content || !content.trim();
@@ -152,7 +154,7 @@ class CommentInput extends Component {
                                       content: content && content.trim(),
                                       commentable_id: questionId,
                                       comment_id: comment_id,
-                                      commentable_type: 'questions',
+                                      commentable_type: isPost ? 'videos' : 'questions',
                                   },
                                   update: this.update,
                                   optimisticResponse: {

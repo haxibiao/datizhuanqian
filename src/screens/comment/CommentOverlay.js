@@ -201,11 +201,12 @@ class CommentOverlay extends Component {
     };
 
     render() {
-        let { onHide, question, hideComment } = this.props;
+        let { onHide, question, hideComment, isPost } = this.props;
         let { visible, offset, modalVisible, reply, comment_id, childLimit, parent_comment_id } = this.state;
         if (!visible || !question) {
             return <View />;
         }
+        console.log('question comment', question, isPost);
         return (
             <View style={styles.overlayContainer}>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps={'always'}>
@@ -225,7 +226,12 @@ class CommentOverlay extends Component {
                             }}>
                             <Query
                                 query={GQL.questionCommentsQuery}
-                                variables={{ commentable_id: question.id, limit: 10, childLimit: childLimit }}
+                                variables={{
+                                    commentable_id: question.id,
+                                    commentable_type: isPost ? 'videos' : 'questions',
+                                    limit: 10,
+                                    childLimit: childLimit,
+                                }}
                                 fetchPolicy="network-only">
                                 {({ data, loading, error, refetch, fetchMore }) => {
                                     console.log('====================================');
@@ -277,6 +283,7 @@ class CommentOverlay extends Component {
                         parent_comment_id={parent_comment_id}
                         switchReplyType={this.switchReplyType}
                         increaseCountComments={this.increaseCountComments}
+                        isPost={isPost}
                     />
                 </ScrollView>
             </View>

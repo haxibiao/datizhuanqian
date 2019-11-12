@@ -22,12 +22,12 @@ export default observer(props => {
     const client = makeClient(app.me, checkServer); // 构建apollo client;
     app.client = client;
 
-    const onFailed = useCallback(() => {
-        Toast.show({ content: '粘贴板视频上传失败' });
+    const onFailed = useCallback(error => {
+        Toast.show({ content: error.message });
     }, []);
 
     const onSuccess = useCallback(() => {
-        Toast.show({ content: '粘贴板视频上传成功' });
+        Toast.show({ content: '粘贴板视频采集成功,通过审核即可获得智慧点奖励' });
     }, []);
 
     useCaptureVideo({ client, onSuccess, onFailed });

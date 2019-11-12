@@ -12,15 +12,11 @@ import { exceptionCapture } from 'common';
 import { Row } from 'components';
 
 export default observer(props => {
-    const { question, index, navigation } = props;
-    const { video, user } = question;
-    console.log(
-        "Tools.syncGetter('from', question) === 2 ",
-        Tools.syncGetter('from', question),
-        Tools.syncGetter('is_resolved', question),
-    );
-    const isAskQuestion = Tools.syncGetter('form', question) === 2 && !Tools.syncGetter('is_resolved', question);
-
+    const { spider, index, navigation } = props;
+    console.log('spider', spider);
+    const { video, title } = spider;
+    console.log('video', video);
+    const { user } = video;
     return (
         <View style={{ height: VideoStore.viewportHeight }}>
             {video && video.cover && (
@@ -35,31 +31,13 @@ export default observer(props => {
                 <View style={styles.left}>
                     <Row>
                         <Text style={styles.name}>@{user.name}</Text>
-                        {isAskQuestion && (
-                            <View style={styles.rewardWrap}>
-                                <Text style={styles.rewardTitle}>{'悬赏问答'}</Text>
-                                <Text style={styles.rewardCount}>{Tools.syncGetter('gold', question)}智慧点</Text>
-                            </View>
-                        )}
                     </Row>
                     <View>
-                        <Text style={styles.body}>
-                            {question.description}
-                            <Text
-                                onPress={() =>
-                                    navigation.navigate('Answer', {
-                                        category: Tools.syncGetter('category', question),
-                                        question_id: null,
-                                    })
-                                }
-                                style={{ fontWeight: 'bold', color: Theme.white }}>
-                                #{Tools.syncGetter('category.name', question)}
-                            </Text>
-                        </Text>
+                        <Text style={styles.body}>{title}</Text>
                     </View>
                 </View>
 
-                <SideBar question={question} user={user} />
+                <SideBar video={video} user={user} />
             </View>
         </View>
     );

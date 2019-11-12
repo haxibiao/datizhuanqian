@@ -133,3 +133,40 @@ query MyVideosQuery($type: VideoTypeEnum, $limit: Int, $offset: Int) {
         }
     }
 }
+
+#爬虫视频列表
+query SpidersQuery($limit: Int, $offset: Int) {
+    spiders(limit: $limit, offset: $offset) {
+        id
+        status
+        source_url
+        title
+        reward
+        remark
+        video {
+            id
+            width
+            height
+            url
+            cover
+            is_ad_video
+            count_likes
+            created_at
+            liked
+            count_comments
+            user {
+                id
+                name
+                avatar
+                followed_user_status
+                profile {
+                    age
+                }
+                level {
+                    id
+                    level
+                }
+            }
+        }
+    }
+}

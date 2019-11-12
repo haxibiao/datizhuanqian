@@ -111,7 +111,7 @@ class UserProfile extends Component {
                 </View>
                 {hasQuestion && (
                     <View style={styles.answerTitle}>
-                        <Text style={styles.greyText}>{isSelf ? '我' : 'TA'}出的发布</Text>
+                        <Text style={styles.greyText}>{isSelf ? '我' : 'TA'}的发布</Text>
                         <TouchFeedback onPress={switchOrder} style={{ paddingVertical: PxFit(5) }}>
                             <Row>
                                 <Text style={[styles.orderText, orderByHot && { color: Theme.secondaryColor }]}>

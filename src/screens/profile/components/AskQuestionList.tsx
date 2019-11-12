@@ -36,43 +36,38 @@ import QuestionItem from './QuestionItem';
 const AskQuestionList = (props: any) => {
     const [finished, setFinished] = useState(false);
 
-    const { data, loading, refetch, error, fetchMore } = useQuery(GQL.MyVideosQuery, {
+    const { data, loading, refetch, error, fetchMore } = useQuery(GQL.SpidersQuery, {
         variables: {
             limit: 10,
         },
         fetchPolicy: 'network-only',
     });
 
-    const videos = Tools.syncGetter('videos', data);
-
+    const spiders = Tools.syncGetter('spiders', data);
+    console.log('spiders', spiders);
     return (
-        <PageContainer hiddenNavBar loading={loading} empty={videos && videos.length < 1} error={error}>
+        <PageContainer hiddenNavBar loading={loading} empty={spiders && spiders.length < 1} error={error}>
             <FlatList
                 contentContainerStyle={styles.container}
-                data={videos}
+                data={spiders}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                    <QuestionItem
-                        question={item.question}
-                        user={item.question.user}
-                        videos={videos}
-                        navigation={props.navigation}
-                    />
+                    <QuestionItem video={item.video} spiders={spiders} navigation={props.navigation} spider={item} />
                 )}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
                 onEndReachedThreshold={0.3}
                 onEndReached={() => {
                     fetchMore({
                         variables: {
-                            offset: videos.length,
+                            offset: spiders.length,
                         },
                         updateQuery: (prev, { fetchMoreResult }) => {
-                            if (!(fetchMoreResult && fetchMoreResult.videos && fetchMoreResult.videos.length > 0)) {
+                            if (!(fetchMoreResult && fetchMoreResult.spiders && fetchMoreResult.spiders.length > 0)) {
                                 setFinished(true);
                                 return prev;
                             }
                             return Object.assign({}, prev, {
-                                videos: [...prev.videos, ...fetchMoreResult.videos],
+                                spiders: [...prev.spiders, ...fetchMoreResult.spiders],
                             });
                         },
                     });
@@ -86,7 +81,7 @@ const AskQuestionList = (props: any) => {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        padding: PxFit(Theme.itemSpace),
+        paddingHorizontal: PxFit(Theme.itemSpace),
         backgroundColor: '#fff',
     },
 });

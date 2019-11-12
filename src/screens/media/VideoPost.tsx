@@ -118,7 +118,7 @@ export default observer(props => {
 
     const question = VideoStore.dataSource[VideoStore.viewableItemIndex];
 
-    console.log('commentRef', commentRef);
+    console.log('question', question);
     if (!question) return null;
     return (
         <View style={styles.container} onLayout={onLayout}>
@@ -134,9 +134,7 @@ export default observer(props => {
                 pagingEnabled={true}
                 removeClippedSubviews={true}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                    <VideoItem question={item.question} index={index} navigation={navigation} />
-                )}
+                renderItem={({ item, index }) => <VideoItem spider={item} index={index} navigation={navigation} />}
                 getItemLayout={(data, index) => ({
                     length: VideoStore.viewportHeight,
                     offset: VideoStore.viewportHeight * index,
@@ -148,12 +146,12 @@ export default observer(props => {
                     </View>
                 }
                 ListFooterComponent={<Footer />}
-                onMomentumScrollEnd={onMomentumScrollEnd}
+                // onMomentumScrollEnd={onMomentumScrollEnd}
                 onViewableItemsChanged={getVisibleRows}
                 viewabilityConfig={config.current}
             />
 
-            <CommentOverlay ref={commentRef} question={question} />
+            <CommentOverlay ref={commentRef} question={question.video} isPost={true} />
             <TouchFeedback
                 style={styles.header}
                 onPress={() => {

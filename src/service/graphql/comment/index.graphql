@@ -1,146 +1,144 @@
 # 题目评论列表
-query questionCommentsQuery($commentable_id: Int!, $offset: Int, $limit: Int) {
-	comments(commentable_type: questions, commentable_id: $commentable_id, offset: $offset, limit: $limit) {
-		id
-		content
-		user {
-			id
-			name
-			avatar
-			is_admin
-			level {
-				id
-				level
-			}
-			gender
-		}
-		liked
-		time_ago
-		comments_count
-		count_likes
-	}
+query questionCommentsQuery($commentable_type: CommentTableEnum, $commentable_id: Int!, $offset: Int, $limit: Int) {
+    comments(commentable_type: $commentable_type, commentable_id: $commentable_id, offset: $offset, limit: $limit) {
+        id
+        content
+        user {
+            id
+            name
+            avatar
+            is_admin
+            level {
+                id
+                level
+            }
+            gender
+        }
+        liked
+        time_ago
+        comments_count
+        count_likes
+    }
 }
 
 #题目评论二级评论
 query childCommentQuery($comment_id: Int!, $offset: Int, $limit: Int) {
-	comments(commentable_type: comments, comment_id: $comment_id) {
-		id
-		comments_count
-		comments(offset: $offset, limit: $limit) {
-			id
-			content
-			user {
-				id
-				name
-				avatar
-				is_admin
-				level {
-					id
-					level
-				}
-				gender
-			}
-			liked
-			time_ago
-			count_likes
-			reply {
-				id
-				user {
-					id
-					name
-				}
-			}
-		}
-	}
+    comments(commentable_type: comments, comment_id: $comment_id) {
+        id
+        comments_count
+        comments(offset: $offset, limit: $limit) {
+            id
+            content
+            user {
+                id
+                name
+                avatar
+                is_admin
+                level {
+                    id
+                    level
+                }
+                gender
+            }
+            liked
+            time_ago
+            count_likes
+            reply {
+                id
+                user {
+                    id
+                    name
+                }
+            }
+        }
+    }
 }
 
 #创建评论
 mutation createCommentMutation(
-	$content: String
-	$comment_id: Int
-	$images: [String]
-	$commentable_id: Int
-	$commentable_type: CommentTableEnum
+    $content: String
+    $comment_id: Int
+    $images: [String]
+    $commentable_id: Int
+    $commentable_type: CommentTableEnum
 ) {
-	createComment(
-		content: $content
-		images: $images
-		comment_id: $comment_id
-		commentable_id: $commentable_id
-		commentable_type: $commentable_type
-	) {
-		id
-		content
-		user {
-			id
-			name
-			avatar
-			is_admin
-			level {
-				id
-				level
-			}
-			gender
-		}
-		liked
-		time_ago
-		count_likes
-		comments_count
-	}
+    createComment(
+        content: $content
+        images: $images
+        comment_id: $comment_id
+        commentable_id: $commentable_id
+        commentable_type: $commentable_type
+    ) {
+        id
+        content
+        user {
+            id
+            name
+            avatar
+            is_admin
+            level {
+                id
+                level
+            }
+            gender
+        }
+        liked
+        time_ago
+        count_likes
+        comments_count
+    }
 }
 
 #创建子评论
 mutation createChildCommentMutation(
-	$content: String
-	$comment_id: Int
-	$images: [String]
-	$commentable_id: Int
-	$commentable_type: CommentTableEnum
+    $content: String
+    $comment_id: Int
+    $images: [String]
+    $commentable_id: Int
+    $commentable_type: CommentTableEnum
 ) {
-	createComment(
-		content: $content
-		images: $images
-		comment_id: $comment_id
-		commentable_id: $commentable_id
-		commentable_type: $commentable_type
-	) {
-		id
-		content
-		user {
-			id
-			name
-			avatar
-			is_admin
-			level {
-				id
-				level
-			}
-			gender
-		}
-		liked
-		time_ago
-		count_likes
-		reply {
-			id
-			content
-			user {
-				id
-				name
-				avatar
-				is_admin
-				level {
-					id
-					level
-				}
-				gender
-			}
-		}
-	}
+    createComment(
+        content: $content
+        images: $images
+        comment_id: $comment_id
+        commentable_id: $commentable_id
+        commentable_type: $commentable_type
+    ) {
+        id
+        content
+        user {
+            id
+            name
+            avatar
+            is_admin
+            level {
+                id
+                level
+            }
+            gender
+        }
+        liked
+        time_ago
+        count_likes
+        reply {
+            id
+            content
+            user {
+                id
+                name
+                avatar
+                is_admin
+                level {
+                    id
+                    level
+                }
+                gender
+            }
+        }
+    }
 }
 
 #删除评论
 mutation deleteCommentMutation($id: Int!) {
-	deleteComment(id: $id)
+    deleteComment(id: $id)
 }
-
-

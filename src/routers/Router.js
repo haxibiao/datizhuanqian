@@ -99,7 +99,7 @@ import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
 // MainTabNavigator CompetitionMatchingScreen GameSettlementScreen
 export default {
     Main: {
-        screen: CompetitionCategoriesScreen,
+        screen: MainTabNavigator,
     },
     // 登录验证
     Login: {

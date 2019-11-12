@@ -15,7 +15,7 @@ interface User {
     name: String;
 }
 
-interface Question {
+interface Video {
     description: String;
     created_at: String;
     count_comments: Number;
@@ -23,45 +23,36 @@ interface Question {
     form: Number;
     is_resolved: any;
     gold: Number;
-    video: any;
     user: any;
     image: any;
     count: Number;
     submit: any;
+    id: Number;
+    width: Number;
+    height: Number;
+    url: String;
+    cover: String;
+    is_ad_video: Boolean;
 }
 
 interface Props {
-    question: Question;
+    video: Video;
     user: User;
-    videos: any;
+    spiders: any;
     activeIndex: Number;
     navigation: any;
+    spider: object;
 }
 
 const AskQuestionItem = (props: Props) => {
-    const { question, videos, activeIndex, navigation } = props;
+    const { video, spiders, activeIndex, navigation, spider } = props;
+    const { status, title, remark, reward } = spider;
 
     const navigationAction = () => {
-        if (question) {
-            props.navigation.navigate('Question', { question, referrer: 'user' });
-        } else if (!question && activeIndex) {
-            props.navigation.navigate('VideoPost', { videos, index: activeIndex });
-        } else if (!question && !activeIndex) {
-            props.navigation.navigate('VideoPost', { videos: [{ question }] });
-        }
-
-        // if (question) {
-        //     props.navigation.navigate('Question', { question, referrer: 'user' });
-        // } else {
-        // }
-        // props.navigation.navigate('VideoPost', { videos: [{ question }] });
+        props.navigation.navigate('VideoPost', { videos: [spider] });
     };
 
     const renderVideo = () => {
-        const {
-            question: { video },
-        } = props;
-
         const maxHeight = 240;
         const maxWidth = SCREEN_WIDTH - Theme.itemSpace * 2;
         const videoWidth = (video && video.width) || 1;
@@ -114,44 +105,53 @@ const AskQuestionItem = (props: Props) => {
         );
     };
 
-    const renderImage = () => {
-        const {
-            question: { image },
-        } = props;
-
-        const maxHeight = 240;
-        const maxWidth = SCREEN_WIDTH - Theme.itemSpace * 2;
-        const imageWidth = (image && image.width) || 1;
-        const imageHeight = (image && image.height) || 1;
-
-        const isLargeScale = maxWidth > maxHeight && imageWidth / imageHeight > maxWidth / maxHeight;
-
+    if (!video) {
         return (
-            <View style={styles.image}>
-                <Image
-                    source={{ uri: image && image.path }}
-                    style={
-                        isLargeScale
-                            ? {
-                                  width: PxFit(maxWidth),
-                                  height: (maxWidth * imageHeight) / imageWidth,
-                                  borderRadius: PxFit(5),
-                                  backgroundColor: '#000',
-                              }
-                            : {
-                                  width: PxFit(240) * (imageWidth / imageHeight),
-                                  height: PxFit(240),
-                                  borderRadius: PxFit(5),
-                                  backgroundColor: '#000',
-                              }
-                    }
-                />
+            <View style={styles.container}>
+                <Row style={{ justifyContent: 'space-between' }}>
+                    <Row>
+                        <Avatar source={{ uri: app.userCache.avatar }} size={42} />
+                        <View style={{ marginLeft: PxFit(8) }}>
+                            <Text style={styles.userName}>{app.userCache.name}</Text>
+                            <Row>
+                                <GenderLabel user={app.userCache} size={PxFit(8)} />
+                                <UserTitle user={app.userCache} />
+                            </Row>
+                        </View>
+                    </Row>
+
+                    <View style={styles.rewardWrap}>
+                        <Text
+                            style={[
+                                styles.rewardTitle,
+                                { color: status === 'FAILED_STATUS' ? Theme.themeRed : Theme.grey },
+                            ]}>
+                            {remark}
+                        </Text>
+                    </View>
+                </Row>
+                <View style={{ paddingVertical: PxFit(10) }}>
+                    <Text style={{ color: Theme.black, lineHeight: 22 }}>{title}</Text>
+                </View>
+                <Row>
+                    <View style={styles.row}>
+                        <Image source={require('../../../assets/images/comment_icon.png')} style={styles.commentIcon} />
+                        <Text style={styles.commentText}>{'评论'}</Text>
+                    </View>
+                    <Like
+                        media={{ count_likes: 0, liked: false }}
+                        type="icon"
+                        iconSize={PxFit(22)}
+                        containerStyle={{ flexDirection: 'row', alignItems: 'center' }}
+                        textStyle={{ color: '#CCD5E0', fontSize: 14, marginStart: 5, marginEnd: 23 }}
+                    />
+                </Row>
             </View>
         );
-    };
+    }
 
-    const { gold, is_resolved, form, video, user, image, count, submit } = question;
-    console.log('question', question);
+    const { gold, is_resolved, form, user, image, count, submit, created_at, count_comments } = video;
+    // console.log('vidoe', video);
 
     return (
         <TouchFeedback style={styles.container} onPress={navigationAction}>
@@ -169,66 +169,31 @@ const AskQuestionItem = (props: Props) => {
                     </Row>
                 </TouchFeedback>
 
-                {submit === '1' && form === 2 && (
-                    <View style={styles.rewardWrap}>
-                        <Text style={styles.rewardTitle}>{is_resolved ? '已解决' : '悬赏问答'}</Text>
-                        <Text style={[styles.rewardCount, { color: is_resolved ? Theme.grey : Theme.themeRed }]}>
-                            {gold}
-                        </Text>
-                        <Image source={require('../../../assets/images/diamond.png')} style={styles.rewardIcon} />
-                    </View>
-                )}
-                {submit === '1' && form === 0 && (
-                    <View style={styles.rewardWrap}>
-                        <Text style={styles.rewardTitle}>{Tools.NumberFormat(count)}人答过</Text>
-                    </View>
-                )}
-                {submit === '0' && (
-                    <View style={styles.rewardWrap}>
-                        <Text style={styles.rewardTitle}>审核中</Text>
-                    </View>
-                )}
-                {submit === '-1' && (
-                    <View style={styles.rewardWrap}>
-                        <Text style={[styles.rewardTitle, { color: Theme.themeRed }]}>被下架</Text>
-                    </View>
-                )}
-                {submit === '-2' && (
-                    <View style={styles.rewardWrap}>
-                        <Text style={[styles.rewardTitle, { color: Theme.themeRed }]}>已拒绝</Text>
-                    </View>
-                )}
+                <View style={styles.rewardWrap}>
+                    <Text style={[styles.rewardTitle, { color: Theme.weixin }]}>
+                        {remark}
+                        <Text style={{ color: Theme.grey }}>{' | '}</Text>
+                    </Text>
+                    <Text style={styles.rewardCount}>
+                        {'奖励'}
+                        {reward}
+                    </Text>
+                    <Image source={require('../../../assets/images/diamond.png')} style={styles.rewardIcon} />
+                </View>
             </Row>
             <View style={{ paddingVertical: PxFit(10) }}>
-                <Text style={{ color: Theme.black, lineHeight: 22 }}>
-                    {question.description}
-                    <Text
-                        onPress={() =>
-                            navigation.navigate('Answer', {
-                                category: Tools.syncGetter('category', question),
-                                question_id: null,
-                            })
-                        }
-                        style={{ color: Theme.primaryColor }}>
-                        {` #`}
-                        {Tools.syncGetter('category.name', question)}
-                    </Text>
-                </Text>
+                <Text style={{ color: Theme.black, lineHeight: 22 }}>{title}</Text>
                 {video && renderVideo()}
                 {image && renderImage()}
-                <Text style={styles.timeText}>{question.created_at}</Text>
+                <Text style={styles.timeText}>{created_at}</Text>
             </View>
             <Row>
-                <TouchFeedback
-                    style={styles.row}
-                    onPress={() =>
-                        props.navigation.navigate('VideoPost', { videos, index: activeIndex, isComment: true })
-                    }>
+                <TouchFeedback style={styles.row} onPress={navigationAction}>
                     <Image source={require('../../../assets/images/comment_icon.png')} style={styles.commentIcon} />
-                    <Text style={styles.commentText}>{question.count_comments || '评论'}</Text>
+                    <Text style={styles.commentText}>{count_comments || '评论'}</Text>
                 </TouchFeedback>
                 <Like
-                    media={question}
+                    media={video}
                     type="icon"
                     iconSize={PxFit(22)}
                     containerStyle={{ flexDirection: 'row', alignItems: 'center' }}
