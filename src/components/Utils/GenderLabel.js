@@ -8,20 +8,28 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Iconfont from '../Iconfont';
 import { Theme, PxFit, Tools } from '../../utils';
+import { app } from 'store';
 
 class GenderLabel extends Component {
-    static defaultProps = {
-        size: PxFit(15),
-    };
-
     render() {
-        let { user, size } = this.props;
+        const { user } = this.props;
         return (
-            <Iconfont
-                name={user.gender ? 'woman' : 'man'}
-                size={size}
-                color={user.gender ? Theme.girlColor : Theme.boyColor}
-            />
+            <View
+                style={{
+                    backgroundColor: user.gender ? Theme.girlColor : Theme.boyColor,
+                    paddingVertical: PxFit(1),
+                    paddingHorizontal: PxFit(4),
+                    // marginHorizontal: PxFit(5),
+                    borderRadius: PxFit(10),
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                <Iconfont name={user.gender ? 'woman' : 'man'} size={PxFit(8)} color={Theme.white} />
+                <Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10), paddingLeft: PxFit(1) }}>
+                    {app.userCache.profile.age}
+                </Text>
+            </View>
         );
     }
 }

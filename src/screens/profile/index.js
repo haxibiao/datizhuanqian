@@ -154,13 +154,13 @@ class index extends Component {
                                     authenticated
                                     activeOpacity={1}
                                     style={styles.metaItem}
-                                    onPress={() => navigation.navigate('Contributes')}>
+                                    onPress={() => navigation.navigate('MyPublish')}>
                                     <Image
                                         style={styles.metaIcon}
                                         source={require('../../assets/images/profile_make_question.png')}
                                     />
                                     <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        我的出题
+                                        我的发布
                                     </Text>
                                 </TouchFeedback>
                                 <TouchFeedback

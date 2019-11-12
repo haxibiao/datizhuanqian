@@ -40,6 +40,7 @@ import OverlayViewer from './Overlay/OverlayViewer';
 import UpdateOverlay from './Overlay/UpdateOverlay';
 import TipsOverlay from './Overlay/TipsOverlay';
 import RewardTipsOverlay from './Overlay/RewardTipsOverlay';
+import CaptureVideoOverlay from './Overlay/CaptureVideoOverlay';
 // Layout
 import MasonryList from './Layout/MasonryList';
 // List
@@ -55,6 +56,7 @@ import AnimationButton from './TouchableView/AnimationButton';
 import FollowButton from './TouchableView/FollowButton';
 import TouchFeedback from './TouchableView/TouchFeedback';
 import Radio from './TouchableView/Radio';
+import Like from './TouchableView/Like';
 // ThirdParty
 import ScrollTabBar from './ThirdParty/ScrollTabBar';
 import ScrollTabBarHeader from './ThirdParty/ScrollTabBarHeader';
@@ -110,6 +112,7 @@ export {
     UpdateOverlay,
     TipsOverlay,
     RewardTipsOverlay,
+    CaptureVideoOverlay,
     MasonryList,
     PullList,
     ListFooter,
@@ -122,6 +125,7 @@ export {
     FollowButton,
     TouchFeedback,
     Radio,
+    Like,
     ScrollTabBar,
     ScrollTabBarHeader,
     ImagePickerViewer,

@@ -180,18 +180,39 @@ query UserInfoQuery($id: Int, $limit: Int, $offset: Int, $order: QuestionOrderEn
         }
         questions(limit: $limit, offset: $offset, order: $order, filter: $filter) {
             id
+            gold
             description
+            count_likes
+            count_comments
+            liked
             created_at
             count
-            image {
-                id
-                path
-            }
             video {
                 id
+                width
+                height
                 url
-                path
                 cover
+                is_ad_video
+            }
+            user {
+                id
+                name
+                avatar
+                followed_user_status
+                profile {
+                    age
+                }
+                level {
+                    id
+                    level
+                }
+            }
+            image {
+                id
+                width
+                height
+                path
             }
             category {
                 id
@@ -677,33 +698,33 @@ query UserAutoQuery($id: Int) {
 }
 
 #用户累计收入排行榜 "TOTAL_WITHDRAW"
-query userWithdrawRank{
-  users(rank: TOTAL_WITHDRAW){
-    id
-    name
-    avatar
-    transaction_sum_amount
-  }
+query userWithdrawRank {
+    users(rank: TOTAL_WITHDRAW) {
+        id
+        name
+        avatar
+        transaction_sum_amount
+    }
 }
 
 #用户答对题总数排行榜 "DOUBLE_HIT_ANSWER"
-query userCorrectRank{
-  users(rank: DOUBLE_HIT_ANSWER){
-    id
-    name
-    avatar
-    correct_count
-  }
+query userCorrectRank {
+    users(rank: DOUBLE_HIT_ANSWER) {
+        id
+        name
+        avatar
+        correct_count
+    }
 }
 
 #我的排名
-query meRank($id: Int){
-  user(id: $id){
-    id
-    avatar
-    name
-    rank
-    transaction_sum_amount
-    correct_count
-  }
+query meRank($id: Int) {
+    user(id: $id) {
+        id
+        avatar
+        name
+        rank
+        transaction_sum_amount
+        correct_count
+    }
 }

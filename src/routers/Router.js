@@ -20,7 +20,9 @@ import CompetitionMatchingScreen from '../screens/competition/matching';
 import CompeteScreen from '../screens/competition/compete';
 import GameSettlementScreen from '../screens/competition/settlement';
 // 小视频
-import MediumScreen from '../screens/video';
+// import MediumScreen from '../screens/video';
+// 视频动态
+import VideoPostScreen from '../screens/media/VideoPost';
 // 题目详情
 import QuestionScreen from '../screens/question';
 import VideoExplanationScreen from '../screens/question/VideoExplanation';
@@ -62,6 +64,7 @@ import IntroduceScreen from '../screens/profile/Introduce';
 import SocietyScreen from '../screens/profile/Society';
 import RecruitScreen from '../screens/profile/Recruit';
 import MakeMoenyManualScreen from '../screens/profile/MakeMoenyManual';
+import MyPublishScreen from '../screens/profile/MyPublish';
 // 通知
 import NotificationScreen from '../screens/notification';
 import SystemNotificationScreen from '../screens/notification/SystemNotification';
@@ -147,6 +150,9 @@ export default {
     // 题目详情
     Question: {
         screen: QuestionScreen,
+    },
+    VideoPost: {
+        screen: VideoPostScreen,
     },
     VideoExplanation: {
         screen: VideoExplanationScreen,
@@ -243,6 +249,9 @@ export default {
     },
     MakeMoenyManual: {
         screen: MakeMoenyManualScreen,
+    },
+    MyPublish: {
+        screen: MyPublishScreen,
     },
     // 通知
     Notification: {

@@ -3,6 +3,7 @@ import { AppState, Clipboard } from 'react-native';
 import { GQL } from '@src/apollo';
 import { exceptionCapture } from '@src/common';
 import { userStore } from '@src/store';
+import { CaptureVideoOverlay } from 'components';
 
 interface Props {
     client: any;
@@ -43,6 +44,10 @@ export const useCaptureVideo = (props: Props) => {
                     console.log('====================================');
                     console.log('clipboardString', path);
                     console.log('====================================');
+
+                    // const UrlReg = /[a-zA-z]+://[^\z]*/;
+
+                    // CaptureVideoOverlay.show({ path });
                     const [error, result] = await exceptionCapture(() => captureVideo(path));
                     console.log('====================================');
                     console.log('error:', error, 'result:', result);
