@@ -18,6 +18,7 @@ import AnswerScreen from '../screens/answer';
 import CompetitionCategoriesScreen from '../screens/competition/categories';
 import CompetitionMatchingScreen from '../screens/competition/matching';
 import CompeteScreen from '../screens/competition/compete';
+import GameSettlementScreen from '../screens/competition/settlement';
 // 小视频
 import MediumScreen from '../screens/video';
 // 题目详情
@@ -92,10 +93,10 @@ import AboutUsScreen from '../screens/setting/AboutUs';
 import UpdateLogScreen from '../screens/setting/UpdateLog';
 import PrivacyPolicyScreen from '../screens/setting/PrivacyPolicy';
 import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
-// MainTabNavigator CompetitionMatchingScreen
+// MainTabNavigator CompetitionMatchingScreen GameSettlementScreen
 export default {
     Main: {
-        screen: MainTabNavigator,
+        screen: CompetitionCategoriesScreen,
     },
     // 登录验证
     Login: {
@@ -134,6 +135,10 @@ export default {
     // 比赛
     Compete: {
         screen: CompeteScreen,
+    },
+    // 比赛
+    GameSettlement: {
+        screen: GameSettlementScreen,
     },
     // 短视频
     // Medium: {
