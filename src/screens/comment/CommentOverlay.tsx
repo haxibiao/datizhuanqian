@@ -51,6 +51,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     // 显示动画;
     const slideUp = () => {
         setVisible(true);
+        app.modalIsShow = true;
         Animated.parallel([
             Animated.timing(offset, {
                 easing: Easing.linear,
@@ -65,6 +66,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
         () => ({
             slideUp: () => {
                 setVisible(true);
+                app.modalIsShow = true;
                 Animated.parallel([
                     Animated.timing(offset, {
                         easing: Easing.linear,
@@ -80,13 +82,16 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                         duration: 200,
                         toValue: 0,
                     }),
-                ]).start(() => setVisible(false));
+                ]).start(() => {
+                    setVisible(false);
+                    app.modalIsShow = false;
+                });
             },
         }),
         [visible],
     );
 
-    //隐藏动画
+    // 隐藏动画
     const slideDown = () => {
         Animated.parallel([
             Animated.timing(offset, {
@@ -94,7 +99,10 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                 duration: 200,
                 toValue: 0,
             }),
-        ]).start(() => setVisible(false));
+        ]).start(() => {
+            setVisible(false);
+            app.modalIsShow = false;
+        });
     };
 
     // UNSAFE_componentWillReceiveProps(nextProps) {
@@ -138,8 +146,12 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     };
 
     const renderContent = (comments, fetchMore, loading) => {
-        if (!comments) return <Placeholder type="comment" quantity={5} />;
-        if (comments && comments.length === 0) return <StatusView.EmptyView />;
+        if (!comments) {
+            return <Placeholder type="comment" quantity={5} />;
+        }
+        if (comments && comments.length === 0) {
+            return <StatusView.EmptyView />;
+        }
         return (
             <FlatList
                 ref={flatListRef}
@@ -175,7 +187,9 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                 ListFooterComponent={() => <ListFooter finished={finished} />}
                 onEndReachedThreshold={0.3}
                 onEndReached={() => {
-                    if (finished) return;
+                    if (finished) {
+                        return;
+                    }
                     fetchMore({
                         variables: {
                             offset: comments.length,
@@ -290,25 +304,23 @@ const shadowOpt = {
 };
 
 const styles = StyleSheet.create({
-    overlayContainer: {
-        ...StyleSheet.absoluteFill,
-        zIndex: 1000,
-    },
-    modal: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
+    close: {
+        alignItems: 'center',
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        height: PxFit(44),
+        justifyContent: 'center',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: PxFit(44),
     },
     commentContainer: {
-        height: (SCREEN_HEIGHT * 2) / 3,
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
         backgroundColor: '#fff',
         borderTopLeftRadius: PxFit(12),
         borderTopRightRadius: PxFit(12),
+        height: (SCREEN_HEIGHT * 2) / 3,
         overflow: 'hidden',
+        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
     },
     header: {
         height: PxFit(44),
@@ -319,18 +331,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     headerText: {
-        fontSize: PxFit(15),
         color: Theme.secondaryTextColor,
-    },
-    close: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        width: PxFit(44),
-        height: PxFit(44),
-        alignItems: 'center',
-        justifyContent: 'center',
+        fontSize: PxFit(15),
     },
     inputContainer: {
         height: PxFit(40),
@@ -345,15 +347,27 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(20),
         backgroundColor: '#F9F9FB',
     },
+    modal: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        bottom: 0,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+    },
+    overlayContainer: {
+        ...StyleSheet.absoluteFill,
+        zIndex: 1000,
+    },
     textInput: {
         flex: 1,
-        paddingVertical: PxFit(10),
         paddingLeft: PxFit(5),
+        paddingVertical: PxFit(10),
     },
     touchItem: {
-        width: PxFit(40),
         alignItems: 'flex-end',
         justifyContent: 'center',
+        width: PxFit(40),
     },
 });
 
