@@ -172,13 +172,16 @@ class CommentItem extends Component<Props> {
                                         <Iconfont
                                             name={'like-fill'}
                                             size={PxFit(20)}
-                                            color={liked ? Theme.themeRed : Theme.back}
+                                            color={liked ? Theme.themeRed : Theme.backColor}
                                         />
                                     </TouchFeedback>
                                 </Animated.View>
                                 {count_likes > 0 && (
                                     <SafeText
-                                        style={[styles.countLikes, { color: liked ? Theme.themeRed : Theme.back }]}>
+                                        style={[
+                                            styles.countLikes,
+                                            { color: liked ? Theme.themeRed : Theme.backColor },
+                                        ]}>
                                         {count_likes}
                                     </SafeText>
                                 )}
