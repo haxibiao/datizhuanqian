@@ -151,7 +151,7 @@ export default observer(props => {
                 viewabilityConfig={config.current}
             />
 
-            <CommentOverlay ref={commentRef} question={question.video} isPost={true} />
+            <CommentOverlay ref={commentRef} question={question} isPost={true} />
             <TouchFeedback
                 style={styles.header}
                 onPress={() => {

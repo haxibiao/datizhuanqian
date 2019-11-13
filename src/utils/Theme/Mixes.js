@@ -71,6 +71,7 @@ export default {
     errorColor: '#FF4C4C',
     teaGreen: '#12E2BB',
     itemSpace: 15,
+    backColor: '#CCD5E0',
 
     // old
     white,
