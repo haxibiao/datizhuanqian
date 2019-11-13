@@ -49,20 +49,15 @@ export const useCaptureVideo = (props: Props) => {
 
                     // CaptureVideoOverlay.show({ path });
                     console.log('app.userCache.ticket', app.userCache.ticket);
-                    if (app.userCache.ticket < 1) {
-                        Toast.show({
-                            content: '精力点不足，每采集一条视频需要消耗1精力点哦',
-                        });
-                    } else {
-                        const [error, result] = await exceptionCapture(() => captureVideo(path));
-                        console.log('====================================');
-                        console.log('error:', error, 'result:', result);
-                        console.log('====================================');
-                        if (error && onFailed) {
-                            onFailed(error);
-                        } else if (result && onSuccess) {
-                            onSuccess(result);
-                        }
+
+                    const [error, result] = await exceptionCapture(() => captureVideo(path));
+                    console.log('====================================');
+                    console.log('error:', error, 'result:', result);
+                    console.log('====================================');
+                    if (error && onFailed) {
+                        onFailed(error);
+                    } else if (result && onSuccess) {
+                        onSuccess(result);
                     }
                 }
             }
