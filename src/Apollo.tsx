@@ -23,6 +23,7 @@ export default observer(props => {
     app.client = client;
 
     const onFailed = useCallback(error => {
+        console.log('onFailed', error);
         Toast.show({ content: error.message });
     }, []);
 

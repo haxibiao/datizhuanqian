@@ -7,7 +7,7 @@ import { useMutation, GQL } from 'apollo';
 import { app } from 'store';
 
 const CommentInput = props => {
-    const [defaultText] = useState(props.count_comments > 2 ? '写评论...' : '写回答...');
+    const [defaultText] = useState('写评论...');
     const [content, setContent] = useState('');
 
     const {

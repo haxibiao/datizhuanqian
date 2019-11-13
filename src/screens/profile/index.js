@@ -191,7 +191,8 @@ class index extends Component {
                                         答题记录
                                     </Text>
                                 </TouchFeedback>
-                                <TouchFeedback
+                                {/*
+                                     <TouchFeedback
                                     navigation={navigation}
                                     authenticated
                                     activeOpacity={1}
@@ -202,6 +203,7 @@ class index extends Component {
                                         答题排行
                                     </Text>
                                 </TouchFeedback>
+                                    */}
                             </View>
                         </BoxShadow>
                     </View>

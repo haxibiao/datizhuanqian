@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { AppState, Clipboard } from 'react-native';
 import { GQL } from '@src/apollo';
 import { exceptionCapture } from '@src/common';
-import { userStore } from '@src/store';
+import { app } from 'store';
 import { CaptureVideoOverlay } from 'components';
 
 interface Props {
@@ -48,14 +48,21 @@ export const useCaptureVideo = (props: Props) => {
                     // const UrlReg = /[a-zA-z]+://[^\z]*/;
 
                     // CaptureVideoOverlay.show({ path });
-                    const [error, result] = await exceptionCapture(() => captureVideo(path));
-                    console.log('====================================');
-                    console.log('error:', error, 'result:', result);
-                    console.log('====================================');
-                    if (error && onFailed) {
-                        onFailed(error);
-                    } else if (result && onSuccess) {
-                        onSuccess(result);
+                    console.log('app.userCache.ticket', app.userCache.ticket);
+                    if (app.userCache.ticket < 1) {
+                        Toast.show({
+                            content: '精力点不足，每采集一条视频需要消耗1精力点哦',
+                        });
+                    } else {
+                        const [error, result] = await exceptionCapture(() => captureVideo(path));
+                        console.log('====================================');
+                        console.log('error:', error, 'result:', result);
+                        console.log('====================================');
+                        if (error && onFailed) {
+                            onFailed(error);
+                        } else if (result && onSuccess) {
+                            onSuccess(result);
+                        }
                     }
                 }
             }
