@@ -43,7 +43,7 @@ const competitor = observer(props => {
         <Animated.View style={[{ alignItems: 'center' }, animateStyles]}>
             <ImageBackground style={theLeft ? styles.leftUser : styles.rightUser} source={source}>
                 <Avatar
-                    source={app.me.avatar}
+                    source={user.avatar}
                     size={height - PxFit(16)}
                     style={theLeft ? styles.competeLeftAvatar : styles.competeRightAvatar}
                 />

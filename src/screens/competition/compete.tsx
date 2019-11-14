@@ -7,8 +7,7 @@ import CountDown from './components/CountDown';
 import QuestionBody from './components/QuestionBody';
 import Progress from './components/Progress';
 import Competitor from './components/Competitor';
-import LeaveGameOverlay from './components/LeaveGameOverlay';
-import { useCountDown } from 'common';
+import LeaveGameOverlay from "./components/LeaveGameOverlay"
 import { useQuery, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
@@ -16,42 +15,53 @@ import { Overlay } from 'teaset';
 const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
 
-const compete = () => {
-	const navigation = useNavigation();
+const compete = observer(props => {
+    const { navigation } = props;
+    const [subTime, setSubTime] = useState(10); //倒计时
+    const [index, setIndex] = useState(0); //题目下标值
+    const [score, setScore] = useState(0); //分数
+    const [fadeIn, setFadeIn] = useState(true); //
 
 	const [subTime, setSubTime] = useState(10); // 倒计时
 	const [index, setIndex] = useState(0); // 题目下标值
 	const [score, setScore] = useState(0); // 分数
 	const [fadeIn, setFadeIn] = useState(true); //
 
-	const [answerStatus, setAnswerStatus] = useState('');
+    const game = navigation.getParam('game');
+    const store = navigation.getParam('store');
 
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setSubTime(prevCount => prevCount - 1);
-		}, 1000);
-		return () => {
-			clearInterval(timer);
-		};
-	}, []);
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSubTime(prevCount => prevCount - 1);
+        }, 1000);
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
 
-	useEffect(() => {
-		console.log('subTime', subTime);
-		if (subTime === 0) {
-			if (index + 1 === data.questions.length) {
-				// 结算
-				Tools.navigate('Settlement');
-			} else {
-				resetState();
-			}
-		}
-	}, [subTime]);
+    useEffect(() => {
+        if (subTime === 0) {
+            if (index + 1 === data.gameQuestions.length) {
+                //结算
+                Tools.navigate('Settlement');
+            } else {
+                resetState();
+            }
+        }
+    }, [subTime]);
 
-	const { data, loading, error } = useQuery(GQL.QuestionListQuery, {
-		variables: {
-			category_id: 1,
-		},
-	});
+    const { data, loading, error } = useQuery(GQL.GameQuestionsQuery, {
+        variables: {
+            game_id: game.id,
+        },
+    });
+
+    const selectOption = (value: any) => {
+        if (data.gameQuestions[index].answer === value) {
+            // setScore(data.gameQuestions[index].gold * 10);
+            store.calculateScore(data.gameQuestions[index].gold * 10);
+        }
+    };
 
 	const selectOption = (value: any) => {
 		if (data.questions[index].answer === value) {

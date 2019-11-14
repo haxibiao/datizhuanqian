@@ -260,3 +260,24 @@ mutation UserRewardMutation($reward: RewardEnum) {
         contribute
     }
 }
+
+#对战取题
+query GameQuestionsQuery($game_id: Int!) {
+    gameQuestions(game_id: $game_id) {
+        id
+        description
+        answer
+        gold
+        selections_array {
+            Text
+            Value
+        }
+    }
+}
+
+#答题对战上报数据
+mutation ReceiveGameScore($game_id: Int!, $score: Int!) {
+    receiveGameScore(game_id: $game_id, score: $score) {
+        id
+    }
+}

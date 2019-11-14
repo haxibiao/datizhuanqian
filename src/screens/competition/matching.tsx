@@ -27,15 +27,15 @@ export default observer(props => {
 
     useEffect(() => {
         if (store.rival.id) {
-            Overlay.show(
-                <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (overlayRef.current = ref)}>
-                    <View style={styles.modal} />
-                </Overlay.PopView>,
-            );
+            // Overlay.show(
+            //     <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (overlayRef.current = ref)}>
+            //         <View style={styles.modal} />
+            //     </Overlay.PopView>,
+            // );
             timer.current = setInterval(() => {
                 timer.current = 0;
-                navigation.navigate('Compete');
-                overlayRef.current.close();
+                // overlayRef.current && overlayRef.current.close();
+                navigation.navigate('Compete', { game: store.game, store });
             }, 500);
         } else {
             clearInterval(timer.current);
