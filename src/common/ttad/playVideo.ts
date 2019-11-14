@@ -241,9 +241,7 @@ function dataReport(type: string | undefined, playType: number) {
             name = playType ? '时段奖励随机看激励视频' : '时段奖励随机看全屏视频';
             break;
         case 'Dividend':
-            action = playType
-                ? 'user_click_dividend_reward_ad'
-                : 'user_click_user_click_dividend_reward_ad_fullscreen_ad';
+            action = playType ? 'user_click_dividend_reward_ad' : 'user_click_dividend_fullscreen_ad';
             name = playType ? '分红随机看激励视频' : '分红随机看全屏视频';
             break;
         default:

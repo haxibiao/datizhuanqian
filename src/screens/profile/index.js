@@ -64,134 +64,135 @@ class index extends Component {
         return (
             <PageContainer hiddenNavBar onWillFocus={data && data.refetch}>
                 <ScrollView style={styles.container} bounces={false}>
-                    <View style={{ marginBottom: -Theme.itemSpace }}>
-                        <View style={styles.userInfoContainer}>
-                            <View style={styles.userCoverContainer}>
-                                <Image
-                                    source={require('../../assets/images/user_cover.png')}
-                                    style={styles.userCover}
-                                />
-                            </View>
-                            <TouchFeedback
-                                authenticated
-                                navigation={navigation}
-                                activeOpacity={1}
-                                style={styles.userInfo}
-                                onPress={() => navigation.navigate('EditProfile', { user })}>
-                                <TouchFeedback
-                                    authenticated
-                                    navigation={navigation}
-                                    onPress={() => navigation.navigate('User', { user })}>
-                                    <Avatar
-                                        source={user.avatar + '?t=' + Date.now()}
-                                        size={PxFit(60)}
-                                        style={styles.userAvatar}
+                    <View style={{ flex: 1, paddingBottom: PxFit(50) }}>
+                        <View style={{ marginBottom: -Theme.itemSpace }}>
+                            <View style={styles.userInfoContainer}>
+                                <View style={styles.userCoverContainer}>
+                                    <Image
+                                        source={require('../../assets/images/user_cover.png')}
+                                        style={styles.userCover}
                                     />
-                                </TouchFeedback>
-                                <View style={styles.textInfo}>
-                                    <SafeText style={styles.userName} numberOfLines={1}>
-                                        {login ? user.name : '登录/注册'}
-                                    </SafeText>
-                                    <Text style={styles.introduction} numberOfLines={1}>
-                                        {login
-                                            ? user.profile.introduction || '快去完善个人资料吧'
-                                            : '欢迎来到' + Config.AppName}
-                                    </Text>
                                 </View>
-                                <Iconfont name={'right'} size={PxFit(20)} color={'#fff'} />
-                            </TouchFeedback>
-                            <View style={styles.metaWrap}>
                                 <TouchFeedback
-                                    navigation={navigation}
-                                    onPress={() => navigation.navigate('GradeDescription', { user })}
                                     authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}>
-                                    <SafeText style={styles.metaCount} numberOfLines={1}>
-                                        {user.level ? user.level.level : 0}
-                                    </SafeText>
-                                    <Text style={styles.metaLabel} numberOfLines={1}>
-                                        等级
-                                    </Text>
-                                </TouchFeedback>
-                                <TouchFeedback
                                     navigation={navigation}
-                                    onPress={() => navigation.navigate('Society')}
-                                    authenticated
                                     activeOpacity={1}
-                                    style={styles.metaItem}>
-                                    <Text style={styles.metaCount} numberOfLines={1}>
-                                        {user.follow_users_count || 0}
-                                    </Text>
-                                    <Text style={styles.metaLabel} numberOfLines={1}>
-                                        关注
-                                    </Text>
+                                    style={styles.userInfo}
+                                    onPress={() => navigation.navigate('EditProfile', { user })}>
+                                    <TouchFeedback
+                                        authenticated
+                                        navigation={navigation}
+                                        onPress={() => navigation.navigate('User', { user })}>
+                                        <Avatar
+                                            source={user.avatar + '?t=' + Date.now()}
+                                            size={PxFit(60)}
+                                            style={styles.userAvatar}
+                                        />
+                                    </TouchFeedback>
+                                    <View style={styles.textInfo}>
+                                        <SafeText style={styles.userName} numberOfLines={1}>
+                                            {login ? user.name : '登录/注册'}
+                                        </SafeText>
+                                        <Text style={styles.introduction} numberOfLines={1}>
+                                            {login
+                                                ? user.profile.introduction || '快去完善个人资料吧'
+                                                : '欢迎来到' + Config.AppName}
+                                        </Text>
+                                    </View>
+                                    <Iconfont name={'right'} size={PxFit(20)} color={'#fff'} />
                                 </TouchFeedback>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    onPress={() => navigation.navigate('Society', { follower: true })}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}>
-                                    <Text style={styles.metaCount} numberOfLines={1}>
-                                        {user.followers_count || 0}
-                                    </Text>
-                                    <Text style={styles.metaLabel} numberOfLines={1}>
-                                        粉丝
-                                    </Text>
-                                </TouchFeedback>
+                                <View style={styles.metaWrap}>
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        onPress={() => navigation.navigate('GradeDescription', { user })}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}>
+                                        <SafeText style={styles.metaCount} numberOfLines={1}>
+                                            {user.level ? user.level.level : 0}
+                                        </SafeText>
+                                        <Text style={styles.metaLabel} numberOfLines={1}>
+                                            等级
+                                        </Text>
+                                    </TouchFeedback>
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        onPress={() => navigation.navigate('Society')}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}>
+                                        <Text style={styles.metaCount} numberOfLines={1}>
+                                            {user.follow_users_count || 0}
+                                        </Text>
+                                        <Text style={styles.metaLabel} numberOfLines={1}>
+                                            关注
+                                        </Text>
+                                    </TouchFeedback>
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        onPress={() => navigation.navigate('Society', { follower: true })}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}>
+                                        <Text style={styles.metaCount} numberOfLines={1}>
+                                            {user.followers_count || 0}
+                                        </Text>
+                                        <Text style={styles.metaLabel} numberOfLines={1}>
+                                            粉丝
+                                        </Text>
+                                    </TouchFeedback>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                    <View style={{ paddingHorizontal: Theme.itemSpace, marginBottom: Theme.itemSpace }}>
-                        <BoxShadow
-                            setting={Object.assign({}, shadowOpt, {
-                                height: PxFit(80),
-                            })}>
-                            <View style={[styles.metaWrap, styles.metaWrapBottom]}>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('MyPublish')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/profile_make_question.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        我的发布
-                                    </Text>
-                                </TouchFeedback>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('FavoritesLog')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/profile_collection.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        我的收藏
-                                    </Text>
-                                </TouchFeedback>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('AnswerLog')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/profile_answer_history.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        答题记录
-                                    </Text>
-                                </TouchFeedback>
-                                {/*
+                        <View style={{ paddingHorizontal: Theme.itemSpace, marginBottom: Theme.itemSpace }}>
+                            <BoxShadow
+                                setting={Object.assign({}, shadowOpt, {
+                                    height: PxFit(80),
+                                })}>
+                                <View style={[styles.metaWrap, styles.metaWrapBottom]}>
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}
+                                        onPress={() => navigation.navigate('MyPublish')}>
+                                        <Image
+                                            style={styles.metaIcon}
+                                            source={require('../../assets/images/profile_make_question.png')}
+                                        />
+                                        <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                            我的发布
+                                        </Text>
+                                    </TouchFeedback>
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}
+                                        onPress={() => navigation.navigate('FavoritesLog')}>
+                                        <Image
+                                            style={styles.metaIcon}
+                                            source={require('../../assets/images/profile_collection.png')}
+                                        />
+                                        <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                            我的收藏
+                                        </Text>
+                                    </TouchFeedback>
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}
+                                        onPress={() => navigation.navigate('AnswerLog')}>
+                                        <Image
+                                            style={styles.metaIcon}
+                                            source={require('../../assets/images/profile_answer_history.png')}
+                                        />
+                                        <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                            答题记录
+                                        </Text>
+                                    </TouchFeedback>
+                                    {/*
                                      <TouchFeedback
                                     navigation={navigation}
                                     authenticated
@@ -204,67 +205,75 @@ class index extends Component {
                                     </Text>
                                 </TouchFeedback>
                                     */}
-                            </View>
-                        </BoxShadow>
-                    </View>
-                    <TouchFeedback
-                        style={styles.columnItem}
-                        authenticated
-                        navigation={navigation}
-                        onPress={() => navigation.navigate('Notification')}>
-                        <Row>
-                            <Image
-                                style={styles.metaIcon}
-                                source={require('../../assets/images/profile_notification.png')}
-                            />
-                            <Text style={styles.itemTypeText}>消息通知</Text>
-                        </Row>
-                        {login ? (
-                            <Query query={GQL.userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
-                                {({ data, error, refetch }) => {
-                                    navigation.addListener('didFocus', payload => {
-                                        refetch();
-                                    });
-                                    if (data && data.user && data.user.unread_notifications_count) {
-                                        app.updateNoticeCount(data.user.unread_notifications_count);
-                                        return <Badge count={data.user.unread_notifications_count} />;
-                                    } else {
-                                        app.updateNoticeCount(0);
-                                        return <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />;
-                                    }
-                                }}
-                            </Query>
-                        ) : (
+                                </View>
+                            </BoxShadow>
+                        </View>
+                        <TouchFeedback
+                            style={styles.columnItem}
+                            authenticated
+                            navigation={navigation}
+                            onPress={() => navigation.navigate('Notification')}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIcon}
+                                    source={require('../../assets/images/profile_notification.png')}
+                                />
+                                <Text style={styles.itemTypeText}>消息通知</Text>
+                            </Row>
+                            {login ? (
+                                <Query
+                                    query={GQL.userUnreadQuery}
+                                    variables={{ id: user.id }}
+                                    fetchPolicy="network-only">
+                                    {({ data, error, refetch }) => {
+                                        navigation.addListener('didFocus', payload => {
+                                            refetch();
+                                        });
+                                        if (data && data.user && data.user.unread_notifications_count) {
+                                            app.updateNoticeCount(data.user.unread_notifications_count);
+                                            return <Badge count={data.user.unread_notifications_count} />;
+                                        } else {
+                                            app.updateNoticeCount(0);
+                                            return (
+                                                <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                                            );
+                                        }
+                                    }}
+                                </Query>
+                            ) : (
+                                <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                            )}
+                        </TouchFeedback>
+                        <TouchFeedback
+                            style={styles.columnItem}
+                            authenticated
+                            navigation={navigation}
+                            onPress={() => navigation.navigate('BillingRecord')}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIcon}
+                                    source={require('../../assets/images/profile_order.png')}
+                                />
+                                <Text style={styles.itemTypeText}>我的账单</Text>
+                            </Row>
+                            <Iconfont name="right" size={17} color={Theme.subTextColor} />
+                        </TouchFeedback>
+                        <TouchFeedback
+                            style={styles.columnItem}
+                            authenticated
+                            navigation={navigation}
+                            onPress={() => navigation.navigate('Feedback')}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIcon}
+                                    source={require('../../assets/images/profile_feedback.png')}
+                                />
+                                <Text style={styles.itemTypeText}>反馈建议</Text>
+                            </Row>
                             <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                        )}
-                    </TouchFeedback>
-                    <TouchFeedback
-                        style={styles.columnItem}
-                        authenticated
-                        navigation={navigation}
-                        onPress={() => navigation.navigate('BillingRecord')}>
-                        <Row>
-                            <Image style={styles.metaIcon} source={require('../../assets/images/profile_order.png')} />
-                            <Text style={styles.itemTypeText}>我的账单</Text>
-                        </Row>
-                        <Iconfont name="right" size={17} color={Theme.subTextColor} />
-                    </TouchFeedback>
-                    <TouchFeedback
-                        style={styles.columnItem}
-                        authenticated
-                        navigation={navigation}
-                        onPress={() => navigation.navigate('Feedback')}>
-                        <Row>
-                            <Image
-                                style={styles.metaIcon}
-                                source={require('../../assets/images/profile_feedback.png')}
-                            />
-                            <Text style={styles.itemTypeText}>反馈建议</Text>
-                        </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>
-                    <View style={{ height: 10 }} />
-                    {/*
+                        </TouchFeedback>
+                        <View style={{ height: 10 }} />
+                        {/*
                         <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Recruit')}>
                         <Row>
                             <Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
@@ -272,33 +281,39 @@ class index extends Component {
                         </Row>
                         <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                     </TouchFeedback>*/}
-                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
-                        <Row>
-                            <Image
-                                style={styles.metaIcon}
-                                source={require('../../assets/images/profile_explain.png')}
-                            />
-                            <Text style={styles.itemTypeText}>赚钱攻略</Text>
-                        </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>
-                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('CommonIssue')}>
-                        <Row>
-                            <Image style={styles.metaIcon} source={require('../../assets/images/profile_help.png')} />
-                            <Text style={styles.itemTypeText}>常见问题</Text>
-                        </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>
-                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Setting', { user })}>
-                        <Row>
-                            <Image
-                                style={styles.metaIconRank}
-                                source={require('../../assets/images/profile_setting.png')}
-                            />
-                            <Text style={styles.itemTypeText}>设置</Text>
-                        </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>
+                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIcon}
+                                    source={require('../../assets/images/profile_explain.png')}
+                                />
+                                <Text style={styles.itemTypeText}>赚钱攻略</Text>
+                            </Row>
+                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                        </TouchFeedback>
+                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('CommonIssue')}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIcon}
+                                    source={require('../../assets/images/profile_help.png')}
+                                />
+                                <Text style={styles.itemTypeText}>常见问题</Text>
+                            </Row>
+                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                        </TouchFeedback>
+                        <TouchFeedback
+                            style={styles.columnItem}
+                            onPress={() => navigation.navigate('Setting', { user })}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIconRank}
+                                    source={require('../../assets/images/profile_setting.png')}
+                                />
+                                <Text style={styles.itemTypeText}>设置</Text>
+                            </Row>
+                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                        </TouchFeedback>
+                    </View>
                 </ScrollView>
             </PageContainer>
         );

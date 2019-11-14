@@ -319,6 +319,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         flex: 1,
+        paddingBottom: 100,
     },
     content: {
         color: Theme.black,
