@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, FlatList, View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { PageContainer, Row } from '@src/components';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
@@ -12,7 +12,7 @@ import Category from './components/Category';
 export default observer(props => {
     const navigation = useNavigation();
 
-    const { data, refetch } = useQuery(GQL.CategoriesQuery, {
+    const { data } = useQuery(GQL.CategoriesQuery, {
         variables: {
             limit: 100,
         },

@@ -1,7 +1,8 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { PageContainer, NavigatorBar, Avatar } from '@src/components';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
+import { playVideo } from 'common';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app } from 'store';
 import localStore from './store';
 import { useNavigation } from 'react-navigation-hooks';
@@ -29,7 +30,9 @@ const over = observer(props => {
     const result = navigation.getParam('result', 'victory');
     const store = useRef(new localStore()).current;
     const { me } = app;
-
+    const loadAd = useCallback(() => {
+        playVideo({ type: 'Compete' });
+    }, [me]);
     return (
         <PageContainer hiddenNavBar>
             <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
@@ -54,7 +57,7 @@ const over = observer(props => {
                             <Text style={styles.score}>120</Text>
                         </View>
                         <View style={{ alignItems: 'flex-end' }}>
-                            <Text style={styles.userName}>{me.name}</Text>
+                            <Text style={styles.userName}>{store.rival.name}</Text>
                             <Text style={[styles.score, { color: '#F8CE4D' }]}>60</Text>
                         </View>
                     </View>
@@ -95,12 +98,16 @@ const over = observer(props => {
                             <View style={styles.buttonWrap}>
                                 <TouchableOpacity
                                     style={[styles.button, { backgroundColor: Theme.watermelon }]}
-                                    onPress={store.button}>
+                                    onPress={loadAd}>
                                     <Text style={[styles.buttonText, { color: '#fff' }]}>领取额外奖励</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.buttonWrap}>
-                                <TouchableOpacity style={styles.button} onPress={store.button}>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => {
+                                        navigation.navigate('Matching');
+                                    }}>
                                     <Text style={styles.buttonText}>继续答题挑战</Text>
                                 </TouchableOpacity>
                             </View>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, ImageBackground, View, Text, ScrollView, BackHandler } from 'react-native';
 import { PageContainer, Avatar, Row } from 'components';
 import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
 import { observer, app } from 'store';
@@ -7,145 +7,173 @@ import CountDown from './components/CountDown';
 import QuestionBody from './components/QuestionBody';
 import Progress from './components/Progress';
 import Competitor from './components/Competitor';
+import LeaveGameOverlay from './components/LeaveGameOverlay';
 import { useCountDown } from 'common';
 import { useQuery, GQL } from 'apollo';
+import { useNavigation } from 'react-navigation-hooks';
+import { Overlay } from 'teaset';
 
 const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
 
 const compete = () => {
-    const [subTime, setSubTime] = useState(10); //倒计时
-    const [index, setIndex] = useState(0); //题目下标值
-    const [score, setScore] = useState(0); //分数
-    const [fadeIn, setFadeIn] = useState(true); //
+	const navigation = useNavigation();
 
-    const [answerStatus, setAnswerStatus] = useState('');
+	const [subTime, setSubTime] = useState(10); // 倒计时
+	const [index, setIndex] = useState(0); // 题目下标值
+	const [score, setScore] = useState(0); // 分数
+	const [fadeIn, setFadeIn] = useState(true); //
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setSubTime(prevCount => prevCount - 1);
-        }, 1000);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+	const [answerStatus, setAnswerStatus] = useState('');
 
-    useEffect(() => {
-        console.log('subTime', subTime);
-        if (subTime === 0) {
-            if (index + 1 === data.questions.length) {
-                //结算
-                Tools.navigate('Settlement');
-            } else {
-                resetState();
-            }
-        }
-    }, [subTime]);
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setSubTime(prevCount => prevCount - 1);
+		}, 1000);
+		return () => {
+			clearInterval(timer);
+		};
+	}, []);
 
-    const { data, loading, error } = useQuery(GQL.QuestionListQuery, {
-        variables: {
-            category_id: 1,
-        },
-    });
+	useEffect(() => {
+		console.log('subTime', subTime);
+		if (subTime === 0) {
+			if (index + 1 === data.questions.length) {
+				// 结算
+				Tools.navigate('Settlement');
+			} else {
+				resetState();
+			}
+		}
+	}, [subTime]);
 
-    const selectOption = (value: any) => {
-        if (data.questions[index].answer === value) {
-            setScore(data.questions[index].gold * 10);
-        }
-    };
+	const { data, loading, error } = useQuery(GQL.QuestionListQuery, {
+		variables: {
+			category_id: 1,
+		},
+	});
 
-    const resetState = () => {
-        setFadeIn(false);
-        setIndex(index + 1);
-        setSubTime(10);
-        setTimeout(() => {
-            setFadeIn(true);
-        }, 100);
-        setAnswerStatus('');
-    };
+	const selectOption = (value: any) => {
+		if (data.questions[index].answer === value) {
+			setScore(data.questions[index].gold * 10);
+		}
+	};
 
-    if (loading)
-        return <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')} />;
+	const resetState = () => {
+		setFadeIn(false);
+		setIndex(index + 1);
+		setSubTime(10);
+		setTimeout(() => {
+			setFadeIn(true);
+		}, 100);
+		setAnswerStatus('');
+	};
 
-    return (
-        <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
-            <PageContainer
-                title={'答题'}
-                titleStyle={{ color: Theme.white }}
-                navBarStyle={{
-                    backgroundColor: 'transparent',
-                }}>
-                <ScrollView>
-                    <Progress questions={data.questions} index={index} />
-                    <View style={styles.userContainer}>
-                        <Competitor fadeIn={fadeIn} user={app.me} compete theLeft />
-                        <CountDown countDown={subTime} />
-                        <Competitor fadeIn={fadeIn} user={app.me} compete />
-                    </View>
-                    <Row style={styles.textWrap}>
-                        <Text style={styles.name}>{app.me.name}</Text>
-                        <Text style={styles.name}>{app.me.name}</Text>
-                    </Row>
-                    <Row style={styles.textWrap}>
-                        <Text style={[styles.score, { color: '#70E9F3' }]}>{score}</Text>
-                        <Text style={styles.score}>{score}</Text>
-                    </Row>
-                    <QuestionBody
-                        question={data.questions[index]}
-                        selectOption={selectOption}
-                        setAnswerStatus={setAnswerStatus}
-                        answerStatus={answerStatus}
-                    />
-                </ScrollView>
-            </PageContainer>
-        </ImageBackground>
-    );
+	useEffect(() => {
+		const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
+			let popViewRef;
+			Overlay.show(
+				<Overlay.PopView modal={true} style={styles.overlay} ref={ref => (popViewRef = ref)}>
+					<LeaveGameOverlay
+						onConfirm={() => {
+							popViewRef.close();
+							navigation.goBack();
+						}}
+						close={() => popViewRef.close()}
+					/>
+				</Overlay.PopView>,
+			);
+			return true;
+		});
+		return () => {
+			hardwareBackPress.remove();
+		};
+	}, []);
+
+	if (loading) {
+		return <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')} />;
+	}
+
+	return (
+		<ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
+			<PageContainer
+				title={'答题'}
+				titleStyle={{ color: Theme.white }}
+				navBarStyle={{
+					backgroundColor: 'transparent',
+				}}>
+				<ScrollView>
+					<Progress questions={data.questions} index={index} />
+					<View style={styles.userContainer}>
+						<Competitor fadeIn={fadeIn} user={app.me} compete theLeft />
+						<CountDown countDown={subTime} />
+						<Competitor fadeIn={fadeIn} user={app.me} compete />
+					</View>
+					<Row style={styles.textWrap}>
+						<Text style={styles.name}>{app.me.name}</Text>
+						<Text style={styles.name}>{app.me.name}</Text>
+					</Row>
+					<Row style={styles.textWrap}>
+						<Text style={[styles.score, { color: '#70E9F3' }]}>{score}</Text>
+						<Text style={styles.score}>{score}</Text>
+					</Row>
+					<QuestionBody
+						question={data.questions[index]}
+						selectOption={selectOption}
+						setAnswerStatus={setAnswerStatus}
+						answerStatus={answerStatus}
+					/>
+				</ScrollView>
+			</PageContainer>
+		</ImageBackground>
+	);
 };
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: PxFit(15),
-    },
-    userContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: PxFit(30),
-    },
-    leftUser: {
-        width: width,
-        height: height,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-    },
-    avatar: {
-        marginRight: PxFit(7),
-        borderWidth: PxFit(3),
-        borderColor: '#fff',
-    },
-    rightUser: {
-        width: width,
-        height: height,
-        justifyContent: 'center',
-    },
-    textWrap: {
-        justifyContent: 'space-between',
-        paddingHorizontal: PxFit(15),
-    },
-    name: {
-        marginTop: PxFit(10),
-        color: Theme.white,
-    },
-    score: {
-        marginTop: PxFit(5),
-        fontSize: PxFit(22),
-        color: '#FFEB7A',
-    },
-    background: {
-        height: '100%',
-        resizeMode: 'cover',
-        width: '100%',
-    },
+	avatar: {
+		borderColor: '#fff',
+		borderWidth: PxFit(3),
+		marginRight: PxFit(7),
+	},
+	background: {
+		height: '100%',
+		resizeMode: 'cover',
+		width: '100%',
+	},
+	container: {
+		paddingHorizontal: PxFit(15),
+	},
+	leftUser: {
+		alignItems: 'flex-end',
+		height: height,
+		justifyContent: 'center',
+		width: width,
+	},
+	name: {
+		color: Theme.white,
+		marginTop: PxFit(10),
+	},
+	overlay: { alignItems: 'center', justifyContent: 'center' },
+	rightUser: {
+		height: height,
+		justifyContent: 'center',
+		width: width,
+	},
+	score: {
+		color: '#FFEB7A',
+		fontSize: PxFit(22),
+		marginTop: PxFit(5),
+	},
+	textWrap: {
+		justifyContent: 'space-between',
+		paddingHorizontal: PxFit(15),
+	},
+	userContainer: {
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginTop: PxFit(30),
+	},
 });
 
 export default compete;
