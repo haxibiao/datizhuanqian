@@ -4,7 +4,7 @@ import { PageContainer, NavigatorBar, Avatar } from '@src/components';
 import { playVideo } from 'common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app } from 'store';
-import localStore from './store';
+// import localStore from './store';
 import { useNavigation } from 'react-navigation-hooks';
 
 const avatarWidget = {
@@ -28,7 +28,8 @@ const competitionResult = {
 const over = observer(props => {
     const navigation = useNavigation();
     const result = navigation.getParam('result', 'victory');
-    const store = useRef(new localStore()).current;
+
+    const store = navigation.getParam('store');
     const { me } = app;
     const loadAd = useCallback(() => {
         playVideo({ type: 'Compete' });
@@ -54,11 +55,11 @@ const over = observer(props => {
                     <View style={styles.userInfo}>
                         <View>
                             <Text style={styles.userName}>{me.name}</Text>
-                            <Text style={styles.score}>120</Text>
+                            <Text style={styles.score}>{store.score[0]}</Text>
                         </View>
                         <View style={{ alignItems: 'flex-end' }}>
                             <Text style={styles.userName}>{store.rival.name}</Text>
-                            <Text style={[styles.score, { color: '#F8CE4D' }]}>60</Text>
+                            <Text style={[styles.score, { color: '#F8CE4D' }]}>{store.score[1]}</Text>
                         </View>
                     </View>
                     <View style={styles.main}>
@@ -72,17 +73,17 @@ const over = observer(props => {
                                     style={styles.iconImage}
                                     source={require('@src/assets/images/competition_log.png')}
                                 />
-                                <Text style={styles.itemText2}>8题</Text>
+                                <Text style={styles.itemText2}>{store.answerPassCount}题</Text>
                             </View>
                             <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
-                            <View style={styles.statisticItem}>
+                            {/*  <View style={styles.statisticItem}>
                                 <Text style={styles.itemText1}>计时:</Text>
                                 <Image
                                     style={styles.iconImage}
                                     source={require('@src/assets/images/competition_time.png')}
                                 />
                                 <Text style={styles.itemText2}>43秒</Text>
-                            </View>
+                            </View> */}
                             <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
                             <View style={styles.statisticItem}>
                                 <Text style={styles.itemText1}>奖励:</Text>
@@ -120,7 +121,7 @@ const over = observer(props => {
                     navigation={navigation}
                     style={styles.navigatorBar}
                     titleStyle={styles.titleStyle}
-                    title="对战结束"
+                    title='对战结束'
                 />
             </View>
         </PageContainer>

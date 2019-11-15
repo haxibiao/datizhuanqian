@@ -38,14 +38,28 @@ const compete = observer(props => {
     useEffect(() => {
         if (subTime === 0) {
             if (index + 1 === data.gameQuestions.length) {
-                store.leaveGame();
-                //结算
-                Tools.navigate('Settlement');
+                handlerResult();
             } else {
                 resetState();
             }
         }
     }, [subTime]);
+
+    const handlerResult = () => {
+        store.leaveGame();
+        let result;
+        if (store.score[0] > store.score[1]) {
+            result = 'victory';
+        } else if (store.score[0] < store.score[1]) {
+            result = 'defeat';
+        } else {
+            result = 'draw';
+        }
+        Tools.navigate('GameSettlement', {
+            result,
+            store,
+        });
+    };
 
     const { data, loading, error } = useQuery(GQL.GameQuestionsQuery, {
         variables: {

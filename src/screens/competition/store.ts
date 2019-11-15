@@ -11,6 +11,7 @@ export default class CompetitionStore {
     @observable public offline: boolean = false;
     @observable public score: number[] = [0, 0];
     @observable public rival: Record<string, any> = {};
+    @observable public answerPassCount: number = 0;
 
     @action.bound
     public resetStore() {
@@ -96,7 +97,7 @@ export default class CompetitionStore {
     @action.bound
     public async calculateScore(score: number) {
         this.score[0] += score;
-        console.log('score', score, this.score[0], this.score[1]);
+        this.answerPassCount += 1;
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.ReceiveGameScore,
@@ -104,7 +105,7 @@ export default class CompetitionStore {
             });
         });
 
-        console.log('ReceiveGameScore', result, error);
+        console.log('ReceiveGameScore', result, error, this.answerPassCount);
 
         // Toast.show({
         //     content: error,
