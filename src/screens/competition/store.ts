@@ -25,16 +25,6 @@ export default class CompetitionStore {
         console.log('matchGame');
         console.log('====================================');
         this.matching = true;
-        app.echo.private('App.User.' + app.me.id).listen('NewGame', (newGame: object) => {
-            console.log('====================================');
-            console.log('NewGame', newGame);
-            console.log('====================================');
-            this.game = newGame.game;
-            this.rival = newGame.game.rival;
-            this.matching = false;
-            this.playGame();
-        });
-
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.MatchGameMutation,
@@ -44,14 +34,24 @@ export default class CompetitionStore {
         console.log('====================================');
         console.log('matchGame', matchGame, error);
         console.log('====================================');
-        if (matchGame) {
+        if (error) {
+            Toast.show({ content: '匹配失败', layout: 'top' });
+            this.matching = false;
+        } else if (matchGame) {
             this.game = matchGame.game;
             this.rival = matchGame.user;
             this.matching = false;
             this.playGame();
-        } else if (error) {
-            Toast.show({ content: '匹配失败', layout: 'top' });
-            this.matching = false;
+        } else {
+            app.echo.private('App.User.' + app.me.id).listen('NewGame', (newGame: object) => {
+                console.log('====================================');
+                console.log('NewGame', newGame);
+                console.log('====================================');
+                this.game = newGame.game;
+                this.rival = newGame.game.rival;
+                this.matching = false;
+                this.playGame();
+            });
         }
     }
 
