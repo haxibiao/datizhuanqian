@@ -28,7 +28,7 @@ const Progress = (props: Props) => {
                 <View
                     style={{
                         height: PxFit(16),
-                        width: ((SCREEN_WIDTH - PxFit(65)) * (index + 1)) / questions.length,
+                        width: ((SCREEN_WIDTH - PxFit(65)) * (index + 1)) / questions.length || 1,
                         backgroundColor: '#F5D461',
                         borderRadius: PxFit(8),
                     }}></View>

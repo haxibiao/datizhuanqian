@@ -38,6 +38,7 @@ const compete = observer(props => {
     useEffect(() => {
         if (subTime === 0) {
             if (index + 1 === data.gameQuestions.length) {
+                store.leaveGame();
                 //结算
                 Tools.navigate('Settlement');
             } else {
@@ -94,7 +95,6 @@ const compete = observer(props => {
     if (loading) {
         return <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')} />;
     }
-
     return (
         <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
             <PageContainer

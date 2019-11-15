@@ -96,11 +96,11 @@ export default class CompetitionStore {
     @action.bound
     public async calculateScore(score: number) {
         this.score[0] += score;
-        console.log('score', score);
+        console.log('score', score, this.score[0], this.score[1]);
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.ReceiveGameScore,
-                variables: { game_id: this.game.id, score: score },
+                variables: { game_id: this.game.id, score: this.score[0] },
             });
         });
 
@@ -115,6 +115,7 @@ export default class CompetitionStore {
 
     @action.bound
     public playGame() {
+        console.log('playGame');
         app.echo
             .join(`game.${this.game.id}`)
             // .here(users => {
@@ -129,8 +130,10 @@ export default class CompetitionStore {
                 this.leaveGameMutate(user.id, app.me.id, this.game.id);
             })
             .listen('Score', data => {
-                console.log('game_score', data.score);
-                this.score[1] += data.score;
+                console.log('game_score', data);
+                if (data.scoreData.socres.user_id !== app.me.id) {
+                    this.score[1] = data.scoreData.socres.score;
+                }
             });
     }
 
