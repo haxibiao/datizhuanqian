@@ -1,36 +1,45 @@
 # 1.PK匹配对手GQL
 mutation MatchGameMutation {
-    matchGame {
-        user {
-            id
-            name
-            gender
-            avatar
-        }
-        game {
-            id
-        }
-    }
+	matchGame {
+		user {
+			id
+			name
+			gender
+			avatar
+		}
+		game {
+			id
+		}
+	}
 }
 
 # 2.中途退出,离开比赛GQL
 mutation LeaveGameMutation($user_id: Int!, $game_id: Int!) {
-    leaveGame(user_id: $user_id, game_id: $game_id) {
-        id
-        status
-        end_at
-        winner {
-            id
-        }
-        reward
-    }
+	leaveGame(user_id: $user_id, game_id: $game_id) {
+		id
+		status
+		end_at
+		winner {
+			id
+		}
+		reward
+	}
 }
 
 # 3.取消匹配GQL
 mutation OfflineGameMutation {
-    offlineGame {
-        id
-        online_at
-        online_status
-    }
+	offlineGame {
+		id
+		online_at
+		online_status
+	}
+}
+
+# 游戏结束
+mutation EndGameMutation($game_id: Int!) {
+	endGame(game_id: $game_id) {
+		winner {
+			id
+		}
+	}
 }

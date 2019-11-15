@@ -138,5 +138,12 @@ export default class CompetitionStore {
     }
 
     @action.bound
-    public gameOver() {}
+    public gameOver() {
+        exceptionCapture(() => {
+            return app.client.mutate({
+                mutation: GQL.EndGameMutation,
+                variables: { game_id: this.game.id },
+            });
+        });
+    }
 }
