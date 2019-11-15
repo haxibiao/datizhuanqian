@@ -53,8 +53,9 @@ const compete = observer(props => {
     });
 
     const selectOption = (value: any) => {
-        if (data.questions[index].answer === value) {
-            setScore(data.questions[index].gold * 10);
+        if (data.gameQuestions[index].answer === value) {
+            // setScore(data.gameQuestions[index].gold * 10);
+            store.calculateScore(data.gameQuestions[index].gold * 10);
         }
     };
 
@@ -76,7 +77,8 @@ const compete = observer(props => {
                     <LeaveGameOverlay
                         onConfirm={() => {
                             popViewRef.close();
-                            navigation.goBack();
+                            navigation.pop(2);
+                            store.leaveGame();
                         }}
                         close={() => popViewRef.close()}
                     />
@@ -102,22 +104,22 @@ const compete = observer(props => {
                     backgroundColor: 'transparent',
                 }}>
                 <ScrollView>
-                    <Progress questions={data.questions} index={index} />
+                    <Progress questions={data.gameQuestions} index={index} />
                     <View style={styles.userContainer}>
                         <Competitor fadeIn={fadeIn} user={app.me} compete theLeft />
                         <CountDown countDown={subTime} />
-                        <Competitor fadeIn={fadeIn} user={app.me} compete />
+                        <Competitor fadeIn={fadeIn} user={store.rival} compete />
                     </View>
                     <Row style={styles.textWrap}>
                         <Text style={styles.name}>{app.me.name}</Text>
-                        <Text style={styles.name}>{app.me.name}</Text>
+                        <Text style={styles.name}>{store.rival.name}</Text>
                     </Row>
                     <Row style={styles.textWrap}>
-                        <Text style={[styles.score, { color: '#70E9F3' }]}>{score}</Text>
-                        <Text style={styles.score}>{score}</Text>
+                        <Text style={[styles.score, { color: '#70E9F3' }]}>{store.score[0]}</Text>
+                        <Text style={styles.score}>{store.score[1]}</Text>
                     </Row>
                     <QuestionBody
-                        question={data.questions[index]}
+                        question={data.gameQuestions[index]}
                         selectOption={selectOption}
                         setAnswerStatus={setAnswerStatus}
                         answerStatus={answerStatus}
