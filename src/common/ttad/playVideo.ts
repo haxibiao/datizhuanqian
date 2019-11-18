@@ -11,7 +11,7 @@ import { RewardTipsOverlay } from 'components';
 import { GQL } from 'apollo';
 import service from 'service';
 
-type Type = 'Task' | 'AnswerPass' | 'AnswerFail' | 'Sigin' | 'TimeReward' | 'Dividend' | 'Any' | 'Compete';
+type Type = 'Task' | 'AnswerPass' | 'AnswerFail' | 'Sigin' | 'TimeReward' | 'Dividend' | 'Guide' | 'Compete';
 
 interface Video {
     video_play: Boolean;
@@ -225,6 +225,10 @@ function dataReport(type: string | undefined, playType: number) {
         case 'Dividend':
             action = playType ? 'user_click_dividend_reward_ad' : 'user_click_dividend_fullscreen_ad';
             name = playType ? '分红随机看激励视频' : '分红随机看全屏视频';
+            break;
+        case 'Guide':
+            action = playType ? 'user_click_guide_reward_ad' : 'user_click_guide_fullscreen_ad';
+            name = playType ? '新人引导随机看激励视频' : '新人引导随机看全屏视频';
             break;
         case 'Compete':
             action = playType ? 'user_click_compete_reward_ad' : 'user_click_compete_fullscreen_ad';
