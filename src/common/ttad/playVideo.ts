@@ -11,26 +11,7 @@ import { RewardTipsOverlay } from 'components';
 import { GQL } from 'apollo';
 import service from 'service';
 
-const reportContent = {
-    category: '广告点击',
-    action: 'user_click_answer_reward_ad',
-    name: '答题结果选择看全屏视频',
-    value: '1',
-    package: Config.PackageName,
-    os: Platform.OS,
-    version: Config.Version,
-    build: Config.Build,
-    user_id: app.me.id,
-    referrer: Config.AppStore,
-};
-
-type Type = 'Task' | 'AnswerPass' | 'AnswerFail' | 'Sigin' | 'TimeReward' | 'Dividend' | 'Any';
-
-interface Reward {
-    gold: 0;
-    ticket: 0;
-    contribute: 0;
-}
+type Type = 'Task' | 'AnswerPass' | 'AnswerFail' | 'Sigin' | 'TimeReward' | 'Dividend' | 'Any' | 'Compete';
 
 interface Video {
     video_play: Boolean;
@@ -41,7 +22,7 @@ interface Video {
 interface Props {
     rewardVideoAdCache?: any; //激励视频cache
     fullScreenVideoAdCache?: any; //全屏视频cache
-    callback?: Function; //兼容任务列表刷新
+    callback?: Function;
     type?: Type; //看视频来源
 }
 
@@ -160,6 +141,7 @@ function getReward(props: Props, video: Video) {
     const { type } = props;
     console.log('type', type);
     let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
+
     if (type === 'Sigin') {
         rewardType = 'SIGNIN_VIDEO_REWARD'; //签到奖励
     }
@@ -243,6 +225,10 @@ function dataReport(type: string | undefined, playType: number) {
         case 'Dividend':
             action = playType ? 'user_click_dividend_reward_ad' : 'user_click_dividend_fullscreen_ad';
             name = playType ? '分红随机看激励视频' : '分红随机看全屏视频';
+            break;
+        case 'Compete':
+            action = playType ? 'user_click_compete_reward_ad' : 'user_click_compete_fullscreen_ad';
+            name = playType ? '答题对战随机看激励视频' : '答题对战随机看全屏视频';
             break;
         default:
             break;
