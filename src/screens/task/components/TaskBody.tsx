@@ -112,6 +112,17 @@ const TaskBody = props => {
                     submit_name: '去分享',
                     details: '每成功分享一个用户注册登录，即可获取600智慧点和36贡献点奖励',
                 },
+                {
+                    name: '采集视频赚钱',
+                    status: 1,
+                    taskStatus: 7,
+                    gold: 10,
+                    ticket: 0,
+                    contribute: 0,
+                    type: 7,
+                    submit_name: '去采集',
+                    details: `打开抖音视频点击分享按钮选择复制链接，回到答题赚钱即可触发视频采集，采集成功即可获取智慧点奖励`,
+                },
             ];
 
             // 任务列表

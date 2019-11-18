@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Linking } from 'react-native';
 import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
 
 import { BoxShadow } from 'react-native-shadow';
@@ -75,6 +75,10 @@ const TaskType = (props: Props) => {
                 break;
             case 6:
                 Tools.navigate('Share');
+            case 7:
+                Linking.openURL('snssdk1128://');
+            //TODO： 唤起抖音   scheme可能存在一旦更改无法唤起的风险
+            // 可以完善在仅第一次点击时去看教程
             default:
                 Tools.navigate(task.route, {
                     task: task,
