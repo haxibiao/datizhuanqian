@@ -84,7 +84,7 @@ const over = observer(props => {
                                 />
                                 <Text style={styles.itemText2}>43秒</Text>
                             </View> */}
-                            <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
+                            {/* <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} /> */}
                             <View style={styles.statisticItem}>
                                 <Text style={styles.itemText1}>奖励:</Text>
                                 <Image
@@ -121,7 +121,7 @@ const over = observer(props => {
                     navigation={navigation}
                     style={styles.navigatorBar}
                     titleStyle={styles.titleStyle}
-                    title='对战结束'
+                    title="对战结束"
                 />
             </View>
         </PageContainer>

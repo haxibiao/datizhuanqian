@@ -16,10 +16,12 @@ export default observer(props => {
     const overlayRef = useRef();
     const timer = useRef();
 
-    // Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })
     const rightView = useMemo(() => {
         return (
-            <TouchableOpacity style={styles.rightView} activeOpacity={1} onPress={() => navigation.navigate('Compete')}>
+            <TouchableOpacity
+                style={styles.rightView}
+                activeOpacity={1}
+                onPress={() => Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })}>
                 <Image style={styles.medal} source={require('@src/assets/images/medal.png')} />
             </TouchableOpacity>
         );
@@ -27,18 +29,18 @@ export default observer(props => {
 
     useEffect(() => {
         if (store.rival.id) {
-            // Overlay.show(
-            //     <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (overlayRef.current = ref)}>
-            //         <View style={styles.modal} />
-            //     </Overlay.PopView>,
-            // );
-            timer.current = setInterval(() => {
+            Overlay.show(
+                <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (overlayRef.current = ref)}>
+                    <View style={styles.modal} />
+                </Overlay.PopView>,
+            );
+            timer.current = setTimeout(() => {
                 timer.current = 0;
-                // overlayRef.current && overlayRef.current.close();
+                overlayRef.current && overlayRef.current.close();
                 navigation.navigate('Compete', { game: store.game, store });
             }, 500);
         } else {
-            clearInterval(timer.current);
+            clearTimeout(timer.current);
         }
     }, [store.rival.id]);
 
@@ -108,7 +110,6 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(6),
         height: PxFit(42),
         justifyContent: 'center',
-        marginTop: PxFit(20),
         position: 'absolute',
         width: PxFit(180),
     },
@@ -119,6 +120,8 @@ const styles = StyleSheet.create({
     },
     cancelMatchWrap: {
         alignItems: 'center',
+        height: PxFit(42),
+        marginTop: PxFit(20),
     },
     challengeWrap: {
         marginVertical: PxFit(50),
@@ -137,14 +140,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
-        ...StyleSheet.absoluteFill,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
     },
     medal: {
         height: (PxFit(22) * 75) / 56,
         marginRight: PxFit(5),
         width: PxFit(22),
     },
-    modal: { backgroundColor: 'rgba(255,255,255,0)', flex: 1 },
+    modal: {
+        backgroundColor: 'rgba(255,255,255,0)',
+        flex: 1,
+    },
     navigatorBar: {
         backgroundColor: 'transparent',
     },
