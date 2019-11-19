@@ -8,6 +8,7 @@ class app {
     @observable login = false;
     @observable fetching = false;
     @observable contributeRuleRead = false;
+    @observable firstReadSpiderVideoTask = true;
     @observable echo = null;
     @observable resetVersion = 1;
     @observable userCache = null;
@@ -108,6 +109,12 @@ class app {
         await storage.setItem(keys.viewedVersion, viewedVersion);
     }
 
+    // 记录已查看的版本更新提示
+    @action.bound
+    async setReadSpiderVideoTask(firstReadSpiderVideoTask) {
+        console.log('firstReadSpiderVideoTask', firstReadSpiderVideoTask);
+        await storage.setItem(keys.firstReadSpiderVideoTask, firstReadSpiderVideoTask);
+    }
     // echo对象
     @action.bound
     setEcho(echo) {
@@ -150,6 +157,7 @@ class app {
     async recallCache() {
         const resetVersion = await storage.getItem(keys.resetVersion);
         this.withdrawTips = await storage.getItem(keys.withdrawTips);
+        this.firstReadSpiderVideoTask = await storage.getItem(keys.firstReadSpiderVideoTask);
         if (resetVersion === Config.AppVersionNumber) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);

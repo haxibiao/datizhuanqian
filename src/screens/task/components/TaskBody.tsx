@@ -57,9 +57,10 @@ const TaskBody = props => {
         } = TasksQuery;
 
         const {
-            taskConfig: { chuti, reward, cpc, invitation },
+            taskConfig: { chuti, reward, cpc, invitation, spider_video },
             taskConfig,
         } = config;
+        console.log('taskConfig', taskConfig);
         if (!loading && tasks.length > 0 && taskConfig) {
             // 新人任务
             const newUserTask = tasks.filter((elem, i) => {
@@ -114,11 +115,11 @@ const TaskBody = props => {
                 },
                 {
                     name: '采集视频赚钱',
-                    status: 1,
+                    status: Tools.syncGetter('status', spider_video),
                     taskStatus: 7,
-                    gold: 10,
-                    ticket: 0,
-                    contribute: 0,
+                    gold: Tools.syncGetter('gold', spider_video),
+                    ticket: Tools.syncGetter('ticket', spider_video),
+                    contribute: Tools.syncGetter('contribute', spider_video),
                     type: 7,
                     submit_name: '去采集',
                     details: `打开抖音视频点击分享按钮选择复制链接，回到答题赚钱即可触发视频采集，采集成功即可获取智慧点奖励`,

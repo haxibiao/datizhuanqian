@@ -11,6 +11,7 @@ export const keys = {
     taskCache: 'taskCache',
     userCache: 'userCache',
     withdrawTips: 'withdrawTips',
+    firstReadSpiderVideoTask: 'firstReadSpiderVideoTask',
     BeginnerGuidance_VideoTask: 'BeginnerGuidance_VideoTask',
     BeginnerGuidance_Answer: 'BeginnerGuidance_Answer',
     BeginnerGuidance_InputQuestion: 'BeginnerGuidance_InputQuestion',

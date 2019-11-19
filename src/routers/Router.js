@@ -32,6 +32,7 @@ import WithdrawApplyScreen from '../screens/withdraw/WithdrawApply';
 // 任务
 import CpcTaskScreen from '../screens/task/CpcTask';
 import SubmitTaskScreen from '../screens/task/SubmitTask';
+import SpiderVideoTaskScreen from '../screens/task/SpiderVideoTask';
 
 // 排行
 import RankScreen from '../screens/rank';
@@ -170,6 +171,9 @@ export default {
     },
     SubmitTask: {
         screen: SubmitTaskScreen,
+    },
+    SpiderVideoTask: {
+        screen: SpiderVideoTaskScreen,
     },
     // 排行
     Rank: {

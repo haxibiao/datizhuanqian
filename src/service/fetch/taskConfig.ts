@@ -14,6 +14,6 @@ export default function getTaskConfig(props: Props) {
             callback && callback(result);
         })
         .catch(err => {
-            console.log('err', err);
+            console.log('err getTaskConfig', err);
         });
 }
