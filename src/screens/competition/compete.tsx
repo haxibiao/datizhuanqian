@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { StyleSheet, ImageBackground, View, Text, ScrollView, BackHandler } from 'react-native';
-import { PageContainer, Avatar, Row } from 'components';
+import { PageContainer, Row } from 'components';
 import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
 import { observer, app } from 'store';
-import CountDown from './components/CountDown';
+import RepeatCountDown from './components/RepeatCountDown';
 import QuestionBody from './components/QuestionBody';
 import Progress from './components/Progress';
 import Competitor from './components/Competitor';
 import LeaveGameOverlay from './components/LeaveGameOverlay';
+import Ready from './components/Ready';
 import { useQuery, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
@@ -16,36 +17,31 @@ const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
 
 const compete = observer(props => {
-    const { navigation } = props;
-    const [subTime, setSubTime] = useState(10); //倒计时
-    const [index, setIndex] = useState(0); //题目下标值
-    const [score, setScore] = useState(0); //分数
-    const [fadeIn, setFadeIn] = useState(true); //
-    const [answerStatus, setAnswerStatus] = useState('');
-
+    const navigation = useNavigation();
     const game = navigation.getParam('game');
     const store = navigation.getParam('store');
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setSubTime(prevCount => prevCount - 1);
-        }, 1000);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+    const [index, setIndex] = useState(0); // 题目下标值
+    const [answerStatus, setAnswerStatus] = useState('');
 
-    useEffect(() => {
-        if (subTime === 0) {
-            if (index + 1 === data.gameQuestions.length) {
-                handlerResult();
-            } else {
-                resetState();
+    const { data, error } = useQuery(GQL.GameQuestionsQuery, {
+        variables: {
+            game_id: game.id,
+        },
+    });
+
+    const gameQuestions = useMemo(() => Tools.syncGetter('gameQuestions', data), [data]);
+
+    const selectOption = useCallback(
+        (value: any) => {
+            if (gameQuestions[index].answer === value) {
+                store.calculateScore(gameQuestions[index].gold * 10);
             }
-        }
-    }, [subTime]);
+        },
+        [gameQuestions, index],
+    );
 
-    const handlerResult = () => {
+    const handlerResult = useCallback(() => {
         store.leaveGame();
         let result;
         if (store.score[0] > store.score[1]) {
@@ -59,30 +55,12 @@ const compete = observer(props => {
             result,
             store,
         });
-    };
+    }, []);
 
-    const { data, loading, error } = useQuery(GQL.GameQuestionsQuery, {
-        variables: {
-            game_id: game.id,
-        },
-    });
-
-    const selectOption = (value: any) => {
-        if (data.gameQuestions[index].answer === value) {
-            // setScore(data.gameQuestions[index].gold * 10);
-            store.calculateScore(data.gameQuestions[index].gold * 10);
-        }
-    };
-
-    const resetState = () => {
-        setFadeIn(false);
-        setIndex(index + 1);
-        setSubTime(10);
-        setTimeout(() => {
-            setFadeIn(true);
-        }, 100);
+    const resetState = useCallback(() => {
+        setIndex(i => i + 1);
         setAnswerStatus('');
-    };
+    }, []);
 
     useEffect(() => {
         const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -106,9 +84,10 @@ const compete = observer(props => {
         };
     }, []);
 
-    if (loading) {
-        return <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')} />;
+    if (!gameQuestions) {
+        return <Ready />;
     }
+
     return (
         <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
             <PageContainer
@@ -118,11 +97,16 @@ const compete = observer(props => {
                     backgroundColor: 'transparent',
                 }}>
                 <ScrollView>
-                    <Progress questions={data.gameQuestions} index={index} />
+                    <Progress questions={gameQuestions} index={index} />
                     <View style={styles.userContainer}>
-                        <Competitor fadeIn={fadeIn} user={app.me} compete theLeft />
-                        <CountDown countDown={subTime} />
-                        <Competitor fadeIn={fadeIn} user={store.rival} compete />
+                        <Competitor user={app.me} compete theLeft />
+                        <RepeatCountDown
+                            duration={10}
+                            repeat={gameQuestions.length}
+                            callback={handlerResult}
+                            resetState={resetState}
+                        />
+                        <Competitor user={store.rival} compete />
                     </View>
                     <Row style={styles.textWrap}>
                         <Text style={styles.name}>{app.me.name}</Text>
@@ -133,7 +117,7 @@ const compete = observer(props => {
                         <Text style={styles.score}>{store.score[1]}</Text>
                     </Row>
                     <QuestionBody
-                        question={data.gameQuestions[index]}
+                        question={gameQuestions[index]}
                         selectOption={selectOption}
                         setAnswerStatus={setAnswerStatus}
                         answerStatus={answerStatus}

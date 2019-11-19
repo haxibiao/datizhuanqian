@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text } from 'react-native';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
-import { observer, app } from 'store';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
-const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
 
 interface Props {
-    countDown: Number;
+    duration: number;
+    repeat: number;
+    resetState: Function;
+    callback: Function;
 }
 
-const CountDown = (props: Props) => {
-    const { countDown } = props;
+const RepeatCountDown = (props: Props) => {
+    const { duration, repeat, resetState, callback } = props;
+    const [subTime, setSubTime] = useState(duration);
+    const count = useRef(1);
+
+    useEffect(() => {
+        const timer: number = setInterval(() => {
+            if (subTime === 0 && repeat === count.current) {
+                callback();
+            } else if (subTime === 0) {
+                count.current++;
+                resetState();
+                setSubTime(duration);
+            } else {
+                setSubTime(prevCount => prevCount - 1);
+            }
+        }, 1000);
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
     return (
         <View
             style={{
@@ -49,7 +70,7 @@ const CountDown = (props: Props) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                        <Text style={{ color: Theme.white }}>{countDown}</Text>
+                        <Text style={{ color: Theme.white }}>{subTime}</Text>
                     </View>
                 </View>
             </View>
@@ -57,4 +78,4 @@ const CountDown = (props: Props) => {
     );
 };
 
-export default CountDown;
+export default RepeatCountDown;
