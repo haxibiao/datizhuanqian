@@ -32,7 +32,7 @@ const CommentInput = props => {
         const prev = cache.readQuery({
             query: GQL.questionCommentsQuery,
             variables: {
-                commentable_type: isPost ? 'videos' : 'questions',
+                commentable_type: isPost ? 'posts' : 'questions',
                 commentable_id: questionId,
                 limit: 10,
             },
@@ -41,7 +41,7 @@ const CommentInput = props => {
         cache.writeQuery({
             query: GQL.questionCommentsQuery,
             variables: {
-                commentable_type: isPost ? 'videos' : 'questions',
+                commentable_type: isPost ? 'posts' : 'questions',
                 commentable_id: questionId,
                 limit: 10,
             },
@@ -83,7 +83,7 @@ const CommentInput = props => {
             variables: {
                 commentable_id: questionId,
                 comment_id: comment_id,
-                commentable_type: comment_id ? 'comments' : isPost ? 'videos' : 'questions',
+                commentable_type: comment_id ? 'comments' : isPost ? 'posts' : 'questions',
                 content: content && content.trim(),
             },
             update: comment_id ? updateRepliesQuery : updateCommentsQuery,
@@ -142,7 +142,7 @@ const CommentInput = props => {
                 </Row>
                 <TouchFeedback disabled={content.length < 1} style={styles.touchItem} onPress={createCommentHandler}>
                     <Iconfont
-                        name="plane-fill"
+                        name='plane-fill'
                         size={PxFit(22)}
                         color={content.length > 0 ? Theme.boyColor : Theme.subTextColor}
                     />

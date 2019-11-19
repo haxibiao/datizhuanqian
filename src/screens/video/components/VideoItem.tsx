@@ -47,7 +47,7 @@ export default observer(props => {
             }
         }
     };
-    if (media.is_ad_video && adShow && !ISIOS && config.enableDrawFeed) {
+    if (media.is_ad && adShow && !ISIOS && config.enableDrawFeed) {
         return (
             <View style={{ height: app.viewportHeight }}>
                 <ttad.DrawFeedAd
@@ -85,9 +85,14 @@ export default observer(props => {
 
     return (
         <View style={{ height: app.viewportHeight }}>
-            {media.cover && (
+            {media.video.cover && (
                 <View style={styles.cover}>
-                    <Image style={styles.curtain} source={{ uri: media.cover }} resizeMode="cover" blurRadius={4} />
+                    <Image
+                        style={styles.curtain}
+                        source={{ uri: media.video.cover }}
+                        resizeMode='cover'
+                        blurRadius={4}
+                    />
                     <View style={styles.mask} />
                 </View>
             )}
@@ -95,12 +100,12 @@ export default observer(props => {
             <View style={styles.videoContent}>
                 <View>
                     <SafeText shadowText={true} style={styles.name}>
-                        @{Tools.syncGetter('question.user.name', media)}
+                        @{Tools.syncGetter('user.name', media)}
                     </SafeText>
                 </View>
                 <View>
                     <SafeText shadowText={true} style={styles.body} numberOfLines={3}>
-                        {Tools.syncGetter('question.description', media)}
+                        {Tools.syncGetter('description', media)}
                     </SafeText>
                 </View>
             </View>

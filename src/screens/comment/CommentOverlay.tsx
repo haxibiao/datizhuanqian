@@ -139,7 +139,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
             <View style={styles.header}>
                 <Text style={styles.headerText}>{count_comments > 0 && count_comments + ' 条'}评论</Text>
                 <TouchFeedback style={styles.close} onPress={slideDown}>
-                    <Iconfont name="close" size={PxFit(20)} color={Theme.defaultTextColor} />
+                    <Iconfont name='close' size={PxFit(20)} color={Theme.defaultTextColor} />
                 </TouchFeedback>
             </View>
         );
@@ -147,7 +147,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
 
     const renderContent = (comments, fetchMore, loading) => {
         if (!comments) {
-            return <Placeholder type="comment" quantity={5} />;
+            return <Placeholder type='comment' quantity={5} />;
         }
         if (comments && comments.length === 0) {
             return <StatusView.EmptyView />;
@@ -160,7 +160,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                 onScrollBeginDrag={() => {
                     Keyboard.dismiss();
                 }}
-                keyboardShouldPersistTaps="always"
+                keyboardShouldPersistTaps='always'
                 keyExtractor={(item, index) => item.id.toString()}
                 renderItem={({ item, index }) => {
                     return (
@@ -224,7 +224,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
 
     const { data, loading, error, refetch, fetchMore } = useQuery(GQL.questionCommentsQuery, {
         variables: {
-            commentable_type: isPost ? 'videos' : 'questions',
+            commentable_type: isPost ? 'posts' : 'questions',
             commentable_id: Tools.syncGetter('id', question),
             limit: 10,
             childLimit: childLimit,

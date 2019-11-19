@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
 import { observer, app } from 'store';
@@ -19,13 +19,14 @@ export default observer(props => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const commentRef = useRef();
+    const [lastScrollAt, setLastScrollAt] = useState(new Date().getTime());
     const config = useRef({
         waitForInteraction: true,
         viewAreaCoveragePercentThreshold: 95,
     });
-    const question = useMemo(() => {
+    const post = useMemo(() => {
         const activeItem = VideoStore.dataSource[VideoStore.viewableItemIndex >= 0 ? VideoStore.viewableItemIndex : 0];
-        return activeItem ? activeItem.question : {};
+        return activeItem ? activeItem : {};
     }, [VideoStore.dataSource, VideoStore.viewableItemIndex]);
 
     const onLayout = useCallback(event => {
@@ -47,8 +48,8 @@ export default observer(props => {
 
     const VideosQuery = useCallback(() => {
         return client.query({
-            query: GQL.VideosQuery,
-            variables: { offset: VideoStore.dataSource.length, limit: 5 },
+            query: GQL.HotPostsQuery,
+            variables: { offset: VideoStore.dataSource.length, limit: 6 },
             fetchPolicy: 'network-only',
         });
     }, [client]);
@@ -56,12 +57,14 @@ export default observer(props => {
     const fetchData = useCallback(async () => {
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
-        const videoSource = Tools.syncGetter('data.videos', result);
+        console.log('result :', result, error);
+        const videoSource = Tools.syncGetter('data.posts', result);
         if (error) {
             VideoStore.isError = true;
         } else {
             if (Array.isArray(videoSource) && videoSource.length > 0) {
                 VideoStore.addSource(videoSource);
+                VideoStore.addVisit(videoSource[0]);
             } else {
                 VideoStore.isFinish = true;
             }
@@ -77,12 +80,35 @@ export default observer(props => {
 
     const onMomentumScrollEnd = useCallback(
         event => {
-            if (VideoStore.dataSource.length - VideoStore.viewableItemIndex <= 3) {
-                fetchData();
+            let currentScroolAt = new Date().getTime();
+            if (currentScroolAt - lastScrollAt < 1500) {
+                return;
+            }
+            setLastScrollAt(currentScroolAt);
+            VideoStore.addVisit(VideoStore.dataSource[VideoStore.viewableItemIndex]);
+            if (VideoStore.dataSource.length - VideoStore.viewableItemIndex <= 2) {
+                reportData();
             }
         },
-        [fetchData],
+        [fetchData, lastScrollAt],
     );
+
+    const reportData = () => {
+        client
+            .mutate({
+                mutation: GQL.SaveVisitsMutation,
+                variables: { visits: VideoStore.visits },
+            })
+            .then(data => {
+                console.log('data', data);
+                VideoStore.visits = [];
+                fetchData();
+            })
+            .catch(err => {
+                console.log('err :', err);
+                fetchData();
+            });
+    };
 
     useEffect(() => {
         const navWillFocusListener = props.navigation.addListener('willFocus', () => {
@@ -94,7 +120,7 @@ export default observer(props => {
             });
 
             service.dataReport({
-                data: { category: '用户行为', action: 'user_click_video_screen_', name: '用户点击进入学习视频页' },
+                data: { category: '用户行为', action: 'user_click_video_screen', name: '用户点击进入学习视频页' },
                 callback: (result: any) => {
                     console.warn('result', result);
                 },
@@ -125,7 +151,7 @@ export default observer(props => {
                 bounces={false}
                 scrollsToTop={false}
                 showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="always"
+                keyboardShouldPersistTaps='always'
                 pagingEnabled={true}
                 removeClippedSubviews={true}
                 keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
@@ -149,7 +175,7 @@ export default observer(props => {
                 <RewardProgress />
             </View>
 
-            <CommentOverlay ref={commentRef} question={question} />
+            <CommentOverlay ref={commentRef} question={post} isPost />
         </View>
     );
 });

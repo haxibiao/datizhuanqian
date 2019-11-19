@@ -31,24 +31,24 @@ export default observer((props: Props) => {
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
-            likable_id: Tools.syncGetter('question.id', media),
-            likable_type: 'QUESTION',
+            likable_id: Tools.syncGetter('id', media),
+            likable_type: 'POST',
         },
     });
 
     const likeHandler = _.debounce(async function() {
         const [error] = await exceptionCapture(likeArticle);
         if (error) {
-            media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
-            media.question.liked = !media.question.liked;
+            media.liked ? media.count_likes-- : media.count_likes++;
+            media.liked = !media.liked;
             Toast.show({ content: '操作失败' });
         }
     }, 500);
 
     function toggleLike(): void {
         if (TOKEN) {
-            media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
-            media.question.liked = !media.question.liked;
+            media.liked ? media.count_likes-- : media.count_likes++;
+            media.liked = !media.liked;
         } else {
             navigation.navigate('Login');
         }
@@ -60,7 +60,7 @@ export default observer((props: Props) => {
             likeHandler();
         }
         firstMount.current = false;
-    }, [media.question.liked]);
+    }, [media.liked]);
 
     const scale = animation.interpolate({
         inputRange: [1, 1.1, 1.2],
@@ -69,12 +69,9 @@ export default observer((props: Props) => {
     return (
         <Animated.View style={{ transform: [{ scale }] }}>
             <TouchableOpacity onPress={toggleLike}>
-                <Image
-                    source={media.question.liked ? imageSource.liked : imageSource.unlike}
-                    style={styles.imageStyle}
-                />
+                <Image source={media.liked ? imageSource.liked : imageSource.unlike} style={styles.imageStyle} />
                 <SafeText style={styles.countLikes} shadowText={true}>
-                    {media.question.count_likes}
+                    {media.count_likes}
                 </SafeText>
             </TouchableOpacity>
         </Animated.View>

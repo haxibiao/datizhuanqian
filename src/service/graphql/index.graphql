@@ -11,6 +11,7 @@
 #import './withdraw/index.graphql'
 #import './reward/index.graphql'
 #import './game/index.graphql'
+#import './post/index.graphql'
 
 query me {
     user {

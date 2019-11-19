@@ -80,60 +80,6 @@ mutation resolveDouyinVideo($share_link: String!) {
     }
 }
 
-# 视频流列表
-query MyVideosQuery($type: VideoTypeEnum, $limit: Int, $offset: Int) {
-    videos(type: $type, limit: $limit, offset: $offset) {
-        id
-        width
-        height
-        url
-        cover
-        is_ad_video
-        question {
-            id
-            gold
-            description
-            count_likes
-            count_comments
-            liked
-            created_at
-            count
-            submit
-            video {
-                id
-                width
-                height
-                url
-                cover
-                is_ad_video
-            }
-            user {
-                id
-                name
-                avatar
-                followed_user_status
-                profile {
-                    age
-                }
-                level {
-                    id
-                    level
-                }
-            }
-            image {
-                id
-                width
-                height
-                path
-            }
-            category {
-                id
-                name
-            }
-        }
-    }
-}
-
 #爬虫视频列表
 query SpidersQuery($limit: Int, $offset: Int) {
     spiders(limit: $limit, offset: $offset) {

@@ -1,0 +1,33 @@
+# 学习视频列表
+query HotPostsQuery($limit: Int!, $offset: Int!, $user_id: Int) {
+    posts(user_id: $user_id, limit: $limit, offset: $offset) {
+        id
+        description
+        content
+        count_likes
+        count_comments
+        liked
+        is_ad
+        video {
+            id
+            width
+            height
+            url
+            cover
+            is_ad_video
+        }
+        user {
+            id
+            name
+            avatar
+            followed_user_status
+        }
+    }
+}
+
+# 上报已看视频
+mutation SaveVisitsMutation($visits: [VisitsInputType]) {
+    saveVisits(visits: $visits) {
+        id
+    }
+}

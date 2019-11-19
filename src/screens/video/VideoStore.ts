@@ -24,6 +24,12 @@ interface Video {
     url: string;
     cover?: string;
     question: Question;
+    is_ad: boolean;
+}
+
+interface Visit {
+    visited_type: string;
+    visited_id: number;
 }
 
 class VideoStore {
@@ -39,10 +45,30 @@ class VideoStore {
     @observable public viewableItemIndex: number = -1;
     @observable public rewardProgress: number = 0;
     @observable public getReward = [];
+    @observable public visits: Visit[] = [];
 
     @action.bound
     public addSource(source: Video[]) {
         this.dataSource = this.dataSource.concat(source);
+    }
+
+    @action.bound
+    public addVisit(source: Video) {
+        const visit = {
+            visited_type: 'posts',
+            visited_id: source.id,
+        };
+        if (!source.is_ad) {
+            for (let i = 0, count = this.visits.length; i < count; i++) {
+                let visitedType = this.visits[i].visited_type;
+                let visitedId = this.visits[i].visited_id;
+                if (visit.visited_id === visitedId && visit.visited_type === visitedType) {
+                    return;
+                }
+            }
+            this.visits = this.visits.concat(visit);
+            console.log('visits', this.visits);
+        }
     }
 
     @action.bound

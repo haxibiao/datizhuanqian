@@ -15,10 +15,10 @@ export default observer(props => {
             <View style={styles.itemWrap}>
                 <TouchableOpacity
                     onPress={() => {
-                        Tools.navigate('User', { user: Tools.syncGetter('question.user', media) });
+                        Tools.navigate('User', { user: Tools.syncGetter('user', media) });
                     }}>
                     <Avatar
-                        source={Tools.syncGetter('question.user.avatar', media)}
+                        source={Tools.syncGetter('user.avatar', media)}
                         size={PxFit(52)}
                         style={{ borderColor: '#fff', borderWidth: 1 }}
                     />
@@ -31,7 +31,7 @@ export default observer(props => {
                 <TouchableOpacity onPress={VideoStore.showComment}>
                     <Image source={require('@src/assets/images/comment_item.png')} style={styles.imageStyle} />
                     <SafeText shadowText={true} style={styles.countText}>
-                        {Tools.NumberFormat(Tools.syncGetter('question.count_comments', media))}
+                        {Tools.NumberFormat(Tools.syncGetter('count_comments', media))}
                     </SafeText>
                 </TouchableOpacity>
             </View>

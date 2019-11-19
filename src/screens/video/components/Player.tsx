@@ -20,8 +20,8 @@ export default observer(props => {
     const [paused, setPause] = useState(true);
     const [loading, setLoaded] = useState(true);
     const resizeMode = useMemo(() => {
-        const videoHeight = media.height;
-        const videoWidth = media.width;
+        const videoHeight = media.video.height;
+        const videoWidth = media.video.width;
         return videoHeight > videoWidth * 1.3 ? 'cover' : 'contain';
     }, [media]);
 
@@ -30,9 +30,9 @@ export default observer(props => {
     }, []);
 
     const giveALike = useCallback(() => {
-        if (TOKEN && !media.question.liked) {
-            media.question.liked ? media.question.count_likes-- : media.question.count_likes++;
-            media.question.liked = !media.question.liked;
+        if (TOKEN && !media.liked) {
+            media.liked ? media.count_likes-- : media.count_likes++;
+            media.liked = !media.liked;
         }
     }, [TOKEN, media]);
     // 双击点赞、单击暂停视频
@@ -97,7 +97,7 @@ export default observer(props => {
                     resizeMode={resizeMode}
                     paused={paused}
                     source={{
-                        uri: syncGetter('url', media),
+                        uri: syncGetter('video.url', media),
                     }}
                     style={styles.fullScreen}
                     rate={1} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
@@ -107,13 +107,13 @@ export default observer(props => {
                     disableFocus={true}
                     useTextureView={false}
                     repeat={true} // 是否重复播放
-                    ignoreSilentSwitch="obey"
+                    ignoreSilentSwitch='obey'
                     playWhenInactive={false}
                     playInBackground={false}
                     {...videoEvents}
                 />
 
-                {paused && <Iconfont name="paused" size={PxFit(70)} color="rgba(255,255,255,0.8)" />}
+                {paused && <Iconfont name='paused' size={PxFit(70)} color='rgba(255,255,255,0.8)' />}
                 <View style={styles.bottom}>
                     <VideoLoading loading={loading} />
                     <View style={[styles.progress, { width: (progress / duration.current) * 100 + '%' }]} />
