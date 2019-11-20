@@ -55,6 +55,9 @@ export default observer(props => {
     }, [client]);
 
     const fetchData = useCallback(async () => {
+        if (VideoStore.isLoadMore) {
+            return;
+        }
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
         console.log('result :', result, error);
