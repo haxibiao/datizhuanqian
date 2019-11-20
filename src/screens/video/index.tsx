@@ -49,7 +49,7 @@ export default observer(props => {
     const VideosQuery = useCallback(() => {
         return client.query({
             query: GQL.HotPostsQuery,
-            variables: { offset: VideoStore.dataSource.length, limit: 6 },
+            variables: { offset: VideoStore.dataSource.length, limit: 10 },
             fetchPolicy: 'network-only',
         });
     }, [client]);
