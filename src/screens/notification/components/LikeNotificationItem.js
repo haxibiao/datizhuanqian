@@ -17,8 +17,16 @@ class CommentNotification extends Component {
     siwthType = notification => {
         if (Tools.syncGetter('like.comment', notification)) {
             this.content = { tips: '赞了我的评论', body: Tools.syncGetter('like.comment.content', notification) };
-        } else {
-            this.content = { tips: '赞了我的题目', body: Tools.syncGetter('like.question.description', notification) };
+        } else if (Tools.syncGetter('like.question', notification)) {
+            this.content = {
+                tips: '赞了我的题目',
+                body: Tools.syncGetter('like.question.description', notification),
+            };
+        } else if (Tools.syncGetter('like.post', notification)) {
+            this.content = {
+                tips: '赞了我的动态',
+                body: Tools.syncGetter('like.post.description', notification),
+            };
         }
     };
 
@@ -28,8 +36,8 @@ class CommentNotification extends Component {
             navigation.navigate('Question', {
                 question: Tools.syncGetter('like.question', notification),
             });
-        } else {
-            // navigation.navigate('VideoPost', { videos: [spider] });
+        } else if (Tools.syncGetter('like.post', notification)) {
+            navigation.navigate('VideoPost', { videos: [Tools.syncGetter('like.post', notification)] });
         }
     };
 
@@ -85,6 +93,33 @@ class CommentNotification extends Component {
 
                                 <Text style={styles.commenTime}>
                                     {Tools.syncGetter('like.comment.time_ago', notification)} {this.content.tips}
+                                </Text>
+                            </View>
+                        </TouchFeedback>
+                        <View style={styles.bottom}>
+                            <Text>{this.content.body}</Text>
+                        </View>
+                    </TouchFeedback>
+                );
+            } else if (Tools.syncGetter('like.post', notification)) {
+                return (
+                    <TouchFeedback style={styles.container}>
+                        <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
+                            <Avatar source={{ uri: Tools.syncGetter('avatar', user) }} size={34} />
+                            <View style={styles.user}>
+                                <View style={styles.userTop}>
+                                    <Text
+                                        style={{
+                                            color: Theme.black,
+                                        }}>
+                                        {Tools.syncGetter('name', user)}
+                                    </Text>
+                                    <UserTitle user={user} />
+                                    <GenderLabel user={user} />
+                                </View>
+
+                                <Text style={styles.commenTime}>
+                                    {Tools.syncGetter('like.post.created_at', notification)} {this.content.tips}
                                 </Text>
                             </View>
                         </TouchFeedback>

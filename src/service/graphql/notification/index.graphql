@@ -123,6 +123,30 @@ query likeNotificationsQuery($offset: Int, $limit: Int, $filter: [NotificationEn
         type
         like {
             id
+            post {
+                id
+                description
+                content
+                count_likes
+                count_comments
+                liked
+                is_ad
+                created_at
+                video {
+                    id
+                    width
+                    height
+                    url
+                    cover
+                    is_ad_video
+                }
+                user {
+                    id
+                    name
+                    avatar
+                    followed_user_status
+                }
+            }
             question {
                 id
                 description

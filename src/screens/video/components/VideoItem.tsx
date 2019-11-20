@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { SafeText, RewardTipsOverlay } from 'components';
+import { SafeText, RewardTipsOverlay, Row } from 'components';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ttad } from 'native';
 import { observer, app, config } from 'store';
@@ -98,11 +98,15 @@ export default observer(props => {
             )}
             <Player media={media} index={index} />
             <View style={styles.videoContent}>
-                <View>
+                <Row>
                     <SafeText shadowText={true} style={styles.name}>
                         @{Tools.syncGetter('user.name', media)}
                     </SafeText>
-                </View>
+                    <SafeText shadowText={true} style={styles.time}>{` ${Tools.syncGetter(
+                        'created_at',
+                        media,
+                    )}`}</SafeText>
+                </Row>
                 <View>
                     <SafeText shadowText={true} style={styles.body} numberOfLines={3}>
                         {Tools.syncGetter('description', media)}
@@ -144,6 +148,10 @@ const styles = StyleSheet.create({
         top: 0,
     },
     name: { color: 'rgba(255,255,255,0.9)', fontSize: PxFit(16), fontWeight: 'bold' },
+    time: {
+        color: Theme.grey,
+        fontSize: PxFit(15),
+    },
     videoContent: {
         bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(80),
         left: PxFit(Theme.itemSpace),

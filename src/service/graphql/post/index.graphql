@@ -1,5 +1,5 @@
 # 学习视频列表
-query HotPostsQuery($limit: Int!, $offset: Int!, $user_id: Int) {
+query HotPostsQuery($limit: Int!, $offset: Int, $user_id: Int) {
     posts(user_id: $user_id, limit: $limit, offset: $offset) {
         id
         description
@@ -8,6 +8,7 @@ query HotPostsQuery($limit: Int!, $offset: Int!, $user_id: Int) {
         count_comments
         liked
         is_ad
+        created_at
         video {
             id
             width
