@@ -152,10 +152,10 @@ function getReward(props: Props, video: Video) {
         rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
     }
     if (type === 'Task' && video.ad_click && video.video_play) {
-        rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //激励视频查看详情
+        rewardType = 'CLICK_REWARD_VIDEO'; //激励视频查看详情
     }
     if (type === 'Task' && !video.ad_click && video.video_play) {
-        rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //激励视频未看详情
+        rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
     }
 
     const refetchQuery =

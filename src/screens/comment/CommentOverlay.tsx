@@ -37,11 +37,12 @@ import { BoxShadow } from 'react-native-shadow';
 
 const CommentOverlay = React.forwardRef((props, ref) => {
     const { question, isPost, isSpider } = props;
+
     const [offset, setOffset] = useState(new Animated.Value(0));
     const [visible, setVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [finished, setFinished] = useState(false);
-    const [count_comments, setCount_comments] = useState(question && question.count_comments);
+    const [count_comments, setCount_comments] = useState(question.count_comments || 0);
     const [reply, setReply] = useState(null);
     const [comment_id, setComment_id] = useState(null);
     const [childLimit, setChildLimit] = useState(1);
@@ -130,7 +131,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                 offset: 0,
                 animated: true,
             });
-
+        console.log('onCommented', question, count_comments);
         setCount_comments(count_comments + 1);
     };
 
@@ -234,7 +235,6 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     });
 
     const comments = Tools.syncGetter('comments', data);
-    console.log('show overlay', question, visible, error);
 
     if (!visible || !question || error) {
         return <View />;

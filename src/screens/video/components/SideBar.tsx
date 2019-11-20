@@ -10,7 +10,7 @@ import VideoStore from '../VideoStore';
 export default observer(props => {
     const { media } = props;
     const user = Tools.syncGetter('user', media);
-    console.log("user.roles.indexOf('STAR_USER')", user, user.roles.indexOf('STAR_USER'));
+
     return (
         <View style={styles.sideBar}>
             <View style={styles.itemWrap}>
