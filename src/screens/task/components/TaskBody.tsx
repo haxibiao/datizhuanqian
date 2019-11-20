@@ -38,8 +38,8 @@ const TaskBody = props => {
         //构建tasklist
         constructTask();
         //更新缓存
-        if (TasksQuery && TasksQuery.tasks) {
-            app.updateTaskCache(TasksQuery.tasks);
+        if (TasksQuery && TasksQuery.data && TasksQuery.data.tasks) {
+            app.updateTaskCache(TasksQuery.data.tasks);
         }
         //命中刷新
         const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
@@ -51,16 +51,21 @@ const TaskBody = props => {
     }, [TasksQuery.loading, TasksQuery.refetch]);
 
     const constructTask = () => {
-        const {
-            data: { tasks },
-            loading,
-        } = TasksQuery;
+        const { loading } = TasksQuery;
+
+        let tasks = Tools.syncGetter('data.tasks', TasksQuery);
+        if (!tasks) {
+            if (app.taskCache) {
+                tasks = app.taskCache;
+            } else {
+                return null;
+            }
+        }
 
         const {
             taskConfig: { chuti, reward, cpc, invitation, spider_video },
             taskConfig,
         } = config;
-        console.log('taskConfig', taskConfig);
         if (!loading && tasks.length > 0 && taskConfig) {
             // 新人任务
             const newUserTask = tasks.filter((elem, i) => {
