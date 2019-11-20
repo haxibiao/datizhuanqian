@@ -9,7 +9,8 @@ import VideoStore from '../VideoStore';
 
 export default observer(props => {
     const { media } = props;
-
+    const user = Tools.syncGetter('user', media);
+    console.log("user.roles.indexOf('STAR_USER')", user, user.roles.indexOf('STAR_USER'));
     return (
         <View style={styles.sideBar}>
             <View style={styles.itemWrap}>
@@ -22,6 +23,12 @@ export default observer(props => {
                         size={PxFit(52)}
                         style={{ borderColor: '#fff', borderWidth: 1 }}
                     />
+                    {user.roles.indexOf('STAR_USER') >= 0 ? (
+                        <Image
+                            source={require('@src/assets/images/VIP.png')}
+                            style={{ width: PxFit(15), height: PxFit(15), position: 'absolute', bottom: 0, right: 0 }}
+                        />
+                    ) : null}
                 </TouchableOpacity>
             </View>
             <View style={styles.itemWrap}>

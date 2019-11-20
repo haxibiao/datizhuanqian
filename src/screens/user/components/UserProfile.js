@@ -24,9 +24,29 @@ class UserProfile extends Component {
         });
     };
 
+    construct = user => {
+        console.log('user', user.roles, user.roles.indexOf('ROOT_USER'));
+        if (user.roles.indexOf('ROOT_USER') >= 0) {
+            this.sub_name = '答题赚钱 官方账号';
+        } else if (user.roles.indexOf('EDITOR_USER') >= 0) {
+            this.sub_name = '答题赚钱 官方小编';
+        } else if (user.roles.indexOf('STAR_USER') >= 0) {
+            this.sub_name = '优质内容作者';
+        } else if (user.roles.indexOf('MODERATOR_USER') >= 0) {
+            this.sub_name = '答题版主';
+        } else if (user.roles.indexOf('NORMAL_USER') >= 0) {
+            this.sub_name = '普通答友';
+        } else {
+            this.sub_name = '普通答友';
+        }
+    };
+
     render() {
         let { user, orderByHot, switchOrder, hasQuestion, navigation } = this.props;
         let isSelf = app.me.id === user.id;
+
+        this.construct(user);
+
         return (
             <View style={styles.userInfoContainer}>
                 <View style={styles.main}>
@@ -79,17 +99,23 @@ class UserProfile extends Component {
                     </View>
                 </View>
                 <View style={styles.bottom}>
-                    {user.is_admin ? (
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: -6, paddingBottom: 10 }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            // marginLeft: -6,
+                            paddingBottom: 10,
+                        }}>
+                        {this.sub_name !== '普通答友' && (
                             <Image
                                 source={require('../../../assets/images/admin.png')}
-                                style={{ height: PxFit(13), width: PxFit(13), marginHorizontal: PxFit(5) }}
+                                style={{ height: PxFit(13), width: PxFit(13), marginRight: PxFit(5) }}
                             />
-                            <Text style={styles.introduction} numberOfLines={1}>
-                                {user.is_admin ? '答题赚钱 官方账号' : user.profile.sub_name}
-                            </Text>
-                        </View>
-                    ) : null}
+                        )}
+                        <Text style={styles.introduction} numberOfLines={1}>
+                            {this.sub_name}
+                        </Text>
+                    </View>
 
                     {user.profile.sub_name ? (
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: -6, paddingBottom: 10 }}>
@@ -118,7 +144,7 @@ class UserProfile extends Component {
                                     {orderByHot ? '热门' : '最新'}
                                 </Text>
                                 <Iconfont
-                                    name="sort"
+                                    name='sort'
                                     size={PxFit(15)}
                                     style={{ marginTop: PxFit(1) }}
                                     color={orderByHot ? Theme.secondaryColor : Theme.correctColor}
