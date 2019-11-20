@@ -23,12 +23,12 @@ interface Props {
 }
 
 export default observer((props: Props) => {
-    const { question, isPost } = props;
+    const { question, isVideo } = props;
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
             likable_id: question.id,
-            likable_type: isPost ? 'VIDEO' : 'QUESTION',
+            likable_type: isVideo ? 'VIDEO' : 'QUESTION',
         },
     });
 

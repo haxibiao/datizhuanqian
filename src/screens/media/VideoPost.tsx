@@ -130,7 +130,7 @@ export default observer(props => {
                 scrollsToTop={false}
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={activeIndex}
-                keyboardShouldPersistTaps="always"
+                keyboardShouldPersistTaps='always'
                 pagingEnabled={true}
                 removeClippedSubviews={true}
                 keyExtractor={(item, index) => index.toString()}
@@ -151,7 +151,7 @@ export default observer(props => {
                 viewabilityConfig={config.current}
             />
 
-            <CommentOverlay ref={commentRef} question={question.video} isPost={true} />
+            <CommentOverlay ref={commentRef} question={question.video} isSpider={true} />
             <TouchFeedback
                 style={styles.header}
                 onPress={() => {

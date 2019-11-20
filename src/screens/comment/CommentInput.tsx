@@ -20,6 +20,7 @@ const CommentInput = props => {
         parent_comment_id,
         onCommented,
         isPost,
+        isSpider,
     } = props;
 
     const onChangeText = useCallback(value => {
@@ -32,7 +33,7 @@ const CommentInput = props => {
         const prev = cache.readQuery({
             query: GQL.questionCommentsQuery,
             variables: {
-                commentable_type: isPost ? 'posts' : 'questions',
+                commentable_type: isPost ? 'posts' : isSpider ? 'videos' : 'questions',
                 commentable_id: questionId,
                 limit: 10,
             },
@@ -41,7 +42,7 @@ const CommentInput = props => {
         cache.writeQuery({
             query: GQL.questionCommentsQuery,
             variables: {
-                commentable_type: isPost ? 'posts' : 'questions',
+                commentable_type: isPost ? 'posts' : isSpider ? 'videos' : 'questions',
                 commentable_id: questionId,
                 limit: 10,
             },
@@ -83,7 +84,7 @@ const CommentInput = props => {
             variables: {
                 commentable_id: questionId,
                 comment_id: comment_id,
-                commentable_type: comment_id ? 'comments' : isPost ? 'posts' : 'questions',
+                commentable_type: comment_id ? 'comments' : isPost ? 'posts' : isSpider ? 'videos' : 'questions',
                 content: content && content.trim(),
             },
             update: comment_id ? updateRepliesQuery : updateCommentsQuery,
@@ -112,6 +113,7 @@ const CommentInput = props => {
                       },
             },
             onError: error => {
+                console.log('error', error);
                 const content = error.message.replace('GraphQL error: ', '') || '评论失败';
                 Toast.show({ content });
             },

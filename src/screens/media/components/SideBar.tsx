@@ -20,7 +20,7 @@ export default observer(props => {
                 </TouchableOpacity>
             </View>
             <View style={styles.itemWrap}>
-                <Like question={video} isPost />
+                <Like question={video} isVideo />
             </View>
             <View style={styles.itemWrap}>
                 <TouchableOpacity onPress={VideoStore.showComment}>

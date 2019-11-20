@@ -36,7 +36,7 @@ import { BoxShadow } from 'react-native-shadow';
 // TODO: 评论模块需重构  满足新的hooks以及适配新的后端接口
 
 const CommentOverlay = React.forwardRef((props, ref) => {
-    const { question, isPost } = props;
+    const { question, isPost, isSpider } = props;
     const [offset, setOffset] = useState(new Animated.Value(0));
     const [visible, setVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -224,7 +224,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
 
     const { data, loading, error, refetch, fetchMore } = useQuery(GQL.questionCommentsQuery, {
         variables: {
-            commentable_type: isPost ? 'posts' : 'questions',
+            commentable_type: isPost ? 'posts' : isSpider ? 'videos' : 'questions',
             commentable_id: Tools.syncGetter('id', question),
             limit: 10,
             childLimit: childLimit,
@@ -284,6 +284,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                     switchReplyType={switchReplyType}
                     count_comments={count_comments}
                     isPost={isPost}
+                    isSpider={isSpider}
                 />
             </ScrollView>
         </View>

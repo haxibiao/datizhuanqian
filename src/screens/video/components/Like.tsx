@@ -37,7 +37,8 @@ export default observer((props: Props) => {
     });
 
     const likeHandler = _.debounce(async function() {
-        const [error] = await exceptionCapture(likeArticle);
+        const [error, result] = await exceptionCapture(likeArticle);
+        console.log('err', error, result);
         if (error) {
             media.liked ? media.count_likes-- : media.count_likes++;
             media.liked = !media.liked;

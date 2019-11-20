@@ -158,6 +158,7 @@ class app {
         const resetVersion = await storage.getItem(keys.resetVersion);
         this.withdrawTips = await storage.getItem(keys.withdrawTips);
         this.firstReadSpiderVideoTask = await storage.getItem(keys.firstReadSpiderVideoTask);
+
         if (resetVersion === Config.AppVersionNumber) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
