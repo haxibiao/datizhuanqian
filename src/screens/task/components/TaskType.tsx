@@ -5,8 +5,9 @@ import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
 import { BoxShadow } from 'react-native-shadow';
 import TaskItem from './TaskItem';
 import { playVideo } from 'common';
-import { config, app } from 'store';
+import { config, app, observer } from 'store';
 import { NavigationActions } from 'react-navigation';
+import { observable } from 'mobx';
 
 interface Props {
     tasks: Array<object>;
@@ -40,7 +41,7 @@ interface Level {
     level: Number;
 }
 
-const TaskType = (props: Props) => {
+const TaskType = observer((props: Props) => {
     const [taskTypeHeight, setTaskTypeHeight] = useState(70);
     const { typeName, tasks, userData, setLoading, setUnLoading } = props;
 
@@ -78,10 +79,10 @@ const TaskType = (props: Props) => {
                 Tools.navigate('Share');
             case 7:
                 if (app.firstReadSpiderVideoTask) {
-                    Tools.navigate('SpiderVideoTask');
-                    app.setReadSpiderVideoTask(false);
-                } else {
                     Linking.openURL('snssdk1128://');
+                } else {
+                    Tools.navigate('SpiderVideoTask');
+                    app.setReadSpiderVideoTask(true);
                 }
             //TODO： 唤起抖音   scheme可能存在一旦更改无法唤起的风险
             default:
@@ -131,7 +132,7 @@ const TaskType = (props: Props) => {
     } else {
         return null;
     }
-};
+});
 
 const shadowOpt = {
     width: SCREEN_WIDTH - PxFit(30),

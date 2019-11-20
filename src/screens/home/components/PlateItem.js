@@ -16,7 +16,7 @@ class PlateItem extends Component {
 
     onPress = () => {
         const { category, navigation } = this.props;
-        navigation.navigate('CompetitionCategories', { category, question_id: null });
+        navigation.navigate('Answer', { category, question_id: null });
     };
 
     render() {

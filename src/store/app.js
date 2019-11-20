@@ -8,7 +8,7 @@ class app {
     @observable login = false;
     @observable fetching = false;
     @observable contributeRuleRead = false;
-    @observable firstReadSpiderVideoTask = true;
+    @observable firstReadSpiderVideoTask = false;
     @observable echo = null;
     @observable resetVersion = 1;
     @observable userCache = null;
@@ -112,7 +112,7 @@ class app {
     // 记录已查看的版本更新提示
     @action.bound
     async setReadSpiderVideoTask(firstReadSpiderVideoTask) {
-        console.log('firstReadSpiderVideoTask', firstReadSpiderVideoTask);
+        this.firstReadSpiderVideoTask = firstReadSpiderVideoTask;
         await storage.setItem(keys.firstReadSpiderVideoTask, firstReadSpiderVideoTask);
     }
     // echo对象

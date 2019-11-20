@@ -81,7 +81,7 @@ export default observer(props => {
     const onMomentumScrollEnd = useCallback(
         event => {
             let currentScroolAt = new Date().getTime();
-            if (currentScroolAt - lastScrollAt < 1500) {
+            if (currentScroolAt - lastScrollAt < 1200) {
                 return;
             }
             setLastScrollAt(currentScroolAt);
