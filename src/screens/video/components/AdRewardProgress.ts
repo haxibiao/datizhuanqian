@@ -16,12 +16,14 @@ const AdRewardProgress = (focus: boolean) => {
     }, []);
 
     useEffect(() => {
-        if (timer.current) {
-            clearTimeout(timer.current);
-        }
         if (focus) {
             timer.current = setRewardProgress();
         }
+        return () => {
+            if (timer.current) {
+                clearTimeout(timer.current);
+            }
+        };
     }, [focus]);
 };
 
