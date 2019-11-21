@@ -11,6 +11,8 @@ import Player from './Player';
 import SideBar from './SideBar';
 import VideoStore from '../VideoStore';
 
+import service from 'service';
+
 export default observer(props => {
     const { media, index } = props;
     const [adShow, setAdShow] = useState(true);
@@ -45,6 +47,13 @@ export default observer(props => {
                     duration: 2000,
                 });
             }
+
+            service.dataReport({
+                data: { category: '广告点击', action: 'user_click_drawfeed_ad', name: '用户点击drawFeed广告' },
+                callback: (result: any) => {
+                    console.warn('result', result);
+                },
+            }); //上报drawFeed点击量
         }
     };
     if (media.is_ad && adShow && !ISIOS && config.enableDrawFeed) {

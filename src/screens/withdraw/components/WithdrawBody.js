@@ -63,22 +63,7 @@ class WithdrawBody extends Component {
         if (data.user.today_withdraw_left < amount && amount > 1) {
             TipsOverlay.show({
                 title: '日贡献不足',
-                content: (
-                    <TouchFeedback
-                        style={{ paddingTop: PxFit(10) }}
-                        onPress={() => {
-                            navigation.navigate('任务');
-                            playVideo({ navigation, type: 'Task' });
-                            TipsOverlay.hide();
-                        }}>
-                        <Text style={styles.tipsContent}>去做激励任务提升贡献值！</Text>
-                        {config.enableBanner && (
-                            <View>
-                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
-                            </View>
-                        )}
-                    </TouchFeedback>
-                ),
+                content: <View>{config.enableBanner && <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
                 onConfirm: () => {
                     navigation.navigate('任务');
                     playVideo({ navigation, type: 'Task' });

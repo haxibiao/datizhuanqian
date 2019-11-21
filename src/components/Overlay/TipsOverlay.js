@@ -38,7 +38,7 @@ class TipsOverlay {
                 animated
                 ref={ref => (popViewRef = ref)}>
                 <View style={styles.overlayInner}>
-                    <View style={{ paddingVertical: PxFit(15) }}>
+                    <View style={{ marginVertical: PxFit(10) }}>
                         <SafeText style={styles.headerText}>{title || '提示'}</SafeText>
                         {content && renderContent(content)}
                     </View>
@@ -82,9 +82,10 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(5),
     },
     headerText: {
-        fontSize: PxFit(15),
-        color: Theme.defaultTextColor,
+        fontSize: PxFit(16),
+        color: Theme.theme,
         textAlign: 'center',
+        paddingVertical: PxFit(20),
     },
     messageText: {
         paddingTop: 10,

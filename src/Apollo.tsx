@@ -1,11 +1,13 @@
 import React, { Component, useContext, useCallback, useEffect } from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 
 import { makeClient, ApolloProvider } from 'apollo';
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 
-import { observer, app } from 'store';
-import { Config, Tools } from 'utils';
+import { observer, app, config } from 'store';
+import { Config, Tools, SCREEN_WIDTH, PxFit } from 'utils';
+import { ttad } from 'native';
+import { TipsOverlay } from 'components';
 
 import JPushModule from 'jpush-react-native';
 import Echo from 'laravel-echo';
@@ -16,7 +18,7 @@ import AppRouter from './routers';
 import { useCaptureVideo } from '@src/common';
 
 export default observer(props => {
-    const { checkServer } = props;
+    const { checkServer, navigation } = props;
 
     // const store = useContext(StoreContext);
     const client = makeClient(app.me, checkServer); // 构建apollo client;
@@ -28,7 +30,14 @@ export default observer(props => {
     }, []);
 
     const onSuccess = useCallback(() => {
-        Toast.show({ content: '粘贴板视频采集成功,通过审核即可获得智慧点奖励' });
+        TipsOverlay.show({
+            title: '粘贴板视频分享成功',
+            content: <View>{config.enableBanner && <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
+            onConfirm: () => {
+                Tools.navigate('MyPublish');
+                TipsOverlay.hide();
+            },
+        });
     }, []);
 
     useCaptureVideo({ client, onSuccess, onFailed });
