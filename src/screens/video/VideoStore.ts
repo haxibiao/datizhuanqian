@@ -56,7 +56,7 @@ class VideoStore {
     public addVisit(source: Video) {
         const visit = {
             visited_type: 'posts',
-            visited_id: source.id,
+            visited_id: source && source.id,
         };
         if (!source.is_ad) {
             for (let i = 0, count = this.visits.length; i < count; i++) {

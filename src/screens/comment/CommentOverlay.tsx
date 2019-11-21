@@ -42,7 +42,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     const [visible, setVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [finished, setFinished] = useState(false);
-    const [count_comments, setCount_comments] = useState((question && question.count_comments) || 0);
+    // const [count_comments, setCount_comments] = useState((question && question.count_comments) || 0);
     const [reply, setReply] = useState(null);
     const [comment_id, setComment_id] = useState(null);
     const [childLimit, setChildLimit] = useState(1);
@@ -132,13 +132,16 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                 animated: true,
             });
 
-        setCount_comments(count_comments + 1);
+        // setCount_comments(count_comments + 1);
+        question.count_comments++;
     };
 
     const _renderCommentHeader = comments => {
         return (
             <View style={styles.header}>
-                <Text style={styles.headerText}>{count_comments > 0 && count_comments + ' 条'}评论</Text>
+                <Text style={styles.headerText}>
+                    {question.count_comments > 0 && question.count_comments + ' 条'}评论
+                </Text>
                 <TouchFeedback style={styles.close} onPress={slideDown}>
                     <Iconfont name='close' size={PxFit(20)} color={Theme.defaultTextColor} />
                 </TouchFeedback>
@@ -282,7 +285,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                     comment_id={comment_id}
                     parent_comment_id={parent_comment_id}
                     switchReplyType={switchReplyType}
-                    count_comments={count_comments}
+                    count_comments={question.count_comments}
                     isPost={isPost}
                     isSpider={isSpider}
                 />
