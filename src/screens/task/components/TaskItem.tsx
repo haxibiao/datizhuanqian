@@ -175,6 +175,8 @@ const TaskItem = (props: Props) => {
                 backgroundColor = Theme.borderColor;
                 break;
             //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
+            case 7:
+                backgroundColor = '#FF5267';
         }
 
         return (
