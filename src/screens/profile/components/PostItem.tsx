@@ -46,7 +46,7 @@ interface Props {
 
 const AskQuestionItem = (props: Props) => {
     const { video, spiders, activeIndex, navigation, spider } = props;
-    const { status, title, remark, reward } = spider;
+    const { status, title, remark, reward, user } = spider;
 
     const navigationAction = () => {
         props.navigation.navigate('VideoPost', { videos: [spider] });
@@ -80,9 +80,9 @@ const AskQuestionItem = (props: Props) => {
                     }
                 />
                 <Iconfont
-                    name="paused"
+                    name='paused'
                     size={PxFit(34)}
-                    color="#fff"
+                    color='#fff'
                     style={
                         isLargeScale
                             ? {
@@ -140,7 +140,7 @@ const AskQuestionItem = (props: Props) => {
                     </View>
                     <Like
                         media={{ count_likes: 0, liked: false }}
-                        type="icon"
+                        type='icon'
                         iconSize={PxFit(22)}
                         containerStyle={{ flexDirection: 'row', alignItems: 'center' }}
                         textStyle={{ color: '#CCD5E0', fontSize: 14, marginStart: 5, marginEnd: 23 }}
@@ -150,7 +150,7 @@ const AskQuestionItem = (props: Props) => {
         );
     }
 
-    const { gold, is_resolved, form, user, image, count, submit, created_at, count_comments } = video;
+    const { gold, is_resolved, form, image, count, submit, created_at, count_comments } = video;
     // console.log('vidoe', video);
 
     return (
@@ -194,7 +194,7 @@ const AskQuestionItem = (props: Props) => {
                 </TouchFeedback>
                 <Like
                     media={video}
-                    type="icon"
+                    type='icon'
                     iconSize={PxFit(22)}
                     containerStyle={{ flexDirection: 'row', alignItems: 'center' }}
                     textStyle={{ color: '#CCD5E0', fontSize: 14, marginStart: 5, marginEnd: 23 }}

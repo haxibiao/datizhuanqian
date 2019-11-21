@@ -31,7 +31,7 @@ import { compose, useQuery, Mutation, graphql, GQL } from 'apollo';
 import { app } from 'store';
 import { exceptionCapture } from 'common';
 
-import QuestionItem from './QuestionItem';
+import PostItem from './PostItem';
 
 const AskQuestionList = (props: any) => {
     const [finished, setFinished] = useState(false);
@@ -52,7 +52,7 @@ const AskQuestionList = (props: any) => {
                 data={spiders}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                    <QuestionItem video={item.video} spiders={spiders} navigation={props.navigation} spider={item} />
+                    <PostItem video={item.video} spiders={spiders} navigation={props.navigation} spider={item} />
                 )}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
                 onEndReachedThreshold={0.3}

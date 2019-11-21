@@ -11,12 +11,12 @@ import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
 import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from 'components';
 
-import Contributes from '../contribute/Contributes';
-import AskQuestionList from './components/AskQuestionList';
+import Questions from './components/Questions';
+import Posts from './components/Posts';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-class MyPublish extends Component {
+class index extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -24,6 +24,7 @@ class MyPublish extends Component {
 
     render() {
         const { navigation } = this.props;
+        const user = navigation.getParam('user', {});
         return (
             <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
                 <ScrollableTabView
@@ -35,8 +36,8 @@ class MyPublish extends Component {
                             tabWidth={SCREEN_WIDTH / 4}
                         />
                     )}>
-                    <AskQuestionList navigation={navigation} tabLabel='视频' />
-                    <Contributes navigation={navigation} tabLabel='出题' />
+                    <Posts navigation={navigation} tabLabel='动态' userInfo={user} />
+                    <Questions navigation={navigation} tabLabel='出题' userInfo={user} />
                 </ScrollableTabView>
                 <View style={styles.backButton}>
                     <TouchFeedback activeOpacity={1} onPress={() => navigation.goBack()}>
@@ -60,4 +61,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MyPublish;
+export default index;

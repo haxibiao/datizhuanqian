@@ -21,8 +21,23 @@ query HotPostsQuery($limit: Int!, $offset: Int, $user_id: Int) {
             id
             name
             avatar
+            gender
+            follow_users_count
+            followers_count
             followed_user_status
+            is_admin
             roles
+            profile {
+                sub_name
+                birthday
+                age
+                introduction
+                posts_count
+            }
+            level {
+                id
+                level
+            }
         }
     }
 }

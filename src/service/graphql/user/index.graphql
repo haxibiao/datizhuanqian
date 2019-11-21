@@ -174,11 +174,13 @@ query UserInfoQuery($id: Int, $limit: Int, $offset: Int, $order: QuestionOrderEn
             birthday
             age
             introduction
+            questions_count
         }
         level {
             id
             level
         }
+
         questions(limit: $limit, offset: $offset, order: $order, filter: $filter) {
             id
             gold

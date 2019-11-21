@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 
 import { Avatar, Iconfont, FollowButton, Button, TouchFeedback, Row } from 'components';
-import { Theme, PxFit } from 'utils';
+import { Theme, PxFit, Tools } from 'utils';
 
 import { Query, ApolloClient, withApollo } from 'react-apollo';
 import { StackActions } from 'react-navigation';
@@ -135,9 +135,12 @@ class UserProfile extends Component {
                         </Text>
                     </View>
                 </View>
-                {hasQuestion && (
+                {hasQuestion ? (
                     <View style={styles.answerTitle}>
-                        <Text style={styles.greyText}>{isSelf ? '我' : 'TA'}的发布</Text>
+                        <Text style={styles.greyText}>{`题目 ${Tools.syncGetter(
+                            'profile.question_count',
+                            user,
+                        )}`}</Text>
                         <TouchFeedback onPress={switchOrder} style={{ paddingVertical: PxFit(5) }}>
                             <Row>
                                 <Text style={[styles.orderText, orderByHot && { color: Theme.secondaryColor }]}>
@@ -151,6 +154,10 @@ class UserProfile extends Component {
                                 />
                             </Row>
                         </TouchFeedback>
+                    </View>
+                ) : (
+                    <View style={styles.answerTitle}>
+                        <Text style={styles.greyText}>{`视频 ${Tools.syncGetter('profile.post_count', user)}`}</Text>
                     </View>
                 )}
             </View>
@@ -205,7 +212,9 @@ const styles = StyleSheet.create({
     },
     bottom: {
         marginTop: PxFit(20),
-        marginBottom: PxFit(5),
+        paddingBottom: PxFit(10),
+        borderBottomWidth: PxFit(0.5),
+        borderColor: Theme.borderColor,
     },
     introduction: {
         fontSize: PxFit(13),
@@ -238,8 +247,7 @@ const styles = StyleSheet.create({
     answerTitle: {
         marginTop: PxFit(5),
         paddingTop: PxFit(4),
-        borderTopWidth: PxFit(1),
-        borderColor: Theme.borderColor,
+
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

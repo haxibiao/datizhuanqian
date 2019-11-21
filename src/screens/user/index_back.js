@@ -29,8 +29,6 @@ import UserProfile from './components/UserProfile';
 import QuestionItem from './components/QuestionItem';
 import Placeholder from './components/Placeholder';
 
-const HEADER_EXPANDED_HEIGHT = PxFit(158);
-const HEADER_COLLAPSED_HEIGHT = 0;
 const ORDER = ['ANSWERS_COUNT', 'CREATED_AT'];
 
 class index extends Component {
@@ -42,10 +40,6 @@ class index extends Component {
             orderByHot: false,
         };
     }
-
-    renderContent = (questions, fetchMore, refetch) => {
-        let { navigation } = this.props;
-    };
 
     showOptions = () => {
         let { navigation } = this.props;
@@ -71,7 +65,7 @@ class index extends Component {
             <Query
                 query={GQL.UserInfoQuery}
                 variables={{ id: user.id, order: orderByHot ? ORDER[0] : ORDER[1], filter: 'publish' }}
-                fetchPolicy="network-only">
+                fetchPolicy='network-only'>
                 {({ data, loading, error, refetch, fetchMore }) => {
                     let user = Tools.syncGetter('user', data),
                         questions = [];
@@ -91,7 +85,7 @@ class index extends Component {
                                 user.id == app.me.id ? null : (
                                     <TouchFeedback onPress={this.showOptions} style={styles.optionsButton}>
                                         <Iconfont
-                                            name="more-horizontal"
+                                            name='more-horizontal'
                                             color={Theme.defaultTextColor}
                                             size={PxFit(18)}
                                         />
@@ -117,7 +111,7 @@ class index extends Component {
                                         orderByHot={orderByHot}
                                     />
                                 }
-                                ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
+                                ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有出过题目' />}
                                 renderItem={({ item, index }) => (
                                     <QuestionItem question={item} navigation={navigation} />
                                 )}

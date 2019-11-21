@@ -100,18 +100,18 @@ query SpidersQuery($limit: Int, $offset: Int) {
             created_at
             liked
             count_comments
-            user {
+        }
+        user {
+            id
+            name
+            avatar
+            followed_user_status
+            profile {
+                age
+            }
+            level {
                 id
-                name
-                avatar
-                followed_user_status
-                profile {
-                    age
-                }
-                level {
-                    id
-                    level
-                }
+                level
             }
         }
     }

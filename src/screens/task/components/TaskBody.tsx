@@ -94,7 +94,7 @@ const TaskBody = props => {
                     details: `看完视频才可获取精力点奖励,点击下载、查看详情才能够获取智慧点或贡献点奖励`,
                 },
                 {
-                    name: '出题赚钱',
+                    name: '出题目赚钱',
                     status: Tools.syncGetter('status', chuti),
                     taskStatus: 5,
                     gold: Tools.syncGetter('gold', chuti) + '~20',
@@ -119,7 +119,7 @@ const TaskBody = props => {
                     details: '每成功分享一个用户注册登录，即可获取600智慧点和36贡献点奖励',
                 },
                 {
-                    name: '采集视频赚钱',
+                    name: '玩抖音赚钱',
                     status: Tools.syncGetter('status', spider_video),
                     taskStatus: 7,
                     gold: Tools.syncGetter('gold', spider_video),

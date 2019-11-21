@@ -12,16 +12,14 @@ import { exceptionCapture } from 'common';
 import { Row } from 'components';
 
 export default observer(props => {
-    const { spider, index, navigation } = props;
-    console.log('spider', spider);
-    const { video, title } = spider;
-    console.log('video', video);
-    const { user } = video;
+    const { spider, index, navigation, isPost } = props;
+    const { video, title, user, description } = spider;
+
     return (
         <View style={{ height: VideoStore.viewportHeight }}>
             {video && video.cover && (
                 <View style={styles.cover}>
-                    <Image style={styles.curtain} source={{ uri: video.cover }} resizeMode="cover" blurRadius={4} />
+                    <Image style={styles.curtain} source={{ uri: video.cover }} resizeMode='cover' blurRadius={4} />
                     <View style={styles.mask} />
                 </View>
             )}
@@ -33,11 +31,11 @@ export default observer(props => {
                         <Text style={styles.name}>@{user.name}</Text>
                     </Row>
                     <View>
-                        <Text style={styles.body}>{title}</Text>
+                        <Text style={styles.body}>{title ? title : description}</Text>
                     </View>
                 </View>
 
-                <SideBar video={video} user={user} />
+                <SideBar spider={spider} user={user} isPost={isPost} />
             </View>
         </View>
     );

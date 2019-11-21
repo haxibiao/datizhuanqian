@@ -19,7 +19,7 @@ export default observer(props => {
     const { navigation } = props;
     const data = navigation.getParam('videos') || [];
     const activeIndex = navigation.getParam('index') || 0;
-    const isComment = navigation.getParam('isComment') || false;
+    const isPost = navigation.getParam('isPost') || false;
     const activeItem = useRef(0);
     // const [questions, setQuestions] = useState(data);
     console.log('data', data);
@@ -46,11 +46,11 @@ export default observer(props => {
 
     const VideosQuery = useCallback(() => {
         return app.client.query({
-            query: GQL.myVideoQuestionHistoryQuery,
+            query: GQL.HotPostsQuery,
             variables: {
-                limit: 5,
+                limit: 10,
                 offset: VideoStore.dataSource.length,
-                QuestionFormEnumType: 'NON_SELECTION',
+                user_id: data[0].user.id,
             },
         });
     }, [app.client]);
@@ -58,12 +58,14 @@ export default observer(props => {
     const fetchData = useCallback(async () => {
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
-        const videoSource = Tools.syncGetter('data.user.questions', result);
+        console.log('result', result, error);
+        const videoSource = Tools.syncGetter('data.posts', result);
 
         if (error) {
             VideoStore.isError = true;
         } else {
             if (Array.isArray(videoSource) && videoSource.length > 0) {
+                console.log('videoSource', videoSource);
                 VideoStore.addSource(videoSource);
             } else {
                 VideoStore.isFinish = true;
@@ -116,10 +118,10 @@ export default observer(props => {
         };
     }, []);
 
-    const question = VideoStore.dataSource[VideoStore.viewableItemIndex];
+    const media = VideoStore.dataSource[VideoStore.viewableItemIndex];
 
-    console.log('question', question);
-    if (!question) return null;
+    console.log('media', media);
+    if (!media) return null;
     return (
         <View style={styles.container} onLayout={onLayout}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'} />
@@ -134,7 +136,9 @@ export default observer(props => {
                 pagingEnabled={true}
                 removeClippedSubviews={true}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => <VideoItem spider={item} index={index} navigation={navigation} />}
+                renderItem={({ item, index }) => (
+                    <VideoItem spider={item} index={index} navigation={navigation} isPost={isPost} />
+                )}
                 getItemLayout={(data, index) => ({
                     length: VideoStore.viewportHeight,
                     offset: VideoStore.viewportHeight * index,
@@ -146,12 +150,12 @@ export default observer(props => {
                     </View>
                 }
                 ListFooterComponent={<Footer />}
-                // onMomentumScrollEnd={onMomentumScrollEnd}
+                onMomentumScrollEnd={onMomentumScrollEnd}
                 onViewableItemsChanged={getVisibleRows}
                 viewabilityConfig={config.current}
             />
 
-            <CommentOverlay ref={commentRef} question={question.video} isSpider={true} />
+            <CommentOverlay ref={commentRef} question={media.video} isSpider={isPost ? false : true} isPost={isPost} />
             <TouchFeedback
                 style={styles.header}
                 onPress={() => {
