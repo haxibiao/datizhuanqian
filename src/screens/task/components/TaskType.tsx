@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { StyleSheet, View, Text, Image, Linking } from 'react-native';
-import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
+import { Theme, SCREEN_WIDTH, PxFit, Tools, ISIOS } from 'utils';
 
 import { BoxShadow } from 'react-native-shadow';
 import TaskItem from './TaskItem';
@@ -79,7 +79,7 @@ const TaskType = observer((props: Props) => {
                 Tools.navigate('Share');
             case 7:
                 if (app.firstReadSpiderVideoTask) {
-                    Linking.openURL('snssdk1128://');
+                    Linking.openURL(ISIOS ? 'itms-apps://itunes.apple.com/app/id1142110895' : 'snssdk1128://');
                 } else {
                     Tools.navigate('SpiderVideoTask');
                     app.setReadSpiderVideoTask(true);
