@@ -112,7 +112,10 @@ query UserQuery($id: Int) {
             birthday
             age
             total_contributes
+            questions_count
+            posts_count
         }
+        roles
         gender
         avatar
         gold

@@ -41,7 +41,7 @@ const Posts = props => {
     if (loading) {
         return <Placeholder />;
     }
-
+    console.log('data', data);
     const posts = Tools.syncGetter('posts', data) || [];
 
     return (
@@ -56,8 +56,10 @@ const Posts = props => {
                 style={styles.container}
                 data={posts}
                 keyExtractor={(item, index) => index.toString()}
-                ListHeaderComponent={<UserProfile user={posts[0].user} navigation={navigation} isPost />}
-                ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有出过题目' />}
+                ListHeaderComponent={
+                    <UserProfile user={posts.length > 0 ? posts[0].user : userInfo} navigation={navigation} isPost />
+                }
+                ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有发布过动态' />}
                 renderItem={({ item, index }) => (
                     <PostItem post={item} navigation={navigation} posts={posts} activeIndex={index} />
                 )}
@@ -69,14 +71,7 @@ const Posts = props => {
                             offset: posts.length,
                         },
                         updateQuery: (prev, { fetchMoreResult }) => {
-                            if (
-                                !(
-                                    fetchMoreResult &&
-                                    fetchMoreResult &&
-                                    fetchMoreResult.posts &&
-                                    fetchMoreResult.posts.length > 0
-                                )
-                            ) {
+                            if (!(fetchMoreResult && fetchMoreResult.posts && fetchMoreResult.posts.length > 0)) {
                                 setFinished(true);
                                 return prev;
                             }
