@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, Platform } from 'react-native';
 
 import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay, TipsOverlay } from 'components';
-import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, ISAndroid } from 'utils';
+import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, ISAndroid, iPhone11 } from 'utils';
 import { Query, Mutation, graphql, withApollo, compose, GQL, useQuery } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
 
@@ -84,7 +84,7 @@ const TaskBody = props => {
             const customTask = [
                 {
                     name: '看视频赚钱',
-                    status: Tools.syncGetter('status', reward),
+                    status: iPhone11() ? 0 : Tools.syncGetter('status', reward),
                     taskStatus: 4,
                     gold: Tools.syncGetter('gold', reward),
                     ticket: Tools.syncGetter('ticket', reward),
