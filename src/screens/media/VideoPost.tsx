@@ -155,7 +155,12 @@ export default observer(props => {
                 viewabilityConfig={config.current}
             />
 
-            <CommentOverlay ref={commentRef} question={media.video} isSpider={isPost ? false : true} isPost={isPost} />
+            <CommentOverlay
+                ref={commentRef}
+                question={isPost ? media : media.video}
+                isSpider={isPost ? false : true}
+                isPost={isPost}
+            />
             <TouchFeedback
                 style={styles.header}
                 onPress={() => {
