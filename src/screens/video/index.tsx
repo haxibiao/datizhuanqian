@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
 		width: null,
 	},
 	rewardProgress: {
-		bottom: PxFit(340 + Theme.HOME_INDICATOR_HEIGHT),
+		bottom: PxFit(380 + Theme.HOME_INDICATOR_HEIGHT),
 		position: 'absolute',
 		right: PxFit(Theme.itemSpace),
 	},

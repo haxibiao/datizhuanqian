@@ -73,6 +73,7 @@ import Badge from './Utils/Badge';
 import WheelPicker from './Utils/WheelPicker';
 import UpwardImage from './Utils/UpwardImage';
 import ProgressWithdrawal from './Utils/ProgressWithdrawal';
+import MoreOperation from './Utils/MoreOperation';
 //Media
 import Player from './Media/Player';
 // Guide
@@ -141,6 +142,7 @@ export {
 	WheelPicker,
 	UpwardImage,
 	ProgressWithdrawal,
+	MoreOperation,
 	Player,
 	beginnerGuidance,
 	VideoTaskGuidance,
