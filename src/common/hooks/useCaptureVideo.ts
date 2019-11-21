@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { AppState, Clipboard } from 'react-native';
+import { AppState, Clipboard,Alert } from 'react-native';
 import { GQL } from '@src/apollo';
 import { exceptionCapture } from '@src/common';
 import { app } from 'store';
@@ -56,8 +56,11 @@ export const useCaptureVideo = (props: Props) => {
                     console.log('====================================');
                     if (error && onFailed) {
                         onFailed(error);
+                        Clipboard.setString("");
                     } else if (result && onSuccess) {
                         onSuccess(result);
+                        //清空粘贴板
+                        Clipboard.setString("");
                     }
                 }
             }
