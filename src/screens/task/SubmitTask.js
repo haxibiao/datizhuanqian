@@ -175,7 +175,7 @@ class SubmitTaskScreen extends Component {
                         </View>
                     </BoxShadow>
                     <DropdownMenu
-                        style={{ marginTop: PxFit(20) }}
+                        style={{ marginTop: PxFit(20),height:500 }}
                         dropStyle={{
                             paddingHorizontal: PxFit(20),
                             borderBottomWidth: PxFit(0.5),
