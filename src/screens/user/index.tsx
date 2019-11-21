@@ -25,6 +25,7 @@ class index extends Component {
     render() {
         const { navigation } = this.props;
         const user = navigation.getParam('user', {});
+        console.log('index user', user);
         return (
             <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
                 <ScrollableTabView

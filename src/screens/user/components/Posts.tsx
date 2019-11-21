@@ -30,7 +30,7 @@ const Posts = props => {
 
     const { data, error, loading, refetch, fetchMore } = useQuery(GQL.HotPostsQuery, {
         variables: {
-            id: userInfo.id,
+            user_id: userInfo.id,
             limit: 10,
         },
         fetchPolicy: 'network-only',
@@ -56,7 +56,7 @@ const Posts = props => {
                 style={styles.container}
                 data={posts}
                 keyExtractor={(item, index) => index.toString()}
-                ListHeaderComponent={<UserProfile user={posts[0].user} navigation={navigation} />}
+                ListHeaderComponent={<UserProfile user={posts[0].user} navigation={navigation} isPost />}
                 ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有出过题目' />}
                 renderItem={({ item, index }) => (
                     <PostItem post={item} navigation={navigation} posts={posts} activeIndex={index} />

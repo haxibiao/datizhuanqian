@@ -42,7 +42,7 @@ class UserProfile extends Component {
     };
 
     render() {
-        let { user, orderByHot, switchOrder, hasQuestion, navigation } = this.props;
+        let { user, orderByHot, switchOrder, hasQuestion, navigation, isPost } = this.props;
         let isSelf = app.me.id === user.id;
 
         this.construct(user);
@@ -135,10 +135,10 @@ class UserProfile extends Component {
                         </Text>
                     </View>
                 </View>
-                {hasQuestion ? (
+                {hasQuestion && (
                     <View style={styles.answerTitle}>
                         <Text style={styles.greyText}>{`题目 ${Tools.syncGetter(
-                            'profile.question_count',
+                            'profile.questions_count',
                             user,
                         )}`}</Text>
                         <TouchFeedback onPress={switchOrder} style={{ paddingVertical: PxFit(5) }}>
@@ -155,9 +155,10 @@ class UserProfile extends Component {
                             </Row>
                         </TouchFeedback>
                     </View>
-                ) : (
+                )}
+                {isPost && (
                     <View style={styles.answerTitle}>
-                        <Text style={styles.greyText}>{`视频 ${Tools.syncGetter('profile.post_count', user)}`}</Text>
+                        <Text style={styles.greyText}>{`视频 ${Tools.syncGetter('profile.posts_count', user)}`}</Text>
                     </View>
                 )}
             </View>
