@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, Image, Animated, TouchableOpacity } from 'react-native';
 
 import { Avatar, Iconfont, SafeText, MoreOperation } from 'components';
-import { observer } from 'store';
+import { observer, app } from 'store';
 import { useApolloClient } from '@src/apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { PxFit, Theme, Tools } from 'utils';
@@ -16,6 +16,9 @@ export default observer(props => {
 	const navigation = useNavigation();
 	const client = useApolloClient();
 	const showMoreOperation = useCallback(() => {
+		if (!app.firstOpenVideoOperation) {
+			app.setOpenVideoOperation(true);
+		}
 		let overlayRef;
 		const MoreOperationOverlay = (
 			<Overlay.PullView
@@ -59,7 +62,14 @@ export default observer(props => {
 			</View>
 			<View style={styles.itemWrap}>
 				<TouchableOpacity onPress={showMoreOperation}>
-					<Image source={require('@src/assets/images/more_item.png')} style={styles.imageStyle} />
+					<Image
+						source={
+							!app.firstOpenVideoOperation
+								? require('@src/assets/images/first_capture_video.png')
+								: require('@src/assets/images/more_item.png')
+						}
+						style={styles.imageStyle}
+					/>
 				</TouchableOpacity>
 			</View>
 		</View>
