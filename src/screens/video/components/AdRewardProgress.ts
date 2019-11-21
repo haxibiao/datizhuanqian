@@ -2,29 +2,29 @@ import { useEffect, useRef, useCallback } from 'react';
 import VideoStore from '../VideoStore';
 
 const AdRewardProgress = (focus: boolean) => {
-    const currentTime = useRef(0);
-    const timer = useRef(0);
+	const currentTime = useRef(0);
+	const timer = useRef(0);
 
-    const setRewardProgress = useCallback((): any => {
-        return setTimeout(() => {
-            if (currentTime.current < VideoStore.rewardLimit) {
-                VideoStore.rewardProgress++;
-                currentTime.current++;
-                setRewardProgress();
-            }
-        }, 500);
-    }, []);
+	const setRewardProgress = useCallback((): any => {
+		return setTimeout(() => {
+			if (currentTime.current < VideoStore.rewardLimit * 2) {
+				VideoStore.rewardProgress++;
+				currentTime.current++;
+				setRewardProgress();
+			}
+		}, 500);
+	}, []);
 
-    useEffect(() => {
-        if (focus) {
-            timer.current = setRewardProgress();
-        }
-        return () => {
-            if (timer.current) {
-                clearTimeout(timer.current);
-            }
-        };
-    }, [focus]);
+	useEffect(() => {
+		if (focus) {
+			timer.current = setRewardProgress();
+		}
+		return () => {
+			if (timer.current) {
+				clearTimeout(timer.current);
+			}
+		};
+	}, [focus]);
 };
 
 export default AdRewardProgress;
