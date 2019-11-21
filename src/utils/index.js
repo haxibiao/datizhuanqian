@@ -5,7 +5,7 @@
 import { Dimensions, Platform } from 'react-native';
 import Api from './Api';
 import Config from './Config';
-import Theme from './Theme';
+import Theme,{iPhone11} from './Theme';
 import Tools from './Tools';
 import { WPercent, HPercent, PxFit, FontSize } from './Scale';
 
@@ -19,6 +19,8 @@ const NAVBAR_HEIGHT = Theme.navBarContentHeight + Theme.statusBarHeight;
 const CONTENT_HEIGHT = SCREEN_HEIGHT - Theme.HOME_INDICATOR_HEIGHT - PxFit(NAVBAR_HEIGHT);
 
 export {
+    // iphone11 系列手机
+    iPhone11,
     // IOS系统
     ISIOS,
     // 安卓系统
@@ -48,3 +50,4 @@ export {
     // 字体适配
     FontSize,
 };
+

@@ -244,7 +244,11 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     }
     return (
         <View style={styles.overlayContainer}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps={'always'}>
+            <ScrollView 
+            contentContainerStyle={{ flexGrow: 1 }} 
+            keyboardShouldPersistTaps={'always'}
+            alwaysBounceVertical= {false}
+            >
                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <TouchableOpacity style={styles.modal} onPress={slideDown} activeOpacity={1} />
                     <Animated.View

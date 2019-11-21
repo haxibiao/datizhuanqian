@@ -1,3 +1,4 @@
+
 /*
  * @flow
  * wyk created it in 2018-12-04 15:46:29
@@ -17,6 +18,13 @@ const deviceID = DeviceInfo.getDeviceId();
 if (['iPhone12,1', 'iPhone12,3', 'iPhone12,5'].includes(deviceID)) {
 	HAS_NOTCH = true;
 	HOME_INDICATOR_HEIGHT = 26;
+}
+export const iPhone11 = () => {
+    if (['iPhone12,1', 'iPhone12,3', 'iPhone12,5'].includes(deviceID)) {
+        HAS_NOTCH = true;
+        HOME_INDICATOR_HEIGHT = 26;
+        return true;
+    }
 }
 
 if (Platform.OS === 'ios' && HAS_NOTCH) {
