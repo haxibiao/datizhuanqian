@@ -105,7 +105,7 @@ query SpidersQuery($limit: Int, $offset: Int) {
             id
             name
             avatar
-            followed_user_status
+            gender
             profile {
                 age
             }

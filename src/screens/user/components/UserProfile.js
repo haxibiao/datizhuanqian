@@ -25,7 +25,7 @@ class UserProfile extends Component {
     };
 
     construct = user => {
-        console.log('user', user.roles, user.roles.indexOf('ROOT_USER'));
+        console.log('user', user.roles);
         if (user.roles.indexOf('ROOT_USER') >= 0) {
             this.sub_name = '答题赚钱 官方账号';
         } else if (user.roles.indexOf('EDITOR_USER') >= 0) {
@@ -45,7 +45,11 @@ class UserProfile extends Component {
         let { user, orderByHot, switchOrder, hasQuestion, navigation, isPost } = this.props;
         let isSelf = app.me.id === user.id;
 
-        this.construct(user);
+        if (user && user.roles) {
+            this.construct(user);
+        } else {
+            this.sub_name = '普通答友';
+        }
 
         return (
             <View style={styles.userInfoContainer}>
@@ -117,7 +121,7 @@ class UserProfile extends Component {
                         </Text>
                     </View>
 
-                    {user.profile.sub_name ? (
+                    {user && user.profile && user.profile.sub_name ? (
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: -6, paddingBottom: 10 }}>
                             <Image
                                 source={require('../../../assets/images/official.png')}
@@ -131,7 +135,7 @@ class UserProfile extends Component {
 
                     <View>
                         <Text style={styles.introduction} numberOfLines={2}>
-                            {user.profile.introduction || '这个人很神秘，什么介绍都没有'}
+                            {(user && user.profile && user.profile.introduction) || '这个人很神秘，什么介绍都没有'}
                         </Text>
                     </View>
                 </View>
@@ -158,7 +162,8 @@ class UserProfile extends Component {
                 )}
                 {isPost && (
                     <View style={styles.answerTitle}>
-                        <Text style={styles.greyText}>{`视频 ${Tools.syncGetter('profile.posts_count', user)}`}</Text>
+                        <Text style={styles.greyText}>{`视频 ${Tools.syncGetter('profile.posts_count', user) ||
+                            0}`}</Text>
                     </View>
                 )}
             </View>

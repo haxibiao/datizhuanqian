@@ -16,6 +16,7 @@ query commentNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offse
                 name
                 gender
                 avatar
+                roles
                 is_admin
                 level {
                     id
@@ -53,6 +54,7 @@ query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset
             id
             name
             gender
+            roles
             level {
                 id
                 level
@@ -107,6 +109,7 @@ query FansNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset: 
                 name
                 avatar
                 gender
+                roles
                 followed_user_status
                 level {
                     id
@@ -145,6 +148,7 @@ query likeNotificationsQuery($offset: Int, $limit: Int, $filter: [NotificationEn
                     name
                     avatar
                     followed_user_status
+                    roles
                 }
             }
             question {
@@ -173,6 +177,7 @@ query likeNotificationsQuery($offset: Int, $limit: Int, $filter: [NotificationEn
                 gender
                 avatar
                 is_admin
+                roles
                 level {
                     id
                     level

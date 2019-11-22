@@ -91,6 +91,7 @@ query QuestionListQuery($category_id: Int, $offset: Int, $limit: Int) {
             avatar
             followers_count
             question_count
+            roles
         }
         submit
         audits {
