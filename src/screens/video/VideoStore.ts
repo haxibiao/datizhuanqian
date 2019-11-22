@@ -33,7 +33,7 @@ interface Visit {
 }
 
 class VideoStore {
-	readonly rewardLimit: number = 15;
+	readonly rewardLimit: number = 30;
 
 	@observable public dataSource: Video[] = [];
 	@observable public isLoading: boolean = true;

@@ -3,21 +3,25 @@ import VideoStore from '../VideoStore';
 
 const AdRewardProgress = (focus: boolean) => {
 	const currentTime = useRef(0);
+	const flag = useRef(focus);
 	const timer = useRef(0);
 
 	const setRewardProgress = useCallback((): any => {
 		return setTimeout(() => {
-			if (currentTime.current < VideoStore.rewardLimit * 2) {
+			if (flag.current && currentTime.current < VideoStore.rewardLimit) {
 				VideoStore.rewardProgress++;
 				currentTime.current++;
 				setRewardProgress();
 			}
-		}, 500);
+		}, 1000);
 	}, []);
 
 	useEffect(() => {
 		if (focus) {
+			flag.current = true;
 			timer.current = setRewardProgress();
+		} else {
+			flag.current = false;
 		}
 		return () => {
 			if (timer.current) {

@@ -40,8 +40,8 @@ const useReport = props => {
 	const report = useCallback(() => {
 		const operations = [
 			{
-				title: '低俗色情',
-				onPress: () => reportAction('低俗色情'),
+				title: '低质内容',
+				onPress: () => reportAction('低质内容'),
 			},
 			{
 				title: '侮辱谩骂',
