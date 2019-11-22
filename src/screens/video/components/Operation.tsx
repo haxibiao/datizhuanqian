@@ -4,6 +4,7 @@ import { GQL, useMutation } from '@src/apollo';
 import { TouchFeedback } from '@src/components';
 import { PxFit, Theme, Tools, SCREEN_WIDTH, SCREEN_HEIGHT } from '@src/utils';
 import useReport from '@src/components/Utils/useReport';
+import VideoStore from '../VideoStore';
 
 const MoreOperation = props => {
     const { options, target, type, onPressIn } = props;
@@ -34,6 +35,7 @@ const MoreOperation = props => {
     const dislike = useCallback(() => {
         onPressIn();
         dislikeMutation();
+        VideoStore.filterUserPost(target.user.id);
     }, []);
 
     const operation = useMemo(

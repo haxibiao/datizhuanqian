@@ -5,6 +5,7 @@ import { config, app, observer } from 'store';
 import useReport from './useReport';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import { Theme, PxFit, Tools } from 'utils';
+import VideoStore from '../../screens/video/VideoStore';
 
 const MoreOperation = props => {
     const { options, target, type, onPressIn, deleteCallback } = props;
@@ -65,6 +66,7 @@ const MoreOperation = props => {
     const dislike = useCallback(() => {
         onPressIn();
         dislikeMutation();
+        VideoStore.filterUserPost(target.user.id);
     }, []);
 
     const operation = useMemo(
