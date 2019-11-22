@@ -16,7 +16,6 @@ const CommentInput = props => {
         textInputRef,
         reply,
         comment_id,
-        createComment,
         parent_comment_id,
         onCommented,
         isPost,
@@ -28,6 +27,7 @@ const CommentInput = props => {
     }, []);
 
     const updateCommentsQuery = useCallback((cache, { data: { createComment } }) => {
+        console.log('触发 updateCommentsQuery');
         Toast.show({ content: '评论成功' });
         console.log('createComment', createComment);
         const prev = cache.readQuery({
@@ -126,6 +126,7 @@ const CommentInput = props => {
     const createCommentHandler = useCallback(() => {
         Keyboard.dismiss();
         onChangeText('');
+        console.log('触发 :');
         createCommentMutation();
     }, []);
 

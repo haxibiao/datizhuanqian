@@ -12,7 +12,7 @@ import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from 'components';
 
 import Contributes from '../contribute/Contributes';
-import AskQuestionList from './components/AskQuestionList';
+import SpiderList from './components/SpiderList';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
@@ -35,7 +35,7 @@ class MyPublish extends Component {
                             tabWidth={SCREEN_WIDTH / 4}
                         />
                     )}>
-                    <AskQuestionList navigation={navigation} tabLabel='视频' />
+                    <SpiderList navigation={navigation} tabLabel='动态' />
                     <Contributes navigation={navigation} tabLabel='出题' />
                 </ScrollableTabView>
                 <View style={styles.backButton}>

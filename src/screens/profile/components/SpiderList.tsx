@@ -31,9 +31,9 @@ import { compose, useQuery, Mutation, graphql, GQL } from 'apollo';
 import { app } from 'store';
 import { exceptionCapture } from 'common';
 
-import PostItem from './PostItem';
+import SpiderItem from './SpiderItem';
 
-const AskQuestionList = (props: any) => {
+const SpiderList = (props: any) => {
     const [finished, setFinished] = useState(false);
 
     const { data, loading, refetch, error, fetchMore } = useQuery(GQL.SpidersQuery, {
@@ -52,7 +52,7 @@ const AskQuestionList = (props: any) => {
                 data={spiders}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                    <PostItem video={item.video} spiders={spiders} navigation={props.navigation} spider={item} />
+                    <SpiderItem video={item.video} spiders={spiders} navigation={props.navigation} spider={item} />
                 )}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
                 onEndReachedThreshold={0.3}
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AskQuestionList;
+export default SpiderList;

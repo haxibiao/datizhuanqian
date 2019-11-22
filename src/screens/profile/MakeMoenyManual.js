@@ -70,7 +70,7 @@ class MakeMoenyManual extends Component {
                         {
                             title: '如何获取贡献点？',
                             content:
-                                '贡献值可以通过举报违反出题规则的题目、做激励任务、看视频点击详情、发布有价值的神评论(被点赞)等方式获取。',
+                                '贡献值可以通过举报违反出题规则的题目、做激励任务、看视频点击详情、发布有价值的神评论(被点赞)、出题通过审核等方式获取。',
                         },
                     ],
                 },
@@ -135,7 +135,7 @@ class MakeMoenyManual extends Component {
     render() {
         const { tabs, select, items } = this.state;
         return (
-            <PageContainer title="赚钱攻略" white>
+            <PageContainer title='赚钱攻略' white>
                 <View style={styles.header}>
                     {tabs.map((tab, index) => {
                         return (

@@ -4,10 +4,10 @@
  */
 'use strict';
 
-import React, { Component } from 'react';
-import { StyleSheet, View, TouchableWithoutFeedback, Text, Image } from 'react-native';
-import { Iconfont, Row, PlaceholderImage, TouchFeedback, Avatar, UserTitle, GenderLabel, Like } from 'components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH } from 'utils';
+import React from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { Iconfont, Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like, VideoItem } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import { app } from 'store';
 interface User {
@@ -44,65 +44,12 @@ interface Props {
     spider: object;
 }
 
-const AskQuestionItem = (props: Props) => {
-    const { video, spiders, activeIndex, navigation, spider } = props;
+const SpiderItem = (props: Props) => {
+    const { video, navigation, spider } = props;
     const { status, title, remark, reward, user } = spider;
 
     const navigationAction = () => {
-        props.navigation.navigate('VideoPost', { videos: [spider] });
-    };
-
-    const renderVideo = () => {
-        const maxHeight = 240;
-        const maxWidth = SCREEN_WIDTH - Theme.itemSpace * 2;
-        const videoWidth = (video && video.width) || 1;
-        const videoHeight = (video && video.height) || 1;
-
-        const isLargeScale = videoWidth > videoHeight && videoWidth / videoHeight > maxWidth / maxHeight;
-        return (
-            <View style={styles.image}>
-                <Image
-                    source={{ uri: video && video.cover }}
-                    style={
-                        isLargeScale
-                            ? {
-                                  width: maxWidth,
-                                  height: (maxWidth * videoHeight) / videoWidth,
-                                  borderRadius: PxFit(5),
-                                  backgroundColor: '#000',
-                              }
-                            : {
-                                  width: PxFit(240) * (videoWidth / videoHeight),
-                                  height: PxFit(240),
-                                  borderRadius: PxFit(5),
-                                  backgroundColor: '#000',
-                              }
-                    }
-                />
-                <Iconfont
-                    name='paused'
-                    size={PxFit(34)}
-                    color='#fff'
-                    style={
-                        isLargeScale
-                            ? {
-                                  position: 'absolute',
-                                  top: ((maxWidth * videoHeight) / videoWidth - PxFit(34)) / 2,
-                                  left: (PxFit(maxWidth) - PxFit(34)) / 2,
-                                  bottom: 0,
-                                  right: 0,
-                              }
-                            : {
-                                  position: 'absolute',
-                                  top: PxFit(103),
-                                  left: (PxFit(240) * (videoWidth / videoHeight) - PxFit(34)) / 2,
-                                  bottom: 0,
-                                  right: 0,
-                              }
-                    }
-                />
-            </View>
-        );
+        props.navigation.navigate('VideoPost', { medium: [spider] });
     };
 
     if (!video) {
@@ -150,7 +97,7 @@ const AskQuestionItem = (props: Props) => {
         );
     }
 
-    const { gold, is_resolved, form, image, count, submit, created_at, count_comments } = video;
+    const { image, created_at, count_comments } = video;
     // console.log('vidoe', video);
 
     return (
@@ -183,8 +130,7 @@ const AskQuestionItem = (props: Props) => {
             </Row>
             <View style={{ paddingVertical: PxFit(10) }}>
                 <Text style={{ color: Theme.black, lineHeight: 22 }}>{title}</Text>
-                {video && renderVideo()}
-                {image && renderImage()}
+                {video && <VideoItem video={video} />}
                 <Text style={styles.timeText}>{created_at}</Text>
             </View>
             <Row>
@@ -273,4 +219,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AskQuestionItem;
+export default SpiderItem;

@@ -1,79 +1,29 @@
 #!/bin/bash
 
+yel=$'\e[1;33m'
 grn=$'\e[1;32m'
+red=$'\e[1;31m'
 end=$'\e[0m'
 
 
-
-echo "${grn}开始生成OPPO正式包 ...${end}"
 cd /data/app/datizhuanqian
 
 cd ./android
-./gradlew assembleOppo
 
-echo "${grn}开始生成华为正式包 ...${end}"
-cd /data/app/datizhuanqian
+if [ "$1" = "upload" ]; then
 
-cd ./android
-./gradlew assembleHuawei
+echo "${yel}开始上传 apk 正式包"
+cd ../bash/nodejs
 
-echo "${grn}开始生成小米正式包 ..."
-cd /data/app/datizhuanqian
+version="2.4"
 
-cd ./android
-./gradlew assembleXiaomi
+node cos_upload_apk.js release $version
 
-echo "${grn}开始生成魅族正式包 ...${end}"
-cd /data/app/datizhuanqian
+echo  -e "${grn}上传完成${end}"
+echo "下载地址：http://dtzq-1251052432.cos.ap-shanghai.myqcloud.com/datizhuanqian-$version.apk"
 
-cd ./android
-./gradlew assembleMeizu
-
-
-echo "${grn}开始生成百度正式包 ...${end}"
-cd /data/app/datizhuanqian
-
-cd ./android
-./gradlew assembleBaidu
-
-echo "${grn}开始生成豌豆荚正式包 ...${end}"
-cd /data/app/datizhuanqian
-
-cd ./android
-./gradlew assembleWandoujia
-
-# echo "${grn}开始生成VIVO正式包 ...${end}"
-# cd /data/app/datizhuanqian
-
-# cd ./android
-# ./gradlew assembleVivo
-
-
-# echo "${grn}开始生成360正式包 ...${end}"
-# cd /data/datizhuanqian
-
-# cd ./android
-# ./gradlew assembleQihoo
-
-# echo "${grn}开始生成应用宝正式包 ...${end}"
-# cd /data/datizhuanqian
-
-# cd ./android
-# ./gradlew assembleTencent
-
-
-# echo "${grn}开始生成其他小应用商店正式包 ...${end}"
-# cd /data/datizhuanqian
-
-# cd ./android
-# ./gradlew assembleOther
-
-
-
-
-
-
-
-
-
-#单独生成某个包的话手动去生成比较方便
+else 
+echo "${grn}开始生成 ..."
+./gradlew clean
+./gradlew assembleRelease
+fi

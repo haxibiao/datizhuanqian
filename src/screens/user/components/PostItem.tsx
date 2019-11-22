@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Iconfont, Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like } from 'components';
+import { Iconfont, Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like, VideoItem } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 interface User {
@@ -44,7 +44,7 @@ const PostItem = (props: Props) => {
     const { video } = post;
 
     const navigationAction = () => {
-        props.navigation.navigate('VideoPost', { videos: posts, index: activeIndex, isPost: true });
+        props.navigation.navigate('VideoPost', { medium: posts, index: activeIndex, isPost: true });
     };
 
     const renderVideo = () => {
@@ -120,7 +120,7 @@ const PostItem = (props: Props) => {
             </Row>
             <View style={{ paddingVertical: PxFit(10) }}>
                 <Text style={{ color: Theme.black, lineHeight: 22 }}>{description}</Text>
-                {video && renderVideo()}
+                {video && <VideoItem video={video} />}
                 <Text style={styles.timeText}>{created_at}</Text>
             </View>
             <Row>

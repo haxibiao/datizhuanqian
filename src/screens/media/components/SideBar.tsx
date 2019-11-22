@@ -8,9 +8,9 @@ import Like from './Like';
 import VideoStore from '../VideoStore';
 
 export default observer(props => {
-    const { user, spider, isPost } = props;
+    const { user, media, isPost } = props;
 
-    const { video, count_comments } = spider;
+    const { video, count_comments } = media;
 
     return (
         <View style={styles.sideBar}>
@@ -23,7 +23,7 @@ export default observer(props => {
                 </TouchableOpacity>
             </View>
             <View style={styles.itemWrap}>
-                <Like question={spider} isPost={isPost} />
+                <Like media={isPost ? media : video} isPost={isPost} />
             </View>
             <View style={styles.itemWrap}>
                 <TouchableOpacity onPress={VideoStore.showComment}>

@@ -17,12 +17,12 @@ import { useNavigation } from 'react-navigation-hooks';
 
 export default observer(props => {
     const { navigation } = props;
-    const data = navigation.getParam('videos') || [];
+    const medium = navigation.getParam('medium') || [];
     const activeIndex = navigation.getParam('index') || 0;
     const isPost = navigation.getParam('isPost') || false;
     const activeItem = useRef(0);
     // const [questions, setQuestions] = useState(data);
-    console.log('data', data);
+    console.log('medium', medium);
     const commentRef = useRef();
 
     VideoStore.showComment = useCallback(() => {
@@ -50,7 +50,7 @@ export default observer(props => {
             variables: {
                 limit: 10,
                 offset: VideoStore.dataSource.length,
-                user_id: data[0].user.id,
+                user_id: medium[0].user.id,
             },
         });
     }, [app.client]);
@@ -77,7 +77,9 @@ export default observer(props => {
     const onMomentumScrollEnd = useCallback(
         event => {
             if (VideoStore.dataSource.length - activeItem.current <= 3) {
-                fetchData();
+                if (medium.length > 1) {
+                    fetchData();
+                }
             }
         },
         [fetchData],
@@ -94,7 +96,7 @@ export default observer(props => {
         // fetchData({ authentication: firstAuthenticationQuery.current });
         VideoStore.viewableItemIndex = activeIndex;
 
-        VideoStore.addSource(data);
+        VideoStore.addSource(medium);
 
         // if (isComment) {
         //     VideoStore.showComment();
@@ -120,7 +122,6 @@ export default observer(props => {
 
     const media = VideoStore.dataSource[VideoStore.viewableItemIndex];
 
-    console.log('media', media);
     if (!media) return null;
     return (
         <View style={styles.container} onLayout={onLayout}>
@@ -137,7 +138,7 @@ export default observer(props => {
                 removeClippedSubviews={true}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                    <VideoItem spider={item} index={index} navigation={navigation} isPost={isPost} />
+                    <VideoItem media={item} index={index} navigation={navigation} isPost={isPost} />
                 )}
                 getItemLayout={(data, index) => ({
                     length: VideoStore.viewportHeight,

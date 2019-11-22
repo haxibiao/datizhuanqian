@@ -23,11 +23,11 @@ interface Props {
 }
 
 export default observer((props: Props) => {
-    const { question, isPost } = props;
+    const { media, isPost } = props;
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
-            likable_id: question.id,
+            likable_id: media.id,
             likable_type: isPost ? 'POST' : 'VIDEO',
         },
     });
@@ -37,15 +37,15 @@ export default observer((props: Props) => {
             const result = await exceptionCapture(likeArticle);
             console.log('result', result);
         } catch (error) {
-            question.liked ? question.count_likes-- : question.count_likes++;
-            question.liked = !question.liked;
+            media.liked ? media.count_likes-- : media.count_likes++;
+            media.liked = !media.liked;
             Toast.show({ content: '操作失败' });
         }
     }, 500);
 
     function toggleLike(): void {
-        question.liked ? question.count_likes-- : question.count_likes++;
-        question.liked = !question.liked;
+        media.liked ? media.count_likes-- : media.count_likes++;
+        media.liked = !media.liked;
         startAnimation();
         likeHandler();
     }
@@ -57,8 +57,8 @@ export default observer((props: Props) => {
     return (
         <Animated.View style={{ transform: [{ scale }] }}>
             <TouchableOpacity onPress={toggleLike}>
-                <Image source={question.liked ? imageSource.liked : imageSource.unlike} style={styles.imageStyle} />
-                <Text style={styles.countLikes}>{question.count_likes}</Text>
+                <Image source={media.liked ? imageSource.liked : imageSource.unlike} style={styles.imageStyle} />
+                <Text style={styles.countLikes}>{media.count_likes}</Text>
             </TouchableOpacity>
         </Animated.View>
     );

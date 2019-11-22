@@ -12,8 +12,8 @@ import { exceptionCapture } from 'common';
 import { Row } from 'components';
 
 export default observer(props => {
-    const { spider, index, navigation, isPost } = props;
-    const { video, title, user, description } = spider;
+    const { media, index, isPost } = props;
+    const { video, title, user, description } = media;
 
     return (
         <View style={{ height: VideoStore.viewportHeight }}>
@@ -35,7 +35,7 @@ export default observer(props => {
                     </View>
                 </View>
 
-                <SideBar spider={spider} user={user} isPost={isPost} />
+                <SideBar media={media} user={user} isPost={isPost} />
             </View>
         </View>
     );
