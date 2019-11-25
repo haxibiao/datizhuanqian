@@ -11,7 +11,16 @@ import { RewardTipsOverlay } from 'components';
 import { GQL } from 'apollo';
 import service from 'service';
 
-type Type = 'Task' | 'AnswerPass' | 'AnswerFail' | 'Sigin' | 'TimeReward' | 'Dividend' | 'Guide' | 'Compete';
+type Type =
+    | 'Task'
+    | 'AnswerPass'
+    | 'AnswerFail'
+    | 'Sigin'
+    | 'TimeReward'
+    | 'Dividend'
+    | 'Guide'
+    | 'Compete'
+    | 'Contribute';
 
 interface Video {
     video_play: Boolean;
@@ -24,13 +33,14 @@ interface Props {
     fullScreenVideoAdCache?: any; //全屏视频cache
     callback?: Function;
     type?: Type; //看视频来源
+    noReward: Boolean;
 }
 
 export function playVideo(props: Props) {
     const { type } = props;
     const playType = Math.round(Math.random()); //随机1为看激励视频 0为看全屏视频
     //非指定Reward时  触发随机看视频  奖励值为默认类型
-    if (type == 'Task' || playType) {
+    if (type == 'Task' || type == 'Contribute' || playType) {
         playRewardVideo(props);
     } else {
         playFullScreenVideo(props);
@@ -62,7 +72,7 @@ function loadRewardVideo(props: Props) {
 
 //播放激励视频
 function startRewardVideo(props: Props) {
-    const { callback, reward } = props;
+    const { callback, noReward } = props;
     let video = {
         video_play: false,
         ad_click: false,
@@ -70,13 +80,13 @@ function startRewardVideo(props: Props) {
     };
     ttad.RewardVideo.startAd()
         .then(result => {
-            console.log('result', result, reward);
+            console.log('result', result);
             if (ISAndroid) {
                 if (result) {
                     video = JSON.parse(result);
                     if (video.video_play) {
                         callback && callback();
-                        getReward(props, video);
+                        !noReward && getReward(props, video);
                     } else {
                         Toast.show({
                             content: '没看完视频,或没看详情，或其他异常...',
@@ -88,7 +98,7 @@ function startRewardVideo(props: Props) {
                     });
                 }
             } else {
-                getReward(props, video);
+                !noReward && getReward(props, video);
             }
         })
         .catch(error => {
@@ -120,11 +130,12 @@ function loadFullScreenVideo(props: Props) {
 
 //播放全屏视频
 function startFullScreenVideo(props: Props) {
+    const { noReward } = props;
     ttad.FullScreenVideo.startFullScreenVideoAd()
         .then((result: string) => {
             console.log('result', result);
             if (result) {
-                getReward(props);
+                !noReward && getReward(props);
             } else {
                 Toast.show({
                     content: '没看完视频，或其他异常...',
@@ -233,6 +244,10 @@ function dataReport(type: string | undefined, playType: number) {
         case 'Compete':
             action = playType ? 'user_click_compete_reward_ad' : 'user_click_compete_fullscreen_ad';
             name = playType ? '答题对战随机看激励视频' : '答题对战随机看全屏视频';
+            break;
+        case 'Contribute':
+            action = 'user_click_contribute_reward_ad';
+            name = '出题加速看激励视频';
             break;
         default:
             break;

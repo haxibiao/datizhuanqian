@@ -24,6 +24,7 @@ class MyPublish extends Component {
 
     render() {
         const { navigation } = this.props;
+        const initialPage = navigation.getParam('initialPage', 0);
         return (
             <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
                 <ScrollableTabView
@@ -34,7 +35,8 @@ class MyPublish extends Component {
                             underLineColor={Theme.primaryColor}
                             tabWidth={SCREEN_WIDTH / 4}
                         />
-                    )}>
+                    )}
+                    initialPage={initialPage ? initialPage : 0}>
                     <SpiderList navigation={navigation} tabLabel='动态' />
                     <Contributes navigation={navigation} tabLabel='出题' />
                 </ScrollableTabView>
