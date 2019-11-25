@@ -22,7 +22,7 @@ class WithdrawLogDetails extends Component {
         const { navigation } = this.props;
         const { withdraw_id } = navigation.state.params;
         return (
-            <PageContainer title="提现详情" white>
+            <PageContainer title='提现详情' white>
                 <Query
                     query={GQL.WithdrawQuery}
                     variables={{
@@ -76,12 +76,18 @@ class WithdrawLogDetails extends Component {
                                         )}
                                     </View>
                                     <View style={styles.row}>
-                                        <Text style={styles.textLeft}> 提现单号 </Text>
-                                        <Text style={styles.textRight}> {withdraw.biz_no} </Text>
+                                        <Text style={styles.textLeft}>提现平台 </Text>
+                                        <Text style={styles.textRight}>
+                                            {withdraw.to_platform == 'alipay' ? '支付宝' : '微信'}{' '}
+                                        </Text>
                                     </View>
                                     <View style={styles.row}>
-                                        <Text style={styles.textLeft}> 转账备注 </Text>
-                                        <Text style={styles.textRight}> 智慧点提现 </Text>
+                                        <Text style={styles.textLeft}>提现单号 </Text>
+                                        <Text style={styles.textRight}>{withdraw.biz_no} </Text>
+                                    </View>
+                                    <View style={styles.row}>
+                                        <Text style={styles.textLeft}>转账备注 </Text>
+                                        <Text style={styles.textRight}>智慧点提现 </Text>
                                     </View>
                                     <View
                                         style={[
@@ -90,7 +96,7 @@ class WithdrawLogDetails extends Component {
                                                 paddingBottom: PxFit(15),
                                             },
                                         ]}>
-                                        <Text style={styles.textLeft}> 收款账户 </Text>
+                                        <Text style={styles.textLeft}>收款账户 </Text>
                                         <Text style={styles.textRight}>
                                             {withdraw.to_account + '(' + app.me.wallet.real_name + ')'}
                                         </Text>
@@ -110,7 +116,7 @@ class WithdrawLogDetails extends Component {
                                                 paddingBottom: PxFit(15),
                                             },
                                         ]}>
-                                        <Text style={styles.textLeft}> 支付宝订单号 </Text>
+                                        <Text style={styles.textLeft}>订单号 </Text>
                                         <Text style={styles.text}> {withdraw.trade_no} </Text>
                                     </View>
                                 </View>
@@ -192,7 +198,7 @@ const styles = StyleSheet.create({
         paddingTop: PxFit(15),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderTopWidth: PxFit(1),
+        borderTopWidth: PxFit(0.5),
         borderTopColor: Theme.borderColor,
     },
     footer: {

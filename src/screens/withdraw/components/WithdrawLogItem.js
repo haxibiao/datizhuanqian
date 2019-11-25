@@ -4,12 +4,16 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
+import { Row } from 'components';
 
 function WithdrawLogItem(props) {
     const { style, navigation, item } = props;
-    let statusText, color;
+    let statusText,
+        color,
+        image_url,
+        size = 40;
     switch (item.status) {
         case -1:
             statusText = '提现失败';
@@ -24,6 +28,20 @@ function WithdrawLogItem(props) {
             color = Theme.correctColor;
             break;
     }
+
+    switch (item.to_platform) {
+        case 'alipay':
+            image_url = require('../../../assets/images/alipay.png');
+            break;
+        case 'wechat':
+            image_url = require('../../../assets/images/wechat.png');
+            break;
+        default:
+            image_url = require('../../../assets/images/money_icon.png');
+            size = 46;
+            break;
+    }
+
     return (
         <TouchableOpacity
             style={[styles.item, style]}
@@ -34,18 +52,21 @@ function WithdrawLogItem(props) {
                     withdraw_id: item.id,
                 })
             }>
-            <View style={{ width: (SCREEN_WIDTH * 5) / 7 }}>
-                <Text style={{ fontSize: PxFit(15), color: Theme.defaultTextColor }}>
-                    {statusText}
-                    <Text style={{ fontSize: 15, color: Theme.themeRed }}>{item.remark && `   (${item.remark})`}</Text>
-                </Text>
-                <Text style={{ fontSize: PxFit(12), color: Theme.subTextColor, paddingTop: PxFit(10) }}>
-                    {item.created_at}
-                </Text>
-            </View>
-            <View>
-                <Text style={{ fontSize: PxFit(20), color }}>￥{item.amount.toFixed(0)}.00</Text>
-            </View>
+            <Image source={image_url} style={{ width: size, height: size, marginVertical: PxFit(15) }} />
+            <Row style={styles.content}>
+                <View style={{ width: (SCREEN_WIDTH * 4) / 7 }}>
+                    <Text style={styles.statusText}>{statusText}</Text>
+                    {item.remark && (
+                        <Text
+                            style={{ fontSize: 12, color: Theme.themeRed }}
+                            numberOfLines={1}>{`${item.remark}`}</Text>
+                    )}
+                    <Text style={styles.time}>{item.created_at}</Text>
+                </View>
+                <View>
+                    <Text style={{ fontSize: PxFit(20), color }}>￥{item.amount.toFixed(0)}.00</Text>
+                </View>
+            </Row>
         </TouchableOpacity>
     );
 }
@@ -53,12 +74,30 @@ function WithdrawLogItem(props) {
 const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
-        paddingVertical: 10,
+        paddingHorizontal: 15,
+    },
+    image: {
+        width: 40,
+        height: 40,
+        marginVertical: PxFit(15),
+    },
+    content: {
         borderBottomColor: Theme.lightBorder,
         borderBottomWidth: 0.5,
-        paddingHorizontal: 15,
+        paddingVertical: 15,
+        alignItems: 'flex-start',
+    },
+    statusText: {
+        fontSize: PxFit(16),
+        color: Theme.defaultTextColor,
+        lineHeight: PxFit(22),
+    },
+    time: {
+        fontSize: PxFit(12),
+        color: Theme.subTextColor,
+        lineHeight: PxFit(22),
     },
 });
 
