@@ -46,7 +46,7 @@ const CommentInput = props => {
                 commentable_id: questionId,
                 limit: 10,
             },
-            data: { comments: [{ ...createComment }, ...prev.comments] },
+            data: { comments: [createComment, ...prev.comments] },
         });
     }, []);
     const updateRepliesQuery = useCallback((cache, { data: { createComment } }) => {
@@ -92,25 +92,25 @@ const CommentInput = props => {
                 __typename: 'Mutation',
                 createComment: comment_id
                     ? {
-                          __typename: 'Comment',
-                          id: -1,
-                          user: app.userCache,
-                          content,
-                          time_ago: '刚刚',
-                          liked: false,
-                          count_likes: 0,
-                          reply: null,
-                      }
+                        __typename: 'Comment',
+                        id: -1,
+                        user: app.userCache,
+                        content,
+                        time_ago: '刚刚',
+                        liked: false,
+                        count_likes: 0,
+                        reply: null,
+                    }
                     : {
-                          __typename: 'Comment',
-                          id: -1,
-                          user: app.userCache,
-                          content,
-                          time_ago: '刚刚',
-                          liked: false,
-                          comments_count: 0,
-                          count_likes: 0,
-                      },
+                        __typename: 'Comment',
+                        id: -1,
+                        user: app.userCache,
+                        content,
+                        time_ago: '刚刚',
+                        liked: false,
+                        comments_count: 0,
+                        count_likes: 0,
+                    },
             },
             onError: error => {
                 console.log('error', error);
@@ -145,7 +145,7 @@ const CommentInput = props => {
                 </Row>
                 <TouchFeedback disabled={content.length < 1} style={styles.touchItem} onPress={createCommentHandler}>
                     <Iconfont
-                        name='plane-fill'
+                        name="plane-fill"
                         size={PxFit(22)}
                         color={content.length > 0 ? Theme.boyColor : Theme.subTextColor}
                     />
@@ -157,24 +157,24 @@ const CommentInput = props => {
 
 const styles = StyleSheet.create({
     footerBar: {
-        height: PxFit(40),
-        flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: '#F9F9FB',
+        borderRadius: PxFit(20),
+        flexDirection: 'row',
+        height: PxFit(40),
         justifyContent: 'space-between',
         marginHorizontal: PxFit(10),
         paddingHorizontal: PxFit(14),
         paddingVertical: PxFit(5),
-        borderRadius: PxFit(20),
-        backgroundColor: '#F9F9FB',
     },
     textInput: {
-        width: SCREEN_WIDTH - PxFit(100),
         paddingLeft: PxFit(5),
+        width: SCREEN_WIDTH - PxFit(100),
     },
     touchItem: {
-        width: PxFit(40),
         alignItems: 'flex-end',
         justifyContent: 'center',
+        width: PxFit(40),
     },
 });
 
