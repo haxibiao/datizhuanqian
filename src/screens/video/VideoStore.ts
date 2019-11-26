@@ -57,7 +57,7 @@ class VideoStore {
             visited_type: 'posts',
             visited_id: source && source.id,
         };
-        if (!source.is_ad) {
+        if (source && !source.is_ad) {
             for (let i = 0, count = this.visits.length; i < count; i++) {
                 let visitedType = this.visits[i].visited_type;
                 let visitedId = this.visits[i].visited_id;

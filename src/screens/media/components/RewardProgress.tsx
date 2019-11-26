@@ -6,11 +6,9 @@ import * as Progress from 'react-native-progress';
 import VideoStore from '../VideoStore';
 import { GQL, useMutation } from 'apollo';
 import { useBounceAnimation, useLinearAnimation, exceptionCapture } from 'common';
-import { transform } from '@babel/core';
 
 const RewardProgress = observer(props => {
     const progress = (VideoStore.rewardProgress / VideoStore.rewardLimit) * 100;
-    const me = useMemo(() => app.me, []);
 
     const [rewardGold, setReward] = useState();
     const [imageAnimation, startImageAnimation] = useBounceAnimation({ value: 0, toValue: 1 });
@@ -67,7 +65,14 @@ const RewardProgress = observer(props => {
     });
 
     return (
-        <TouchableWithoutFeedback onPress={(): void => Tools.navigate('BillingRecord', { initialPage: 1 })}>
+        <TouchableWithoutFeedback
+            onPress={() => {
+                if (app.login) {
+                    Tools.navigate('BillingRecord', { initialPage: 1 });
+                } else {
+                    Tools.navigate('Login');
+                }
+            }}>
             <Animated.View style={[styles.circleProgress, { transform: [{ scale: imageScale }] }]}>
                 <Animated.Text
                     style={[
@@ -80,12 +85,12 @@ const RewardProgress = observer(props => {
                 {progress > 0 && !ISIOS && (
                     <Progress.Circle
                         progress={progress / 100}
-                        size={PxFit(48)}
+                        size={PxFit(54)}
                         borderWidth={0}
                         color="#ff5644"
                         thickness={PxFit(4)}
                         endAngle={1}
-                        strokeCap={'round'}
+                        strokeCap="round"
                     />
                 )}
             </Animated.View>
@@ -94,26 +99,23 @@ const RewardProgress = observer(props => {
 });
 const styles = StyleSheet.create({
     circleProgress: {
+        height: PxFit(54),
         position: 'relative',
-        height: PxFit(48),
-        width: PxFit(80),
-        alignItems: 'center',
-    },
-    rewardText: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        textAlign: 'center',
-        fontSize: PxFit(16),
-        fontWeight: 'bold',
-        color: '#FFB100',
+        width: PxFit(54),
     },
     rewardImage: {
         ...StyleSheet.absoluteFill,
-        height: PxFit(48),
-        width: PxFit(48),
-        left: PxFit(16),
+        height: PxFit(54),
+        width: PxFit(54),
+    },
+    rewardText: {
+        color: '#FFB100',
+        fontSize: PxFit(12),
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        textAlign: 'center',
+        top: 0,
     },
 });
 

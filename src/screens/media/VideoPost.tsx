@@ -7,6 +7,8 @@ import { exceptionCapture } from 'common';
 import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils';
 import { Iconfont, TouchFeedback } from 'components';
 
+import RewardProgress from './components/RewardProgress';
+
 import VideoItem from './components/VideoItem';
 import Footer from './components/Footer';
 import VideoStore from './VideoStore';
@@ -133,7 +135,7 @@ export default observer(props => {
                 scrollsToTop={false}
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={activeIndex}
-                keyboardShouldPersistTaps='always'
+                keyboardShouldPersistTaps="always"
                 pagingEnabled={true}
                 removeClippedSubviews={true}
                 keyExtractor={(item, index) => index.toString()}
@@ -155,6 +157,10 @@ export default observer(props => {
                 onViewableItemsChanged={getVisibleRows}
                 viewabilityConfig={config.current}
             />
+
+            <View style={styles.rewardProgress}>
+                <RewardProgress />
+            </View>
 
             <CommentOverlay
                 ref={commentRef}
@@ -197,5 +203,10 @@ const styles = StyleSheet.create({
         right: 0,
         height: 50,
         width: 50,
+    },
+    rewardProgress: {
+        bottom: PxFit(300 + Theme.HOME_INDICATOR_HEIGHT),
+        position: 'absolute',
+        right: PxFit(Theme.itemSpace),
     },
 });

@@ -38,16 +38,16 @@ export default observer(props => {
                 setLoaded(false);
             },
 
-            // onProgress(data) {
-            //     if (!media.watched && media.watchedTime < data.currentTime) {
-            //         VideoStore.rewardProgress += data.currentTime - media.watchedTime;
-            //         media.watchedTime = data.currentTime;
-            //         if (Math.abs(media.watchedTime - duration.current) <= 1) {
-            //             media.watched = true;
-            //         }
-            //     }
-            //     media.currentTime = data.currentTime;
-            // },
+            onProgress(data) {
+                if (!media.watched && media.watchedTime < data.currentTime) {
+                    VideoStore.rewardProgress += data.currentTime - media.watchedTime;
+                    media.watchedTime = data.currentTime;
+                    if (Math.abs(media.watchedTime - duration.current) <= 1) {
+                        media.watched = true;
+                    }
+                }
+                media.currentTime = data.currentTime;
+            },
 
             onEnd() {},
 

@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Iconfont, UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
+import { UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
 import { Theme, PxFit, Tools } from 'utils';
 
 class CommentNotification extends Component {
@@ -46,7 +46,6 @@ class CommentNotification extends Component {
         const user = Tools.syncGetter('like.user', notification);
         if (notification.like) {
             this.siwthType(notification);
-
             if (Tools.syncGetter('like.question', notification)) {
                 return (
                     <TouchFeedback style={styles.container} onPress={this.navigationAction}>
