@@ -16,6 +16,7 @@ import {
     UpwardImage,
     beginnerGuidance,
     AnswerGuidance,
+    RewardTipsOverlay,
 } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
 
@@ -36,6 +37,7 @@ import AnswerOverlay from './components/AnswerOverlay';
 import ChooseOverlay from './components/ChooseOverlay';
 import FirstWithdrawTips from './components/FirstWithdrawTips';
 import AnswerResult from './components/AnswerResult';
+import AuditResultOverlay from './components/AuditResultOverlay';
 
 import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
@@ -166,7 +168,8 @@ class index extends Component {
     // 提交审核
     onSubmitOpinion = async status => {
         this.setState({ auditStatus: status }, () => {
-            this.showResultsOverlay();
+            // this.showResultsOverlay();
+            AuditResultOverlay.show({});
         });
         try {
             await this.props.auditMutation({
@@ -504,7 +507,7 @@ class index extends Component {
                             paddingBottom: audit ? SCREEN_WIDTH / 3 : 0,
                         },
                     ]}
-                    keyboardShouldPersistTaps="always"
+                    keyboardShouldPersistTaps='always'
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                     scrollEnabled={!config.isFullScreen}
@@ -600,7 +603,7 @@ class index extends Component {
                             disabled={!this.state.question}
                             style={styles.optionsButton}
                             onPress={this.showOptions}>
-                            <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
+                            <Iconfont name='more-vertical' color='#000' size={PxFit(18)} />
                         </TouchFeedback>
                     }
                     hiddenNavBar={config.isFullScreen}

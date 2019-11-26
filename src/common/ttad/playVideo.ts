@@ -20,7 +20,8 @@ type Type =
     | 'Dividend'
     | 'Guide'
     | 'Compete'
-    | 'Contribute';
+    | 'Contribute'
+    | 'Audit';
 
 interface Video {
     video_play: Boolean;
@@ -40,7 +41,7 @@ export function playVideo(props: Props) {
     const { type } = props;
     const playType = Math.round(Math.random()); //随机1为看激励视频 0为看全屏视频
     //非指定Reward时  触发随机看视频  奖励值为默认类型
-    if (type == 'Task' || type == 'Contribute' || playType) {
+    if (type == 'Task' || type == 'Contribute' || type == 'Audit' || playType) {
         playRewardVideo(props);
     } else {
         playFullScreenVideo(props);
@@ -169,6 +170,15 @@ function getReward(props: Props, video: Video) {
         rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
     }
 
+    //TODO:  需后端扩展userReward奖励类型
+    if (type === 'Audit' && video.ad_click && video.video_play) {
+        rewardType = 'VIDEO_PLAY_REWARD'; //审题激励视频看详情
+    }
+
+    if (type === 'Audit' && !video.ad_click && video.video_play) {
+        rewardType = 'VIDEO_PLAY_REWARD'; //审题激励视频未看详情
+    }
+
     const refetchQuery =
         type === 'Sigin'
             ? [
@@ -248,6 +258,10 @@ function dataReport(type: string | undefined, playType: number) {
         case 'Contribute':
             action = 'user_click_contribute_reward_ad';
             name = '出题加速看激励视频';
+            break;
+        case 'Audit':
+            action = 'user_click_Audit_reward_ad';
+            name = '审题看激励视频';
             break;
         default:
             break;
