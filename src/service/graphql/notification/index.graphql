@@ -147,8 +147,20 @@ query likeNotificationsQuery($offset: Int, $limit: Int, $filter: [NotificationEn
                     id
                     name
                     avatar
-                    followed_user_status
+                    gender
+                    is_admin
                     roles
+                    profile {
+                        sub_name
+                        birthday
+                        age
+                        introduction
+                        posts_count
+                    }
+                    level {
+                        id
+                        level
+                    }
                 }
             }
             question {

@@ -43,7 +43,7 @@ class CommentNotification extends Component {
 
     render() {
         const { navigation, notification } = this.props;
-        let user = Tools.syncGetter('like.user', notification);
+        const user = Tools.syncGetter('like.user', notification);
         if (notification.like) {
             this.siwthType(notification);
 
@@ -103,7 +103,14 @@ class CommentNotification extends Component {
                 );
             } else if (Tools.syncGetter('like.post', notification)) {
                 return (
-                    <TouchFeedback style={styles.container}>
+                    <TouchFeedback
+                        style={styles.container}
+                        onPress={() =>
+                            navigation.navigate('VideoPost', {
+                                medium: [Tools.syncGetter('like.post', notification)],
+                                isPost: true,
+                            })
+                        }>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
                             <Avatar source={{ uri: Tools.syncGetter('avatar', user) }} size={34} />
                             <View style={styles.user}>
