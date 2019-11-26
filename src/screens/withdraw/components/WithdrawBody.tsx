@@ -148,8 +148,6 @@ const WithdrawBody = props => {
             </Row>
         );
     };
-
-    console.log('withdrawInfo', withdrawInfo);
     const WithdrawType = [
         {
             type: 'alipay',

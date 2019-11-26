@@ -21,7 +21,8 @@ type Type =
     | 'Guide'
     | 'Compete'
     | 'Contribute'
-    | 'Audit';
+    | 'Audit'
+    | 'Spider';
 
 interface Video {
     video_play: Boolean;
@@ -86,6 +87,7 @@ function startRewardVideo(props: Props) {
                 if (result) {
                     video = JSON.parse(result);
                     if (video.video_play) {
+                        //TODO: video.video_play 有很大几率返回false
                         callback && callback();
                         !noReward && getReward(props, video);
                     } else {
@@ -260,9 +262,14 @@ function dataReport(type: string | undefined, playType: number) {
             name = '出题加速看激励视频';
             break;
         case 'Audit':
-            action = 'user_click_Audit_reward_ad';
+            action = 'user_click_audit_reward_ad';
             name = '审题看激励视频';
             break;
+        case 'Spider':
+            action = 'user_click_spider_reward_ad';
+            name = '采集视频看激励视频';
+            break;
+
         default:
             break;
     }

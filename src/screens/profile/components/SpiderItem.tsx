@@ -10,6 +10,8 @@ import { Iconfont, Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like, Vid
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import { app } from 'store';
+import { GQL, useMutation } from 'apollo';
+import RetryOverlay from './RetryOverlay';
 interface User {
     avatar: String;
     name: String;
@@ -35,21 +37,53 @@ interface Video {
     is_ad_video: Boolean;
 }
 
+interface Spider {
+    status: String;
+    title: String;
+    remark: String;
+    reward: number;
+    user: User;
+    source_url: String;
+}
+
 interface Props {
     video: Video;
     user: User;
     spiders: any;
     activeIndex: Number;
     navigation: any;
-    spider: object;
+    spider: Spider;
 }
 
 const SpiderItem = (props: Props) => {
     const { video, navigation, spider } = props;
-    const { status, title, remark, reward, user } = spider;
+    const { status, title, remark, reward, user, source_url } = spider;
 
     const navigationAction = () => {
         props.navigation.navigate('VideoPost', { medium: [spider] });
+    };
+
+    const [resolveDouyinVideo] = useMutation(GQL.resolveDouyinVideo, {
+        variables: {
+            share_link: source_url,
+        },
+    });
+
+    const retryUpload = async () => {
+        RetryOverlay.show({
+            callback: async () => {
+                try {
+                    const result = await resolveDouyinVideo();
+                    Toast.show({
+                        content: '已进入重新采集队列',
+                    });
+                } catch (e) {
+                    console.log('e :', e);
+                    let str = e.toString().replace(/Error: GraphQL error: /, '');
+                    Toast.show({ content: str });
+                }
+            },
+        });
     };
 
     if (!video) {
@@ -67,18 +101,26 @@ const SpiderItem = (props: Props) => {
                         </View>
                     </Row>
 
-                    <View style={styles.rewardWrap}>
+                    <TouchFeedback
+                        style={styles.rewardWrap}
+                        onPress={() => retryUpload()}
+                        disabled={status !== 'FAILED_STATUS'}>
                         <Text
                             style={[
                                 styles.rewardTitle,
                                 { color: status === 'FAILED_STATUS' ? Theme.themeRed : Theme.grey },
                             ]}>
-                            {remark}
+                            {status === 'FAILED_STATUS' ? '重试' : remark}
                         </Text>
-                    </View>
+                    </TouchFeedback>
                 </Row>
                 <View style={{ paddingVertical: PxFit(10) }}>
-                    <Text style={{ color: Theme.black, lineHeight: 22 }}>{title}</Text>
+                    <Text style={{ color: Theme.black, lineHeight: 22 }}>
+                        {title}
+                        {status === 'FAILED_STATUS' && (
+                            <Text style={{ color: Theme.themeRed, lineHeight: 22 }}>{`(${remark})`}</Text>
+                        )}
+                    </Text>
                 </View>
                 <Row>
                     <View style={styles.row}>
@@ -87,7 +129,7 @@ const SpiderItem = (props: Props) => {
                     </View>
                     <Like
                         media={{ count_likes: 0, liked: false }}
-                        type='icon'
+                        type="icon"
                         iconSize={PxFit(22)}
                         containerStyle={{ flexDirection: 'row', alignItems: 'center' }}
                         textStyle={{ color: '#CCD5E0', fontSize: 14, marginStart: 5, marginEnd: 23 }}
@@ -140,7 +182,7 @@ const SpiderItem = (props: Props) => {
                 </TouchFeedback>
                 <Like
                     media={video}
-                    type='icon'
+                    type="icon"
                     iconSize={PxFit(22)}
                     containerStyle={{ flexDirection: 'row', alignItems: 'center' }}
                     textStyle={{ color: '#CCD5E0', fontSize: 14, marginStart: 5, marginEnd: 23 }}
