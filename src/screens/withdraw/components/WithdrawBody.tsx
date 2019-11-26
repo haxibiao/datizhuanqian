@@ -87,20 +87,48 @@ const WithdrawBody = props => {
         }
     };
 
+    const renderBindTips = () => {
+        const aliapyInfo = Tools.syncGetter('wallet.platforms.alipay', user);
+        const wechatInfo = Tools.syncGetter('wallet.platforms.wechat', user);
+
+        if (withdrawType === 'alipay' && aliapyInfo) {
+            return null;
+        }
+
+        if (withdrawType === 'wechat' && wechatInfo) {
+            return null;
+        }
+        return (
+            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10) }}>
+                <Text>{`绑定${withdrawType == 'alipay' ? '支付宝' : '微信'}后可直接提现`}</Text>
+                <TouchFeedback
+                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                    onPress={() => {
+                        navigation.navigate('AccountSecurity', { user });
+                    }}>
+                    <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>立即绑定</Text>
+                    <Iconfont name='right' size={PxFit(13)} color={Theme.subTextColor} />
+                </TouchFeedback>
+            </Row>
+        );
+    };
+
+    console.log('user', UserMeansQuery);
     const WithdrawType = [
         {
             type: 'alipay',
             name: '支付宝',
-            icon: require('@src/assets/images/alipay.png'),
-            withdrawInfo: Tools.syncGetter('data.user.wallet.platforms.alipay', UserMeansQuery),
+            icon: require('@src/assets/images/zhifubao.png'),
+            withdrawInfo: Tools.syncGetter('wallet.platforms.alipay', user),
         },
         {
             type: 'wechat',
             name: '微信',
             icon: require('@src/assets/images/wechat.png'),
-            withdrawInfo: Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery),
+            withdrawInfo: Tools.syncGetter('wallet.platforms.wechat', user),
         },
     ];
+
     const { userCache } = app;
     if (!user) {
         if (userCache) {
@@ -120,8 +148,16 @@ const WithdrawBody = props => {
                     </View>
                     <View style={styles.accumulat}>
                         <View style={styles.accumulated}>
-                            <Text style={styles.greyText}>今日可提现额度(元)</Text>
-                            <Text style={styles.slenderBlackText}>{user.today_withdraw_left || 0}</Text>
+                            <TouchFeedback
+                                onPress={() => navigation.navigate('MakeMoenyManual')}
+                                style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.greyText}>今日贡献值</Text>
+                                <Image
+                                    source={require('../../../assets/images/question.png')}
+                                    style={{ width: PxFit(11), height: PxFit(11), marginLeft: PxFit(3) }}
+                                />
+                            </TouchFeedback>
+                            <Text style={styles.slenderBlackText}>{user.today_contributes || 0}</Text>
                         </View>
                         <View style={styles.line} />
                         <View style={styles.accumulated}>
@@ -141,7 +177,7 @@ const WithdrawBody = props => {
                     <Row style={{ marginTop: PxFit(10) }}>
                         {WithdrawType.map((data, index) => {
                             return (
-                                <Fragment>
+                                <Fragment key={index}>
                                     <TouchFeedback
                                         style={[
                                             styles.withdrawType,
@@ -152,27 +188,15 @@ const WithdrawBody = props => {
                                         ]}
                                         onPress={() => {
                                             setWithdrawType(data.type);
-                                        }}
-                                        key={index}>
+                                        }}>
                                         <Image source={data.icon} style={styles.withdrawTypeText} />
                                         <Text>{data.name}</Text>
                                     </TouchFeedback>
-                                    {data.withdrawInfo && (
-                                        <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10) }}>
-                                            <Text>{`绑定${data.name}后可直接提现`}</Text>
-                                            <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>
-                                                    立即绑定
-                                                </Text>
-                                                <Iconfont name='right' size={PxFit(13)} color={Theme.subTextColor} />
-                                            </TouchFeedback>
-                                        </Row>
-                                    )}
                                 </Fragment>
                             );
                         })}
                     </Row>
-
+                    {renderBindTips()}
                     <Row style={{ marginTop: PxFit(15) }}>
                         <View style={styles.titleBadge}></View>
                         <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
@@ -225,17 +249,8 @@ const WithdrawBody = props => {
 
                     {user.wallet && user.wallet.pay_account ? (
                         <View style={styles.footer}>
-                            <TouchFeedback
-                                style={{ flexDirection: 'row', alignItems: 'center' }}
-                                onPress={() => navigation.navigate('Introduce')}>
-                                <Text style={styles.tips}>
-                                    总提现{user.wallet.total_withdraw_amount || 0}.00 / 今日贡献
-                                    {user.today_contributes}{' '}
-                                </Text>
-                                <Image
-                                    source={require('../../../assets/images/question.png')}
-                                    style={{ width: 11, height: 11 }}
-                                />
+                            <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.tips}>总提现{user.wallet.total_withdraw_amount || 0}.00</Text>
                             </TouchFeedback>
                             <Button
                                 title={'立即提现'}
@@ -276,6 +291,7 @@ const styles = StyleSheet.create({
     accumulated: {
         flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',
     },
     slenderBlackText: {
         textAlign: 'center',
