@@ -1,1 +1,2 @@
-export * from './checkLoginInfo';
+export * from './checkUserInfo';
+export * from './bindWechat';

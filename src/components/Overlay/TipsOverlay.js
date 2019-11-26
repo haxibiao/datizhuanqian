@@ -17,6 +17,7 @@ type args = {
     title: string,
     content: any,
     onConfirm: Function,
+    confirmContent: string,
 };
 
 function renderContent(content) {

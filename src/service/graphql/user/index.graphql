@@ -106,6 +106,10 @@ query UserQuery($id: Int) {
             balance
             pay_info_change_count
             total_withdraw_amount
+            platforms {
+                alipay
+                wechat
+            }
         }
         profile {
             introduction

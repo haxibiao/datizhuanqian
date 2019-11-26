@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, ListItem, Avatar, ItemSeparator, TipsOverlay } from 'components';
-import { Theme, PxFit, Config, ISIOS } from 'utils';
+import { Theme, PxFit, Config, ISIOS, Tools } from 'utils';
 
 import UserPanel from './components/UserPanel';
 import { WeChat } from 'native';
@@ -14,67 +14,48 @@ import { WeChat } from 'native';
 import { app } from 'store';
 
 import { compose, graphql, GQL } from 'apollo';
-import { checkLoginInfo } from 'common';
+import { checkUserInfo, bindWechat } from 'common';
 
 class AccountSecurity extends Component {
     constructor(props) {
         super(props);
         const user = this.props.navigation.getParam('user');
         this.state = {
-            is_bind_wechat: user.is_bind_wechat,
+            is_bind_wechat: Tools.syncGetter('wallet.platforms.wechat', user),
         };
     }
 
-    bindWechat = () => {
-        WeChat.isSupported()
-            .then(isSupported => {
-                if (isSupported) {
-                    WeChat.wechatLogin().then(code => {
-                        let data = new FormData();
-                        data.append('code', code);
-                        this.bindWx(code);
-                    });
-                } else {
-                    Toast.show({ content: '未安装微信或当前微信版本较低' });
-                }
-            })
-            .catch(() => {
-                Toast.show({ content: '绑定失败' });
+    handlerBindWechat = () => {
+        if (this.state.is_bind_wechat) {
+            Toast.show({
+                content: '已绑定微信',
             });
-    };
-
-    bindWx = async code => {
-        let result = {};
-        try {
-            result = await this.props.BindWechatMutation({
-                variables: {
-                    code,
-                    version: 'v2',
-                },
-                errorPolicy: 'all',
-                refetchQueries: () => [
-                    {
-                        query: GQL.UserAutoQuery,
-                        variables: { id: app.me.id },
-                        fetchPolicy: 'network-only',
-                    },
-                ],
-            });
-        } catch (ex) {
-            result.errors = ex;
-        }
-        if (result && result.errors) {
-            this.setState({
-                submitting: false,
-            });
-            const str = result.errors[0].message;
-            Toast.show({ content: str });
         } else {
             this.setState({
-                is_bind_wechat: true,
+                submitting: true,
             });
-            Toast.show({ content: '绑定成功' });
+            bindWechat({
+                onSuccess: this.onSuccess,
+                onFailed: this.onFailed,
+            });
         }
+    };
+
+    onSuccess = () => {
+        this.setState({
+            submitting: false,
+        });
+        this.setState({
+            is_bind_wechat: true,
+        });
+    };
+
+    onFailed = error => {
+        this.setState({
+            submitting: false,
+        });
+        const str = error[0].message;
+        Toast.show({ content: str });
     };
 
     checkAccount = (auto_uuid_user, auto_phone_user) => {
@@ -120,7 +101,7 @@ class AccountSecurity extends Component {
 
         console.log('user', user);
         return (
-            <PageContainer title='账号与安全' white loading={!user}>
+            <PageContainer title="账号与安全" white loading={!user}>
                 <View style={styles.container}>
                     <ItemSeparator />
                     <UserPanel user={user} />
@@ -137,7 +118,7 @@ class AccountSecurity extends Component {
                             onPress={() => navigation.navigate('SetLoginInfo', { account: null })}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>设置手机/密码</Text>}
-                            rightComponent={<Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />}
+                            rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
                         />
                     )}
 
@@ -146,7 +127,7 @@ class AccountSecurity extends Component {
                             onPress={() => navigation.navigate('SetLoginInfo', { phone: user.account })}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>设置密码</Text>}
-                            rightComponent={<Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />}
+                            rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
                         />
                     )}
                     {!auto_uuid_user && !auto_phone_user && (
@@ -154,28 +135,20 @@ class AccountSecurity extends Component {
                             onPress={() => navigation.navigate('ModifyPassword')}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>修改密码</Text>}
-                            rightComponent={<Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />}
+                            rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
                         />
                     )}
 
                     <ItemSeparator />
                     {!ISIOS && (
                         <ListItem
-                            onPress={() => {
-                                if (is_bind_wechat) {
-                                    Toast.show({
-                                        content: '已绑定微信',
-                                    });
-                                } else {
-                                    this.bindWechat();
-                                }
-                            }}
+                            onPress={this.handlerBindWechat}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>微信账号</Text>}
                             rightComponent={
                                 <View style={styles.rightWrap}>
                                     <Text style={styles.linkText}>{is_bind_wechat ? '已绑定' : '去绑定'}</Text>
-                                    <Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />
+                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             }
                         />
@@ -185,7 +158,7 @@ class AccountSecurity extends Component {
                             if (user.wallet && user.wallet.pay_info_change_count === -1) {
                                 Toast.show({ content: '支付宝信息更改次数已达上限' });
                             } else {
-                                checkLoginInfo(auto_uuid_user, auto_phone_user, navigation, user);
+                                checkUserInfo();
                             }
                         }}
                         style={styles.listItem}
@@ -196,12 +169,12 @@ class AccountSecurity extends Component {
                                     <Text style={styles.rightText}>
                                         {user.wallet.pay_account + '(' + user.wallet.real_name + ')'}
                                     </Text>
-                                    <Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />
+                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             ) : (
                                 <View style={styles.rightWrap}>
                                     <Text style={styles.linkText}>去绑定</Text>
-                                    <Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />
+                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             )
                         }

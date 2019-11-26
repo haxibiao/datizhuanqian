@@ -4,7 +4,7 @@ import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, 
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid } from 'utils';
-import { playVideo } from 'common';
+import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ttad } from 'native';
 
 import WithdrawGuidance from './WithdrawGuidance';
@@ -140,10 +140,14 @@ const WithdrawBody = props => {
                 <TouchFeedback
                     style={{ flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => {
-                        navigation.navigate('AccountSecurity', { user });
+                        if (withdrawType == 'alipay') {
+                            checkUserInfo();
+                        } else {
+                            bindWechat();
+                        }
                     }}>
                     <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>立即绑定</Text>
-                    <Iconfont name='right' size={PxFit(13)} color={Theme.subTextColor} />
+                    <Iconfont name="right" size={PxFit(13)} color={Theme.subTextColor} />
                 </TouchFeedback>
             </Row>
         );
@@ -277,22 +281,19 @@ const WithdrawBody = props => {
                             );
                         })}
                     </View>
-
-                    {user.wallet && user.wallet.pay_account ? (
-                        <View style={styles.footer}>
-                            <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={styles.tips}>总提现{user.wallet.total_withdraw_amount || 0}.00</Text>
-                            </TouchFeedback>
-                            <Button
-                                title={'立即提现'}
-                                style={styles.button}
-                                disabled={withdrawCount < 1}
-                                onPress={handleWithdraws}
-                            />
-                        </View>
-                    ) : (
-                        <WithdrawGuidance user={user} />
-                    )}
+                    <View style={styles.footer}>
+                        <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.tips}>
+                                总提现{Tools.syncGetter('wallet.total_withdraw_amoun', user) || 0}.00
+                            </Text>
+                        </TouchFeedback>
+                        <Button
+                            title={'立即提现'}
+                            style={styles.button}
+                            disabled={withdrawCount < 1}
+                            onPress={handleWithdraws}
+                        />
+                    </View>
                 </View>
                 <SubmitLoading isVisible={submit} content={'加载中...'} />
             </View>

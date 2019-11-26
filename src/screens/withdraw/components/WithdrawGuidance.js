@@ -7,27 +7,9 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { withApollo, GQL } from 'apollo';
 import { app } from 'store';
-import { checkLoginInfo } from 'common';
+import { checkUserInfo } from 'common';
 
 class WithdrawGuidance extends Component {
-    checkUser = async () => {
-        const { navigation, client } = this.props;
-        const result = await client.mutate({
-            mutation: GQL.UserAutoQuery,
-            variables: {
-                id: app.me.id,
-            },
-        });
-        if (result && result.data && result.data.user) {
-            const { user } = result.data;
-            checkLoginInfo(user.auto_uuid_user, user.auto_phone_user, navigation, user);
-        } else {
-            Toast.show({
-                content: '获取账号信息失败，请检查网络',
-            });
-        }
-    };
-
     render() {
         const { tips } = this.props;
         return (
@@ -46,7 +28,7 @@ class WithdrawGuidance extends Component {
                     {tips ? tips : '目前没有绑定支付宝账户哦'}
                 </Text>
 
-                <TouchableOpacity onPress={this.checkUser} style={{ alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => checkUserInfo()} style={{ alignItems: 'center' }}>
                     <Text
                         style={{
                             color: Theme.linkColor,
