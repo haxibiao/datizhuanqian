@@ -246,6 +246,10 @@ query UserMeansQuery($id: Int!) {
             pay_account
             pay_info_change_count
             total_withdraw_amount
+            platforms {
+                alipay
+                wechat
+            }
         }
         profile {
             total_contributes
@@ -521,8 +525,8 @@ query checkNewUserQuery($user_id: Int) {
 }
 
 #绑定微信
-mutation BindWechatMutation($union_id: String!) {
-    bindWechat(union_id: $union_id) {
+mutation BindWechatMutation($code: String!, $version: String) {
+    bindWechat(code: $code, version: $version) {
         id
     }
 }

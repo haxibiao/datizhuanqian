@@ -6,8 +6,8 @@ mutation SetUserPaymentInfoMutation($pay_account: String!, $real_name: String!, 
 }
 
 #提交提现
-mutation CreateWithdrawMutation($amount: Float!) {
-    createWithdrawal(amount: $amount)
+mutation CreateWithdrawMutation($amount: Float!, $platform: WithdrawPlatformEnum) {
+    createWithdrawal(amount: $amount, platform: $platform)
 }
 
 #提现日志

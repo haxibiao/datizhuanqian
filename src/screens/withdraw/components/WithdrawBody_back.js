@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
-import { TouchFeedback, Button, SubmitLoading, TipsOverlay } from 'components';
+import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row } from 'components';
 
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid } from 'utils';
 
@@ -27,7 +27,8 @@ class WithdrawBody extends Component {
             userCache: {
                 gold: 0,
             },
-            isExist: false,
+            withdrawType: 'alipay',
+            widthdrawCount: 1,
             luckyMoney: [
                 {
                     id: 1,
@@ -72,7 +73,7 @@ class WithdrawBody extends Component {
             });
             // navigation.navigate('WithdrawApply', { amount: 1 });
         } else {
-            this.createWithdraw(amount);
+            this.this.createWithdraw(amount);
         }
 
         // if(data.user.wallet)
@@ -164,6 +165,33 @@ class WithdrawBody extends Component {
                             </View>
                         </View>
                     </View>
+                    <ItemSeparator />
+                    <View style={{ paddingHorizontal: PxFit(Theme.itemSpace), paddingTop: PxFit(Theme.itemSpace) }}>
+                        <Row>
+                            <View style={styles.titleBadge}></View>
+                            <Text style={{ fontSize: PxFit(15) }}>提现到</Text>
+                        </Row>
+                        <Row style={{ marginTop: PxFit(10) }}>
+                            <Row style={styles.type}>
+                                <Image
+                                    source={require('@src/assets/images/wechat.png')}
+                                    style={styles.withdrawTypeText}
+                                />
+                                <Text>微信</Text>
+                            </Row>
+                            <Row style={[styles.type, { marginLeft: PxFit(10) }]}>
+                                <Image
+                                    source={require('@src/assets/images/alipay.png')}
+                                    style={styles.withdrawTypeText}
+                                />
+                                <Text>支付宝</Text>
+                            </Row>
+                        </Row>
+                        <Row style={{ marginTop: PxFit(15) }}>
+                            <View style={styles.titleBadge}></View>
+                            <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
+                        </Row>
+                    </View>
                     <View style={styles.withdraws}>
                         <View style={styles.center}>
                             {luckyMoney.map((luckyMoney, index) => {
@@ -231,7 +259,7 @@ class WithdrawBody extends Component {
                                         style={{ width: 11, height: 11 }}
                                     />
                                 </TouchFeedback>
-                                <Button
+                                {/*<Button
                                     title={'提现记录'}
                                     style={{
                                         height: PxFit(38),
@@ -240,6 +268,11 @@ class WithdrawBody extends Component {
                                         width: WPercent(80),
                                     }}
                                     onPress={() => navigation.navigate('BillingRecord')}
+                                />*/}
+                                <Button
+                                    title={'立即提现'}
+                                    style={styles.button}
+                                    onPress={() => this.createWithdraw(1)}
                                 />
                             </View>
                         ) : (
@@ -268,6 +301,19 @@ const styles = StyleSheet.create({
     accumulated: {
         flex: 1,
         justifyContent: 'center',
+    },
+    type: {
+        width: (SCREEN_WIDTH - 40) / 2,
+        height: PxFit(50),
+        justifyContent: 'center',
+        borderColor: Theme.borderColor,
+        borderWidth: PxFit(0.5),
+        borderRadius: PxFit(5),
+    },
+    withdrawTypeText: {
+        width: PxFit(24),
+        height: PxFit(24),
+        marginRight: PxFit(5),
     },
     badge: {
         alignItems: 'center',
@@ -338,6 +384,12 @@ const styles = StyleSheet.create({
         lineHeight: PxFit(18),
         marginTop: PxFit(10),
     },
+    titleBadge: {
+        height: 16,
+        width: 3,
+        backgroundColor: Theme.primaryColor,
+        marginRight: PxFit(10),
+    },
     statistics: {
         marginBottom: PxFit(Theme.itemSpace),
         marginTop: PxFit(Theme.itemSpace),
@@ -362,6 +414,13 @@ const styles = StyleSheet.create({
     withdraws: {
         flex: 1,
         justifyContent: 'space-between',
+        marginTop: PxFit(15),
+    },
+    button: {
+        height: PxFit(38),
+        borderRadius: PxFit(19),
+        backgroundColor: Theme.primaryColor,
+        width: WPercent(80),
     },
 });
 

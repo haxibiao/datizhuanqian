@@ -3,7 +3,6 @@
  * created by wyk made in 2019-03-22 11:55:07
  */
 
-
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, ListItem, Avatar, ItemSeparator, TipsOverlay } from 'components';
@@ -33,26 +32,7 @@ class AccountSecurity extends Component {
                     WeChat.wechatLogin().then(code => {
                         let data = new FormData();
                         data.append('code', code);
-                        fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
-                            method: 'POST',
-                            body: data,
-                        })
-                            .then(response => response.json())
-                            .then(result => {
-                                if (result.data && result.data.unionid) {
-                                    this.bindWx(result.data);
-                                } else {
-                                    Toast.show({
-                                        content: '当前登录微信已绑定账号' + result.data.user.account,
-                                    });
-                                }
-                            })
-
-                            .catch(error => {
-                                Toast.show({
-                                    content: '微信账号获取失败',
-                                });
-                            });
+                        this.bindWx(code);
                     });
                 } else {
                     Toast.show({ content: '未安装微信或当前微信版本较低' });
@@ -63,12 +43,13 @@ class AccountSecurity extends Component {
             });
     };
 
-    bindWx = async data => {
+    bindWx = async code => {
         let result = {};
         try {
             result = await this.props.BindWechatMutation({
                 variables: {
-                    union_id: data.unionid,
+                    code,
+                    version: 'v2',
                 },
                 errorPolicy: 'all',
                 refetchQueries: () => [
@@ -139,7 +120,7 @@ class AccountSecurity extends Component {
 
         console.log('user', user);
         return (
-            <PageContainer title="账号与安全" white loading={!user}>
+            <PageContainer title='账号与安全' white loading={!user}>
                 <View style={styles.container}>
                     <ItemSeparator />
                     <UserPanel user={user} />
@@ -156,7 +137,7 @@ class AccountSecurity extends Component {
                             onPress={() => navigation.navigate('SetLoginInfo', { account: null })}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>设置手机/密码</Text>}
-                            rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+                            rightComponent={<Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />}
                         />
                     )}
 
@@ -165,7 +146,7 @@ class AccountSecurity extends Component {
                             onPress={() => navigation.navigate('SetLoginInfo', { phone: user.account })}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>设置密码</Text>}
-                            rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+                            rightComponent={<Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />}
                         />
                     )}
                     {!auto_uuid_user && !auto_phone_user && (
@@ -173,7 +154,7 @@ class AccountSecurity extends Component {
                             onPress={() => navigation.navigate('ModifyPassword')}
                             style={styles.listItem}
                             leftComponent={<Text style={styles.itemText}>修改密码</Text>}
-                            rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+                            rightComponent={<Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />}
                         />
                     )}
 
@@ -194,7 +175,7 @@ class AccountSecurity extends Component {
                             rightComponent={
                                 <View style={styles.rightWrap}>
                                     <Text style={styles.linkText}>{is_bind_wechat ? '已绑定' : '去绑定'}</Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                    <Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             }
                         />
@@ -215,12 +196,12 @@ class AccountSecurity extends Component {
                                     <Text style={styles.rightText}>
                                         {user.wallet.pay_account + '(' + user.wallet.real_name + ')'}
                                     </Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                    <Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             ) : (
                                 <View style={styles.rightWrap}>
                                     <Text style={styles.linkText}>去绑定</Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                    <Iconfont name='right' size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             )
                         }
