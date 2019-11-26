@@ -251,6 +251,13 @@ query UserMeansQuery($id: Int!) {
                 wechat
             }
         }
+        withdrawInfo {
+            tips
+            amount
+            description
+            fontColor
+            bgColor
+        }
         profile {
             total_contributes
         }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, Iconfont } from 'components';
 import { useQuery, GQL, useMutation } from 'apollo';
@@ -9,19 +9,55 @@ import { ttad } from 'native';
 
 import WithdrawGuidance from './WithdrawGuidance';
 
-const WithdrawCount = [1, 3, 5, 10];
+const withdrawData = [
+    {
+        tips: '秒到账',
+        amount: 0.3,
+        description: '新人无门槛',
+        fontColor: '#FFA200',
+        bgColor: Theme.themeRed,
+    },
+    {
+        tips: '限量抢',
+        amount: 3,
+        description: '108日贡献',
+        fontColor: Theme.subTextColor,
+        bgColor: Theme.primaryColor,
+    },
+    {
+        tips: '限量抢',
+        amount: 5,
+        description: '180日贡献',
+        fontColor: Theme.subTextColor,
+        bgColor: Theme.primaryColor,
+    },
+    {
+        tips: '限量抢',
+        amount: 10,
+        description: '360日贡献',
+        fontColor: Theme.subTextColor,
+        bgColor: Theme.primaryColor,
+    },
+];
 
 const WithdrawBody = props => {
     const { navigation } = props;
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
     const [withdrawCount, setWithdrawCount] = useState(0);
+    const [user, setUser] = useState(app.me);
+    const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
 
-    let user = Tools.syncGetter('data.user', UserMeansQuery);
+    useEffect(() => {
+        if (UserMeansQuery.data && UserMeansQuery.data.user) {
+            setwithdrawInfo(Tools.syncGetter('data.user.withdrawInfo', UserMeansQuery));
+            setUser(Tools.syncGetter('data.user', UserMeansQuery));
+        }
+    }, [UserMeansQuery.loading]);
 
     const [createWithdrawal] = useMutation(GQL.CreateWithdrawMutation, {
         variables: {
@@ -113,7 +149,7 @@ const WithdrawBody = props => {
         );
     };
 
-    console.log('user', UserMeansQuery);
+    console.log('withdrawInfo', withdrawInfo);
     const WithdrawType = [
         {
             type: 'alipay',
@@ -129,12 +165,9 @@ const WithdrawBody = props => {
         },
     ];
 
-    const { userCache } = app;
     if (!user) {
-        if (userCache) {
-            user = userCache;
-        } else {
-            user = app.me;
+        if (app && app.userCache) {
+            setUser(app.userCache);
         }
     }
 
@@ -204,32 +237,32 @@ const WithdrawBody = props => {
                 </View>
                 <View style={styles.withdraws}>
                     <View style={styles.center}>
-                        {WithdrawCount.map((value, index) => {
+                        {withdrawInfo.map((data, index) => {
                             return (
                                 <View key={index}>
                                     <TouchFeedback
                                         style={[
                                             styles.withdrawItem,
-                                            withdrawCount === value && {
+                                            withdrawCount === data.amount && {
                                                 backgroundColor: '#FFF2EB',
                                             },
                                         ]}
-                                        onPress={() => selectWithdrawCount(value)}>
+                                        onPress={() => selectWithdrawCount(data.amount)}>
                                         <Text
                                             style={[
                                                 styles.content,
-                                                withdrawCount === value && {
+                                                withdrawCount === data.amount && {
                                                     color: Theme.themeRed,
                                                 },
                                             ]}>
-                                            {value}元
+                                            {data.amount}元
                                         </Text>
                                         <Text
                                             style={{
                                                 fontSize: 13,
-                                                color: value === 1 ? '#FFA200' : Theme.subTextColor,
+                                                color: data.fontColor,
                                             }}>
-                                            {value === 1 ? '新人无门槛' : `${value * 36}日贡献`}
+                                            {data.description}
                                         </Text>
                                     </TouchFeedback>
 
@@ -237,10 +270,10 @@ const WithdrawBody = props => {
                                         style={[
                                             styles.badge,
                                             {
-                                                backgroundColor: value === 1 ? Theme.themeRed : Theme.primaryColor,
+                                                backgroundColor: data.bgColor,
                                             },
                                         ]}>
-                                        <Text style={styles.badgeText}>{value === 1 ? '秒到账' : '限量抢'}</Text>
+                                        <Text style={styles.badgeText}>{data.tips}</Text>
                                     </View>
                                 </View>
                             );

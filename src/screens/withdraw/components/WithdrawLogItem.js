@@ -64,7 +64,7 @@ function WithdrawLogItem(props) {
                     <Text style={styles.time}>{item.created_at}</Text>
                 </View>
                 <View>
-                    <Text style={{ fontSize: PxFit(20), color }}>￥{item.amount.toFixed(0)}.00</Text>
+                    <Text style={{ fontSize: PxFit(20), color }}>￥{item.amount}</Text>
                 </View>
             </Row>
         </TouchableOpacity>
