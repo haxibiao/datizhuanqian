@@ -37,7 +37,7 @@ export default observer(props => {
             timer.current = setTimeout(() => {
                 timer.current = 0;
                 overlayRef.current && overlayRef.current.close();
-                navigation.navigate('Compete', { game: store.game, store });
+                navigation.replace('Compete', { game: store.game, store });
             }, 500);
         } else {
             clearTimeout(timer.current);

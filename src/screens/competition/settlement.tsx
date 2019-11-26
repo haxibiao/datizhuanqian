@@ -122,6 +122,7 @@ const over = observer(props => {
                     style={styles.navigatorBar}
                     titleStyle={styles.titleStyle}
                     title="对战结束"
+                    backButtonPress={() => navigation.pop(2)}
                 />
             </View>
         </PageContainer>

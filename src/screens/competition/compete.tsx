@@ -51,7 +51,7 @@ const compete = observer(props => {
         } else {
             result = 'draw';
         }
-        Tools.navigate('GameSettlement', {
+        navigation.replace('GameSettlement', {
             result,
             store,
         });
@@ -62,21 +62,25 @@ const compete = observer(props => {
         setAnswerStatus('');
     }, []);
 
+    const backPress = useCallback(() => {
+        let popViewRef;
+        Overlay.show(
+            <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (popViewRef = ref)}>
+                <LeaveGameOverlay
+                    onConfirm={() => {
+                        popViewRef.close();
+                        navigation.pop(2);
+                        store.leaveGame();
+                    }}
+                    close={() => popViewRef.close()}
+                />
+            </Overlay.PopView>,
+        );
+    }, []);
+
     useEffect(() => {
         const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
-            let popViewRef;
-            Overlay.show(
-                <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (popViewRef = ref)}>
-                    <LeaveGameOverlay
-                        onConfirm={() => {
-                            popViewRef.close();
-                            navigation.pop(2);
-                            store.leaveGame();
-                        }}
-                        close={() => popViewRef.close()}
-                    />
-                </Overlay.PopView>,
-            );
+            backPress();
             return true;
         });
         return () => {
@@ -95,13 +99,14 @@ const compete = observer(props => {
                 titleStyle={{ color: Theme.white }}
                 navBarStyle={{
                     backgroundColor: 'transparent',
-                }}>
+                }}
+                backButtonPress={backPress}>
                 <ScrollView>
                     <Progress questions={gameQuestions} index={index} />
                     <View style={styles.userContainer}>
                         <Competitor user={app.me} compete theLeft />
                         <RepeatCountDown
-                            duration={10}
+                            duration={3}
                             repeat={gameQuestions.length}
                             callback={handlerResult}
                             resetState={resetState}

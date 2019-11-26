@@ -36,7 +36,11 @@ export default class CompetitionStore {
         console.log('matchGame', matchGame, error);
         console.log('====================================');
         if (error) {
-            Toast.show({ content: '匹配失败', layout: 'top' });
+            Toast.show({
+                content: error.message || '匹配失败',
+                duration: 3000,
+                layout: 'top',
+            });
             this.matching = false;
         } else if (matchGame) {
             this.game = matchGame.game;
@@ -69,7 +73,7 @@ export default class CompetitionStore {
             this.rival = {};
             this.matching = false;
         } else if (error) {
-            Toast.show({ content: '取消失败', layout: 'top' });
+            Toast.show({ content: error.message || '取消失败', layout: 'top' });
         }
     }
 
@@ -80,6 +84,7 @@ export default class CompetitionStore {
                 variables: { user_id, game_id },
             });
         });
+
         console.log('====================================');
         console.log('leaveGameMutate', error, result);
         console.log('====================================');
@@ -128,7 +133,7 @@ export default class CompetitionStore {
             })
             .leaving(user => {
                 console.log('leaving:', user);
-                this.leaveGameMutate(user.id, app.me.id, this.game.id);
+                this.leaveGameMutate(user.id, this.game.id);
             })
             .listen('Score', data => {
                 console.log('game_score', data);

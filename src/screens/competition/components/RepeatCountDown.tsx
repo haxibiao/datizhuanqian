@@ -17,16 +17,23 @@ const RepeatCountDown = (props: Props) => {
     const count = useRef(1);
 
     useEffect(() => {
+        console.log('====================================');
+        console.log('setInterval');
+        console.log('====================================');
         const timer: number = setInterval(() => {
-            if (subTime === 0 && repeat === count.current) {
-                callback();
-            } else if (subTime === 0) {
-                count.current++;
-                resetState();
-                setSubTime(duration);
-            } else {
-                setSubTime(prevCount => prevCount - 1);
-            }
+            setSubTime(prevCount => {
+                if (prevCount === 0) {
+                    if (repeat === count.current) {
+                        callback();
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    count.current++;
+                    resetState();
+                    return duration;
+                }
+                return prevCount - 1;
+            });
         }, 1000);
         return () => {
             clearInterval(timer);

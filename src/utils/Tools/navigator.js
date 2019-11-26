@@ -4,17 +4,17 @@
  */
 import { NavigationActions } from 'react-navigation';
 
-let rootNavigation = null;
+export let rootNavigation = null;
 
 export function setRootNavigation(navigation: any) {
-	rootNavigation = navigation;
+    rootNavigation = navigation;
 }
 
 export const navigate = (routeName: string, params?: object, action?: any) => {
-	const navigateAction = NavigationActions.navigate({
-		routeName,
-		params,
-		action
-	});
-	rootNavigation.dispatch(navigateAction);
+    const navigateAction = NavigationActions.navigate({
+        routeName,
+        params,
+        action,
+    });
+    rootNavigation.dispatch(navigateAction);
 };
