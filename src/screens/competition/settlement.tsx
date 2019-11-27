@@ -1,5 +1,15 @@
-import React, { useRef, useCallback } from 'react';
-import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import React, { useRef, useCallback, useState, useMemo } from 'react';
+import {
+    StyleSheet,
+    ScrollView,
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    ImageBackground,
+    ActivityIndicator,
+    BackHandler,
+} from 'react-native';
 import { PageContainer, NavigatorBar, Avatar } from '@src/components';
 import { playVideo } from 'common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
@@ -28,12 +38,81 @@ const competitionResult = {
 const over = observer(props => {
     const navigation = useNavigation();
     const result = navigation.getParam('result', 'victory');
-
     const store = navigation.getParam('store');
-    const { me } = app;
+
+    const [loading, setLoading] = useState(true);
+    const [game, setGame] = useState();
+    const { me } = useMemo(() => app.me, []);
+    const timer = useRef(0);
     const loadAd = useCallback(() => {
         playVideo({ type: 'Compete' });
-    }, [me]);
+    }, []);
+    // 获取结算
+    const fetchResult = useCallback(() => {
+        return setTimeout(async () => {
+            const [error, result] = await store.stateQuery();
+            if (error) {
+                timer.current = fetchResult();
+            } else if (result) {
+                setLoading(false);
+                setGame(result);
+            }
+        }, 3000);
+    }, []);
+
+    useEffect(() => {
+        const [error, result] = await store.stateQuery();
+        if (error) {
+            timer.current = fetchResult();
+        } else if (result) {
+            setGame(result);
+            setLoading(false);
+        }
+        setTimeout(() => {
+            clearTimeout(timer.current);
+            setLoading(false);
+        }, 6000);
+
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
+    useEffect(() => {
+        const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
+            return true;
+        });
+        return () => {
+            hardwareBackPress.remove();
+        };
+    }, []);
+
+    if (loading) {
+        return (
+            <PageContainer hiddenNavBar>
+                <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
+                    <View style={styles.container}>
+                        <View style={styles.competitor}>
+                            <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
+                                <Avatar source={app.me.avatar} size={PxFit(100)} style={styles.playerAvatar} />
+                            </ImageBackground>
+                            <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
+                            <ImageBackground
+                                style={[styles.playerBg, { alignItems: 'flex-start' }]}
+                                source={avatarWidget[result][1]}>
+                                <Avatar source={store.rival.avatar} size={PxFit(100)} style={styles.playerAvatar} />
+                            </ImageBackground>
+                        </View>
+                        <View style={styles.loading}>
+                            <Text style={styles.loadingText}>正在结算</Text>
+                            <ActivityIndicator size="small" color={Theme.primaryColor} />
+                        </View>
+                    </View>
+                </ImageBackground>
+            </PageContainer>
+        );
+    }
+
     return (
         <PageContainer hiddenNavBar>
             <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
@@ -169,6 +248,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    loading: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    loadingText: {
+        marginRight: PxFit(15),
+        color: Theme.primaryColor,
+        fontSize: PxFit(15),
     },
     container: {
         flex: 1,

@@ -6,7 +6,6 @@ import { GQL } from '@src/apollo';
 export default class CompetitionStore {
     public scoreMultiple: number = 10;
     public matched: boolean = false;
-    @observable public finished: boolean = false;
     @observable public game: Record<string, any> = {};
     @observable public matching: boolean = false;
     @observable public error: boolean = false;
@@ -174,7 +173,6 @@ export default class CompetitionStore {
             })
             .leaving(user => {
                 console.log('leaving:', user);
-                this.finished = true;
                 this.leaveGameMutate(user.id, this.game.id);
             })
             .listen('Score', data => {
@@ -190,6 +188,16 @@ export default class CompetitionStore {
         exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.EndGameMutation,
+                variables: { game_id: this.game.id },
+            });
+        });
+    }
+
+    @action.bound
+    public async stateQuery() {
+        return await exceptionCapture(() => {
+            return app.client.query({
+                query: GQL.EndGameMutation,
                 variables: { game_id: this.game.id },
             });
         });
