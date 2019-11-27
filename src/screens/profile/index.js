@@ -192,19 +192,21 @@ class index extends Component {
                                             答题记录
                                         </Text>
                                     </TouchFeedback>
-                                    {/*
-                                     <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('Rank')}>
-                                    <Image style={styles.metaIcon} source={require('../../assets/images/rank.png')} />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        答题排行
-                                    </Text>
-                                </TouchFeedback>
-                                    */}
+
+                                    <TouchFeedback
+                                        navigation={navigation}
+                                        authenticated
+                                        activeOpacity={1}
+                                        style={styles.metaItem}
+                                        onPress={() => navigation.navigate('Rank')}>
+                                        <Image
+                                            style={styles.metaIcon}
+                                            source={require('../../assets/images/rank.png')}
+                                        />
+                                        <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                            答题排行
+                                        </Text>
+                                    </TouchFeedback>
                                 </View>
                             </BoxShadow>
                         </View>

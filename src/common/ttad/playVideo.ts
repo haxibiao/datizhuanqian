@@ -35,7 +35,7 @@ interface Props {
     fullScreenVideoAdCache?: any; //全屏视频cache
     callback?: Function;
     type?: Type; //看视频来源
-    noReward: Boolean;
+    noReward?: Boolean;
 }
 
 export function playVideo(props: Props) {
@@ -174,11 +174,11 @@ function getReward(props: Props, video: Video) {
 
     //TODO:  需后端扩展userReward奖励类型
     if (type === 'Audit' && video.ad_click && video.video_play) {
-        rewardType = 'VIDEO_PLAY_REWARD'; //审题激励视频看详情
+        rewardType = 'AUDIT_REWAERD_VIDEO_CLICK'; //审题激励视频看详情
     }
 
     if (type === 'Audit' && !video.ad_click && video.video_play) {
-        rewardType = 'VIDEO_PLAY_REWARD'; //审题激励视频未看详情
+        rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
     }
 
     const refetchQuery =

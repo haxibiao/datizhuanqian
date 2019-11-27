@@ -749,3 +749,11 @@ query meRank($id: Int) {
         correct_count
     }
 }
+
+#检查用户是否能够发布视频
+query checkUser($id: Int) {
+    user(id: $id) {
+        id
+        share_spider_status
+    }
+}

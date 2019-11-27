@@ -43,6 +43,8 @@ import UpdateOverlay from './Overlay/UpdateOverlay';
 import TipsOverlay from './Overlay/TipsOverlay';
 import RewardTipsOverlay from './Overlay/RewardTipsOverlay';
 import CaptureVideoOverlay from './Overlay/CaptureVideoOverlay';
+import RewardVideoTipsOverlay from './Overlay/RewardVideoTipsOverlay';
+import LoadingOverlay from './Overlay/LoadingOverlay';
 // Layout
 import MasonryList from './Layout/MasonryList';
 // List
@@ -119,6 +121,8 @@ export {
     TipsOverlay,
     RewardTipsOverlay,
     CaptureVideoOverlay,
+    RewardVideoTipsOverlay,
+    LoadingOverlay,
     MasonryList,
     PullList,
     ListFooter,
