@@ -6,7 +6,17 @@
 
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Iconfont, Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like, VideoItem } from 'components';
+import {
+    Iconfont,
+    Row,
+    TouchFeedback,
+    Avatar,
+    UserTitle,
+    GenderLabel,
+    Like,
+    VideoItem,
+    LoadingOverlay,
+} from 'components';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import { app } from 'store';
@@ -72,12 +82,17 @@ const SpiderItem = (props: Props) => {
     const retryUpload = async () => {
         RetryOverlay.show({
             callback: async () => {
+                LoadingOverlay.show({ content: '重新采集中...' });
                 try {
                     const result = await resolveDouyinVideo();
+                    if (result) {
+                        LoadingOverlay.hide();
+                    }
                     Toast.show({
                         content: '已进入重新采集队列',
                     });
                 } catch (e) {
+                    LoadingOverlay.hide();
                     console.log('e :', e);
                     let str = e.toString().replace(/Error: GraphQL error: /, '');
                     Toast.show({ content: str });

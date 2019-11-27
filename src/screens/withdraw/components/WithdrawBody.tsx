@@ -146,13 +146,16 @@ const WithdrawBody = props => {
                         if (withdrawType == 'alipay') {
                             checkUserInfo();
                         } else {
+                            setSubmit(true);
                             bindWechat({
                                 onSuccess: () => {
+                                    setSubmit(false);
                                     Toast.show({
                                         content: '绑定成功',
                                     });
                                 },
                                 onFailed: (error: { message: any }[]) => {
+                                    setSubmit(false);
                                     Toast.show({ content: error.toString().replace(/Error: GraphQL error: /, '') });
                                 },
                             });
@@ -223,7 +226,7 @@ const WithdrawBody = props => {
                             <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
                         </Row>
                         <Text style={styles.tips}>
-                            总提现: {Tools.syncGetter('wallet.total_withdraw_amount', user) || 0}(元)
+                            总提现:{Tools.syncGetter('wallet.total_withdraw_amount', user) || 0}（元）
                         </Text>
                     </Row>
                 </View>
