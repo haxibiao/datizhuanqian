@@ -97,15 +97,12 @@ const TaskBody = props => {
                     name: '出题目赚钱',
                     status: Tools.syncGetter('status', chuti),
                     taskStatus: 5,
-                    gold: Tools.syncGetter('gold', chuti) + '~20',
+                    gold: Tools.syncGetter('gold', chuti) + '~40',
                     ticket: Tools.syncGetter('ticket', chuti),
                     contribute: Tools.syncGetter('contribute', chuti),
                     type: 5,
                     submit_name: '去出题',
-                    details: `出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，没有解析将只能获得${Tools.syncGetter(
-                        'gold',
-                        chuti,
-                    )}智慧点的奖励。恶意刷题和乱出解析将会受到惩罚哦！`,
+                    details: `每次成功出题都要消耗1精力点,出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，恶意刷题和乱出解析将会受到惩罚哦！`,
                 },
                 {
                     name: '分享领现金',
