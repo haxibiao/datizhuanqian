@@ -102,7 +102,7 @@ class WithdrawApply extends Component {
                 <View style={styles.content}>
                     <Text style={styles.header}>提现申请已提交</Text>
                     <View style={styles.center}>
-                        <Text style={styles.money}>{amount}.00</Text>
+                        <Text style={styles.money}>{amount}</Text>
                         <Text style={{ fontSize: PxFit(15), color: Theme.secondaryColor, paddingTop: PxFit(32) }}>
                             {' '}
                             元

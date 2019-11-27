@@ -46,19 +46,23 @@ const WithdrawBody = props => {
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
     const [withdrawCount, setWithdrawCount] = useState(0);
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
     const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
 
+    let user = Tools.syncGetter('data.user', UserMeansQuery);
+
     useEffect(() => {
+        console.log('useEffect 111:');
         if (UserMeansQuery.data && UserMeansQuery.data.user) {
+            console.log('useEffect :', UserMeansQuery);
             setwithdrawInfo(Tools.syncGetter('data.user.withdrawInfo', UserMeansQuery));
-            setUser(Tools.syncGetter('data.user', UserMeansQuery));
+            // setUser(Tools.syncGetter('data.user', UserMeansQuery));
         }
-    }, [UserMeansQuery.loading]);
+    }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
     const [createWithdrawal] = useMutation(GQL.CreateWithdrawMutation, {
         variables: {
@@ -78,12 +82,13 @@ const WithdrawBody = props => {
 
     useEffect(() => {
         const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
+            console.log('UserMeansQuery :', UserMeansQuery);
             UserMeansQuery.refetch();
         });
         return () => {
             navDidFocusListener.remove();
         };
-    }, [UserMeansQuery.loading]);
+    }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
     const handleWithdraws = async () => {
         if (user.today_withdraw_left < withdrawCount && withdrawCount > 1) {
@@ -181,11 +186,11 @@ const WithdrawBody = props => {
             withdrawInfo: Tools.syncGetter('wallet.platforms.wechat', user),
         },
     ];
-    console.log('withdrawData user :', user, app.userCache);
+    console.log('withdrawData user :', user);
     if (!user) {
         console.log('userCache :', app.userCache);
         if (app && app.userCache) {
-            setUser(app.userCache);
+            user = app.userCache;
         } else {
             return null;
         }
