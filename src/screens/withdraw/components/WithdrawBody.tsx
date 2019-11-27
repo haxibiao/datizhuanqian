@@ -1,13 +1,14 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, ImageBackground } from 'react-native';
 import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, Iconfont } from 'components';
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ttad } from 'native';
 
 import WithdrawGuidance from './WithdrawGuidance';
+import WithdrawHeader from './WithdrawHeader';
 
 const withdrawData = [
     {
@@ -45,7 +46,7 @@ const WithdrawBody = props => {
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
     const [withdrawCount, setWithdrawCount] = useState(0);
-    const [user, setUser] = useState(app.me);
+    const [user, setUser] = useState(null);
     const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
@@ -135,15 +136,26 @@ const WithdrawBody = props => {
             return null;
         }
         return (
-            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10) }}>
-                <Text>{`绑定${withdrawType == 'alipay' ? '支付宝' : '微信'}后可直接提现`}</Text>
+            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10), marginBottom: PxFit(5) }}>
+                <Text style={{ fontSize: PxFit(13) }}>{`绑定${
+                    withdrawType == 'alipay' ? '支付宝' : '微信'
+                }后可直接提现`}</Text>
                 <TouchFeedback
                     style={{ flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => {
                         if (withdrawType == 'alipay') {
                             checkUserInfo();
                         } else {
-                            bindWechat();
+                            bindWechat({
+                                onSuccess: () => {
+                                    Toast.show({
+                                        content: '绑定成功',
+                                    });
+                                },
+                                onFailed: (error: { message: any }[]) => {
+                                    Toast.show({ content: error.toString().replace(/Error: GraphQL error: /, '') });
+                                },
+                            });
                         }
                     }}>
                     <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>立即绑定</Text>
@@ -166,49 +178,22 @@ const WithdrawBody = props => {
             withdrawInfo: Tools.syncGetter('wallet.platforms.wechat', user),
         },
     ];
-
+    console.log('withdrawData user :', user, app.userCache);
     if (!user) {
+        console.log('userCache :', app.userCache);
         if (app && app.userCache) {
             setUser(app.userCache);
+        } else {
+            return null;
         }
     }
 
     return (
         <ScrollView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <View style={styles.statistics}>
-                    <View>
-                        <Text style={styles.greyText}>当前智慧点(个)</Text>
-                        <Text style={styles.boldBlackText}>{user.gold || 0}</Text>
-                    </View>
-                    <View style={styles.accumulat}>
-                        <View style={styles.accumulated}>
-                            <TouchFeedback
-                                onPress={() => navigation.navigate('MakeMoenyManual')}
-                                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={styles.greyText}>今日贡献值</Text>
-                                <Image
-                                    source={require('../../../assets/images/question.png')}
-                                    style={{ width: PxFit(11), height: PxFit(11), marginLeft: PxFit(3) }}
-                                />
-                            </TouchFeedback>
-                            <Text style={styles.slenderBlackText}>{user.today_contributes || 0}</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.accumulated}>
-                            <Text style={styles.greyText}>当前汇率(智慧点/元)</Text>
-                            <Text style={styles.slenderBlackText}>
-                                {user.exchange_rate ? user.exchange_rate : 600}/1
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <ItemSeparator />
-                <View style={{ paddingHorizontal: PxFit(Theme.itemSpace), paddingTop: PxFit(Theme.itemSpace) }}>
-                    <Row>
-                        <View style={styles.titleBadge}></View>
-                        <Text style={{ fontSize: PxFit(15) }}>提现到</Text>
-                    </Row>
+                <WithdrawHeader navigation={navigation} user={user} />
+
+                <View style={{ paddingHorizontal: PxFit(Theme.itemSpace) }}>
                     <Row style={{ marginTop: PxFit(10) }}>
                         {WithdrawType.map((data, index) => {
                             return (
@@ -232,9 +217,14 @@ const WithdrawBody = props => {
                         })}
                     </Row>
                     {renderBindTips()}
-                    <Row style={{ marginTop: PxFit(15) }}>
-                        <View style={styles.titleBadge}></View>
-                        <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
+                    <Row style={{ justifyContent: 'space-between', marginTop: PxFit(15) }}>
+                        <Row>
+                            <View style={styles.titleBadge}></View>
+                            <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
+                        </Row>
+                        <Text style={styles.tips}>
+                            总提现: {Tools.syncGetter('wallet.total_withdraw_amount', user) || 0}(元)
+                        </Text>
                     </Row>
                 </View>
                 <View style={styles.withdraws}>
@@ -282,15 +272,15 @@ const WithdrawBody = props => {
                         })}
                     </View>
                     <View style={styles.footer}>
-                        <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        {/*  <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.tips}>
-                                总提现{Tools.syncGetter('wallet.total_withdraw_amoun', user) || 0}.00
+                                总提现{Tools.syncGetter('wallet.total_withdraw_amount', user) || 0}
                             </Text>
-                        </TouchFeedback>
+                        </TouchFeedback> */}
                         <Button
                             title={'立即提现'}
                             style={styles.button}
-                            disabled={withdrawCount < 1}
+                            disabled={withdrawCount <= 0}
                             onPress={handleWithdraws}
                         />
                     </View>
@@ -307,24 +297,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingBottom: 100,
     },
-    statistics: {
-        marginBottom: PxFit(10),
-        marginTop: PxFit(10),
-    },
-    greyText: {
-        textAlign: 'center',
-        color: Theme.subTextColor,
-        fontSize: PxFit(13),
-    },
-    accumulat: {
-        flexDirection: 'row',
-        marginVertical: PxFit(10),
-    },
-    accumulated: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     slenderBlackText: {
         textAlign: 'center',
         color: Theme.defaultTextColor,
@@ -333,11 +305,7 @@ const styles = StyleSheet.create({
         lineHeight: PxFit(18),
         marginTop: PxFit(10),
     },
-    line: {
-        alignSelf: 'stretch',
-        backgroundColor: '#f0f0f0',
-        width: PxFit(1),
-    },
+
     boldBlackText: {
         textAlign: 'center',
         color: Theme.secondaryColor,
@@ -411,20 +379,19 @@ const styles = StyleSheet.create({
     },
     footer: {
         alignItems: 'center',
-        paddingTop: PxFit(30),
+        paddingTop: PxFit(50),
     },
     tips: {
         color: Theme.grey,
-        fontSize: PxFit(12),
+        fontSize: PxFit(13),
         lineHeight: PxFit(18),
-        paddingVertical: PxFit(10),
         textAlign: 'center',
     },
     button: {
         height: PxFit(38),
-        borderRadius: PxFit(19),
+        borderRadius: PxFit(5),
         backgroundColor: Theme.primaryColor,
-        width: WPercent(80),
+        width: WPercent(90),
     },
 });
 

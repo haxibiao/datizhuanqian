@@ -50,6 +50,7 @@ export const useCaptureVideo = (props: Props) => {
                 Toast.show({
                     content: '今日视频采集数量已达上限',
                 });
+                LoadingOverlay.hide();
             default:
                 spiderVideo(path);
                 break;

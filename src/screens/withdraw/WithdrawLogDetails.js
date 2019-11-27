@@ -22,7 +22,7 @@ class WithdrawLogDetails extends Component {
         const { navigation } = this.props;
         const { withdraw_id } = navigation.state.params;
         return (
-            <PageContainer title='提现详情' white>
+            <PageContainer title="提现详情" white>
                 <Query
                     query={GQL.WithdrawQuery}
                     variables={{
@@ -86,18 +86,21 @@ class WithdrawLogDetails extends Component {
                                         <Text style={styles.textLeft}>转账备注 </Text>
                                         <Text style={styles.textRight}>智慧点提现 </Text>
                                     </View>
-                                    <View
-                                        style={[
-                                            styles.row,
-                                            {
-                                                paddingBottom: PxFit(15),
-                                            },
-                                        ]}>
-                                        <Text style={styles.textLeft}>收款账户 </Text>
-                                        <Text style={styles.textRight}>
-                                            {withdraw.to_account + '(' + app.me.wallet.real_name + ')'}
-                                        </Text>
-                                    </View>
+                                    {withdraw.to_platform == 'alipay' && (
+                                        <View
+                                            style={[
+                                                styles.row,
+                                                {
+                                                    paddingBottom: PxFit(15),
+                                                },
+                                            ]}>
+                                            <Text style={styles.textLeft}>收款账户 </Text>
+                                            <Text style={styles.textRight}>
+                                                {withdraw.to_account + '(' + app.me.wallet.real_name + ')'}
+                                            </Text>
+                                        </View>
+                                    )}
+
                                     <View style={styles.borderRow}>
                                         <Text style={styles.textLeft}>
                                             {withdraw.status == -1 ? '提现时间' : '到账时间'}

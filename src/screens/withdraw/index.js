@@ -41,15 +41,7 @@ class index extends Component {
         const { navigation } = this.props;
         const { login } = app;
         return (
-            <PageContainer
-                title="提现"
-                isTopNavigator
-                white
-                rightView={
-                    <TouchFeedback onPress={this.showRule} style={styles.rule}>
-                        <Text>规则说明</Text>
-                    </TouchFeedback>
-                }>
+            <PageContainer hiddenNavBar>
                 {login ? <WithdrawBody navigation={navigation} /> : <NotLogin navigation={navigation} />}
             </PageContainer>
         );

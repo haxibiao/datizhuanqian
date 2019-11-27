@@ -42,7 +42,7 @@ export function playVideo(props: Props) {
     const { type } = props;
     const playType = Math.round(Math.random()); //随机1为看激励视频 0为看全屏视频
     //非指定Reward时  触发随机看视频  奖励值为默认类型
-    if (type == 'Task' || type == 'Contribute' || type == 'Audit' || playType) {
+    if (type == 'Task' || type == 'Contribute' || type == 'Audit' || type == 'Spider' || playType) {
         playRewardVideo(props);
     } else {
         playFullScreenVideo(props);

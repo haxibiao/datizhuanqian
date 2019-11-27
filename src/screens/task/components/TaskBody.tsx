@@ -168,7 +168,7 @@ const TaskBody = props => {
                             tasks={data.tasks}
                             typeName={data.typeName}
                             key={index}
-                            userData={userData.user || app.me}
+                            userData={(userData && userData.user) || app.me}
                             setLoading={() => setIsVisible(true)}
                             setUnLoading={() => setIsVisible(false)}
                         />

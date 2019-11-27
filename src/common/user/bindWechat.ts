@@ -33,7 +33,6 @@ function bindWx(code: any, props: Props) {
                 code,
                 version: 'v2',
             },
-            errorPolicy: 'all',
             refetchQueries: () => [
                 {
                     query: GQL.UserMeansQuery,
@@ -45,7 +44,8 @@ function bindWx(code: any, props: Props) {
         .then((result: any) => {
             onSuccess && onSuccess(result);
         })
-        .then((error: any) => {
+        .catch((error: any) => {
+            console.log('error', error);
             onFailed && onFailed(error);
         });
 }

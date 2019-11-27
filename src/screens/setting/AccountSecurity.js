@@ -42,6 +42,9 @@ class AccountSecurity extends Component {
     };
 
     onSuccess = () => {
+        Toast.show({
+            content: '绑定成功',
+        });
         this.setState({
             submitting: false,
         });
@@ -54,7 +57,7 @@ class AccountSecurity extends Component {
         this.setState({
             submitting: false,
         });
-        const str = error[0].message;
+        const str = error.toString().replace(/Error: GraphQL error: /, '');
         Toast.show({ content: str });
     };
 

@@ -256,7 +256,7 @@ class index extends Component {
 
         // 提现提示
         if (data.user && data.user.gold >= 600 && !app.withdrawTips && this.answer_count !== 10) {
-            if ((data.user.wallet && data.user.wallet.total_withdraw_amount < 1) || !data.user.wallet) {
+            if ((data.user.wallet && data.user.wallet.total_withdraw_amount <= 0) || !data.user.wallet) {
                 this.loadWithdrawTips();
             }
         }
@@ -507,7 +507,7 @@ class index extends Component {
                             paddingBottom: audit ? SCREEN_WIDTH / 3 : 0,
                         },
                     ]}
-                    keyboardShouldPersistTaps='always'
+                    keyboardShouldPersistTaps="always"
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                     scrollEnabled={!config.isFullScreen}
@@ -603,7 +603,7 @@ class index extends Component {
                             disabled={!this.state.question}
                             style={styles.optionsButton}
                             onPress={this.showOptions}>
-                            <Iconfont name='more-vertical' color='#000' size={PxFit(18)} />
+                            <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
                         </TouchFeedback>
                     }
                     hiddenNavBar={config.isFullScreen}

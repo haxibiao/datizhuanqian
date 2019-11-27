@@ -251,7 +251,7 @@ class WithdrawBody extends Component {
                                     style={{ flexDirection: 'row', alignItems: 'center' }}
                                     onPress={() => navigation.navigate('Introduce')}>
                                     <Text style={styles.tips}>
-                                        总提现{user.wallet.total_withdraw_amount || 0}.00 / 今日贡献
+                                        总提现{user.wallet.total_withdraw_amount || 0}/ 今日贡献
                                         {user.today_contributes}{' '}
                                     </Text>
                                     <Image
