@@ -35,7 +35,7 @@ const compete = observer(props => {
     const selectOption = useCallback(
         (value: any) => {
             if (gameQuestions[index].answer === value) {
-                store.calculateScore(gameQuestions[index].gold * 10);
+                store.calculateScore(gameQuestions[index].gold * store.scoreMultiple);
             }
         },
         [gameQuestions, index],
@@ -110,6 +110,8 @@ const compete = observer(props => {
                             repeat={gameQuestions.length}
                             callback={handlerResult}
                             resetState={resetState}
+                            store={store}
+                            score={gameQuestions}
                         />
                         <Competitor user={store.rival} compete />
                     </View>

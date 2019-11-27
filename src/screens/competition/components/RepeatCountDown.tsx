@@ -12,9 +12,17 @@ interface Props {
 }
 
 const RepeatCountDown = (props: Props) => {
-    const { duration, repeat, resetState, callback } = props;
+    const { duration, repeat, resetState, callback, store, score } = props;
     const [subTime, setSubTime] = useState(duration);
     const count = useRef(1);
+    const answered = useRef(false);
+
+    const randomAnswer = useCallback(() => {
+        if (!answered.current) {
+            answered.current = true;
+            store.score[1] += Math.random() > 0.5 ? score[count.current - 1].gold * store.scoreMultiple : 0;
+        }
+    }, []);
 
     useEffect(() => {
         console.log('====================================');
@@ -24,6 +32,7 @@ const RepeatCountDown = (props: Props) => {
             setSubTime(prevCount => {
                 if (prevCount === 0) {
                     if (repeat === count.current) {
+                        answered.current = false;
                         callback();
                         clearInterval(timer);
                         return 0;
@@ -34,6 +43,10 @@ const RepeatCountDown = (props: Props) => {
                 }
                 return prevCount - 1;
             });
+            // 机器人答题条件
+            if (prevCount < duration - 1 && Math.random() > 0.5) {
+                randomAnswer();
+            }
         }, 1000);
         return () => {
             clearInterval(timer);

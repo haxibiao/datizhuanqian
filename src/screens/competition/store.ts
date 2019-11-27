@@ -4,9 +4,11 @@ import { app } from '@src/store';
 import { GQL } from '@src/apollo';
 
 export default class CompetitionStore {
+    public scoreMultiple: number = 10;
+    public matched: boolean = false;
+    @observable public finished: boolean = false;
     @observable public game: Record<string, any> = {};
     @observable public matching: boolean = false;
-    @observable public finished: boolean = false;
     @observable public error: boolean = false;
     @observable public offline: boolean = false;
     @observable public score: number[] = [0, 0];
@@ -26,11 +28,21 @@ export default class CompetitionStore {
         console.log('matchGame');
         console.log('====================================');
         this.matching = true;
+        setTimeout(() => {
+            if (!this.matched) {
+                this.matched = true;
+                this.matchRobert();
+            }
+        }, 5000);
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.MatchGameMutation,
             });
         });
+        if (this.matched) {
+            return;
+        }
+        this.matched = true;
         const matchGame = syncGetter('data.matchGame', result);
         console.log('====================================');
         console.log('matchGame', matchGame, error);
@@ -57,6 +69,35 @@ export default class CompetitionStore {
                 this.matching = false;
                 this.playGame();
             });
+        }
+    }
+
+    @action.bound
+    public async matchRobert() {
+        console.log('====================================');
+        console.log('matchRobert');
+        console.log('====================================');
+        this.matching = true;
+        const [error, result] = await exceptionCapture(() => {
+            return app.client.mutate({
+                mutation: GQL.MatchGameMutation,
+            });
+        });
+        const matchGame = syncGetter('data.matchGame', result);
+        console.log('====================================');
+        console.log('matchGame', matchGame, error);
+        console.log('====================================');
+        if (error) {
+            Toast.show({
+                content: error.message || '匹配失败',
+                duration: 3000,
+                layout: 'top',
+            });
+            this.matching = false;
+        } else if (matchGame) {
+            this.game = matchGame.game;
+            this.rival = matchGame.user;
+            this.matching = false;
         }
     }
 
@@ -133,6 +174,7 @@ export default class CompetitionStore {
             })
             .leaving(user => {
                 console.log('leaving:', user);
+                this.finished = true;
                 this.leaveGameMutate(user.id, this.game.id);
             })
             .listen('Score', data => {
