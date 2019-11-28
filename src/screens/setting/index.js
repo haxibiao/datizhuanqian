@@ -107,13 +107,6 @@ class index extends Component {
                     />
                     <ItemSeparator />
                     <ListItem
-                        onPress={() => navigation.navigate('ShareApp')}
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>分享给好友</Text>}
-                        rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
-                    />
-                    <ItemSeparator />
-                    <ListItem
                         onPress={() => navigation.navigate('AboutUs')}
                         style={styles.listItem}
                         leftComponent={<Text style={styles.itemText}>关于{Config.AppName}</Text>}

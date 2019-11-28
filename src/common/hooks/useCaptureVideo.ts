@@ -49,6 +49,7 @@ export const useCaptureVideo = (props: Props) => {
                 Toast.show({
                     content: '今日视频采集数量已达上限',
                 });
+                Clipboard.setString('');
                 break;
             default:
                 spiderVideo(path);
