@@ -7,7 +7,6 @@ import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT }
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ttad } from 'native';
 
-import WithdrawGuidance from './WithdrawGuidance';
 import WithdrawHeader from './WithdrawHeader';
 
 const withdrawData = [

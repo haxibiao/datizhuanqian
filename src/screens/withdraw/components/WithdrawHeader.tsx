@@ -52,7 +52,7 @@ const WithdrawHeader = (props: Props) => {
                         提现
                     </Text>
                 </View>
-                <View style={{ marginTop: PxFit(10) }}>
+                <View style={{ marginTop: PxFit(5) }}>
                     <Text style={styles.greyText}>当前智慧点(个)</Text>
                     <View style={{ marginTop: PxFit(3) }}>
                         <Text style={styles.boldBlackText}>{user.gold || 0}</Text>
@@ -68,7 +68,7 @@ const WithdrawHeader = (props: Props) => {
                                 style={{
                                     position: 'absolute',
                                     top: PxFit(1),
-                                    left: PxFit(8),
+                                    left: PxFit(5),
                                     fontSize: PxFit(10),
                                     color: Theme.white,
                                 }}>
