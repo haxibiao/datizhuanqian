@@ -155,6 +155,7 @@ function getReward(props: Props, video: Video) {
     const { type } = props;
     console.log('type', type);
     let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
+    let title = '领取奖励成功';
 
     if (type === 'Sigin') {
         rewardType = 'SIGNIN_VIDEO_REWARD'; //签到奖励
@@ -170,8 +171,8 @@ function getReward(props: Props, video: Video) {
     }
     if (type === 'Task' && !video.ad_click && video.video_play) {
         rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
+        title = '仅观看视频，查看详情奖励更多';
     }
-
     //TODO:  需后端扩展userReward奖励类型
     if (type === 'Audit' && video.ad_click && video.video_play) {
         rewardType = 'AUDIT_REWAERD_VIDEO_CLICK'; //审题激励视频看详情
@@ -179,6 +180,7 @@ function getReward(props: Props, video: Video) {
 
     if (type === 'Audit' && !video.ad_click && video.video_play) {
         rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
+        title = '仅观看视频，查看详情奖励更多';
     }
 
     const refetchQuery =
@@ -213,7 +215,7 @@ function getReward(props: Props, video: Video) {
         .then((res: any) => {
             console.log('res', res);
             const reward = Tools.syncGetter('data.userReward', res);
-            RewardTipsOverlay.show({ reward, rewardVideo: true });
+            RewardTipsOverlay.show({ reward, rewardVideo: true, title });
         })
         .catch((err: any) => {
             console.log('reward video error', err);
