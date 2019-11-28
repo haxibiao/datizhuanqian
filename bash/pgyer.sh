@@ -19,11 +19,11 @@ sudo chmod -R 777 .
 
 [ ! -d /data/build/app ] && mkdir -p /data/build/app
 
-echo -e "\n${grn}clean $app ...${end}"
-xcodebuild clean -UseModernBuildSystem=YES -workspace /data/app/$app/ios/$app.xcworkspace -scheme "$app"
+# echo -e "\n${grn}clean $app ...${end}"
+# xcodebuild clean -UseModernBuildSystem=YES -workspace /data/app/$app/ios/$app.xcworkspace -scheme "$app"
 
-echo -e "\n${grn}archive $app ...${end}"
-xcodebuild archive -UseModernBuildSystem=YES -workspace "/data/app/$app/ios/$app.xcworkspace" -scheme "$app" -archivePath "/data/build/app/$app"
+# echo -e "\n${grn}archive $app ...${end}"
+# xcodebuild archive -UseModernBuildSystem=YES -workspace "/data/app/$app/ios/$app.xcworkspace" -scheme "$app" -archivePath "/data/build/app/$app"
 
 echo -e "\n${grn}export ipa $app ...${end}"
 xcodebuild -UseModernBuildSystem=YES -exportArchive -archivePath  /data/build/app/$app.xcarchive  -exportPath  /data/build/app/$app  -exportOptionsPlist /data/app/$app/bash/etc/exportOptions.plist

@@ -19,7 +19,9 @@ PODS:
     - AppCenter/Core (= 1.12.0)
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
-  - Bytedance-UnionAD (2.3.1.0)
+  - BVLinearGradient (2.5.6):
+    - React
+  - Bytedance-UnionAD (2.4.6.7)
   - CodePush (5.7.0):
     - Base64 (~> 1.1)
     - JWT (~> 3.0.0-beta.7)
@@ -161,7 +163,8 @@ DEPENDENCIES:
   - appcenter (from `../node_modules/appcenter`)
   - appcenter-analytics (from `../node_modules/appcenter-analytics`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes`)
-  - Bytedance-UnionAD
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
+  - Bytedance-UnionAD (~> 2.4.6.7)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -210,11 +213,12 @@ SPEC REPOS:
     - AppCenterReactNativeShared
     - Base64
     - boost-for-react-native
-    - Bytedance-UnionAD
     - JWT
     - QBImagePickerController
     - RSKImageCropper
     - SSZipArchive
+  trunk:
+    - Bytedance-UnionAD
 
 EXTERNAL SOURCES:
   appcenter:
@@ -223,6 +227,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter-analytics"
   appcenter-crashes:
     :path: "../node_modules/appcenter-crashes"
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
   CodePush:
     :path: "../node_modules/react-native-code-push"
   DoubleConversion:
@@ -314,7 +320,8 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 74a1c684b8183b3edef0a7e41d567fe8bd31075d
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  Bytedance-UnionAD: 66d0bed5cbaeff1c1d4b6b2ca483e5e653a90f84
+  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
+  Bytedance-UnionAD: 794d75a1af5f3635e0c2ea9d6f74720b56dba43e
   CodePush: d2e54ad42df82a8db65b2d23d8191b950ba945e1
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -361,6 +368,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: 53c368da2c6e9ddc62e48e4f3c23869440ec8925
+PODFILE CHECKSUM: 915ec202155fdb52b222257d6de1306d460cfd5b
 
 COCOAPODS: 1.8.3

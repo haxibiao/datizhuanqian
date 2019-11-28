@@ -8,8 +8,8 @@
     <string>development</string>
     <key>provisioningProfiles</key>
     <dict>
-        <key>com.dazhuan</key>
-        <string>dazhuan_test</string>
+        <key>com.datizhuanqian</key>
+        <string>datizhuanqian_test</string>
     </dict>
     <key>signingCertificate</key>
     <string>iPhone Developer</string>
@@ -18,7 +18,7 @@
     <key>stripSwiftSymbols</key>
     <true/>
     <key>teamID</key>
-    <string>44232M6892</string>
+    <string>3W7L7CX92N</string>
     <key>thinning</key>
     <string>&lt;none&gt;</string>
 </dict>

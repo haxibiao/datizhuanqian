@@ -15,7 +15,7 @@ import SplashScreen from 'react-native-splash-screen';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
 import { ttad, WeChat } from 'native';
-import { ISIOS, Config, PxFit, Theme,iPhone11 } from 'utils';
+import { ISIOS, Config, PxFit, Theme, iPhone11 } from 'utils';
 
 import service from 'service';
 import { checkUpdate } from 'common';
@@ -45,7 +45,6 @@ class App extends Component {
     componentDidMount() {
         //获取广告开放状态
         service.enableAdvert(data => {
-            
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
 
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
@@ -55,9 +54,7 @@ class App extends Component {
         });
 
         if (Config.AppStore !== 'huawei') {
-            if( !iPhone11()){
-                ttad.Splash.loadSplashAd();
-            }
+            ttad.Splash.loadSplashAd();
         }
         // 恢复用户身份信息
         app.recallUser();
