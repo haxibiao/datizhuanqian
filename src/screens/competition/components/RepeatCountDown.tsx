@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text } from 'react-native';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
@@ -20,33 +20,32 @@ const RepeatCountDown = (props: Props) => {
     const randomAnswer = useCallback(() => {
         if (!answered.current) {
             answered.current = true;
-            store.score[1] += Math.random() > 0.5 ? score[count.current - 1].gold * store.scoreMultiple : 0;
+            if (Math.random() > 0.6) {
+                store.calculateScore(score[count.current - 1].gold * store.scoreMultiple, 'RIVAL');
+            }
         }
     }, []);
 
     useEffect(() => {
-        console.log('====================================');
-        console.log('setInterval');
-        console.log('====================================');
         const timer: number = setInterval(() => {
             setSubTime(prevCount => {
+                // 机器人答题条件
+                if (prevCount < duration - 1 && Math.random() > 0.3) {
+                    randomAnswer();
+                }
                 if (prevCount === 0) {
                     if (repeat === count.current) {
-                        answered.current = false;
                         callback();
                         clearInterval(timer);
                         return 0;
                     }
+                    answered.current = false;
                     count.current++;
                     resetState();
                     return duration;
                 }
                 return prevCount - 1;
             });
-            // 机器人答题条件
-            if (prevCount < duration - 1 && Math.random() > 0.5) {
-                randomAnswer();
-            }
         }, 1000);
         return () => {
             clearInterval(timer);

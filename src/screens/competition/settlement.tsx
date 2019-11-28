@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useMemo } from 'react';
+import React, { useRef, useCallback, useState, useMemo, useEffect } from 'react';
 import {
     StyleSheet,
     ScrollView,
@@ -42,36 +42,32 @@ const over = observer(props => {
 
     const [loading, setLoading] = useState(true);
     const [game, setGame] = useState();
-    const { me } = useMemo(() => app.me, []);
+    const me = useMemo(() => app.me, []);
     const timer = useRef(0);
     const loadAd = useCallback(() => {
         playVideo({ type: 'Compete' });
     }, []);
     // 获取结算
     const fetchResult = useCallback(() => {
-        return setTimeout(async () => {
-            const [error, result] = await store.stateQuery();
+        (async () => {
+            const [error, result] = await store.gameOver();
             if (error) {
-                timer.current = fetchResult();
+                timer.current = setTimeout(() => {
+                    fetchResult();
+                }, 3000);
             } else if (result) {
                 setLoading(false);
                 setGame(result);
             }
-        }, 3000);
+        })();
     }, []);
 
     useEffect(() => {
-        const [error, result] = await store.stateQuery();
-        if (error) {
-            timer.current = fetchResult();
-        } else if (result) {
-            setGame(result);
-            setLoading(false);
-        }
-        setTimeout(() => {
-            clearTimeout(timer.current);
-            setLoading(false);
-        }, 6000);
+        // fetchResult();
+        // setTimeout(() => {
+        //     clearTimeout(timer.current);
+        //     setLoading(false);
+        // }, 6000);
 
         return () => {
             clearTimeout(timer.current);
@@ -87,31 +83,31 @@ const over = observer(props => {
         };
     }, []);
 
-    if (loading) {
-        return (
-            <PageContainer hiddenNavBar>
-                <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
-                    <View style={styles.container}>
-                        <View style={styles.competitor}>
-                            <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
-                                <Avatar source={app.me.avatar} size={PxFit(100)} style={styles.playerAvatar} />
-                            </ImageBackground>
-                            <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
-                            <ImageBackground
-                                style={[styles.playerBg, { alignItems: 'flex-start' }]}
-                                source={avatarWidget[result][1]}>
-                                <Avatar source={store.rival.avatar} size={PxFit(100)} style={styles.playerAvatar} />
-                            </ImageBackground>
-                        </View>
-                        <View style={styles.loading}>
-                            <Text style={styles.loadingText}>正在结算</Text>
-                            <ActivityIndicator size="small" color={Theme.primaryColor} />
-                        </View>
-                    </View>
-                </ImageBackground>
-            </PageContainer>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <PageContainer hiddenNavBar>
+    //             <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
+    //                 <View style={styles.container}>
+    //                     <View style={styles.competitor}>
+    //                         <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
+    //                             <Avatar source={app.me.avatar} size={PxFit(100)} style={styles.playerAvatar} />
+    //                         </ImageBackground>
+    //                         <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
+    //                         <ImageBackground
+    //                             style={[styles.playerBg, { alignItems: 'flex-start' }]}
+    //                             source={avatarWidget[result][1]}>
+    //                             <Avatar source={store.rival.avatar} size={PxFit(100)} style={styles.playerAvatar} />
+    //                         </ImageBackground>
+    //                     </View>
+    //                     <View style={styles.loading}>
+    //                         <Text style={styles.loadingText}>正在结算</Text>
+    //                         <ActivityIndicator size="small" color={Theme.primaryColor} />
+    //                     </View>
+    //                 </View>
+    //             </ImageBackground>
+    //         </PageContainer>
+    //     );
+    // }
 
     return (
         <PageContainer hiddenNavBar>

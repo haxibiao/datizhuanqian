@@ -3,6 +3,8 @@ import { exceptionCapture, syncGetter } from '@src/common';
 import { app } from '@src/store';
 import { GQL } from '@src/apollo';
 
+type UserType = 'ME' | 'RIVAL';
+
 export default class CompetitionStore {
     public scoreMultiple: number = 10;
     public matched: boolean = false;
@@ -23,28 +25,15 @@ export default class CompetitionStore {
 
     @action.bound
     public async matchGame() {
-        console.log('====================================');
-        console.log('matchGame');
-        console.log('====================================');
         this.matching = true;
-        setTimeout(() => {
-            if (!this.matched) {
-                this.matched = true;
-                this.matchRobert();
-            }
-        }, 5000);
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.MatchGameMutation,
             });
         });
-        if (this.matched) {
-            return;
-        }
-        this.matched = true;
         const matchGame = syncGetter('data.matchGame', result);
         console.log('====================================');
-        console.log('matchGame', matchGame, error);
+        console.log('matchGame', result, matchGame, error);
         console.log('====================================');
         if (error) {
             Toast.show({
@@ -59,7 +48,17 @@ export default class CompetitionStore {
             this.matching = false;
             this.playGame();
         } else {
+            setTimeout(() => {
+                if (!this.matched) {
+                    this.matched = true;
+                    this.matchRobot();
+                }
+            }, 5000);
             app.echo.private('App.User.' + app.me.id).listen('NewGame', (newGame: object) => {
+                if (this.matched) {
+                    return;
+                }
+                this.matched = true;
                 console.log('====================================');
                 console.log('NewGame', newGame);
                 console.log('====================================');
@@ -72,19 +71,19 @@ export default class CompetitionStore {
     }
 
     @action.bound
-    public async matchRobert() {
+    public async matchRobot() {
         console.log('====================================');
-        console.log('matchRobert');
+        console.log('matchRobot');
         console.log('====================================');
         this.matching = true;
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
-                mutation: GQL.MatchGameMutation,
+                mutation: GQL.MatchRobotMutation,
             });
         });
-        const matchGame = syncGetter('data.matchGame', result);
+        const matchRobot = syncGetter('data.matchRobot', result);
         console.log('====================================');
-        console.log('matchGame', matchGame, error);
+        console.log('matchRobot', result, matchRobot, error);
         console.log('====================================');
         if (error) {
             Toast.show({
@@ -93,9 +92,9 @@ export default class CompetitionStore {
                 layout: 'top',
             });
             this.matching = false;
-        } else if (matchGame) {
-            this.game = matchGame.game;
-            this.rival = matchGame.user;
+        } else if (matchRobot) {
+            this.game = matchRobot;
+            this.rival = matchRobot.rival;
             this.matching = false;
         }
     }
@@ -138,25 +137,28 @@ export default class CompetitionStore {
         }
     }
 
-    // 计算自己得分，广播事件
+    // 计算得分，广播事件
     @action.bound
-    public async calculateScore(score: number) {
-        this.score[0] += score;
-        this.answerPassCount += 1;
+    public async calculateScore(score: number, type: UserType = 'ME') {
+        const variables: { game_id: number; score: number; user_id?: number } = {
+            game_id: this.game.id,
+            score: this.score[0],
+        };
+        if (type === 'ME') {
+            this.score[0] += score;
+            this.answerPassCount += 1;
+        } else {
+            this.score[1] += score;
+            variables.user_id = this.rival.id;
+        }
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.ReceiveGameScore,
-                variables: { game_id: this.game.id, score: this.score[0] },
+                variables,
             });
         });
 
         console.log('ReceiveGameScore', result, error, this.answerPassCount);
-
-        // Toast.show({
-        //     content: error,
-        // });
-
-        // app.echo
     }
 
     @action.bound
@@ -184,20 +186,10 @@ export default class CompetitionStore {
     }
 
     @action.bound
-    public gameOver() {
-        exceptionCapture(() => {
+    public async gameOver() {
+        return await exceptionCapture(() => {
             return app.client.mutate({
                 mutation: GQL.EndGameMutation,
-                variables: { game_id: this.game.id },
-            });
-        });
-    }
-
-    @action.bound
-    public async stateQuery() {
-        return await exceptionCapture(() => {
-            return app.client.query({
-                query: GQL.EndGameMutation,
                 variables: { game_id: this.game.id },
             });
         });
