@@ -48,3 +48,47 @@ mutation SaveVisitsMutation($visits: [VisitsInputType]) {
         id
     }
 }
+
+#视频详情
+query PostQuery($id: Int) {
+    post(id: $id) {
+        id
+        description
+        content
+        count_likes
+        count_comments
+        liked
+        is_ad
+        created_at
+        video {
+            id
+            width
+            height
+            url
+            cover
+            is_ad_video
+        }
+        user {
+            id
+            name
+            avatar
+            gender
+            follow_users_count
+            followers_count
+            followed_user_status
+            is_admin
+            roles
+            profile {
+                sub_name
+                birthday
+                age
+                introduction
+                posts_count
+            }
+            level {
+                id
+                level
+            }
+        }
+    }
+}

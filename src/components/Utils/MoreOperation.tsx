@@ -58,7 +58,7 @@ const MoreOperation = props => {
         if (app.firstReadSpiderVideoTask) {
             Linking.openURL('snssdk1128://');
         } else {
-            Tools.navigate('SpiderVideoTask');
+            Tools.navigate('VideoPost', { medium: [VideoStore.guidanceVideo], isPost: true });
             app.setReadSpiderVideoTask(true);
         }
     }, []);

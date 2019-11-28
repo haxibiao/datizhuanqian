@@ -158,10 +158,11 @@ export default observer(props => {
                 viewabilityConfig={config.current}
             />
 
-            <View style={styles.rewardProgress}>
-                <RewardProgress />
-            </View>
-
+            {medium.length > 1 && (
+                <View style={styles.rewardProgress}>
+                    <RewardProgress />
+                </View>
+            )}
             <CommentOverlay
                 ref={commentRef}
                 question={isPost ? media : media.video}

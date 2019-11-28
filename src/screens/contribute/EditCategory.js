@@ -37,7 +37,7 @@ class CategoryItem extends Component {
                         </Text>
                         {!category.user_can_submit && (
                             <Text style={{ fontSize: PxFit(12), color: Theme.secondaryColor }} numberOfLines={1}>
-                                您暂时没有该分类的投稿权限
+                                您暂时没有该分类的投稿权限（答对5题即可解锁权限）
                             </Text>
                         )}
                     </View>

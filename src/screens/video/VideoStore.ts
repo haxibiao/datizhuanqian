@@ -45,6 +45,7 @@ class VideoStore {
     @observable public rewardProgress: number = 0;
     @observable public getReward = [];
     @observable public visits: Visit[] = [];
+    @observable public guidanceVideo = {};
 
     @action.bound
     public addSource(source: Post[]) {
@@ -90,6 +91,11 @@ class VideoStore {
             return elem.user.id !== id;
         });
         this.dataSource = filterPost;
+    }
+
+    @action.bound
+    public setGuidanceVideo(post: object) {
+        this.guidanceVideo = post;
     }
 }
 

@@ -58,7 +58,7 @@ export default observer((props: Props) => {
         <Animated.View style={{ transform: [{ scale }] }}>
             <TouchableOpacity onPress={toggleLike}>
                 <Image source={media.liked ? imageSource.liked : imageSource.unlike} style={styles.imageStyle} />
-                <Text style={styles.countLikes}>{media.count_likes}</Text>
+                <Text style={styles.countLikes}>{media.count_likes || 0}</Text>
             </TouchableOpacity>
         </Animated.View>
     );
