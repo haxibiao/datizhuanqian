@@ -3,7 +3,7 @@ import { AppState, Clipboard, Alert } from 'react-native';
 import { GQL } from '@src/apollo';
 import { exceptionCapture } from '@src/common';
 import { app } from 'store';
-import { RewardVideoTipsOverlay, LoadingOverlay } from 'components';
+import { RewardVideoTipsOverlay, LoadingOverlay, TipsOverlay } from 'components';
 import { Tools } from 'utils';
 
 interface Props {
@@ -29,15 +29,13 @@ export const useCaptureVideo = (props: Props) => {
     );
 
     const checkUser = async (path: string) => {
-        LoadingOverlay.show({ content: '正在采集粘贴板视频' });
-
         const result = await client.query({
             query: GQL.checkUser,
             variables: {
                 id: app.me.id,
             },
         });
-
+        console.log('Tools.syncGetter', Tools.syncGetter('data.user.share_spider_status', result));
         switch (Tools.syncGetter('data.user.share_spider_status', result)) {
             case 0:
                 spiderVideo(path);
@@ -46,11 +44,12 @@ export const useCaptureVideo = (props: Props) => {
                 RewardVideoTipsOverlay.show({
                     callback: () => spiderVideo(path),
                 });
+                break;
             case -1:
                 Toast.show({
                     content: '今日视频采集数量已达上限',
                 });
-                LoadingOverlay.hide();
+                break;
             default:
                 spiderVideo(path);
                 break;
@@ -59,21 +58,22 @@ export const useCaptureVideo = (props: Props) => {
 
     const spiderVideo = async (path: any) => {
         const [error, result] = await exceptionCapture(() => captureVideo(path));
-        console.log('error:', error, 'result:', result);
+        // console.log('error:', error, 'result:', result);
         if (error && onFailed) {
             onFailed(error);
             Clipboard.setString('');
-            LoadingOverlay.hide();
         } else if (result && onSuccess) {
             onSuccess(result);
+            console.log('result', result);
             //清空粘贴板
             Clipboard.setString('');
-            LoadingOverlay.hide();
         }
     };
 
     const stateChangeHandle = useCallback(
         async event => {
+            console.log('event', event);
+
             if (event === 'active') {
                 const path = await Clipboard.getString();
                 if (

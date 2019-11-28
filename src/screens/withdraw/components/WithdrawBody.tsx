@@ -91,19 +91,21 @@ const WithdrawBody = props => {
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
     const handleWithdraws = async () => {
-        if (user.today_withdraw_left < withdrawCount && withdrawCount > 1) {
-            TipsOverlay.show({
-                title: '日贡献不足',
-                content: <View>{config.enableBanner && <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
-                onConfirm: () => {
-                    navigation.navigate('任务');
-                    playVideo({ navigation, type: 'Task' });
-                    TipsOverlay.hide();
-                },
-            });
-        } else {
-            createWithdraw();
-        }
+        // if (user.today_withdraw_left < withdrawCount && withdrawCount > 1) {
+        //     TipsOverlay.show({
+        //         title: '日贡献不足',
+        //         content: <View>{config.enableBanner && <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
+        //         onConfirm: () => {
+        //             navigation.navigate('任务');
+        //             playVideo({ navigation, type: 'Task' });
+        //             TipsOverlay.hide();
+        //         },
+        //     });
+        // } else {
+        //     createWithdraw();
+        // }
+
+        createWithdraw();
     };
 
     const createWithdraw = async () => {
@@ -126,18 +128,16 @@ const WithdrawBody = props => {
             });
         } else {
             setWithdrawCount(value);
+            handleWithdraws();
         }
     };
 
     const renderBindTips = () => {
-        const aliapyInfo = Tools.syncGetter('wallet.platforms.alipay', user);
-        const wechatInfo = Tools.syncGetter('wallet.platforms.wechat', user);
-
-        if (withdrawType === 'alipay' && aliapyInfo) {
+        if (withdrawType === 'alipay' && Tools.syncGetter('wallet.platforms.alipay', user)) {
             return null;
         }
-
-        if (withdrawType === 'wechat' && wechatInfo) {
+        console.log('Tools.syncGetter :', Tools.syncGetter('wallet.platforms.wechat', user));
+        if (withdrawType === 'wechat' && Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) {
             return null;
         }
         return (
@@ -177,13 +177,11 @@ const WithdrawBody = props => {
             type: 'alipay',
             name: '支付宝',
             icon: require('@src/assets/images/zhifubao.png'),
-            withdrawInfo: Tools.syncGetter('wallet.platforms.alipay', user),
         },
         {
             type: 'wechat',
             name: '微信',
             icon: require('@src/assets/images/wechat.png'),
-            withdrawInfo: Tools.syncGetter('wallet.platforms.wechat', user),
         },
     ];
     console.log('withdrawData user :', user);
@@ -247,7 +245,9 @@ const WithdrawBody = props => {
                                                 backgroundColor: '#FFF2EB',
                                             },
                                         ]}
-                                        onPress={() => selectWithdrawCount(data.amount)}>
+                                        onPress={() => {
+                                            selectWithdrawCount(data.amount);
+                                        }}>
                                         <Text
                                             style={[
                                                 styles.content,
@@ -280,16 +280,10 @@ const WithdrawBody = props => {
                         })}
                     </View>
                     <View style={styles.footer}>
-                        {/*  <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={styles.tips}>
-                                总提现{Tools.syncGetter('wallet.total_withdraw_amount', user) || 0}
-                            </Text>
-                        </TouchFeedback> */}
                         <Button
-                            title={'立即提现'}
+                            title={'提现日志'}
                             style={styles.button}
-                            disabled={withdrawCount <= 0}
-                            onPress={handleWithdraws}
+                            onPress={() => navigation.navigate('BillingRecord')}
                         />
                     </View>
                 </View>
