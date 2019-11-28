@@ -9,6 +9,7 @@ mutation MatchGameMutation {
         }
         game {
             id
+            reward
         }
     }
 }
@@ -17,6 +18,7 @@ mutation MatchGameMutation {
 mutation MatchRobotMutation {
     matchRobot {
         id
+        reward
         rival {
             id
             name
@@ -72,8 +74,17 @@ mutation ReceiveGameScore($game_id: Int!, $score: Int!, $user_id: Int) {
 # 游戏结束
 mutation EndGameMutation($game_id: Int!) {
     endGame(game_id: $game_id) {
+        status
+        reward
         winner {
             id
+        }
+        data {
+            scores {
+                score
+                user_id
+                submit_at
+            }
         }
     }
 }

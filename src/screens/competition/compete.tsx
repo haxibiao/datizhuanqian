@@ -106,7 +106,7 @@ const compete = observer(props => {
                     <View style={styles.userContainer}>
                         <Competitor user={app.me} compete theLeft />
                         <RepeatCountDown
-                            duration={3}
+                            duration={5}
                             repeat={gameQuestions.length}
                             callback={handlerResult}
                             resetState={resetState}

@@ -11,7 +11,7 @@ import {
     BackHandler,
 } from 'react-native';
 import { PageContainer, NavigatorBar, Avatar } from '@src/components';
-import { playVideo } from 'common';
+import { playVideo, syncGetter } from 'common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app } from 'store';
 // import localStore from './store';
@@ -37,37 +37,74 @@ const competitionResult = {
 
 const over = observer(props => {
     const navigation = useNavigation();
-    const result = navigation.getParam('result', 'victory');
     const store = navigation.getParam('store');
+    const [result, setResult] = useState(() => navigation.getParam('result', 'draw'));
 
     const [loading, setLoading] = useState(true);
-    const [game, setGame] = useState();
-    const me = useMemo(() => app.me, []);
+    const [winner, setWinner] = useState();
+    const [scores, setScores] = useState([-1, -1]);
     const timer = useRef(0);
+    const maxRepeat = useRef(3);
+    const me = useMemo(() => app.me, []);
     const loadAd = useCallback(() => {
         playVideo({ type: 'Compete' });
     }, []);
     // 获取结算
     const fetchResult = useCallback(() => {
         (async () => {
-            const [error, result] = await store.gameOver();
-            if (error) {
+            const [error, res] = await store.gameOver();
+            const endGame = syncGetter('data.endGame', res);
+            const scores = syncGetter('scores', endGame);
+            const winner = syncGetter('winner', endGame);
+            console.log('====================================');
+            console.log('res', res);
+            console.log('====================================');
+            // 游戏未结束或者接口出错  重新请求
+            Toast.show({ content: endGame.status });
+            if ((error || endGame.status !== 'END') && maxRepeat > 0) {
                 timer.current = setTimeout(() => {
+                    --maxRepeat;
                     fetchResult();
                 }, 3000);
-            } else if (result) {
+            } else if (winner) {
+                Toast.show({ content: winner.id });
                 setLoading(false);
-                setGame(result);
+                setWinner(winner);
+                setScores(() => {
+                    let arr = [];
+                    scores.forEach(item => {
+                        if (item.user_id === me.id) {
+                            arr[0] = item.score;
+                        } else {
+                            arr[1] = item.score;
+                        }
+                    });
+                    return arr;
+                });
             }
         })();
     }, []);
 
     useEffect(() => {
-        // fetchResult();
-        // setTimeout(() => {
-        //     clearTimeout(timer.current);
-        //     setLoading(false);
-        // }, 6000);
+        if (winner) {
+            if (winner.id === me.id) {
+                setResult('victory');
+            } else if (winner.id > 0) {
+                setResult('defeat');
+            } else {
+                setResult('draw');
+            }
+        }
+    }, [winner]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            fetchResult();
+        }, 3000);
+        setTimeout(() => {
+            clearTimeout(timer.current);
+            setLoading(false);
+        }, 10000);
 
         return () => {
             clearTimeout(timer.current);
@@ -83,31 +120,40 @@ const over = observer(props => {
         };
     }, []);
 
-    // if (loading) {
-    //     return (
-    //         <PageContainer hiddenNavBar>
-    //             <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
-    //                 <View style={styles.container}>
-    //                     <View style={styles.competitor}>
-    //                         <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
-    //                             <Avatar source={app.me.avatar} size={PxFit(100)} style={styles.playerAvatar} />
-    //                         </ImageBackground>
-    //                         <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
-    //                         <ImageBackground
-    //                             style={[styles.playerBg, { alignItems: 'flex-start' }]}
-    //                             source={avatarWidget[result][1]}>
-    //                             <Avatar source={store.rival.avatar} size={PxFit(100)} style={styles.playerAvatar} />
-    //                         </ImageBackground>
-    //                     </View>
-    //                     <View style={styles.loading}>
-    //                         <Text style={styles.loadingText}>正在结算</Text>
-    //                         <ActivityIndicator size="small" color={Theme.primaryColor} />
-    //                     </View>
-    //                 </View>
-    //             </ImageBackground>
-    //         </PageContainer>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <PageContainer hiddenNavBar>
+                <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
+                    <View style={[styles.container, styles.content]}>
+                        <View style={styles.competitor}>
+                            <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
+                                <Avatar source={app.me.avatar} size={PxFit(100)} style={styles.playerAvatar} />
+                            </ImageBackground>
+                            <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
+                            <ImageBackground
+                                style={[styles.playerBg, { alignItems: 'flex-start' }]}
+                                source={avatarWidget[result][1]}>
+                                <Avatar source={store.rival.avatar} size={PxFit(100)} style={styles.playerAvatar} />
+                            </ImageBackground>
+                        </View>
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="small" color={'#fff'} />
+                            <Text style={styles.loadingText}>正在结算</Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+                <View style={styles.header}>
+                    <NavigatorBar
+                        navigation={navigation}
+                        style={styles.navigatorBar}
+                        titleStyle={styles.titleStyle}
+                        title="对战结束"
+                        backButtonPress={() => navigation.pop(2)}
+                    />
+                </View>
+            </PageContainer>
+        );
+    }
 
     return (
         <PageContainer hiddenNavBar>
@@ -130,11 +176,13 @@ const over = observer(props => {
                     <View style={styles.userInfo}>
                         <View>
                             <Text style={styles.userName}>{me.name}</Text>
-                            <Text style={styles.score}>{store.score[0]}</Text>
+                            <Text style={styles.score}>{scores[0] > 0 ? scores[0] : store.score[0]}</Text>
                         </View>
                         <View style={{ alignItems: 'flex-end' }}>
                             <Text style={styles.userName}>{store.rival.name}</Text>
-                            <Text style={[styles.score, { color: '#F8CE4D' }]}>{store.score[1]}</Text>
+                            <Text style={[styles.score, { color: '#F8CE4D' }]}>
+                                {scores[1] > 0 ? scores[1] : store.score[1]}
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.main}>
@@ -151,22 +199,13 @@ const over = observer(props => {
                                 <Text style={styles.itemText2}>{store.answerPassCount}题</Text>
                             </View>
                             <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
-                            {/*  <View style={styles.statisticItem}>
-                                <Text style={styles.itemText1}>计时:</Text>
-                                <Image
-                                    style={styles.iconImage}
-                                    source={require('@src/assets/images/competition_time.png')}
-                                />
-                                <Text style={styles.itemText2}>43秒</Text>
-                            </View> */}
-                            {/* <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} /> */}
                             <View style={styles.statisticItem}>
                                 <Text style={styles.itemText1}>奖励:</Text>
                                 <Image
                                     style={styles.iconImage}
                                     source={require('@src/assets/images/competition_reward.png')}
                                 />
-                                <Text style={styles.itemText2}>+200</Text>
+                                <Text style={styles.itemText2}>{result !== 'defeat' ? store.game.reward : 0}</Text>
                             </View>
                             <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
                         </View>
@@ -246,14 +285,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     loading: {
+        marginTop: PxFit(40),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
     loadingText: {
-        marginRight: PxFit(15),
-        color: Theme.primaryColor,
-        fontSize: PxFit(15),
+        marginTop: PxFit(20),
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: PxFit(20),
     },
     container: {
         flex: 1,

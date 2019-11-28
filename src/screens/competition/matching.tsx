@@ -1,7 +1,8 @@
-import React, { useMemo, useRef, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
-import { PageContainer, NavigatorBar } from '@src/components';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+import React, { useMemo, useRef, useEffect, useCallback, useState } from 'react';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground, Animated } from 'react-native';
+import { PageContainer, NavigatorBar, Row } from '@src/components';
+import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from '@src/utils';
+import { useLinearAnimation } from '@src/common';
 import { observer, app } from 'store';
 import localStore from './store';
 import ChallengeButton from './components/ChallengeButton';
@@ -11,10 +12,30 @@ import { Overlay } from 'teaset';
 
 export default observer(props => {
     const navigation = useNavigation();
-
+    const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 2000 });
     const store = useRef(new localStore()).current;
     const overlayRef = useRef();
     const timer = useRef();
+    const [disableCancel, setDisableCancel] = useState(true);
+
+    const cancelDisable = useCallback(() => {
+        setDisableCancel(false);
+    }, []);
+
+    useEffect(() => {
+        if (store.matching) {
+            startAnimation(0, 1, cancelDisable);
+        } else {
+            setDisableCancel(true);
+        }
+    }, [store.matching]);
+
+    const animateStyles = useMemo(
+        () => ({
+            opacity: animation,
+        }),
+        [animation],
+    );
 
     const rightView = useMemo(() => {
         return (
@@ -73,16 +94,19 @@ export default observer(props => {
                             onPress={store.matchGame}
                         />
                     </View>
-                    {store.matching && !store.rival.id && (
-                        <View style={styles.cancelMatchWrap}>
-                            <TouchableOpacity style={styles.cancelMatch} onPress={store.cancelMatch}>
-                                <Text style={styles.cancelMatchText}>取消匹配</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
                     <View style={styles.competitorRight}>
                         <MatchTheUser fadeIn={store.rival.id} user={store.rival} />
                     </View>
+                    {store.matching && !store.rival.id && (
+                        <Animated.View style={[styles.cancelMatchWrap, animateStyles]}>
+                            <TouchableOpacity
+                                style={styles.cancelMatch}
+                                onPress={store.cancelMatch}
+                                disabled={disableCancel}>
+                                <Text style={styles.cancelMatchText}>取消匹配</Text>
+                            </TouchableOpacity>
+                        </Animated.View>
+                    )}
                 </View>
             </ImageBackground>
             <View style={styles.header}>
@@ -119,9 +143,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     cancelMatchWrap: {
+        position: 'absolute',
         alignItems: 'center',
         height: PxFit(42),
-        marginTop: PxFit(20),
+        width: PxFit(180),
+        top: SCREEN_HEIGHT * 0.5 + PxFit(120),
     },
     challengeWrap: {
         marginVertical: PxFit(50),

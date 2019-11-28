@@ -30,7 +30,7 @@ const RepeatCountDown = (props: Props) => {
         const timer: number = setInterval(() => {
             setSubTime(prevCount => {
                 // 机器人答题条件
-                if (prevCount < duration - 1 && Math.random() > 0.3) {
+                if (store.robot && prevCount < duration - 1 && Math.random() > 0.3) {
                     randomAnswer();
                 }
                 if (prevCount === 0) {
