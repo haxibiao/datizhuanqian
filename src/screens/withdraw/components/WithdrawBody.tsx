@@ -13,7 +13,7 @@ import WithdrawHeader from './WithdrawHeader';
 const withdrawData = [
     {
         tips: '秒到账',
-        amount: 0.3,
+        amount: 1,
         description: '新人无门槛',
         fontColor: '#FFA200',
         bgColor: Theme.themeRed,
@@ -45,8 +45,6 @@ const WithdrawBody = props => {
     const { navigation } = props;
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
-    const [withdrawCount, setWithdrawCount] = useState(0);
-    // const [user, setUser] = useState(null);
     const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
@@ -56,33 +54,13 @@ const WithdrawBody = props => {
     let user = Tools.syncGetter('data.user', UserMeansQuery);
 
     useEffect(() => {
-        console.log('useEffect 111:');
         if (UserMeansQuery.data && UserMeansQuery.data.user) {
-            console.log('useEffect :', UserMeansQuery);
             setwithdrawInfo(Tools.syncGetter('data.user.withdrawInfo', UserMeansQuery));
-            // setUser(Tools.syncGetter('data.user', UserMeansQuery));
         }
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
-    const [createWithdrawal] = useMutation(GQL.CreateWithdrawMutation, {
-        variables: {
-            amount: withdrawCount,
-            platform: withdrawType,
-        },
-        refetchQueries: () => [
-            {
-                query: GQL.UserMeansQuery,
-                variables: { id: app.me.id },
-            },
-            {
-                query: GQL.WithdrawsQuery,
-            },
-        ],
-    });
-
     useEffect(() => {
         const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
-            console.log('UserMeansQuery :', UserMeansQuery);
             UserMeansQuery.refetch();
         });
         return () => {
@@ -90,29 +68,27 @@ const WithdrawBody = props => {
         };
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
-    const handleWithdraws = async () => {
-        // if (user.today_withdraw_left < withdrawCount && withdrawCount > 1) {
-        //     TipsOverlay.show({
-        //         title: '日贡献不足',
-        //         content: <View>{config.enableBanner && <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
-        //         onConfirm: () => {
-        //             navigation.navigate('任务');
-        //             playVideo({ navigation, type: 'Task' });
-        //             TipsOverlay.hide();
-        //         },
-        //     });
-        // } else {
-        //     createWithdraw();
-        // }
-
-        createWithdraw();
-    };
-
-    const createWithdraw = async () => {
+    const createWithdraw = async value => {
         setSubmit(true);
         try {
-            const result = await createWithdrawal();
-            navigation.navigate('WithdrawApply', { amount: withdrawCount });
+            const result = await app.client.mutate({
+                mutation: GQL.CreateWithdrawMutation,
+                variables: {
+                    amount: value,
+                    platform: withdrawType,
+                },
+                refetchQueries: () => [
+                    {
+                        query: GQL.UserMeansQuery,
+                        variables: { id: app.me.id },
+                    },
+                    {
+                        query: GQL.WithdrawsQuery,
+                    },
+                ],
+            });
+
+            navigation.navigate('WithdrawApply', { amount: value });
             setSubmit(false);
         } catch (e) {
             let str = e.toString().replace(/Error: GraphQL error: /, '');
@@ -127,8 +103,7 @@ const WithdrawBody = props => {
                 content: `智慧点不足提现${value}元，快去赚钱智慧点吧`,
             });
         } else {
-            setWithdrawCount(value);
-            handleWithdraws();
+            createWithdraw(value);
         }
     };
 
@@ -239,24 +214,11 @@ const WithdrawBody = props => {
                             return (
                                 <View key={index}>
                                     <TouchFeedback
-                                        style={[
-                                            styles.withdrawItem,
-                                            withdrawCount === data.amount && {
-                                                backgroundColor: '#FFF2EB',
-                                            },
-                                        ]}
+                                        style={[styles.withdrawItem]}
                                         onPress={() => {
                                             selectWithdrawCount(data.amount);
                                         }}>
-                                        <Text
-                                            style={[
-                                                styles.content,
-                                                withdrawCount === data.amount && {
-                                                    color: Theme.themeRed,
-                                                },
-                                            ]}>
-                                            {data.amount}元
-                                        </Text>
+                                        <Text style={[styles.content]}>{data.amount}元</Text>
                                         <Text
                                             style={{
                                                 fontSize: 13,

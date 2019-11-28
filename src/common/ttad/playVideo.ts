@@ -171,7 +171,7 @@ function getReward(props: Props, video: Video) {
     }
     if (type === 'Task' && !video.ad_click && video.video_play) {
         rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
-        title = '仅观看视频，查看详情奖励更多';
+        title = '点击详情得贡献';
     }
     //TODO:  需后端扩展userReward奖励类型
     if (type === 'Audit' && video.ad_click && video.video_play) {
@@ -180,7 +180,7 @@ function getReward(props: Props, video: Video) {
 
     if (type === 'Audit' && !video.ad_click && video.video_play) {
         rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
-        title = '仅观看视频，查看详情奖励更多';
+        title = '点击详情得贡献';
     }
 
     const refetchQuery =
