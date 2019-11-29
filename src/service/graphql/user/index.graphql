@@ -212,6 +212,7 @@ query UserInfoQuery($id: Int, $limit: Int, $offset: Int, $order: QuestionOrderEn
                 followed_user_status
                 profile {
                     age
+                    questions_count
                 }
                 level {
                     id

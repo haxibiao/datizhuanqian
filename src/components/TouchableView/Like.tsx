@@ -24,12 +24,12 @@ interface Props {
 }
 
 export default observer((props: Props) => {
-    const { media, containerStyle, imageStyle, textStyle, iconSize, type } = props;
+    const { media, containerStyle, imageStyle, textStyle, iconSize, type, isQuestion } = props;
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
             likable_id: Tools.syncGetter('id', media),
-            likable_type: 'QUESTION',
+            likable_type: isQuestion ? 'QUESTION' : 'POST',
         },
     });
 

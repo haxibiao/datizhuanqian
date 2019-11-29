@@ -20,7 +20,7 @@ import { app } from 'store';
 import { Query, withApollo, compose, useQuery, GQL } from 'apollo';
 
 import UserProfile from './UserProfile';
-import QuestionItem from './QuestionItem';
+import PostItem from '../../post/components/PostItem';
 import Placeholder from './Placeholder';
 
 const ORDER = ['ANSWERS_COUNT', 'CREATED_AT'];
@@ -68,7 +68,7 @@ const Questions = props => {
             rightView={
                 user.id == app.me.id ? null : (
                     <TouchFeedback onPress={showOptions} style={styles.optionsButton}>
-                        <Iconfont name='more-horizontal' color={Theme.defaultTextColor} size={PxFit(18)} />
+                        <Iconfont name="more-horizontal" color={Theme.defaultTextColor} size={PxFit(18)} />
                     </TouchFeedback>
                 )
             }>
@@ -86,13 +86,14 @@ const Questions = props => {
                     <UserProfile
                         user={user}
                         hasQuestion={questions.length > 0}
+                        isQuestion={true}
                         navigation={navigation}
                         switchOrder={switchOrder}
                         orderByHot={orderByHot}
                     />
                 }
-                ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有出过题目' />}
-                renderItem={({ item, index }) => <QuestionItem question={item} navigation={navigation} />}
+                ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
+                renderItem={({ item, index }) => <PostItem post={item} navigation={navigation} isQuestion={true} />}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
                 onEndReachedThreshold={0.3}
                 onEndReached={() => {
@@ -129,7 +130,7 @@ const Questions = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f9f9f9',
+        backgroundColor: Theme.white,
     },
     header: {
         position: 'absolute',

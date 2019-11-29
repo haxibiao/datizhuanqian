@@ -20,7 +20,7 @@ import { app } from 'store';
 import { Query, withApollo, compose, useQuery, GQL } from 'apollo';
 
 import UserProfile from './UserProfile';
-import PostItem from './PostItem';
+import PostItem from '../../post/components/PostItem';
 import Placeholder from './Placeholder';
 
 const Posts = props => {
@@ -35,8 +35,6 @@ const Posts = props => {
         },
         fetchPolicy: 'network-only',
     });
-
-    useEffect(() => {}, []);
 
     if (loading) {
         return <Placeholder />;
@@ -59,7 +57,7 @@ const Posts = props => {
                 ListHeaderComponent={
                     <UserProfile user={posts.length > 0 ? posts[0].user : userInfo} navigation={navigation} isPost />
                 }
-                ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有发布过动态' />}
+                ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有发布过动态" />}
                 renderItem={({ item, index }) => (
                     <PostItem post={item} navigation={navigation} posts={posts} activeIndex={index} />
                 )}
