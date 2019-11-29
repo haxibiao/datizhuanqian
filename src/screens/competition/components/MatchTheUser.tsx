@@ -52,7 +52,7 @@ const MatchTheUser = observer(props => {
         <Animated.View style={[styles.competitor, animateStyles]}>
             <ImageBackground style={styles.background} source={source}>
                 <Avatar
-                    source={user.avatar || require('@src/assets/images/default_avatar.png')}
+                    source={user.avatar_url || require('@src/assets/images/default_avatar.png')}
                     size={height * 0.76}
                     style={styles.avatar}
                 />

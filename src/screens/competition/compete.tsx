@@ -42,8 +42,10 @@ const compete = observer(props => {
     );
 
     const handlerResult = useCallback(() => {
-        store.leaveGame();
         let result;
+        if (store.score[0] === 0) {
+            store.calculateScore(0);
+        }
         if (store.score[0] > store.score[1]) {
             result = 'victory';
         } else if (store.score[0] < store.score[1]) {
@@ -79,6 +81,15 @@ const compete = observer(props => {
     }, []);
 
     useEffect(() => {
+        if (store.isLeaving) {
+            navigation.replace('GameSettlement', {
+                result: 'victory',
+                store,
+            });
+        }
+    }, [store.isLeaving]);
+
+    useEffect(() => {
         const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
             backPress();
             return true;
@@ -91,7 +102,9 @@ const compete = observer(props => {
     if (!gameQuestions) {
         return <Ready />;
     }
-
+    console.log('====================================');
+    console.log('store.rival', store.me, store.rival);
+    console.log('====================================');
     return (
         <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
             <PageContainer
@@ -104,9 +117,9 @@ const compete = observer(props => {
                 <ScrollView>
                     <Progress questions={gameQuestions} index={index} />
                     <View style={styles.userContainer}>
-                        <Competitor user={app.me} compete theLeft />
+                        <Competitor user={store.me} compete theLeft />
                         <RepeatCountDown
-                            duration={5}
+                            duration={10}
                             repeat={gameQuestions.length}
                             callback={handlerResult}
                             resetState={resetState}

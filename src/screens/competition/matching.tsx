@@ -85,7 +85,7 @@ export default observer(props => {
             <ImageBackground style={styles.background} source={require('@src/assets/images/matching_bg.png')}>
                 <View style={styles.container}>
                     <View style={styles.competitorLeft}>
-                        <MatchTheUser fadeIn={store.rival.id} user={app.me} theLeft={true} />
+                        <MatchTheUser fadeIn={store.rival.id} user={store.me} theLeft={true} />
                     </View>
                     <View style={styles.challengeWrap}>
                         <ChallengeButton

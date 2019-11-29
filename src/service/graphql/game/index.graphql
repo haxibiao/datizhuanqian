@@ -5,7 +5,7 @@ mutation MatchGameMutation {
             id
             name
             gender
-            avatar
+            avatar_url
         }
         game {
             id
@@ -23,7 +23,7 @@ mutation MatchRobotMutation {
             id
             name
             gender
-            avatar
+            avatar_url
         }
     }
 }
@@ -74,6 +74,38 @@ mutation ReceiveGameScore($game_id: Int!, $score: Int!, $user_id: Int) {
 # 游戏结束
 mutation EndGameMutation($game_id: Int!) {
     endGame(game_id: $game_id) {
+        id
+        status
+        reward
+        winner {
+            id
+        }
+        data {
+            scores {
+                score
+                user_id
+                submit_at
+            }
+        }
+    }
+}
+
+# 查询状态
+query UserGameQuery($user_id: Int!) {
+    userGame(user_id: $user_id) {
+        user {
+            id
+        }
+        online_status
+        in_game {
+            end_at
+        }
+    }
+}
+
+query GameQuery($game_id: Int!) {
+    game(game_id: $game_id) {
+        id
         status
         reward
         winner {
