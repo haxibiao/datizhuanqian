@@ -27,7 +27,7 @@ class GenderLabel extends Component {
                 }}>
                 <Iconfont name={user.gender ? 'woman' : 'man'} size={PxFit(8)} color={Theme.white} />
                 <Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10), paddingLeft: PxFit(1) }}>
-                    {app.userCache.profile.age}
+                    {Tools.syncGetter('profile.age', user) || 1}
                 </Text>
             </View>
         );
