@@ -9,9 +9,8 @@ import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools, WPercent } from 'utils';
 import { TouchFeedback } from 'components';
 import { GQL, useMutation } from 'apollo';
 import { ttad } from 'native';
-import { app } from 'store';
+import { app, config } from 'store';
 import { playVideo } from 'common';
-import { config } from 'src/store';
 
 interface Props {
     gold: number;
