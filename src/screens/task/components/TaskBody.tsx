@@ -6,8 +6,6 @@ import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, ISAndroid, iPhone11 }
 import { Query, Mutation, graphql, withApollo, compose, GQL, useQuery } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
 
-import { ttad } from 'native';
-
 import service from 'service';
 
 import AttendanceBook from './AttendanceBook';
@@ -126,6 +124,17 @@ const TaskBody = props => {
                     submit_name: '去采集',
                     details: `打开抖音视频点击分享按钮选择复制链接，回到答题赚钱即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,
                 },
+                // {
+                //     name: '试玩点墨阁',
+                //     status: Tools.syncGetter('status', spider_video),
+                //     taskStatus: 8,
+                //     gold: Tools.syncGetter('gold', spider_video),
+                //     ticket: Tools.syncGetter('ticket', spider_video),
+                //     contribute: Tools.syncGetter('contribute', spider_video),
+                //     type: 8,
+                //     submit_name: '去试玩',
+                //     details: `打开抖音视频点击分享按钮选择复制链接，回到答题赚钱即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,
+                // },
             ];
 
             // 任务列表

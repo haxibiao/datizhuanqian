@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated } from 'react-native';
+import React, { Fragment, useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated, Linking, AppState } from 'react-native';
 
 import { Button, Row, Iconfont, TouchFeedback } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
@@ -7,6 +7,7 @@ import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
 import { Mutation, compose, useMutation, GQL } from 'apollo';
 import { exceptionCapture } from 'common';
 import { app } from 'store';
+import { ttad, AppUtil } from 'native';
 
 interface Props {
     handler: Function;
@@ -33,6 +34,8 @@ const TaskItem = (props: Props) => {
     const [taskDetailVisiable, setTaskDetailVisiable] = useState(false);
     const [rotateValue, setRotateValue] = useState(new Animated.Value(0));
     const [fadeValue, setFadeValue] = useState(new Animated.Value(0));
+    const [appExist, setAppExist] = useState(false);
+    const route = 'com.diudie';
 
     const refetchQuery = () => [
         {
@@ -95,6 +98,22 @@ const TaskItem = (props: Props) => {
             Toast.show({ content: '已经领取该任务了哦~' });
         }
     };
+
+    const stateChangeHandle = (event: any) => {
+        if (event === 'active') {
+            AppUtil.CheckApkExist(route, (data: any) => {
+                console.log('data :', data);
+                setAppExist(data);
+            });
+        }
+    };
+
+    useEffect(() => {
+        AppState.addEventListener('change', stateChangeHandle);
+        return () => {
+            AppState.removeEventListener('change', stateChangeHandle);
+        };
+    }, [stateChangeHandle]);
 
     const RewardContent = () => {
         return (
@@ -177,6 +196,13 @@ const TaskItem = (props: Props) => {
             //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
             case 7:
                 backgroundColor = '#FF5267';
+            case 8:
+                if (task.type == 8 && !appExist) {
+                    name = '做任务';
+                    doTask = () => {
+                        Linking.openURL('market://details?id=com.diudie');
+                    };
+                }
         }
 
         return (

@@ -30,13 +30,13 @@ class RuleDescription extends Component {
                 </Text>
 
                 <View style={{ marginTop: PxFit(5) }}>
-                    <Text style={styles.text}>1.只有当您绑定支付宝账号之后，才能开始提现。</Text>
+                    <Text style={styles.text}>1.只有当您绑定支付宝或微信账号之后，才能开始提现。</Text>
                     <Text style={styles.text}>
                         2.提现金额分为1元、3元、5元、10元四档，每次提现时会扣除智慧点，剩余智慧点可以在下次满足最低提现额度时申请提现。
                     </Text>
                     <Text style={styles.text}>3.每日只能进行一次提现。</Text>
                     <Text style={styles.text}>
-                        4.一个账号只能绑定一个支付宝提现，使用多个账号绑定同一支付宝，提现系统将判定涉嫌恶意刷取智慧点，
+                        4.一个账号只能绑定一个支付宝或微信进行提现，使用多个账号绑定同一支付宝或微信，提现系统将判定涉嫌恶意刷取智慧点，
                         {Config.AppName}官方将做限制提现处理,同时清空所有智慧点。
                     </Text>
                     <Text style={styles.text}>4.提现24小时内到账(如遇提现高峰，提现到账时间会延长)。</Text>
