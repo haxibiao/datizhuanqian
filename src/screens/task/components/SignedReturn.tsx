@@ -11,6 +11,7 @@ import { GQL, useMutation } from 'apollo';
 import { ttad } from 'native';
 import { app } from 'store';
 import { playVideo } from 'common';
+import { config } from 'src/store';
 
 interface Props {
     gold: number;
@@ -57,9 +58,11 @@ const SignedReturn = (props: Props) => {
                 </View>
             </ImageBackground>
             <View style={styles.TTAD}>
-                <View>
-                    <ttad.FeedAd adWidth={WPercent(90)} />
-                </View>
+                {!config.disableAd && (
+                    <View>
+                        <ttad.FeedAd adWidth={WPercent(90)} />
+                    </View>
+                )}
                 <TouchFeedback
                     onPress={() => {
                         ISIOS ? close() : loadAd();

@@ -93,7 +93,7 @@ const TaskBody = props => {
                 },
                 {
                     name: '出题目赚钱',
-                    status: Tools.syncGetter('status', chuti),
+                    status: config.disableAd ? 0 : Tools.syncGetter('status', chuti),
                     taskStatus: 5,
                     gold: Tools.syncGetter('gold', chuti) + '~40',
                     ticket: Tools.syncGetter('ticket', chuti),
