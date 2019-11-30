@@ -723,10 +723,6 @@
   dependencies:
     "@hapi/hoek" "8.x.x"
 
-"@hxf/toolkits_npm@git+http://code.haxibiao.cn/android/toolkits_npm.git":
-  version "1.0.1"
-  resolved "git+http://code.haxibiao.cn/android/toolkits_npm.git#07580abdd602a1906ae4e181283d2f5adc889ccd"
-
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.npm.taobao.org/@jest/console/download/@jest/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
