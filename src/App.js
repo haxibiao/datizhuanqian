@@ -43,10 +43,14 @@ class App extends Component {
     }
 
     componentDidMount() {
-        //获取广告开放状态
+        // 初始化 AdManager, 之后才能启动开屏
+        ttad.AdManager.init();
+        // 信息流广告先预加载，提速第一次签到时显示的速度
+        ttad.AdManager.loadFeedAd();
+
+        // 获取广告开放状态
         service.enableAdvert(data => {
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
-
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
                 ttad.Splash.loadSplashAd();
             }
