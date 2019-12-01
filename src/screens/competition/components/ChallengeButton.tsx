@@ -1,26 +1,57 @@
-import React, { useMemo, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated } from 'react-native';
+import React, { useMemo, useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
 import { Avatar, Row, Center, Iconfont, WaveView } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { throttle } from '@src/common';
+import { throttle, useCountDown, syncGetter } from '@src/common';
 import { BoxShadow } from 'react-native-shadow';
-import { GQL, useMutation } from '@src/apollo';
+import { GQL, useMutation, useQuery } from '@src/apollo';
 import { observer, app } from 'store';
 
 const challenge = observer(props => {
     const { onPress, matching, matched } = props;
+    const [isLoading, setLoading] = useState(true);
+    const [surplusSecond, setSurplusSecond] = useState(0);
+    // 检测是否在游戏中
+    const { data: userGameQuery, loading } = useQuery(GQL.UserGameQuery, {
+        variables: { user_id: app.me.id },
+    });
+    const onlineStatus = useMemo(() => syncGetter('userGame.online_status', userGameQuery), [userGameQuery]);
+    const surplus_second = useMemo(() => syncGetter('userGame.surplus_second', userGameQuery), [userGameQuery]);
+    console.log('onlineStatus===================================');
+    console.log(loading, userGameQuery, onlineStatus, surplus_second);
+    console.log('onlineAt===================================');
+    // loading和倒计时的UI切换
+    useEffect(() => {
+        if (!loading) {
+            setLoading(false);
+            if (onlineStatus === 'PLAYING_STATUS' && surplus_second > 0) {
+                setSurplusSecond(surplus_second);
+            }
+        }
+    }, [loading, onlineStatus]);
+    const countDown = useCountDown({ expirationTime: surplusSecond });
     return (
         <BoxShadow setting={shadowOpt}>
-            <View style={{ flex: 1 }}>
-                {matching && <WaveView containerStyle={styles.waveContainer} style={styles.wave} />}
-                <TouchableOpacity
-                    disabled={matching || matched}
-                    onPress={throttle(onPress)}
-                    style={styles.matchingButton}>
-                    <Image style={styles.battle} source={require('@src/assets/images/battle.png')} />
-                    <Text style={styles.text}>{matched ? '匹配成功' : matching ? '正在匹配' : '立即PK'}</Text>
-                </TouchableOpacity>
-            </View>
+            {isLoading || !countDown.isEnd ? (
+                <View style={styles.matchingButton}>
+                    {isLoading ? (
+                        <ActivityIndicator color={Theme.watermelon} size={'large'} />
+                    ) : (
+                        <Text style={styles.time}>{`${countDown.minutes}:${countDown.seconds}`}</Text>
+                    )}
+                </View>
+            ) : (
+                <View style={{ flex: 1 }}>
+                    {matching && <WaveView containerStyle={styles.waveContainer} style={styles.wave} />}
+                    <TouchableOpacity
+                        disabled={matching || matched}
+                        onPress={throttle(onPress)}
+                        style={styles.matchingButton}>
+                        <Image style={styles.battle} source={require('@src/assets/images/battle.png')} />
+                        <Text style={styles.text}>{matched ? '匹配成功' : matching ? '正在匹配' : '立即PK'}</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
         </BoxShadow>
     );
 });
@@ -53,6 +84,11 @@ const styles = StyleSheet.create({
         fontSize: PxFit(16),
         fontWeight: 'bold',
         marginTop: PxFit(10),
+    },
+    time: {
+        color: Theme.watermelon,
+        fontSize: PxFit(20),
+        fontWeight: 'bold',
     },
     wave: {
         borderRadius: PxFit(100),

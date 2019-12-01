@@ -2,7 +2,8 @@ import React, { useMemo, useRef, useEffect, useCallback, useState } from 'react'
 import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground, Animated } from 'react-native';
 import { PageContainer, NavigatorBar, Row } from '@src/components';
 import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from '@src/utils';
-import { useLinearAnimation } from '@src/common';
+import { Query, useQuery, GQL } from '@src/apollo';
+import { useLinearAnimation, syncGetter } from '@src/common';
 import { observer, app } from 'store';
 import localStore from './store';
 import ChallengeButton from './components/ChallengeButton';
@@ -17,11 +18,11 @@ export default observer(props => {
     const overlayRef = useRef();
     const timer = useRef();
     const [disableCancel, setDisableCancel] = useState(true);
-
     const cancelDisable = useCallback(() => {
         setDisableCancel(false);
     }, []);
 
+    // 开始匹配后执行按钮动画
     useEffect(() => {
         if (store.matching) {
             startAnimation(0, 1, cancelDisable);
@@ -29,7 +30,6 @@ export default observer(props => {
             setDisableCancel(true);
         }
     }, [store.matching]);
-
     const animateStyles = useMemo(
         () => ({
             opacity: animation,
@@ -37,17 +37,7 @@ export default observer(props => {
         [animation],
     );
 
-    const rightView = useMemo(() => {
-        return (
-            <TouchableOpacity
-                style={styles.rightView}
-                activeOpacity={1}
-                onPress={() => Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })}>
-                <Image style={styles.medal} source={require('@src/assets/images/medal.png')} />
-            </TouchableOpacity>
-        );
-    }, []);
-
+    // 匹配成功，出现遮罩禁用UI，随即跳转PK
     useEffect(() => {
         if (store.rival.id) {
             Overlay.show(
@@ -65,6 +55,7 @@ export default observer(props => {
         }
     }, [store.rival.id]);
 
+    // 退出界面业务逻辑
     useEffect(() => {
         const navWillBlurListener = navigation.addListener('willBlur', () => {
             if (store.rival.id && timer.current) {
@@ -78,6 +69,17 @@ export default observer(props => {
         return () => {
             navWillBlurListener.remove();
         };
+    }, []);
+
+    const rightView = useMemo(() => {
+        return (
+            <TouchableOpacity
+                style={styles.rightView}
+                activeOpacity={1}
+                onPress={() => Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })}>
+                <Image style={styles.medal} source={require('@src/assets/images/medal.png')} />
+            </TouchableOpacity>
+        );
     }, []);
 
     return (

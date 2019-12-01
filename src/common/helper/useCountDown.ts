@@ -13,24 +13,30 @@ export const useCountDown = (props: Props) => {
     }, [expirationTime]);
 
     useEffect(() => {
-        const timer: number = setInterval(() => {
-            setSubTime(prevCount => prevCount - 1000);
+        const timer: any = setInterval(() => {
+            setSubTime((prevCount: any) => {
+                if (prevCount - 1000 <= 0) {
+                    clearInterval(timer);
+                }
+                return prevCount - 1000;
+            });
         }, 1000);
         return () => {
             clearInterval(timer);
         };
-    }, []);
+    }, [expirationTime]);
 
     return useMemo(() => {
         let day: number | string = parseInt(String(subTime / 1000 / 60 / 60 / 24), 10);
         let hours: number | string = parseInt(String((subTime / 1000 / 60 / 60) % 24), 10);
         let minutes: number | string = parseInt(String((subTime / 1000 / 60) % 60), 10);
         let seconds: number | string = parseInt(String((subTime / 1000) % 60), 10);
+        const isEnd = subTime <= 1000;
         day = day < 10 ? '0' + day : day;
         hours = hours < 10 ? '0' + hours : hours;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
-        return { day, hours, minutes, seconds };
+        return { day, hours, minutes, seconds, isEnd };
     }, [subTime]);
 };
 
