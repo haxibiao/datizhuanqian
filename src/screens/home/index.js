@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import {
     PageContainer,
     CustomRefreshControl,
@@ -29,6 +29,7 @@ import { Overlay } from 'teaset';
 
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
+import ListHeader from './components/ListHeader';
 
 // 监听新用户登录
 when(
@@ -239,6 +240,7 @@ class index extends Component {
                             });
                         }
                     }}
+                    ListHeaderComponent={() => <ListHeader navigation={this.props.navigation} />}
                     ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
                 />
             </View>
