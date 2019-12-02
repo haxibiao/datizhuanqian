@@ -42,7 +42,7 @@ function VideoTaskGuidance({ onDismiss }) {
                     <TouchableWithoutFeedback
                         onPress={() => {
                             app.changeUserStatus(false);
-                            playVideo({ type: 'Task' });
+                            // playVideo({ type: 'Task' });
                             onDismiss();
                         }}>
                         <Image
