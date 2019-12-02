@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { TouchFeedback } from 'components';
 import { Config, SCREEN_WIDTH, Theme, PxFit } from 'utils';
 import { observer, app } from 'store';
 
@@ -11,7 +12,9 @@ const ListHeader = observer(props => {
     return (
         <>
             <View style={styles.enters}>
-                <TouchableOpacity
+                <TouchFeedback
+                    authenticated
+                    navigation={navigation}
                     style={styles.enterWrap}
                     activeOpacity={1}
                     onPress={() => navigation.navigate('Matching')}>
@@ -21,8 +24,10 @@ const ListHeader = observer(props => {
                         <Text style={styles.entranceName}>答题对战</Text>
                         <Text style={styles.entranceDescription}>PK赢奖金</Text>
                     </ImageBackground>
-                </TouchableOpacity>
-                <TouchableOpacity
+                </TouchFeedback>
+                <TouchFeedback
+                    authenticated
+                    navigation={navigation}
                     style={styles.enterWrap}
                     activeOpacity={1}
                     onPress={() => navigation.navigate('Rank')}>
@@ -30,7 +35,7 @@ const ListHeader = observer(props => {
                         <Text style={styles.entranceName}>排行榜</Text>
                         <Text style={styles.entranceDescription}>今日榜单排名</Text>
                     </ImageBackground>
-                </TouchableOpacity>
+                </TouchFeedback>
             </View>
             <Text style={styles.questionsTitle}>热门题库</Text>
         </>
