@@ -22,6 +22,9 @@ export const useCountDown = (props: Props) => {
             });
         }, 1000);
         return () => {
+            console.log('====================================');
+            console.log('clearInterval');
+            console.log('====================================');
             clearInterval(timer);
         };
     }, [expirationTime]);
@@ -31,7 +34,7 @@ export const useCountDown = (props: Props) => {
         let hours: number | string = parseInt(String((subTime / 1000 / 60 / 60) % 24), 10);
         let minutes: number | string = parseInt(String((subTime / 1000 / 60) % 60), 10);
         let seconds: number | string = parseInt(String((subTime / 1000) % 60), 10);
-        const isEnd = subTime <= 1000;
+        const isEnd = subTime < 1000;
         day = day < 10 ? '0' + day : day;
         hours = hours < 10 ? '0' + hours : hours;
         minutes = minutes < 10 ? '0' + minutes : minutes;

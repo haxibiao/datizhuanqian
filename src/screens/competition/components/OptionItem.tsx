@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
@@ -28,6 +28,7 @@ interface Option {
 const OptionItem = (props: Props) => {
     const [animated, setAnimated] = useState(new Animated.Value(0));
     const [optionIndex, setOptionIndex] = useState(-1);
+    const flag = useRef(false);
 
     useEffect(() => {
         animation();
@@ -39,6 +40,7 @@ const OptionItem = (props: Props) => {
     }, [props.questionId]);
 
     const animation = () => {
+        flag.current = true;
         animated.setValue(0);
         Animated.timing(animated, {
             toValue: 1,
@@ -46,10 +48,13 @@ const OptionItem = (props: Props) => {
             tension: -10,
             friction: 5,
             delay: 350,
-        }).start(() => {});
+        }).start(() => {
+            flag.current = false;
+        });
     };
 
     const onPress = () => {
+        if (flag.current) return;
         let { option, question, selectOption, setAnswerStatus, index } = props;
         setOptionIndex(index);
         setAnswerStatus(question.answer === option.Value ? 'correct' : 'error');

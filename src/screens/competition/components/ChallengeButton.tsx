@@ -1,8 +1,8 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
 import { Avatar, Row, Center, Iconfont, WaveView } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { throttle, useCountDown, syncGetter } from '@src/common';
+import { throttle, useCountDown, syncGetter, useAppState } from '@src/common';
 import { BoxShadow } from 'react-native-shadow';
 import { GQL, useMutation, useQuery } from '@src/apollo';
 import { observer, app } from 'store';
@@ -11,26 +11,35 @@ const challenge = observer(props => {
     const { onPress, matching, matched } = props;
     const [isLoading, setLoading] = useState(true);
     const [surplusMillisecond, setSurplusMillisecond] = useState(0);
+    const showToast = useRef(true);
     // 检测是否在游戏中
-    const { data: userGameQuery, loading, error } = useQuery(GQL.UserGameQuery, {
+    const { data: userGameQuery, loading, error, refetch } = useQuery(GQL.UserGameQuery, {
         variables: { user_id: app.me.id },
         fetchPolicy: 'network-only',
     });
     const onlineStatus = useMemo(() => syncGetter('userGame.online_status', userGameQuery), [userGameQuery]);
     const surplus_ms = useMemo(() => syncGetter('userGame.in_game.surplus_ms', userGameQuery), [userGameQuery]);
     console.log('onlineStatus===================================');
-    console.log(loading, error, userGameQuery, onlineStatus, surplus_ms);
+    console.log(surplus_ms);
     console.log('onlineAt===================================');
     // loading和倒计时的UI切换
     useEffect(() => {
         if (!loading) {
             setLoading(false);
             if (onlineStatus === 'PLAYING_STATUS' && surplus_ms > 0) {
-                Toast.show({ content: '上一场游戏未结束，请稍后再试', layout: 'top', duration: 3000 });
+                if (showToast.current) {
+                    showToast.current = false;
+                    Toast.show({ content: '上一场游戏未结束\n请稍后再试', layout: 'top', duration: 1800 });
+                }
                 setSurplusMillisecond(surplus_ms);
+            } else {
+                setSurplusMillisecond(0);
             }
         }
-    }, [loading, onlineStatus]);
+    }, [loading, onlineStatus, surplus_ms]);
+
+    useAppState(refetch);
+
     const countDown = useCountDown({ expirationTime: surplusMillisecond });
     return (
         <BoxShadow setting={shadowOpt}>
