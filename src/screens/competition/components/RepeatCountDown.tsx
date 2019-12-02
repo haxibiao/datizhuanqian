@@ -20,7 +20,7 @@ const RepeatCountDown = (props: Props) => {
     const randomAnswer = useCallback(() => {
         if (!answered.current) {
             answered.current = true;
-            if (Math.random() > 0.5) {
+            if (Math.random() > store.robotOdds) {
                 store.calculateScore(score[count.current - 1].gold * store.scoreMultiple, 'RIVAL');
             }
         }

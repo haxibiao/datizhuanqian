@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react
 import { Config, SCREEN_WIDTH, Theme, PxFit } from 'utils';
 import { observer, app } from 'store';
 
-const ListHeader = props => {
+const ListHeader = observer(props => {
     const { navigation } = props;
+    if (!app.gameAble) {
+        return <View />;
+    }
     return (
         <>
             <View style={styles.enters}>
@@ -32,7 +35,7 @@ const ListHeader = props => {
             <Text style={styles.questionsTitle}>热门题库</Text>
         </>
     );
-};
+});
 const entranceWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 2;
 
 const styles = StyleSheet.create({

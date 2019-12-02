@@ -8,6 +8,7 @@ import { observer, app } from 'store';
 import localStore from './store';
 import ChallengeButton from './components/ChallengeButton';
 import MatchTheUser from './components/MatchTheUser';
+import Guide from './components/Guide';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
 
@@ -71,15 +72,31 @@ export default observer(props => {
         };
     }, []);
 
+    const showGuide = useCallback(() => {
+        // Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })
+        let overlayRef;
+        Overlay.show(
+            <Overlay.View animated ref={ref => (overlayRef = ref)}>
+                <View style={styles.overlayInner}>
+                    <Guide hide={() => overlayRef.close()} />
+                </View>
+            </Overlay.View>,
+        );
+    }, []);
+
     const rightView = useMemo(() => {
         return (
-            <TouchableOpacity
-                style={styles.rightView}
-                activeOpacity={1}
-                onPress={() => Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })}>
+            <TouchableOpacity style={styles.rightView} activeOpacity={1} onPress={showGuide}>
                 <Image style={styles.medal} source={require('@src/assets/images/medal.png')} />
             </TouchableOpacity>
         );
+    }, []);
+
+    useEffect(() => {
+        if (!app.competitionGuide) {
+            app.recordCompetitionGuide(true);
+            showGuide();
+        }
     }, []);
 
     return (
@@ -192,5 +209,10 @@ const styles = StyleSheet.create({
     },
     titleStyle: {
         fontWeight: 'bold',
+    },
+    overlayInner: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

@@ -26,6 +26,7 @@ interface GameRoom {
 
 export default class CompetitionStore {
     public scoreMultiple: number = 10;
+    public robotOdds: number = 0.5;
     public matched: boolean = false;
     public isRobot: boolean = false;
     public isLeaving: boolean = false;
@@ -126,6 +127,7 @@ export default class CompetitionStore {
             this.isRobot = true;
             this.game = room;
             this.rival = room.rival;
+            this.robotOdds = room.robot_odds;
             this.matching = false;
         }
     }

@@ -19,6 +19,7 @@ mutation MatchRobotMutation {
     matchRobot {
         id
         reward
+        robot_odds
         rival {
             id
             name
@@ -90,7 +91,7 @@ mutation EndGameMutation($game_id: Int!) {
     }
 }
 
-# 查询状态
+# 查询个人游戏状态
 query UserGameQuery($user_id: Int!) {
     userGame(user_id: $user_id) {
         user {
@@ -106,6 +107,7 @@ query UserGameQuery($user_id: Int!) {
     }
 }
 
+# 查询比赛数据
 query GameQuery($game_id: Int!) {
     game(game_id: $game_id) {
         id
@@ -120,6 +122,15 @@ query GameQuery($game_id: Int!) {
                 user_id
                 submit_at
             }
+        }
+    }
+}
+
+# 答题PK接口是否开启
+query SystemConfigQuery {
+    systemConfig {
+        modules {
+            game
         }
     }
 }
