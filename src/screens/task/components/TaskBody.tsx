@@ -82,7 +82,7 @@ const TaskBody = props => {
             const customTask = [
                 {
                     name: '看视频赚钱',
-                    status: iPhone11() ? 0 : Tools.syncGetter('status', reward),
+                    status: iPhone11() || config.disableAd ? 0 : Tools.syncGetter('status', reward),
                     taskStatus: 4,
                     gold: Tools.syncGetter('gold', reward),
                     ticket: Tools.syncGetter('ticket', reward),
@@ -93,7 +93,7 @@ const TaskBody = props => {
                 },
                 {
                     name: '出题目赚钱',
-                    status: config.disableAd ? 0 : Tools.syncGetter('status', chuti),
+                    status: Tools.syncGetter('status', chuti),
                     taskStatus: 5,
                     gold: Tools.syncGetter('gold', chuti) + '~40',
                     ticket: Tools.syncGetter('ticket', chuti),

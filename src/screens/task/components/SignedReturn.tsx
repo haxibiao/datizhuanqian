@@ -64,12 +64,12 @@ const SignedReturn = (props: Props) => {
                 )}
                 <TouchFeedback
                     onPress={() => {
-                        ISIOS ? close() : loadAd();
+                        ISIOS || !config.disableAd ? close() : loadAd();
                     }}>
                     <ImageBackground
                         style={styles.loadAdButton}
                         source={require('../../../assets/images/attendance_button.png')}>
-                        <Text style={styles.buttonText}>{ISIOS ? '知道了' : '获取双倍奖励'}</Text>
+                        <Text style={styles.buttonText}>{ISIOS || !config.disableAd ? '知道了' : '获取双倍奖励'}</Text>
                     </ImageBackground>
                 </TouchFeedback>
             </View>

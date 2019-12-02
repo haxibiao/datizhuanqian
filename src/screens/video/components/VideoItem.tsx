@@ -17,7 +17,9 @@ import service from 'service';
 export default observer(props => {
     const { media, index } = props;
     const [adShow, setAdShow] = useState(true);
-    const isAdMedia = useMemo(() => media.is_ad && adShow && !ISIOS && config.enableDrawFeed, [media]);
+    const isAdMedia = useMemo(() => media.is_ad && adShow && !ISIOS && config.enableDrawFeed && !config.disableAd, [
+        media,
+    ]);
 
     const [onClickReward] = useMutation(GQL.UserRewardMutation, {
         variables: {
