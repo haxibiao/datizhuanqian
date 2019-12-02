@@ -10,26 +10,28 @@ import { observer, app } from 'store';
 const challenge = observer(props => {
     const { onPress, matching, matched } = props;
     const [isLoading, setLoading] = useState(true);
-    const [surplusSecond, setSurplusSecond] = useState(0);
+    const [surplusMillisecond, setSurplusMillisecond] = useState(0);
     // 检测是否在游戏中
-    const { data: userGameQuery, loading } = useQuery(GQL.UserGameQuery, {
+    const { data: userGameQuery, loading, error } = useQuery(GQL.UserGameQuery, {
         variables: { user_id: app.me.id },
+        fetchPolicy: 'network-only',
     });
     const onlineStatus = useMemo(() => syncGetter('userGame.online_status', userGameQuery), [userGameQuery]);
-    const surplus_second = useMemo(() => syncGetter('userGame.surplus_second', userGameQuery), [userGameQuery]);
+    const surplus_ms = useMemo(() => syncGetter('userGame.in_game.surplus_ms', userGameQuery), [userGameQuery]);
     console.log('onlineStatus===================================');
-    console.log(loading, userGameQuery, onlineStatus, surplus_second);
+    console.log(loading, error, userGameQuery, onlineStatus, surplus_ms);
     console.log('onlineAt===================================');
     // loading和倒计时的UI切换
     useEffect(() => {
         if (!loading) {
             setLoading(false);
-            if (onlineStatus === 'PLAYING_STATUS' && surplus_second > 0) {
-                setSurplusSecond(surplus_second);
+            if (onlineStatus === 'PLAYING_STATUS' && surplus_ms > 0) {
+                Toast.show({ content: '上一场游戏未结束，请稍后再试', layout: 'top', duration: 3000 });
+                setSurplusMillisecond(surplus_ms);
             }
         }
     }, [loading, onlineStatus]);
-    const countDown = useCountDown({ expirationTime: surplusSecond });
+    const countDown = useCountDown({ expirationTime: surplusMillisecond });
     return (
         <BoxShadow setting={shadowOpt}>
             {isLoading || !countDown.isEnd ? (
@@ -37,7 +39,10 @@ const challenge = observer(props => {
                     {isLoading ? (
                         <ActivityIndicator color={Theme.watermelon} size={'large'} />
                     ) : (
-                        <Text style={styles.time}>{`${countDown.minutes}:${countDown.seconds}`}</Text>
+                        <>
+                            <Image style={styles.battle} source={require('@src/assets/images/count_down.png')} />
+                            <Text style={styles.time}>{`${countDown.minutes}:${countDown.seconds}`}</Text>
+                        </>
                     )}
                 </View>
             ) : (
@@ -89,6 +94,7 @@ const styles = StyleSheet.create({
         color: Theme.watermelon,
         fontSize: PxFit(20),
         fontWeight: 'bold',
+        marginTop: PxFit(10),
     },
     wave: {
         borderRadius: PxFit(100),

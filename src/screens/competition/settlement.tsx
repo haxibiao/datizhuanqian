@@ -56,18 +56,13 @@ const over = observer(props => {
             gameOverCount.current++;
             const [error, res] = await store.gameOver();
             const endGame = syncGetter('data.endGame', res);
-            const status = syncGetter('status', endGame);
             const scores = syncGetter('data.scores', endGame);
+            const status = syncGetter('status', endGame);
             const winner = syncGetter('winner', endGame);
             console.log('====================================');
             console.log('gameOver', res);
             console.log('====================================');
             // 游戏未结束或者接口出错  重新请求
-            setTimeout(() => {
-                Toast.show({
-                    content: error ? error.message : status ? status : winner ? '获胜者' + winner.id : '没了',
-                });
-            }, 10000);
             if ((error || status !== 'END') && maxRepeat.current > 0) {
                 clearTimeout(fetchResultTimer.current);
                 fetchResultTimer.current = setTimeout(() => {
@@ -99,38 +94,21 @@ const over = observer(props => {
             gameQueryCount.current++;
             const [error, res] = await store.gameQuery();
             const game = syncGetter('data.game', res);
-            const status = syncGetter('status', game);
             const scores = syncGetter('data.scores', game);
+            const status = syncGetter('status', game);
             const winner = syncGetter('winner', game);
             console.log('====================================');
-            console.log('fetchResult', res);
+            console.log('gameQuery', res);
             console.log('====================================');
-
-            // 游戏未结束或者接口出错  重新请求
-            setTimeout(() => {
-                Toast.show({
-                    content: error ? error.message : status ? status : winner ? '获胜者' + winner.id : '没了',
-                });
-            }, 10000);
+            // 游戏未结束或者接口出错就间隔查询游戏状态
             if ((error || status !== 'END') && maxRepeat.current > 0) {
-                setTimeout(() => {
-                    Toast.show({
-                        content: 'status' + winner.id,
-                    });
-                }, 15000);
                 clearTimeout(fetchResultTimer.current);
                 fetchResultTimer.current = setTimeout(() => {
                     --maxRepeat.current;
                     fetchResult();
                 }, 4000);
             } else if (winner) {
-                setTimeout(() => {
-                    Toast.show({
-                        content: 'winner' + winner.id,
-                    });
-                }, 20000);
                 clearTimeout(setLoadingTimer.current);
-                setLoading(false);
                 setWinner(winner);
                 setScores(() => {
                     let arr = [];
@@ -147,6 +125,7 @@ const over = observer(props => {
         })();
     }, []);
 
+    // 计算获胜者
     useEffect(() => {
         if (winner) {
             if (winner.id === store.me.id) {
@@ -161,20 +140,22 @@ const over = observer(props => {
     }, [winner]);
 
     useEffect(() => {
+        // 对方离开一下，立马结算
         if (store.isLeaving) {
             setLoading(false);
         } else {
+            // 通知游戏结算
             fetchResultTimer.current = setTimeout(
                 () => {
                     gameOver();
                 },
-                store.isRobot ? 500 : 3000,
+                store.isRobot ? 1000 : 3000,
             );
+            // 请求超时 前端先结算
             setLoadingTimer.current = setTimeout(() => {
-                Toast.show({ content: 'clearTimeout' });
                 clearTimeout(fetchResultTimer.current);
                 setLoading(false);
-            }, 12000);
+            }, 15000);
         }
 
         return () => {
@@ -184,11 +165,11 @@ const over = observer(props => {
     }, []);
 
     useEffect(() => {
-        setTimeout(() => {
-            Toast.show({
-                content: '调用了over' + gameOverCount.current + '次' + '调用了query' + gameQueryCount.current + '次',
-            });
-        }, 25000);
+        // setTimeout(() => {
+        //     Toast.show({
+        //         content: '调用了over' + gameOverCount.current + '次' + '调用了query' + gameQueryCount.current + '次',
+        //     });
+        // }, 25000);
         const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
             return true;
         });
@@ -208,41 +189,6 @@ const over = observer(props => {
         }
     }, [result, store.game.reward]);
 
-    if (loading) {
-        return (
-            <PageContainer hiddenNavBar>
-                <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
-                    <View style={[styles.container, styles.content]}>
-                        <View style={styles.competitor}>
-                            <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
-                                <Avatar source={store.me.avatar_url} size={PxFit(100)} style={styles.playerAvatar} />
-                            </ImageBackground>
-                            <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
-                            <ImageBackground
-                                style={[styles.playerBg, { alignItems: 'flex-start' }]}
-                                source={avatarWidget[result][1]}>
-                                <Avatar source={store.rival.avatar_url} size={PxFit(100)} style={styles.playerAvatar} />
-                            </ImageBackground>
-                        </View>
-                        <View style={styles.loading}>
-                            <ActivityIndicator size="small" color={'#fff'} />
-                            <Text style={styles.loadingText}>正在结算</Text>
-                        </View>
-                    </View>
-                </ImageBackground>
-                <View style={styles.header}>
-                    <NavigatorBar
-                        navigation={navigation}
-                        style={styles.navigatorBar}
-                        titleStyle={styles.titleStyle}
-                        title="对战结束"
-                        backButtonPress={() => navigation.pop(2)}
-                    />
-                </View>
-            </PageContainer>
-        );
-    }
-
     return (
         <PageContainer hiddenNavBar>
             <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
@@ -261,61 +207,76 @@ const over = observer(props => {
                             <Avatar source={store.rival.avatar_url} size={PxFit(100)} style={styles.playerAvatar} />
                         </ImageBackground>
                     </View>
-                    <View style={styles.userInfo}>
-                        <View>
-                            <Text style={styles.userName}>{store.me.name}</Text>
-                            <Text style={styles.score}>{scores[0] > 0 ? scores[0] : store.score[0]}</Text>
+                    {loading ? (
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="small" color={'#fff'} />
+                            <Text style={styles.loadingText}>正在结算</Text>
                         </View>
-                        <View style={{ alignItems: 'flex-end' }}>
-                            <Text style={styles.userName}>{store.rival.name}</Text>
-                            <Text style={[styles.score, { color: '#F8CE4D' }]}>
-                                {store.isLeaving ? '中途离开' : scores[1] > 0 ? scores[1] : store.score[1]}
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={styles.main}>
-                        <View style={styles.gameResult}>
-                            <Image style={styles.gameResultBg} source={competitionResult[result]} />
-                        </View>
-                        <View style={styles.statisticPanel}>
-                            <View style={styles.statisticItem}>
-                                <Text style={styles.itemText1}>答对数:</Text>
-                                <Image
-                                    style={styles.iconImage}
-                                    source={require('@src/assets/images/competition_log.png')}
-                                />
-                                <Text style={styles.itemText2}>{store.answerPassCount}题</Text>
+                    ) : (
+                        <>
+                            <View style={styles.userInfo}>
+                                <View>
+                                    <Text style={styles.userName}>{store.me.name}</Text>
+                                    <Text style={styles.score}>{scores[0] > 0 ? scores[0] : store.score[0]}</Text>
+                                </View>
+                                <View style={{ alignItems: 'flex-end' }}>
+                                    <Text style={styles.userName}>{store.rival.name}</Text>
+                                    <Text style={[styles.score, { color: '#F8CE4D' }]}>
+                                        {store.isLeaving ? '中途离开' : scores[1] > 0 ? scores[1] : store.score[1]}
+                                    </Text>
+                                </View>
                             </View>
-                            <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
-                            <View style={styles.statisticItem}>
-                                <Text style={styles.itemText1}>奖励:</Text>
-                                <Image
-                                    style={styles.iconImage}
-                                    source={require('@src/assets/images/competition_reward.png')}
-                                />
-                                <Text style={styles.itemText2}>{reward}</Text>
+                            <View style={styles.main}>
+                                <View style={styles.gameResult}>
+                                    <Image style={styles.gameResultBg} source={competitionResult[result]} />
+                                </View>
+                                <View style={styles.statisticPanel}>
+                                    <View style={styles.statisticItem}>
+                                        <Text style={styles.itemText1}>答对数:</Text>
+                                        <Image
+                                            style={styles.iconImage}
+                                            source={require('@src/assets/images/competition_log.png')}
+                                        />
+                                        <Text style={styles.itemText2}>{store.answerPassCount}题</Text>
+                                    </View>
+                                    <Image
+                                        style={styles.orangeLine}
+                                        source={require('@src/assets/images/orange_line.png')}
+                                    />
+                                    <View style={styles.statisticItem}>
+                                        <Text style={styles.itemText1}>奖励:</Text>
+                                        <Image
+                                            style={styles.iconImage}
+                                            source={require('@src/assets/images/competition_reward.png')}
+                                        />
+                                        <Text style={styles.itemText2}>{reward}</Text>
+                                    </View>
+                                    <Image
+                                        style={styles.orangeLine}
+                                        source={require('@src/assets/images/orange_line.png')}
+                                    />
+                                </View>
+                                <View style={styles.bottom}>
+                                    <View style={styles.buttonWrap}>
+                                        <TouchableOpacity
+                                            style={[styles.button, { backgroundColor: Theme.watermelon }]}
+                                            onPress={loadAd}>
+                                            <Text style={[styles.buttonText, { color: '#fff' }]}>领取额外奖励</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.buttonWrap}>
+                                        <TouchableOpacity
+                                            style={styles.button}
+                                            onPress={() => {
+                                                navigation.replace('Matching');
+                                            }}>
+                                            <Text style={styles.buttonText}>继续答题挑战</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
                             </View>
-                            <Image style={styles.orangeLine} source={require('@src/assets/images/orange_line.png')} />
-                        </View>
-                        <View style={styles.bottom}>
-                            <View style={styles.buttonWrap}>
-                                <TouchableOpacity
-                                    style={[styles.button, { backgroundColor: Theme.watermelon }]}
-                                    onPress={loadAd}>
-                                    <Text style={[styles.buttonText, { color: '#fff' }]}>领取额外奖励</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.buttonWrap}>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => {
-                                        navigation.replace('Matching');
-                                    }}>
-                                    <Text style={styles.buttonText}>继续答题挑战</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
+                        </>
+                    )}
                 </ScrollView>
             </ImageBackground>
             <View style={styles.header}>

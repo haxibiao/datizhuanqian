@@ -93,14 +93,13 @@ mutation EndGameMutation($game_id: Int!) {
 # 查询状态
 query UserGameQuery($user_id: Int!) {
     userGame(user_id: $user_id) {
-        id
         user {
             id
         }
-        surplus_second
         online_status
         online_at
         in_game {
+            surplus_ms
             created_at
             end_at
         }

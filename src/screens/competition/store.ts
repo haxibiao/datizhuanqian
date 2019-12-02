@@ -221,7 +221,7 @@ export default class CompetitionStore {
     @action.bound
     public async gameOver() {
         return await exceptionCapture(() => {
-            Toast.show({ content: 'gameOver:' + this.game.id });
+            // Toast.show({ content: 'gameOver:' + this.game.id });
             return app.client.mutate({
                 mutation: GQL.EndGameMutation,
                 variables: { game_id: this.game.id },
@@ -232,7 +232,7 @@ export default class CompetitionStore {
     @action.bound
     public async gameQuery() {
         return await exceptionCapture(() => {
-            Toast.show({ content: 'gameQuery:' + this.game.id });
+            // Toast.show({ content: 'gameQuery:' + this.game.id });
             return app.client.query({
                 query: GQL.GameQuery,
                 variables: { game_id: this.game.id },
