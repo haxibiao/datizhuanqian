@@ -40,6 +40,10 @@ export default observer(props => {
         });
     }, []);
 
+    useEffect(() => {
+        app.systemConfig();
+    }, []);
+
     useCaptureVideo({ client, onSuccess, onFailed });
 
     const mountWebSocket = (user: { token: string | undefined; id: string }) => {
