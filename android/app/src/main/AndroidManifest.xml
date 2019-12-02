@@ -56,6 +56,11 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
       </activity>
+      <activity
+          android:name="com.datizhuanqian.tiktokapi.TikTokEntryActivity"
+          android:launchMode="singleInstance"
+          android:exported="true">
+      </activity>
       <provider
             android:name="com.bytedance.sdk.openadsdk.TTFileProvider"
             android:authorities="${applicationId}.TTFileProvider"

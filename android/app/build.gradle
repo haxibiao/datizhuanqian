@@ -343,7 +343,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
 
 
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'  //微信sdk
+    implementation 'com.bytedance.ies.ugc.aweme:open-sdk:0.0.1.4' //抖音sdk
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

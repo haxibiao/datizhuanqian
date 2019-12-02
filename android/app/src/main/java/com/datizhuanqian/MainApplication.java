@@ -15,7 +15,11 @@ import cn.jpush.android.api.JPushInterface;
 import com.haxibiao.share.NativeSharePackage;
 import com.haxibiao.toolkits.ToolkitsPackage;
 
+import com.bytedance.sdk.open.aweme.TikTokOpenApiFactory;
+import com.bytedance.sdk.open.aweme.TikTokOpenConfig;
+
 import com.datizhuanqian.wxapi.WxEntryPackage;
+import com.datizhuanqian.tiktokapi.TikTokEntryPackage;
 
 import java.util.List;
 
@@ -48,6 +52,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             packages.add(new AdPackage());
             packages.add(new WxEntryPackage());
             packages.add(new ToolkitsPackage());
+            packages.add(new TikTokEntryPackage());
             return packages;
         }
 
@@ -67,5 +72,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         JPushInterface.init(this);
+        String clientkey = "awutk5784jtmdygh"; // 需要到开发者网站申请并替换
+        TikTokOpenApiFactory.init(new TikTokOpenConfig(clientkey));
     }
 }

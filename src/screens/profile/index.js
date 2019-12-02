@@ -5,7 +5,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image, NativeModules } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '../../components';
 import { Config, Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 import { GQL, Query, withApollo, compose, graphql } from 'apollo';
@@ -275,14 +275,20 @@ class index extends Component {
                             <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                         </TouchFeedback>
                         <View style={{ height: 10 }} />
-                        {/*
-                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Recruit')}>
-                        <Row>
-                            <Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
-                            <Text style={styles.itemTypeText}>版主招募</Text>
-                        </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                    </TouchFeedback>*/}
+
+                        <TouchFeedback
+                            style={styles.columnItem}
+                            onPress={() =>
+                                NativeModules.TikTokEntryModule.douyinLogin().then(code => {
+                                    console.log('code', code);
+                                })
+                            }>
+                            <Row>
+                                <Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
+                                <Text style={styles.itemTypeText}>版主招募</Text>
+                            </Row>
+                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                        </TouchFeedback>
                         <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
                             <Row>
                                 <Image
