@@ -55,31 +55,31 @@ const SignedReturn = (props: Props) => {
                     </Text>
                     <Text style={[styles.whiteText1, { paddingTop: PxFit(5) }]}>明日继续签到奖励翻倍</Text>
                 </View>
+                <View style={styles.TTAD}>
+                    {
+                        // <View>
+                        //     <ttad.FeedAd adWidth={WPercent(90)} />
+                        // </View>
+                    }
+                    <TouchFeedback
+                        onPress={() => {
+                            ISIOS || !config.disableAd ? close() : loadAd();
+                        }}>
+                        <ImageBackground
+                            style={styles.loadAdButton}
+                            source={require('../../../assets/images/attendance_button.png')}>
+                            <Text style={styles.buttonText}>
+                                {ISIOS || !config.disableAd ? '知道了' : '看视频领双倍奖励'}
+                            </Text>
+                        </ImageBackground>
+                    </TouchFeedback>
+                </View>
             </ImageBackground>
-            <View style={styles.TTAD}>
-                {!config.disableAd && (
-                    <View>
-                        <ttad.FeedAd adWidth={WPercent(90)} />
-                    </View>
-                )}
-                <TouchFeedback
-                    onPress={() => {
-                        ISIOS || !config.disableAd ? close() : loadAd();
-                    }}>
-                    <ImageBackground
-                        style={styles.loadAdButton}
-                        source={require('../../../assets/images/attendance_button.png')}>
-                        <Text style={styles.buttonText}>
-                            {ISIOS || !config.disableAd ? '知道了' : '看视频领双倍奖励'}
-                        </Text>
-                    </ImageBackground>
-                </TouchFeedback>
-            </View>
         </View>
     );
 };
 
-const OVERLAY_WIDTH = WPercent(90);
+const OVERLAY_WIDTH = WPercent(80);
 const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 2655) / 1819;
 
 const styles = StyleSheet.create({
@@ -87,10 +87,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // flex: 1,
         justifyContent: 'space-around',
-        backgroundColor: '#FFF',
+
         // height: 80,
         width: OVERLAY_WIDTH,
-        marginTop: -(OVERLAY_HEIGHT / 3 + 10),
+        // marginTop: -(OVERLAY_HEIGHT / 3 + 10),
         borderRadius: PxFit(10),
         paddingBottom: PxFit(10),
         minHeight: OVERLAY_HEIGHT / 3,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     overlayImage: {
-        marginTop: PxFit(-50),
+        // marginTop: PxFit(-50),
         height: OVERLAY_HEIGHT,
         paddingTop: (OVERLAY_HEIGHT * 510) / 2655,
         width: OVERLAY_WIDTH,

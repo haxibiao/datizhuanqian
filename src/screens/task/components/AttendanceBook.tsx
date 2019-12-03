@@ -57,11 +57,11 @@ const AttendanceBook = (props): JSX.Element => {
     const today_signed = Tools.syncGetter('today_signed', signInData);
     const signIns = Tools.syncGetter('signs', signInData);
 
-    // useEffect(() => {
-    //     if (today_signed === false) {
-    //         toDaySignIn();
-    //     }
-    // }, [signIns]);
+    useEffect(() => {
+        if (today_signed === false) {
+            toDaySignIn();
+        }
+    }, [signIns]);
 
     const toDaySignIn = useCallback(
         Tools.throttle(async () => {
@@ -75,10 +75,10 @@ const AttendanceBook = (props): JSX.Element => {
                     Toast.show({ content: str || '签到失败' });
                 }
             } else {
-                // onSignInSuccess({
-                //     gold_reward: 10,
-                //     contribute_reward: 10,
-                // });
+                onSignInSuccess({
+                    gold_reward: 10,
+                    contribute_reward: 10,
+                });
                 Toast.show({ content: '今天已经签到过了哦' });
             }
         }),
