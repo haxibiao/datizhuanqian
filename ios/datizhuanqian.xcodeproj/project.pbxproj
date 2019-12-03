@@ -34,6 +34,7 @@
 		2C50A3B22331DD4900046CAA /* BUDFeedNormalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */; };
 		2C50A3B32331DD4900046CAA /* RewardVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A39B2331DD4900046CAA /* RewardVideo.m */; };
 		2C50A3B42331DD4900046CAA /* VideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C50A39C2331DD4900046CAA /* VideoUploader.m */; };
+		2C554D442396B35100488AE9 /* AdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C554D432396B35100488AE9 /* AdManager.m */; };
 		2C7C0A4F23332EF2007E43D3 /* AdBoss.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A4E23332EF2007E43D3 /* AdBoss.m */; };
 		2C7C0A542333587B007E43D3 /* BannerAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A532333587B007E43D3 /* BannerAd.m */; };
 		2C7C0A5623335890007E43D3 /* SplashAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7C0A5523335890007E43D3 /* SplashAd.m */; };
@@ -137,6 +138,7 @@
 		2C50A3992331DD4900046CAA /* BUDFeedNormalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUDFeedNormalModel.m; sourceTree = "<group>"; };
 		2C50A39B2331DD4900046CAA /* RewardVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardVideo.m; sourceTree = "<group>"; };
 		2C50A39C2331DD4900046CAA /* VideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoUploader.m; sourceTree = "<group>"; };
+		2C554D432396B35100488AE9 /* AdManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdManager.m; sourceTree = "<group>"; };
 		2C7C0A4E23332EF2007E43D3 /* AdBoss.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdBoss.m; sourceTree = "<group>"; };
 		2C7C0A50233332B6007E43D3 /* AdBoss.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdBoss.h; sourceTree = "<group>"; };
 		2C7C0A532333587B007E43D3 /* BannerAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAd.m; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				2C7C0A5523335890007E43D3 /* SplashAd.m */,
 				2C7C0A5B233382B7007E43D3 /* AppUtilModule.m */,
 				2CAFA6E3233B6B9700C20E17 /* FullScreenVideo.m */,
+				2C554D432396B35100488AE9 /* AdManager.m */,
 			);
 			path = rnmodules;
 			sourceTree = "<group>";
@@ -896,6 +899,7 @@
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2C50A3A52331DD4900046CAA /* BUDCocoaSecurity.m in Sources */,
 				2C50A3A32331DD4900046CAA /* NSString+LocalizedString.m in Sources */,
+				2C554D442396B35100488AE9 /* AdManager.m in Sources */,
 				2C7C0A5C233382B7007E43D3 /* AppUtilModule.m in Sources */,
 				2C50A3A12331DD4900046CAA /* UIView+Draw.m in Sources */,
 				2CAFA6E4233B6B9700C20E17 /* FullScreenVideo.m in Sources */,

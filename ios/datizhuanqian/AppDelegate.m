@@ -52,12 +52,12 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
-  //穿山甲 init appid
-  #if DEBUG
-    [AdBoss init: @"5016582"]; //内测appid
-  #else
-    [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
-  #endif
+//  //穿山甲 init appid
+//  #if DEBUG
+//    [AdBoss init: @"5016582"]; //内测appid
+//  #else
+//    [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
+//  #endif
   
   [AdBoss hookWindow:self.window];
   [AdBoss hookApp:self];
