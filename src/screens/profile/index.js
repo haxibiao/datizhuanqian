@@ -278,11 +278,15 @@ class index extends Component {
 
                         <TouchFeedback
                             style={styles.columnItem}
-                            onPress={() =>
-                                NativeModules.TikTokEntryModule.douyinLogin().then(code => {
-                                    console.log('code', code);
-                                })
-                            }>
+                            onPress={() => {
+                                // NativeModules.TikTokEntryModule.douyinLogin().then(code => {
+                                //     console.log('code', code);
+                                // })
+                                NativeModules.AlipayEntryModule.AlipayAuth().then(data => {
+                                    console.log('data', data);
+                                });
+                                // 抖音授权   支付宝授权
+                            }}>
                             <Row>
                                 <Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
                                 <Text style={styles.itemTypeText}>版主招募</Text>

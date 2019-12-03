@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="com.datizhuanqian">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -60,6 +61,14 @@
           android:name="com.datizhuanqian.tiktokapi.TikTokEntryActivity"
           android:launchMode="singleInstance"
           android:exported="true">
+      </activity>
+      <activity android:name="com.alipay.sdk.app.AlipayResultActivity" tools:node="merge">
+          <intent-filter tools:node="replace">
+              <action android:name="android.intent.action.VIEW"/>
+              <category android:name="android.intent.category.DEFAULT"/>
+              <category android:name="android.intent.category.BROWSABLE"/>
+              <data android:scheme="dtzq"/>
+          </intent-filter>
       </activity>
       <provider
             android:name="com.bytedance.sdk.openadsdk.TTFileProvider"
