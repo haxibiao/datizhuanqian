@@ -208,7 +208,7 @@ class app {
     async systemConfig() {
         const [err, res] = await exceptionCapture(() => {
             return this.client.query({
-                query: GQL.SystemConfigQuery,
+                query: GQL.systemConfigQuery,
             });
         });
 
