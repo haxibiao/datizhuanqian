@@ -62,7 +62,7 @@ const OptionItem = (props: Props) => {
     };
 
     const buildProps = () => {
-        let { option, answerStatus, index } = props;
+        let { option, answerStatus, index, question } = props;
         let labelStyle, contentStyle, label, status;
 
         let focused = optionIndex == index;
@@ -88,6 +88,12 @@ const OptionItem = (props: Props) => {
             default:
                 label = <Text style={styles.optionLabelText}>{option.Value}</Text>;
                 break;
+        }
+
+        if (answerStatus.length > 0 && question.answer == option.Value) {
+            labelStyle = { backgroundColor: Theme.correctColor, borderWidth: 0 };
+            contentStyle = { color: Theme.correctColor };
+            label = <Iconfont name="correct" size={PxFit(16)} color={'#fff'} />;
         }
         return { labelStyle, contentStyle, label };
     };
