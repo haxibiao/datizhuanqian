@@ -45,7 +45,7 @@ const over = observer(props => {
     const setLoadingTimer = useRef(0);
     const gameOverCount = useRef(0);
     const gameQueryCount = useRef(0);
-    const maxRepeat = useRef(2);
+    const maxRepeat = useRef(10);
     const loadAd = useCallback(() => {
         playVideo({ type: 'Compete' });
     }, []);
@@ -68,10 +68,10 @@ const over = observer(props => {
                 fetchResultTimer.current = setTimeout(() => {
                     --maxRepeat.current;
                     fetchResult();
-                }, 4000);
+                }, 3000);
             } else if (winner) {
+                // 设置获胜者和得分
                 clearTimeout(setLoadingTimer.current);
-                setLoading(false);
                 setWinner(winner);
                 setScores(() => {
                     let arr = [];
@@ -106,8 +106,9 @@ const over = observer(props => {
                 fetchResultTimer.current = setTimeout(() => {
                     --maxRepeat.current;
                     fetchResult();
-                }, 4000);
+                }, 3000);
             } else if (winner) {
+                // 设置获胜者和得分
                 clearTimeout(setLoadingTimer.current);
                 setWinner(winner);
                 setScores(() => {
@@ -144,18 +145,19 @@ const over = observer(props => {
         if (store.isLeaving) {
             setLoading(false);
         } else {
+            gameOver();
             // 通知游戏结算
-            fetchResultTimer.current = setTimeout(
-                () => {
-                    gameOver();
-                },
-                store.isRobot ? 1000 : 3000,
-            );
+            // fetchResultTimer.current = setTimeout(
+            //     () => {
+            //         gameOver();
+            //     },
+            //     store.isRobot ? 1000 : 3000,
+            // );
             // 请求超时 前端先结算
-            setLoadingTimer.current = setTimeout(() => {
-                clearTimeout(fetchResultTimer.current);
-                setLoading(false);
-            }, 15000);
+            // setLoadingTimer.current = setTimeout(() => {
+            //     clearTimeout(fetchResultTimer.current);
+            //     setLoading(false);
+            // }, 15000);
         }
 
         return () => {
@@ -261,7 +263,7 @@ const over = observer(props => {
                                         <TouchableOpacity
                                             style={[styles.button, { backgroundColor: Theme.watermelon }]}
                                             onPress={loadAd}>
-                                            <Text style={[styles.buttonText, { color: '#fff' }]}>领取额外奖励</Text>
+                                            <Text style={[styles.buttonText, { color: '#fff' }]}>看视频领奖励</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.buttonWrap}>
