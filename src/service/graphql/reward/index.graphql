@@ -16,9 +16,6 @@ query systemConfigQuery {
         }
         game {
             status
-            gold_reward
-            ticket_reward
-            contribute_reward
             ticket_loss
             gold_loss
         }
