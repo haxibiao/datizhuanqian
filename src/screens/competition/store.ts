@@ -14,6 +14,8 @@ interface User {
 
 interface Game {
     id: number;
+    end_at: string;
+    end_at_unix: number;
     reward: number;
     rival: User;
     user: User;
@@ -84,9 +86,14 @@ export default class CompetitionStore {
                 if (this.matched) {
                     return;
                 }
+                // 通知超时 阻止逻辑
+                if (Math.ceil(new Date().getTime() / 1000) > room.game.end_at_unix) {
+                    this.matching = false;
+                    return;
+                }
                 this.matched = true;
                 console.log('====================================');
-                console.log('room', room);
+                console.log('NewGame', room);
                 console.log('====================================');
                 this.isRobot = false;
                 this.game = room.game;
@@ -136,6 +143,9 @@ export default class CompetitionStore {
     public async cancelMatch() {
         if (this.timer) {
             clearTimeout(this.timer);
+        }
+        if (this.rival.id) {
+            return;
         }
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({

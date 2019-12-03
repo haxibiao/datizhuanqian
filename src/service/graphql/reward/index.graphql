@@ -14,10 +14,12 @@ query systemConfigQuery {
             time
             time_unix
         }
-        game {
-            status
-            ticket_loss
-            gold_loss
+        modules {
+            game {
+                status
+                ticket_loss
+                gold_loss
+            }
         }
     }
 }

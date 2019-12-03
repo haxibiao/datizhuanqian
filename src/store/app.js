@@ -214,7 +214,9 @@ class app {
 
         const gameConfig = syncGetter('data.systemConfig.modules.game', res);
 
-        this.gameConfig = gameConfig;
+        if (gameConfig) {
+            this.gameConfig = gameConfig;
+        }
     }
 }
 
