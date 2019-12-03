@@ -73,6 +73,19 @@ const SignedReturn = (props: Props) => {
                             </Text>
                         </ImageBackground>
                     </TouchFeedback>
+                    {!ISIOS && (
+                        <TouchFeedback>
+                            <Text
+                                style={{
+                                    paddingTop: PxFit(5),
+                                    textAlign: 'center',
+                                    color: Theme.grey,
+                                    fontSize: PxFit(12),
+                                }}>
+                                下次吧
+                            </Text>
+                        </TouchFeedback>
+                    )}
                 </View>
             </ImageBackground>
         </View>
@@ -85,15 +98,14 @@ const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 2655) / 1819;
 const styles = StyleSheet.create({
     TTAD: {
         alignItems: 'center',
-        // flex: 1,
-        justifyContent: 'space-around',
-
+        flex: 1,
+        justifyContent: 'center',
         // height: 80,
         width: OVERLAY_WIDTH,
-        // marginTop: -(OVERLAY_HEIGHT / 3 + 10),
         borderRadius: PxFit(10),
         paddingBottom: PxFit(10),
-        minHeight: OVERLAY_HEIGHT / 3,
+        marginTop: (OVERLAY_WIDTH * 0.6 * 258) / 995,
+        // minHeight: OVERLAY_HEIGHT / 3,
     },
     buttonText: {
         color: '#fff',
