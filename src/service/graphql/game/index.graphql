@@ -125,12 +125,3 @@ query GameQuery($game_id: Int!) {
         }
     }
 }
-
-# 答题PK接口是否开启
-query SystemConfigQuery {
-    systemConfig {
-        modules {
-            game
-        }
-    }
-}

@@ -6,40 +6,41 @@ import { observer, app } from 'store';
 
 const ListHeader = observer(props => {
     const { navigation } = props;
-    if (!app.gameAble) {
+    if (app.gameConfig.status >= 1) {
+        return (
+            <>
+                <View style={styles.enters}>
+                    <TouchFeedback
+                        authenticated
+                        navigation={navigation}
+                        style={styles.enterWrap}
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate('Matching')}>
+                        <ImageBackground
+                            source={require('@src/assets/images/competitor.png')}
+                            style={[styles.entrance, { marginRight: PxFit(10) }]}>
+                            <Text style={styles.entranceName}>答题对战</Text>
+                            <Text style={styles.entranceDescription}>PK赢奖金</Text>
+                        </ImageBackground>
+                    </TouchFeedback>
+                    <TouchFeedback
+                        authenticated
+                        navigation={navigation}
+                        style={styles.enterWrap}
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate('Rank')}>
+                        <ImageBackground source={require('@src/assets/images/answer_rank.png')} style={styles.entrance}>
+                            <Text style={styles.entranceName}>排行榜</Text>
+                            <Text style={styles.entranceDescription}>今日榜单排名</Text>
+                        </ImageBackground>
+                    </TouchFeedback>
+                </View>
+                <Text style={styles.questionsTitle}>热门题库</Text>
+            </>
+        );
+    } else {
         return <View />;
     }
-    return (
-        <>
-            <View style={styles.enters}>
-                <TouchFeedback
-                    authenticated
-                    navigation={navigation}
-                    style={styles.enterWrap}
-                    activeOpacity={1}
-                    onPress={() => navigation.navigate('Matching')}>
-                    <ImageBackground
-                        source={require('@src/assets/images/competitor.png')}
-                        style={[styles.entrance, { marginRight: PxFit(10) }]}>
-                        <Text style={styles.entranceName}>答题对战</Text>
-                        <Text style={styles.entranceDescription}>PK赢奖金</Text>
-                    </ImageBackground>
-                </TouchFeedback>
-                <TouchFeedback
-                    authenticated
-                    navigation={navigation}
-                    style={styles.enterWrap}
-                    activeOpacity={1}
-                    onPress={() => navigation.navigate('Rank')}>
-                    <ImageBackground source={require('@src/assets/images/answer_rank.png')} style={styles.entrance}>
-                        <Text style={styles.entranceName}>排行榜</Text>
-                        <Text style={styles.entranceDescription}>今日榜单排名</Text>
-                    </ImageBackground>
-                </TouchFeedback>
-            </View>
-            <Text style={styles.questionsTitle}>热门题库</Text>
-        </>
-    );
 });
 const entranceWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 2;
 

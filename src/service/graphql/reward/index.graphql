@@ -14,5 +14,13 @@ query systemConfigQuery {
             time
             time_unix
         }
+        game {
+            status
+            gold_reward
+            ticket_reward
+            contribute_reward
+            ticket_loss
+            gold_loss
+        }
     }
 }

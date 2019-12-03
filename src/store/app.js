@@ -24,7 +24,11 @@ class app {
     @observable withdrawTips = false;
     @observable launched: boolean = false;
     @observable modalIsShow: boolean = false;
-    @observable gameAble: boolean = false;
+    @observable gameConfig: object = {
+        status: 0,
+        ticket_loss: 3,
+        gold_loss: 50,
+    };
     @observable viewportHeight: number = SCREEN_HEIGHT;
     @observable client = {};
 
@@ -208,9 +212,9 @@ class app {
             });
         });
 
-        const gameAble = syncGetter('data.systemConfig.modules.game', res);
+        const gameConfig = syncGetter('data.systemConfig.modules.game', res);
 
-        this.gameAble = gameAble;
+        this.gameConfig = gameConfig;
     }
 }
 

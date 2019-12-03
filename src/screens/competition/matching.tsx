@@ -127,6 +127,12 @@ export default observer(props => {
                         </Animated.View>
                     )}
                 </View>
+                <View style={styles.tips}>
+                    <Text style={styles.tipsTitle}>*入场规则</Text>
+                    <Text style={styles.tipsText}>
+                        消耗{app.gameConfig.ticket_loss}精力点和{app.gameConfig.gold_loss}智慧点
+                    </Text>
+                </View>
             </ImageBackground>
             <View style={styles.header}>
                 <NavigatorBar
@@ -214,5 +220,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    tips: {
+        margin: PxFit(Theme.itemSpace),
+    },
+    tipsTitle: {
+        color: Theme.watermelon,
+        fontSize: PxFit(15),
+        fontWeight: 'bold',
+        marginBottom: PxFit(10),
+    },
+    tipsText: {
+        color: Theme.watermelon,
+        fontSize: PxFit(14),
     },
 });
