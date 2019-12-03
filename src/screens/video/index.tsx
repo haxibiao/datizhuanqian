@@ -154,6 +154,9 @@ export default observer(props => {
             fetchData();
             fetchGuidanceVideo();
         }
+        return () => {
+            VideoStore.reset();
+        };
     }, [launched]);
 
     return (

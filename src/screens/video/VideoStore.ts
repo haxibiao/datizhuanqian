@@ -48,6 +48,22 @@ class VideoStore {
     @observable public guidanceVideo = {};
 
     @action.bound
+    public reset() {
+        this.dataSource = [];
+        this.isLoading = true;
+        this.isError = false;
+        this.isFinish = false;
+        this.isRefreshing = false;
+        this.isLoadMore = false;
+        this.videoPaused = false;
+        this.viewableItemIndex = -1;
+        this.rewardProgress = 0;
+        this.getReward = [];
+        this.visits = [];
+        this.guidanceVideo = {};
+    }
+
+    @action.bound
     public addSource(source: Post[]) {
         this.dataSource = this.dataSource.concat(source);
     }
