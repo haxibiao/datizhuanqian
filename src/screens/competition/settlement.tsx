@@ -46,9 +46,10 @@ const over = observer(props => {
     const gameOverCount = useRef(0);
     const gameQueryCount = useRef(0);
     const maxRepeat = useRef(10);
+
     const loadAd = useCallback(() => {
-        playVideo({ type: 'Compete' });
-    }, []);
+        playVideo({ type: result === 'victory' ? 'GameWinner' : 'GameLoser' });
+    }, [result]);
 
     // 结束
     const gameOver = useCallback(() => {

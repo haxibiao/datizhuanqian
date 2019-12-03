@@ -19,7 +19,8 @@ type Type =
     | 'TimeReward'
     | 'Dividend'
     | 'Guide'
-    | 'Compete'
+    | 'GameWinner'
+    | 'GameLoser'
     | 'Contribute'
     | 'Audit'
     | 'Spider';
@@ -183,6 +184,13 @@ function getReward(props: Props, video: Video) {
         title = '点击详情得贡献';
     }
 
+    if (type === 'GameWinner') {
+        rewardType = 'GAME_WINNER_REWARD'; //答题对战胜利奖励
+    }
+    if (type === 'GameLoser') {
+        rewardType = 'GAME_LOSER_REWARD'; //答题失败平局奖励
+    }
+
     const refetchQuery =
         type === 'Sigin'
             ? [
@@ -255,9 +263,9 @@ function dataReport(type: string | undefined, playType: number) {
             action = playType ? 'user_click_guide_reward_ad' : 'user_click_guide_fullscreen_ad';
             name = playType ? '新人引导随机看激励视频' : '新人引导随机看全屏视频';
             break;
-        case 'Compete':
-            action = playType ? 'user_click_compete_reward_ad' : 'user_click_compete_fullscreen_ad';
-            name = playType ? '答题对战随机看激励视频' : '答题对战随机看全屏视频';
+        case 'GameWinner' || 'GameLoser':
+            action = 'user_click_game_reward_ad';
+            name = '答题对战看激励视频';
             break;
         case 'Contribute':
             action = 'user_click_contribute_reward_ad';
