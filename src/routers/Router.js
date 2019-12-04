@@ -76,6 +76,8 @@ import FansNotificationScreen from '../screens/notification/FansNotification';
 import PushNotificationScreen from '../screens/notification/PushNotification';
 import LikeNotificationScreen from '../screens/notification/LikeNotification';
 import NoticeItemDetailScreen from '../screens/notification/NoticeItemDetail';
+import ChatScreen from '../screens/chat';
+
 // 反馈
 import FeedbackScreen from '../screens/feedback';
 import FeedbackDetails from '../screens/feedback/FeedbackDetails';
@@ -288,6 +290,9 @@ export default {
     },
     NoticeItemDetail: {
         screen: NoticeItemDetailScreen,
+    },
+    Chat: {
+        screen: ChatScreen,
     },
     // 反馈
     Feedback: {

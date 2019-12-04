@@ -1,0 +1,73 @@
+query ChatsQuery($limit: Int, $offset: Int) {
+    chats(limit: $limit, offset: $offset) {
+        id
+        unreads_count
+        last_message {
+            id
+            created_at
+            body {
+                text
+            }
+        }
+        users {
+            id
+            avatar
+            name
+        }
+    }
+}
+
+query ChatQuery($chat_id: Int!) {
+    chat(chat_id: $chat_id) {
+        id
+        unreads_count
+        last_message {
+            id
+            created_at
+            body {
+                text
+            }
+        }
+        users {
+            id
+            avatar
+            name
+        }
+    }
+}
+
+query MessagesQuery($chat_id: Int!, $limit: Int, $offset: Int) {
+    messages(chat_id: $chat_id, limit: $limit, offset: $offset) {
+        id
+        user {
+            id
+            avatar
+            name
+        }
+        body {
+            text
+        }
+        created_at
+    }
+}
+
+mutation CreateChatMutation($users: [Int]!) {
+    createChat(users: $users) {
+        id
+    }
+}
+
+mutation CreateMessageMutation($chat_id: Int!, $body: MessageBodyType) {
+    createMessage(chat_id: $chat_id, body: $body) {
+        id
+        user {
+            id
+            avatar
+            name
+        }
+        body {
+            text
+        }
+        created_at
+    }
+}
