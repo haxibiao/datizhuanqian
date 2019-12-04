@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect } from 'react';
+import React, { Component, useRef, useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 
 import { Avatar, Iconfont, FollowButton, Button, TouchFeedback, Row } from 'components';
@@ -6,32 +6,58 @@ import { Theme, PxFit, Tools } from 'utils';
 
 import { StackActions } from 'react-navigation';
 import { app } from 'store';
+import service from 'service';
 
 const UserProfile = props => {
     const { user, orderByHot, switchOrder, isQuestion, navigation, hasQuestion } = props;
     const isSelf = app.me.id === user.id;
 
-    const sub_name = useRef('普通答友');
+    const [subName, setSubName] = useState('普通答友');
 
     useEffect(() => {
+        console.log('user :', user, user.roles.indexOf('STAR_USER') >= 0);
         if (user.roles.indexOf('ROOT_USER') >= 0) {
-            sub_name.current = '答题赚钱 官方账号';
+            setSubName('答题赚钱 官方账号');
         } else if (user.roles.indexOf('EDITOR_USER') >= 0) {
-            sub_name.current = '答题赚钱 官方小编';
+            setSubName('答题赚钱 官方小编');
         } else if (user.roles.indexOf('STAR_USER') >= 0) {
-            sub_name.current = '优质内容作者';
+            setSubName('优质内容作者');
         } else if (user.roles.indexOf('MODERATOR_USER') >= 0) {
-            sub_name.current = '答题版主';
+            setSubName('答题版主');
         } else if (user.roles.indexOf('NORMAL_USER') >= 0) {
-            sub_name.current = '普通答友';
+            setSubName('普通答友');
         } else {
-            sub_name.current = '普通答友';
+            setSubName('普通答友');
         }
     }, []);
+
+    const navigationAction = () => {
+        service.dataReport({
+            data: {
+                category: '用户行为',
+                action: 'user_click_medal_screen',
+                name: '用户点击进入徽章视频页',
+            },
+            callback: (result: any) => {
+                console.warn('result', result);
+            },
+        });
+        navigation.navigate('Medal');
+    };
+
     return (
         <View style={styles.userInfoContainer}>
             <View style={styles.main}>
-                <Avatar source={user.avatar} size={PxFit(90)} />
+                <View>
+                    <Avatar source={user.avatar} size={PxFit(90)} />
+                    <View style={[styles.badge, { backgroundColor: user.gender ? '#FFEAEF' : '#E6F2FF' }]}>
+                        <Iconfont
+                            name={user.gender ? 'woman' : 'man'}
+                            size={PxFit(18)}
+                            color={user.gender ? '#ED5D87' : '#0588FF'}
+                        />
+                    </View>
+                </View>
                 <View style={styles.userInfo}>
                     <View style={styles.metaWrap}>
                         <View style={styles.metaItem}>
@@ -78,27 +104,68 @@ const UserProfile = props => {
                 </View>
             </View>
             <View style={styles.bottom}>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        paddingBottom: 10,
-                    }}>
-                    {sub_name.current !== '普通答友' && (
+                <Row style={{ paddingBottom: 10 }}>
+                    <Text style={{ fontSize: PxFit(20), fontWeight: '700', color: Theme.black }}>{user.name}</Text>
+                    {subName === '答题赚钱 官方账号' && (
                         <Image
-                            source={require('../../../assets/images/admin.png')}
-                            style={{ height: PxFit(13), width: PxFit(13), marginRight: PxFit(5) }}
+                            source={require('@src/assets/images/admin.png')}
+                            style={{ height: PxFit(15), width: PxFit(15), marginLeft: PxFit(10) }}
                         />
                     )}
-                    <Text style={styles.introduction} numberOfLines={1}>
-                        {sub_name.current}
-                    </Text>
-                </View>
+                </Row>
                 <View>
                     <Text style={styles.introduction} numberOfLines={2}>
                         {Tools.syncGetter('profile.introduction', user) || '这个人很神秘，什么介绍都没有'}
                     </Text>
                 </View>
+            </View>
+            <View style={styles.bottom}>
+                <TouchFeedback
+                    style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+                    onPress={navigationAction}>
+                    <Row>
+                        <Image
+                            source={require('@src/assets/images/medal.png')}
+                            style={{ width: 14, height: 75 / 4, marginRight: PxFit(10) }}
+                        />
+                        <Text>他的勋章</Text>
+                    </Row>
+                    <Row>
+                        <Row>
+                            <Image
+                                source={require('@src/assets/images/medal1.png')}
+                                style={{ width: 16, height: 16, marginRight: PxFit(10) }}
+                            />
+                            <Image
+                                source={require('@src/assets/images/medal2.png')}
+                                style={{ width: 18, height: 18, marginRight: PxFit(10) }}
+                            />
+                        </Row>
+                        <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                    </Row>
+                </TouchFeedback>
+                {subName !== '普通答友' && (
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingTop: PxFit(10),
+                        }}>
+                        <Image
+                            source={require('@src/assets/images/title.png')}
+                            style={{
+                                height: PxFit(16),
+                                width: PxFit(16),
+                                marginRight: PxFit(10),
+                                marginLeft: PxFit(-1.5),
+                            }}
+                        />
+
+                        <Text style={{ color: '#8590A6' }} numberOfLines={1}>
+                            {subName}
+                        </Text>
+                    </View>
+                )}
             </View>
             {hasQuestion && (
                 <View style={styles.answerTitle}>
@@ -127,6 +194,18 @@ const styles = StyleSheet.create({
         padding: PxFit(Theme.itemSpace),
         paddingBottom: PxFit(0),
         backgroundColor: '#fff',
+    },
+    badge: {
+        height: PxFit(26),
+        width: PxFit(26),
+        borderRadius: PxFit(13),
+        borderWidth: PxFit(2),
+        borderColor: '#FFF',
+        position: 'absolute',
+        bottom: PxFit(-2),
+        right: PxFit(-2),
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     main: {
         flexDirection: 'row',
@@ -168,14 +247,14 @@ const styles = StyleSheet.create({
         marginTop: PxFit(Theme.itemSpace),
     },
     bottom: {
-        marginTop: PxFit(20),
-        paddingBottom: PxFit(10),
+        marginTop: PxFit(15),
+        paddingBottom: PxFit(15),
         borderBottomWidth: PxFit(0.5),
         borderColor: Theme.borderColor,
     },
     introduction: {
-        fontSize: PxFit(13),
-        color: Theme.defaultTextColor,
+        fontSize: PxFit(14),
+        color: Theme.subTextColor,
     },
     labels: {
         flexDirection: 'row',

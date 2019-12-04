@@ -62,7 +62,7 @@ export default {
     navBarTitleColor,
     navBarSeparatorColor,
     watermelon: '#FF5E7D',
-    boyColor: '#00C8FF',
+    boyColor: '#0588FF',
     girlColor: '#FF5C9D',
     linkColor: '#407FCF',
     cancelColor: '#b6c2e1',
