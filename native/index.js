@@ -11,5 +11,6 @@ import ttad from './ttad';
 import WeChat from './WeChat';
 import Util from './Util';
 import AppUtil from './AppUtil';
+import Alipay from './Alipay';
 
-export { Share, VideoUploader, WeChat, Util, ttad, AppUtil };
+export { Share, VideoUploader, WeChat, Util, ttad, AppUtil, Alipay };

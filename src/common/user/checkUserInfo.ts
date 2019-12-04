@@ -1,7 +1,7 @@
 import TipsOverlay from '../../components/Overlay/TipsOverlay';
 import { app } from 'store';
 import { GQL } from 'apollo';
-import { Tools } from 'utils';
+import { Tools, ISIOS } from 'utils';
 
 interface User {
     auto_uuid_user: boolean;
@@ -39,6 +39,6 @@ function checkLoginInfo(user: User) {
             confirmContent: '去完善',
         });
     } else {
-        Tools.navigate('ModifyAliPay');
+        Tools.navigate(ISIOS ? 'ModifyAliPay' : 'SettingWithdrawInfo');
     }
 }

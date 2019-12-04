@@ -111,7 +111,9 @@ class AccountSecurity extends Component {
                         style={styles.listItem}
                         leftComponent={<Text style={styles.itemText}>{auto_uuid_user ? '访客' : '账号'}</Text>}
                         rightComponent={
-                            <Text style={styles.rightText}>{auto_uuid_user ? '未设置手机号' : user.account}</Text>
+                            <Text style={styles.rightText}>
+                                {auto_uuid_user ? '未设置手机号' : user && user.account}
+                            </Text>
                         }
                     />
                     {auto_uuid_user && (

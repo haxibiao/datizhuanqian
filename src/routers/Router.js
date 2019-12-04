@@ -99,6 +99,7 @@ import AboutUsScreen from '../screens/setting/AboutUs';
 import UpdateLogScreen from '../screens/setting/UpdateLog';
 import PrivacyPolicyScreen from '../screens/setting/PrivacyPolicy';
 import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
+import SettingWithdrawInfoScreen from '../screens/setting/SettingWithdrawInfo';
 // MainTabNavigator CompetitionMatchingScreen GameSettlementScreen
 export default {
     Main: {
@@ -339,5 +340,8 @@ export default {
     },
     SetLoginInfo: {
         screen: SetLoginInfoScreen,
+    },
+    SettingWithdrawInfo: {
+        screen: SettingWithdrawInfoScreen,
     },
 };
