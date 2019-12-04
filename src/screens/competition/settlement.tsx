@@ -155,10 +155,10 @@ const over = observer(props => {
             //     store.isRobot ? 1000 : 3000,
             // );
             // 请求超时 前端先结算
-            // setLoadingTimer.current = setTimeout(() => {
-            //     clearTimeout(fetchResultTimer.current);
-            //     setLoading(false);
-            // }, 15000);
+            setLoadingTimer.current = setTimeout(() => {
+                clearTimeout(fetchResultTimer.current);
+                setLoading(false);
+            }, 30000);
         }
 
         return () => {
@@ -168,11 +168,6 @@ const over = observer(props => {
     }, []);
 
     useEffect(() => {
-        // setTimeout(() => {
-        //     Toast.show({
-        //         content: '调用了over' + gameOverCount.current + '次' + '调用了query' + gameQueryCount.current + '次',
-        //     });
-        // }, 25000);
         const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
             return true;
         });

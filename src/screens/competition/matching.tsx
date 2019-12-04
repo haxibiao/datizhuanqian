@@ -128,9 +128,10 @@ export default observer(props => {
                     )}
                 </View>
                 <View style={styles.tips}>
-                    <Text style={styles.tipsTitle}>*入场规则</Text>
+                    <Text style={styles.tipsTitle}>PK规则：</Text>
                     <Text style={styles.tipsText}>
-                        消耗{app.gameConfig.ticket_loss}精力点和{app.gameConfig.gold_loss}智慧点
+                        答题失败将扣除{app.gameConfig.ticket_loss}精力点和{app.gameConfig.gold_loss}
+                        智慧点(中途离场视为失败)
                     </Text>
                 </View>
             </ImageBackground>
