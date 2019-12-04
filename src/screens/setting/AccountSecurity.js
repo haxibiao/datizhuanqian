@@ -57,8 +57,6 @@ class AccountSecurity extends Component {
         this.setState({
             submitting: false,
         });
-        const str = error.toString().replace(/Error: GraphQL error: /, '');
-        Toast.show({ content: str });
     };
 
     checkAccount = (auto_uuid_user, auto_phone_user) => {

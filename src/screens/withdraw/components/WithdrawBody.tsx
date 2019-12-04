@@ -135,7 +135,6 @@ const WithdrawBody = props => {
                                 },
                                 onFailed: (error: { message: any }[]) => {
                                     setSubmit(false);
-                                    Toast.show({ content: error.toString().replace(/Error: GraphQL error: /, '') });
                                 },
                             });
                         }
