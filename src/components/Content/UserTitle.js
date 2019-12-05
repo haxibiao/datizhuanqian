@@ -17,25 +17,18 @@ class UserTitle extends Component {
         let { navigation, user } = this.props;
         return (
             <View>
-                {user.is_admin ? (
-                    <Image
-                        source={require('../../assets/images/admin.png')}
-                        style={{ height: PxFit(13), width: PxFit(13), marginHorizontal: PxFit(5) }}
-                    />
-                ) : (
-                    <View
-                        style={{
-                            backgroundColor: Theme.theme,
-                            paddingVertical: PxFit(1),
-                            paddingHorizontal: PxFit(6),
-                            marginHorizontal: PxFit(5),
-                            borderRadius: PxFit(10),
-                        }}>
-                        <Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10) }}>
-                            Lv.{user.level.level}
-                        </Text>
-                    </View>
-                )}
+                <View
+                    style={{
+                        backgroundColor: Theme.theme,
+                        paddingVertical: PxFit(1),
+                        paddingHorizontal: PxFit(6),
+                        marginHorizontal: PxFit(5),
+                        borderRadius: PxFit(10),
+                    }}>
+                    <Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10) }}>
+                        Lv.{user.level.level}
+                    </Text>
+                </View>
             </View>
         );
     }

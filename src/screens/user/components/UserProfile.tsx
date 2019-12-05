@@ -4,32 +4,13 @@ import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'rea
 import { Avatar, Iconfont, FollowButton, Button, TouchFeedback, Row } from 'components';
 import { Theme, PxFit, Tools } from 'utils';
 
-import { StackActions } from 'react-navigation';
 import { app } from 'store';
 import service from 'service';
+import { getRole } from 'common';
 
 const UserProfile = props => {
     const { user, orderByHot, switchOrder, isQuestion, navigation, hasQuestion } = props;
     const isSelf = app.me.id === user.id;
-
-    const [subName, setSubName] = useState('普通答友');
-
-    useEffect(() => {
-        console.log('user :', user, user.roles.indexOf('STAR_USER') >= 0);
-        if (user.roles.indexOf('ROOT_USER') >= 0) {
-            setSubName('答题赚钱 官方账号');
-        } else if (user.roles.indexOf('EDITOR_USER') >= 0) {
-            setSubName('答题赚钱 官方小编');
-        } else if (user.roles.indexOf('STAR_USER') >= 0) {
-            setSubName('优质内容作者');
-        } else if (user.roles.indexOf('MODERATOR_USER') >= 0) {
-            setSubName('答题版主');
-        } else if (user.roles.indexOf('NORMAL_USER') >= 0) {
-            setSubName('普通答友');
-        } else {
-            setSubName('普通答友');
-        }
-    }, []);
 
     const navigationAction = () => {
         service.dataReport({
@@ -44,6 +25,8 @@ const UserProfile = props => {
         });
         navigation.navigate('Medal');
     };
+
+    const subName = getRole(user);
 
     return (
         <View style={styles.userInfoContainer}>
@@ -106,7 +89,7 @@ const UserProfile = props => {
             <View style={styles.bottom}>
                 <Row style={{ paddingBottom: 10 }}>
                     <Text style={{ fontSize: PxFit(20), fontWeight: '700', color: Theme.black }}>{user.name}</Text>
-                    {subName === '答题赚钱 官方账号' && (
+                    {(subName === '答题赚钱 官方账号' || subName === '答题赚钱 官方小编') && (
                         <Image
                             source={require('@src/assets/images/admin.png')}
                             style={{ height: PxFit(15), width: PxFit(15), marginLeft: PxFit(10) }}

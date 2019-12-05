@@ -24,10 +24,37 @@ const Medal = (props: Props) => {
     const { navigation, user } = props;
     console.log('WithdrawHeader user :', user);
 
+    const MedalList = [
+        {
+            image: require('@src/assets/images/medal1.png'),
+            name: '答题王者',
+        },
+        {
+            image: require('@src/assets/images/medal2.png'),
+            name: '腰缠万贯',
+        },
+        {
+            image: require('@src/assets/images/medal3.png'),
+            name: '答题王者',
+        },
+        {
+            image: require('@src/assets/images/medal4.png'),
+            name: '腰缠万贯',
+        },
+        {
+            image: require('@src/assets/images/medal5.png'),
+            name: '答题王者',
+        },
+        {
+            image: require('@src/assets/images/medal6.png'),
+            name: '腰缠万贯',
+        },
+    ];
+
     return (
         <View>
             <ImageBackground
-                source={require('@src/assets/images/withdraw_bg.png')}
+                source={require('@src/assets/images/medal_bg.png')}
                 style={{
                     width: SCREEN_WIDTH,
                     height: (SCREEN_WIDTH * 687) / 1080,
@@ -45,42 +72,15 @@ const Medal = (props: Props) => {
                     <Text style={styles.titleText}>个</Text>
                 </Row>
             </ImageBackground>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: PxFit(15),
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                }}>
-                <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
-                    <Image
-                        source={require('@src/assets/images/medal1.png')}
-                        style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4, marginBottom: PxFit(10) }}
-                    />
-                    <Text>答题王者</Text>
-                </View>
-                <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
-                    <Image
-                        source={require('@src/assets/images/medal2.png')}
-                        style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4, marginBottom: PxFit(10) }}
-                    />
-                    <Text>答题王者</Text>
-                </View>
-                <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
-                    <Image
-                        source={require('@src/assets/images/medal1.png')}
-                        style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4, marginBottom: PxFit(10) }}
-                    />
-                    <Text>答题王者</Text>
-                </View>
-                <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
-                    <Image
-                        source={require('@src/assets/images/medal2.png')}
-                        style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4, marginBottom: PxFit(10) }}
-                    />
-                    <Text>答题王者</Text>
-                </View>
+            <View style={styles.medalList}>
+                {MedalList.map((data, index) => {
+                    return (
+                        <View style={styles.medalContent} key={index}>
+                            <Image source={data.image} style={styles.medalImage} />
+                            <Text>{data.name}</Text>
+                        </View>
+                    );
+                })}
             </View>
         </View>
     );
@@ -115,6 +115,23 @@ const styles = StyleSheet.create({
         color: Theme.white,
         paddingTop: PxFit(26),
         paddingLeft: PxFit(10),
+    },
+    medalList: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: PxFit(15),
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        backgroundColor: '#FEFEFE',
+    },
+    medalContent: {
+        alignItems: 'center',
+        marginTop: PxFit(25),
+    },
+    medalImage: {
+        width: SCREEN_WIDTH / 4,
+        height: SCREEN_WIDTH / 4,
+        marginBottom: PxFit(10),
     },
 });
 export default Medal;

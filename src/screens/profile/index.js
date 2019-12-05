@@ -198,13 +198,18 @@ class index extends Component {
                                         authenticated
                                         activeOpacity={1}
                                         style={styles.metaItem}
-                                        onPress={() => navigation.navigate('Rank')}>
+                                        onPress={() => navigation.navigate('Medal')}>
                                         <Image
-                                            style={styles.metaIcon}
-                                            source={require('../../assets/images/rank.png')}
+                                            style={{
+                                                width: PxFit(19),
+                                                height: PxFit((19 * 140) / 109),
+                                                resizeMode: 'cover',
+                                                paddingTop: PxFit(4),
+                                            }}
+                                            source={require('../../assets/images/medal_icon.png')}
                                         />
                                         <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                            答题排行
+                                            我的勋章
                                         </Text>
                                     </TouchFeedback>
                                 </View>
