@@ -22,6 +22,7 @@ class AccountSecurity extends Component {
         const user = this.props.navigation.getParam('user');
         this.state = {
             is_bind_wechat: Tools.syncGetter('wallet.platforms.wechat', user),
+            is_bind_alipay: Tools.syncGetter('wallet.platforms.alipay', user),
         };
     }
 
@@ -86,7 +87,7 @@ class AccountSecurity extends Component {
 
     render() {
         const { navigation, data } = this.props;
-        const { is_bind_wechat } = this.state;
+        const { is_bind_wechat, is_bind_alipay } = this.state;
         const { loading, user } = data;
 
         if (loading) {
@@ -167,19 +168,14 @@ class AccountSecurity extends Component {
                         style={styles.listItem}
                         leftComponent={<Text style={styles.itemText}>支付宝账号</Text>}
                         rightComponent={
-                            user.wallet && user.wallet.pay_account ? (
-                                <View style={styles.rightWrap}>
-                                    <Text style={styles.rightText}>
-                                        {user.wallet.pay_account + '(' + user.wallet.real_name + ')'}
-                                    </Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                                </View>
-                            ) : (
-                                <View style={styles.rightWrap}>
-                                    <Text style={styles.linkText}>去绑定</Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                                </View>
-                            )
+                            <View style={styles.rightWrap}>
+                                <Text style={[styles.linkText, { color: is_bind_alipay ? Theme.grey : '#407FCF' }]}>
+                                    {is_bind_alipay
+                                        ? `已绑定（${Tools.syncGetter('wallet.real_name', user)}）`
+                                        : '去绑定'}
+                                </Text>
+                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                            </View>
                         }
                     />
                 </View>

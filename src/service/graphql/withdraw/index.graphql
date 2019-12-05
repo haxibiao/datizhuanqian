@@ -37,3 +37,17 @@ query WithdrawQuery($id: Int!) {
         to_platform
     }
 }
+
+#支付信息绑定
+mutation OAuthBindMutation($code: String!, $oauth_type: OAuthEnum) {
+    oAuthBind(code: $code, oauth_type: $oauth_type) {
+        id
+    }
+}
+
+#真实姓名绑定
+mutation SetWalletInfoMutation($data: WalletInput) {
+    setWalletInfo(data: $data) {
+        real_name
+    }
+}

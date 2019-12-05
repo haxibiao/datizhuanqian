@@ -18,325 +18,325 @@ import { Util } from 'native';
 import DeviceInfo from 'react-native-device-info';
 
 const shadowOpt = {
-	width: SCREEN_WIDTH - Theme.itemSpace * 3,
-	color: '#E8E8E8',
-	border: PxFit(3),
-	radius: PxFit(10),
-	opacity: 0.5,
-	x: 0,
-	y: 1,
-	style: {
-		marginTop: 0
-	}
+    width: SCREEN_WIDTH - Theme.itemSpace * 3,
+    color: '#E8E8E8',
+    border: PxFit(3),
+    radius: PxFit(10),
+    opacity: 0.5,
+    x: 0,
+    y: 1,
+    style: {
+        marginTop: 0,
+    },
 };
 var showThumbType = ['accpunt', 'password'];
 class index extends Component {
-	constructor(props) {
-		super(props);
-		this.timeRemaining = 60;
-		this.phoneNumber = null;
-		this.deviceId = DeviceInfo.getUniqueID();
-		this.state = {
-			signIn: true,
-			submitting: false,
-			account: null,
-			password: null,
-			showThumb: false,
-			secure: true,
-			submitTips: '登录中...',
-			readed: true
-		};
-	}
+    constructor(props) {
+        super(props);
+        this.timeRemaining = 60;
+        this.phoneNumber = null;
+        this.deviceId = DeviceInfo.getUniqueID();
+        this.state = {
+            signIn: true,
+            submitting: false,
+            account: null,
+            password: null,
+            showThumb: false,
+            secure: true,
+            submitTips: '登录中...',
+            readed: true,
+        };
+    }
 
-	async componentDidMount() {
-		let phone = await Util.getPhoneNumber();
+    async componentDidMount() {
+        let phone = await Util.getPhoneNumber();
 
-		if (phone) {
-			this.phoneNumber = phone.substr(phone.length - 11);
-			this.setState({
-				account: this.phoneNumber
-			});
-		}
-	}
+        if (phone) {
+            this.phoneNumber = phone.substr(phone.length - 11);
+            this.setState({
+                account: this.phoneNumber,
+            });
+        }
+    }
 
-	onSubmit = () => {
-		if (this.state.readed) {
-			if (this.state.signIn) {
-				this.signIn();
-			} else {
-				this.signUp();
-			}
-		} else {
-			Toast.show({
-				content: '请先勾选同意”用户协议“和”隐私政策“'
-			});
-		}
-	};
+    onSubmit = () => {
+        if (this.state.readed) {
+            if (this.state.signIn) {
+                this.signIn();
+            } else {
+                this.signUp();
+            }
+        } else {
+            Toast.show({
+                content: '请先勾选同意”用户协议“和”隐私政策“',
+            });
+        }
+    };
 
-	autoSign = async () => {
-		let result = {};
-		this.setState({
-			submitting: true
-		});
-		console.log('this.deviceId', this.deviceId);
-		try {
-			result = await this.props.autoSignInMutation({
-				variables: {
-					account: null,
-					uuid: this.deviceId
-				}
-			});
-		} catch (ex) {
-			result.errors = ex;
-		}
-		console.log('result', result);
-		if (result && result.errors) {
-			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Toast.show({ content: str, layout: 'top' });
-		} else {
-			const user = result.data.autoSignIn;
-			this._saveUserData(user);
-		}
-		this.setState({
-			submitting: false
-		});
-	};
+    autoSign = async () => {
+        let result = {};
+        this.setState({
+            submitting: true,
+        });
+        console.log('this.deviceId', this.deviceId);
+        try {
+            result = await this.props.autoSignInMutation({
+                variables: {
+                    account: null,
+                    uuid: this.deviceId,
+                },
+            });
+        } catch (ex) {
+            result.errors = ex;
+        }
+        console.log('result', result);
+        if (result && result.errors) {
+            let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+            Toast.show({ content: str, layout: 'top' });
+        } else {
+            const user = result.data.autoSignIn;
+            this._saveUserData(user);
+        }
+        this.setState({
+            submitting: false,
+        });
+    };
 
-	signIn = async () => {
-		let { account } = this.state;
-		const { navigation } = this.props;
+    signIn = async () => {
+        let { account } = this.state;
+        const { navigation } = this.props;
 
-		if (account == this.phoneNumber) {
-			let result = {};
-			this.setState({
-				submitting: true
-			});
-			console.log('this.deviceId', this.deviceId);
-			try {
-				result = await this.props.autoSignInMutation({
-					variables: {
-						account: account,
-						uuid: this.deviceId
-					}
-				});
-			} catch (ex) {
-				result.errors = ex;
-			}
-			console.log('result', result);
-			if (result && result.errors) {
-				let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-				Toast.show({ content: str, layout: 'top' });
-			} else {
-				const user = result.data.autoSignIn;
-				this._saveUserData(user);
-			}
-			this.setState({
-				submitting: false
-			});
-		} else {
-			navigation.navigate('PasswordLogin', { hasPassword: true, account: account });
-		}
-	};
+        if (account == this.phoneNumber) {
+            let result = {};
+            this.setState({
+                submitting: true,
+            });
+            console.log('this.deviceId', this.deviceId);
+            try {
+                result = await this.props.autoSignInMutation({
+                    variables: {
+                        account: account,
+                        uuid: this.deviceId,
+                    },
+                });
+            } catch (ex) {
+                result.errors = ex;
+            }
+            console.log('result', result);
+            if (result && result.errors) {
+                let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+                Toast.show({ content: str, layout: 'top' });
+            } else {
+                const user = result.data.autoSignIn;
+                this._saveUserData(user);
+            }
+            this.setState({
+                submitting: false,
+            });
+        } else {
+            navigation.navigate('PasswordLogin', { hasPassword: true, account: account });
+        }
+    };
 
-	//处理注册来源
-	signUp = async () => {
-		let { signIn, account, password } = this.state;
-		let { client, navigation } = this.props;
-		this.setState({
-			submitting: true
-		});
-		let result = {};
+    //处理注册来源
+    signUp = async () => {
+        let { signIn, account, password } = this.state;
+        let { client, navigation } = this.props;
+        this.setState({
+            submitting: true,
+        });
+        let result = {};
 
-		try {
-			result = await client.query({
-				query: GQL.IsInviteUser,
-				variables: {
-					account
-				}
-			});
-		} catch (ex) {
-			result.errors = ex;
-		}
-		if (result && result.errors) {
-			let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
-			Toast.show({ content: str, layout: 'top' });
-			this.setState({
-				submitting: false
-			});
-		} else {
-			if (result && result.data.isInviteUser) {
-				//对邀请用户发送验证码验证
-				this.sendVerificationCode(account);
-			} else {
-				//自然流量无需验证手机，设置密码注册
-				navigation.navigate('RegisterSetPassword', { phone: account });
-				this.setState({
-					submitting: false
-				});
-			}
-		}
-	};
+        try {
+            result = await client.query({
+                query: GQL.IsInviteUser,
+                variables: {
+                    account,
+                },
+            });
+        } catch (ex) {
+            result.errors = ex;
+        }
+        if (result && result.errors) {
+            let str = result.errors.toString().replace(/Error: GraphQL error: /, '');
+            Toast.show({ content: str, layout: 'top' });
+            this.setState({
+                submitting: false,
+            });
+        } else {
+            if (result && result.data.isInviteUser) {
+                //对邀请用户发送验证码验证
+                this.sendVerificationCode(account);
+            } else {
+                //自然流量无需验证手机，设置密码注册
+                navigation.navigate('RegisterSetPassword', { phone: account });
+                this.setState({
+                    submitting: false,
+                });
+            }
+        }
+    };
 
-	//发送验证码
-	sendVerificationCode = async () => {
-		const { navigation } = this.props;
+    //发送验证码
+    sendVerificationCode = async () => {
+        const { navigation } = this.props;
 
-		let result = {};
-		try {
-			result = await this.props.SendVerificationCodeMutation({
-				variables: {
-					account: this.state.account,
-					action: 'USER_LOGIN'
-				},
-				errorPolicy: 'all'
-			});
-		} catch (ex) {
-			result.errors = ex;
-		}
-		if (result && result.errors) {
-			let str = result.errors[0].message;
-			Toast.show({ content: str });
-		} else {
-			navigation.navigate('VerificationPhone', {
-				code: result.data.sendVerificationCode.code,
-				time: result.data.sendVerificationCode.surplusSecond,
-				phone: this.state.account,
-				data: null
-			});
-		}
-		this.setState({
-			submitting: false
-		});
-	};
+        let result = {};
+        try {
+            result = await this.props.SendVerificationCodeMutation({
+                variables: {
+                    account: this.state.account,
+                    action: 'USER_LOGIN',
+                },
+                errorPolicy: 'all',
+            });
+        } catch (ex) {
+            result.errors = ex;
+        }
+        if (result && result.errors) {
+            let str = result.errors[0].message;
+            Toast.show({ content: str });
+        } else {
+            navigation.navigate('VerificationPhone', {
+                code: result.data.sendVerificationCode.code,
+                time: result.data.sendVerificationCode.surplusSecond,
+                phone: this.state.account,
+                data: null,
+            });
+        }
+        this.setState({
+            submitting: false,
+        });
+    };
 
-	//保存用户信息
-	_saveUserData = user => {
-		app.signIn(user);
-		this.setState({
-			submitting: false
-		});
-		this.props.navigation.goBack();
-		Toast.show({ content: '登录成功' });
-	};
+    //保存用户信息
+    _saveUserData = user => {
+        app.signIn(user);
+        this.setState({
+            submitting: false,
+        });
+        this.props.navigation.goBack();
+        Toast.show({ content: '登录成功' });
+    };
 
-	//显示邀请奖励
-	loadUserReword = () => {
-		let overlayView = (
-			<Overlay.View animated>
-				<View style={styles.overlayInner}>
-					<UserRewardOverlay hide={() => Overlay.hide(this.OverlayKey)} />
-				</View>
-			</Overlay.View>
-		);
-		this.OverlayKey = Overlay.show(overlayView);
-	};
+    //显示邀请奖励
+    loadUserReword = () => {
+        let overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <UserRewardOverlay hide={() => Overlay.hide(this.OverlayKey)} />
+                </View>
+            </Overlay.View>
+        );
+        this.OverlayKey = Overlay.show(overlayView);
+    };
 
-	changeAccount = value => {
-		this.setState({ account: value });
-	};
+    changeAccount = value => {
+        this.setState({ account: value });
+    };
 
-	changePassword = value => {
-		this.setState({ password: value });
-	};
+    changePassword = value => {
+        this.setState({ password: value });
+    };
 
-	toggleMutation = () => {
-		this.setState(prevState => ({
-			signIn: !prevState.signIn,
-			// account: null,
-			password: null
-		}));
-	};
+    toggleMutation = () => {
+        this.setState(prevState => ({
+            signIn: !prevState.signIn,
+            // account: null,
+            password: null,
+        }));
+    };
 
-	validator(number) {
-		if (String(number).length === 11) {
-			return true;
-		}
-		return false;
-	}
+    validator(number) {
+        if (String(number).length === 11) {
+            return true;
+        }
+        return false;
+    }
 
-	//微信登录
-	wechatLogin = () => {
-		WeChat.isSupported()
-			.then(isSupported => {
-				if (isSupported) {
-					WeChat.wechatLogin().then(code => {
-						this.setState({
-							submitting: true
-						});
-						console.log('code', code);
-						this.getWechatInfo(code);
-					});
-				} else {
-					Toast.show({ content: '未安装微信或当前微信版本较低' });
-				}
-			})
-			.catch(err => {
-				console.log('err=' + err);
-				Toast.show({ content: '微信请求失败，请使用手机号登录' });
-			});
-	};
+    //微信登录
+    wechatLogin = () => {
+        WeChat.isSupported()
+            .then(isSupported => {
+                if (isSupported) {
+                    WeChat.wechatLogin().then(code => {
+                        this.setState({
+                            submitting: true,
+                        });
+                        console.log('code', code);
+                        this.getWechatInfo(code);
+                    });
+                } else {
+                    Toast.show({ content: '未安装微信或当前微信版本较低' });
+                }
+            })
+            .catch(err => {
+                console.log('err=' + err);
+                Toast.show({ content: '微信请求失败，请使用手机号登录' });
+            });
+    };
 
-	//获取微信身份信息
-	getWechatInfo = code => {
-		var data = new FormData();
-		data.append('code', code);
+    //获取微信身份信息
+    getWechatInfo = code => {
+        var data = new FormData();
+        data.append('code', code);
 
-		fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
-			method: 'POST',
-			body: data
-		})
-			.then(response => response.json())
-			.then(result => {
-				if (result.data && result.data.unionid) {
-					//新用户绑定手机号
-					this.props.navigation.navigate('PhoneBind', { data: result.data });
-					this.setState({
-						submitting: false
-					});
-				} else {
-					//老用户直接登录
-					this.getUserData(result.data.user);
-				}
-			})
-			.catch(error => {
-				Toast.show({ content: '微信账号获取失败' });
-				this.setState({
-					submitting: false
-				});
-			});
-	};
+        fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
+            method: 'POST',
+            body: data,
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.data && result.data.unionid) {
+                    //新用户绑定手机号
+                    this.props.navigation.navigate('PhoneBind', { data: result.data });
+                    this.setState({
+                        submitting: false,
+                    });
+                } else {
+                    //老用户直接登录
+                    this.getUserData(result.data.user);
+                }
+            })
+            .catch(error => {
+                Toast.show({ content: '微信账号获取失败' });
+                this.setState({
+                    submitting: false,
+                });
+            });
+    };
 
-	//微信已存在，直接登录
-	getUserData = user => {
-		const { client } = this.props;
-		client
-			.query({
-				query: GQL.UserQuery,
-				variables: {
-					id: user.id
-				}
-			})
-			.then(result => {
-				let token = { token: user.api_token };
-				let userLoginInfo = { ...result.data.user, token: user.api_token };
-				this._saveUserData(userLoginInfo);
-			})
-			.catch(error => {
-				let str = rejected.toString().replace(/Error: GraphQL error: /, '');
-				Toast.show({ content: str });
-				this.setState({
-					submitting: false
-				});
-			});
-	};
+    //微信已存在，直接登录
+    getUserData = user => {
+        const { client } = this.props;
+        client
+            .query({
+                query: GQL.UserQuery,
+                variables: {
+                    id: user.id,
+                },
+            })
+            .then(result => {
+                let token = { token: user.api_token };
+                let userLoginInfo = { ...result.data.user, token: user.api_token };
+                this._saveUserData(userLoginInfo);
+            })
+            .catch(error => {
+                let str = rejected.toString().replace(/Error: GraphQL error: /, '');
+                Toast.show({ content: str });
+                this.setState({
+                    submitting: false,
+                });
+            });
+    };
 
-	render() {
-		let { me } = app;
-		let { navigation } = this.props;
-		let { signIn, submitting, account, password, showThumb, secure, submitTips, readed } = this.state;
-		// let disabled = signIn ? !(account && password) : !account;
-		let disabled = !account;
-		return (
+    render() {
+        let { me } = app;
+        let { navigation } = this.props;
+        let { signIn, submitting, account, password, showThumb, secure, submitTips, readed } = this.state;
+        // let disabled = signIn ? !(account && password) : !account;
+        let disabled = !account;
+        return (
             <PageContainer
                 submitting={submitting}
                 submitTips={submitTips}
@@ -462,142 +462,142 @@ class index extends Component {
                 </View>
             </PageContainer>
         );
-	}
+    }
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff'
-	},
-	registerCoverContainer: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0
-	},
-	registerCover: {
-		// flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: null,
-		height: null
-	},
-	// registerCover: {
-	// 	height: PxFit(150),
-	// 	paddingTop: PxFit(Theme.statusBarHeight + 20),
-	// 	backgroundColor: Theme.primaryColor
-	// },
-	formContainer: {
-		flex: 1,
-		justifyContent: 'space-between',
-		paddingHorizontal: PxFit(35),
-		marginTop: 50,
-		marginHorizontal: 15
-	},
-	fieldGroup: {
-		marginBottom: PxFit(10),
-		backgroundColor: '#000000'
-	},
-	field: {
-		fontSize: PxFit(16),
-		color: '#666'
-	},
-	inputWrap: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		borderBottomWidth: PxFit(0.5),
-		borderBottomColor: Theme.lightBorder,
-		marginTop: 15
-	},
-	inputStyle: {
-		flex: 1,
-		height: PxFit(40),
-		fontSize: PxFit(15),
-		color: Theme.defaultTextColor,
-		paddingBottom: PxFit(10),
-		paddingTop: PxFit(10)
-	},
-	button: {
-		marginTop: PxFit(30),
-		height: PxFit(38),
-		backgroundColor: Theme.primaryColor,
-		borderRadius: PxFit(20)
-	},
-	buttonText: {
-		fontSize: PxFit(16),
-		fontWeight: '400',
-		color: '#fff'
-	},
-	bottomInfo: {
-		width: SCREEN_WIDTH,
-		paddingHorizontal: PxFit(50),
-		marginTop: PxFit(20),
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between'
-	},
-	bottomInfoText: {
-		fontSize: PxFit(12),
-		color: '#7D8089'
-	},
-	bottomLinkText: {
-		fontSize: PxFit(12),
-		color: '#7D8089'
-	},
-	protocol: {
-		position: 'absolute',
-		bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace),
-		left: 0,
-		right: 0
-	},
-	line: {
-		width: SCREEN_WIDTH / 5,
-		height: 0.5,
-		backgroundColor: Theme.grey
-	},
-	otherLogin: {
-		flex: 1,
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginTop: 30
-	},
-	bageWrap: {
-		height: 14,
-		width: 14,
-		borderRadius: 8,
-		borderWidth: 2,
-		borderColor: Theme.grey,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight: 10
-	},
-	bage: {
-		backgroundColor: Theme.theme,
-		height: 14,
-		width: 14,
-		borderRadius: 8,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	overlayInner: {
-		flex: 1,
-		width: SCREEN_WIDTH,
-		height: SCREEN_HEIGHT,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	rowCenter: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace)
-	}
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    registerCoverContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    registerCover: {
+        // flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: null,
+        height: null,
+    },
+    // registerCover: {
+    // 	height: PxFit(150),
+    // 	paddingTop: PxFit(Theme.statusBarHeight + 20),
+    // 	backgroundColor: Theme.primaryColor
+    // },
+    formContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        paddingHorizontal: PxFit(35),
+        marginTop: 50,
+        marginHorizontal: 15,
+    },
+    fieldGroup: {
+        marginBottom: PxFit(10),
+        backgroundColor: '#000000',
+    },
+    field: {
+        fontSize: PxFit(16),
+        color: '#666',
+    },
+    inputWrap: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: PxFit(0.5),
+        borderBottomColor: Theme.lightBorder,
+        marginTop: 15,
+    },
+    inputStyle: {
+        flex: 1,
+        height: PxFit(40),
+        fontSize: PxFit(15),
+        color: Theme.defaultTextColor,
+        paddingBottom: PxFit(10),
+        paddingTop: PxFit(10),
+    },
+    button: {
+        marginTop: PxFit(30),
+        height: PxFit(38),
+        backgroundColor: Theme.primaryColor,
+        borderRadius: PxFit(20),
+    },
+    buttonText: {
+        fontSize: PxFit(16),
+        fontWeight: '400',
+        color: '#fff',
+    },
+    bottomInfo: {
+        width: SCREEN_WIDTH,
+        paddingHorizontal: PxFit(50),
+        marginTop: PxFit(20),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    bottomInfoText: {
+        fontSize: PxFit(12),
+        color: '#7D8089',
+    },
+    bottomLinkText: {
+        fontSize: PxFit(12),
+        color: '#7D8089',
+    },
+    protocol: {
+        position: 'absolute',
+        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace),
+        left: 0,
+        right: 0,
+    },
+    line: {
+        width: SCREEN_WIDTH / 5,
+        height: 0.5,
+        backgroundColor: Theme.grey,
+    },
+    otherLogin: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 30,
+    },
+    bageWrap: {
+        height: 14,
+        width: 14,
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: Theme.grey,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    bage: {
+        backgroundColor: Theme.theme,
+        height: 14,
+        width: 14,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    overlayInner: {
+        flex: 1,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rowCenter: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(Theme.itemSpace),
+    },
 });
 
 export default compose(
-	withApollo,
-	graphql(GQL.signInMutation, { name: 'signInMutation' }),
-	graphql(GQL.autoSignInMutation, { name: 'autoSignInMutation' }),
-	graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' })
+    withApollo,
+    graphql(GQL.signInMutation, { name: 'signInMutation' }),
+    graphql(GQL.autoSignInMutation, { name: 'autoSignInMutation' }),
+    graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }),
 )(index);

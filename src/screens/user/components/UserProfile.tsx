@@ -138,7 +138,7 @@ const UserProfile = props => {
                             />
                             <Image
                                 source={require('@src/assets/images/medal2.png')}
-                                style={{ width: 18, height: 18, marginRight: PxFit(10) }}
+                                style={{ width: 16, height: 16, marginRight: PxFit(10) }}
                             />
                         </Row>
                         <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />

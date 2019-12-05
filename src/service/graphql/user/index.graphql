@@ -758,3 +758,10 @@ query checkUser($id: Int) {
         share_spider_status
     }
 }
+
+#设置钱包信息`
+mutation SetWalletInfoMutation($data: WalletInput) {
+    setWalletInfo(data: $data) {
+        real_name
+    }
+}

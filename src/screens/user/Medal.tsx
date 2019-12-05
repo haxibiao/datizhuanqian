@@ -62,7 +62,7 @@ const Medal = (props: Props) => {
                 </View>
                 <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
                     <Image
-                        source={require('@src/assets/images/medal1.png')}
+                        source={require('@src/assets/images/medal2.png')}
                         style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4, marginBottom: PxFit(10) }}
                     />
                     <Text>答题王者</Text>
@@ -76,7 +76,7 @@ const Medal = (props: Props) => {
                 </View>
                 <View style={{ alignItems: 'center', marginTop: PxFit(15) }}>
                     <Image
-                        source={require('@src/assets/images/medal1.png')}
+                        source={require('@src/assets/images/medal2.png')}
                         style={{ width: SCREEN_WIDTH / 4, height: SCREEN_WIDTH / 4, marginBottom: PxFit(10) }}
                     />
                     <Text>答题王者</Text>
