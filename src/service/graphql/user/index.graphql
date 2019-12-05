@@ -110,6 +110,9 @@ query UserQuery($id: Int) {
                 alipay
                 wechat
             }
+            bind_platforms {
+                alipay
+            }
         }
         profile {
             introduction
@@ -254,6 +257,9 @@ query UserMeansQuery($id: Int!) {
             platforms {
                 alipay
                 wechat
+            }
+            bind_platforms {
+                alipay
             }
         }
         withdrawInfo {

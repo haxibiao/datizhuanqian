@@ -22,7 +22,7 @@ class AccountSecurity extends Component {
         const user = this.props.navigation.getParam('user');
         this.state = {
             is_bind_wechat: Tools.syncGetter('wallet.platforms.wechat', user),
-            is_bind_alipay: Tools.syncGetter('wallet.platforms.alipay', user),
+            is_bind_alipay: Tools.syncGetter('wallet.bind_platforms.alipay', user),
         };
     }
 

@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PageContainer, Iconfont, Row, Button, CustomTextInput, TouchFeedback } from 'components';
-import { Theme, PxFit } from 'utils';
+import { Theme, PxFit, Tools } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
@@ -10,8 +10,8 @@ import { Alipay } from 'native';
 const SettingWithdrawInfo = props => {
     const [realName, setRealName] = useState(app.userCache.wallet.real_name || '');
     const [submitting, setSubmitting] = useState(false);
-    const [authCode, setAuthCode] = useState('');
-
+    const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
+    const { navigation } = props;
     const getAuthCode = () => {
         Alipay.AlipayAuth().then((code: any) => {
             console.log('code', code);
@@ -29,9 +29,27 @@ const SettingWithdrawInfo = props => {
                         real_name: realName,
                     },
                 },
+                refetchQueries: () => [
+                    {
+                        query: GQL.UserMeansQuery,
+                        variables: { id: app.me.id },
+                    },
+                    {
+                        query: GQL.UserQuery,
+                        variables: { id: app.me.id },
+                    },
+                ],
             })
             .then(data => {
-                bindWithdrawInfo();
+                setSubmitting(false);
+                if (Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app)) {
+                    Toast.show({
+                        content: '绑定成功',
+                    });
+                    navigation.navigate('Main', null, navigation.navigate({ routeName: '提现' }));
+                } else {
+                    bindWithdrawInfo();
+                }
             })
             .catch(err => {
                 setSubmitting(false);
@@ -49,13 +67,23 @@ const SettingWithdrawInfo = props => {
                     code: authCode,
                     oauth_type: 'ALIPAY',
                 },
+                refetchQueries: () => [
+                    {
+                        query: GQL.UserMeansQuery,
+                        variables: { id: app.me.id },
+                    },
+                    {
+                        query: GQL.UserQuery,
+                        variables: { id: app.me.id },
+                    },
+                ],
             })
             .then((data: any) => {
                 setSubmitting(false);
                 Toast.show({
                     content: '绑定成功',
                 });
-                props.navigation.goBack();
+                navigation.navigate('Main', null, navigation.navigate({ routeName: '提现' }));
             })
             .catch((err: { toString: () => { replace: (arg0: RegExp, arg1: string) => void } }) => {
                 setSubmitting(false);
@@ -76,7 +104,7 @@ const SettingWithdrawInfo = props => {
                 </View>
                 <View style={styles.inputWrap}>
                     <CustomTextInput
-                        placeholder={app.userCache.wallet.real_name || '请输入支付宝真实姓名'}
+                        placeholder={Tools.syncGetter('userCache.wallet.real_name', app) || '请输入支付宝真实姓名'}
                         style={{ height: PxFit(48) }}
                         onChangeText={(value: React.SetStateAction<string>) => {
                             setRealName(value);
@@ -86,10 +114,12 @@ const SettingWithdrawInfo = props => {
                 <TouchFeedback style={styles.bind} onPress={getAuthCode} disabled={authCode.length > 0}>
                     <Row>
                         <Image source={require('@src/assets/images/zhifubao.png')} style={styles.image} />
-                        <Text style={{ fontSize: PxFit(13) }}>{authCode.length > 0 ? '已授权' : '支付宝授权'}</Text>
+                        <Text style={{ fontSize: PxFit(13) }}>{'支付宝授权'}</Text>
                     </Row>
                     <Row>
-                        <Text style={{ color: Theme.subTextColor, fontSize: PxFit(13) }}>去授权</Text>
+                        <Text style={{ color: Theme.subTextColor, fontSize: PxFit(13) }}>
+                            {authCode.length > 0 ? '已授权' : '去授权'}
+                        </Text>
                         <Iconfont name="right" size={PxFit(13)} color={Theme.subTextColor} />
                     </Row>
                 </TouchFeedback>
