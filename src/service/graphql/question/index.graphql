@@ -261,3 +261,25 @@ mutation UserRewardMutation($reward: RewardEnum) {
         contribute
     }
 }
+
+# 新首页
+query TagsQuery {
+    tags(filter: HOMEPAGE) {
+        id
+        name
+    }
+}
+
+query TagQuery($id: Int!) {
+    tag(id: $id) {
+        id
+        name
+        categories {
+            id
+            name
+        }
+        tags {
+            id
+        }
+    }
+}

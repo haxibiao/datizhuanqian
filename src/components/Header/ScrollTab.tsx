@@ -24,7 +24,7 @@ const ScrollTab = observer(props => {
 
     // 计算scaleX动画系数
     const scaleValue = useCallback(defaultScale => {
-        const number = 4;
+        const number = 5;
         const arr = new Array(number * 2);
         return arr.fill(0).reduce(
             function(pre, cur, idx) {
@@ -52,7 +52,9 @@ const ScrollTab = observer(props => {
                     {props.renderTabItem ? (
                         props.renderTabItem({ name, page, isActive })
                     ) : (
-                        <Text style={[styles.textStyle, props.textStyle, changeTextStyle]}>{name}</Text>
+                        <Animated.Text style={[styles.textStyle, props.textStyle, changeTextStyle]}>
+                            {name}
+                        </Animated.Text>
                     )}
                 </TouchableOpacity>
             );
