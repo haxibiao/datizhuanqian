@@ -2,12 +2,11 @@
  * @flow
  * created by wyk made in 2019-03-18 22:28:33
  */
-'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Keyboard, LayoutAnimation } from 'react-native';
+import { StyleSheet, Platform, View, Keyboard, LayoutAnimation, StatusBar, Dimensions } from 'react-native';
+import app from '../../store/app';
 import DeviceInfo from 'react-native-device-info';
-const systemVersion = DeviceInfo.getSystemVersion();
 import { Theme, PxFit, ISIOS, ISAndroid } from '../../utils';
 
 type Props = {
@@ -30,11 +29,11 @@ class KeyboardSpacer extends Component<Props> {
 
     componentDidMount() {
         if (!this.showListener) {
-            let name = ISIOS ? 'keyboardWillShow' : 'keyboardDidShow';
+            const name = ISIOS ? 'keyboardWillShow' : 'keyboardDidShow';
             this.showListener = Keyboard.addListener(name, e => this.onKeyboardShow(e));
         }
         if (!this.hideListener) {
-            let name = ISIOS ? 'keyboardWillHide' : 'keyboardDidHide';
+            const name = ISIOS ? 'keyboardWillHide' : 'keyboardDidHide';
             this.hideListener = Keyboard.addListener(name, () => this.onKeyboardHide());
         }
     }
@@ -50,7 +49,7 @@ class KeyboardSpacer extends Component<Props> {
         }
     }
 
-    componentDidUpdate(props, state) {
+    componentWillUpdate(props, state) {
         if (state.keyboardHeight !== this.state.keyboardHeight) {
             LayoutAnimation.configureNext({
                 duration: 500,
@@ -68,11 +67,20 @@ class KeyboardSpacer extends Component<Props> {
     }
 
     onKeyboardShow(e) {
-        if (!e || !e.endCoordinates || !e.endCoordinates.height) return;
-        let height = e.endCoordinates.height + (this.props.topInsets ? this.props.topInsets : 0);
-        if (ISAndroid && Theme.HAS_NOTCH && systemVersion == 9) {
-            height += 75;
+        let FixTopInsets = 0;
+        if (['Redmi', 'Xiaomi', 'HUAWEI'].includes(DeviceInfo.getBrand())) {
+            FixTopInsets = app.viewportHeight - Dimensions.get('window').height || 0;
         }
+        if (
+            DeviceInfo.getBrand() === 'meizu' &&
+            DeviceInfo.getSystemVersion() >= 8 &&
+            Math.floor(Dimensions.get('window').height) === Math.floor(Dimensions.get('screen').height)
+        ) {
+            FixTopInsets = -16;
+        }
+        if (!e || !e.endCoordinates || !e.endCoordinates.height) return;
+        let height = e.endCoordinates.height + (this.props.topInsets || 0);
+        height += FixTopInsets;
         this.setState({ keyboardHeight: height });
     }
 
@@ -88,9 +96,9 @@ class KeyboardSpacer extends Component<Props> {
 const styles = StyleSheet.create({
     keyboardSpace: {
         backgroundColor: 'rgba(0, 0, 0, 0)',
+        bottom: 0,
         left: 0,
         right: 0,
-        bottom: 0,
     },
 });
 

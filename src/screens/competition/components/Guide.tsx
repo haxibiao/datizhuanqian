@@ -11,7 +11,7 @@ const Guide = props => {
             <View>
                 <Text style={styles.text}>1.所有场次对手随即匹配，每场对战总共8道题目。</Text>
                 <Text style={styles.highlight}>
-                    2.对战开始前，系统自动扣除所需的<Text style={styles.highlight}>{app.gameConfig.ticket_loss}</Text>
+                    2.对战开始后，系统自动扣除所需的<Text style={styles.highlight}>{app.gameConfig.ticket_loss}</Text>
                     精力点与<Text style={styles.highlight}>{app.gameConfig.gold_loss}</Text>智慧点。
                 </Text>
                 <Text style={styles.text}>
