@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { SafeText, Row, Badge, Avatar, StatusView } from '@src/components';
 import { syncGetter, exceptionCapture } from '@src/common';
@@ -39,58 +39,30 @@ const Chat = ({ chat }) => {
 
 const Chats = props => {
     const [chats, setChats] = useState([]);
-    const init = useRef(true);
-    const offset = useRef(0);
-    const flag = useRef(false);
-    const [loadingState, setLoadingState] = useState(false);
-    const { data: chatsData, refetch, fetchMore, loading, error } = useQuery(GQL.ChatsQuery, {
-        variables: { limit: 10, offset: offset.current },
+    const { data: chatsData, refetch } = useQuery(GQL.ChatsQuery, {
+        variables: { limit: 100 },
         fetchPolicy: 'network-only',
     });
-    console.log('====================================');
-    console.log('chatsData', chatsData, error);
-    console.log('====================================');
-    useEffect(() => {
-        setLoadingState(loading);
-    }, [loading]);
 
     useEffect(() => {
         const newChats = syncGetter('chats', chatsData);
-        if (init.current && Array.isArray(newChats)) {
-            init.current = false;
+        if (newChats) {
             setChats(newChats);
         }
     }, [chatsData]);
 
-    const onEndReached = useCallback(async () => {
-        if (flag.current) {
-            return;
-        }
-        setLoadingState(true);
-        flag.current = true;
-        const [err, res] = await exceptionCapture(() => {
-            return fetchMore({
-                variables: {
-                    offset: chats.length,
-                },
-            });
+    useEffect(() => {
+        const navWillBlurListener = props.navigation.addListener('willFocus', payload => {
+            refetch();
         });
-        if (Array.isArray(syncGetter('chats', res))) {
-            setChats(chats => {
-                offset.current += res.chats.length;
-                return chats.concat(res.chats);
-            });
-            if (res.chats.length > 0) {
-                flag.current = true;
-            }
-        }
-        setLoadingState(false);
-    }, []);
+        return () => {
+            navWillBlurListener.remove();
+        };
+    }, [refetch]);
 
     return (
         <FlatList
             data={chats}
-            onEndReached={onEndReached}
             renderItem={({ item }) => {
                 return <Chat chat={item} />;
             }}
@@ -104,10 +76,14 @@ const Chats = props => {
     );
 };
 
-// if (true) {
+// const onEndReached = useCallback(async () => {
+//     if (flag.current) {
+//         return;
+//     }
+//     flag.current = true;
 //     fetchMore({
 //         variables: {
-//             offset: chats.length,
+//             offset: chats.current.length,
 //         },
 //         updateQuery: (prev, { fetchMoreResult }) => {
 //             const newChats = syncGetter('chats', fetchMoreResult);
@@ -119,7 +95,33 @@ const Chats = props => {
 //             }
 //         },
 //     });
-// }
+//     flag.current = false;
+// }, []);
+
+// const onEndReached = useCallback(async () => {
+//     if (flag.current) {
+//         return;
+//     }
+//     setLoadingState(true);
+//     flag.current = true;
+//     const [err, res] = await exceptionCapture(() => {
+//         return fetchMore({
+//             variables: {
+//                 offset: chats.length,
+//             },
+//         });
+//     });
+//     if (Array.isArray(syncGetter('chats', res))) {
+//         setChats(chats => {
+//             offset.current += res.chats.length;
+//             return chats.concat(res.chats);
+//         });
+//         if (res.chats.length > 0) {
+//             flag.current = true;
+//         }
+//     }
+//     setLoadingState(false);
+// }, []);
 
 const styles = StyleSheet.create({
     avatar: {

@@ -1,9 +1,10 @@
 import { observable, action, runInAction } from 'mobx';
 import { app } from '@src/store';
 import { GQL } from '@src/apollo';
+import { syncGetter } from '@src/common';
 import JPushModule from 'jpush-react-native';
 
-export type ViewStatus = 'loadMore' | 'error' | 'finished';
+export type ViewStatus = 'init' | 'loadMore' | 'error' | 'loaded' | 'finished';
 
 interface User {
     id: number;
@@ -12,7 +13,7 @@ interface User {
 }
 
 interface ChatUser {
-    _id: number;
+    _id: number | string;
     name: string;
     avatar: string;
 }
@@ -27,7 +28,7 @@ interface Message {
 }
 
 interface NewMessage {
-    _id: number;
+    _id: number | string;
     user: ChatUser;
     createdAt?: string;
     [key: string]: any;
@@ -44,7 +45,7 @@ class ChatStore {
     @observable public me: User;
     @observable public friend: User;
     @observable public chatId: number = 0;
-    @observable public status: ViewStatus = 'finished';
+    @observable public status: ViewStatus = 'init';
     @observable public messagesData: NewMessage[] = [];
     @observable public newMessageOffset: number = 0;
     @observable public hasMoreMessage: boolean = false;
@@ -55,9 +56,9 @@ class ChatStore {
         this.me = props.me;
         this.friend = props.friend;
         if (props.chatId) {
-            this.fetchMessages(props.chatId);
             this.chatId = props.chatId;
-            this.listenChat(this.chatId);
+            this.fetchMessages();
+            this.listenChat();
         }
     }
 
@@ -73,8 +74,8 @@ class ChatStore {
             .then((result: any) => {
                 const chatroom = result.data.Room;
                 this.chatId = chatroom.id as number;
-                this.listenChat(this.chatId);
-                this.fetchMessages(this.chatId);
+                this.fetchMessages();
+                this.listenChat();
             })
             .catch((err: any) => {
                 console.log('err', err);
@@ -82,8 +83,8 @@ class ChatStore {
     }
 
     @action.bound
-    public listenChat(chatId: number) {
-        app.echo.private(`App.Chat.${chatId}`).listen('NewMessage', (message: Message) => {
+    public listenChat() {
+        app.echo.private(`App.Chat.${this.chatId}`).listen('NewMessage', (message: Message) => {
             console.log('new message', message);
             this.appendMessage(this.constructMessage(message));
             this.sendLocalNotification(message, this.friend.name);
@@ -105,8 +106,9 @@ class ChatStore {
 
     @action.bound
     public constructNewMessage(message: string): NewMessage {
+        ++this.messageId;
         return {
-            _id: this.messageId++,
+            _id: '_id' + this.messageId,
             text: message,
             user: {
                 _id: this.me.id,
@@ -141,21 +143,26 @@ class ChatStore {
     }
 
     @action.bound
-    public fetchMessages(chatId: number) {
+    public fetchMessages() {
+        if (this.status === 'loadMore') {
+            return;
+        }
         this.status = 'loadMore';
         app.client
             .query({
                 query: GQL.MessagesQuery,
                 variables: {
-                    chat_id: chatId,
+                    chat_id: this.chatId,
                     limit: 10,
                     offset: this.newMessageOffset,
                 },
+                fetchPolicy: 'network-only',
             })
             .then((data: any) => {
-                this.status = 'finished';
-                const messages: Message[] = data.data.messages;
-                console.log('Data', data);
+                const messages: Message[] = syncGetter('data.messages', data) || [];
+                console.log('====================================');
+                console.log('messages', this.newMessageOffset, messages);
+                console.log('====================================');
                 this.newMessageOffset += messages.length;
                 messages.forEach((message: Message) => {
                     const incomingMessage = {
@@ -170,6 +177,12 @@ class ChatStore {
                     };
                     this.prependMessage(incomingMessage);
                 });
+                if (messages.length >= 10) {
+                    this.hasMoreMessage = true;
+                } else {
+                    this.status = 'finished';
+                }
+                this.status = 'loaded';
             })
             .catch((err: any) => {
                 this.status = 'error';
@@ -193,7 +206,7 @@ class ChatStore {
         JPushModule.sendLocalNotification({
             buildId: 1,
             id: data.id,
-            content: data.message_content,
+            content: data.body.text,
             extra: {},
             fireTime: currentDate.getTime() + 3000,
             title,

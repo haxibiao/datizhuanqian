@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Theme, PxFit, Tools, ISAndroid } from '@src/utils';
 import { PageContainer } from '@src/components';
 import { observer, app } from '@src/store';
@@ -29,29 +29,46 @@ const index = observer(props => {
             <Send
                 {...props}
                 onSend={chatStore.sendMessage}
-                containerStyle={chatStyle.sendButton}
+                containerStyle={[chatStyle.sendButton, !chatStore.textMessage && chatStyle.disabledButton]}
                 alwaysShowSend
-                // disabled={disabled}
-            >
+                disabled={!chatStore.textMessage}>
                 <Text style={{ color: '#fff', fontSize: PxFit(14) }}>发送</Text>
             </Send>
         );
+    }, []);
+
+    const renderLoadEarlier = useCallback(() => {
+        if (chatStore.hasMoreMessage) {
+            return (
+                <View style={styles.loadEarlier}>
+                    {chatStore.status === 'loadMore' && (
+                        <ActivityIndicator size="small" color="rgba(255, 87, 51 ,0.6)" />
+                    )}
+                    {chatStore.status === 'loaded' && (
+                        <TouchableOpacity style={styles.touchView} onPress={chatStore.fetchMessages}>
+                            <Text style={styles.loadMoreText}>点击加载更多</Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
+            );
+        } else {
+            return null;
+        }
     }, []);
 
     return (
         <PageContainer
             white
             title={user.name}
-            // autoKeyboardInsets={ISAndroid}
+            autoKeyboardInsets={ISAndroid}
             topInsets={ISAndroid ? 0 : -Theme.statusBarHeight}>
-            <View style={{ flex: 1, backgroundColor: '#F6F7F9' }}>
+            <View style={styles.container}>
                 <GiftedChat
                     renderAvatarOnTop={true}
                     showUserAvatar={true}
-                    // loadEarlier={true}
                     isAnimated={true}
                     showAvatarForEveryMessage={true}
-                    placeholder={'写私信...'}
+                    placeholder={'发私信...'}
                     onInputTextChanged={chatStore.changText}
                     text={chatStore.textMessage}
                     renderInputToolbar={renderInputToolbar}
@@ -59,7 +76,6 @@ const index = observer(props => {
                     renderSend={renderSend}
                     renderBubble={renderBubble}
                     messages={chatStore.messagesData.slice()}
-                    isLoadingEarlier={true}
                     onPressAvatar={user => {
                         user = { ...user, ...{ id: user._id } };
                         navigation.navigate('User', { user });
@@ -69,6 +85,9 @@ const index = observer(props => {
                         name: app.me.name,
                         avatar: app.me.avatar,
                     }}
+                    loadEarlier={true}
+                    isLoadingEarlier={true}
+                    renderLoadEarlier={renderLoadEarlier}
                 />
             </View>
         </PageContainer>
@@ -79,7 +98,7 @@ var chatStyle = {
     inputToolbar: {
         paddingVertical: PxFit(8),
         borderTopWidth: 0,
-        backgroundColor: '#F1EFFA',
+        backgroundColor: '#F0F3F4',
     },
     actions: {
         marginTop: 0,
@@ -102,7 +121,7 @@ var chatStyle = {
         paddingTop: 0,
         paddingBottom: 0,
         alignItems: 'center',
-        borderRadius: PxFit(6),
+        borderRadius: PxFit(8),
         backgroundColor: '#fff',
         paddingHorizontal: PxFit(10),
     },
@@ -110,12 +129,13 @@ var chatStyle = {
         marginBottom: 5,
         marginRight: PxFit(15),
         width: 60,
-        height: 31,
-        borderRadius: PxFit(6),
+        height: 30,
+        borderRadius: PxFit(8),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Theme.theme,
+        backgroundColor: '#1CACF9',
     },
+    disabledButton: { opacity: 0.5 },
     bubbleWrapper: {
         left: {
             marginBottom: PxFit(15),
@@ -149,12 +169,25 @@ var chatStyle = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F7F7F7',
     },
     loadEarlier: {
         marginVertical: PxFit(20),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    touchView: {
+        width: PxFit(100),
+        height: PxFit(30),
+        borderRadius: PxFit(15),
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 87, 51 ,0.6)',
+    },
+    loadMoreText: {
+        fontSize: PxFit(11),
+        color: '#fff',
     },
     darkText: {
         fontSize: PxFit(14),
@@ -165,96 +198,5 @@ const styles = StyleSheet.create({
         color: Theme.subTextColor,
     },
 });
-
-// const chatStyle = {
-//     inputToolbar: {
-//         paddingVertical: PxFit(5),
-//         borderTopWidth: 0,
-//         backgroundColor: '#fff',
-//     },
-//     actions: {
-//         marginTop: 0,
-//         marginLeft: 0,
-//         marginBottom: PxFit(4),
-//         width: PxFit(32),
-//         height: PxFit(32),
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-//     wrapperStyle: {
-//         borderWidth: 0,
-//         borderRadius: 0,
-//     },
-//     composer: {
-//         marginBottom: 0,
-//         marginRight: PxFit(15),
-//         marginLeft: PxFit(15),
-//         padding: 0,
-//         paddingTop: 0,
-//         paddingBottom: 0,
-//         alignItems: 'center',
-//         borderRadius: PxFit(6),
-//         backgroundColor: '#fff',
-//         paddingHorizontal: PxFit(10),
-//     },
-//     sendButton: {
-//         marginBottom: 5,
-//         marginRight: PxFit(15),
-//         width: 60,
-//         height: 31,
-//         borderRadius: PxFit(6),
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         backgroundColor: Theme.theme,
-//     },
-//     bubbleWrapper: {
-//         left: {
-//             marginBottom: PxFit(15),
-//             marginLeft: PxFit(3),
-//             backgroundColor: '#eee',
-//             borderWidth: PxFit(2),
-//             borderColor: '#fff',
-//             overflow: 'hidden',
-//         },
-//         right: {
-//             marginBottom: PxFit(15),
-//             marginRight: PxFit(3),
-//             backgroundColor: '#b7e8ff',
-//             borderWidth: PxFit(2),
-//             borderColor: '#fff',
-//             overflow: 'hidden',
-//         },
-//     },
-//     bubbleText: {
-//         left: {
-//             padding: PxFit(5),
-//             color: '#515151',
-//         },
-//         right: {
-//             padding: PxFit(5),
-//             color: '#515151',
-//         },
-//     },
-// };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         backgroundColor: '#fff',
-//         flex: 1,
-//     },
-//     darkText: {
-//         color: Theme.defaultTextColor,
-//         fontSize: PxFit(14),
-//     },
-//     loadEarlier: {
-//         flexDirection: 'row',
-//         justifyContent: 'center',
-//         marginVertical: PxFit(20),
-//     },
-//     tintText: {
-//         color: Theme.subTextColor,
-//         fontSize: PxFit(14),
-//     },
-// });
 
 export default index;
