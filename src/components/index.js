@@ -27,6 +27,7 @@ import VideoMark from './Content/VideoMark';
 // Header
 import NavigatorBar from './Header/NavigatorBar';
 import SearchBar from './Header/SearchBar';
+import ScrollTab from './Header/ScrollTab';
 // StatusView
 import StatusView from './StatusView';
 import EmptyView from './StatusView/EmptyView';
@@ -107,6 +108,7 @@ export {
     VideoMark,
     NavigatorBar,
     SearchBar,
+    ScrollTab,
     EmptyView,
     ErrorView,
     LoadingSpinner,

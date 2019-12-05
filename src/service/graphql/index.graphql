@@ -1,5 +1,6 @@
 #import './comment/index.graphql'
 #import './contribute/index.graphql'
+#import './chat/index.graphql'
 #import './feedback/index.graphql'
 #import './like/index.graphql'
 #import './notification/index.graphql'

@@ -1,13 +1,9 @@
 import { observable, action, runInAction } from 'mobx';
 import { app } from '@src/store';
-import { useApolloClient, GQL } from '@src/apollo';
+import { GQL } from '@src/apollo';
 import JPushModule from 'jpush-react-native';
 
-export const enum ViewStatus {
-    loadMore = 'loadMore',
-    error = 'error',
-    finished = 'finished',
-}
+export type ViewStatus = 'loadMore' | 'error' | 'finished';
 
 interface User {
     id: number;
@@ -22,11 +18,12 @@ interface ChatUser {
 }
 
 interface Message {
-    message_id: number;
-    message_content: string;
-    user_id: number;
-    user_name: string;
-    user_avatar: string;
+    id: number;
+    user: User;
+    body: {
+        text: string;
+    };
+    created_at: string;
 }
 
 interface NewMessage {
@@ -39,6 +36,7 @@ interface NewMessage {
 interface Props {
     me: User;
     friend: User;
+    chatId?: number;
 }
 
 // 聊天管理
@@ -46,25 +44,30 @@ class ChatStore {
     @observable public me: User;
     @observable public friend: User;
     @observable public chatId: number = 0;
-    @observable public status: ViewStatus = ViewStatus.finished;
+    @observable public status: ViewStatus = 'finished';
     @observable public messagesData: NewMessage[] = [];
-    @observable public currentPage: number = 1;
-    @observable public hasMorePages: boolean = false;
+    @observable public newMessageOffset: number = 0;
+    @observable public hasMoreMessage: boolean = false;
     @observable public messageId: number = 1;
     @observable public textMessage = '';
 
     public constructor(props: Props) {
         this.me = props.me;
         this.friend = props.friend;
+        if (props.chatId) {
+            this.fetchMessages(props.chatId);
+            this.chatId = props.chatId;
+            this.listenChat(this.chatId);
+        }
     }
 
     @action.bound
     public createChatroom(userId: number) {
         app.client
             .mutate({
-                mutation: GQL.RoomMutation,
+                mutation: GQL.CreateChatMutation,
                 variables: {
-                    id: userId,
+                    id: [this.me.id, userId],
                 },
             })
             .then((result: any) => {
@@ -80,35 +83,22 @@ class ChatStore {
 
     @action.bound
     public listenChat(chatId: number) {
-        app.echo
-            .join(`chat.${chatId}`)
-            .here((users: User[]) => {
-                console.log('echo join here users:', users);
-            })
-            .joining((user: User) => {
-                console.log(user.name);
-            })
-            .leaving((user: User) => {
-                console.log(user.name);
-            })
-            .listen('NewMessage', (message: Message) => {
-                console.log('new message', message);
-                if (message.user_id !== Number(this.me.id)) {
-                    this.appendMessage(this.constructMessage(message));
-                    this.sendLocalNotification(message, this.friend.name);
-                }
-            });
+        app.echo.private(`App.Chat.${chatId}`).listen('NewMessage', (message: Message) => {
+            console.log('new message', message);
+            this.appendMessage(this.constructMessage(message));
+            this.sendLocalNotification(message, this.friend.name);
+        });
     }
 
     @action.bound
     public constructMessage(message: Message): NewMessage {
         return {
-            _id: message.message_id,
-            text: message.message_content,
+            _id: message.id,
+            text: message.body.text,
             user: {
-                _id: message.user_id,
-                name: message.user_name,
-                avatar: message.user_avatar,
+                _id: message.user.id,
+                name: message.user.name,
+                avatar: message.user.avatar,
             },
         };
     }
@@ -134,11 +124,12 @@ class ChatStore {
         this.textMessage = '';
         app.client
             .mutate({
-                mutation: GQL.sendMessageMutation,
+                mutation: GQL.CreateMessageMutation,
                 variables: {
-                    user_id: this.me.id,
                     chat_id: this.chatId,
-                    message: text,
+                    body: {
+                        text,
+                    },
                 },
             })
             .then((data: any) => {
@@ -151,21 +142,37 @@ class ChatStore {
 
     @action.bound
     public fetchMessages(chatId: number) {
-        this.status = ViewStatus.loadMore;
+        this.status = 'loadMore';
         app.client
             .query({
-                query: GQL.messagesQuery,
+                query: GQL.MessagesQuery,
                 variables: {
                     chat_id: chatId,
-                    page: this.currentPage,
+                    limit: 10,
+                    offset: this.newMessageOffset,
                 },
             })
             .then((data: any) => {
-                this.status = ViewStatus.finished;
+                this.status = 'finished';
+                const messages: Message[] = data.data.messages;
                 console.log('Data', data);
+                this.newMessageOffset += messages.length;
+                messages.forEach((message: Message) => {
+                    const incomingMessage = {
+                        _id: message.id,
+                        text: message.body.text,
+                        // createdAt: message.created_at,
+                        user: {
+                            _id: message.user.id,
+                            name: message.user.name,
+                            avatar: message.user.avatar,
+                        },
+                    };
+                    this.prependMessage(incomingMessage);
+                });
             })
             .catch((err: any) => {
-                this.status = ViewStatus.error;
+                this.status = 'error';
                 console.log('err', err);
             });
     }
@@ -185,7 +192,7 @@ class ChatStore {
         const currentDate = new Date();
         JPushModule.sendLocalNotification({
             buildId: 1,
-            id: data.message_id,
+            id: data.id,
             content: data.message_content,
             extra: {},
             fireTime: currentDate.getTime() + 3000,
