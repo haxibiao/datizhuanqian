@@ -114,7 +114,7 @@ const UserProfile = props => {
                         <Text>他的勋章</Text>
                     </Row>
                     <Row>
-                        <Row>
+                        {/*  <Row>
                             <Image
                                 source={require('@src/assets/images/medal1.png')}
                                 style={{ width: 16, height: 16, marginRight: PxFit(10) }}
@@ -123,7 +123,7 @@ const UserProfile = props => {
                                 source={require('@src/assets/images/medal2.png')}
                                 style={{ width: 16, height: 16, marginRight: PxFit(10) }}
                             />
-                        </Row>
+                        </Row> */}
                         <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                     </Row>
                 </TouchFeedback>

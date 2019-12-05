@@ -771,3 +771,15 @@ mutation SetWalletInfoMutation($data: WalletInput) {
         real_name
     }
 }
+
+#我的勋章
+query MedalsQuery($limit: Int, $offset: Int) {
+    medals(limit: $limit, offset: $offset) {
+        id
+        name_cn
+        introduction
+        done_icon_url
+        undone_icon_url
+        owned
+    }
+}

@@ -6,8 +6,7 @@ import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { Overlay } from 'teaset';
-import RuleDescription from './RuleDescription';
-import { BoxShadow } from 'react-native-shadow';
+import MedalIntro from './components/MedalIntro';
 
 interface Props {
     navigation: any;
@@ -24,33 +23,20 @@ const Medal = (props: Props) => {
     const { navigation, user } = props;
     console.log('WithdrawHeader user :', user);
 
-    const MedalList = [
-        {
-            image: require('@src/assets/images/medal1.png'),
-            name: '答题王者',
-        },
-        {
-            image: require('@src/assets/images/medal2.png'),
-            name: '腰缠万贯',
-        },
-        {
-            image: require('@src/assets/images/medal3.png'),
-            name: '答题王者',
-        },
-        {
-            image: require('@src/assets/images/medal4.png'),
-            name: '腰缠万贯',
-        },
-        {
-            image: require('@src/assets/images/medal5.png'),
-            name: '答题王者',
-        },
-        {
-            image: require('@src/assets/images/medal6.png'),
-            name: '腰缠万贯',
-        },
-    ];
+    const showMedalIntro = medal => {
+        const overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <MedalIntro hide={() => Overlay.hide(OverlayKey)} medal={medal} />
+                </View>
+            </Overlay.View>
+        );
+        const OverlayKey = Overlay.show(overlayView);
+    };
 
+    const { data, loading, error } = useQuery(GQL.MedalsQuery, { fetchPolicy: 'network-only' });
+
+    if (loading) return null;
     return (
         <View>
             <ImageBackground
@@ -73,12 +59,12 @@ const Medal = (props: Props) => {
                 </Row>
             </ImageBackground>
             <View style={styles.medalList}>
-                {MedalList.map((data, index) => {
+                {data.medals.map((medal, index) => {
                     return (
-                        <View style={styles.medalContent} key={index}>
-                            <Image source={data.image} style={styles.medalImage} />
-                            <Text>{data.name}</Text>
-                        </View>
+                        <TouchFeedback style={styles.medalContent} key={index} onPress={() => showMedalIntro(medal)}>
+                            <Image source={{ uri: medal.done_icon_url }} style={styles.medalImage} />
+                            <Text>{medal.name_cn || '才高八斗'}</Text>
+                        </TouchFeedback>
                     );
                 })}
             </View>
@@ -132,6 +118,17 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH / 4,
         height: SCREEN_WIDTH / 4,
         marginBottom: PxFit(10),
+    },
+    overlayInner: {
+        flex: 1,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rule: {
+        flex: 1,
+        justifyContent: 'center',
     },
 });
 export default Medal;
