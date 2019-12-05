@@ -11,8 +11,10 @@ query TasksQuery($type: Int, $offset: Int, $limit: Int) {
         taskStatus
         route
         submit_name
+        package
     }
 }
+
 #领取任务
 mutation ReceiveTaskMutation($task_id: Int!) {
     receiveTask(task_id: $task_id)
@@ -26,6 +28,13 @@ mutation TaskRewardMutation($task_id: Int!) {
 #答复任务
 mutation ReplyTaskMutation($task_id: Int!, $content: ReplyContent) {
     replyTask(task_id: $task_id, content: $content)
+}
+
+#完成任务
+mutation CompleteTask($task_id: Int!) {
+    completeTask(task_id: $task_id) {
+        id
+    }
 }
 
 #上传图片

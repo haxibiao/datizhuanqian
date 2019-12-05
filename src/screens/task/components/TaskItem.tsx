@@ -8,6 +8,7 @@ import { Mutation, compose, useMutation, GQL } from 'apollo';
 import { exceptionCapture } from 'common';
 import { app } from 'store';
 import { ttad, AppUtil } from 'native';
+import service from 'service';
 
 interface Props {
     handler: Function;
@@ -27,6 +28,8 @@ interface Task {
     submit_name: string;
     details: string;
     type: Number;
+    route: String;
+    package: String;
 }
 
 const TaskItem = (props: Props) => {
@@ -34,8 +37,6 @@ const TaskItem = (props: Props) => {
     const [taskDetailVisiable, setTaskDetailVisiable] = useState(false);
     const [rotateValue, setRotateValue] = useState(new Animated.Value(0));
     const [fadeValue, setFadeValue] = useState(new Animated.Value(0));
-    const [appExist, setAppExist] = useState(false);
-    const route = 'com.diudie';
 
     const refetchQuery = () => [
         {
@@ -61,7 +62,7 @@ const TaskItem = (props: Props) => {
         refetchQueries: refetchQuery,
     });
 
-    //领取奖励
+    //领取任务奖励
     const getReward = async () => {
         setLoading();
         const [error, res] = await exceptionCapture(taskReward);
@@ -91,19 +92,64 @@ const TaskItem = (props: Props) => {
         setUnLoading();
         if (res.data.receiveTask == 1) {
             Toast.show({ content: '领取成功' });
-            if (type == 2) {
+
+            if (task.type == 2 && task.package) {
                 Tools.navigate('任务详情', { task: task });
+                viewTask();
             }
         } else {
             Toast.show({ content: '已经领取该任务了哦~' });
         }
     };
 
-    const stateChangeHandle = (event: any) => {
-        if (event === 'active') {
-            AppUtil.CheckApkExist(route, (data: any) => {
+    // 完成任务
+    const completeTask = () => {
+        const { task } = props;
+        app.client
+            .mutate({
+                mutation: GQL.CompleteTask,
+                variables: {
+                    task_id: task.id,
+                },
+                refetchQueries: refetchQuery,
+            })
+            .then((data: any) => {
                 console.log('data :', data);
-                setAppExist(data);
+                Toast.show({
+                    content: '任务完成',
+                });
+            })
+            .catch((err: any) => {
+                console.log('err :', err);
+            });
+    };
+
+    // 查看任务
+    const viewTask = () => {
+        app.client
+            .query({
+                query: GQL.PostQuery,
+                variables: { id: 10667 },
+                fetchPolicy: 'network-only',
+            })
+            .then((result: any) => {
+                console.log('result :', result);
+                const post = Tools.syncGetter('data.post', result);
+                if (post) {
+                    Tools.navigate('VideoPost', { medium: [post], isPost: true });
+                }
+            })
+            .catch((error: any) => {});
+    };
+
+    //处理下载任务
+    const stateChangeHandle = (event: any) => {
+        const { task } = props;
+        console.log('task :', task);
+        if (event === 'active' && task.package && task.taskStatus == 0) {
+            AppUtil.CheckApkExist(task.package, (data: any) => {
+                console.log('CheckApkExist data :', data);
+                completeTask();
             });
         }
     };
@@ -170,6 +216,24 @@ const TaskItem = (props: Props) => {
                     });
                 };
                 break;
+            case 0:
+                if (task.type == 2 && task.package) {
+                    name = '去下载';
+                    doTask = () => {
+                        Linking.openURL(`market://details?id=${task.package}`);
+                        service.dataReport({
+                            data: {
+                                category: '用户行为',
+                                action: 'user_click_try_play_task',
+                                name: '用户点击试玩任务',
+                            },
+                            callback: (result: any) => {
+                                console.warn('result', result);
+                            },
+                        });
+                    };
+                }
+                break;
             case null:
                 name = '领取';
                 doTask = getTask;
@@ -196,13 +260,7 @@ const TaskItem = (props: Props) => {
             //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
             case 7:
                 backgroundColor = '#FF5267';
-            case 8:
-                if (task.type == 8 && !appExist) {
-                    name = '做任务';
-                    doTask = () => {
-                        Linking.openURL('market://details?id=com.diudie');
-                    };
-                }
+                break;
         }
 
         return (
