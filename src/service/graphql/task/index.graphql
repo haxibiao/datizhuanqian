@@ -12,6 +12,7 @@ query TasksQuery($type: Int, $offset: Int, $limit: Int) {
         route
         submit_name
         package
+        post_id
     }
 }
 

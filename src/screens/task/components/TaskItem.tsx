@@ -30,6 +30,7 @@ interface Task {
     type: Number;
     route: String;
     package: String;
+    post_id: Number;
 }
 
 const TaskItem = (props: Props) => {
@@ -126,10 +127,11 @@ const TaskItem = (props: Props) => {
 
     // 查看任务
     const viewTask = () => {
+        const { task } = props;
         app.client
             .query({
                 query: GQL.PostQuery,
-                variables: { id: 10667 },
+                variables: { id: task.post_id },
                 fetchPolicy: 'network-only',
             })
             .then((result: any) => {
