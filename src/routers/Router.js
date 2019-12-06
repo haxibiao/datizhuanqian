@@ -68,7 +68,7 @@ import RecruitScreen from '../screens/profile/Recruit';
 import MakeMoenyManualScreen from '../screens/profile/MakeMoenyManual';
 import MyPublishScreen from '../screens/profile/MyPublish';
 // 通知
-import NotificationScreen from '../screens/notification';
+import NotificationScreen from '../screens/notification/Remind';
 import SystemNotificationScreen from '../screens/notification/SystemNotification';
 import OfficialNoticeScreen from '../screens/notification/OfficialNotice';
 import CommentNotificationScreen from '../screens/notification/CommentNotification';

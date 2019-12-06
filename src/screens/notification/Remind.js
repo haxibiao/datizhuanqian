@@ -38,7 +38,7 @@ class Remind extends Component {
         const loading = !user;
         const calcUnreads = this.calcUnreads(user);
         return (
-            <PageContainer hiddenNavBar loading={loading} title="消息中心" white>
+            <PageContainer loading={loading} title="消息中心" white>
                 <TouchFeedback
                     style={styles.notificationItem}
                     onPress={() => navigation.navigate('SystemNotification')}>
