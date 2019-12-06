@@ -11,6 +11,7 @@ import MatchTheUser from './components/MatchTheUser';
 import Guide from './components/Guide';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
+import service from 'service';
 
 export default observer(props => {
     const navigation = useNavigation();
@@ -97,6 +98,19 @@ export default observer(props => {
             app.recordCompetitionGuide(true);
             showGuide();
         }
+    }, []);
+
+    useEffect(() => {
+        service.dataReport({
+            data: {
+                category: '用户行为',
+                action: 'user_click_compete_screen',
+                name: '用户进入答题PK页',
+            },
+            callback: (result: any) => {
+                console.warn('result', result);
+            },
+        });
     }, []);
 
     return (

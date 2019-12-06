@@ -1,6 +1,16 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, ImageBackground } from 'react-native';
-import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, Iconfont } from 'components';
+import {
+    TouchFeedback,
+    Button,
+    SubmitLoading,
+    TipsOverlay,
+    ItemSeparator,
+    Row,
+    Iconfont,
+    ErrorView,
+    LoadingSpinner,
+} from 'components';
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
@@ -49,14 +59,19 @@ const Medal = (props: Props) => {
         const OverlayKey = Overlay.show(overlayView);
     };
 
-    const { data, loading, error } = useQuery(GQL.MedalsQuery, {
+    const { data, loading, error, refetch } = useQuery(GQL.MedalsQuery, {
         variables: {
-            user_id: user.id || app.me.id,
+            user_id: user.id,
         },
     });
 
-    console.log('user :', user);
-    if (loading) return null;
+    console.log('user :', user, data, error);
+    if (error) return <ErrorView onPress={refetch} />;
+    if (loading) return <LoadingSpinner />;
+
+    const owneds = data.medals.filter((elem, i) => {
+        return elem.owned == true;
+    });
 
     return (
         <View>
@@ -75,7 +90,7 @@ const Medal = (props: Props) => {
                     </View>
                 </Row>
                 <Row style={styles.title}>
-                    <Text style={styles.titleCount}>{Tools.syncGetter('profile.medals_count', user)}</Text>
+                    <Text style={styles.titleCount}>{owneds.length}</Text>
                     <Text style={styles.titleText}>个</Text>
                 </Row>
             </ImageBackground>
