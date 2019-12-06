@@ -270,16 +270,47 @@ query TagsQuery {
     }
 }
 
-query TagQuery($id: Int!) {
+query TagsCategoriesQuery($id: Int!, $offset: Int, $limit: Int) {
     tag(id: $id) {
         id
         name
-        categories {
+        tags(offset: $offset, limit: $limit) {
             id
             name
+            categories {
+                id
+                icon
+                name
+                description
+                is_official
+                questions_count
+                answers_count
+            }
         }
-        tags {
+    }
+}
+
+query TagCategoriesQuery($id: Int!, $offset: Int, $limit: Int) {
+    tag(id: $id) {
+        id
+        name
+        categories(offset: $offset, limit: $limit) {
             id
+            icon
+            name
+            description
+            is_official
+            questions_count
+            answers_count
+            children {
+                id
+                icon
+                name
+                description
+                is_official
+                questions_count
+                answers_count
+            }
         }
     }
 }

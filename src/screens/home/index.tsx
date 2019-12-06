@@ -1,5 +1,6 @@
 import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 import {
     PageContainer,
     TouchFeedback,
@@ -8,21 +9,22 @@ import {
     beginnerGuidance,
     VideoTaskGuidance,
 } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Config } from '@src/utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Config } from '@src/utils';
 import { observer, app, storage, keys, config } from '@src/store';
 import { Query, useQuery, GQL } from '@src/apollo';
 import { syncGetter } from '@src/common';
 import { Util } from 'native';
+import { when } from 'mobx';
+import { Overlay } from 'teaset';
+import JPushModule from 'jpush-react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { useNavigation } from 'react-navigation-hooks';
 import { useApolloClient } from '@apollo/react-hooks';
-import { Overlay } from 'teaset';
-import { when } from 'mobx';
-import JPushModule from 'jpush-react-native';
+import ScrollableTabBar from './components/ScrollableTabBar';
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
-import FixedSection from './FixedSection';
-import DynamicSection from './DynamicSection';
+import TagList from './TagList';
+import TagsList from './TagsList';
 
 // 监听新用户登录
 when(
@@ -36,7 +38,7 @@ when(
     },
 );
 
-const Index = observer(props => {
+const index = observer(props => {
     const navigation = useNavigation();
     const client = useApolloClient();
     const registerTimer = useRef();
@@ -102,7 +104,7 @@ const Index = observer(props => {
                     })
                     .then(({ data }) => {})
                     .catch(error => {
-                        const info = error.toString().indexOf('登录');
+                        const info = error.toString().iOf('登录');
                         if (info > -1) {
                             app.forget();
                             Toast.show({ content: '您的身份信息已过期,请重新登录' });
@@ -164,59 +166,57 @@ const Index = observer(props => {
         };
     }, []);
 
-    const Sections = useMemo(() => {
-        console.log('====================================');
-        console.log('tags', tags);
-        console.log('====================================');
-        if (Array.isArray(tags)) {
-            return tags.map((tag, index) => {
-                if (index === 0 || index === tags.length - 1) {
-                    // return <FixedSection tabLabel={tag.name} tag={tag} />;
-                    return <View key={tag.id} tabLabel={tag.name} tag={tag} />;
-                } else {
-                    // return <DynamicSection tabLabel={tag.name} tag={tag} />;
-                    return <View key={tag.id} tabLabel={tag.name} tag={tag} />;
-                }
-            });
+    const Content = useMemo(() => {
+        if (tags) {
+            return (
+                <ScrollableTabView
+                    prerenderingSiblingsNumber={0}
+                    renderTabBar={() => <ScrollableTabBar {...scrollTabStyle} />}>
+                    {tags.map((tag, index) => {
+                        if (index === 0 || index === tags.length - 1) {
+                            return <TagList key={tag.id} tabLabel={tag.name} tag={tag} />;
+                        } else {
+                            return <TagsList key={tag.id} tabLabel={tag.name} tag={tag} />;
+                        }
+                    })}
+                </ScrollableTabView>
+            );
         } else {
             return <View />;
         }
     }, [tags]);
 
     return (
-        <PageContainer hiddenNavBar white contentViewStyle={styles.container}>
-            <ScrollableTabView
-                prerenderingSiblingsNumber={0}
-                renderTabBar={props => (
-                    <ScrollTab
-                        {...props}
-                        underlineWidth={PxFit(16)}
-                        style={scrollTabStyle.tabBarStyle}
-                        activeTextStyle={scrollTabStyle.activeTextStyle}
-                        inactivityTextStyle={scrollTabStyle.inactivityTextStyle}
-                        underlineStyle={scrollTabStyle.underlineStyle}
-                    />
-                )}>
-                {Sections}
-                {/* <View tabLabel={1} />
-                <View tabLabel={2} />
-                <View tabLabel={3} /> */}
-            </ScrollableTabView>
+        <PageContainer
+            title={Config.AppName}
+            white
+            isTopNavigator
+            rightView={!ISIOS ? <TimeReward navigation={navigation} /> : null}>
+            {Content}
         </PageContainer>
     );
 });
 
 const scrollTabStyle = {
-    tabBarStyle: {
-        justifyContent: 'flex-start',
+    style: {
+        height: 41,
+        borderColor: '#F6F6F6',
+    },
+    tabStyle: {
+        height: 40,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     activeTextStyle: {
-        color: Theme.watermelon,
         fontSize: PxFit(17),
+        fontWeight: 'bold',
+        color: Theme.defaultTextColor,
     },
     inactivityTextStyle: {
         color: Theme.defaultTextColor,
-        fontSize: PxFit(17),
+    },
+    textStyle: {
+        fontSize: PxFit(15),
     },
     underlineStyle: {
         height: PxFit(2),
@@ -240,4 +240,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Index;
+export default index;

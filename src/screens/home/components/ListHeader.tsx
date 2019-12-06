@@ -44,7 +44,7 @@ const entranceWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 
 const styles = StyleSheet.create({
     enters: {
         flexDirection: 'row',
-        margin: PxFit(Theme.itemSpace),
+        marginVertical: PxFit(Theme.itemSpace),
     },
     enterWrap: {},
     entrance: {
