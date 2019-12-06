@@ -121,7 +121,6 @@ query UserQuery($id: Int) {
             total_contributes
             questions_count
             posts_count
-            medals_count
         }
         roles
         gender

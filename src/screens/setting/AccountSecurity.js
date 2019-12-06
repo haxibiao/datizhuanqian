@@ -60,31 +60,6 @@ class AccountSecurity extends Component {
         });
     };
 
-    checkAccount = (auto_uuid_user, auto_phone_user) => {
-        const { navigation } = this.props;
-        const user = navigation.getParam('user');
-
-        if (auto_uuid_user || auto_phone_user) {
-            TipsOverlay.show({
-                title: '您还未完善登录信息',
-                content: (
-                    <TouchFeedback
-                        style={{ alignItems: 'center', paddingTop: 15 }}
-                        onPress={() => {
-                            navigation.navigate('Share');
-                            TipsOverlay.hide();
-                        }}>
-                        <Text style={{ fontSize: 13, color: Theme.theme }}>完善登录信息后即可绑定支付宝</Text>
-                    </TouchFeedback>
-                ),
-                onConfirm: () => navigation.navigate('SetLoginInfo', { phone: user.account }),
-                confirmContent: '去绑定',
-            });
-        } else {
-            navigation.navigate('ModifyAliPay');
-        }
-    };
-
     render() {
         const { navigation, data } = this.props;
         const { is_bind_wechat, is_bind_alipay } = this.state;

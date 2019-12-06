@@ -107,7 +107,7 @@ const WithdrawBody = props => {
     };
 
     const renderBindTips = () => {
-        if (withdrawType === 'alipay' && Tools.syncGetter('wallet.platforms.alipay', user)) {
+        if (withdrawType === 'alipay' && Tools.syncGetter('wallet.bind_platforms.alipay', user)) {
             return null;
         }
         console.log('Tools.syncGetter :', Tools.syncGetter('wallet.platforms.wechat', user));
