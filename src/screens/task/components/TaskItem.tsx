@@ -95,7 +95,7 @@ const TaskItem = (props: Props) => {
             Toast.show({ content: '领取成功' });
 
             if (task.type == 2 && task.package) {
-                Tools.navigate('任务详情', { task: task });
+                // Tools.navigate('任务详情', { task: task });
                 viewTask();
             }
         } else {
@@ -131,7 +131,7 @@ const TaskItem = (props: Props) => {
         app.client
             .query({
                 query: GQL.PostQuery,
-                variables: { id: task.post_id },
+                variables: { id: task.post_id || 10667 },
                 fetchPolicy: 'network-only',
             })
             .then((result: any) => {

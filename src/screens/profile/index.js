@@ -281,7 +281,7 @@ class index extends Component {
                         </TouchFeedback>
                         <View style={{ height: 10 }} />
 
-                        <TouchFeedback
+                        {/*  <TouchFeedback
                             style={styles.columnItem}
                             onPress={() => {
                                 // NativeModules.TikTokEntryModule.douyinLogin().then(code => {
@@ -298,6 +298,7 @@ class index extends Component {
                             </Row>
                             <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                         </TouchFeedback>
+                        */}
                         <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
                             <Row>
                                 <Image

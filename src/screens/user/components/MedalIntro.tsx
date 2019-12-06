@@ -10,7 +10,7 @@ const BODY_WIDTH = SCREEN_WIDTH - PxFit(60);
 const MedalIntro = (props: { hide: any; medal: any }) => {
     const { hide, medal } = props;
     const navigationAction = () => {
-        Tools.navigate('Main', null, Tools.navigate({ routeName: '答题' }));
+        Tools.navigate('Main', null, Tools.navigate({ routeName: '任务' }));
         hide();
         service.dataReport({
             data: {

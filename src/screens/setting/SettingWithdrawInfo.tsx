@@ -5,17 +5,32 @@ import { Theme, PxFit, Tools } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
-import { Alipay } from 'native';
+import { Alipay, AppUtil } from 'native';
 
 const SettingWithdrawInfo = props => {
-    const [realName, setRealName] = useState(app.userCache.wallet.real_name || '');
+    const [realName, setRealName] = useState(Tools.syncGetter('userCache.wallet.real_name', app) || '');
     const [submitting, setSubmitting] = useState(false);
     const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
     const { navigation } = props;
     const getAuthCode = () => {
-        Alipay.AlipayAuth().then((code: any) => {
-            console.log('code', code);
-            setAuthCode(code);
+        AppUtil.CheckApkExist('com.eg.android.AlipayGphone', (data: any) => {
+            console.log('CheckApkExist data :', data);
+            if (data) {
+                Alipay.AlipayAuth()
+                    .then((code: any) => {
+                        console.log('code', code);
+                        setAuthCode(code);
+                    })
+                    .catch(err => {
+                        Toast.show({
+                            content: '请登录或尝试更新支付宝再授权',
+                        });
+                    });
+            } else {
+                Toast.show({
+                    content: '请先安装登录支付宝',
+                });
+            }
         });
     };
 

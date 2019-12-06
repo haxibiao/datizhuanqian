@@ -63,6 +63,7 @@ const Medal = (props: Props) => {
         variables: {
             user_id: user.id,
         },
+        fetchPolicy: 'network-only',
     });
 
     console.log('user :', user, data, error);

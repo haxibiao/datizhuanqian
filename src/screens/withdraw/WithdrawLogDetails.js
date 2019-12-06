@@ -86,7 +86,7 @@ class WithdrawLogDetails extends Component {
                                         <Text style={styles.textLeft}>转账备注 </Text>
                                         <Text style={styles.textRight}>智慧点提现 </Text>
                                     </View>
-                                    {withdraw.to_platform == 'alipay' && (
+                                    {withdraw.to_platform == 'alipay' && app.me.wallet.real_name && (
                                         <View
                                             style={[
                                                 styles.row,
@@ -95,9 +95,7 @@ class WithdrawLogDetails extends Component {
                                                 },
                                             ]}>
                                             <Text style={styles.textLeft}>收款账户 </Text>
-                                            <Text style={styles.textRight}>
-                                                {withdraw.to_account + '(' + app.me.wallet.real_name + ')'}
-                                            </Text>
+                                            <Text style={styles.textRight}>{app.me.wallet.real_name}</Text>
                                         </View>
                                     )}
 
