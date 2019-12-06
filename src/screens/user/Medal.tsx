@@ -10,18 +10,19 @@ import MedalIntro from './components/MedalIntro';
 
 interface Props {
     navigation: any;
-    user: User;
 }
 
 interface User {
+    id: Number;
     gold: any;
     today_contributes: Number;
     exchange_rate: any;
 }
 
 const Medal = (props: Props) => {
-    const { navigation, user } = props;
-    console.log('WithdrawHeader user :', user);
+    const { navigation } = props;
+    const user = navigation.getParam('user', {});
+    const medals = navigation.getParam('medals', []);
 
     const showMedalIntro = medal => {
         const overlayView = (
@@ -34,9 +35,6 @@ const Medal = (props: Props) => {
         const OverlayKey = Overlay.show(overlayView);
     };
 
-    const { data, loading, error } = useQuery(GQL.MedalsQuery, { fetchPolicy: 'network-only' });
-
-    if (loading) return null;
     return (
         <View>
             <ImageBackground
@@ -54,15 +52,18 @@ const Medal = (props: Props) => {
                     </View>
                 </Row>
                 <Row style={styles.title}>
-                    <Text style={styles.titleCount}>2</Text>
+                    <Text style={styles.titleCount}>{Tools.syncGetter('profile.medals_count', user)}</Text>
                     <Text style={styles.titleText}>个</Text>
                 </Row>
             </ImageBackground>
             <View style={styles.medalList}>
-                {data.medals.map((medal, index) => {
+                {medals.map((medal, index) => {
                     return (
                         <TouchFeedback style={styles.medalContent} key={index} onPress={() => showMedalIntro(medal)}>
-                            <Image source={{ uri: medal.done_icon_url }} style={styles.medalImage} />
+                            <Image
+                                source={{ uri: medal.owned ? medal.done_icon_url : medal.undone_icon_url }}
+                                style={styles.medalImage}
+                            />
                             <Text>{medal.name_cn || '才高八斗'}</Text>
                         </TouchFeedback>
                     );

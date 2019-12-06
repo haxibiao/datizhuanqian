@@ -7,6 +7,7 @@ import { Theme, PxFit, Tools } from 'utils';
 import { app } from 'store';
 import service from 'service';
 import { getRole } from 'common';
+import { useQuery, GQL } from 'apollo';
 
 const UserProfile = props => {
     const { user, orderByHot, switchOrder, isQuestion, navigation, hasQuestion } = props;
@@ -23,21 +24,34 @@ const UserProfile = props => {
                 console.warn('result', result);
             },
         });
-        navigation.navigate('Medal');
+        navigation.navigate('Medal', { user, medals: data.medals });
     };
 
+    const { data, loading, error } = useQuery(GQL.MedalsQuery, {
+        variables: {
+            user_id: user.id,
+        },
+        fetchPolicy: 'network-only',
+    });
+
     const subName = getRole(user);
+
+    const showMedal = !loading && !error;
 
     return (
         <View style={styles.userInfoContainer}>
             <View style={styles.main}>
                 <View>
-                    <Avatar source={user.avatar} size={PxFit(90)} />
-                    <View style={[styles.badge, { backgroundColor: user.gender ? '#FFEAEF' : '#E6F2FF' }]}>
+                    <Avatar source={Tools.syncGetter('avatar', user)} size={PxFit(90)} />
+                    <View
+                        style={[
+                            styles.badge,
+                            { backgroundColor: Tools.syncGetter('gender', user) ? '#FFEAEF' : '#E6F2FF' },
+                        ]}>
                         <Iconfont
-                            name={user.gender ? 'woman' : 'man'}
+                            name={Tools.syncGetter('gender', user) ? 'woman' : 'man'}
                             size={PxFit(18)}
-                            color={user.gender ? '#ED5D87' : '#0588FF'}
+                            color={Tools.syncGetter('gender', user) ? '#ED5D87' : '#0588FF'}
                         />
                     </View>
                 </View>
@@ -55,7 +69,7 @@ const UserProfile = props => {
                         </View>
                         <TouchFeedback style={styles.metaItem}>
                             <Text style={styles.metaCount} numberOfLines={1}>
-                                {user.follow_users_count || 0}
+                                {Tools.syncGetter('follow_users_count', user) || 0}
                             </Text>
                             <Text style={styles.metaLabel} numberOfLines={1}>
                                 关注
@@ -63,7 +77,7 @@ const UserProfile = props => {
                         </TouchFeedback>
                         <TouchFeedback style={styles.metaItem}>
                             <Text style={styles.metaCount} numberOfLines={1}>
-                                {user.followers_count || 0}
+                                {Tools.syncGetter('followers_count', user) || 0}
                             </Text>
                             <Text style={styles.metaLabel} numberOfLines={1}>
                                 粉丝
@@ -79,7 +93,7 @@ const UserProfile = props => {
                     ) : (
                         <FollowButton
                             id={user.id}
-                            followedStatus={user.followed_user_status}
+                            followedStatus={Tools.syncGetter('followed_user_status', user)}
                             style={styles.button}
                             titleStyle={{ fontSize: PxFit(15), letterSpacing: 5 }}
                         />
@@ -88,7 +102,9 @@ const UserProfile = props => {
             </View>
             <View style={styles.bottom}>
                 <Row style={{ paddingBottom: 10 }}>
-                    <Text style={{ fontSize: PxFit(20), fontWeight: '700', color: Theme.black }}>{user.name}</Text>
+                    <Text style={{ fontSize: PxFit(20), fontWeight: '700', color: Theme.black }}>
+                        {Tools.syncGetter('name', user)}
+                    </Text>
                     {(subName === '答题赚钱 官方账号' || subName === '答题赚钱 官方小编') && (
                         <Image
                             source={require('@src/assets/images/admin.png')}
@@ -114,16 +130,22 @@ const UserProfile = props => {
                         <Text>他的勋章</Text>
                     </Row>
                     <Row>
-                        {/*  <Row>
-                            <Image
-                                source={require('@src/assets/images/medal1.png')}
-                                style={{ width: 16, height: 16, marginRight: PxFit(10) }}
-                            />
-                            <Image
-                                source={require('@src/assets/images/medal2.png')}
-                                style={{ width: 16, height: 16, marginRight: PxFit(10) }}
-                            />
-                        </Row> */}
+                        {showMedal && (
+                            <Row>
+                                {data.medals.map((medal, index) => {
+                                    if (medal.owned) {
+                                        return (
+                                            <Image
+                                                key={index}
+                                                source={{ uri: medal.done_icon_url }}
+                                                style={{ width: PxFit(18), height: PxFit(18), marginRight: PxFit(10) }}
+                                            />
+                                        );
+                                    }
+                                })}
+                            </Row>
+                        )}
+
                         <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                     </Row>
                 </TouchFeedback>

@@ -121,6 +121,7 @@ query UserQuery($id: Int) {
             total_contributes
             questions_count
             posts_count
+            medals_count
         }
         roles
         gender
@@ -773,8 +774,8 @@ mutation SetWalletInfoMutation($data: WalletInput) {
 }
 
 #我的勋章
-query MedalsQuery($limit: Int, $offset: Int) {
-    medals(limit: $limit, offset: $offset) {
+query MedalsQuery($user_id: Int, $limit: Int, $offset: Int) {
+    medals(user_id: $user_id, limit: $limit, offset: $offset) {
         id
         name_cn
         introduction
