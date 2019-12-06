@@ -3,7 +3,7 @@
 grn=$'\e[1;32m'
 end=$'\e[0m'
 
-
+bash bash/fix_nodeModule.sh
 
 echo "${grn}开始生成OPPO正式包 ...${end}"
 cd /data/app/datizhuanqian

@@ -7,6 +7,7 @@ import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEI
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { Overlay } from 'teaset';
 import MedalIntro from './components/MedalIntro';
+import service from 'service';
 
 interface Props {
     navigation: any;
@@ -22,7 +23,20 @@ interface User {
 const Medal = (props: Props) => {
     const { navigation } = props;
     const user = navigation.getParam('user', {});
-    const medals = navigation.getParam('medals', []);
+    // const medals = navigation.getParam('medals', []);
+
+    useEffect(() => {
+        service.dataReport({
+            data: {
+                category: '用户行为',
+                action: 'user_click_medal_screen',
+                name: '用户点击进入徽章视频页',
+            },
+            callback: (result: any) => {
+                console.warn('result', result);
+            },
+        });
+    }, []);
 
     const showMedalIntro = medal => {
         const overlayView = (
@@ -34,6 +48,15 @@ const Medal = (props: Props) => {
         );
         const OverlayKey = Overlay.show(overlayView);
     };
+
+    const { data, loading, error } = useQuery(GQL.MedalsQuery, {
+        variables: {
+            user_id: user.id || app.me.id,
+        },
+    });
+
+    console.log('user :', user);
+    if (loading) return null;
 
     return (
         <View>
@@ -48,7 +71,7 @@ const Medal = (props: Props) => {
                         <Iconfont name="left" color={Theme.navBarTitleColor} size={PxFit(21)} />
                     </TouchFeedback>
                     <View style={styles.headerCenter}>
-                        <Text style={styles.headerText}>我的勋章</Text>
+                        <Text style={styles.headerText}>勋章中心</Text>
                     </View>
                 </Row>
                 <Row style={styles.title}>
@@ -57,7 +80,7 @@ const Medal = (props: Props) => {
                 </Row>
             </ImageBackground>
             <View style={styles.medalList}>
-                {medals.map((medal, index) => {
+                {data.medals.map((medal, index) => {
                     return (
                         <TouchFeedback style={styles.medalContent} key={index} onPress={() => showMedalIntro(medal)}>
                             <Image

@@ -9,6 +9,7 @@ echo "${yel}说明：这个脚本用来生成、上传指定版本的APK ${end}"
 echo "${grn}第一个参数：版本号（可选，如：2.x.x） 例如：bash/apk.sh 2.4.3 ${end}"
 echo "${grn}第二个参数：upload(可选，用来上传cdn) 例如：bash/apk.sh 2.4.3 upload ${end}"
 
+bash bash/fix_nodeModule.sh
 cd /data/app/datizhuanqian
 cd ./android
 

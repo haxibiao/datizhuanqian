@@ -7,12 +7,13 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Iconfont } from 'components';
+import { Iconfont, TouchFeedback } from 'components';
 import { Theme, PxFit, Tools } from 'utils';
 
 import WithdrawNotificationItem from './WithdrawNotificationItem';
 import ContributeNotificationItem from './ContributeNotificationItem';
 import CurationNotificationItem from './CurationNotificationItem';
+import { app } from 'store';
 
 class NotificationItem extends Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class NotificationItem extends Component {
 
     render() {
         const { navigation, user, notification } = this.props;
+        console.log('navigation', notification);
         return (
             <View>
                 <View style={styles.timeInfo}>
@@ -115,6 +117,37 @@ class NotificationItem extends Component {
                             </Text>
                         </View>
                     </View>
+                )}
+
+                {notification.type === 'NEW_MEDAL' && notification.medal && (
+                    <TouchFeedback
+                        style={styles.item}
+                        onPress={() => {
+                            Tools.navigate('Medal', { user: app.userCache });
+                        }}>
+                        <View style={styles.titleInfo}>
+                            <Image
+                                style={{
+                                    width: PxFit(16),
+                                    height: PxFit((16 * 140) / 109),
+                                    resizeMode: 'cover',
+                                    paddingTop: PxFit(4),
+                                }}
+                                source={require('@src/assets/images/medal_icon.png')}
+                            />
+                            <Text style={styles.title}>勋章成就</Text>
+                        </View>
+                        <View style={styles.bottomInfo}>
+                            <Text style={[styles.text, { color: Theme.black }]}>恭喜达成新的勋章成就</Text>
+                            <View styles={{ alignItems: 'center' }}>
+                                <Text>{Tools.syncGetter('medal.name_cn', notification)}</Text>
+                                <Image
+                                    source={{ uri: Tools.syncGetter('medal.done_icon_url', notification) }}
+                                    style={{ width: PxFit(60), height: PxFit(60), marginTop: PxFit(15) }}
+                                />
+                            </View>
+                        </View>
+                    </TouchFeedback>
                 )}
             </View>
         );

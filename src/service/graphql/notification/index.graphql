@@ -93,6 +93,14 @@ query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset
                 name
             }
         }
+        medal {
+            id
+            name_cn
+            introduction
+            done_icon_url
+            undone_icon_url
+            owned
+        }
     }
 }
 

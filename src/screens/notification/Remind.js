@@ -16,7 +16,7 @@ class Remind extends Component {
     calcUnreads(data) {
         data = data || {};
         return function(key) {
-            var state = {
+            const state = {
                 system:
                     data.unread_notifications_count -
                     data.unread_comment_notifications_count -
@@ -33,10 +33,10 @@ class Remind extends Component {
     }
 
     render() {
-        let { navigation, data } = this.props;
-        let user = Tools.syncGetter('user', data);
-        let loading = !user;
-        let calcUnreads = this.calcUnreads(user);
+        const { navigation, data } = this.props;
+        const user = Tools.syncGetter('user', data);
+        const loading = !user;
+        const calcUnreads = this.calcUnreads(user);
         return (
             <PageContainer hiddenNavBar loading={loading} title="消息中心" white>
                 <TouchFeedback

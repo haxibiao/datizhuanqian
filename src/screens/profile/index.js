@@ -198,7 +198,7 @@ class index extends Component {
                                         authenticated
                                         activeOpacity={1}
                                         style={styles.metaItem}
-                                        onPress={() => navigation.navigate('Medal')}>
+                                        onPress={() => navigation.navigate('Medal', { user })}>
                                         <Image
                                             style={{
                                                 width: PxFit(19),

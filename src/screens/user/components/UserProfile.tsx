@@ -14,16 +14,6 @@ const UserProfile = props => {
     const isSelf = app.me.id === user.id;
 
     const navigationAction = () => {
-        service.dataReport({
-            data: {
-                category: '用户行为',
-                action: 'user_click_medal_screen',
-                name: '用户点击进入徽章视频页',
-            },
-            callback: (result: any) => {
-                console.warn('result', result);
-            },
-        });
         navigation.navigate('Medal', { user, medals: data.medals });
     };
 
