@@ -27,6 +27,7 @@ const TagItem = ({ category, data, title }) => {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.titleWrap}>
+                        <Image source={require('@src/assets/images/category_tag.png')} style={styles.tagImage} />
                         <Text style={styles.title} numberOfLines={1}>
                             {title}
                         </Text>
@@ -91,6 +92,11 @@ const styles = StyleSheet.create({
         fontSize: PxFit(15),
         fontWeight: 'bold',
         lineHeight: PxFit(20),
+    },
+    tagImage: {
+        height: PxFit(18),
+        width: PxFit(18),
+        marginRight: PxFit(3),
     },
     columnStyle: {
         justifyContent: 'space-between',

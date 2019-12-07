@@ -6,6 +6,7 @@ import { SCREEN_WIDTH, Theme, PxFit } from '@src/utils';
 import { useQuery, GQL } from '@src/apollo';
 import { observer, app } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
+import TagsPlaceholder from './components/TagsPlaceholder';
 import ListHeader from './components/ListHeader';
 import TagItem from './components/TagItem';
 
@@ -71,6 +72,7 @@ const TagList = props => {
             renderItem={renderItem}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.2}
+            ListEmptyComponent={() => <TagsPlaceholder isTab />}
             ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
             ListHeaderComponent={() => <ListHeader navigation={navigation} />}
             ListFooterComponent={() => <ListFooter finished={finished} />}

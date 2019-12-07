@@ -14,6 +14,7 @@ import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
 import AnswerScreen from '../screens/answer';
+import MoreCategoriesScreen from '../screens/home/MoreCategories';
 // 答题对垒
 import CompetitionCategoriesScreen from '../screens/competition/categories';
 import CompetitionMatchingScreen from '../screens/competition/matching';
@@ -132,6 +133,9 @@ export default {
     // 答题
     Answer: {
         screen: AnswerScreen,
+    },
+    MoreCategories: {
+        screen: MoreCategoriesScreen,
     },
     // 答题对垒
     CompetitionCategories: {

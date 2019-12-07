@@ -20,6 +20,7 @@ import JPushModule from 'jpush-react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { useNavigation } from 'react-navigation-hooks';
 import { useApolloClient } from '@apollo/react-hooks';
+import TagsPlaceholder from './components/TagsPlaceholder';
 import ScrollableTabBar from './components/ScrollableTabBar';
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
@@ -51,7 +52,13 @@ const index = observer(props => {
             filter: 'HOMEPAGE',
         },
     });
-    const tags = useMemo(() => syncGetter('tags', data), [data]);
+    const tags = useMemo(() => {
+        const tagData = syncGetter('tags', data);
+        if (Array.isArray(tagData) && tagData.length > 0) {
+            return tagData;
+        }
+        return null;
+    }, [data]);
 
     // 每个版本静默重新登录一次
     const resetUser = useCallback(async () => {
@@ -182,7 +189,7 @@ const index = observer(props => {
                 </ScrollableTabView>
             );
         } else {
-            return <View />;
+            return <TagsPlaceholder contentStyle={styles.placeholderStyle} />;
         }
     }, [tags]);
 
@@ -212,7 +219,7 @@ const scrollTabStyle = {
         fontWeight: 'bold',
         color: Theme.defaultTextColor,
     },
-    inactivityTextStyle: {
+    inactiveTextStyle: {
         color: Theme.defaultTextColor,
     },
     textStyle: {
@@ -221,6 +228,10 @@ const scrollTabStyle = {
     underlineStyle: {
         height: PxFit(2),
         backgroundColor: Theme.watermelon,
+    },
+    placeholderStyle: {
+        paddingHorizontal: PxFit(Theme.itemSpace),
+        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
     },
 };
 
