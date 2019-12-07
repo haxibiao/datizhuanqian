@@ -7,6 +7,7 @@ export const keys = {
     viewedVersion: 'viewedVersion',
     resetVersion: 'resetVersion',
     commentAppStoreVersion: 'commentAppStoreVersion',
+    tagsCache: 'tagsCache',
     categoryCache: 'categoryCache',
     taskCache: 'taskCache',
     userCache: 'userCache',

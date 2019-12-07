@@ -19,6 +19,7 @@ class app {
     @observable userCache = null;
     @observable taskCache = null;
     @observable categoryCache = null;
+    @observable tagsCache = null;
     @observable noTicketTips = true;
     @observable unreadNotice = 0;
     @observable withdrawTips = false;
@@ -173,6 +174,12 @@ class app {
     }
 
     @action.bound
+    async updateTagsCache(tags) {
+        this.tagsCache = tags;
+        await storage.setItem(keys.tagsCache, tags);
+    }
+
+    @action.bound
     async updateTaskCache(tasks) {
         this.taskCache = tasks;
         await storage.setItem(keys.taskCache, tasks);
@@ -190,6 +197,7 @@ class app {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
             this.categoryCache = await storage.getItem(keys.categoryCache);
+            this.tagsCache = await storage.getItem(keys.tagsCache);
         }
     }
 
