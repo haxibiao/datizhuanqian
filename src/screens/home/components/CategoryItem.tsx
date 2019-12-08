@@ -26,11 +26,13 @@ const CategoryItem = ({ category }) => {
                         start={{ x: 0, y: 1 }}
                         end={{ x: 0, y: 0 }}
                         colors={['rgba(000,000,000,0.5)', 'rgba(000,000,000,0.2)', 'rgba(000,000,000,0.1)']}>
-                        <ImageBackground
-                            source={require('@src/assets/images/official_category.png')}
-                            style={styles.officialCategory}>
-                            <Text style={styles.officialText}>官方</Text>
-                        </ImageBackground>
+                        {category.is_official > 0 && (
+                            <ImageBackground
+                                source={require('@src/assets/images/official_category.png')}
+                                style={styles.officialCategory}>
+                                <Text style={styles.officialText}>官方</Text>
+                            </ImageBackground>
+                        )}
                     </LinearGradient>
                 </View>
                 <View style={styles.body}>
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
         left: 0,
         width: COVER_WIDTH * 0.5,
         height: (COVER_WIDTH * 0.5 * 48) / 108,
+        paddingRight: COVER_WIDTH * 0.05,
         justifyContent: 'center',
         alignItems: 'center',
     },

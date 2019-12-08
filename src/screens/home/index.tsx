@@ -25,7 +25,6 @@ import ScrollableTabBar from './components/ScrollableTabBar';
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
 import TagList from './TagList';
-import TagsList from './TagsList';
 
 // 监听新用户登录
 when(
@@ -184,11 +183,7 @@ const index = observer(props => {
                     prerenderingSiblingsNumber={0}
                     renderTabBar={() => <ScrollableTabBar {...scrollTabStyle} />}>
                     {tags.map((tag, index) => {
-                        if (index === 0 || index === tags.length - 1) {
-                            return <TagList key={tag.id} tabLabel={tag.name} tag={tag} />;
-                        } else {
-                            return <TagsList key={tag.id} tabLabel={tag.name} tag={tag} />;
-                        }
+                        return <TagList key={tag.id} tabLabel={tag.name} tag={tag} />;
                     })}
                 </ScrollableTabView>
             );

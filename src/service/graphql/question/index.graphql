@@ -270,11 +270,11 @@ query TagsQuery {
     }
 }
 
-query TagsCategoriesQuery($id: Int!, $offset: Int, $limit: Int) {
+query TagQuery($id: Int!, $tagsOffset: Int, $categoriesOffset: Int, $limit: Int) {
     tag(id: $id) {
         id
         name
-        tags(offset: $offset, limit: $limit) {
+        tags(offset: $tagsOffset, limit: $limit) {
             id
             name
             categories {
@@ -287,14 +287,7 @@ query TagsCategoriesQuery($id: Int!, $offset: Int, $limit: Int) {
                 answers_count
             }
         }
-    }
-}
-
-query TagCategoriesQuery($id: Int!, $offset: Int, $limit: Int) {
-    tag(id: $id) {
-        id
-        name
-        categories(offset: $offset, limit: $limit) {
+        categories(offset: $categoriesOffset, limit: $limit) {
             id
             icon
             name

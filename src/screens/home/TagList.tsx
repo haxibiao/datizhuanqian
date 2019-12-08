@@ -16,10 +16,39 @@ const TagList = props => {
     const [finished, setFinished] = useState(false);
     const navigation = useNavigation();
 
-    const { loading, error, data, refetch, fetchMore } = useQuery(GQL.TagCategoriesQuery, {
+    const { loading, error, data, refetch, fetchMore } = useQuery(GQL.TagQuery, {
         variables: { limit: 10, id: tag.id },
     });
-    const categories = useMemo(() => syncGetter('tag.categories', data), [data]);
+
+    const tags = useMemo(() => {
+        const tagsData = syncGetter('tag.tags', data);
+        if (Array.isArray(tagsData)) {
+            return tagsData;
+        }
+        return [];
+    }, [data]);
+
+    const categories = useMemo(() => {
+        const categoriesData = syncGetter('tag.categories', data);
+        if (Array.isArray(categoriesData)) {
+            return categoriesData;
+        }
+        return [];
+    }, [data]);
+
+    const listData = useMemo(() => {
+        if (tags.length > 0) {
+            if (tags.length % 10 === 0) {
+                return tags;
+            } else if (categories.length > 0) {
+                return tags.concat(categories);
+            }
+        } else if (categories.length > 0) {
+            return categories;
+        } else {
+            return [];
+        }
+    }, [tags, categories]);
 
     const onEndReached = useCallback(async () => {
         if (flag.current) {
@@ -28,43 +57,54 @@ const TagList = props => {
         flag.current = true;
         fetchMore({
             variables: {
-                offset: categories.length,
+                tagsOffset: tags.length,
+                categoriesOffset: categories.length,
             },
             updateQuery: (prev, { fetchMoreResult }) => {
-                const newCategories = syncGetter('tag.categories', fetchMoreResult);
+                const newTags = Array.isArray(syncGetter('tag.tags', fetchMoreResult))
+                    ? syncGetter('tag.tags', fetchMoreResult)
+                    : [];
+                const newCategories = Array.isArray(syncGetter('tag.categories', fetchMoreResult))
+                    ? syncGetter('tag.categories', fetchMoreResult)
+                    : [];
                 flag.current = false;
-                if (Array.isArray(newCategories)) {
-                    if (newCategories.length === 0) {
-                        setFinished(true);
-                        return prev;
-                    }
-                    if (newCategories.length < 10) {
+
+                if (newTags.length > 0 || newCategories.length > 0) {
+                    if (newTags.length < 10 && newCategories.length < 10) {
                         setFinished(true);
                     }
                     return Object.assign({}, prev, {
                         tag: Object.assign({}, prev.tag, {
+                            tags: [...prev.tag.tags, ...newTags],
                             categories: [...prev.tag.categories, ...newCategories],
                         }),
                     });
                 } else {
+                    setFinished(true);
                     return prev;
                 }
             },
         });
-    }, [categories]);
+    }, [tags, categories]);
 
     const keyExtractor = useCallback((item, index) => {
         return item.id ? item.id.toString() : index.toString();
     }, []);
 
     const renderItem = useCallback(({ item }) => {
-        return <TagItem title={item.name} category={item} />;
+        let props;
+        if (item.categories) {
+            props = { data: item.categories };
+        } else {
+            props = { category: item };
+        }
+        return <TagItem title={item.name} {...props} />;
     }, []);
 
     return (
         <FlatList
             contentContainerStyle={styles.contentStyle}
-            data={categories}
+            data={listData}
             refreshControl={
                 <CustomRefreshControl refreshing={loading} onRefresh={refetch} reset={() => setFinished(false)} />
             }

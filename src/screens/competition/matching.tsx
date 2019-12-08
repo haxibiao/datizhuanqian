@@ -145,7 +145,7 @@ export default observer(props => {
                     <Text style={styles.tipsTitle}>PK规则：</Text>
                     <Text style={styles.tipsText}>
                         答题失败将扣除{app.gameConfig.ticket_loss}精力点和{app.gameConfig.gold_loss}
-                        智慧点(中途离场视为失败)
+                        智慧点(中途离场视为失败)，<Text style={{ fontWeight: 'bold' }}>战胜对手，奖励翻倍</Text>
                     </Text>
                 </View>
             </ImageBackground>

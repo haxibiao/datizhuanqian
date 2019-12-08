@@ -1,15 +1,13 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { Theme, PxFit } from 'utils';
 import { Iconfont } from '@src/components';
 import { useNavigation } from 'react-navigation-hooks';
 import CategoryItem from './CategoryItem';
 
 const TagItem = ({ category, data, title }) => {
     const navigation = useNavigation();
-    console.log('====================================');
-    console.log(data, category);
-    console.log('====================================');
+
     const categories = useMemo(() => {
         if (Array.isArray(data) && data.length > 0) {
             return data;

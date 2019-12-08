@@ -11,11 +11,12 @@ const Guide = props => {
             <View>
                 <Text style={styles.text}>1.所有场次对手随即匹配，每场对战总共8道题目。</Text>
                 <Text style={styles.highlight}>
-                    2.对战开始后，系统自动扣除所需的<Text style={styles.highlight}>{app.gameConfig.ticket_loss}</Text>
-                    精力点与<Text style={styles.highlight}>{app.gameConfig.gold_loss}</Text>智慧点。
+                    2.对战开始后，系统自动扣除所需的{app.gameConfig.ticket_loss}
+                    精力点与{app.gameConfig.gold_loss}智慧点。
                 </Text>
-                <Text style={styles.text}>
-                    3.对战结束后将进行奖励结算。战胜对手，奖励翻倍；平局按原智慧点返还；失败则不返还智慧点。
+                <Text style={styles.highlight}>
+                    3.对战结束后将进行奖励结算。战胜对手，<Text style={{ fontWeight: 'bold' }}>奖励翻倍</Text>
+                    ；平局按原智慧点返还；失败则不返还智慧点。
                 </Text>
                 <Text style={styles.text}>4.为了保障双方游戏体验，对战途中主动离场的一方将默认认输。</Text>
             </View>
@@ -45,6 +46,8 @@ const styles = StyleSheet.create({
         color: Theme.subTextColor,
     },
     highlight: {
+        paddingVertical: PxFit(5),
+        lineHeight: PxFit(18),
         fontSize: PxFit(14),
         color: Theme.watermelon,
     },
