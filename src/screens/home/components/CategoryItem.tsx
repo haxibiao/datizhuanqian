@@ -30,7 +30,7 @@ const CategoryItem = ({ category }) => {
                             <ImageBackground
                                 source={require('@src/assets/images/official_category.png')}
                                 style={styles.officialCategory}>
-                                <Text style={styles.officialText}>官方</Text>
+                                <Text style={styles.officialText}>精选</Text>
                             </ImageBackground>
                         )}
                     </LinearGradient>
