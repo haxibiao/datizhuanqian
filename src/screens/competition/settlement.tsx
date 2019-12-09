@@ -41,6 +41,7 @@ const over = observer(props => {
     const [loading, setLoading] = useState(true);
     const [scores, setScores] = useState([-1, -1]);
     const [winner, setWinner] = useState();
+    const [disabledRewardAdVideo, setDisabledRewardAdVideo] = useState(false);
     const fetchResultTimer = useRef(0);
     const setLoadingTimer = useRef(0);
     const gameOverCount = useRef(0);
@@ -48,7 +49,10 @@ const over = observer(props => {
     const maxRepeat = useRef(10);
 
     const loadAd = useCallback(() => {
-        playVideo({ type: result === 'victory' ? 'GameWinner' : 'GameLoser' });
+        playVideo({
+            type: result === 'victory' ? 'GameWinner' : 'GameLoser',
+            callback: () => setDisabledRewardAdVideo(true),
+        });
     }, [result]);
 
     // 结束
@@ -257,9 +261,23 @@ const over = observer(props => {
                                 <View style={styles.bottom}>
                                     <View style={styles.buttonWrap}>
                                         <TouchableOpacity
-                                            style={[styles.button, { backgroundColor: Theme.watermelon }]}
+                                            style={[
+                                                styles.button,
+                                                {
+                                                    backgroundColor: disabledRewardAdVideo
+                                                        ? Theme.subTextColor
+                                                        : Theme.watermelon,
+                                                },
+                                            ]}
+                                            disabled={disabledRewardAdVideo}
                                             onPress={loadAd}>
-                                            <Text style={[styles.buttonText, { color: '#fff' }]}>看视频领奖励</Text>
+                                            <Text style={[styles.buttonText, { color: '#fff' }]}>
+                                                {disabledRewardAdVideo
+                                                    ? '已经领取奖励'
+                                                    : result === 'victory'
+                                                    ? '领取额外奖励'
+                                                    : '领取安慰奖励'}
+                                            </Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.buttonWrap}>

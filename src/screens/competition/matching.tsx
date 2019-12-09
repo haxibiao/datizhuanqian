@@ -74,10 +74,9 @@ export default observer(props => {
     }, []);
 
     const showGuide = useCallback(() => {
-        // Toast.show({ content: `更多功能正在开发\n敬请期待`, layout: 'top' })
         let overlayRef;
         Overlay.show(
-            <Overlay.View animated ref={ref => (overlayRef = ref)}>
+            <Overlay.View modal animated ref={ref => (overlayRef = ref)}>
                 <View style={styles.overlayInner}>
                     <Guide hide={() => overlayRef.close()} />
                 </View>
@@ -113,6 +112,16 @@ export default observer(props => {
         });
     }, []);
 
+    // const guideText = useMemo(() => {
+    //     if (app.gameConfig.ticket_loss && app.gameConfig.gold_loss) {
+    //         return `匹配成功消耗${app.gameConfig.ticket_loss}精力点，答题失败将扣除${app.gameConfig.gold_loss}智慧点(中途离场视为失败)，`;
+    //     } else if (app.gameConfig.ticket_loss) {
+    //         return `匹配成功消耗${app.gameConfig.ticket_loss}精力点，`;
+    //     } else if (app.gameConfig.gold_loss) {
+    //         return `答题失败将扣除${app.gameConfig.gold_loss}智慧点(中途离场视为失败)，`;
+    //     }
+    // }, [app.gameConfig]);
+
     return (
         <PageContainer hiddenNavBar>
             <ImageBackground style={styles.background} source={require('@src/assets/images/matching_bg.png')}>
@@ -140,13 +149,6 @@ export default observer(props => {
                             </TouchableOpacity>
                         </Animated.View>
                     )}
-                </View>
-                <View style={styles.tips}>
-                    <Text style={styles.tipsTitle}>PK规则：</Text>
-                    <Text style={styles.tipsText}>
-                        答题失败将扣除{app.gameConfig.ticket_loss}精力点和{app.gameConfig.gold_loss}
-                        智慧点(中途离场视为失败)，<Text style={{ fontWeight: 'bold' }}>战胜对手，奖励翻倍</Text>
-                    </Text>
                 </View>
             </ImageBackground>
             <View style={styles.header}>

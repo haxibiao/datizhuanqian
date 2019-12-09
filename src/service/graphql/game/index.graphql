@@ -62,6 +62,10 @@ query GameQuestionsQuery($game_id: Int!) {
             Text
             Value
         }
+        category {
+            id
+            name
+        }
     }
 }
 
