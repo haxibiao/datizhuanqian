@@ -13,6 +13,7 @@ import TagItem from './components/TagItem';
 const TagList = props => {
     const { tag } = props;
     const flag = useRef(false);
+    const hasMoreTags = useRef(true);
     const [finished, setFinished] = useState(false);
     const navigation = useNavigation();
 
@@ -38,7 +39,7 @@ const TagList = props => {
 
     const listData = useMemo(() => {
         if (tags.length > 0) {
-            if (tags.length % 10 === 0) {
+            if (tags.length % 10 === 0 && hasMoreTags.current) {
                 return tags;
             } else if (categories.length > 0) {
                 return tags.concat(categories);
@@ -59,7 +60,7 @@ const TagList = props => {
     }, [listData]);
 
     const onEndReached = useCallback(async () => {
-        if (flag.current) {
+        if (flag.current || finished) {
             return;
         }
         flag.current = true;
@@ -78,6 +79,9 @@ const TagList = props => {
                 flag.current = false;
 
                 if (newTags.length > 0 || newCategories.length > 0) {
+                    if (newTags.length < 10) {
+                        hasMoreTags.current = false;
+                    }
                     if (newTags.length < 10 && newCategories.length < 10) {
                         setFinished(true);
                     }
@@ -88,12 +92,13 @@ const TagList = props => {
                         }),
                     });
                 } else {
+                    hasMoreTags.current = false;
                     setFinished(true);
                     return prev;
                 }
             },
         });
-    }, [tags, categories]);
+    }, [finished, tags, categories]);
 
     const keyExtractor = useCallback((item, index) => {
         return item.id ? item.id.toString() : index.toString();
