@@ -19,7 +19,6 @@ import { Iconfont } from 'components';
 //test
 import RankScreen from '../screens/rank';
 
-
 export default createBottomTabNavigator(
     {
         答题: {
@@ -106,7 +105,7 @@ const TabOptions = routeName => {
                 iconSize = PxFit(21);
                 break;
             case '学习':
-                iconName = `video${focused ? '-fill' : ''}`;
+                iconName = `video`;
                 iconSize = focused ? PxFit(22) : PxFit(20);
                 break;
             case '提现':
