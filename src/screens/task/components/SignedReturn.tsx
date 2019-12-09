@@ -73,8 +73,8 @@ const SignedReturn = (props: Props) => {
                             </Text>
                         </ImageBackground>
                     </TouchFeedback>
-                    {!ISIOS && (
-                        <TouchFeedback>
+                    {(!ISIOS || !config.disableAd) && (
+                        <TouchFeedback onPress={() => close()}>
                             <Text
                                 style={{
                                     paddingTop: PxFit(5),
