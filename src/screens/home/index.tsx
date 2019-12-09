@@ -228,10 +228,6 @@ const scrollTabStyle = {
         height: PxFit(2),
         backgroundColor: Theme.watermelon,
     },
-    placeholderStyle: {
-        paddingHorizontal: PxFit(Theme.itemSpace),
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
-    },
 };
 
 const styles = StyleSheet.create({
@@ -247,6 +243,10 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT,
         justifyContent: 'center',
         width: SCREEN_WIDTH,
+    },
+    placeholderStyle: {
+        marginHorizontal: PxFit(Theme.itemSpace),
+        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
     },
 });
 

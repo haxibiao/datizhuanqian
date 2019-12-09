@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useCallback } from 'react';
+import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { CustomRefreshControl, ListFooter } from '@src/components';
 import { syncGetter } from '@src/common';
@@ -45,10 +45,18 @@ const TagList = props => {
             }
         } else if (categories.length > 0) {
             return categories;
+        } else if ((!loading || error) && app.tagListData[tag.id]) {
+            return app.tagListData[tag.id];
         } else {
             return [];
         }
-    }, [tags, categories]);
+    }, [tags, categories, tag, error, loading]);
+
+    useEffect(() => {
+        if (listData.length > 0) {
+            app.updateTagListCache(tag.id, listData);
+        }
+    }, [listData]);
 
     const onEndReached = useCallback(async () => {
         if (flag.current) {

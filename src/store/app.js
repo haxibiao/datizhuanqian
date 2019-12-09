@@ -18,8 +18,8 @@ class app {
     @observable resetVersion = 1;
     @observable userCache = null;
     @observable taskCache = null;
-    @observable categoryCache = null;
     @observable tagsCache = null;
+    @observable tagListData = {};
     @observable noTicketTips = true;
     @observable unreadNotice = 0;
     @observable withdrawTips = false;
@@ -168,15 +168,18 @@ class app {
     }
 
     @action.bound
-    async updateCategoryCache(categories) {
-        this.categoryCache = categories;
-        await storage.setItem(keys.categoryCache, categories);
-    }
-
-    @action.bound
     async updateTagsCache(tags) {
         this.tagsCache = tags;
         await storage.setItem(keys.tagsCache, tags);
+    }
+
+    @action.bound
+    async updateTagListCache(id, tag) {
+        this.tagListData[id] = tag;
+        console.log('====================================');
+        console.log('this.tagListData', id, this.tagListData[id]);
+        console.log('====================================');
+        await storage.setItem(keys.tagListCache + '.' + id, tag);
     }
 
     @action.bound
@@ -196,8 +199,15 @@ class app {
         if (resetVersion === Config.AppVersionNumber) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
-            this.categoryCache = await storage.getItem(keys.categoryCache);
             this.tagsCache = await storage.getItem(keys.tagsCache);
+            if (Array.isArray(this.tagsCache)) {
+                this.tagsCache.forEach(async tag => {
+                    this.tagListData[tag.id] = await storage.getItem(keys.tagListCache + '.' + tag.id);
+                    console.log('====================================');
+                    console.log('this.tagListData[tag.id]', tag.id, this.tagListData[tag.id]);
+                    console.log('====================================');
+                });
+            }
         }
     }
 

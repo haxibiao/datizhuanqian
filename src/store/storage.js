@@ -8,6 +8,7 @@ export const keys = {
     resetVersion: 'resetVersion',
     commentAppStoreVersion: 'commentAppStoreVersion',
     tagsCache: 'tagsCache',
+    tagListCache: 'tagListCache',
     categoryCache: 'categoryCache',
     taskCache: 'taskCache',
     userCache: 'userCache',
