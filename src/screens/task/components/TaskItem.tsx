@@ -147,10 +147,9 @@ const TaskItem = (props: Props) => {
     //处理下载任务
     const stateChangeHandle = (event: any) => {
         const { task } = props;
-        console.log('task :', task);
+
         if (event === 'active' && task.package && task.taskStatus == 0) {
             AppUtil.CheckApkExist(task.package, (data: any) => {
-                console.log('CheckApkExist data :', data);
                 if (data) {
                     completeTask();
                 }

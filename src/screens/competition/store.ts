@@ -27,7 +27,7 @@ interface GameRoom {
 }
 
 export default class CompetitionStore {
-    public scoreMultiple: number = 10;
+    public scoreMultiple: number = 1;
     public robotOdds: number = 0.5;
     public matched: boolean = false;
     public isRobot: boolean = false;
