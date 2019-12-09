@@ -151,7 +151,9 @@ const TaskItem = (props: Props) => {
         if (event === 'active' && task.package && task.taskStatus == 0) {
             AppUtil.CheckApkExist(task.package, (data: any) => {
                 console.log('CheckApkExist data :', data);
-                completeTask();
+                if (data) {
+                    completeTask();
+                }
             });
         }
     };
