@@ -36,7 +36,7 @@ const ListHeader = observer(props => {
             </View>
         );
     } else {
-        return <View />;
+        return <View style={{ height: PxFit(Theme.itemSpace) }} />;
     }
 });
 const entranceWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 2;

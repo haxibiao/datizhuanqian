@@ -57,11 +57,11 @@ const index = observer(props => {
         if (Array.isArray(tagsData) && tagsData.length > 0) {
             app.updateTagsCache(tagsData);
             return tagsData;
-        } else if ((!loading || error) && app.tagsCache) {
+        } else if (app.tagsCache) {
             return app.tagsCache;
         }
         return null;
-    }, [data, error, loading]);
+    }, [data, error, loading, app.tagsCache]);
 
     // 每个版本静默重新登录一次
     const resetUser = useCallback(async () => {
