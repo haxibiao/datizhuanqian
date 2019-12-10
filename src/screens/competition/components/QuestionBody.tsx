@@ -27,7 +27,7 @@ const QuestionBody = (props: Props) => {
             {category && category.name && (
                 <Text style={styles.categoryText}>
                     {'—— '}
-                    <Iconfont name="order-fill" color={Theme.watermelon} size={PxFit(18)} />
+                    <Iconfont name="order-fill" color={'#fff'} size={PxFit(18)} />
                     {category.name}
                 </Text>
             )}
@@ -53,7 +53,7 @@ const QuestionBody = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
-    categoryText: { color: Theme.watermelon, fontSize: PxFit(17), marginBottom: PxFit(10) },
+    categoryText: { color: '#fff', fontSize: PxFit(16), marginBottom: PxFit(10), fontWeight: 'bold' },
 });
 
 export default QuestionBody;

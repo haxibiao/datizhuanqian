@@ -217,12 +217,16 @@ const over = observer(props => {
                     ) : (
                         <>
                             <View style={styles.userInfo}>
-                                <View>
-                                    <Text style={styles.userName}>{store.me.name}</Text>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={styles.userName} numberOfLines={1}>
+                                        {store.me.name}
+                                    </Text>
                                     <Text style={styles.score}>{scores[0] > 0 ? scores[0] : store.score[0]}</Text>
                                 </View>
-                                <View style={{ alignItems: 'flex-end' }}>
-                                    <Text style={styles.userName}>{store.rival.name}</Text>
+                                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                    <Text style={styles.userName} numberOfLines={1}>
+                                        {store.rival.name}
+                                    </Text>
                                     <Text style={[styles.score, { color: '#F8CE4D' }]}>
                                         {store.isLeaving ? '中途离开' : scores[1] > 0 ? scores[1] : store.score[1]}
                                     </Text>
@@ -424,7 +428,7 @@ const styles = StyleSheet.create({
     },
     score: {
         color: '#2AE2F3',
-        fontSize: PxFit(20),
+        fontSize: PxFit(19),
         fontWeight: 'bold',
     },
     statisticItem: {
@@ -446,7 +450,7 @@ const styles = StyleSheet.create({
     },
     userName: {
         color: '#fff',
-        fontSize: PxFit(20),
+        fontSize: PxFit(19),
         fontWeight: 'bold',
     },
 });

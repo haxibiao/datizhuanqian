@@ -81,7 +81,7 @@ export default class CompetitionStore {
                     this.matched = true;
                     this.matchRobot();
                 }
-            }, 10000);
+            }, 5000);
             app.echo.private('App.User.' + app.me.id).listen('NewGame', (room: GameRoom) => {
                 if (this.matched) {
                     return;
