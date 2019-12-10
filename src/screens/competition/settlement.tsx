@@ -381,7 +381,10 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH / 2,
     },
     header: {
-        ...StyleSheet.absoluteFill,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
     },
     iconImage: {
         height: PxFit(20),
