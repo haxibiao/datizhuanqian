@@ -114,7 +114,7 @@ const index = observer(props => {
                     })
                     .then(({ data }) => {})
                     .catch(error => {
-                        const info = error.toString().iOf('登录');
+                        const info = error.toString().indexOf('登录');
                         if (info > -1) {
                             app.forget();
                             Toast.show({ content: '您的身份信息已过期,请重新登录' });
