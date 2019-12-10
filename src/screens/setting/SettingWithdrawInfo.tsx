@@ -102,6 +102,7 @@ const SettingWithdrawInfo = props => {
             })
             .catch((err: { toString: () => { replace: (arg0: RegExp, arg1: string) => void } }) => {
                 setSubmitting(false);
+                setAuthCode('');
                 Toast.show({
                     content: err.toString().replace(/Error: GraphQL error: /, ''),
                 });
