@@ -62,7 +62,7 @@ const PostItem = (props: Props) => {
 
     const navigationAction = () => {
         isQuestion
-            ? navigation.navigate('UserAnswer', { questions: posts, index: activeIndex })
+            ? navigation.navigate('Question', { question: post, referrer: 'user' })
             : navigation.navigate('VideoPost', { medium: posts, index: activeIndex, isPost: true });
     };
 
