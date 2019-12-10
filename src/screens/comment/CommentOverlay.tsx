@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         paddingLeft: PxFit(5),
-        paddingVertical: PxFit(10),
+        paddingVertical: 0,
     },
     touchItem: {
         alignItems: 'flex-end',
