@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, ScrollView, ImageBackground } from 'reac
 import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, Iconfont } from 'components';
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT, ISIOS } from 'utils';
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ttad } from 'native';
 
@@ -111,7 +111,10 @@ const WithdrawBody = props => {
             return null;
         }
         console.log('Tools.syncGetter :', Tools.syncGetter('wallet.platforms.wechat', user));
-        if (withdrawType === 'wechat' && Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) {
+        if (
+            (withdrawType === 'wechat' && Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||
+            ISIOS
+        ) {
             return null;
         }
         return (
@@ -175,6 +178,7 @@ const WithdrawBody = props => {
                 <View style={{ paddingHorizontal: PxFit(Theme.itemSpace) }}>
                     <Row style={{ marginTop: PxFit(10) }}>
                         {WithdrawType.map((data, index) => {
+                            if (ISIOS && data.type === 'wechat') return null;
                             return (
                                 <Fragment key={index}>
                                     <TouchFeedback
