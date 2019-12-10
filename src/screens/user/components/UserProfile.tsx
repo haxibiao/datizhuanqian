@@ -81,12 +81,19 @@ const UserProfile = props => {
                             <Text style={styles.editText}>编辑资料</Text>
                         </Button>
                     ) : (
-                        <FollowButton
-                            id={user.id}
-                            followedStatus={Tools.syncGetter('followed_user_status', user)}
-                            style={styles.button}
-                            titleStyle={{ fontSize: PxFit(15), letterSpacing: 5 }}
-                        />
+                        <Row>
+                            <FollowButton
+                                id={user.id}
+                                followedStatus={Tools.syncGetter('followed_user_status', user)}
+                                style={StyleSheet.flatten([styles.button, { flex: 1, marginRight: PxFit(5) }])}
+                                titleStyle={styles.buttonText}
+                            />
+                            <TouchableOpacity
+                                style={styles.chatButton}
+                                onPress={() => navigation.navigate('Chat', { user })}>
+                                <Text style={styles.buttonText}>私信</Text>
+                            </TouchableOpacity>
+                        </Row>
                     )}
                 </View>
             </View>
@@ -201,6 +208,21 @@ const styles = StyleSheet.create({
         right: PxFit(-2),
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    chatButton: {
+        flex: 1,
+        height: PxFit(32),
+        borderRadius: PxFit(16),
+        marginTop: PxFit(Theme.itemSpace),
+        marginLeft: PxFit(5),
+        backgroundColor: Theme.watermelon,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontSize: PxFit(15),
+        color: '#fff',
+        letterSpacing: 3,
     },
     main: {
         flexDirection: 'row',
