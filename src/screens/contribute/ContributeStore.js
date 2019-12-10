@@ -15,7 +15,7 @@ class ContributeStore {
     static instance = null;
 
     @observable uploading = null;
-    @observable description = null;
+    @observable description = '';
     @observable category = null;
     @observable picture = null;
     @observable video = null;

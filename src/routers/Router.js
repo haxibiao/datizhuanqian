@@ -14,7 +14,7 @@ import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
 import AnswerScreen from '../screens/answer';
-import UserAnswerScreen from '../screens/answer/UserAnswerScreen';
+import UserAnswerScreen from '../screens/answer/UserAnswer';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
 // 答题对垒
 import CompetitionCategoriesScreen from '../screens/competition/categories';
