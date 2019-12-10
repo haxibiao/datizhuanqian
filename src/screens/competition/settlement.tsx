@@ -64,31 +64,36 @@ const over = observer(props => {
             const scores = syncGetter('data.scores', endGame);
             const status = syncGetter('status', endGame);
             const winner = syncGetter('winner', endGame);
-            console.log('====================================');
-            console.log('gameOver', res);
-            console.log('====================================');
+            const reward = syncGetter('reward', endGame);
+
             // 游戏未结束或者接口出错  重新请求
-            if ((error || status !== 'END') && maxRepeat.current > 0) {
+            if (status == 'END') {
+                // 设置获胜者和得分
+                clearTimeout(setLoadingTimer.current);
+                store.game.reward = reward;
+                setLoading(false);
+                if (winner) {
+                    setWinner(winner);
+                }
+                if (scores) {
+                    setScores(() => {
+                        let arr = [];
+                        scores.forEach(item => {
+                            if (item.user_id === store.me.id) {
+                                arr[0] = item.score;
+                            } else {
+                                arr[1] = item.score;
+                            }
+                        });
+                        return arr;
+                    });
+                }
+            } else if (maxRepeat.current > 0) {
                 clearTimeout(fetchResultTimer.current);
                 fetchResultTimer.current = setTimeout(() => {
                     --maxRepeat.current;
                     fetchResult();
                 }, 3000);
-            } else if (winner) {
-                // 设置获胜者和得分
-                clearTimeout(setLoadingTimer.current);
-                setWinner(winner);
-                setScores(() => {
-                    let arr = [];
-                    scores.forEach(item => {
-                        if (item.user_id === store.me.id) {
-                            arr[0] = item.score;
-                        } else {
-                            arr[1] = item.score;
-                        }
-                    });
-                    return arr;
-                });
             }
         })();
     }, []);
@@ -102,31 +107,36 @@ const over = observer(props => {
             const scores = syncGetter('data.scores', game);
             const status = syncGetter('status', game);
             const winner = syncGetter('winner', game);
-            console.log('====================================');
-            console.log('gameQuery', res);
-            console.log('====================================');
+            const reward = syncGetter('reward', game);
+
             // 游戏未结束或者接口出错就间隔查询游戏状态
-            if ((error || status !== 'END') && maxRepeat.current > 0) {
+            if (status == 'END') {
+                // 设置获胜者和得分
+                clearTimeout(setLoadingTimer.current);
+                store.game.reward = reward;
+                setLoading(false);
+                if (winner) {
+                    setWinner(winner);
+                }
+                if (scores) {
+                    setScores(() => {
+                        let arr = [];
+                        scores.forEach(item => {
+                            if (item.user_id === store.me.id) {
+                                arr[0] = item.score;
+                            } else {
+                                arr[1] = item.score;
+                            }
+                        });
+                        return arr;
+                    });
+                }
+            } else if (maxRepeat.current > 0) {
                 clearTimeout(fetchResultTimer.current);
                 fetchResultTimer.current = setTimeout(() => {
                     --maxRepeat.current;
                     fetchResult();
                 }, 3000);
-            } else if (winner) {
-                // 设置获胜者和得分
-                clearTimeout(setLoadingTimer.current);
-                setWinner(winner);
-                setScores(() => {
-                    let arr = [];
-                    scores.forEach(item => {
-                        if (item.user_id === store.me.id) {
-                            arr[0] = item.score;
-                        } else {
-                            arr[1] = item.score;
-                        }
-                    });
-                    return arr;
-                });
             }
         })();
     }, []);
@@ -141,7 +151,6 @@ const over = observer(props => {
             } else {
                 setResult('draw');
             }
-            setLoading(false);
         }
     }, [winner]);
 
@@ -150,14 +159,8 @@ const over = observer(props => {
         if (store.isLeaving) {
             setLoading(false);
         } else {
-            gameOver();
             // 通知游戏结算
-            // fetchResultTimer.current = setTimeout(
-            //     () => {
-            //         gameOver();
-            //     },
-            //     store.isRobot ? 1000 : 3000,
-            // );
+            gameOver();
             // 请求超时 前端先结算
             setLoadingTimer.current = setTimeout(() => {
                 clearTimeout(fetchResultTimer.current);
@@ -184,8 +187,6 @@ const over = observer(props => {
     const reward = useMemo(() => {
         if (result == 'victory') {
             return store.game.reward;
-        } else if (result == 'draw') {
-            return store.game.reward / 2;
         } else {
             return 0;
         }
