@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, ScrollView, Linking } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, ListItem, ItemSeparator, PopOverlay } from 'components';
 import { Theme, PxFit, Config, ISIOS } from 'utils';
-import { app } from 'store';
+import { app, config } from 'store';
 import { withApollo, GQL } from 'apollo';
 import { checkUpdate } from 'common';
 
@@ -113,42 +113,18 @@ class index extends Component {
                         rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
                     />
                     <ItemSeparator />
-                    <ListItem
-                        onPress={() =>
-                            Linking.openURL(
-                                ISIOS
-                                    ? 'itms-apps://itunes.apple.com/app/id1462854524'
-                                    : 'market://details?id=com.datizhuanqian',
-                            )
-                        }
-                        //  id  答妹上架后的itunes的id  itms-apps://itunes.apple.com/app/id1462854524
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>鼓励一下{Config.AppName}</Text>}
-                        rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
-                    />
-                    <ItemSeparator />
-                    <ListItem
-                        onPress={() =>
-                            Linking.openURL(
-                                ISIOS
-                                    ? 'itms-apps://itunes.apple.com/app/id1462854524'
-                                    : 'market://details?id=com.dianmoge',
-                            )
-                        }
-                        //  id  答妹上架后的itunes的id  itms-apps://itunes.apple.com/app/id1462854524
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>下载点墨阁</Text>}
-                        rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
-                    />
+                    {!config.disableAd && (
+                        <Fragment>
+                            <ListItem
+                                onPress={() => navigation.navigate('UpdateLog')}
+                                style={styles.listItem}
+                                leftComponent={<Text style={styles.itemText}>更新日志</Text>}
+                                rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
+                            />
+                            <ItemSeparator />
+                        </Fragment>
+                    )}
 
-                    <ItemSeparator />
-                    <ListItem
-                        onPress={() => navigation.navigate('UpdateLog')}
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>更新日志</Text>}
-                        rightComponent={<Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />}
-                    />
-                    <ItemSeparator />
                     <ListItem
                         onPress={() =>
                             setTimeout(() => {

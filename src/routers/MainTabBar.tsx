@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import { Theme, PxFit } from '../utils';
-import { app } from 'store';
+import { app, config } from 'store';
 import { observer } from 'mobx-react';
 
 @observer
@@ -20,6 +20,9 @@ class TabBarComponent extends React.Component {
             focused,
             route,
         };
+        if (config.disableAd && index == 3) {
+            return null;
+        }
 
         return (
             <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>

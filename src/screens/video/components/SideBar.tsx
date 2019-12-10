@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, Image, Animated, TouchableOpacity } from 'react-native';
 
 import { Avatar, Iconfont, SafeText, MoreOperation } from 'components';
-import { observer, app } from 'store';
+import { observer, app, config } from 'store';
 import { useApolloClient } from '@src/apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { PxFit, Theme, Tools } from 'utils';
@@ -66,9 +66,9 @@ export default observer(props => {
                 <TouchableOpacity onPress={showMoreOperation}>
                     <Image
                         source={
-                            !app.firstOpenVideoOperation
-                                ? require('@src/assets/images/first_capture_video.png')
-                                : require('@src/assets/images/more_item.png')
+                            app.firstOpenVideoOperation || config.disableAd
+                                ? require('@src/assets/images/more_item.png')
+                                : require('@src/assets/images/first_capture_video.png')
                         }
                         style={styles.imageStyle}
                     />

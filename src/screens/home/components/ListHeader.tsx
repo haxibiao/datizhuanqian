@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { TouchFeedback } from 'components';
 import { Config, SCREEN_WIDTH, Theme, PxFit } from 'utils';
-import { observer, app } from 'store';
+import { observer, app, config } from 'store';
 
 const ListHeader = observer(props => {
     const { navigation } = props;
@@ -19,7 +19,7 @@ const ListHeader = observer(props => {
                         source={require('@src/assets/images/competitor.png')}
                         style={[styles.entrance, { marginRight: PxFit(10) }]}>
                         <Text style={styles.entranceName}>答题对战</Text>
-                        <Text style={styles.entranceDescription}>PK赢奖金</Text>
+                        <Text style={styles.entranceDescription}>{!config.disableAd ? 'PK赢奖金' : '知识对决'}</Text>
                     </ImageBackground>
                 </TouchFeedback>
                 <TouchFeedback

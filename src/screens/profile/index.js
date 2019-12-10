@@ -251,20 +251,22 @@ class index extends Component {
                                 <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                             )}
                         </TouchFeedback>
-                        <TouchFeedback
-                            style={styles.columnItem}
-                            authenticated
-                            navigation={navigation}
-                            onPress={() => navigation.navigate('BillingRecord')}>
-                            <Row>
-                                <Image
-                                    style={styles.metaIcon}
-                                    source={require('../../assets/images/profile_order.png')}
-                                />
-                                <Text style={styles.itemTypeText}>我的账单</Text>
-                            </Row>
-                            <Iconfont name="right" size={17} color={Theme.subTextColor} />
-                        </TouchFeedback>
+                        {!config.disableAd && (
+                            <TouchFeedback
+                                style={styles.columnItem}
+                                authenticated
+                                navigation={navigation}
+                                onPress={() => navigation.navigate('BillingRecord')}>
+                                <Row>
+                                    <Image
+                                        style={styles.metaIcon}
+                                        source={require('../../assets/images/profile_order.png')}
+                                    />
+                                    <Text style={styles.itemTypeText}>我的账单</Text>
+                                </Row>
+                                <Iconfont name="right" size={17} color={Theme.subTextColor} />
+                            </TouchFeedback>
+                        )}
                         <TouchFeedback
                             style={styles.columnItem}
                             authenticated
@@ -281,15 +283,30 @@ class index extends Component {
                         </TouchFeedback>
                         <View style={{ height: 10 }} />
 
-                        {/*  <TouchFeedback
+                        {/*
+                            <TouchFeedback
                             style={styles.columnItem}
                             onPress={() => {
-                                // NativeModules.TikTokEntryModule.douyinLogin().then(code => {
-                                //     console.log('code', code);
-                                // })
-                                NativeModules.AlipayEntryModule.AlipayAuth().then(data => {
-                                    console.log('data', data);
+                                NativeModules.TikTokEntryModule.douyinLogin().then(code => {
+                                    console.log('code', code);
+                                    app.client
+                                        .mutate({
+                                            mutation: GQL.OAuthBindMutation,
+                                            variables: {
+                                                code: code,
+                                                oauth_type: 'TIKTOK',
+                                            },
+                                        })
+                                        .then((data: any) => {
+                                            console.log('data', data);
+                                        })
+                                        .catch(err => {
+                                            console.log('err', err);
+                                        });
                                 });
+                                // NativeModules.AlipayEntryModule.AlipayAuth().then(data => {
+                                //     console.log('data', data);
+                                // });
                                 // 抖音授权   支付宝授权
                             }}>
                             <Row>
@@ -298,27 +315,34 @@ class index extends Component {
                             </Row>
                             <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                         </TouchFeedback>
-                        */}
-                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
-                            <Row>
-                                <Image
-                                    style={styles.metaIcon}
-                                    source={require('../../assets/images/profile_explain.png')}
-                                />
-                                <Text style={styles.itemTypeText}>赚钱攻略</Text>
-                            </Row>
-                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                        </TouchFeedback>
-                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('CommonIssue')}>
-                            <Row>
-                                <Image
-                                    style={styles.metaIcon}
-                                    source={require('../../assets/images/profile_help.png')}
-                                />
-                                <Text style={styles.itemTypeText}>常见问题</Text>
-                            </Row>
-                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                        </TouchFeedback>
+                    */}
+
+                        {!config.disableAd && (
+                            <TouchFeedback
+                                style={styles.columnItem}
+                                onPress={() => navigation.navigate('MakeMoenyManual')}>
+                                <Row>
+                                    <Image
+                                        style={styles.metaIcon}
+                                        source={require('../../assets/images/profile_explain.png')}
+                                    />
+                                    <Text style={styles.itemTypeText}>赚钱攻略</Text>
+                                </Row>
+                                <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                            </TouchFeedback>
+                        )}
+                        {!config.disableAd && (
+                            <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('CommonIssue')}>
+                                <Row>
+                                    <Image
+                                        style={styles.metaIcon}
+                                        source={require('../../assets/images/profile_help.png')}
+                                    />
+                                    <Text style={styles.itemTypeText}>常见问题</Text>
+                                </Row>
+                                <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                            </TouchFeedback>
+                        )}
                         <TouchFeedback
                             style={styles.columnItem}
                             onPress={() => navigation.navigate('Setting', { user })}>

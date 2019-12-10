@@ -80,11 +80,12 @@ class index extends Component {
     componentDidMount() {
         const { me } = app;
         // 新手指导
-        beginnerGuidance({
-            guidanceKey: 'Answer',
-            GuidanceView: AnswerGuidance,
-            dismissEnabled: true,
-        });
+        !config.disableAd &&
+            beginnerGuidance({
+                guidanceKey: 'Answer',
+                GuidanceView: AnswerGuidance,
+                dismissEnabled: true,
+            });
 
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + me.token)
             .then(response => response.json())
@@ -246,7 +247,7 @@ class index extends Component {
         // this.showAnswerResult(this.answer_count, this.error_count);
         // 广告触发, iOS不让苹果审核轻易发现答题触发广告，设置多一点，比如答题100个
         // 安卓提高到5个题计算及格和视频奖励
-        const adWillShowCount = Platform.OS === 'ios' ? 100 : 5;
+        const adWillShowCount = !config.disableAd ? 100 : 5;
         if (this.answer_count === adWillShowCount && !config.disableAd) {
             this.showAnswerResult(this.answer_count, this.error_count);
             this.error_count = 0;
@@ -256,7 +257,7 @@ class index extends Component {
         // 提现提示
         if (data.user && data.user.gold >= 600 && !app.withdrawTips && this.answer_count !== 10) {
             if ((data.user.wallet && data.user.wallet.total_withdraw_amount <= 0) || !data.user.wallet) {
-                this.loadWithdrawTips();
+                !config.disableAd && this.loadWithdrawTips();
             }
         }
     };

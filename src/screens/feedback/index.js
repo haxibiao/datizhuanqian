@@ -15,6 +15,7 @@ import Feedback from './components/Feedback';
 import FeedbackList from './components/FeedbackList';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { config } from 'store';
 
 class index extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class index extends Component {
                     renderTabBar={props => (
                         <ScrollTabBar {...props} tabUnderlineWidth={PxFit(50)} underLineColor={Theme.primaryColor} />
                     )}>
-                    <FeedbackList navigation={navigation} tabLabel="问题中心" />
+                    {!config.disableAd && <FeedbackList navigation={navigation} tabLabel="问题中心" />}
                     <Feedback navigation={navigation} tabLabel="反馈建议" />
                 </ScrollableTabView>
                 <View style={styles.backButton}>

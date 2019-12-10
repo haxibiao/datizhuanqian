@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
-import { observer, app } from 'store';
+import { observer, app, config as configStore } from 'store';
 import { exceptionCapture, throttle } from 'common';
 import { PxFit, Tools, Theme } from 'utils';
 import { beginnerGuidance, VideoGuidance } from 'components';
@@ -111,11 +111,12 @@ export default observer(props => {
     useEffect(() => {
         const navWillFocusListener = props.navigation.addListener('willFocus', () => {
             StatusBar.setBarStyle('light-content');
-            beginnerGuidance({
-                guidanceKey: 'Video',
-                GuidanceView: VideoGuidance,
-                dismissEnabled: true,
-            });
+            !configStore.disableAd &&
+                beginnerGuidance({
+                    guidanceKey: 'Video',
+                    GuidanceView: VideoGuidance,
+                    dismissEnabled: true,
+                });
 
             service.dataReport({
                 data: { category: '用户行为', action: 'user_click_video_screen', name: '用户点击进入学习视频页' },
@@ -187,10 +188,11 @@ export default observer(props => {
                 onViewableItemsChanged={getVisibleRows}
                 viewabilityConfig={config.current}
             />
-            <View style={styles.rewardProgress}>
-                <RewardProgress />
-            </View>
-
+            {!configStore.disableAd && (
+                <View style={styles.rewardProgress}>
+                    <RewardProgress />
+                </View>
+            )}
             <CommentOverlay ref={commentRef} question={post} isPost />
         </View>
     );

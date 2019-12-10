@@ -141,12 +141,12 @@ const TaskBody = props => {
             const arry = [
                 {
                     typeName: '贡献任务',
-                    tasks: customTask,
+                    tasks: !config.disableAd ? customTask : [],
                     doTask: null,
                 },
                 {
                     typeName: '成长任务',
-                    tasks: growUpTask,
+                    tasks: !ISIOS ? growUpTask : [],
                     doTask: null,
                 },
                 {

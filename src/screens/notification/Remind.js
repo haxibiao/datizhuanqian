@@ -10,7 +10,7 @@ import { Iconfont, PageContainer, Avatar, Badge, TouchFeedback, Row, SafeText } 
 import { Theme, PxFit, Tools } from 'utils';
 
 import { Query, compose, graphql, GQL } from 'apollo';
-import { app } from 'store';
+import { app, config } from 'store';
 
 class Remind extends Component {
     calcUnreads(data) {
@@ -57,26 +57,28 @@ class Remind extends Component {
                         )}
                     </View>
                 </TouchFeedback>
-                <TouchFeedback
-                    authenticate
-                    navigation={navigation}
-                    style={styles.notificationItem}
-                    onPress={() => navigation.navigate('OfficialNotice')}>
-                    <View>
-                        <Image
-                            style={styles.notificationAvatar}
-                            source={require('../../assets/images/official-notice.png')}
-                        />
-                    </View>
-                    <View style={styles.itemContent}>
-                        <SafeText style={styles.itemName}>官方公告</SafeText>
-                        {calcUnreads('notice') ? (
-                            <Badge count={calcUnreads('notice')} />
-                        ) : (
-                            <Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
-                        )}
-                    </View>
-                </TouchFeedback>
+                {!config.disableAd && (
+                    <TouchFeedback
+                        authenticate
+                        navigation={navigation}
+                        style={styles.notificationItem}
+                        onPress={() => navigation.navigate('OfficialNotice')}>
+                        <View>
+                            <Image
+                                style={styles.notificationAvatar}
+                                source={require('../../assets/images/official-notice.png')}
+                            />
+                        </View>
+                        <View style={styles.itemContent}>
+                            <SafeText style={styles.itemName}>官方公告</SafeText>
+                            {calcUnreads('notice') ? (
+                                <Badge count={calcUnreads('notice')} />
+                            ) : (
+                                <Iconfont name={'right'} size={PxFit(16)} color={Theme.subTextColor} />
+                            )}
+                        </View>
+                    </TouchFeedback>
+                )}
                 <TouchFeedback
                     authenticate
                     navigation={navigation}

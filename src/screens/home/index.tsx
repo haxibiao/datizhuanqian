@@ -31,10 +31,11 @@ when(
     () => app.me.isNewUser,
     () => {
         // 新手指导
-        beginnerGuidance({
-            guidanceKey: 'VideoTask',
-            GuidanceView: VideoTaskGuidance,
-        });
+        !config.disableAd &&
+            beginnerGuidance({
+                guidanceKey: 'VideoTask',
+                GuidanceView: VideoTaskGuidance,
+            });
     },
 );
 
@@ -141,7 +142,7 @@ const index = observer(props => {
             const phone = ISIOS ? '' : await Util.getPhoneNumber();
             const userCache = await storage.getItem(keys.userCache);
 
-            if (!app.login && !userCache) {
+            if (!app.login && !userCache && !config.disableAd) {
                 loadUserReword(phone);
             }
         }, 3000);
@@ -197,7 +198,7 @@ const index = observer(props => {
             title={Config.AppName}
             white
             isTopNavigator
-            rightView={!ISIOS ? <TimeReward navigation={navigation} /> : null}>
+            rightView={!config.disableAd ? <TimeReward navigation={navigation} /> : null}>
             {Content}
         </PageContainer>
     );

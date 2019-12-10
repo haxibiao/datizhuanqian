@@ -2,7 +2,7 @@
  * @flow
  * created by wyk made in 2019-07-01 16:29:14
  */
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { observable, action } from 'mobx';
 import { Storage, SystemSettings } from './storage';
@@ -96,7 +96,8 @@ class config {
         this.enableFeed = data.enable_feed;
         this.enableBanner = data.enable_banner;
         this.enableDrawFeed = data.enable_drawfeed;
-        this.disableAd = data.disable[Config.AppStore];
+        this.disableAd = data.disable[Platform.OS === 'ios' ? 'ios' : Config.AppStore];
+        console.log('this.disableAd', this.disableAd);
     }
 
     @action.bound

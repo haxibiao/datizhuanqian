@@ -20,7 +20,8 @@ export default function(callback: Promise) {
                 enable_banner: true,
                 enable_feed: true,
                 disable: {
-                    huawei: true,
+                    huawei: false,
+                    ios: true,
                 },
             });
         });
