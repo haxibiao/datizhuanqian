@@ -75,8 +75,8 @@ const OptionItem = (props: Props) => {
 
         switch (status) {
             case 'correct':
-                labelStyle = { backgroundColor: Theme.correctColor, borderWidth: 0 };
-                contentStyle = { color: Theme.correctColor };
+                labelStyle = { backgroundColor: Theme.teaGreen, borderWidth: 0 };
+                contentStyle = { color: Theme.teaGreen };
                 label = <Iconfont name="correct" size={PxFit(16)} color={'#fff'} />;
                 break;
 
@@ -91,8 +91,8 @@ const OptionItem = (props: Props) => {
         }
 
         if (answerStatus.length > 0 && question.answer == option.Value) {
-            labelStyle = { backgroundColor: Theme.correctColor, borderWidth: 0 };
-            contentStyle = { color: Theme.correctColor };
+            labelStyle = { backgroundColor: Theme.teaGreen, borderWidth: 0 };
+            contentStyle = { color: Theme.teaGreen };
             label = <Iconfont name="correct" size={PxFit(16)} color={'#fff'} />;
         }
         return { labelStyle, contentStyle, label };
