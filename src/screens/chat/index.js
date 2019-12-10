@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Theme, PxFit, Tools, ISAndroid } from '@src/utils';
 import { PageContainer } from '@src/components';
+import { throttle } from '@src/common';
 import { observer, app } from '@src/store';
 import { GiftedChat, Bubble, Actions, Send, Composer, Accessory, InputToolbar } from 'react-native-gifted-chat';
 import { useNavigation } from 'react-navigation-hooks';
@@ -9,7 +10,7 @@ import store from './store';
 
 const index = observer(props => {
     const navigation = useNavigation();
-    const { user, chat } = navigation.state.params;
+    const { user, chat = {} } = navigation.state.params;
     const chatStore = useMemo(() => new store({ me: app.me, friend: user, chatId: chat.id }), []);
 
     const renderInputToolbar = useCallback(props => {
@@ -28,7 +29,7 @@ const index = observer(props => {
         return (
             <Send
                 {...props}
-                onSend={chatStore.sendMessage}
+                onSend={throttle(chatStore.sendMessage)}
                 containerStyle={[chatStyle.sendButton, !chatStore.textMessage && chatStyle.disabledButton]}
                 alwaysShowSend
                 disabled={!chatStore.textMessage}>
@@ -38,22 +39,27 @@ const index = observer(props => {
     }, []);
 
     const renderLoadEarlier = useCallback(() => {
-        if (chatStore.hasMoreMessage) {
-            return (
-                <View style={styles.loadEarlier}>
-                    {chatStore.status === 'loadMore' && (
-                        <ActivityIndicator size="small" color="rgba(255, 87, 51 ,0.6)" />
-                    )}
-                    {chatStore.status === 'loaded' && (
-                        <TouchableOpacity style={styles.touchView} onPress={chatStore.fetchMessages}>
-                            <Text style={styles.loadMoreText}>点击加载更多</Text>
-                        </TouchableOpacity>
-                    )}
-                </View>
-            );
-        } else {
-            return null;
-        }
+        return (
+            <View style={styles.loadEarlier}>
+                {chatStore.status === 'loadMore' && <ActivityIndicator size="small" color="rgba(255, 87, 51 ,0.6)" />}
+                {chatStore.status === 'loaded' && (
+                    <TouchableOpacity style={styles.touchView} onPress={throttle(chatStore.fetchMessages)}>
+                        <Text style={styles.loadMoreText}>点击加载更多</Text>
+                    </TouchableOpacity>
+                )}
+                {chatStore.status === 'finished' && (
+                    <View>
+                        <Text style={styles.createdAt}>{chatStore.startTime}</Text>
+                    </View>
+                )}
+            </View>
+        );
+    }, [chatStore.status]);
+
+    useEffect(() => {
+        return () => {
+            chatStore.leaveChatRoom();
+        };
     }, []);
 
     return (
@@ -188,6 +194,10 @@ const styles = StyleSheet.create({
     loadMoreText: {
         fontSize: PxFit(11),
         color: '#fff',
+    },
+    createdAt: {
+        fontSize: PxFit(11),
+        color: Theme.subTextColor,
     },
     darkText: {
         fontSize: PxFit(14),

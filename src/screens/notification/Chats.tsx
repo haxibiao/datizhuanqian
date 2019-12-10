@@ -38,27 +38,35 @@ const Chat = ({ chat }) => {
 };
 
 const Chats = props => {
-    const [chats, setChats] = useState([]);
-    const { data: chatsData, refetch } = useQuery(GQL.ChatsQuery, {
+    const navigation = useNavigation();
+
+    const { data, refetch } = useQuery(GQL.ChatsQuery, {
         variables: { limit: 100 },
         fetchPolicy: 'network-only',
     });
 
-    useEffect(() => {
-        const newChats = syncGetter('chats', chatsData);
-        if (newChats) {
-            setChats(newChats);
-        }
-    }, [chatsData]);
+    const chats = useMemo(() => {
+        props.updateUnread();
+        return syncGetter('chats', data) || [];
+    }, [data]);
 
     useEffect(() => {
-        const navWillBlurListener = props.navigation.addListener('willFocus', payload => {
+        const navWillBlurListener = navigation.addListener('willFocus', payload => {
             refetch();
         });
         return () => {
             navWillBlurListener.remove();
         };
     }, [refetch]);
+
+    useEffect(() => {
+        // app.echo.private(`App.User.id`).listen('NewMessage', (message: Message) => {
+        //     refetch();
+        // });
+        // return () => {
+        // app.echo.leave(`message`);
+        // };
+    }, []);
 
     return (
         <FlatList

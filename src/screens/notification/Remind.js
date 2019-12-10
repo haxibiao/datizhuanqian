@@ -38,7 +38,7 @@ class Remind extends Component {
         const loading = !user;
         const calcUnreads = this.calcUnreads(user);
         return (
-            <PageContainer loading={loading} title="消息中心" white>
+            <View style={styles.container}>
                 <TouchFeedback
                     style={styles.notificationItem}
                     onPress={() => navigation.navigate('SystemNotification')}>
@@ -139,7 +139,7 @@ class Remind extends Component {
                         )}
                     </View>
                 </TouchFeedback>
-            </PageContainer>
+            </View>
         );
     }
 }

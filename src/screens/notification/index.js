@@ -2,10 +2,12 @@
  * @flow
  * created by wangyukun made in 2019-03-18 11:44:48
  */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { PageContainer, ScrollTab, NavigatorBar, TouchFeedback, Iconfont, Badge } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { syncGetter } from '@src/common';
+import { useQuery, GQL } from '@src/apollo';
 import { observer, app, config } from 'store';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { useNavigation } from 'react-navigation-hooks';
@@ -15,19 +17,58 @@ import Chats from './Chats';
 export default observer(props => {
     const navigation = useNavigation();
 
-    const renderTabItem = useCallback(({ name, isActive, page }) => {
-        const changeTextStyle = isActive ? styles.activeTextStyle : styles.inactivityTextStyle;
-        return (
-            <View>
-                <Text style={changeTextStyle}>{name}</Text>
-                {page === 1 && (
-                    <View style={styles.badge}>
-                        <Badge count={0} />
-                    </View>
-                )}
-            </View>
-        );
+    const { data, refetch } = useQuery(GQL.userUnreadQuery, {
+        variables: { id: app.me.id },
+        fetchPolicy: 'network-only',
+    });
+
+    const unreadCount = useMemo(() => {
+        if (data !== null && typeof data === 'object') {
+            const system =
+                data.unread_notifications_count -
+                data.unread_comment_notifications_count -
+                data.unread_user_follow_notifications_count -
+                data.unread_like_notifications_count -
+                data.unread_notices_count;
+            return {
+                system,
+                comment: data.unread_comment_notifications_count,
+                fans: data.unread_user_follow_notifications_count,
+                like: data.unread_like_notifications_count,
+                notice: data.unread_notices_count,
+                message: data.unread_message_notifications_count,
+            };
+        }
+        return {};
+    }, [data]);
+
+    const renderTabItem = useCallback(
+        ({ name, isActive, page }) => {
+            const changeTextStyle = isActive ? styles.activeTextStyle : styles.inactivityTextStyle;
+            return (
+                <View>
+                    <Text style={changeTextStyle}>{name}</Text>
+                    {page === 1 && (
+                        <View style={styles.badge}>
+                            <Badge count={unreadCount.message} />
+                        </View>
+                    )}
+                </View>
+            );
+        },
+        [unreadCount],
+    );
+
+    useEffect(() => {
+        // app.echo.join(`chatMessages`).listen('NewMessage', data => {
+        //     console.log('unreadMessage', data);
+        //     setUnread(data.unreadMessage);
+        // });
+        return () => {
+            // app.echo.leave(`chatMessages`);
+        };
     }, []);
+
     return (
         <PageContainer hiddenNavBar contentViewStyle={styles.contentViewStyle} white>
             <ScrollableTabView
@@ -43,8 +84,8 @@ export default observer(props => {
                         renderTabItem={renderTabItem}
                     />
                 )}>
-                <Remind tabLabel="提醒" navigation={navigation} />
-                <Chats tabLabel="私信" navigation={navigation} />
+                <Remind tabLabel="提醒" unreadCount={unreadCount} />
+                <Chats tabLabel="私信" updateUnread={() => refetch()} />
             </ScrollableTabView>
             <View style={styles.backButton}>
                 <TouchFeedback activeOpacity={1} onPress={() => navigation.goBack()}>

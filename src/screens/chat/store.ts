@@ -45,12 +45,13 @@ class ChatStore {
     @observable public me: User;
     @observable public friend: User;
     @observable public chatId: number = 0;
+    @observable public startTime: string = '';
     @observable public status: ViewStatus = 'init';
     @observable public messagesData: NewMessage[] = [];
     @observable public newMessageOffset: number = 0;
-    @observable public hasMoreMessage: boolean = false;
     @observable public messageId: number = 1;
     @observable public textMessage = '';
+    public hasMoreMessage: boolean = false;
 
     public constructor(props: Props) {
         this.me = props.me;
@@ -59,6 +60,8 @@ class ChatStore {
             this.chatId = props.chatId;
             this.fetchMessages();
             this.listenChat();
+        } else if (this.friend) {
+            this.createChatroom(this.friend.id);
         }
     }
 
@@ -68,11 +71,12 @@ class ChatStore {
             .mutate({
                 mutation: GQL.CreateChatMutation,
                 variables: {
-                    id: [this.me.id, userId],
+                    users: [this.me.id, userId],
                 },
             })
             .then((result: any) => {
-                const chatroom = result.data.Room;
+                const chatroom = result.data.createChat;
+                console.log('chatroom', chatroom, result);
                 this.chatId = chatroom.id as number;
                 this.fetchMessages();
                 this.listenChat();
@@ -84,11 +88,32 @@ class ChatStore {
 
     @action.bound
     public listenChat() {
-        app.echo.private(`App.Chat.${this.chatId}`).listen('NewMessage', (message: Message) => {
-            console.log('new message', message);
-            this.appendMessage(this.constructMessage(message));
-            this.sendLocalNotification(message, this.friend.name);
-        });
+        console.log('====================================');
+        console.log('listenChat', this.chatId);
+        console.log('====================================');
+        app.echo
+            .join(`chat.${this.chatId}`)
+            .joining((user: User) => {
+                console.log('joining:', user);
+            })
+            .leaving((user: User) => {
+                console.log('leaving:', user);
+            })
+            .listen('NewMessage', (data: { message: Message }) => {
+                console.log('new message', JSON.stringify(data));
+                Toast.show({ content: JSON.stringify(data), duration: 10000 });
+                if (data.message.user.id !== this.me.id) {
+                    this.appendMessage(this.constructMessage(data.message));
+                }
+                // this.sendLocalNotification(message, this.friend.name);
+            });
+    }
+
+    @action.bound
+    public leaveChatRoom() {
+        if (this.chatId) {
+            app.echo.leave(`chat.${this.chatId}`);
+        }
     }
 
     @action.bound
@@ -99,7 +124,7 @@ class ChatStore {
             user: {
                 _id: message.user.id,
                 name: message.user.name,
-                avatar: message.user.avatar,
+                avatar: message.user.avatar_url,
             },
         };
     }
@@ -120,26 +145,30 @@ class ChatStore {
 
     @action.bound
     public sendMessage() {
-        const text = this.textMessage;
-        const incomingMessage = this.constructNewMessage(text);
-        this.appendMessage(incomingMessage);
-        this.textMessage = '';
-        app.client
-            .mutate({
-                mutation: GQL.CreateMessageMutation,
-                variables: {
-                    chat_id: this.chatId,
-                    body: {
-                        text,
+        if (this.chatId) {
+            const text = this.textMessage;
+            const incomingMessage = this.constructNewMessage(text);
+            this.appendMessage(incomingMessage);
+            this.textMessage = '';
+            app.client
+                .mutate({
+                    mutation: GQL.CreateMessageMutation,
+                    variables: {
+                        chat_id: this.chatId,
+                        body: {
+                            text,
+                        },
                     },
-                },
-            })
-            .then((data: any) => {
-                console.log('Data', data);
-            })
-            .catch((err: any) => {
-                console.log('err', err);
-            });
+                })
+                .then((data: any) => {
+                    console.log('Data', data);
+                })
+                .catch((err: any) => {
+                    console.log('err', err);
+                });
+        } else {
+            Toast.show({ content: '发送失败' });
+        }
     }
 
     @action.bound
@@ -175,14 +204,15 @@ class ChatStore {
                             avatar: message.user.avatar,
                         },
                     };
+                    this.startTime = message.created_at;
                     this.prependMessage(incomingMessage);
                 });
                 if (messages.length >= 10) {
                     this.hasMoreMessage = true;
+                    this.status = 'loaded';
                 } else {
                     this.status = 'finished';
                 }
-                this.status = 'loaded';
             })
             .catch((err: any) => {
                 this.status = 'error';
