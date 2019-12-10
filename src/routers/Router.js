@@ -14,6 +14,7 @@ import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
 import AnswerScreen from '../screens/answer';
+import UserAnswerScreen from '../screens/answer/UserAnswerScreen';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
 // 答题对垒
 import CompetitionCategoriesScreen from '../screens/competition/categories';
@@ -47,6 +48,7 @@ import ContributeSubmitedScreen from '../screens/contribute/Submit';
 import ContributeEditCategoryScreen from '../screens/contribute/EditCategory';
 import ContributeEditOptionsScreen from '../screens/contribute/EditOptions';
 import ContributeEditExplainScreen from '../screens/contribute/EditExplain';
+import AskQuestionScreen from '../screens/contribute/AskQuestion';
 
 // 分享
 import ShareScreen from '../screens/share';
@@ -134,6 +136,10 @@ export default {
     Answer: {
         screen: AnswerScreen,
     },
+    // 答题
+    UserAnswer: {
+        screen: UserAnswerScreen,
+    },
     MoreCategories: {
         screen: MoreCategoriesScreen,
     },
@@ -213,6 +219,9 @@ export default {
     },
     EditExplain: {
         screen: ContributeEditExplainScreen,
+    },
+    AskQuestion: {
+        screen: AskQuestionScreen,
     },
 
     // 分享

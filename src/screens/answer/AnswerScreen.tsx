@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect, useRef, useCallback } from 'react';
-import { Text, View, Animated, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { Text, View, Animated, StyleSheet, StatusBar, ScrollView, FlatList } from 'react-native';
 
 import {
     PageContainer,
@@ -34,13 +34,16 @@ import QuestionOptions from '../question/components/QuestionOptions';
 import AnswerBar from '../question/components/AnswerBar';
 import Explain from '../question/components/Explain';
 import VideoExplain from '../question/components/VideoExplain';
-import { List } from 'lodash';
+
+import QuestionStore from './QuestionStore';
+import Questions from '../user/components/Questions';
+import { observable } from 'mobx';
 
 type Props = {
     navigation: any;
 };
 
-const answer = (props: Props) => {
+const AnswerScreen = observer((props: Props) => {
     const [gold, setGold] = useState(0);
     const [ticket, setTicket] = useState(0);
     const [errorCount, setErrorCount] = useState(0);
@@ -50,24 +53,51 @@ const answer = (props: Props) => {
     const [answer, setAnswer] = useState(null);
     const [auditStatus, setAuditStatus] = useState(0);
     const [finished, setFinished] = useState(false);
-    const [questions, setQuestions] = useState(Array);
+    // const [questions, setQuestions] = useState(Array);
     const [error, setError] = useState(null);
-    const [containerHeight, setContainerHeight] = useState(SCREEN_HEIGHT - PxFit(170));
-
+    // const [containerHeight, setContainerHeight] = useState(SCREEN_HEIGHT - PxFit(170));
+    const { navigation } = props;
+    const questions = navigation.getParam('questions') || [];
+    const activeIndex = navigation.getParam('index') || 0;
     const _animated = useRef(new Animated.Value(0));
 
-    const category = props.navigation.getParam('category', {});
+    // const questionList = useQuery(GQL.QuestionListQuery, {
+    //     variables: { category_id: category.id, limit: 10 },
+    // });
 
-    const questionList = useQuery(GQL.QuestionListQuery, {
-        variables: { category_id: category.id, limit: 10 },
-    });
+    console.log('questions :', questions);
 
     const userMeans = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
 
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
+
     useEffect(() => {
-        fetchData();
+        console.log('activeIndex :', activeIndex);
+        QuestionStore.viewableItemIndex = activeIndex;
+
+        QuestionStore.addSource(questions);
+        console.log('useEffect  :', QuestionStore.viewableItemIndex);
+        console.log('dataSource  :', QuestionStore.dataSource);
+
+        const navWillFocusListener = navigation.addListener('willFocus', () => {
+            if (QuestionStore.viewableItemIndex < 0) {
+                QuestionStore.viewableItemIndex = 0;
+            }
+        });
+        const navWillBlurListener = navigation.addListener('willBlur', () => {
+            hideComment();
+        });
+
+        return () => {
+            navWillFocusListener.remove();
+            navWillBlurListener.remove();
+            QuestionStore.dataSource = [];
+            QuestionStore.viewableItemIndex = -1;
+        };
     }, []);
 
     //取题
@@ -85,7 +115,7 @@ const answer = (props: Props) => {
         }
         const _questions = Tools.syncGetter('questions', data);
         if (_questions && _questions instanceof Array && _questions.length > 0) {
-            setQuestions(_questions);
+            QuestionStore.addSource(_questions);
             resetState(_questions);
         } else {
             setFinished(true);
@@ -208,12 +238,10 @@ const answer = (props: Props) => {
         }).start();
     }, []);
 
-    const onContainerLayout = (event: any) => {
-        if (event) {
-            const { x, y, width, height } = event.nativeEvent.layout;
-            setContainerHeight(height);
-        }
-    };
+    const onContainerLayout = useCallback(event => {
+        const { height, width } = event.nativeEvent.layout;
+        QuestionStore.containerWidth = width;
+    }, []);
 
     const onScroll = () => {
         hideUpward();
@@ -265,14 +293,14 @@ const answer = (props: Props) => {
                   //       onPress: () => props.navigation.navigate('ShareCard', { question }),
                   //   },
               ])
-            : ChooseOverlay.show(question, props.navigation, category, 2, userMeans.data.user); //2 ： min_level 需写到config
+            : ChooseOverlay.show(question, props.navigation, 2, userMeans.data.user); //2 ： min_level 需写到config
     };
 
-    const renderContent = () => {
+    const renderContent = question => {
         // const { answer, submited, question, finished, auditStatus, error } = this.state;
         // const { navigation } = this.props;
         // const { category = {} } = this.props.navigation.state.params;
-        console.log('renderContent', question);
+
         if (error) {
             return <StatusView.ErrorView onPress={fetchData} error={error} />;
         }
@@ -314,25 +342,20 @@ const answer = (props: Props) => {
         };
         const audit = question.status === 0;
         return (
-            <React.Fragment>
+            <View style={{ width: QuestionStore.containerWidth }}>
                 {!config.isFullScreen && <Banner isAnswer showWithdraw navigation={props.navigation} />}
                 <ScrollView
-                    contentContainerStyle={[
-                        styles.scrollStyle,
-                        {
-                            paddingBottom: audit ? SCREEN_WIDTH / 3 : 0,
-                        },
-                    ]}
+                    contentContainerStyle={styles.scrollStyle}
                     keyboardShouldPersistTaps="always"
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                     scrollEnabled={!config.isFullScreen}
                     onScroll={onScroll}>
                     <View style={styles.content}>
-                        <Animated.View style={[{ marginHorizontal: PxFit(Theme.itemSpace) }, bodyStyle]}>
-                            <UserInfo question={question} navigation={props.navigation} category={category} />
+                        <View style={[{ marginHorizontal: PxFit(Theme.itemSpace) }]}>
+                            <UserInfo question={question} navigation={props.navigation} />
                             <QuestionBody question={question} audit={audit} />
-                        </Animated.View>
+                        </View>
                         {question.video && question.video.url && (
                             <Player style={{ marginTop: PxFit(Theme.itemSpace) }} video={question.video} />
                         )}
@@ -369,25 +392,30 @@ const answer = (props: Props) => {
                     </View>
                 </ScrollView>
                 {!config.isFullScreen && (
-                    <Animated.View style={footerStyle}>
-                        <FooterBar
-                            navigation={props.navigation}
-                            question={question}
-                            submited={submited}
-                            answer={answer}
-                            // showComment={this.commentHandler}
-                            oSubmit={onSubmit}
-                        />
-                    </Animated.View>
+                    <FooterBar
+                        navigation={props.navigation}
+                        question={question}
+                        submited={submited}
+                        answer={answer}
+                        // showComment={this.commentHandler}
+                        oSubmit={onSubmit}
+                    />
                 )}
-            </React.Fragment>
+            </View>
         );
     };
+
+    console.log('QuestionStore.viewableItemIndex :', QuestionStore.viewableItemIndex);
+    console.log(' QuestionStore.dataSource :', QuestionStore.dataSource);
+    const data = QuestionStore.dataSource[QuestionStore.viewableItemIndex];
+
+    if (!data) return null;
 
     return (
         <Fragment>
             <PageContainer
-                title={category.name || '答题'}
+                title={'答题'}
+                white
                 autoKeyboardInsets={false}
                 onWillBlur={hideComment}
                 rightView={
@@ -396,13 +424,42 @@ const answer = (props: Props) => {
                     </TouchFeedback>
                 }
                 hiddenNavBar={config.isFullScreen}
-                onLayout={onContainerLayout}>
+                onLayout={onContainerLayout}
+                titleStyle={{ color: Theme.defaultTextColor }}
+                navBarStyle={{
+                    borderBottomWidth: 0,
+                    borderBottomColor: '#fff',
+                    backgroundColor: '#fff',
+                }}
+                backButtonColor={Theme.defaultTextColor}>
                 {config.isFullScreen && <StatusBar translucent={true} hidden />}
-                <View style={styles.container}>{renderContent()}</View>
+                {/*   <View style={styles.container}>{renderContent()}</View> */}
+                <FlatList
+                    data={QuestionStore.dataSource}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    bounces={false}
+                    scrollsToTop={false}
+                    horizontal={true}
+                    showsVerticalScrollIndicator={false}
+                    initialScrollIndex={QuestionStore.viewableItemIndex}
+                    keyboardShouldPersistTaps="always"
+                    pagingEnabled={true}
+                    removeClippedSubviews={true}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => renderContent(item)}
+                    getItemLayout={(data, index) => ({
+                        length: QuestionStore.containerWidth,
+                        offset: QuestionStore.containerWidth * index,
+                        index,
+                    })}
+                    // onMomentumScrollEnd={onMomentumScrollEnd}
+                    // onViewableItemsChanged={getVisibleRows}
+                    viewabilityConfig={config.current}
+                />
             </PageContainer>
         </Fragment>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -438,4 +495,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default answer;
+export default AnswerScreen;

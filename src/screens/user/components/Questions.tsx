@@ -93,7 +93,15 @@ const Questions = props => {
                     />
                 }
                 ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
-                renderItem={({ item, index }) => <PostItem post={item} navigation={navigation} isQuestion={true} />}
+                renderItem={({ item, index }) => (
+                    <PostItem
+                        post={item}
+                        navigation={navigation}
+                        isQuestion={true}
+                        posts={questions}
+                        activeIndex={index}
+                    />
+                )}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
                 onEndReachedThreshold={0.3}
                 onEndReached={() => {

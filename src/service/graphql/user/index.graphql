@@ -193,44 +193,85 @@ query UserInfoQuery($id: Int, $limit: Int, $offset: Int, $order: QuestionOrderEn
 
         questions(limit: $limit, offset: $offset, order: $order, filter: $filter) {
             id
-            gold
             description
+            answer
+            status
+            favorite_status
+            gold
+            ticket
+            liked
             count_likes
             count_comments
-            liked
-            created_at
-            count
-            video {
+            selections_array {
+                Text
+                Value
+            }
+            image {
                 id
+                path
                 width
                 height
-                url
-                cover
-                is_ad_video
             }
+            video {
+                id
+                url
+                height
+                width
+                path
+                rotate
+                duration
+                cover
+            }
+            category {
+                id
+                name
+            }
+            explanation {
+                id
+                content
+                video {
+                    width
+                    height
+                    cover
+                    url
+                }
+                images {
+                    width
+                    path
+                }
+            }
+            type
+            correct_count
+            count
+            wrong_count
             user {
                 id
                 name
                 avatar
-                followed_user_status
+                followers_count
+                question_count
+                roles
                 profile {
+                    sub_name
+                    birthday
                     age
-                    questions_count
+                    introduction
+                    posts_count
                 }
                 level {
                     id
                     level
                 }
             }
-            image {
+            submit
+            audits {
                 id
-                width
-                height
-                path
-            }
-            category {
-                id
-                name
+                user {
+                    id
+                    name
+                    avatar
+                }
+                status
             }
         }
     }

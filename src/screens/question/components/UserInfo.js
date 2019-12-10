@@ -16,17 +16,16 @@ class UserInfo extends Component {
             question: { user },
             navigation,
         } = this.props;
+
         if (user.id == 1) {
             return null;
         }
 
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <TouchFeedback style={styles.userItem} onPress={() => navigation.navigate('User', { user })}>
-                    <Avatar source={user.avatar} size={PxFit(24)} />
-                    <Text style={styles.userName}>{user.name}</Text>
-                </TouchFeedback>
-            </View>
+            <TouchFeedback style={styles.userItem} onPress={() => navigation.navigate('User', { user })}>
+                <Avatar source={user.avatar} size={PxFit(24)} />
+                <Text style={styles.userName}>{user.name}</Text>
+            </TouchFeedback>
         );
     }
 }
