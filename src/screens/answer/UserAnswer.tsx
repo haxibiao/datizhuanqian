@@ -34,54 +34,94 @@ import QuestionOptions from '../question/components/QuestionOptions';
 import AnswerBar from '../question/components/AnswerBar';
 import Explain from '../question/components/Explain';
 import VideoExplain from '../question/components/VideoExplain';
+import CommentOverlay from '../comment/CommentOverlay';
 
 import QuestionStore from './QuestionStore';
-import Questions from '../user/components/Questions';
-import { observable } from 'mobx';
+import { exceptionCapture } from 'common';
 
 type Props = {
     navigation: any;
 };
 
+interface User {
+    id: number;
+    name: string;
+    avatar: string;
+    followed_user_status: number;
+}
+
+interface Video {
+    id: number;
+    width: number;
+    height: number;
+    url: string;
+    cover?: string;
+}
+
+interface Question {
+    id: never;
+    description: string;
+    count_likes: number;
+    count_comments: number;
+    liked: boolean;
+    selections_array: Array<object>;
+    answer: string;
+    category: object;
+    user: User;
+    video: Video;
+}
+
+const ORDER = ['ANSWERS_COUNT', 'CREATED_AT'];
+
 const AnswerScreen = observer((props: Props) => {
-    const [gold, setGold] = useState(0);
-    const [ticket, setTicket] = useState(0);
     const [errorCount, setErrorCount] = useState(0);
-    const [answerCount, setanswerCount] = useState(0);
-    const [question, setQuestion] = useState(Object);
+    const [answerCount, setAnswerCount] = useState(0);
+    // const [question, setQuestion] = useState(Object);
     const [submited, setSubmited] = useState(false);
     const [answer, setAnswer] = useState(null);
     const [auditStatus, setAuditStatus] = useState(0);
     const [finished, setFinished] = useState(false);
-    // const [questions, setQuestions] = useState(Array);
     const [error, setError] = useState(null);
-    // const [containerHeight, setContainerHeight] = useState(SCREEN_HEIGHT - PxFit(170));
+    const activeItem = useRef(0);
+
     const { navigation } = props;
     const questions = navigation.getParam('questions') || [];
     const activeIndex = navigation.getParam('index') || 0;
+    const user = navigation.getParam('user') || {};
     const _animated = useRef(new Animated.Value(0));
+    const flatListRef = useRef();
+    const commentRef = useRef();
 
-    // const questionList = useQuery(GQL.QuestionListQuery, {
-    //     variables: { category_id: category.id, limit: 10 },
-    // });
-
-    console.log('questions :', questions);
+    const data = QuestionStore.dataSource[QuestionStore.viewableItemIndex];
 
     const userMeans = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
 
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
+    const showComment = useCallback(() => {
+        if (TOKEN) {
+            commentRef.current.slideUp();
+        } else {
+            navigation.navigate('Login');
+        }
+    }, [commentRef]);
+
+    const hideComment = useCallback(() => {
+        commentRef.current.slideDown();
+    }, [commentRef]);
+
+    const commentHandler = isAnswered => {
+        if (!submited && !isAnswered) {
+            Toast.show({ content: '答题后再评论哦', layout: 'bottom' });
+        } else {
+            showComment();
+        }
+    };
 
     useEffect(() => {
-        console.log('activeIndex :', activeIndex);
         QuestionStore.viewableItemIndex = activeIndex;
 
         QuestionStore.addSource(questions);
-        console.log('useEffect  :', QuestionStore.viewableItemIndex);
-        console.log('dataSource  :', QuestionStore.dataSource);
 
         const navWillFocusListener = navigation.addListener('willFocus', () => {
             if (QuestionStore.viewableItemIndex < 0) {
@@ -100,38 +140,65 @@ const AnswerScreen = observer((props: Props) => {
         };
     }, []);
 
+    const questionsQuery = useCallback(() => {
+        return app.client.query({
+            query: GQL.UserInfoQuery,
+            variables: {
+                id: user.id,
+                order: ORDER[1],
+                offset: QuestionStore.dataSource.length,
+                filter: 'publish',
+            },
+            fetchPolicy: 'network-only',
+        });
+    }, [app.client]);
+
     //取题
-    const fetchData = () => {
-        const { data, error, loading } = questionList;
-        // console.log('fetchData data', data);
-        if (error) {
-            const str = error.toString().replace(/Error: GraphQL error: /, '');
-            Toast.show({ content: str });
-            setError(error);
-            return;
+    const fetchData = useCallback(async () => {
+        if (!QuestionStore.isLoadMore) {
+            QuestionStore.isLoadMore = true;
+            const [error, result] = await exceptionCapture(questionsQuery);
+            console.log('result', result, error);
+            const questionsSource = Tools.syncGetter('data.user.questions', result);
+
+            if (error) {
+                QuestionStore.isError = true;
+            } else {
+                if (Array.isArray(questionsSource) && questionsSource.length > 0) {
+                    console.log('questionsSource', questionsSource);
+                    QuestionStore.addSource(questionsSource);
+                } else {
+                    QuestionStore.isFinish = true;
+                }
+            }
+            QuestionStore.isLoadMore = false;
         }
-        if (loading) {
-            return;
-        }
-        const _questions = Tools.syncGetter('questions', data);
-        if (_questions && _questions instanceof Array && _questions.length > 0) {
-            QuestionStore.addSource(_questions);
-            resetState(_questions);
+    }, [questionsQuery]);
+
+    // 提交按钮
+    const onSubmit = (question: any) => {
+        if (submited || !answer) {
+            nextQuestion();
         } else {
-            setFinished(true);
+            submitAnswer(question);
         }
     };
 
-    const onSubmitOpinion = async (status: any) => {
-        setAuditStatus(status);
-        showResultsOverlay();
+    const submitAnswer = async (question: { id: any }) => {
+        if (answer) {
+            showResultsOverlay(question);
+            setSubmited(true);
+        }
+        let result = {};
 
-        const { data, error } = useMutation(
-            GQL.auditMutation({
+        app.client
+            .mutate({
+                mutation: GQL.QuestionAnswerMutation,
                 variables: {
-                    question_id: question.id,
-                    status: status > 0 ? true : false,
+                    id: question.id,
+                    answer: answer.join(''),
                 },
+                errorPolicy: 'all',
                 refetchQueries: () => [
                     {
                         query: GQL.UserMetaQuery,
@@ -139,94 +206,79 @@ const AnswerScreen = observer((props: Props) => {
                         fetchPolicy: 'network-only',
                     },
                 ],
-            }),
+            })
+            .then((result: any) => {
+                //存储题目ID
+            })
+            .catch((error: any) => {
+                console.log('error :', error);
+                // const str = result.errors[0].message;
+                // Toast.show({ content: str });
+            });
+
+        showAnswerResultAd();
+    };
+
+    const showAnswerResultAd = useCallback(() => {
+        setAnswerCount(answerCount + 1);
+        // this.showAnswerResult(this.answer_count, this.error_count);
+        // 广告触发, iOS不让苹果审核轻易发现答题触发广告，设置多一点，比如答题100个
+        // 安卓提高到5个题计算及格和视频奖励
+        const adWillShowCount = !config.disableAd ? 100 : 1;
+        if (answerCount === adWillShowCount && !config.disableAd) {
+            showAnswerResult(answerCount, errorCount);
+
+            setErrorCount(0);
+            setAnswerCount(0);
+        }
+    }, []);
+
+    // 答题结果
+    const showAnswerResult = (answerCount: number, errorCount: number) => {
+        const overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <AnswerResult
+                        hide={() => Overlay.hide(OverlayKey)}
+                        answer_count={answerCount}
+                        error_count={errorCount}
+                    />
+                </View>
+            </Overlay.View>
         );
-        if (error) {
-            const str = error.toString().replace(/Error: GraphQL error: /, '');
-            Toast.show({ content: str });
-            setAuditStatus(0);
-        }
-        setSubmited(true);
-    };
-
-    // 提交按钮
-    const onSubmit = () => {
-        if (submited || !answer) {
-            nextQuestion();
-        } else {
-            submitAnswer();
-        }
-    };
-
-    const submitAnswer = async () => {
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', userMeans.data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', userMeans.data),
-        };
-
-        let result = {};
-        if (answer) {
-            showResultsOverlay();
-            setSubmited(true);
-        }
+        const OverlayKey = Overlay.show(overlayView);
     };
 
     // 下一题
     const nextQuestion = () => {
-        hideUpward();
-        setErrorCount(errorCount + 1);
+        QuestionStore.addQusetionId(data);
+        resetState();
 
-        if (questions.length === errorCount) {
-            refetchQuery();
-        } else {
-            resetState(questions);
-        }
-
-        // if (questions.length === 0) {
-        //     refetchQuery();
-        // } else {
-        //     resetState(questions);
-        // }
-    };
-
-    // 加载更多题目
-    const refetchQuery = () => {
-        // this.setState({ question: null });
-        setQuestions(Object);
-        fetchData();
+        flatListRef.current.scrollToIndex({ index: QuestionStore.viewableItemIndex + 1, animated: true });
     };
 
     // 提交后显示模态框
     // 计算模态框所需参数
-    const showResultsOverlay = () => {
+    const showResultsOverlay = (question: { id?: any; answer?: any; gold?: any; ticket?: any }) => {
         const {
             data: { user = {} },
         } = userMeans;
-        let result;
-        const type = Number(question.status) === 0 ? 'audit' : 'answer';
-        if (type === 'audit') {
-            setGold(0);
-            setTicket(question.ticket);
-            result = auditStatus > 0 ? true : false;
+        let result = false;
+        let gold = 0;
+        let ticket = 0;
+        if (question.answer == answer.sort().join('')) {
+            gold = question.gold;
+            ticket = user.ticket > 0 ? user.ticket : 0;
+            result = true;
         } else {
-            if (question.answer === answer.sort().join('')) {
-                setGold(question.gold);
-                setTicket(user.ticket > 0 ? user.ticket : 0);
-                result = true;
-            } else {
-                setGold(0);
-                setTicket(question.ticket);
-                result = false;
-                setErrorCount(errorCount + 1);
-            }
+            ticket = question.ticket;
+            setErrorCount(errorCount + 1);
         }
-        AnswerOverlay.show({ gold: gold, ticket: ticket, result, type });
+
+        AnswerOverlay.show({ gold: gold, ticket: ticket, result, type: 'answer' });
     };
 
-    const resetState = useCallback((_questions: any[]) => {
-        // setQuestion(_questions.shift());
-        console.log('resetState');
-        setQuestion(_questions[answerCount]);
+    const resetState = useCallback(() => {
         setSubmited(false);
         setAnswer(null);
         setAuditStatus(0);
@@ -239,7 +291,7 @@ const AnswerScreen = observer((props: Props) => {
     }, []);
 
     const onContainerLayout = useCallback(event => {
-        const { height, width } = event.nativeEvent.layout;
+        const { width } = event.nativeEvent.layout;
         QuestionStore.containerWidth = width;
     }, []);
 
@@ -251,17 +303,15 @@ const AnswerScreen = observer((props: Props) => {
         // _upwardImage && _upwardImage.hide();
     };
 
-    const hideComment = () => {
-        // this._commentOverlay && this._commentOverlay.slideDown();
-    };
-
     // 选择的选项
     // 单选/多选：单选会清除其它已选择的选项
-    const selectOption = useCallback((value: any, singleOption: any) => {
-        let _answer: any = null;
+    const selectOption = (value: any, singleOption: any) => {
+        let _answer = answer;
+        console.log('_answer_answer :', _answer);
         if (!_answer) {
             _answer = [];
         }
+        console.log('singleOption :', singleOption);
         if (singleOption) {
             if (_answer.includes(value)) {
                 _answer = null;
@@ -269,6 +319,7 @@ const AnswerScreen = observer((props: Props) => {
                 _answer = [value];
             }
         } else {
+            console.log('_answer value:', _answer, value);
             if (_answer.includes(value)) {
                 _answer.splice(_answer.indexOf(value), 1);
                 if (_answer.length < 1) {
@@ -278,29 +329,45 @@ const AnswerScreen = observer((props: Props) => {
                 _answer.push(value);
             }
         }
+        console.log('_answer  :', _answer);
         setAnswer(_answer);
-    }, []);
+        console.log('setAnswer :', answer);
+    };
 
     const showOptions = () => {
+        console.log('data :', data);
         ISIOS
             ? PullChooser.show([
                   {
                       title: '举报',
-                      onPress: () => props.navigation.navigate('ReportQuestion', { question }),
+                      onPress: () => props.navigation.navigate('ReportQuestion', { question: data }),
                   },
                   //   {
                   //       title: '分享',
                   //       onPress: () => props.navigation.navigate('ShareCard', { question }),
                   //   },
               ])
-            : ChooseOverlay.show(question, props.navigation, 2, userMeans.data.user); //2 ： min_level 需写到config
+            : ChooseOverlay.show(data, props.navigation, data.category, 2, userMeans.data.user); //2 ： min_level 需写到config
     };
 
-    const renderContent = question => {
-        // const { answer, submited, question, finished, auditStatus, error } = this.state;
-        // const { navigation } = this.props;
-        // const { category = {} } = this.props.navigation.state.params;
+    const getVisibleRows = useCallback(info => {
+        if (info.viewableItems[0]) {
+            activeItem.current = info.viewableItems[0].index;
+            QuestionStore.viewableItemIndex = activeItem.current;
+        }
+    }, []);
 
+    const onMomentumScrollBegin = (question: Question) => {
+        if (submited) {
+            resetState();
+            QuestionStore.addQusetionId(question);
+        }
+        if (QuestionStore.dataSource.length - QuestionStore.viewableItemIndex <= 5) {
+            fetchData();
+        }
+    };
+
+    const renderContent = (question: Question, index: number) => {
         if (error) {
             return <StatusView.ErrorView onPress={fetchData} error={error} />;
         }
@@ -316,34 +383,11 @@ const AnswerScreen = observer((props: Props) => {
             return <AnswerPlaceholder answer />;
         }
 
-        const bodyStyle = {
-            opacity: _animated.current,
-            transform: [
-                {
-                    translateY: _animated.current.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [-SCREEN_WIDTH, 0],
-                        extrapolate: 'clamp',
-                    }),
-                },
-            ],
-        };
-        const footerStyle = {
-            opacity: _animated.current,
-            transform: [
-                {
-                    translateY: _animated.current.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [PxFit(80), 0],
-                        extrapolate: 'clamp',
-                    }),
-                },
-            ],
-        };
-        const audit = question.status === 0;
+        const isAnswered = QuestionStore.answeredId.indexOf(question.id) != -1;
+
+        console.log('render Answer', answer);
         return (
             <View style={{ width: QuestionStore.containerWidth }}>
-                {!config.isFullScreen && <Banner isAnswer showWithdraw navigation={props.navigation} />}
                 <ScrollView
                     contentContainerStyle={styles.scrollStyle}
                     keyboardShouldPersistTaps="always"
@@ -354,36 +398,36 @@ const AnswerScreen = observer((props: Props) => {
                     <View style={styles.content}>
                         <View style={[{ marginHorizontal: PxFit(Theme.itemSpace) }]}>
                             <UserInfo question={question} navigation={props.navigation} />
-                            <QuestionBody question={question} audit={audit} />
+                            <QuestionBody question={question} audit={false} />
                         </View>
                         {question.video && question.video.url && (
-                            <Player style={{ marginTop: PxFit(Theme.itemSpace) }} video={question.video} />
+                            <Player
+                                style={{ marginTop: PxFit(Theme.itemSpace) }}
+                                video={question.video}
+                                isIntoView={index == QuestionStore.viewableItemIndex}
+                                isVideoList={true}
+                            />
                         )}
 
-                        <View style={{ marginHorizontal: PxFit(Theme.itemSpace), marginTop: PxFit(20) }}>
-                            <QuestionOptions
-                                questionId={question.id}
-                                selections={question.selections_array}
-                                onSelectOption={selectOption}
-                                submited={audit || submited}
-                                answer={question.answer}
-                                selectedOption={answer}
-                            />
-                        </View>
+                        {// 防止拖动一半看下一题答案
+                        QuestionStore.viewableItemIndex == index && (
+                            <View style={{ marginHorizontal: PxFit(Theme.itemSpace), marginTop: PxFit(20) }}>
+                                <QuestionOptions
+                                    questionId={question.id}
+                                    selections={question.selections_array}
+                                    onSelectOption={selectOption}
+                                    submited={submited}
+                                    answer={question.answer}
+                                    selectedOption={answer}
+                                />
+                            </View>
+                        )}
                     </View>
-                    <View
-                        style={{ marginHorizontal: PxFit(Theme.itemSpace), zIndex: -1 }}
-                        // ref={ref => (this.markView = ref)}
-                    >
-                        {audit ? (
-                            <AuditTitle navigation={props.navigation} />
-                        ) : (
-                            <AnswerBar isShow={audit || submited} question={question} navigation={props.navigation} />
-                        )}
-                        {(audit || submited) && (
-                            <VideoExplain video={Tools.syncGetter('explanation.video', question)} />
-                        )}
-                        {(audit || submited) && (
+                    <View style={{ marginHorizontal: PxFit(Theme.itemSpace), zIndex: -1 }}>
+                        <AnswerBar isShow={submited} question={question} navigation={props.navigation} />
+
+                        {submited && <VideoExplain video={Tools.syncGetter('explanation.video', question)} />}
+                        {submited && (
                             <Explain
                                 text={Tools.syncGetter('explanation.content', question)}
                                 picture={Tools.syncGetter('explanation.images.0.path', question)}
@@ -397,17 +441,14 @@ const AnswerScreen = observer((props: Props) => {
                         question={question}
                         submited={submited}
                         answer={answer}
-                        // showComment={this.commentHandler}
-                        oSubmit={onSubmit}
+                        showComment={() => commentHandler(isAnswered)}
+                        oSubmit={() => onSubmit(question)}
+                        isAnswered={isAnswered}
                     />
                 )}
             </View>
         );
     };
-
-    console.log('QuestionStore.viewableItemIndex :', QuestionStore.viewableItemIndex);
-    console.log(' QuestionStore.dataSource :', QuestionStore.dataSource);
-    const data = QuestionStore.dataSource[QuestionStore.viewableItemIndex];
 
     if (!data) return null;
 
@@ -417,10 +458,9 @@ const AnswerScreen = observer((props: Props) => {
                 title={'答题'}
                 white
                 autoKeyboardInsets={false}
-                onWillBlur={hideComment}
                 rightView={
-                    <TouchFeedback disabled={!question} style={styles.optionsButton} onPress={showOptions}>
-                        <Iconfont name="more-vertical" color="#fff" size={PxFit(18)} />
+                    <TouchFeedback style={styles.optionsButton} onPress={showOptions}>
+                        <Iconfont name="more-vertical" color={Theme.defaultTextColor} size={PxFit(18)} />
                     </TouchFeedback>
                 }
                 hiddenNavBar={config.isFullScreen}
@@ -433,30 +473,32 @@ const AnswerScreen = observer((props: Props) => {
                 }}
                 backButtonColor={Theme.defaultTextColor}>
                 {config.isFullScreen && <StatusBar translucent={true} hidden />}
-                {/*   <View style={styles.container}>{renderContent()}</View> */}
+                {!config.isFullScreen && <Banner isAnswer showWithdraw navigation={props.navigation} />}
                 <FlatList
+                    ref={flatListRef}
                     data={QuestionStore.dataSource}
                     contentContainerStyle={{ flexGrow: 1 }}
                     bounces={false}
                     scrollsToTop={false}
                     horizontal={true}
-                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     initialScrollIndex={QuestionStore.viewableItemIndex}
                     keyboardShouldPersistTaps="always"
                     pagingEnabled={true}
                     removeClippedSubviews={true}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => renderContent(item)}
+                    renderItem={({ item, index }) => renderContent(item, index)}
                     getItemLayout={(data, index) => ({
                         length: QuestionStore.containerWidth,
                         offset: QuestionStore.containerWidth * index,
                         index,
                     })}
-                    // onMomentumScrollEnd={onMomentumScrollEnd}
-                    // onViewableItemsChanged={getVisibleRows}
+                    onMomentumScrollBegin={() => onMomentumScrollBegin(data)}
+                    onViewableItemsChanged={getVisibleRows}
                     viewabilityConfig={config.current}
                 />
             </PageContainer>
+            <CommentOverlay ref={commentRef} question={data} />
         </Fragment>
     );
 });

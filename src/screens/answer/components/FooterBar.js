@@ -78,7 +78,7 @@ class FooterBar extends Component {
     };
 
     render() {
-        let { navigation, question, submited, answer, showComment, oSubmit, audit } = this.props;
+        let { navigation, question, submited, answer, showComment, oSubmit, audit, isAnswered } = this.props;
         let { favorited, liked, count_likes, count_comments } = this.state;
         let buttonStyle = {
             backgroundColor: submited || audit ? Theme.primaryColor : Theme.correctColor,
@@ -135,9 +135,17 @@ class FooterBar extends Component {
                             </Animated.View>
                         </TouchableWithoutFeedback>
                     </View>
-                    <TouchFeedback style={[styles.button, buttonStyle]} onPress={oSubmit}>
-                        <Text style={styles.buttonText}>{submited || audit || !answer ? '下一题' : '提交答案'}</Text>
-                    </TouchFeedback>
+                    {isAnswered ? (
+                        <TouchFeedback style={[styles.button, { backgroundColor: '#969696' }]} disabled>
+                            <Text style={styles.buttonText}>{'已答过'}</Text>
+                        </TouchFeedback>
+                    ) : (
+                        <TouchFeedback style={[styles.button, buttonStyle]} onPress={oSubmit}>
+                            <Text style={styles.buttonText}>
+                                {submited || audit || !answer ? '下一题' : '提交答案'}
+                            </Text>
+                        </TouchFeedback>
+                    )}
                 </View>
             </View>
         );

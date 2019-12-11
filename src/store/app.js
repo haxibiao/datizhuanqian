@@ -203,9 +203,6 @@ class app {
             if (Array.isArray(this.tagsCache)) {
                 this.tagsCache.forEach(async tag => {
                     this.tagListData[tag.id] = await storage.getItem(keys.tagListCache + '.' + tag.id);
-                    console.log('====================================');
-                    console.log('this.tagListData[tag.id]', tag.id, this.tagListData[tag.id]);
-                    console.log('====================================');
                 });
             }
         }

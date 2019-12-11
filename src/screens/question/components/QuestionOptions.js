@@ -11,34 +11,35 @@ import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import OptionItem from './OptionItem';
 
 class QuestionOption extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-	render() {
-		let { selections, submited, answer, selectedOption, onSelectOption, questionId } = this.props;
-		let singleOption = answer && answer.length === 1;
-		return (
-			<View>
-				{selections.map((option, index) => {
-					return (
-						<OptionItem
-							questionId={questionId}
-							key={index}
-							even={index % 2 === 0}
-							submited={submited}
-							option={option}
-							selectedOption={selectedOption}
-							onSelectOption={onSelectOption}
-							singleOption={singleOption}
-							correct={answer && answer.includes(option.Value)}
-						/>
-					);
-				})}
-			</View>
-		);
-	}
+    render() {
+        let { selections, submited, answer, selectedOption, onSelectOption, questionId } = this.props;
+        let singleOption = answer && answer.length === 1;
+        console.log('selectedOption', selectedOption);
+        return (
+            <View>
+                {selections.map((option, index) => {
+                    return (
+                        <OptionItem
+                            questionId={questionId}
+                            key={index}
+                            even={index % 2 === 0}
+                            submited={submited}
+                            option={option}
+                            selectedOption={selectedOption}
+                            onSelectOption={onSelectOption}
+                            singleOption={singleOption}
+                            correct={answer && answer.includes(option.Value)}
+                        />
+                    );
+                })}
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({});

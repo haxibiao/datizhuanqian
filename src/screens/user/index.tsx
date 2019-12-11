@@ -4,7 +4,7 @@
  */
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
 
 import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
@@ -17,6 +17,8 @@ import Posts from './components/Posts';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { useQuery, GQL } from 'apollo';
 
+import QuestionStore from '@src/screens/answer/QuestionStore';
+
 const index = props => {
     const { navigation } = props;
     const user = navigation.getParam('user', {});
@@ -27,6 +29,10 @@ const index = props => {
         },
         fetchPolicy: 'network-only',
     });
+
+    useEffect(() => {
+        QuestionStore.recallCache();
+    }, []);
 
     return (
         <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }} loading={loading}>

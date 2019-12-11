@@ -20,6 +20,7 @@ export const keys = {
     BeginnerGuidance_Answer: 'BeginnerGuidance_Answer',
     BeginnerGuidance_InputQuestion: 'BeginnerGuidance_InputQuestion',
     BeginnerGuidance_SubmitQuestion: 'BeginnerGuidance_SubmitQuestion',
+    answeredId: 'answeredId',
 };
 
 async function removeItem(key) {

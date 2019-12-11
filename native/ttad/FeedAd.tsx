@@ -22,7 +22,8 @@ const FeedAd = (props: Props) => {
     let [height, setHeight] = useState(0); //默认高度
     const disableAd = config.disableAd;
 
-    if (!visible || disableAd || !config.enableFeed) return null;
+    console.log('disableAd :', disableAd, visible);
+    if (!visible || disableAd) return null;
     return (
         <NativeFeedAd
             codeid={codeid}

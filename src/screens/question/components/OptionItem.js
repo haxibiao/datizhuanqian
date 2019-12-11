@@ -42,8 +42,10 @@ class OptionItem extends Component {
 
     buildProps = () => {
         let { selectedOption, option, submited, correct } = this.props;
+
         let status, labelStyle, contentStyle, label, focused;
         focused = selectedOption && selectedOption.includes(option.Value);
+        console.log('focused', focused, selectedOption, option.Value);
         if (submited) {
             if (focused) {
                 if (correct) {

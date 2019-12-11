@@ -22,7 +22,7 @@ interface User {
 
 const WithdrawHeader = (props: Props) => {
     const { navigation, user } = props;
-    console.log('WithdrawHeader user :', user);
+
     const showRule = () => {
         const overlayView = (
             <Overlay.View animated>

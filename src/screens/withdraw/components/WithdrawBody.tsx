@@ -160,7 +160,7 @@ const WithdrawBody = props => {
             icon: require('@src/assets/images/wechat.png'),
         },
     ];
-    console.log('withdrawData user :', user);
+
     if (!user) {
         console.log('userCache :', app.userCache);
         if (app && app.userCache) {

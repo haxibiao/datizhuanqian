@@ -49,7 +49,6 @@ const TimeReward = (props: Props) => {
     });
 
     const handleAppStateChange = (nextAppState: any) => {
-        console.log('nextAppState', nextAppState);
         if (nextAppState === 'active') {
             let timeRemain =
                 data.systemConfig.next_time_hour_reward.time_unix - Math.ceil(Date.now() / 1000) > 0
