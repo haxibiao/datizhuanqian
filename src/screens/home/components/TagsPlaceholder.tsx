@@ -35,7 +35,6 @@ const entranceWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
         backgroundColor: '#F6F6F6',
     },
     tab: {

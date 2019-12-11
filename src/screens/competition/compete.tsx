@@ -43,8 +43,12 @@ const compete = observer(props => {
 
     const handlerResult = useCallback(() => {
         let result;
+        // 答题结束如果得分为0，同样提交分数
         if (store.score[0] === 0) {
             store.calculateScore(0);
+        }
+        if (store.isRobot && store.score[1] === 0) {
+            store.calculateScore(0, 'RIVAL');
         }
         if (store.score[0] > store.score[1]) {
             result = 'victory';

@@ -9,9 +9,10 @@ import {
     ImageBackground,
     ActivityIndicator,
     BackHandler,
+    Animated,
 } from 'react-native';
 import { PageContainer, NavigatorBar, Avatar } from '@src/components';
-import { playVideo, syncGetter } from 'common';
+import { playVideo, syncGetter, useCirculationAnimation } from '@src/common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app, storage } from 'store';
 import { useNavigation } from 'react-navigation-hooks';
@@ -192,6 +193,12 @@ const over = observer(props => {
         }
     }, [result, store.game.reward]);
 
+    const animation = useCirculationAnimation({ duration: 2000, start: true });
+    const scale = animation.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [1, 1.2, 1],
+    });
+
     return (
         <PageContainer hiddenNavBar>
             <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
@@ -256,7 +263,9 @@ const over = observer(props => {
                                             style={styles.iconImage}
                                             source={require('@src/assets/images/competition_reward.png')}
                                         />
-                                        <Text style={styles.itemText2}>{reward}</Text>
+                                        <Text style={styles.itemText2}>
+                                            {result == 'victory' ? '领取奖励' : '再接再厉'}
+                                        </Text>
                                     </View>
                                     <Image
                                         style={styles.orangeLine}
@@ -264,7 +273,7 @@ const over = observer(props => {
                                     />
                                 </View>
                                 <View style={styles.bottom}>
-                                    <View style={styles.buttonWrap}>
+                                    <Animated.View style={[styles.buttonWrap, { transform: [{ scale }] }]}>
                                         <TouchableOpacity
                                             style={[
                                                 styles.button,
@@ -284,7 +293,7 @@ const over = observer(props => {
                                                     : '领取安慰奖励'}
                                             </Text>
                                         </TouchableOpacity>
-                                    </View>
+                                    </Animated.View>
                                     <View style={styles.buttonWrap}>
                                         <TouchableOpacity
                                             style={styles.button}

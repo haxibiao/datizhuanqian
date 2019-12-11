@@ -190,6 +190,7 @@ export default class CompetitionStore {
         if (type === 'ME') {
             this.score[0] += score;
             this.answerPassCount += 1;
+            variables.user_id = this.me.id;
             variables.score = this.score[0];
         } else {
             this.score[1] += score;
