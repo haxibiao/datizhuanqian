@@ -55,7 +55,7 @@ class QuestionStore {
 
     @action.bound
     async recallCache() {
-        this.answeredId = await storage.getItem(keys.answeredId);
+        this.answeredId = (await storage.getItem(keys.answeredId)) || [];
         console.log('this.answeredId', this.answeredId);
     }
 }

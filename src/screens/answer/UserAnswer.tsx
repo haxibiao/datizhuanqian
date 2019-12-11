@@ -307,11 +307,11 @@ const AnswerScreen = observer((props: Props) => {
     // 单选/多选：单选会清除其它已选择的选项
     const selectOption = (value: any, singleOption: any) => {
         let _answer = answer;
-        console.log('_answer_answer :', _answer);
+
         if (!_answer) {
             _answer = [];
         }
-        console.log('singleOption :', singleOption);
+
         if (singleOption) {
             if (_answer.includes(value)) {
                 _answer = null;
@@ -319,16 +319,16 @@ const AnswerScreen = observer((props: Props) => {
                 _answer = [value];
             }
         } else {
-            console.log('_answer value:', _answer, value);
             if (_answer.includes(value)) {
-                _answer.splice(_answer.indexOf(value), 1);
+                _answer = _answer.slice(_answer.indexOf(value));
                 if (_answer.length < 1) {
                     _answer = null;
                 }
             } else {
-                _answer.push(value);
+                _answer = _answer.concat(value);
             }
         }
+
         console.log('_answer  :', _answer);
         setAnswer(_answer);
         console.log('setAnswer :', answer);
@@ -383,7 +383,7 @@ const AnswerScreen = observer((props: Props) => {
             return <AnswerPlaceholder answer />;
         }
 
-        const isAnswered = QuestionStore.answeredId.indexOf(question.id) != -1;
+        const isAnswered = QuestionStore.answeredId.length > 0 && QuestionStore.answeredId.indexOf(question.id) != -1;
 
         console.log('render Answer', answer);
         return (
