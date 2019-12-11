@@ -60,12 +60,12 @@ const Chats = props => {
     }, [refetch]);
 
     useEffect(() => {
-        // app.echo.private(`App.User.id`).listen('NewMessage', (message: Message) => {
-        //     refetch();
-        // });
-        // return () => {
-        // app.echo.leave(`message`);
-        // };
+        app.echo.private(`App.User.${app.me.id}`).listen('NewMessage', message => {
+            refetch();
+        });
+        return () => {
+            // app.echo.leave(`App.User.${app.me.id}`);
+        };
     }, []);
 
     return (

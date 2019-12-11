@@ -232,6 +232,7 @@ query userUnreadQuery($id: Int) {
         unread_user_follow_notifications_count
         unread_like_notifications_count
         unread_notices_count
+        unread_messages_count
     }
 }
 

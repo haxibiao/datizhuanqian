@@ -23,20 +23,22 @@ export default observer(props => {
     });
 
     const unreadCount = useMemo(() => {
-        if (data !== null && typeof data === 'object') {
+        const unreadData = syncGetter('user', data);
+        if (unreadData) {
             const system =
-                data.unread_notifications_count -
-                data.unread_comment_notifications_count -
-                data.unread_user_follow_notifications_count -
-                data.unread_like_notifications_count -
-                data.unread_notices_count;
+                unreadData.unread_notifications_count -
+                unreadData.unread_comment_notifications_count -
+                unreadData.unread_user_follow_notifications_count -
+                unreadData.unread_like_notifications_count -
+                unreadData.unread_notices_count -
+                unreadData.unread_messages_count;
             return {
                 system,
-                comment: data.unread_comment_notifications_count,
-                fans: data.unread_user_follow_notifications_count,
-                like: data.unread_like_notifications_count,
-                notice: data.unread_notices_count,
-                message: data.unread_message_notifications_count,
+                comment: unreadData.unread_comment_notifications_count,
+                fans: unreadData.unread_user_follow_notifications_count,
+                like: unreadData.unread_like_notifications_count,
+                notice: unreadData.unread_notices_count,
+                message: unreadData.unread_messages_count,
             };
         }
         return {};

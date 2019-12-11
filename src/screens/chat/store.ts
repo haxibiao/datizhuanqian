@@ -101,7 +101,6 @@ class ChatStore {
             })
             .listen('NewMessage', (data: { message: Message }) => {
                 console.log('new message', JSON.stringify(data));
-                Toast.show({ content: JSON.stringify(data), duration: 10000 });
                 if (data.message.user.id !== this.me.id) {
                     this.appendMessage(this.constructMessage(data.message));
                 }

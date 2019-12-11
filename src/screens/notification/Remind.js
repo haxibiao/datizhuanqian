@@ -22,7 +22,8 @@ class Remind extends Component {
                     data.unread_comment_notifications_count -
                     data.unread_user_follow_notifications_count -
                     data.unread_like_notifications_count -
-                    data.unread_notices_count,
+                    data.unread_notices_count -
+                    data.unread_messages_count,
                 comment: data.unread_comment_notifications_count,
                 fans: data.unread_user_follow_notifications_count,
                 like: data.unread_like_notifications_count,

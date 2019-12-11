@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Theme, PxFit, Tools, ISAndroid } from '@src/utils';
 import { PageContainer } from '@src/components';
@@ -134,8 +134,8 @@ var chatStyle = {
     sendButton: {
         marginBottom: 5,
         marginRight: PxFit(15),
-        width: 60,
-        height: 30,
+        width: PxFit(60),
+        height: PxFit(30),
         borderRadius: PxFit(8),
         alignItems: 'center',
         justifyContent: 'center',
@@ -175,7 +175,7 @@ var chatStyle = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#f9f9f9',
     },
     loadEarlier: {
         marginVertical: PxFit(20),
