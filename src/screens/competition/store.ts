@@ -252,4 +252,14 @@ export default class CompetitionStore {
             });
         });
     }
+
+    @action.bound
+    public async receiveGameReward() {
+        return await exceptionCapture(() => {
+            return app.client.mutate({
+                mutation: GQL.GameRewardMutation,
+                variables: { game_id: this.game.id, user_id: this.me.id },
+            });
+        });
+    }
 }

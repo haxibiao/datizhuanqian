@@ -49,10 +49,21 @@ const over = observer(props => {
     const gameQueryCount = useRef(0);
     const maxRepeat = useRef(10);
 
+    // 领取奖励
+    const receiveReward = useCallback(() => {
+        const [error, res] = await store.receiveGameReward();
+        if (error) {
+            Toast.show({ content: error | '领取奖励失败' });
+        } else {
+            setDisabledRewardAdVideo(true);
+        }
+    }, []);
+
+    // 观看广告
     const loadAd = useCallback(() => {
+        receiveReward();
         playVideo({
             type: result === 'victory' ? 'GameWinner' : 'GameLoser',
-            callback: () => setDisabledRewardAdVideo(true),
         });
     }, [result]);
 
@@ -166,6 +177,7 @@ const over = observer(props => {
             setLoadingTimer.current = setTimeout(() => {
                 clearTimeout(fetchResultTimer.current);
                 setLoading(false);
+                maxRepeat.current = 0;
             }, 30000);
         }
 
@@ -264,7 +276,7 @@ const over = observer(props => {
                                             source={require('@src/assets/images/competition_reward.png')}
                                         />
                                         <Text style={styles.itemText2}>
-                                            {result == 'victory' ? '领取奖励' : '再接再厉'}
+                                            {result == 'victory' ? '待领取' : '再接再厉'}
                                         </Text>
                                     </View>
                                     <Image
@@ -273,7 +285,11 @@ const over = observer(props => {
                                     />
                                 </View>
                                 <View style={styles.bottom}>
-                                    <Animated.View style={[styles.buttonWrap, { transform: [{ scale }] }]}>
+                                    <Animated.View
+                                        style={[
+                                            styles.buttonWrap,
+                                            !disabledRewardAdVideo && { transform: [{ scale }] },
+                                        ]}>
                                         <TouchableOpacity
                                             style={[
                                                 styles.button,

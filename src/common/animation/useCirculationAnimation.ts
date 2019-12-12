@@ -8,6 +8,7 @@ interface Props {
 
 export const useCirculationAnimation = (props: Props) => {
     const { duration, start } = props;
+
     const animation = useRef(new Animated.Value(1));
     const runAnimation = useCallback(() => {
         animation.current.setValue(0);
@@ -21,6 +22,8 @@ export const useCirculationAnimation = (props: Props) => {
     useEffect(() => {
         if (start) {
             runAnimation();
+        } else {
+            animation.current.stopAnimation();
         }
         return () => {
             animation.current.stopAnimation();

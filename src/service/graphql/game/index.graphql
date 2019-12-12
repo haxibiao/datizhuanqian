@@ -129,3 +129,12 @@ query GameQuery($game_id: Int!) {
         }
     }
 }
+
+# 奖励领取
+mutation GameRewardMutation($game_id: Int!, $user_id: Int!) {
+    gameReward(game_id: $game_id, user_id: $user_id) {
+        gold
+        ticket
+        contribute
+    }
+}
