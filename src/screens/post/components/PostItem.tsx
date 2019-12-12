@@ -16,6 +16,7 @@ interface Props {
     activeIndex?: Number;
     navigation: any;
     isQuestion?: Boolean;
+    orderByHot?: any;
 }
 
 interface Post {
@@ -57,12 +58,12 @@ interface Categrory {
 }
 
 const PostItem = (props: Props) => {
-    const { navigation, post, activeIndex, posts, isQuestion } = props;
+    const { navigation, post, activeIndex, posts, isQuestion, orderByHot } = props;
     const { user, created_at, count_comments, description, video, image, count } = post;
 
     const navigationAction = () => {
         isQuestion
-            ? navigation.navigate('UserAnswer', { questions: posts, user, index: activeIndex })
+            ? navigation.navigate('UserAnswer', { questions: posts, user, index: activeIndex, orderByHot })
             : navigation.navigate('VideoPost', { medium: posts, index: activeIndex, isPost: true });
     };
 

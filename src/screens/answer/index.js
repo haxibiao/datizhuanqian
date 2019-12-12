@@ -402,33 +402,11 @@ class index extends Component {
                         navigation={this.props.navigation}
                         answer_count={answer_count}
                         error_count={error_count}
-                        showBannerAd={this.showBannerAd}
-                        loadFullVideoAd={this.loadFullVideoAd}
-                        loadRewardVideoAd={this.loadRewardVideoAd}
-                        data={data}
-                        client={client}
                     />
                 </View>
             </Overlay.View>
         );
         this.OverlayKey = Overlay.show(overlayView);
-    }
-
-    // 加载banner广告dialog
-    showBannerAd(click, answer_result) {
-        console.log('click', click, this);
-        switch (click) {
-            case 'LoadRewardVideo':
-                // 加载激励视频
-                console.log(' this.loadRewardVideo', this.loadRewardVideo, this.loadFullScreenVideo);
-                this.loadRewardVideo(answer_result);
-                break;
-
-            case 'LoadFullScreenVideo':
-                // 加载全屏视频
-                this.loadFullScreenVideo();
-                break;
-        }
     }
 
     // 加载广告缓存

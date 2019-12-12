@@ -100,6 +100,7 @@ const Questions = props => {
                         isQuestion={true}
                         posts={questions}
                         activeIndex={index}
+                        orderByHot={orderByHot ? ORDER[0] : ORDER[1]}
                     />
                 )}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}

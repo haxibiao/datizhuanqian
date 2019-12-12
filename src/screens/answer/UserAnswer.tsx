@@ -71,8 +71,6 @@ interface Question {
     video: Video;
 }
 
-const ORDER = ['ANSWERS_COUNT', 'CREATED_AT'];
-
 const AnswerScreen = observer((props: Props) => {
     const [errorCount, setErrorCount] = useState(0);
     const [answerCount, setAnswerCount] = useState(0);
@@ -88,6 +86,7 @@ const AnswerScreen = observer((props: Props) => {
     const questions = navigation.getParam('questions') || [];
     const activeIndex = navigation.getParam('index') || 0;
     const user = navigation.getParam('user') || {};
+    const orderByHot = navigation.getParam('orderByHot') || 'CREATED_AT';
     const _animated = useRef(new Animated.Value(0));
     const flatListRef = useRef();
     const commentRef = useRef();
@@ -145,7 +144,7 @@ const AnswerScreen = observer((props: Props) => {
             query: GQL.UserInfoQuery,
             variables: {
                 id: user.id,
-                order: ORDER[1],
+                order: orderByHot,
                 offset: QuestionStore.dataSource.length,
                 filter: 'publish',
             },
@@ -219,19 +218,20 @@ const AnswerScreen = observer((props: Props) => {
         showAnswerResultAd();
     };
 
-    const showAnswerResultAd = useCallback(() => {
+    const showAnswerResultAd = () => {
         setAnswerCount(answerCount + 1);
         // this.showAnswerResult(this.answer_count, this.error_count);
         // 广告触发, iOS不让苹果审核轻易发现答题触发广告，设置多一点，比如答题100个
         // 安卓提高到5个题计算及格和视频奖励
-        const adWillShowCount = !config.disableAd ? 100 : 1;
-        if (answerCount === adWillShowCount && !config.disableAd) {
-            showAnswerResult(answerCount, errorCount);
+        console.log('answerCount :', answerCount);
+        const adWillShowCount = config.disableAd ? 100 : 5;
+        if (answerCount + 1 == adWillShowCount) {
+            showAnswerResult(answerCount + 1, errorCount);
 
             setErrorCount(0);
             setAnswerCount(0);
         }
-    }, []);
+    };
 
     // 答题结果
     const showAnswerResult = (answerCount: number, errorCount: number) => {
@@ -254,7 +254,9 @@ const AnswerScreen = observer((props: Props) => {
         QuestionStore.addQusetionId(data);
         resetState();
 
-        flatListRef.current.scrollToIndex({ index: QuestionStore.viewableItemIndex + 1, animated: true });
+        if (QuestionStore.dataSource.length >= QuestionStore.viewableItemIndex + 1) {
+            flatListRef.current.scrollToIndex({ index: QuestionStore.viewableItemIndex + 1, animated: true });
+        }
     };
 
     // 提交后显示模态框
@@ -328,10 +330,7 @@ const AnswerScreen = observer((props: Props) => {
                 _answer = _answer.concat(value);
             }
         }
-
-        console.log('_answer  :', _answer);
         setAnswer(_answer);
-        console.log('setAnswer :', answer);
     };
 
     const showOptions = () => {
@@ -385,7 +384,6 @@ const AnswerScreen = observer((props: Props) => {
 
         const isAnswered = QuestionStore.answeredId.length > 0 && QuestionStore.answeredId.indexOf(question.id) != -1;
 
-        console.log('render Answer', answer);
         return (
             <View style={{ width: QuestionStore.containerWidth }}>
                 <ScrollView
