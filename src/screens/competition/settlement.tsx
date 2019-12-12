@@ -50,7 +50,7 @@ const over = observer(props => {
     const maxRepeat = useRef(10);
 
     // 领取奖励
-    const receiveReward = useCallback(() => {
+    const receiveReward = useCallback(async () => {
         const [error, res] = await store.receiveGameReward();
         if (error) {
             Toast.show({ content: error | '领取奖励失败' });
