@@ -27,6 +27,7 @@ interface Props {
 export default observer((props: Props) => {
     const { media } = props;
     const firstMount = useRef(true);
+    const isError = useRef(false);
     const navigation = useNavigation();
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
@@ -40,6 +41,7 @@ export default observer((props: Props) => {
         const [error, result] = await exceptionCapture(likeArticle);
         console.log('err', error, result);
         if (error) {
+            isError.current = true;
             media.liked ? media.count_likes-- : media.count_likes++;
             media.liked = !media.liked;
             Toast.show({ content: '操作失败' });
@@ -56,11 +58,12 @@ export default observer((props: Props) => {
     }
 
     useEffect(() => {
-        if (!firstMount.current) {
+        if (!firstMount.current && !isError.current) {
             startAnimation();
             likeHandler();
         }
         firstMount.current = false;
+        isError.current = false;
     }, [media.liked]);
 
     const scale = animation.interpolate({
