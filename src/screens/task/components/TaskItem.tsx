@@ -228,7 +228,7 @@ const TaskItem = (props: Props) => {
                             data: {
                                 category: '用户行为',
                                 action: 'user_click_try_play_task',
-                                name: '用户点击试玩任务',
+                                name: `用户点击${task.name}任务`,
                             },
                             callback: (result: any) => {
                                 console.warn('result', result);
