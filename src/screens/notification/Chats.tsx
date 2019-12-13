@@ -39,10 +39,12 @@ const Chat = ({ chat }) => {
 
 const Chats = props => {
     const navigation = useNavigation();
+    const isFocused = useRef(false);
 
     const { data, refetch } = useQuery(GQL.ChatsQuery, {
         variables: { limit: 100 },
         fetchPolicy: 'network-only',
+        skip: app.me.id,
     });
 
     const chats = useMemo(() => {
@@ -51,22 +53,23 @@ const Chats = props => {
     }, [data]);
 
     useEffect(() => {
-        const navWillBlurListener = navigation.addListener('willFocus', payload => {
+        const navWillFocusListener = navigation.addListener('willFocus', () => {
+            isFocused.current = true;
             refetch();
         });
+        const navWillBlurListener = navigation.addListener('willBlur', () => {
+            isFocused.current = false;
+        });
+        app.echo.private(`App.User.${app.me.id}`).listen('NewMessage', message => {
+            if (isFocused.current) {
+                refetch();
+            }
+        });
         return () => {
+            navWillFocusListener.remove();
             navWillBlurListener.remove();
         };
     }, [refetch]);
-
-    useEffect(() => {
-        app.echo.private(`App.User.${app.me.id}`).listen('NewMessage', message => {
-            refetch();
-        });
-        return () => {
-            // app.echo.leave(`App.User.${app.me.id}`);
-        };
-    }, []);
 
     return (
         <FlatList

@@ -61,16 +61,6 @@ export default observer(props => {
         [unreadCount],
     );
 
-    useEffect(() => {
-        // app.echo.join(`chatMessages`).listen('NewMessage', data => {
-        //     console.log('unreadMessage', data);
-        //     setUnread(data.unreadMessage);
-        // });
-        return () => {
-            // app.echo.leave(`chatMessages`);
-        };
-    }, []);
-
     return (
         <PageContainer hiddenNavBar contentViewStyle={styles.contentViewStyle} white>
             <ScrollableTabView
