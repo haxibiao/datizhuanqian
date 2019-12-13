@@ -1,7 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import user from './user';
 import { keys, storage } from './storage';
-import { Config, SCREEN_HEIGHT } from '../utils';
+import { Config, SCREEN_HEIGHT, SCREEN_WIDTH } from '../utils';
 import exceptionCapture from '../common/helper/exceptionCapture';
 import { syncGetter } from '../common/helper/adapter';
 import { GQL } from '../service/graphql';
@@ -32,6 +32,7 @@ class app {
         match_time_ms: 7000,
     };
     @observable viewportHeight: number = SCREEN_HEIGHT;
+    @observable viewportWidth: number = SCREEN_WIDTH;
     @observable client = {};
 
     @action.bound

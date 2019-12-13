@@ -10,6 +10,7 @@ import { Player, TouchFeedback, Iconfont, Button } from 'components';
 import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
 
 import { Mutation, compose, graphql, GQL } from 'apollo';
+import { app } from 'store';
 
 class FooterBar extends Component {
     constructor(props) {
@@ -88,6 +89,9 @@ class FooterBar extends Component {
             inputRange: [1, 1.1, 1.2],
             outputRange: [1, 1.25, 1],
         });
+
+        const isSelf = app.me.id === question.user.id;
+
         return (
             <View style={styles.container}>
                 <View style={styles.footerBar}>
@@ -135,9 +139,9 @@ class FooterBar extends Component {
                             </Animated.View>
                         </TouchableWithoutFeedback>
                     </View>
-                    {isAnswered ? (
+                    {isAnswered || isSelf ? (
                         <TouchFeedback style={[styles.button, { backgroundColor: '#969696' }]} disabled>
-                            <Text style={styles.buttonText}>{'已答过'}</Text>
+                            <Text style={styles.buttonText}>{isSelf ? '仅浏览' : '已答过'}</Text>
                         </TouchFeedback>
                     ) : (
                         <TouchFeedback style={[styles.button, buttonStyle]} onPress={oSubmit}>
