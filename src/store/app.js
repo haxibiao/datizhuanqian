@@ -29,6 +29,7 @@ class app {
         status: 0,
         ticket_loss: 3,
         gold_loss: 50,
+        match_time_ms: 7000,
     };
     @observable viewportHeight: number = SCREEN_HEIGHT;
     @observable client = {};
@@ -228,7 +229,9 @@ class app {
         });
 
         const gameConfig = syncGetter('data.systemConfig.modules.game', res);
-
+        console.log('====================================');
+        console.log('gameConfig', gameConfig);
+        console.log('====================================');
         if (gameConfig) {
             this.gameConfig = gameConfig;
         }

@@ -19,6 +19,7 @@ query systemConfigQuery {
                 status
                 ticket_loss
                 gold_loss
+                match_time_ms
             }
         }
     }
