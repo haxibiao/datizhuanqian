@@ -121,7 +121,10 @@ const AttendanceBook = (props): JSX.Element => {
                         source={require('@src/assets/images/double_signIn_reward.png')}
                         style={[styles.doubleRewardImage, { transform: [{ translateY }] }]}
                     />
-                    <Image style={styles.redEnvelop} source={require('@src/assets/images/double_signIn_reward.gif')} />
+                    <Image
+                        style={styles.redEnvelop}
+                        source={require('@src/assets/images/get_double_signIn_reward.gif')}
+                    />
                     <Text style={styles.recordDayText}>领取</Text>
                 </View>
             </TouchableWithoutFeedback>
