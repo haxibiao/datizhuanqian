@@ -63,9 +63,10 @@ const over = observer(props => {
     const loadAd = useCallback(() => {
         receiveReward();
         playVideo({
-            type: result === 'victory' ? 'GameWinner' : 'GameLoser',
+            type: 'Compete',
+            noReward: true,
         });
-    }, [result]);
+    }, []);
 
     // 结束
     const gameOver = useCallback(() => {

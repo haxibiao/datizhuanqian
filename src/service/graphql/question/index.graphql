@@ -253,15 +253,6 @@ mutation ShieldingCategoryAdMutation($category_id: Int!) {
     shieldingCategoryAd(category_id: $category_id)
 }
 
-# 视频奖励
-mutation UserRewardMutation($reward: RewardEnum) {
-    userReward(reward: $reward) {
-        gold
-        ticket
-        contribute
-    }
-}
-
 # 新首页
 query TagsQuery {
     tags(filter: HOMEPAGE) {

@@ -19,10 +19,9 @@ type Type =
     | 'TimeReward'
     | 'Dividend'
     | 'Guide'
-    | 'GameWinner'
-    | 'GameLoser'
     | 'Contribute'
     | 'Audit'
+    | 'Compete'
     | 'Spider';
 
 interface Video {
@@ -159,7 +158,7 @@ function getReward(props: Props, video: Video) {
     let title = '领取奖励成功';
 
     if (type === 'Sigin') {
-        rewardType = 'SIGNIN_VIDEO_REWARD'; //签到奖励
+        rewardType = 'DOUBLE_SIGNIN_REWARD'; //签到奖励
     }
     if (type === 'AnswerPass') {
         rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //答题及格奖励
@@ -182,13 +181,6 @@ function getReward(props: Props, video: Video) {
     if (type === 'Audit' && !video.ad_click && video.video_play) {
         rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
         title = '点击详情得贡献';
-    }
-
-    if (type === 'GameWinner') {
-        rewardType = 'GAME_WINNER_REWARD'; //答题对战胜利奖励
-    }
-    if (type === 'GameLoser') {
-        rewardType = 'GAME_LOSER_REWARD'; //答题失败平局奖励
     }
 
     const refetchQuery =
@@ -263,10 +255,6 @@ function dataReport(type: string | undefined, playType: number) {
             action = playType ? 'user_click_guide_reward_ad' : 'user_click_guide_fullscreen_ad';
             name = playType ? '新人引导随机看激励视频' : '新人引导随机看全屏视频';
             break;
-        case 'GameWinner' || 'GameLoser':
-            action = 'user_click_game_reward_ad';
-            name = '答题对战看激励视频';
-            break;
         case 'Contribute':
             action = 'user_click_contribute_reward_ad';
             name = '出题加速看激励视频';
@@ -278,6 +266,10 @@ function dataReport(type: string | undefined, playType: number) {
         case 'Spider':
             action = 'user_click_spider_reward_ad';
             name = '采集视频看激励视频';
+            break;
+        case 'Compete':
+            action = 'user_click_compete_reward_ad';
+            name = '答题PK看激励视频';
             break;
 
         default:
