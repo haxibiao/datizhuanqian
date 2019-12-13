@@ -430,17 +430,19 @@ const AnswerScreen = observer((props: Props) => {
                             </View>
                         )}
                     </View>
-                    <View style={{ marginHorizontal: PxFit(Theme.itemSpace), zIndex: -1 }}>
-                        <AnswerBar isShow={submited} question={question} navigation={props.navigation} />
+                    {QuestionStore.viewableItemIndex == index && (
+                        <View style={{ marginHorizontal: PxFit(Theme.itemSpace), zIndex: -1 }}>
+                            <AnswerBar isShow={submited} question={question} navigation={props.navigation} />
 
-                        {submited && <VideoExplain video={Tools.syncGetter('explanation.video', question)} />}
-                        {submited && (
-                            <Explain
-                                text={Tools.syncGetter('explanation.content', question)}
-                                picture={Tools.syncGetter('explanation.images.0.path', question)}
-                            />
-                        )}
-                    </View>
+                            {submited && <VideoExplain video={Tools.syncGetter('explanation.video', question)} />}
+                            {submited && (
+                                <Explain
+                                    text={Tools.syncGetter('explanation.content', question)}
+                                    picture={Tools.syncGetter('explanation.images.0.path', question)}
+                                />
+                            )}
+                        </View>
+                    )}
                 </ScrollView>
                 {!config.isFullScreen && (
                     <FooterBar
