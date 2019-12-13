@@ -205,7 +205,7 @@ const AttendanceBook = (props): JSX.Element => {
 const signItemWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2) - PxFit(10)) / 7;
 const coinImageWidth = signItemWidth * 0.9;
 const mysticGiftHeight = (coinImageWidth * 0.9 * 86) / 164;
-const doubleRewardHeight = (coinImageWidth * 0.9 * 32) / 70;
+const doubleRewardHeight = mysticGiftHeight;
 
 const shadowOpt = {
     width: SCREEN_WIDTH - PxFit(Theme.itemSpace * 2),
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         left: signItemWidth * 0.09,
         position: 'absolute',
-        top: signItemWidth * 0.1,
+        top: signItemWidth * 0.02,
         width: coinImageWidth * 0.9,
     },
     redEnvelop: {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         left: signItemWidth * 0.09,
         position: 'absolute',
-        top: signItemWidth * 0.1,
+        top: signItemWidth * 0.02,
         width: coinImageWidth * 0.9,
     },
     recordDayText: {
