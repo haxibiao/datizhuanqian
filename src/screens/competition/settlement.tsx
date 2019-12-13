@@ -11,7 +11,7 @@ import {
     BackHandler,
     Animated,
 } from 'react-native';
-import { PageContainer, NavigatorBar, Avatar } from '@src/components';
+import { PageContainer, NavigatorBar, Avatar, RewardTipsOverlay } from '@src/components';
 import { playVideo, syncGetter, useCirculationAnimation } from '@src/common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app, storage } from 'store';
@@ -52,12 +52,18 @@ const over = observer(props => {
     // 领取奖励
     const receiveReward = useCallback(async () => {
         const [error, res] = await store.receiveGameReward();
+
         if (error) {
-            Toast.show({ content: error | '领取奖励失败' });
-        } else {
+            Toast.show({ content: error.message | '奖励领取失败' });
+        } else if (syncGetter('data.gameReward', res)) {
+            RewardTipsOverlay.show({
+                reward: syncGetter('data.gameReward', res),
+                rewardVideo: true,
+                title: result === 'victory' ? '胜者奖励领取成功' : '安慰奖领取成功',
+            });
             setDisabledRewardAdVideo(true);
         }
-    }, []);
+    }, [result]);
 
     // 观看广告
     const loadAd = useCallback(() => {
