@@ -16,6 +16,7 @@ import PasswordLoginScreen from '../screens/login/PasswordLogin';
 import AnswerScreen from '../screens/answer';
 import UserAnswerScreen from '../screens/answer/UserAnswer';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
+import SearchScreen from '../screens/home/Search';
 // 答题对垒
 import CompetitionCategoriesScreen from '../screens/competition/categories';
 import CompetitionMatchingScreen from '../screens/competition/matching';
@@ -105,7 +106,7 @@ import UpdateLogScreen from '../screens/setting/UpdateLog';
 import PrivacyPolicyScreen from '../screens/setting/PrivacyPolicy';
 import SetLoginInfoScreen from '../screens/setting/SetLoginInfo';
 import SettingWithdrawInfoScreen from '../screens/setting/SettingWithdrawInfo';
-// MainTabNavigator CompetitionMatchingScreen GameSettlementScreen
+
 export default {
     Main: {
         screen: MainTabNavigator,
@@ -142,6 +143,9 @@ export default {
     },
     MoreCategories: {
         screen: MoreCategoriesScreen,
+    },
+    Search: {
+        screen: SearchScreen,
     },
     // 答题对垒
     CompetitionCategories: {

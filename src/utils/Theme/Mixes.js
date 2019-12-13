@@ -72,6 +72,8 @@ export default {
     teaGreen: '#12E2BB',
     itemSpace: 15,
     backColor: '#CCD5E0',
+    slateGray1: '#C4BFCF',
+    slateGray2: '#ECEAF3',
 
     // old
     white,

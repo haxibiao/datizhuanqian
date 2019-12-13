@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import {
     PageContainer,
@@ -198,7 +198,14 @@ const index = observer(props => {
             title={Config.AppName}
             white
             isTopNavigator
-            rightView={!config.disableAd ? <TimeReward navigation={navigation} /> : null}>
+            leftView={!config.disableAd ? <TimeReward navigation={navigation} /> : null}
+            rightView={
+                <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
+                    <View style={styles.searchButton}>
+                        <Image style={styles.searchImage} source={require('@src/assets/images/search.png')} />
+                    </View>
+                </TouchableWithoutFeedback>
+            }>
             {Content}
         </PageContainer>
     );
@@ -248,6 +255,17 @@ const styles = StyleSheet.create({
     placeholderStyle: {
         marginHorizontal: PxFit(Theme.itemSpace),
         paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+    },
+    searchButton: {
+        alignItems: 'flex-end',
+        flex: 1,
+        justifyContent: 'center',
+        padding: PxFit(4),
+        paddingLeft: PxFit(10),
+    },
+    searchImage: {
+        height: PxFit(25),
+        width: PxFit(25),
     },
 });
 

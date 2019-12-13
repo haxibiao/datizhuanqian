@@ -21,6 +21,7 @@ export const keys = {
     BeginnerGuidance_InputQuestion: 'BeginnerGuidance_InputQuestion',
     BeginnerGuidance_SubmitQuestion: 'BeginnerGuidance_SubmitQuestion',
     answeredId: 'answeredId',
+    searchRecord: 'searchRecord',
 };
 
 async function removeItem(key) {
