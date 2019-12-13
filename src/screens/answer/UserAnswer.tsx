@@ -30,7 +30,7 @@ import AnswerResult from './components/AnswerResult';
 
 import UserInfo from '../question/components/UserInfo';
 import QuestionBody from '../question/components/QuestionBody';
-import QuestionOptions from '../question/components/QuestionOptions';
+import QuestionOptions from '../answer/components/QuestionOptions';
 import AnswerBar from '../question/components/AnswerBar';
 import Explain from '../question/components/Explain';
 import VideoExplain from '../question/components/VideoExplain';
