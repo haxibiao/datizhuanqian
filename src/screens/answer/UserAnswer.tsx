@@ -90,6 +90,10 @@ const AnswerScreen = observer((props: Props) => {
     const _animated = useRef(new Animated.Value(0));
     const flatListRef = useRef();
     const commentRef = useRef();
+    const viewConfig = useRef({
+        waitForInteraction: true,
+        viewAreaCoveragePercentThreshold: 95,
+    });
 
     const data = QuestionStore.dataSource[QuestionStore.viewableItemIndex];
 
@@ -294,7 +298,7 @@ const AnswerScreen = observer((props: Props) => {
 
     const onContainerLayout = useCallback(event => {
         const { width } = event.nativeEvent.layout;
-        QuestionStore.containerWidth = width;
+        app.viewportWidth = width;
     }, []);
 
     const onScroll = () => {
@@ -351,8 +355,7 @@ const AnswerScreen = observer((props: Props) => {
 
     const getVisibleRows = useCallback(info => {
         if (info.viewableItems[0]) {
-            activeItem.current = info.viewableItems[0].index;
-            QuestionStore.viewableItemIndex = activeItem.current;
+            QuestionStore.viewableItemIndex = info.viewableItems[0].index;
         }
     }, []);
 
@@ -383,9 +386,9 @@ const AnswerScreen = observer((props: Props) => {
         }
 
         const isAnswered = QuestionStore.answeredId.length > 0 && QuestionStore.answeredId.indexOf(question.id) != -1;
-
+        // console.log(' QuestionStore.viewableItemIndex :', QuestionStore.viewableItemIndex, index);
         return (
-            <View style={{ width: QuestionStore.containerWidth }}>
+            <View style={{ width: app.viewportWidth }}>
                 <ScrollView
                     contentContainerStyle={styles.scrollStyle}
                     keyboardShouldPersistTaps="always"
@@ -449,7 +452,6 @@ const AnswerScreen = observer((props: Props) => {
     };
 
     if (!data) return null;
-
     return (
         <Fragment>
             <PageContainer
@@ -487,13 +489,13 @@ const AnswerScreen = observer((props: Props) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => renderContent(item, index)}
                     getItemLayout={(data, index) => ({
-                        length: QuestionStore.containerWidth,
-                        offset: QuestionStore.containerWidth * index,
+                        length: app.viewportWidth,
+                        offset: app.viewportWidth * index,
                         index,
                     })}
                     onMomentumScrollBegin={() => onMomentumScrollBegin(data)}
                     onViewableItemsChanged={getVisibleRows}
-                    viewabilityConfig={config.current}
+                    viewabilityConfig={viewConfig.current}
                 />
             </PageContainer>
             <CommentOverlay ref={commentRef} question={data} />
