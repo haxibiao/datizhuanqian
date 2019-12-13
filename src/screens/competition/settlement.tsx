@@ -54,7 +54,7 @@ const over = observer(props => {
         const [error, res] = await store.receiveGameReward();
 
         if (error) {
-            Toast.show({ content: error.message | '奖励领取失败' });
+            Toast.show({ content: syncGetter('message', error) ? syncGetter('message', error) : '奖励领取失败' });
         } else if (syncGetter('data.gameReward', res)) {
             RewardTipsOverlay.show({
                 reward: syncGetter('data.gameReward', res),
@@ -67,11 +67,11 @@ const over = observer(props => {
 
     // 观看广告
     const loadAd = useCallback(() => {
-        receiveReward();
         playVideo({
             type: 'Compete',
             noReward: true,
         });
+        receiveReward();
     }, []);
 
     // 结束
@@ -84,7 +84,6 @@ const over = observer(props => {
             const status = syncGetter('status', endGame);
             const winner = syncGetter('winner', endGame);
             const reward = syncGetter('reward', endGame);
-
             // 游戏未结束或者接口出错  重新请求
             if (status == 'END') {
                 // 设置获胜者和得分
@@ -127,7 +126,6 @@ const over = observer(props => {
             const status = syncGetter('status', game);
             const winner = syncGetter('winner', game);
             const reward = syncGetter('reward', game);
-
             // 游戏未结束或者接口出错就间隔查询游戏状态
             if (status == 'END') {
                 // 设置获胜者和得分
@@ -283,7 +281,11 @@ const over = observer(props => {
                                             source={require('@src/assets/images/competition_reward.png')}
                                         />
                                         <Text style={styles.itemText2}>
-                                            {result == 'victory' ? '待领取' : '再接再厉'}
+                                            {disabledRewardAdVideo
+                                                ? '已领取'
+                                                : result == 'victory'
+                                                ? '待领取'
+                                                : '再接再厉'}
                                         </Text>
                                     </View>
                                     <Image

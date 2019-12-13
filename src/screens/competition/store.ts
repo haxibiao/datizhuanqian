@@ -81,7 +81,7 @@ export default class CompetitionStore {
                     this.matched = true;
                     this.matchRobot();
                 }
-            }, 5000);
+            }, app.gameConfig.match_time_ms);
             app.echo.private('App.User.' + app.me.id).listen('NewGame', (room: GameRoom) => {
                 if (this.matched) {
                     return;
@@ -225,8 +225,10 @@ export default class CompetitionStore {
             })
             .listen('Score', (data: any) => {
                 console.log('game_score', data);
-                if (data.scoreData.socres.user_id !== app.me.id) {
-                    this.score[1] = data.scoreData.socres.score;
+                const score = syncGetter('scoreData.socres.score', data);
+                const notMe = syncGetter('scoreData.socres.user_id', data) !== app.me.id;
+                if (notMe && this.score[1] < score) {
+                    this.score[1] = score;
                 }
             });
     }
