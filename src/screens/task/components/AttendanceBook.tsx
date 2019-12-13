@@ -1,11 +1,13 @@
 import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, Animated } from 'react-native';
 import { Row, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
 import { GQL, useMutation, useQuery, useApolloClient } from 'apollo';
+import { useCirculationAnimation } from '@src/common';
 import { app } from 'store';
 import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
+import { playVideo } from 'common';
 import SignedReturn from './SignedReturn';
 
 interface Sign {
@@ -101,6 +103,31 @@ const AttendanceBook = (props): JSX.Element => {
         );
     }, []);
 
+    const animation = useCirculationAnimation({ duration: 2000, start: true });
+    const translateY = animation.interpolate({
+        inputRange: [0, 0.25, 0.5, 0.75, 1],
+        outputRange: [-PxFit(2), -PxFit(5), 0, PxFit(5), -PxFit(2)],
+    });
+
+    const loadAd = useCallback(() => {
+        playVideo({ type: 'Sigin' });
+    }, []);
+
+    const doubleReward = useMemo(() => {
+        return (
+            <TouchableWithoutFeedback onPress={loadAd}>
+                <View style={styles.signItem}>
+                    <Animated.Image
+                        source={require('@src/assets/images/double_signIn_reward.png')}
+                        style={[styles.doubleRewardImage, { transform: [{ translateY }] }]}
+                    />
+                    <Image style={styles.redEnvelop} source={require('@src/assets/images/double_signIn_reward.gif')} />
+                    <Text style={styles.recordDayText}>领取</Text>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }, [translateY]);
+
     if (!signIns) {
         return null;
     }
@@ -113,24 +140,23 @@ const AttendanceBook = (props): JSX.Element => {
             <View style={styles.attendanceBook} onLayout={onLayoutEffect}>
                 <View style={styles.header}>
                     <Text style={styles.signInText}>
-                        已连续签到<Text style={styles.keepSignInText}>{`${keep_signin_days}/${signIns.length}`}</Text>天
+                        已签到<Text style={styles.keepSignInText}>{`${keep_signin_days}/${signIns.length}`}</Text>天
                     </Text>
-                    {/*  <TouchableWithoutFeedback onPress={() => Tools.navigate('Share')}>
-                        <Row style={styles.shareButton}>
-                            <Text style={styles.shareText}>去分享</Text>
-                        </Row>
-                    </TouchableWithoutFeedback> */}
                 </View>
                 <TouchableWithoutFeedback onPress={toDaySignIn}>
                     <View style={styles.attendance}>
                         {signIns.map((elem, index) => {
+                            if (elem.signed && elem.reward_rate === 1 && keep_signin_days === index + 1) {
+                                return <View key={index}>{doubleReward}</View>;
+                            }
+
                             if (index === signIns.length - 1) {
                                 return (
                                     <View style={styles.signItem} key={index}>
                                         {!elem.signed && (
-                                            <Image
-                                                style={styles.mysticGift}
-                                                source={require('../../../assets/images/mystic_gift.png')}
+                                            <Animated.Image
+                                                source={require('@src/assets/images/mystic_gift.png')}
+                                                style={[styles.mysticGift, { transform: [{ translateY }] }]}
                                             />
                                         )}
                                         <Image
@@ -147,6 +173,7 @@ const AttendanceBook = (props): JSX.Element => {
                                     </View>
                                 );
                             }
+
                             return (
                                 <View style={styles.signItem} key={index}>
                                     <ImageBackground
@@ -172,8 +199,10 @@ const AttendanceBook = (props): JSX.Element => {
     );
 };
 
-const signItemWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2)) / 7;
-const coinImageWidth = signItemWidth * 0.8;
+const signItemWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2) - PxFit(10)) / 7;
+const coinImageWidth = signItemWidth * 0.9;
+const mysticGiftHeight = (coinImageWidth * 0.9 * 86) / 164;
+const doubleRewardHeight = (coinImageWidth * 0.9 * 32) / 70;
 
 const shadowOpt = {
     width: SCREEN_WIDTH - PxFit(Theme.itemSpace * 2),
@@ -193,27 +222,37 @@ const styles = StyleSheet.create({
     attendance: {
         alignItems: 'flex-end',
         flexDirection: 'row',
-        paddingTop: PxFit(15),
+        paddingTop: PxFit(10),
     },
     attendanceBook: {
         backgroundColor: '#fff',
         borderRadius: PxFit(10),
-        paddingVertical: PxFit(15),
+        paddingHorizontal: PxFit(5),
+        paddingVertical: mysticGiftHeight,
         shadowColor: '#E8E8E8',
         shadowOffset: { width: PxFit(5), height: PxFit(5) },
         shadowOpacity: 0.8,
         shadowRadius: PxFit(10),
     },
     coinImage: {
-        height: PxFit(20),
-        marginRight: PxFit(4),
-        width: PxFit(20),
-    },
-    coinImage: {
         alignItems: 'center',
         height: coinImageWidth,
         justifyContent: 'center',
         width: coinImageWidth,
+    },
+    doubleRewardImage: {
+        alignItems: 'center',
+        height: doubleRewardHeight,
+        justifyContent: 'center',
+        left: signItemWidth * 0.09,
+        position: 'absolute',
+        top: signItemWidth * 0.1,
+        width: coinImageWidth * 0.9,
+    },
+    redEnvelop: {
+        height: coinImageWidth * 0.9,
+        width: coinImageWidth * 0.9,
+        margin: coinImageWidth * 0.05,
     },
     footer: {
         alignItems: 'center',
@@ -234,44 +273,48 @@ const styles = StyleSheet.create({
         paddingHorizontal: PxFit(10),
     },
     keepSignInText: {
-        color: Theme.primaryColor,
+        color: '#FF5733',
         fontSize: PxFit(18),
     },
     mysticGift: {
         alignItems: 'center',
-        height: (coinImageWidth * 86) / 164,
+        height: mysticGiftHeight,
         justifyContent: 'center',
-        width: coinImageWidth,
+        left: signItemWidth * 0.09,
+        position: 'absolute',
+        top: signItemWidth * 0.1,
+        width: coinImageWidth * 0.9,
     },
     recordDayText: {
         color: Theme.secondaryTextColor,
-        fontSize: PxFit(13),
+        fontSize: PxFit(12),
     },
     rewardGoldText: {
-        color: '#fff',
-        fontSize: PxFit(12),
+        color: '#9F641A',
+        fontSize: PxFit(11),
+        fontWeight: 'bold',
         marginBottom: coinImageWidth * 0.07,
     },
     shareButton: {
-        backgroundColor: '#f4f4f4',
-        borderRadius: PxFit(20),
         justifyContent: 'center',
-        paddingHorizontal: PxFit(10),
+        paddingLeft: PxFit(10),
         paddingVertical: PxFit(4),
     },
     shareText: {
-        color: Theme.secondaryTextColor,
+        color: '#FF5733',
         fontSize: PxFit(13),
+        marginRight: PxFit(2),
     },
     signInText: {
         color: Theme.defaultTextColor,
-        fontSize: PxFit(17),
+        fontSize: PxFit(16),
         fontWeight: 'bold',
     },
     signItem: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: signItemWidth * 0.1,
+        paddingHorizontal: signItemWidth * 0.05,
+        paddingTop: mysticGiftHeight,
     },
 });
 
