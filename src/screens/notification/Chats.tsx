@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { SafeText, Row, Badge, Avatar, StatusView } from '@src/components';
+import { SafeText, Row, Badge, Avatar, StatusView, CustomRefreshControl } from '@src/components';
 import { syncGetter, exceptionCapture } from '@src/common';
 import { Query, useQuery, GQL } from '@src/apollo';
 import { Theme, PxFit, Tools } from '@src/utils';
@@ -39,12 +39,12 @@ const Chat = ({ chat }) => {
 
 const Chats = props => {
     const navigation = useNavigation();
-    const isFocused = useRef(false);
+    const isFocused = useRef(true);
 
-    const { data, refetch } = useQuery(GQL.ChatsQuery, {
+    const { data, refetch, loading } = useQuery(GQL.ChatsQuery, {
         variables: { limit: 100 },
         fetchPolicy: 'network-only',
-        skip: app.me.id,
+        skip: !app.me.id,
     });
 
     const chats = useMemo(() => {
@@ -74,6 +74,7 @@ const Chats = props => {
     return (
         <FlatList
             data={chats}
+            refreshControl={<CustomRefreshControl refreshing={loading} onRefresh={refetch} />}
             renderItem={({ item }) => {
                 return <Chat chat={item} />;
             }}

@@ -83,6 +83,13 @@ class ChatStore {
             })
             .catch((err: any) => {
                 console.log('err', err);
+                let message = '建立聊天失败';
+                if (typeof err === 'string') {
+                    message = err.replace('GraphQL error: ', '');
+                } else if (err !== null && typeof err === 'object') {
+                    message = err.message;
+                }
+                Toast.show({ content: message });
             });
     }
 
@@ -164,6 +171,13 @@ class ChatStore {
                 })
                 .catch((err: any) => {
                     console.log('err', err);
+                    let message = '发送失败';
+                    if (typeof err === 'string') {
+                        message = err.replace('GraphQL error: ', '');
+                    } else if (err !== null && typeof err === 'object') {
+                        message = err.message;
+                    }
+                    Toast.show({ content: message });
                 });
         } else {
             Toast.show({ content: '发送失败' });
