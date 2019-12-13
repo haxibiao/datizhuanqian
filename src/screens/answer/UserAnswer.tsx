@@ -255,11 +255,17 @@ const AnswerScreen = observer((props: Props) => {
 
     // 下一题
     const nextQuestion = () => {
-        QuestionStore.addQusetionId(data);
-        resetState();
+        if (submited) {
+            QuestionStore.addQusetionId(data);
+            resetState();
+        }
 
-        if (QuestionStore.dataSource.length >= QuestionStore.viewableItemIndex + 1) {
+        if (QuestionStore.dataSource.length > QuestionStore.viewableItemIndex + 1) {
             flatListRef.current.scrollToIndex({ index: QuestionStore.viewableItemIndex + 1, animated: true });
+        } else {
+            Toast.show({
+                content: '正在加载中...',
+            });
         }
     };
 
