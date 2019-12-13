@@ -45,8 +45,8 @@ const index = props => {
                         tabWidth={SCREEN_WIDTH / 4}
                     />
                 )}>
-                <Posts navigation={navigation} tabLabel="动态" userInfo={Tools.syncGetter('user', data) || user} />
                 <Questions navigation={navigation} tabLabel="出题" userInfo={Tools.syncGetter('user', data) || user} />
+                <Posts navigation={navigation} tabLabel="动态" userInfo={Tools.syncGetter('user', data) || user} />
             </ScrollableTabView>
             <View style={styles.backButton}>
                 <TouchFeedback activeOpacity={1} onPress={() => navigation.goBack()}>
