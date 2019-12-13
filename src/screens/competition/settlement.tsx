@@ -314,7 +314,7 @@ const over = observer(props => {
                                                 {disabledRewardAdVideo
                                                     ? '已经领取奖励'
                                                     : result === 'victory'
-                                                    ? '领取额外奖励'
+                                                    ? '领取胜者奖励'
                                                     : '领取安慰奖励'}
                                             </Text>
                                         </TouchableOpacity>
