@@ -88,6 +88,10 @@ const AttendanceBook = (props): JSX.Element => {
     );
 
     const onSignInSuccess = useCallback((returns: SignInReturns) => {
+        if (ISIOS) {
+            //避免ios过审有问题
+            return;
+        }
         Overlay.show(
             <Overlay.PopView
                 style={{ alignItems: 'center', justifyContent: 'center' }}
