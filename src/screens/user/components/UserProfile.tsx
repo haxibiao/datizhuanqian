@@ -81,20 +81,20 @@ const UserProfile = props => {
                             <Text style={styles.editText}>编辑资料</Text>
                         </Button>
                     ) : (
-                        <Row>
-                            <FollowButton
-                                id={user.id}
-                                followedStatus={Tools.syncGetter('followed_user_status', user)}
-                                style={StyleSheet.flatten([styles.button, { flex: 1, marginRight: PxFit(5) }])}
-                                titleStyle={styles.buttonText}
-                            />
-                            <TouchableOpacity
-                                style={styles.chatButton}
-                                onPress={() => navigation.navigate('Chat', { user })}>
-                                <Text style={styles.buttonText}>私信</Text>
-                            </TouchableOpacity>
-                        </Row>
-                    )}
+                            <Row>
+                                <FollowButton
+                                    id={user.id}
+                                    followedStatus={Tools.syncGetter('followed_user_status', user)}
+                                    style={StyleSheet.flatten([styles.button, { flex: 1, marginRight: PxFit(5) }])}
+                                    titleStyle={styles.buttonText}
+                                />
+                                <TouchableOpacity
+                                    style={styles.chatButton}
+                                    onPress={() => navigation.navigate('Chat', { user })}>
+                                    <Text style={styles.buttonText}>私信</Text>
+                                </TouchableOpacity>
+                            </Row>
+                        )}
                 </View>
             </View>
             <View style={styles.bottom}>
@@ -102,7 +102,7 @@ const UserProfile = props => {
                     <Text style={{ fontSize: PxFit(20), fontWeight: '700', color: Theme.black }}>
                         {Tools.syncGetter('name', user)}
                     </Text>
-                    {(subName === '答题赚钱 官方账号' || subName === '答题赚钱 官方小编') && (
+                    {(subName === '官方账号' || subName === '官方小编') && (
                         <Image
                             source={require('@src/assets/images/admin.png')}
                             style={{ height: PxFit(15), width: PxFit(15), marginLeft: PxFit(10) }}

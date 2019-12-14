@@ -36,7 +36,9 @@ class ShareRule extends Component {
                             <Text style={{ color: Theme.white }}>2</Text>
                         </View>
                         <Text style={styles.text}>
-                            您邀请的好友必须是答题赚钱新用户才能邀请成功，即手机号/支付宝/QQ邮箱均未注册登录使用过答题赚钱APP，同一个手机号、同一个设备或同一个提现账号都视为一个用户，每个新用户只能被邀请一次，已经被他人邀请过的好友不能重复邀请。
+                            您邀请的好友必须是{Config.AppName}
+                            新用户才能邀请成功，即手机号/支付宝/QQ邮箱均未注册登录使用过{Config.AppName}
+                            APP，同一个手机号、同一个设备或同一个提现账号都视为一个用户，每个新用户只能被邀请一次，已经被他人邀请过的好友不能重复邀请。
                         </Text>
                     </View>
                     <View style={styles.item}>
@@ -44,7 +46,8 @@ class ShareRule extends Component {
                             <Text style={{ color: Theme.white }}>3</Text>
                         </View>
                         <Text style={styles.text}>
-                            为了保证广大答友的收益不被影响，对于非正常邀请行为的用户（如刷机等违规手段），答题赚钱官方有权取消其参与分享活动的资格，并扣除奖励不予结算。
+                            为了保证广大答友的收益不被影响，对于非正常邀请行为的用户（如刷机等违规手段），
+                            {Config.AppName}官方有权取消其参与分享活动的资格，并扣除奖励不予结算。
                         </Text>
                     </View>
                 </ScrollView>

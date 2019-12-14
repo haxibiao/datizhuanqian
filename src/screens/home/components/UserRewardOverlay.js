@@ -61,7 +61,7 @@ class UserRewardOverlay extends Component {
                         app.signIn(user);
                         const router = !(user.auto_uuid_user && user.auto_phone_user) ? '答题' : '提现';
                         const content = !(user.auto_uuid_user && user.auto_phone_user)
-                            ? '欢迎回家，继续享受答题赚钱吧'
+                            ? '欢迎回家，继续享受答题吧'
                             : '领取奖励成功，绑定支付宝即可提现';
 
                         navigation.navigate(router);

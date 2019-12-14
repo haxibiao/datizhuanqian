@@ -122,7 +122,8 @@ const TaskBody = props => {
                     contribute: Tools.syncGetter('contribute', spider_video),
                     type: 7,
                     submit_name: '去采集',
-                    details: `打开抖音视频点击分享按钮选择复制链接，回到答题赚钱即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,
+                    details: `打开抖音视频点击分享按钮选择复制链接，回到答题APP
+                    即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,
                 },
                 // {
                 //     name: '试玩点墨阁',
@@ -133,7 +134,7 @@ const TaskBody = props => {
                 //     contribute: Tools.syncGetter('contribute', spider_video),
                 //     type: 8,
                 //     submit_name: '去试玩',
-                //     details: `打开抖音视频点击分享按钮选择复制链接，回到答题赚钱即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,
+                //     details: `打开抖音视频点击分享按钮选择复制链接，回到答题APP即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,
                 // },
             ];
 

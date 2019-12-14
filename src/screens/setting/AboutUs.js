@@ -59,7 +59,7 @@ class AboutUs extends Component {
                         </View>
                         <View style={styles.copyright}>
                             <Text>近邻乐(深圳)有限责任公司</Text>
-                            <Text>www.datizhuanqian.com</Text>
+                            <Text>datizhuanqian.com</Text>
                         </View>
                     </View>
                 </ScrollView>

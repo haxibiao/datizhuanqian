@@ -48,8 +48,8 @@ class FeedbackBody extends Component {
                                                 }}>
                                                 {feedback.user.name}
                                             </Text>
-                                            {(getRole(feedback.user) === '答题赚钱 官方账号' ||
-                                                getRole(feedback.user) === '答题赚钱 官方小编') && (
+                                            {(getRole(feedback.user) === '官方账号' ||
+                                                getRole(feedback.user) === '官方小编') && (
                                                 <Image
                                                     source={require('@src/assets/images/admin.png')}
                                                     style={{

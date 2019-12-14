@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, NativeModules, Dimensions } from 'react-native';
-// import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../utils';
+import { Config } from '../../utils';
 import Theme from '../../utils/Theme';
 import { WPercent, HPercent, PxFit, FontSize } from '../../utils/Scale';
 import app from '../../store/app';
@@ -57,7 +57,7 @@ class UpdateOverlay {
                                     NativeModules.DownloadApk.downloading(
                                         versionData.apk,
                                         'datizhuanqian.apk',
-                                        '答题赚钱',
+                                        Config.AppName,
                                     );
                                     UpdateOverlay.hide();
                                 }}>

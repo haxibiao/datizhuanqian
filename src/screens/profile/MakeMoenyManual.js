@@ -90,7 +90,7 @@ class MakeMoenyManual extends Component {
                         {
                             title: '如何绑定微信？',
                             content:
-                                '您在登录答题赚钱时，可以选择微信授权登录或者手机注册。或者在【我的】-【设置】-【账号安全】处进行绑定。',
+                                '您在登录答题APP时，可以选择微信授权登录或者手机注册。或者在【我的】-【设置】-【账号安全】处进行绑定。',
                         },
                         {
                             title: '忘记密码怎么办？',
@@ -109,7 +109,7 @@ class MakeMoenyManual extends Component {
                 //         {
                 //             title: '什么是无效邀请？为什么我邀请好友没有奖励是否有风险？',
                 //             content:
-                //                 '您邀请的好友必须是答题赚钱新用户才能邀请成功，即手机号/支付宝/QQ邮箱均未注册登录使用过答题赚钱APP，同一个手机号、同一个设备或同一个提现账号都视为一个用户，每个新用户只能被邀请一次，已经被他人邀请过的好友不能重复邀请。',
+                //                 '您邀请的好友必须是答题APP新用户才能邀请成功，即手机号/支付宝/QQ邮箱均未注册登录使用过答题赚钱APP，同一个手机号、同一个设备或同一个提现账号都视为一个用户，每个新用户只能被邀请一次，已经被他人邀请过的好友不能重复邀请。',
                 //         },
                 //     ],
                 // },
@@ -135,7 +135,7 @@ class MakeMoenyManual extends Component {
     render() {
         const { tabs, select, items } = this.state;
         return (
-            <PageContainer title='赚钱攻略' white>
+            <PageContainer title="赚钱攻略" white>
                 <View style={styles.header}>
                     {tabs.map((tab, index) => {
                         return (

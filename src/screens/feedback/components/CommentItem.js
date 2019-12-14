@@ -92,7 +92,7 @@ class CommentItem extends Component {
                                     }}>
                                     {item.user.name}
                                 </Text>
-                                {(Role === '答题赚钱 官方账号' || Role === '答题赚钱 官方小编') && (
+                                {(Role === '官方账号' || Role === '官方小编') && (
                                     <Image
                                         source={require('@src/assets/images/admin.png')}
                                         style={{
