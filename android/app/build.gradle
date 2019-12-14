@@ -335,7 +335,7 @@ dependencies {
     implementation project(':share')
 
     //穿山甲必须
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
 
     implementation 'com.android.support:multidex:1.0.3'
 
