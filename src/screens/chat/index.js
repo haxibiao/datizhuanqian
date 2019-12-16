@@ -1,10 +1,19 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Theme, PxFit, Tools, ISAndroid } from '@src/utils';
-import { PageContainer } from '@src/components';
+import { PageContainer, PullChooser, TouchFeedback, Iconfont } from '@src/components';
 import { throttle } from '@src/common';
 import { observer, app } from '@src/store';
-import { GiftedChat, Bubble, Actions, Send, Composer, Accessory, InputToolbar } from 'react-native-gifted-chat';
+import {
+    GiftedChat,
+    Bubble,
+    Actions,
+    Send,
+    Composer,
+    Accessory,
+    InputToolbar,
+    SystemMessage,
+} from 'react-native-gifted-chat';
 import { useNavigation } from 'react-navigation-hooks';
 import store from './store';
 
@@ -38,6 +47,16 @@ const index = observer(props => {
         );
     }, []);
 
+    const renderSystemMessage = useCallback(props => {
+        return (
+            <SystemMessage
+                {...props}
+                containerStyle={chatStyle.systemMessageStyle}
+                textStyle={chatStyle.systemMessageTextStyle}
+            />
+        );
+    }, []);
+
     const renderLoadEarlier = useCallback(() => {
         return (
             <View style={styles.loadEarlier}>
@@ -62,12 +81,34 @@ const index = observer(props => {
         };
     }, []);
 
+    const showOptions = useCallback(() => {
+        PullChooser.show([
+            {
+                title: '举报',
+                onPress: () => navigation.navigate('ReportUser', { user }),
+            },
+            {
+                title: '加入黑名单',
+                onPress: () => {
+                    setTimeout(() => {
+                        Toast.show({ content: '该用户已加入黑名单' });
+                    }, 500);
+                },
+            },
+        ]);
+    }, []);
+
     return (
         <PageContainer
             white
             title={user.name}
             autoKeyboardInsets={ISAndroid}
-            topInsets={ISAndroid ? 0 : -Theme.statusBarHeight}>
+            topInsets={ISAndroid ? 0 : -Theme.statusBarHeight}
+            rightView={
+                <TouchFeedback style={styles.optionsButton} onPress={showOptions}>
+                    <Iconfont name="more-horizontal" color="#000" size={PxFit(18)} />
+                </TouchFeedback>
+            }>
             <View style={styles.container}>
                 <GiftedChat
                     renderAvatarOnTop={true}
@@ -81,6 +122,7 @@ const index = observer(props => {
                     renderComposer={renderComposer}
                     renderSend={renderSend}
                     renderBubble={renderBubble}
+                    renderSystemMessage={renderSystemMessage}
                     messages={chatStore.messagesData.slice()}
                     onPressAvatar={user => {
                         user = { ...user, ...{ id: user._id } };
@@ -170,6 +212,13 @@ var chatStyle = {
             color: '#515151',
         },
     },
+    systemMessageStyle: {
+        marginBottom: PxFit(15),
+    },
+    systemMessageTextStyle: {
+        fontSize: PxFit(11),
+        color: Theme.defaultTextColor,
+    },
 };
 
 const styles = StyleSheet.create({
@@ -206,6 +255,12 @@ const styles = StyleSheet.create({
     tintText: {
         fontSize: PxFit(14),
         color: Theme.subTextColor,
+    },
+    optionsButton: {
+        alignItems: 'flex-end',
+        flex: 1,
+        justifyContent: 'center',
+        width: PxFit(40),
     },
 });
 
