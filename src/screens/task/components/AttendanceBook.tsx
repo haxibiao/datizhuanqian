@@ -4,7 +4,7 @@ import { Row, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
 import { GQL, useMutation, useQuery, useApolloClient } from 'apollo';
 import { useCirculationAnimation } from '@src/common';
-import { app } from 'store';
+import { app, config } from 'store';
 import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
 import { playVideo } from 'common';
@@ -153,7 +153,12 @@ const AttendanceBook = (props): JSX.Element => {
                 <TouchableWithoutFeedback onPress={toDaySignIn}>
                     <View style={styles.attendance}>
                         {signIns.map((elem, index) => {
-                            if (elem.signed && elem.reward_rate === 1 && keep_signin_days === index + 1) {
+                            if (
+                                elem.signed &&
+                                elem.reward_rate === 1 &&
+                                keep_signin_days === index + 1 &&
+                                !config.disableAd
+                            ) {
                                 return <View key={index}>{doubleReward}</View>;
                             }
 
