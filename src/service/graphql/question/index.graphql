@@ -26,6 +26,9 @@ query SearchCategoriesQuery($offset: Int, $limit: Int, $keyword: String) {
         name
         icon
         description
+        is_official
+        questions_count
+        answers_count
         user_can_submit
     }
 }
