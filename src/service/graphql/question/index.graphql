@@ -20,8 +20,8 @@ query CategoriesQuery($offset: Int, $limit: Int, $allow_submit: Int) {
 }
 
 # 搜索题库
-query SearchCategoriesQuery($offset: Int, $limit: Int, $keyword: String) {
-    categories(allow_submit: 1, offset: $offset, limit: $limit, keyword: $keyword) {
+query SearchCategoriesQuery($offset: Int, $limit: Int, $keyword: String, $allow_submit: Int) {
+    categories(offset: $offset, limit: $limit, keyword: $keyword, allow_submit: $allow_submit) {
         id
         name
         icon

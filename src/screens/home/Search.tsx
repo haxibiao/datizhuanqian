@@ -29,13 +29,14 @@ const Search = () => {
                 const categoriesQuery = () => {
                     return client.query({
                         query: GQL.SearchCategoriesQuery,
-                        variables: { limit: 999, keyword: trimmedKeyword },
+                        variables: { keyword: trimmedKeyword, limit: 100, allow_submit: -1 },
                         fetchPolicy: 'network-only',
                     });
                 };
 
                 const [error, result] = await exceptionCapture(categoriesQuery);
                 const categoriesData = syncGetter('data.categories', result);
+
                 if (isCache) {
                     addRecord(trimmedKeyword);
                 }
@@ -101,7 +102,8 @@ const Search = () => {
                     <View style={styles.inputWrap}>
                         <CustomTextInput
                             value={keyword}
-                            placeholder="搜索话题"
+                            autoFocus
+                            placeholder="搜索题库"
                             onChangeText={onChangeText}
                             style={{ flex: 1 }}
                         />
@@ -112,10 +114,7 @@ const Search = () => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => searchCategories(keyword, true)}
-                    style={styles.searchButton}>
+                <TouchableOpacity onPress={() => searchCategories(keyword, true)} style={styles.searchButton}>
                     <Text style={styles.searchButtonText}>搜索</Text>
                 </TouchableOpacity>
             </View>
@@ -178,9 +177,8 @@ const styles = StyleSheet.create({
     contentStyle: {
         flexGrow: 1,
         backgroundColor: '#fff',
-        paddingTop: PxFit(20),
+        padding: PxFit(Theme.itemSpace),
         paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(20),
-        paddingHorizontal: PxFit(Theme.itemSpace),
     },
     itemSeparator: {
         height: PxFit(1),

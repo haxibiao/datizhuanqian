@@ -69,8 +69,9 @@ class EditCategory extends Component {
             <Query
                 query={GQL.SearchCategoriesQuery}
                 variables={{
-                    limit: 999,
+                    limit: 100,
                     keyword,
+                    allow_submit: 1,
                 }}
                 fetchPolicy="network-only">
                 {({ data, loading, error, refetch, fetchMore }) => {
