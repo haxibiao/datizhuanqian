@@ -47,7 +47,7 @@ const index = observer(props => {
     const push_time = useRef(() => new Date());
     const push_type = useRef();
     // 首页分类
-    const { data, error, loading } = useQuery(GQL.TagsQuery, {
+    const { data, error, loading, refetch } = useQuery(GQL.TagsQuery, {
         variables: {
             filter: 'HOMEPAGE',
         },
@@ -56,13 +56,21 @@ const index = observer(props => {
     const tags = useMemo(() => {
         const tagsData = syncGetter('tags', data);
         if (Array.isArray(tagsData) && tagsData.length > 0) {
-            app.updateTagsCache(tagsData);
+            // app.updateTagsCache(tagsData);
             return tagsData;
         } else if (app.tagsCache) {
             return app.tagsCache;
         }
         return null;
     }, [data, error, loading, app.tagsCache]);
+
+    useEffect(() => {
+        const tagsData = syncGetter('tags', data);
+        //更新缓存
+        if (Array.isArray(tagsData) && tagsData.length > 0) {
+            app.updateTagsCache(tagsData);
+        }
+    }, [loading, refetch]);
 
     // 每个版本静默重新登录一次
     const resetUser = useCallback(async () => {
