@@ -5,21 +5,21 @@ import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { observer, app, storage, keys } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 
-const SearchRecord = ({ data, remove }) => {
+const SearchRecord = ({ data, remove, search }) => {
     const navigation = useNavigation();
 
     const recordList = useMemo(() => {
-        return data.map((item, index) => {
-            return (
-                <TouchableWithoutFeedback
-                    key={index}
-                    onPress={() => navigation.navigate('Answer', { category: item, question_id: null })}>
-                    <View style={styles.categoryItem}>
-                        <Text style={styles.categoryName}>搜索历史</Text>
-                    </View>
-                </TouchableWithoutFeedback>
-            );
-        });
+        if (Array.isArray(data)) {
+            return data.map((name, index) => {
+                return (
+                    <TouchableWithoutFeedback key={name} onPress={() => search(name)}>
+                        <View style={styles.categoryItem}>
+                            <Text style={styles.categoryName}>{name}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                );
+            });
+        }
     }, [data]);
 
     return (
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: PxFit(Theme.itemSpace),
-        paddingTop: PxFit(10),
     },
     titleText: {
         color: Theme.primaryTextColor,
@@ -64,13 +63,14 @@ const styles = StyleSheet.create({
     categoryItem: {
         alignItems: 'center',
         backgroundColor: Theme.slateGray2,
-        borderRadius: PxFit(17),
+        borderRadius: PxFit(14),
         flexDirection: 'row',
-        height: PxFit(34),
+        height: PxFit(28),
+        minWidth: PxFit(44),
         justifyContent: 'center',
         marginRight: PxFit(20),
         marginBottom: PxFit(10),
-        paddingHorizontal: PxFit(12),
+        paddingHorizontal: PxFit(10),
     },
     categoryName: {
         color: '#363636',
