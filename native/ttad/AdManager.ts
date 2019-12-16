@@ -3,7 +3,7 @@ import { TTAppID, TTAppIDIOS, CodeIdFeed, CodeIdFeedIOS } from '@app/app.json';
 
 const adArgs = {
     appid: Platform.OS === 'ios' ? TTAppIDIOS : TTAppID,
-    codeid: Platform.OS === 'ios' ? CodeIdFeedIOS : CodeIdFeed
+    codeid: Platform.OS === 'ios' ? CodeIdFeedIOS : CodeIdFeed,
 };
 
 export const init = () => {

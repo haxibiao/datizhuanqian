@@ -42,7 +42,10 @@ export function playVideo(props: Props) {
     const { type } = props;
     const playType = Math.round(Math.random()); //随机1为看激励视频 0为看全屏视频
     //非指定Reward时  触发随机看视频  奖励值为默认类型
-    if (type == 'Task' || type == 'Contribute' || type == 'Audit' || type == 'Spider' || playType) {
+
+    if (type === 'AnswerPass' || type === 'AnswerFail') {
+        playFullScreenVideo(props);
+    } else if (type == 'Task' || type == 'Contribute' || type == 'Audit' || type == 'Spider' || playType) {
         playRewardVideo(props);
     } else {
         playFullScreenVideo(props);
@@ -86,15 +89,9 @@ function startRewardVideo(props: Props) {
             if (ISAndroid) {
                 if (result) {
                     video = JSON.parse(result);
-                    if (video.video_play) {
-                        //TODO: video.video_play 有很大几率返回false
-                        callback && callback();
-                        !noReward && getReward(props, video);
-                    } else {
-                        Toast.show({
-                            content: '没看完视频,或没看详情，或其他异常...',
-                        });
-                    }
+                    //TODO: video.video_play 有很大几率返回false
+                    callback && callback();
+                    !noReward && getReward(props, video);
                 } else {
                     Toast.show({
                         content: '没看完视频,或没看详情，或其他异常...',

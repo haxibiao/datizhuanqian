@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Image, AppState } from 'react-native';
-import { TouchFeedback, RewardTipsOverlay } from 'components';
+import { TouchFeedback, RewardTipsOverlay, ErrorOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools, Theme } from 'utils';
 
@@ -77,7 +77,10 @@ const TimeReward = (props: Props) => {
             showRewardTips(reward);
         } catch (e) {
             let str = e.toString().replace(/Error: GraphQL error: /, '');
-            Toast.show({ content: str });
+            // Toast.show({ content: str });
+            ErrorOverlay.show({
+                title: str,
+            });
         }
         setReceived(true);
     };
@@ -112,7 +115,8 @@ const TimeReward = (props: Props) => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image
                     source={require('../../../assets/images/time_reward.png')}
-                    style={{ width: (24 * 357) / 150, height: 24, marginRight: -35 }}></Image>
+                    style={{ width: (24 * 357) / 150, height: 24, marginRight: -35 }}
+                />
                 {minute > 50 && !received ? (
                     <Text style={styles.received}>领取</Text>
                 ) : (
