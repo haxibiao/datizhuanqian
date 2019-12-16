@@ -61,9 +61,9 @@ const Search = () => {
 
     const addRecord = useCallback(keyword => {
         setRecordData(prv => {
-            const newData = new Set([keyword, ...prv]);
-            storage.setItem(keys.searchRecord, [...newData]);
-            return [...newData];
+            const newData = [...new Set([keyword, ...prv])].slice(0, 12);
+            storage.setItem(keys.searchRecord, newData);
+            return newData;
         });
     }, []);
 
