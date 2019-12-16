@@ -106,11 +106,8 @@ const Search = () => {
                             style={{ flex: 1 }}
                         />
                     </View>
-                    <TouchableOpacity
-                        style={styles.searchLabel}
-                        activeOpacity={0.8}
-                        onPress={() => searchCategories(keyword, true)}>
-                        <View style={styles.searchIcon}>
+                    <TouchableOpacity style={styles.closeButton} activeOpacity={0.8} onPress={() => onChangeText('')}>
+                        <View style={styles.closeLabel}>
                             <Iconfont name="close" size={PxFit(14)} color={'#fff'} />
                         </View>
                     </TouchableOpacity>
@@ -229,14 +226,14 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'stretch',
     },
-    searchLabel: {
+    closeButton: {
         paddingLeft: PxFit(10),
         width: PxFit(30),
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    searchIcon: {
+    closeLabel: {
         width: PxFit(16),
         height: PxFit(16),
         borderRadius: PxFit(8),
