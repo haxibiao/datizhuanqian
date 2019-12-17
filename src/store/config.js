@@ -28,8 +28,8 @@ class config {
     @observable enableFeed: boolean = false; // 开启信息流广告
     @observable enableBanner: boolean = false; // 开启Banner广告
     @observable enableDrawFeed: boolean = false;
-    @observable disableAd: boolean = false;
-    @observable rewardVideoAdCache: boolean = false; //激励视频广告cache 过期时间60min
+    @observable disableAd: boolean = Platform.OS === 'ios';
+    @observable rewardVideoAdCache: boolean = false; // 激励视频广告cache 过期时间60min
     @observable fullScreenVideoAdCache: boolean = false;
     @observable taskConfig: object = {};
 
