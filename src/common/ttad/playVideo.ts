@@ -163,10 +163,10 @@ function getReward(props: Props, video: Video) {
     if (type === 'AnswerFail') {
         rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
     }
-    if (type === 'Task' && video.ad_click && video.video_play) {
+    if (type === 'Task' && video.ad_click) {
         rewardType = 'CLICK_REWARD_VIDEO'; //激励视频查看详情
     }
-    if (type === 'Task' && !video.ad_click && video.video_play) {
+    if (type === 'Task') {
         rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
         title = '点击详情得贡献';
     }
