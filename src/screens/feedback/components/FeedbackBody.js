@@ -80,11 +80,26 @@ class FeedbackBody extends Component {
                                                 width: size.width,
                                                 height: size.height,
                                                 marginTop: PxFit(10),
+                                                marginBottom: PxFit(10),
                                             }}
                                             key={index}
                                         />
                                     );
                                 })}
+                                <View
+                                    style={{
+                                        paddingVertical: PxFit(2),
+                                        backgroundColor: '#FFF7E4',
+                                        borderRadius: PxFit(20),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginTop: PxFit(10),
+                                        width: PxFit(180),
+                                    }}>
+                                    <Text style={{ color: '#FBB960', fontSize: PxFit(12) }}>
+                                        优质反馈，已发放官方奖励
+                                    </Text>
+                                </View>
                             </View>
                             <View style={{ height: PxFit(5), backgroundColor: Theme.lightBorder }} />
                             <View style={styles.commentsTab}>
