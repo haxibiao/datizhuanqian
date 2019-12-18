@@ -29,12 +29,13 @@ interface Props {
     reward: Reward;
     title: string;
     rewardVideo: boolean;
+    type: any;
 }
 
 class RewardTips {
     static OverlayKey: any;
     static show(props: Props) {
-        const { reward, title, rewardVideo } = props;
+        const { reward, title, rewardVideo, type } = props;
         const body = reward.gold && (reward.ticket || reward.contribute) ? '同时奖励' : '领取奖励成功';
 
         const overlayView = (
@@ -99,7 +100,7 @@ class RewardTips {
                                     if (rewardVideo) {
                                         Tools.navigate('BillingRecord', { initialPage: 1 });
                                     } else {
-                                        playVideo({});
+                                        playVideo({ type });
                                     }
                                 }}>
                                 <Text style={[styles.operationText, { color: Theme.theme }]}>

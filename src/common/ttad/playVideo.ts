@@ -159,9 +159,11 @@ function getReward(props: Props, video: Video) {
     }
     if (type === 'AnswerPass') {
         rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //答题及格奖励
+        title = '点击详情得贡献';
     }
     if (type === 'AnswerFail') {
         rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
+        title = '点击详情得贡献';
     }
     if (type === 'Task' && video.ad_click) {
         rewardType = 'CLICK_REWARD_VIDEO'; //激励视频查看详情
@@ -171,11 +173,11 @@ function getReward(props: Props, video: Video) {
         title = '点击详情得贡献';
     }
     //TODO:  需后端扩展userReward奖励类型
-    if (type === 'Audit' && video.ad_click && video.video_play) {
+    if (type === 'Audit' && video.ad_click) {
         rewardType = 'AUDIT_REWAERD_VIDEO_CLICK'; //审题激励视频看详情
     }
 
-    if (type === 'Audit' && !video.ad_click && video.video_play) {
+    if (type === 'Audit') {
         rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
         title = '点击详情得贡献';
     }
@@ -224,8 +226,8 @@ function getReward(props: Props, video: Video) {
 
 //看视频数据上报
 function dataReport(type: string | undefined, playType: number) {
-    let action = type == 'Task' || playType ? 'user_click_reward_ad' : 'user_click_fullscreen_ad';
-    let name = type == 'Task' || playType ? '点击激励视频' : '点击全屏视频';
+    let action = playType ? 'user_click_reward_ad' : 'user_click_fullscreen_ad';
+    let name = playType ? '点击激励视频' : '点击全屏视频';
 
     switch (type) {
         case 'Task':
@@ -233,8 +235,8 @@ function dataReport(type: string | undefined, playType: number) {
             name = '点击看激励视频任务';
             break;
         case 'AnswerPass' || 'AnswerFail':
-            action = playType ? 'user_click_answer_reward_ad' : 'user_click_answer_fullscreen_ad';
-            name = playType ? '答题结果随机看激励视频' : '答题结果随机看全屏视频';
+            action = 'user_click_answer_fullscreen_ad';
+            name = '答题结果看全屏视频';
             break;
         case 'Sigin':
             action = playType ? 'user_click_sigin_reward_ad' : 'user_click_sigin_fullscreen_ad';
