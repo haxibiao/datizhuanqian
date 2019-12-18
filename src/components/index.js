@@ -81,6 +81,7 @@ import ProgressWithdrawal from './Utils/ProgressWithdrawal';
 import MoreOperation from './Utils/MoreOperation';
 //Media
 import Player from './Media/Player';
+import * as Audio from './Media/Audio';
 // Guide
 import beginnerGuidance from './Guide/beginnerGuidance';
 import VideoTaskGuidance from './Guide/VideoTaskGuidance';
@@ -154,6 +155,7 @@ export {
     ProgressWithdrawal,
     MoreOperation,
     Player,
+    Audio,
     beginnerGuidance,
     VideoTaskGuidance,
     AnswerGuidance,
