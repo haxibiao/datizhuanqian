@@ -1,12 +1,14 @@
 import React, { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet, Dimensions, Platform, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import Iconfont from '../Iconfont';
 import WaveView from '../Container/WaveView';
+import GradientView from '../Basics/GradientView';
 import { Theme, PxFit, Tools } from '../../utils';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Sound from 'react-native-sound';
 import * as Progress from 'react-native-progress';
 import { Overlay } from 'teaset';
-import Toast from '../Overlay/Toast';
+import AudioTrack from './AudioTrack';
 
 // playingListener
 // stoppedListener
@@ -185,7 +187,7 @@ export const Recorder = ({ completeRecording }) => {
         setStatus('none');
     }, []);
 
-    const uploadAudio = useCallback(() => {
+    const complete = useCallback(() => {
         if (completeRecording) {
             completeRecording();
         }
@@ -259,7 +261,7 @@ export const Recorder = ({ completeRecording }) => {
                 </TouchableWithoutFeedback>
 
                 {!!audioFilePath && (
-                    <TouchableWithoutFeedback onPress={uploadAudio}>
+                    <TouchableWithoutFeedback onPress={complete}>
                         <View>
                             <Image
                                 source={require('@src/assets/images/ic_done_round_big.png')}
@@ -269,12 +271,95 @@ export const Recorder = ({ completeRecording }) => {
                     </TouchableWithoutFeedback>
                 )}
             </View>
+            <View>
+                <Player
+                    audio={audioFilePath}
+                    style={{ width: PxFit(100), height: PxFit(30), borderRadius: 20, paddingHorizontal: PxFit(10) }}
+                />
+            </View>
         </View>
     );
 };
 
-export const Player = () => {
-    return <View style={styles.playerContainer}></View>;
+export const Player = ({ audio, style, fontSize = PxFit(14) }) => {
+    const [status, setStatus] = useState('paused');
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+    const whoosh = useRef();
+    const currentStatus = useRef('paused');
+    const timer = useRef();
+    const onPress = useCallback(() => {
+        if (whoosh.current) {
+            if (currentStatus.current !== 'played') {
+                setStatus('played');
+                clearInterval(timer.current);
+                timer.current = setInterval(() => {
+                    setCurrentTime(v => v + 0.1);
+                }, 100);
+                whoosh.current.play(success => {});
+            } else if (currentStatus.current == 'played') {
+                clearInterval(timer.current);
+                whoosh.current.pause();
+                setStatus('paused');
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        currentStatus.current = status;
+    }, [status]);
+
+    useEffect(() => {
+        if (audio) {
+            whoosh.current = new Sound(
+                audio,
+                '',
+                error => {
+                    if (error) {
+                        Toast.show({ content: '播放异常' });
+                        return;
+                    }
+                    setDuration(Math.ceil(whoosh.current.getDuration()));
+                },
+                {
+                    playingListener: () => {
+                        // setStatus('played');
+                    },
+                    stoppedListener: () => {
+                        if (whoosh.current) {
+                            whoosh.current.stop(() => {
+                                setStatus('paused');
+                                setCurrentTime(0);
+                                clearInterval(timer.current);
+                            });
+                        }
+                    },
+                },
+            );
+        }
+
+        return () => {
+            if (whoosh.current) {
+                whoosh.current.release();
+            }
+        };
+    }, [audio]);
+
+    return (
+        <TouchableWithoutFeedback onPress={onPress}>
+            <GradientView colors={['#16B2F5', '#1CDEE2']} style={style}>
+                <View style={styles.playerContainer}>
+                    <Iconfont name={status === 'played' ? 'play' : 'paused'} size={fontSize} color="#fff" />
+                    <View style={{ flex: 1, height: fontSize, paddingHorizontal: fontSize / 2 }}>
+                        <AudioTrack duration={duration} currentTime={currentTime} />
+                    </View>
+                    <Text style={[styles.durationText, { fontSize }]}>
+                        {duration < 10 ? '0' + duration : duration}"
+                    </Text>
+                </View>
+            </GradientView>
+        </TouchableWithoutFeedback>
+    );
 };
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -317,7 +402,14 @@ const styles = StyleSheet.create({
         height: PxFit(MAIN_BUTTON_WIDTH),
     },
     playerContainer: {
-        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    durationText: {
+        color: '#fff',
+        fontSize: PxFit(16),
     },
     recorderContainer: {
         justifyContent: 'center',
