@@ -63,6 +63,15 @@ const MoreOperation = props => {
         }
     }, []);
 
+    const blockUser = useCallback(() => {
+        onPressIn();
+        setTimeout(() => {
+            Toast.show({ content: '该用户已加入黑名单' });
+        }, 300);
+        VideoStore.filterUserPost(target.user.id);
+        // dislikeMutation();
+    }, []);
+
     const dislike = useCallback(() => {
         onPressIn();
         dislikeMutation();
@@ -78,6 +87,10 @@ const MoreOperation = props => {
             举报: {
                 image: require('@src/assets/images/more_report.png'),
                 callback: reportArticle,
+            },
+            拉黑: {
+                image: require('@src/assets/images/more_block_user.png'),
+                callback: blockUser,
             },
             删除: {
                 image: require('@src/assets/images/more_delete.png'),

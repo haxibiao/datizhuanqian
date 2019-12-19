@@ -20,6 +20,11 @@ class PasswordLogin extends Component {
 
     //提交密码登录
     setPassword = async () => {
+        if (!this.state.password) {
+            Toast.show({ content: '请输入密码' });
+            return;
+        }
+
         const { navigation } = this.props;
         const { hasPassword } = navigation.state.params;
         let result = {};
@@ -132,17 +137,13 @@ class PasswordLogin extends Component {
                                     password: value,
                                 });
                             }}
+                            autoFocus
                             maxLength={48}
                         />
                     </View>
 
                     <View style={styles.buttonWrap}>
-                        <Button
-                            title="完成"
-                            onPress={this.setPassword}
-                            style={styles.button}
-                            disabled={password ? false : true}
-                        />
+                        <Button title="完成" onPress={this.setPassword} style={styles.button} />
                     </View>
                     {hasPassword ? (
                         <TouchFeedback
