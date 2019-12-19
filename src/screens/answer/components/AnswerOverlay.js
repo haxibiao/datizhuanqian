@@ -27,10 +27,11 @@ class AnswerOverlay {
         return expression[type] && expression[type].image;
     }
 
-    static Title(type, bool) {
+    static Title(type, bool, question) {
+        const { wrong_count, count } = question;
         let title = {
             answer: {
-                text: bool ? '恭喜答对啦\n您已战胜1%的答友' : '很可惜答错了\n再接再厉',
+                text: bool ? `恭喜答对啦\n您已战胜${correctRate(wrong_count, count)}的答友` : '很可惜答错了\n再接再厉',
             },
             audit: {
                 text: bool ? '已同意' : '已拒绝',
@@ -47,7 +48,7 @@ class AnswerOverlay {
     }
 
     static show(props) {
-        const { gold, ticket, result, type } = props;
+        const { gold, ticket, result, type, question } = props;
         let overlayView = (
             <Overlay.View modal animated onAppearCompleted={() => AnswerOverlay.countdownColose()}>
                 <View style={styles.overlay}>
@@ -56,9 +57,11 @@ class AnswerOverlay {
                             <Text
                                 style={[
                                     styles.titleText,
-                                    type == 'answer' && { color: result ? Theme.primaryColor : Theme.errorColor },
+                                    type == 'answer' && {
+                                        color: result ? Theme.primaryColor : Theme.errorColor,
+                                    },
                                 ]}>
-                                {AnswerOverlay.Title(type, result)}
+                                {AnswerOverlay.Title(type, result, question)}
                             </Text>
                             {type == 'audit' && <Text style={styles.resultText}>{`经验值+1   贡献+1`}</Text>}
                             {type == 'answer' && result && (
@@ -74,6 +77,16 @@ class AnswerOverlay {
             </Overlay.View>
         );
         this.overlayKey = Overlay.show(overlayView);
+    }
+}
+
+function correctRate(correct, count) {
+    if (typeof correct === 'number' && typeof count === 'number') {
+        const result = (correct / count) * 100;
+        if (result) {
+            return result.toFixed(1) + '%';
+        }
+        return '暂无统计';
     }
 }
 

@@ -163,7 +163,7 @@ class index extends Component {
                 this.error_count = this.error_count + 1;
             }
         }
-        AnswerOverlay.show({ gold: this.gold, ticket: this.ticket, result, type });
+        AnswerOverlay.show({ gold: this.gold, ticket: this.ticket, result, type, question });
     }
 
     // 提交审核
