@@ -1,8 +1,16 @@
 import React, { Component, useEffect, useState } from 'react';
 import { StyleSheet, View, ScrollView, Image, Text, Platform } from 'react-native';
 
-import { SubmitLoading, Banner, TouchFeedback, RewardTipsOverlay, TipsOverlay } from 'components';
-import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, ISAndroid, iPhone11 } from 'utils';
+import {
+    SubmitLoading,
+    Banner,
+    TouchFeedback,
+    RewardTipsOverlay,
+    TipsOverlay,
+    beginnerGuidance,
+    TaskGuidance,
+} from 'components';
+import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, iPhone11 } from 'utils';
 import { Query, Mutation, graphql, withApollo, compose, GQL, useQuery } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
 
@@ -19,7 +27,7 @@ const TaskBody = props => {
         variables: { offest: 0, limit: 20 },
     });
 
-    const { data: userData, refetch: refetchChatsQuery } = useQuery(GQL.UserQuery, {
+    const { data: userData, refetch: refetchChatsQuery, loading } = useQuery(GQL.UserQuery, {
         variables: { id: app.me.id },
     });
 
@@ -33,20 +41,26 @@ const TaskBody = props => {
     }, []);
 
     useEffect(() => {
-        //构建tasklist
+        // 构建tasklist
         constructTask();
-        //更新缓存
+        // 更新缓存
         if (TasksQuery && TasksQuery.data && TasksQuery.data.tasks) {
             app.updateTaskCache(TasksQuery.data.tasks);
         }
-        //命中刷新
+        // 命中刷新
         const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
             TasksQuery.refetch();
+            !config.disableAd && Tools.syncGetter('user.wallet.total_withdraw_amount', userData) == 1;
+            beginnerGuidance({
+                guidanceKey: 'Task',
+                GuidanceView: TaskGuidance,
+                dismissEnabled: true,
+            });
         });
         return () => {
             navDidFocusListener.remove();
         };
-    }, [TasksQuery.loading, TasksQuery.refetch]);
+    }, [TasksQuery.loading, TasksQuery.refetch, loading]);
 
     const constructTask = () => {
         const { loading } = TasksQuery;

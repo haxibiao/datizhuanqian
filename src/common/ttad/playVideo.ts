@@ -106,7 +106,7 @@ function startRewardVideo(props: Props) {
         });
 }
 
-//看全屏视频
+// 看全屏视频
 function playFullScreenVideo(props: Props) {
     const { fullScreenVideoAdCache } = props;
     if (fullScreenVideoAdCache) {
@@ -116,7 +116,7 @@ function playFullScreenVideo(props: Props) {
     }
 }
 
-//加载全屏视频缓存
+// 加载全屏视频缓存
 function loadFullScreenVideo(props: Props) {
     ttad.FullScreenVideo.loadFullScreenVideoAd().then(result => {
         config.fullScreenVideoAdCache = result; //更新缓存
@@ -128,7 +128,7 @@ function loadFullScreenVideo(props: Props) {
     });
 }
 
-//播放全屏视频
+// 播放全屏视频
 function startFullScreenVideo(props: Props) {
     const { noReward } = props;
     ttad.FullScreenVideo.startFullScreenVideoAd()
@@ -147,7 +147,7 @@ function startFullScreenVideo(props: Props) {
         });
 }
 
-//新看视频奖励发放
+// 新看视频奖励发放
 function getReward(props: Props, video: Video) {
     const { type } = props;
     console.log('type', type);
@@ -159,27 +159,27 @@ function getReward(props: Props, video: Video) {
     }
     if (type === 'AnswerPass') {
         rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //答题及格奖励
-        title = '点击详情得贡献';
+        title = '点详情更多贡献';
     }
     if (type === 'AnswerFail') {
         rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
-        title = '点击详情得贡献';
+        title = '点详情更多贡献';
     }
     if (type === 'Task' && video.ad_click) {
         rewardType = 'CLICK_REWARD_VIDEO'; //激励视频查看详情
     }
     if (type === 'Task') {
         rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
-        title = '点击详情得贡献';
+        title = '点详情更多贡献';
     }
-    //TODO:  需后端扩展userReward奖励类型
+    // TODO:  需后端扩展userReward奖励类型
     if (type === 'Audit' && video.ad_click) {
         rewardType = 'AUDIT_REWAERD_VIDEO_CLICK'; //审题激励视频看详情
     }
 
     if (type === 'Audit') {
         rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
-        title = '点击详情得贡献';
+        title = '点详情更多贡献';
     }
 
     const refetchQuery =

@@ -15,7 +15,9 @@ class MakeMoenyManual extends Component {
                     childItems: [
                         {
                             title: '什么是智慧点？',
-                            content: `智慧点是${Config.AppName}用户的虚拟积分，可以兑换一定数量的红包、购买专区免广告服务。`,
+                            content: `智慧点是${
+                                Config.AppName
+                            }用户的虚拟积分，可以兑换一定数量的红包、购买专区免广告服务。`,
                         },
                         {
                             title: '如何获取更多智慧点？',
@@ -55,7 +57,9 @@ class MakeMoenyManual extends Component {
                         },
                         {
                             title: '被限制提现怎么办？',
-                            content: `一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现,系统将判定涉嫌恶意刷取智慧点，${Config.AppName}官方将限制提现功能。`,
+                            content: `一个人名下只能绑定一个支付宝提现，同一人使用多个账号提现,系统将判定涉嫌恶意刷取智慧点，${
+                                Config.AppName
+                            }官方将限制提现功能。`,
                         },
                         { title: '如何提升提现额度？', content: '提升贡献值即可提升提现额度' },
                     ],
@@ -65,12 +69,14 @@ class MakeMoenyManual extends Component {
                     childItems: [
                         {
                             title: '什么是贡献点？',
-                            content: `贡献值代表用户对${Config.AppName}创建良好用户环境所做的贡献，为保证社区用户环境良好，提现时需要考核用户的贡献值。`,
+                            content: `贡献值代表用户对${
+                                Config.AppName
+                            }创建良好用户环境所做的贡献，为保证社区用户环境良好，提现时需要考核用户的贡献值。`,
                         },
                         {
                             title: '如何获取贡献点？',
                             content:
-                                '贡献值可以通过举报违反出题规则的题目、做激励任务、看视频点击详情、发布有价值的神评论(被点赞)、出题通过审核等方式获取。',
+                                '贡献值可以通过举报违反出题规则的题目、做激励任务、看视频或点击详情、点击广告、发布有价值的神评论(被点赞)、出题通过审核等方式获取。',
                         },
                     ],
                 },
@@ -152,6 +158,11 @@ class MakeMoenyManual extends Component {
                                         select: index,
                                     });
                                     this.scrollRef.scrollToIndex({ index: index, animated: true });
+                                    index == 2 &&
+                                        ManualOverlay.show(
+                                            items[2].childItems[1].title,
+                                            items[2].childItems[1].content,
+                                        );
                                 }}>
                                 <Text
                                     style={{
