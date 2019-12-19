@@ -27,7 +27,7 @@ const AudioTrack = ({ trackWidth = PxFit(1), currentTime, duration }) => {
                     const trackStyle = {
                         marginHorizontal: trackWidth,
                         width: trackWidth,
-                        height: PxFit(trackHeight[index]),
+                        height: PxFit(trackHeight[index % trackHeight.length]),
                         backgroundColor: '#fff',
                         opacity: 0.5,
                     };
