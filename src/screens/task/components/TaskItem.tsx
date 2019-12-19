@@ -2,13 +2,14 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated, Linking, AppState } from 'react-native';
 
 import { Button, Row, Iconfont, TouchFeedback } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
 
 import { Mutation, compose, useMutation, GQL } from 'apollo';
 import { exceptionCapture } from 'common';
 import { app } from 'store';
 import { ttad, AppUtil } from 'native';
 import service from 'service';
+import { Overlay } from 'teaset';
 
 interface Props {
     handler: Function;
@@ -31,6 +32,7 @@ interface Task {
     route: String;
     package: String;
     post_id: Number;
+    icon: String;
 }
 
 const TaskItem = (props: Props) => {
@@ -171,7 +173,7 @@ const TaskItem = (props: Props) => {
                     <Row style={styles.reword}>
                         <Image
                             source={require('../../../assets/images/heart.png')}
-                            style={{ width: PxFit(18), height: PxFit(18) }}
+                            style={{ width: PxFit(17), height: PxFit(17) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.ticket}`}</Text>
                     </Row>
@@ -180,7 +182,7 @@ const TaskItem = (props: Props) => {
                     <Row style={styles.reword}>
                         <Image
                             source={require('../../../assets/images/diamond.png')}
-                            style={{ width: PxFit(18), height: PxFit(18) }}
+                            style={{ width: PxFit(17), height: PxFit(17) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.gold}`}</Text>
                     </Row>
@@ -189,7 +191,7 @@ const TaskItem = (props: Props) => {
                     <Row style={styles.reword}>
                         <Image
                             source={require('../../../assets/images/gongxian.png')}
-                            style={{ width: PxFit(14), height: PxFit(14) }}
+                            style={{ width: PxFit(13), height: PxFit(13) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.contribute}`}</Text>
                     </Row>
@@ -250,7 +252,7 @@ const TaskItem = (props: Props) => {
                 };
                 break;
             case 2:
-                name = '领取奖励';
+                name = '领奖励';
                 doTask = getReward;
                 break;
             case 3:
@@ -270,9 +272,9 @@ const TaskItem = (props: Props) => {
             <Button
                 title={name}
                 style={{
-                    borderRadius: PxFit(16),
-                    height: PxFit(32),
-                    width: PxFit(84),
+                    borderRadius: PxFit(15),
+                    height: PxFit(30),
+                    width: PxFit(78),
                     backgroundColor: backgroundColor,
                 }}
                 textColor={textColor}
@@ -293,47 +295,81 @@ const TaskItem = (props: Props) => {
         //任务详情由后端控制
     };
 
+    // const showTaskDetail = () => {
+    //     if (taskDetailVisiable) {
+    //         rotateValue.setValue(180);
+    //         Animated.timing(rotateValue, {
+    //             toValue: 0,
+    //             duration: 400,
+    //             useNativeDriver: true,
+    //         }).start();
+    //         setTaskDetailVisiable(false);
+    //     } else {
+    //         rotateValue.setValue(0);
+    //         fadeValue.setValue(0);
+    //         Animated.timing(rotateValue, {
+    //             toValue: 180,
+    //             duration: 400,
+    //             useNativeDriver: true,
+    //         }).start();
+    //         Animated.timing(fadeValue, {
+    //             toValue: 1,
+    //             duration: 400,
+    //         }).start();
+    //         setTaskDetailVisiable(true);
+    //     }
+    // };
+
+    /*激励视频任务弹窗解释*/
     const showTaskDetail = () => {
-        if (taskDetailVisiable) {
-            rotateValue.setValue(180);
-            Animated.timing(rotateValue, {
-                toValue: 0,
-                duration: 400,
-                useNativeDriver: true,
-            }).start();
-            setTaskDetailVisiable(false);
-        } else {
-            rotateValue.setValue(0);
-            fadeValue.setValue(0);
-            Animated.timing(rotateValue, {
-                toValue: 180,
-                duration: 400,
-                useNativeDriver: true,
-            }).start();
-            Animated.timing(fadeValue, {
-                toValue: 1,
-                duration: 400,
-            }).start();
-            setTaskDetailVisiable(true);
-        }
+        let overlayView = (
+            <Overlay.View animated>
+                <View style={styles.overlayInner}>
+                    <View
+                        style={{
+                            width: SCREEN_WIDTH - PxFit(70),
+                            paddingHorizontal: PxFit(25),
+                            paddingVertical: PxFit(20),
+                            borderRadius: PxFit(10),
+                            backgroundColor: '#fff',
+                        }}>
+                        <Text style={{ color: Theme.defaultTextColor, fontSize: PxFit(16), textAlign: 'center' }}>
+                            {task.name}
+                        </Text>
+
+                        <View style={{ marginVertical: 10 }}>
+                            <Text style={{ lineHeight: PxFit(20) }}>{task.details}</Text>
+                        </View>
+                        <Button title={'确定'} onPress={() => Overlay.hide(OverlayKey)} style={styles.buttonText} />
+                    </View>
+                </View>
+            </Overlay.View>
+        );
+        const OverlayKey = Overlay.show(overlayView);
     };
 
     return (
         <Fragment>
-            <TouchFeedback
-                style={styles.container}
-                onPress={() => {
-                    if (!(task.taskStatus === 1 || 3)) {
-                        handler();
-                    }
-                }}>
+            <TouchFeedback style={styles.container} onPress={task.details && showTaskDetail}>
                 <Row>
+                    <Image
+                        source={task.icon || require('@src/assets/images/task_money_icon.png')}
+                        style={{ width: PxFit(42), height: PxFit(42), marginRight: PxFit(5) }}
+                    />
                     <Text style={styles.name}>{task.name}</Text>
+                    {task.details ? (
+                        <TouchFeedback onPress={task.details && showTaskDetail}>
+                            <Image
+                                source={require('@src/assets/images/question.png')}
+                                style={{ width: PxFit(14), height: PxFit(14), marginHorizontal: PxFit(2) }}
+                            />
+                        </TouchFeedback>
+                    ) : null}
                     {RewardContent()}
                 </Row>
                 <Row>
                     {TaskButton()}
-                    <TouchFeedback onPress={showTaskDetail} style={styles.taskRight}>
+                    {/*  <TouchFeedback onPress={showTaskDetail} style={styles.taskRight}>
                         <Animated.Image
                             style={{
                                 width: 20,
@@ -349,7 +385,7 @@ const TaskItem = (props: Props) => {
                             }}
                             source={require('../../../assets/images/down.png')}
                         />
-                    </TouchFeedback>
+                    </TouchFeedback> */}
                 </Row>
             </TouchFeedback>
             {TaskDetail()}
@@ -359,7 +395,7 @@ const TaskItem = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: PxFit(12),
+        marginHorizontal: PxFit(15),
         paddingVertical: PxFit(12),
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -367,7 +403,7 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#3c3c3c',
-        fontSize: PxFit(15),
+        fontSize: PxFit(14),
     },
     taskRight: {
         paddingVertical: PxFit(5),
@@ -379,7 +415,7 @@ const styles = StyleSheet.create({
     },
     rewordText: {
         color: Theme.primaryColor,
-        fontSize: PxFit(13),
+        fontSize: PxFit(12),
         fontWeight: '200',
         // fontFamily: '',
     },
@@ -396,6 +432,19 @@ const styles = StyleSheet.create({
         color: Theme.primaryFont,
         letterSpacing: 1,
         lineHeight: 18,
+    },
+    overlayInner: {
+        flex: 1,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        height: PxFit(38),
+        borderRadius: PxFit(19),
+        marginTop: PxFit(10),
+        backgroundColor: '#45C3FF',
     },
 });
 

@@ -25,7 +25,7 @@ class index extends Component {
                 titleStyle={{ color: Theme.defaultTextColor }}
                 navBarStyle={styles.navBarStyle}
                 backButtonColor={Theme.defaultTextColor}
-                title='任务'>
+                title="任务">
                 {login ? (
                     <View style={styles.container}>
                         <Banner />
@@ -34,7 +34,7 @@ class index extends Component {
                 ) : (
                     <EmptyView
                         imageSource={require('../../assets/images/default_message.png')}
-                        title='登录之后才能查看任务哦'
+                        title="登录之后才能查看任务哦"
                     />
                 )}
             </PageContainer>

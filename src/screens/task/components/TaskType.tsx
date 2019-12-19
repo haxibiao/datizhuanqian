@@ -95,39 +95,40 @@ const TaskType = observer((props: Props) => {
 
     if (tasks && tasks.length > 0) {
         return (
-            <BoxShadow
-                setting={Object.assign({}, shadowOpt, {
-                    height: taskTypeHeight,
-                })}>
-                <View
-                    style={[styles.container]}
-                    onLayout={event => {
-                        setTaskTypeHeight(event.nativeEvent.layout.height);
-                    }}>
-                    <View style={styles.header}>
-                        <Text style={styles.text}>{typeName}</Text>
-                        <View style={styles.badge} />
-                    </View>
+            // <BoxShadow
+            //     setting={Object.assign({}, shadowOpt, {
+            //         height: taskTypeHeight,
+            //     })}>
 
-                    {tasks.map((task, index) => {
-                        // task status == 1 的时候展示任务
-                        if (task.status > 0) {
-                            return (
-                                <TaskItem
-                                    key={index}
-                                    handler={() => {
-                                        console.log(' handler task', task);
-                                        handler(task);
-                                    }}
-                                    task={task}
-                                    setLoading={setLoading}
-                                    setUnLoading={setUnLoading}
-                                />
-                            );
-                        }
-                    })}
+            // </BoxShadow>
+            <View
+                style={[styles.container]}
+                onLayout={event => {
+                    setTaskTypeHeight(event.nativeEvent.layout.height);
+                }}>
+                <View style={styles.header}>
+                    <Text style={styles.text}>{typeName}</Text>
+                    {/*    <View style={styles.badge} /> */}
                 </View>
-            </BoxShadow>
+
+                {tasks.map((task, index) => {
+                    // task status == 1 的时候展示任务
+                    if (task.status > 0) {
+                        return (
+                            <TaskItem
+                                key={index}
+                                handler={() => {
+                                    console.log(' handler task', task);
+                                    handler(task);
+                                }}
+                                task={task}
+                                setLoading={setLoading}
+                                setUnLoading={setUnLoading}
+                            />
+                        );
+                    }
+                })}
+            </View>
         );
     } else {
         return null;
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     header: {
-        marginHorizontal: PxFit(12),
+        marginHorizontal: PxFit(15),
         paddingVertical: PxFit(10),
     },
     text: {
