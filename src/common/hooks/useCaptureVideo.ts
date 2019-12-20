@@ -35,7 +35,7 @@ export const useCaptureVideo = (props: Props) => {
                 id: app.me.id,
             },
         });
-        console.log('Tools.syncGetter', Tools.syncGetter('data.user.share_spider_status', result));
+
         switch (Tools.syncGetter('data.user.share_spider_status', result)) {
             case 0:
                 spiderVideo(path);
@@ -87,6 +87,8 @@ export const useCaptureVideo = (props: Props) => {
                     console.log('clipboardString', path);
                     checkUser(path);
                 }
+            } else {
+                TipsOverlay.hide();
             }
         },
         [captureVideo, onFailed, onSuccess],
