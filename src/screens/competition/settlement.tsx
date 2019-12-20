@@ -253,7 +253,8 @@ const over = observer(props => {
                                         {store.rival.name}
                                     </Text>
                                     <Text style={[styles.score, { color: '#F8CE4D' }]}>
-                                        {store.isLeaving ? '中途离开' : scores[1] > 0 ? scores[1] : store.score[1]}
+                                        {store.isLeaving ? '(中途离开)' : ''}
+                                        {scores[1] > 0 ? scores[1] : store.score[1]}
                                     </Text>
                                 </View>
                             </View>
