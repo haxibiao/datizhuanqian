@@ -6,12 +6,13 @@ import { View, Image, Keyboard } from 'react-native';
 import { observable, action, runInAction, autorun, computed, when } from 'mobx';
 import { ProgressOverlay, beginnerGuidance, SetQuestionGuidance } from 'components';
 import { Api } from '../../utils';
+import { app } from '@src/store';
 
 const ANSWERS = ['A', 'B', 'C', 'D'];
 
 type target = 'explain_' | '';
 
-class ContributeStore {
+export default class ContributeStore {
     static instance = null;
 
     @observable uploading = null;
@@ -21,13 +22,13 @@ class ContributeStore {
     @observable video = null;
     @observable video_id = null;
     @observable video_path = null;
-    @observable video_duration = 15;
+    @observable video_duration = app.me.video_duration || 30;
     @observable explain_text = null;
     @observable explain_picture = null;
     @observable explain_video = null;
     @observable explain_video_id = null;
     @observable explain_video_path = null;
-    @observable explain_video_duration = 180;
+    @observable explain_video_duration = app.me.explanation_video_duration || 90;
     @observable optionValue = null;
     @observable answers = new Set();
     @observable options = new Map();
@@ -50,16 +51,6 @@ class ContributeStore {
 
     removeInstance() {
         ContributeStore.instance = null;
-    }
-
-    @action.bound
-    setVideoDuration(duration) {
-        this.video_duration = duration || 30;
-    }
-
-    @action.bound
-    setExplainVideoDuration(duration) {
-        this.explain_video_duration = duration || 90;
     }
 
     @action.bound
@@ -308,5 +299,3 @@ class ContributeStore {
         return verified;
     }
 }
-
-export default ContributeStore;

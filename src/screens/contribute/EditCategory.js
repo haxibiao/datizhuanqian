@@ -1,8 +1,4 @@
-/*
- * @flow
- * created by wyk made in 2019-06-05 09:16:56
- */
-import React, { Component } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     StyleSheet,
     View,
@@ -17,113 +13,98 @@ import { PageContainer, TouchFeedback, Iconfont, Row, Button, SearchBar } from '
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
 
 import { Query, GQL } from 'apollo';
+import { observer, app } from 'store';
 import ContributeStore from './ContributeStore';
-import { observer, Provider } from 'mobx-react';
 
-@observer
-class CategoryItem extends Component {
-    render() {
-        let { category, selectedCategory, selectCategory } = this.props;
-        let selected = selectedCategory && selectedCategory.id === category.id;
-        return (
-            <TouchFeedback disabled={!category.user_can_submit} onPress={() => selectCategory(category)}>
-                <View style={styles.categoryItem}>
-                    <View style={styles.iconWrap}>
-                        <Image source={{ uri: category.icon }} style={styles.categoryIcon} />
-                    </View>
-                    <View style={{ flex: 1, marginRight: PxFit(Theme.itemSpace) }}>
-                        <Text style={styles.categoryName} numberOfLines={1}>
-                            {category.name}
-                        </Text>
-                        {!category.user_can_submit && (
-                            <Text style={{ fontSize: PxFit(12), color: Theme.secondaryColor }} numberOfLines={1}>
-                                您暂时没有该分类的投稿权限（答对5题即可解锁权限）
-                            </Text>
-                        )}
-                    </View>
-                    {selected && <Iconfont name={'correct'} size={PxFit(20)} color={Theme.primaryColor} />}
+const CategoryItem = observer(props => {
+    let { category, selectedCategory, selectCategory } = props;
+    let selected = selectedCategory && selectedCategory.id === category.id;
+
+    return (
+        <TouchFeedback disabled={!category.user_can_submit} onPress={() => selectCategory(category)}>
+            <View style={styles.categoryItem}>
+                <View style={styles.iconWrap}>
+                    <Image source={{ uri: category.icon }} style={styles.categoryIcon} />
                 </View>
-            </TouchFeedback>
-        );
-    }
-}
+                <View style={{ flex: 1, marginRight: PxFit(Theme.itemSpace) }}>
+                    <Text style={styles.categoryName} numberOfLines={1}>
+                        {category.name}
+                    </Text>
+                    {!category.user_can_submit && (
+                        <Text style={{ fontSize: PxFit(12), color: Theme.secondaryColor }} numberOfLines={1}>
+                            您暂时没有该分类的投稿权限（答对5题即可解锁权限）
+                        </Text>
+                    )}
+                </View>
+                {selected && <Iconfont name={'correct'} size={PxFit(20)} color={Theme.primaryColor} />}
+            </View>
+        </TouchFeedback>
+    );
+});
 
-@observer
-class EditCategory extends Component {
-    constructor(props) {
-        super(props);
-        this.contributeStore = new ContributeStore();
-        this.state = {
-            keyword: null,
-        };
-    }
+export default observer(props => {
+    const { category: selectedCategory, selectCategory } = new ContributeStore();
+    const [keyword, setKeyword] = useState();
 
-    onChangeText = keyword => {
-        this.setState({ keyword });
-    };
+    const onChangeText = useCallback(text => {
+        Tools.debounce(() => setKeyword(text), 300);
+    }, []);
 
-    render() {
-        let { keyword } = this.state;
-        let { category: selectedCategory, selectCategory } = this.contributeStore;
-        return (
-            <Query
-                query={GQL.SearchCategoriesQuery}
-                variables={{
-                    limit: 100,
-                    keyword,
-                    allow_submit: 1,
-                }}
-                fetchPolicy="network-only">
-                {({ data, loading, error, refetch, fetchMore }) => {
-                    let categories = Tools.syncGetter('categories', data);
-                    let empty = categories && categories.length === 0;
-                    loading = !categories;
-                    return (
-                        <PageContainer
-                            white
-                            title={
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        marginLeft: PxFit(40),
-                                        marginVertical: PxFit(5),
-                                    }}>
-                                    <SearchBar
-                                        onChangeText={Tools.debounce(this.onChangeText, 300)}
-                                        placeholder="搜索题库"
-                                    />
-                                </View>
-                            }
-                            refetch={refetch}
-                            loading={loading}
-                            empty={empty}>
-                            <View style={styles.container}>
-                                <FlatList
-                                    contentContainerStyle={styles.scrollStyle}
-                                    showsVerticalScrollIndicator={false}
-                                    data={categories}
-                                    keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-                                    renderItem={({ item, index }) => (
-                                        <CategoryItem
-                                            category={item}
-                                            selectedCategory={selectedCategory}
-                                            selectCategory={selectCategory}
-                                        />
-                                    )}
-                                    ListFooterComponent={() => (
-                                        <View style={styles.footer}>
-                                            <Text style={styles.footerText}>--end--</Text>
-                                        </View>
-                                    )}
-                                />
+    return (
+        <Query
+            query={GQL.SearchCategoriesQuery}
+            variables={{
+                limit: 100,
+                keyword,
+                allow_submit: 1,
+            }}
+            fetchPolicy="network-only">
+            {({ data, loading, error, refetch, fetchMore }) => {
+                let categories = Tools.syncGetter('categories', data);
+                let empty = categories && categories.length === 0;
+                loading = !categories;
+                return (
+                    <PageContainer
+                        white
+                        title={
+                            <View
+                                style={{
+                                    flex: 1,
+                                    marginLeft: PxFit(40),
+                                    marginVertical: PxFit(5),
+                                }}>
+                                <SearchBar onChangeText={onChangeText} placeholder="搜索题库" />
                             </View>
-                        </PageContainer>
-                    );
-                }}
-            </Query>
-        );
-    }
-}
+                        }
+                        refetch={refetch}
+                        loading={loading}
+                        empty={empty}>
+                        <View style={styles.container}>
+                            <FlatList
+                                contentContainerStyle={styles.scrollStyle}
+                                showsVerticalScrollIndicator={false}
+                                data={categories}
+                                keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+                                renderItem={({ item, index }) => (
+                                    <CategoryItem
+                                        category={item}
+                                        selectedCategory={selectedCategory}
+                                        selectCategory={selectCategory}
+                                    />
+                                )}
+                                ListFooterComponent={() => (
+                                    <View style={styles.footer}>
+                                        <Text style={styles.footerText}>--end--</Text>
+                                    </View>
+                                )}
+                            />
+                        </View>
+                    </PageContainer>
+                );
+            }}
+        </Query>
+    );
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -180,5 +161,3 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-
-export default EditCategory;
