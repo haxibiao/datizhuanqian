@@ -8,7 +8,7 @@ import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Sound from 'react-native-sound';
 import * as Progress from 'react-native-progress';
 import { Overlay } from 'teaset';
-import AudioTrack from './AudioTrack';
+import AudioTracks, { AnimatedTracks } from './AudioTracks';
 
 // playingListener
 // stoppedListener
@@ -43,7 +43,8 @@ function TimeFormat(second) {
 
 export type RecordStatus = 'none' | 'recording' | 'stopped' | 'played';
 
-export const Recorder = ({ completeRecording }) => {
+// 录音器
+export const Recorder = ({ completeRecording, minimumTime = 2 }) => {
     const hasPermission = useRef(true);
     const audioDirectoryPath = useRef(AudioUtils.DocumentDirectoryPath + '/test.aac');
     const [audioFilePath, setAudioFilePath] = useState('');
@@ -51,10 +52,15 @@ export const Recorder = ({ completeRecording }) => {
     const [status, setStatus] = useState('none');
     const recordStatus = useRef('none');
     const whoosh = useRef();
+    const minDuration = useRef();
 
     useEffect(() => {
         recordStatus.current = status;
     }, [status]);
+
+    useEffect(() => {
+        minDuration.current = duration;
+    }, [duration]);
 
     const prepareRecordingPath = useCallback(audioPath => {
         AudioRecorder.prepareRecordingAtPath(audioPath, {
@@ -68,6 +74,11 @@ export const Recorder = ({ completeRecording }) => {
 
     const finishRecording = useCallback((didSucceed, filePath) => {
         if (didSucceed) {
+            if (minDuration.current < minimumTime) {
+                Toast.show({ content: '录音失败，时长过短' });
+                deleteAudio();
+                return;
+            }
             setAudioFilePath(filePath);
         }
     }, []);
@@ -238,6 +249,9 @@ export const Recorder = ({ completeRecording }) => {
                     {status === 'recording' && <Text style={styles.audioState}>60秒内</Text>}
                 </View>
             </View>
+            <View style={styles.tracksContainer}>
+                {status === 'played' && <AnimatedTracks maxWidth={MAIN_BUTTON_WIDTH * 2} multiple={PxFit(2)} />}
+            </View>
             <View style={styles.utils}>
                 {!!audioFilePath && (
                     <TouchableWithoutFeedback onPress={showDeleteModal}>
@@ -252,7 +266,7 @@ export const Recorder = ({ completeRecording }) => {
 
                 <TouchableWithoutFeedback onPress={operation[status]}>
                     <View style={styles.mainButtonWrap}>
-                        {['played', 'recording'].includes(status) && (
+                        {status === 'recording' && (
                             <WaveView containerStyle={styles.waveContainer} style={styles.wave} />
                         )}
 
@@ -271,16 +285,11 @@ export const Recorder = ({ completeRecording }) => {
                     </TouchableWithoutFeedback>
                 )}
             </View>
-            <View>
-                <Player
-                    audio={audioFilePath}
-                    style={{ width: PxFit(100), height: PxFit(30), borderRadius: 20, paddingHorizontal: PxFit(10) }}
-                />
-            </View>
         </View>
     );
 };
 
+// 语音播放
 export const Player = ({ audio, style, fontSize = PxFit(14) }) => {
     const [status, setStatus] = useState('paused');
     const [duration, setDuration] = useState(0);
@@ -351,7 +360,7 @@ export const Player = ({ audio, style, fontSize = PxFit(14) }) => {
                 <View style={styles.playerContainer}>
                     <Iconfont name={status === 'played' ? 'play' : 'paused'} size={fontSize} color="#fff" />
                     <View style={{ flex: 1, height: fontSize, paddingHorizontal: fontSize / 2 }}>
-                        <AudioTrack duration={duration} currentTime={currentTime} />
+                        <AudioTracks duration={duration} currentTime={currentTime} />
                     </View>
                     <Text style={[styles.durationText, { fontSize }]}>
                         {duration < 10 ? '0' + duration : duration}"
@@ -368,7 +377,6 @@ const SIDE_BUTTON_WIDTH = MAIN_BUTTON_WIDTH / 3;
 // FF5E7D
 const styles = StyleSheet.create({
     audioInfo: {
-        marginBottom: PxFit(40),
         alignItems: 'center',
     },
     audioProgress: {
@@ -435,6 +443,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: PxFit(MAIN_BUTTON_WIDTH * 0.1),
+    },
+    tracksContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: PxFit(40),
     },
     overlayInner: {
         flex: 1,
