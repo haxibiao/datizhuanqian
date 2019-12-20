@@ -292,33 +292,8 @@ const TaskItem = (props: Props) => {
                 </Animated.View>
             );
         }
-        //任务详情由后端控制
+        // 任务详情由后端控制
     };
-
-    // const showTaskDetail = () => {
-    //     if (taskDetailVisiable) {
-    //         rotateValue.setValue(180);
-    //         Animated.timing(rotateValue, {
-    //             toValue: 0,
-    //             duration: 400,
-    //             useNativeDriver: true,
-    //         }).start();
-    //         setTaskDetailVisiable(false);
-    //     } else {
-    //         rotateValue.setValue(0);
-    //         fadeValue.setValue(0);
-    //         Animated.timing(rotateValue, {
-    //             toValue: 180,
-    //             duration: 400,
-    //             useNativeDriver: true,
-    //         }).start();
-    //         Animated.timing(fadeValue, {
-    //             toValue: 1,
-    //             duration: 400,
-    //         }).start();
-    //         setTaskDetailVisiable(true);
-    //     }
-    // };
 
     /*激励视频任务弹窗解释*/
     const showTaskDetail = () => {
@@ -351,41 +326,33 @@ const TaskItem = (props: Props) => {
     return (
         <Fragment>
             <TouchFeedback style={styles.container} onPress={task.details && showTaskDetail}>
-                <Row>
-                    <Image
-                        source={task.icon || require('@src/assets/images/task_money_icon.png')}
-                        style={{ width: PxFit(42), height: PxFit(42), marginRight: PxFit(5) }}
-                    />
-                    <Text style={styles.name}>{task.name}</Text>
-                    {task.details ? (
-                        <TouchFeedback onPress={task.details && showTaskDetail}>
-                            <Image
-                                source={require('@src/assets/images/question.png')}
-                                style={{ width: PxFit(14), height: PxFit(14), marginHorizontal: PxFit(2) }}
-                            />
-                        </TouchFeedback>
-                    ) : null}
-                    {RewardContent()}
-                </Row>
-                <Row>
+                <Image
+                    source={task.icon || require('@src/assets/images/task_money_icon.png')}
+                    style={{ width: PxFit(42), height: PxFit(42), marginRight: PxFit(5), marginLeft: PxFit(15) }}
+                />
+
+                <Row
+                    style={{
+                        width: SCREEN_WIDTH - PxFit(65),
+                        justifyContent: 'space-between',
+                        paddingRight: PxFit(15),
+                        paddingVertical: PxFit(15),
+                        borderBottomColor: Theme.borderColor,
+                        borderBottomWidth: PxFit(0.5),
+                    }}>
+                    <Row>
+                        <Text style={styles.name}>{task.name}</Text>
+                        {task.details ? (
+                            <TouchFeedback onPress={task.details && showTaskDetail}>
+                                <Image
+                                    source={require('@src/assets/images/question.png')}
+                                    style={{ width: PxFit(14), height: PxFit(14), marginHorizontal: PxFit(2) }}
+                                />
+                            </TouchFeedback>
+                        ) : null}
+                        {RewardContent()}
+                    </Row>
                     {TaskButton()}
-                    {/*  <TouchFeedback onPress={showTaskDetail} style={styles.taskRight}>
-                        <Animated.Image
-                            style={{
-                                width: 20,
-                                height: 20,
-                                transform: [
-                                    {
-                                        rotate: rotateValue.interpolate({
-                                            inputRange: [0, 180],
-                                            outputRange: ['0deg', '180deg'],
-                                        }),
-                                    },
-                                ],
-                            }}
-                            source={require('../../../assets/images/down.png')}
-                        />
-                    </TouchFeedback> */}
                 </Row>
             </TouchFeedback>
             {TaskDetail()}
@@ -395,8 +362,7 @@ const TaskItem = (props: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: PxFit(15),
-        paddingVertical: PxFit(12),
+        // paddingVertical: PxFit(12),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
