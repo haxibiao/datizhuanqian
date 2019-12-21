@@ -153,33 +153,28 @@ function getReward(props: Props, video: Video) {
     console.log('type', type);
     let rewardType = 'VIDEO_PLAY_REWARD'; //观看视频奖励
     let title = '领取奖励成功';
-
-    if (type === 'Sigin') {
-        rewardType = 'DOUBLE_SIGNIN_REWARD'; //签到奖励
-    }
-    if (type === 'AnswerPass') {
-        rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //答题及格奖励
-        title = '点详情更多贡献';
-    }
-    if (type === 'AnswerFail') {
-        rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //答题不及格奖励
-        title = '点详情更多贡献';
-    }
-    if (type === 'Task' && video.ad_click) {
-        rewardType = 'CLICK_REWARD_VIDEO'; //激励视频查看详情
-    }
-    if (type === 'Task') {
-        rewardType = 'WATCH_REWARD_VIDEO'; //激励视频未看详情
-        title = '点详情更多贡献';
-    }
-    // TODO:  需后端扩展userReward奖励类型
-    if (type === 'Audit' && video.ad_click) {
-        rewardType = 'AUDIT_REWAERD_VIDEO_CLICK'; //审题激励视频看详情
-    }
-
-    if (type === 'Audit') {
-        rewardType = 'AUDIT_REWAERD_VIDEO_WATCH'; //审题激励视频未看详情
-        title = '点详情更多贡献';
+    switch (type) {
+        case 'Sigin':
+            rewardType = 'DOUBLE_SIGNIN_REWARD'; //签到奖励
+            break;
+        case 'AnswerPass':
+            rewardType = 'SUCCESS_ANSWER_VIDEO_REWARD'; //签到奖励
+            title = '点详情得更多贡献';
+            break;
+        case 'AnswerFail':
+            rewardType = 'FAIL_ANSWER_VIDEO_REWARD'; //签到奖励
+            title = '点详情得更多贡献';
+            break;
+        case 'Task':
+            rewardType = video.ad_click ? 'CLICK_REWARD_VIDEO' : 'WATCH_REWARD_VIDEO'; //激励视频查看奖励
+            title = video.ad_click ? '领取点详情奖励成功' : '点详情得更多贡献';
+            break;
+        case 'Audit':
+            rewardType = video.ad_click ? 'AUDIT_REWAERD_VIDEO_CLICK' : 'AUDIT_REWAERD_VIDEO_WATCH'; //签到奖励
+            title = video.ad_click ? '领取点详情奖励成功' : '点详情得更多贡献';
+            break;
+        default:
+            break;
     }
 
     const refetchQuery =
