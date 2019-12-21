@@ -15,7 +15,7 @@ const SCREEN_WIDTH = width;
 const SCREEN_HEIGHT = height;
 
 import { Overlay } from 'teaset';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { playVideo } from 'common';
 
 interface Props {
@@ -38,7 +38,7 @@ class ErrorOverlay {
                                 <Text style={{ fontSize: PxFit(12), textAlign: 'center' }}>{title}</Text>
                             </View>
                             <View>
-                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
+                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
                             </View>
 
                             <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: PxFit(15) }}>

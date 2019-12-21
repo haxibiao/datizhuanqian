@@ -5,7 +5,7 @@ import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT, ISIOS } from 'utils';
 import { playVideo, bindWechat, checkUserInfo } from 'common';
-import { ttad } from 'native';
+import { ad } from 'native';
 
 import WithdrawHeader from './WithdrawHeader';
 

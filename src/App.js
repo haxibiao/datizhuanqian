@@ -14,7 +14,7 @@ import { app, config } from 'store';
 import SplashScreen from 'react-native-splash-screen';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
-import { ttad, WeChat } from 'native';
+import { ad, WeChat } from 'native';
 import { ISIOS, Config, PxFit, Theme, iPhone11 } from 'utils';
 
 import service from 'service';
@@ -44,21 +44,21 @@ class App extends Component {
 
     componentDidMount() {
         // 初始化 AdManager, 之后才能启动开屏
-        ttad.AdManager.init();
+        ad.AdManager.init();
         // 信息流广告先预加载，提速第一次签到时显示的速度
-        ttad.AdManager.loadFeedAd();
+        ad.AdManager.loadFeedAd();
 
         // 获取广告开放状态
         service.enableAdvert(data => {
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
-                ttad.Splash.loadSplashAd();
+                ad.Splash.loadSplashAd();
             }
             config.saveAdvertConfig(data);
         });
 
         if (Config.AppStore !== 'huawei') {
-            ttad.Splash.loadSplashAd();
+            ad.Splash.loadSplashAd();
         }
         // 恢复用户身份信息
         app.recallUser();
@@ -75,7 +75,7 @@ class App extends Component {
         // 禁止横屏
         Orientation.lockToPortrait();
 
-        ttad.RewardVideo.loadAd().then(data => {
+        ad.RewardVideo.loadAd().then(data => {
             config.rewardVideoAdCache = data;
         });
 

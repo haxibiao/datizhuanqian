@@ -7,7 +7,7 @@ import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
 import { Mutation, compose, useMutation, GQL } from 'apollo';
 import { exceptionCapture } from 'common';
 import { app } from 'store';
-import { ttad, AppUtil } from 'native';
+import { ad, AppUtil } from 'native';
 import service from 'service';
 import { Overlay } from 'teaset';
 

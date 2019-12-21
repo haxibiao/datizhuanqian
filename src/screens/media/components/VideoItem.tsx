@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
-import { ttad } from 'native';
+import { ad } from 'native';
 
 import { observer, app, config } from 'store';
 import Player from './Player';
@@ -65,7 +65,7 @@ export default observer(props => {
     if (isAdMedia) {
         return (
             <View style={{ height: app.viewportHeight }}>
-                <ttad.DrawFeedAd
+                <ad.DrawFeedAd
                     onError={(error: any) => {
                         setAdShow(false);
                     }}

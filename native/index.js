@@ -7,10 +7,10 @@
 
 import Share from './Share';
 import VideoUploader from './VideoUploader';
-import ttad from './ttad';
+import ad from './ad';
 import WeChat from './WeChat';
 import Util from './Util';
 import AppUtil from './AppUtil';
 import Alipay from './Alipay';
 
-export { Share, VideoUploader, WeChat, Util, ttad, AppUtil, Alipay };
+export { Share, VideoUploader, WeChat, Util, ad, AppUtil, Alipay };

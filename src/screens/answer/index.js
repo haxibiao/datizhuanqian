@@ -42,7 +42,7 @@ import AuditResultOverlay from './components/AuditResultOverlay';
 import { compose, graphql, withApollo, GQL } from 'apollo';
 import { app, config, observer } from 'store';
 
-import { ttad } from 'native';
+import { ad } from 'native';
 import { Overlay } from 'teaset';
 import { toJS } from 'mobx';
 
@@ -424,11 +424,11 @@ class index extends Component {
                 uid: data.user.id,
             };
 
-            ttad.FullScreenVideo.loadFullScreenVideoAd(fullScreenVideoAdinfo).then(result => {
+            ad.FullScreenVideo.loadFullScreenVideoAd(fullScreenVideoAdinfo).then(result => {
                 this.loadFullVideoAd = result;
             });
 
-            ttad.RewardVideo.loadAd(rewardVideoAdinfo).then(result => {
+            ad.RewardVideo.loadAd(rewardVideoAdinfo).then(result => {
                 this.loadRewardVideoAd = result;
             });
         }

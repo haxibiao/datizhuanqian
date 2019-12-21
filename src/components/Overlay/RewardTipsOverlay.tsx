@@ -12,8 +12,8 @@ import { PxFit } from '../../utils/Scale';
 import Tools from '../../utils/Tools';
 
 import { Overlay } from 'teaset';
-import { ttad } from 'native';
-import { playVideo } from '../../common/ttad/playVideo';
+import { ad } from 'native';
+import { playVideo } from '../../common/ad/playVideo';
 
 const { height, width } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -81,7 +81,7 @@ class RewardTips {
                         </View>
 
                         <View>
-                            <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
+                            <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
                         </View>
 
                         <View style={styles.modalFooter}>

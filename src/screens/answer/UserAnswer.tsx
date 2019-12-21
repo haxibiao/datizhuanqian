@@ -16,7 +16,7 @@ import {
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
 import { app, config, observer } from 'store';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { Overlay } from 'teaset';
 
 import ChooseOverlay from './components/ChooseOverlay';

@@ -15,7 +15,7 @@ const SCREEN_WIDTH = width;
 const SCREEN_HEIGHT = height;
 
 import { Overlay } from 'teaset';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { playVideo } from 'common';
 
 interface Props {
@@ -37,7 +37,7 @@ class RewardVideoTipsOverlay {
                                 <Text style={{ fontSize: PxFit(15) }}>看激励视频才可继续发布</Text>
                             </View>
                             <View>
-                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
+                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
                             </View>
 
                             <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: 10 }}>

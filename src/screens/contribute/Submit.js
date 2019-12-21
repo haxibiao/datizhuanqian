@@ -9,7 +9,7 @@ import { PageContainer, Iconfont, Button, TipsOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { playVideo } from 'common';
 import { config } from 'store';
-import { ttad } from 'native';
+import { ad } from 'native';
 
 class Submit extends Component {
     render() {
@@ -47,7 +47,7 @@ class Submit extends Component {
                                                 content: (
                                                     <View>
                                                         {config.enableBanner && (
-                                                            <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
+                                                            <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
                                                         )}
                                                     </View>
                                                 ),

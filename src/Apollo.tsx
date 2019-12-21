@@ -6,7 +6,7 @@ import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 
 import { observer, app, config } from 'store';
 import { Config, Tools, SCREEN_WIDTH, PxFit } from 'utils';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { TipsOverlay } from 'components';
 
 import JPushModule from 'jpush-react-native';
@@ -32,7 +32,7 @@ export default observer(props => {
     const onSuccess = useCallback(() => {
         TipsOverlay.show({
             title: '粘贴板视频分享成功',
-            content: <View>{config.enableBanner && <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
+            content: <View>{config.enableBanner && <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
             onConfirm: () => {
                 Tools.navigate('MyPublish');
                 TipsOverlay.hide();

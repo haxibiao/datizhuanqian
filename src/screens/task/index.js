@@ -11,7 +11,7 @@ import { Theme } from 'utils';
 
 import TaskBody from './components/TaskBody';
 import { app, observer } from 'store';
-import { ttad } from 'native';
+import { ad } from 'native';
 
 @observer
 class index extends Component {

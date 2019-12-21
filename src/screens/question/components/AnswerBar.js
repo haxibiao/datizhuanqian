@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Keyboard, Animated } from 'react-native';
 import { Theme, PxFit, Tools, SCREEN_WIDTH } from 'utils';
 import { Iconfont, Row, TouchFeedback, Avatar } from 'components';
-import { ttad } from 'native';
+import { ad } from 'native';
 
 class AnswerBar extends Component {
     renderUsers = users => {

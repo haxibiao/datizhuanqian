@@ -8,7 +8,7 @@ import { StyleSheet, View, Image, Text, Linking } from 'react-native';
 import { Button, PageContainer, TouchFeedback } from 'components';
 import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Config, ISIOS } from 'utils';
 import { Overlay } from 'teaset';
-import { ttad } from 'native';
+import { ad } from 'native';
 
 import { observer, app, config, keys, storage } from 'store';
 

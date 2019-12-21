@@ -16,7 +16,7 @@ import JPushModule from 'jpush-react-native';
 import { BoxShadow } from 'react-native-shadow';
 import codePush from 'react-native-code-push';
 
-import { ttad } from 'native';
+import { ad } from 'native';
 
 @observer
 class index extends Component {

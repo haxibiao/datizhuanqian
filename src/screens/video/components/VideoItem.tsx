@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { SafeText, Row } from 'components';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { observer, app, config } from 'store';
 import { GQL, useMutation } from 'apollo';
 import { exceptionCapture } from 'common';
@@ -64,7 +64,7 @@ export default observer(props => {
     if (isAdMedia) {
         return (
             <View style={{ height: app.viewportHeight }}>
-                <ttad.DrawFeedAd
+                <ad.DrawFeedAd
                     onError={(error: any) => {
                         setAdShow(false);
                     }}

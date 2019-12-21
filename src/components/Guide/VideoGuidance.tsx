@@ -6,7 +6,7 @@ import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
 import { app } from 'store';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { playVideo } from 'common';
 
 function VideoGuidance({ onDismiss }) {

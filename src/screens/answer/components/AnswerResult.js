@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, View, Text } from 'react-native';
 import { TouchFeedback, Button, Row } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { playVideo } from 'common';
 
 class AnswerResult extends Component {
@@ -54,7 +54,7 @@ class AnswerResult extends Component {
                     )}
                     {!ISIOS && (
                         <View>
-                            <ttad.FeedAd
+                            <ad.FeedAd
                                 adWidth={SCREEN_WIDTH - PxFit(48)}
                                 onAdShow={() => {
                                     this.setState({

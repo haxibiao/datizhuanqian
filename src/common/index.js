@@ -5,7 +5,7 @@ export * from './share';
 export * from './user';
 export * from './animation';
 
-export * from './ttad';
+export * from './ad';
 
 export * from './hooks';
 // import { checkUpdate } from './app';

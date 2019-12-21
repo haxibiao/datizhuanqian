@@ -4,7 +4,7 @@
 */
 
 import { Platform } from 'react-native';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { app, config } from 'store';
 import { ISAndroid, Tools, Config } from 'utils';
 import { RewardTipsOverlay } from 'components';
@@ -65,7 +65,7 @@ function playRewardVideo(props: Props) {
 
 //加载激励视频缓存
 function loadRewardVideo(props: Props) {
-    ttad.RewardVideo.loadAd().then(result => {
+    ad.RewardVideo.loadAd().then(result => {
         config.rewardVideoAdCache = result; //更新缓存
         if (result) {
             startRewardVideo(props);
@@ -83,7 +83,7 @@ function startRewardVideo(props: Props) {
         ad_click: false,
         verify_status: false,
     };
-    ttad.RewardVideo.startAd()
+    ad.RewardVideo.startAd()
         .then(result => {
             console.log('result', result);
             if (ISAndroid) {
@@ -118,7 +118,7 @@ function playFullScreenVideo(props: Props) {
 
 // 加载全屏视频缓存
 function loadFullScreenVideo(props: Props) {
-    ttad.FullScreenVideo.loadFullScreenVideoAd().then(result => {
+    ad.FullScreenVideo.loadFullScreenVideoAd().then(result => {
         config.fullScreenVideoAdCache = result; //更新缓存
         if (result) {
             startFullScreenVideo(props);
@@ -131,7 +131,7 @@ function loadFullScreenVideo(props: Props) {
 // 播放全屏视频
 function startFullScreenVideo(props: Props) {
     const { noReward } = props;
-    ttad.FullScreenVideo.startFullScreenVideoAd()
+    ad.FullScreenVideo.startFullScreenVideoAd()
         .then((result: string) => {
             console.log('result', result);
             if (result) {

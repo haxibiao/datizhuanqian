@@ -17,7 +17,7 @@ import RuleDescription from './components/RuleDescription';
 
 import { Overlay } from 'teaset';
 import { app, observer } from 'store';
-import { ttad, config } from 'native';
+import { ad, config } from 'native';
 
 @observer
 class index extends Component {

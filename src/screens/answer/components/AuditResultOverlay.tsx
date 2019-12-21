@@ -10,7 +10,7 @@ import { TouchFeedback, Button, Row } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
 import { Overlay } from 'teaset';
-import { ttad } from 'native';
+import { ad } from 'native';
 import { playVideo } from 'common';
 
 interface Props {
@@ -60,7 +60,7 @@ class AuditResultOverlay {
                             </View>
 
                             <View>
-                                <ttad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
+                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
                             </View>
 
                             <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: 10 }}>
