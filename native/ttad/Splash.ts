@@ -4,8 +4,12 @@ import service from 'service';
 
 const codeid = Platform.OS === 'ios' ? CodeIdSplashIOS : CodeIdSplash;
 
+// const adArgs = {
+//     provider: '百度',
+//     codeid: '6806459',
+// };
 const adArgs = {
-    tt_codeid: codeid,
+    codeid,
 };
 
 const module = NativeModules.Splash;

@@ -10,18 +10,21 @@
     "PackageName": "com.datizhuanqian",
     "AppSlogan": "学有所伴，见证成长每一步",
 
+    "BDAPPID": "add76300",
     "TTAppID": "5016518",
-    "TTAppIDIOS": "5016582",
+
     "CodeIdBanner": "916518401",
-    "CodeIdBannerIOS": "916582270",
     "CodeIdFeed": "916518115",
-    "CodeIdFeedIOS": "916518830",
     "CodeIdSplash": "816518857",
-    "CodeIdSplashIOS": "816582039",
     "CodeIdDrawFeed": "916518247",
-    "CodeIdDrawFeedIOS": "916582757",
     "CodeIdFullVideo": "916518198",
-    "CodeIdFullVideoIOS": "916582815",
     "CodeIdRewardVideo": "916518846",
+
+    "TTAppIDIOS": "5016582",
+    "CodeIdBannerIOS": "916582270",
+    "CodeIdFeedIOS": "916518830",
+    "CodeIdSplashIOS": "816582039",
+    "CodeIdDrawFeedIOS": "916582757",
+    "CodeIdFullVideoIOS": "916582815",
     "CodeIdRewardVideoIOS": "916582412"
 }

@@ -69,6 +69,8 @@ const FeedAd = (props: Props) => {
     return (
         <NativeFeedAd
             codeid={codeid}
+            // provider={'百度'}
+            // codeid={'6804265'}
             adWidth={adWidth}
             style={{ width: adWidth, height }}
             onAdClick={(e: { nativeEvent: any }) => {
