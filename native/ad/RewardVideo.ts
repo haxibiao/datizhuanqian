@@ -4,6 +4,11 @@ import { CodeIdRewardVideo, CodeIdRewardVideoIOS } from '@app/app.json';
 const codeid = Platform.OS === 'ios' ? CodeIdRewardVideoIOS : CodeIdRewardVideo;
 const module = NativeModules.RewardVideo;
 
+// const adArgs = {
+//     provider: '腾讯',
+//     codeid: '9030593551196917',
+// };
+
 const adArgs = {
     codeid,
 };

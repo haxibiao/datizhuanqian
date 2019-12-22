@@ -1,3 +1,5 @@
+/* eslint-disable handle-callback-err */
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { StyleSheet, requireNativeComponent, Dimensions, Platform } from 'react-native';
 const { width } = Dimensions.get('window');
@@ -65,12 +67,19 @@ const FeedAd = (props: Props) => {
     };
 
     console.log('disableAd :', disableAd, visible, GQL);
-    if (!visible || disableAd) return null;
+    if (!visible || disableAd) {
+        return null;
+    }
     return (
         <NativeFeedAd
             codeid={codeid}
+
             // provider={'百度'}
             // codeid={'6804265'}
+
+            // provider={'腾讯'}
+            // codeid={'6020790561090327'}
+
             adWidth={adWidth}
             style={{ width: adWidth, height }}
             onAdClick={(e: { nativeEvent: any }) => {
@@ -102,12 +111,5 @@ const FeedAd = (props: Props) => {
         />
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        width: SCREEN_WIDTH,
-        height: 0,
-    },
-});
 
 export default FeedAd;

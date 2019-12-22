@@ -8,6 +8,10 @@ const codeid = Platform.OS === 'ios' ? CodeIdSplashIOS : CodeIdSplash;
 //     provider: '百度',
 //     codeid: '6806459',
 // };
+// const adArgs = {
+//     provider: '腾讯',
+//     codeid: '7050896561496966',
+// };
 const adArgs = {
     codeid,
 };

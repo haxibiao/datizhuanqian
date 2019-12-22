@@ -1,14 +1,16 @@
 import { NativeModules, Platform } from 'react-native';
-import { BDAPPID, TTAppID, TTAppIDIOS, CodeIdFeed, CodeIdFeedIOS } from '@app/app.json';
+import { BDAppId, TXAppId, TTAppId, TTAppIdIOS, CodeIdFeed, CodeIdFeedIOS } from '@app/app.json';
 
 const adArgs = {
-    appid: Platform.OS === 'ios' ? TTAppIDIOS : TTAppID,
+    appid: Platform.OS === 'ios' ? TTAppIdIOS : TTAppId,
 };
 
 export const init = () => {
     NativeModules.AdManager.init(adArgs);
-    // 初始化百度广告sdk
-    NativeModules.AdManager.initBd({ appid: BDAPPID });
+    // 百度广告sdk
+    NativeModules.AdManager.initBd({ appid: BDAppId });
+    // 腾讯广告sdk
+    NativeModules.AdManager.initTx({ appid: TXAppId });
 };
 
 export const loadFeedAd = () => {
