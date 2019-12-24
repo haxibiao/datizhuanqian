@@ -59,7 +59,7 @@ class UpdateOverlay {
                                         'datizhuanqian.apk',
                                         Config.AppName,
                                     );
-                                    UpdateOverlay.hide();
+                                    // UpdateOverlay.hide();
                                 }}>
                                 <Text style={[styles.operationText, { color: Theme.theme }]}>立即更新</Text>
                             </TouchableOpacity>
