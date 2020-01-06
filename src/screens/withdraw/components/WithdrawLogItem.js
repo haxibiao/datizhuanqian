@@ -36,6 +36,9 @@ function WithdrawLogItem(props) {
         case 'wechat':
             image_url = require('../../../assets/images/wechat.png');
             break;
+        case 'dongdezhuan':
+            image_url = require('../../../assets/images/dongdezhuan.png');
+            break;
         default:
             image_url = require('../../../assets/images/money_icon.png');
             size = 46;

@@ -40,26 +40,28 @@ class FeedbackItem extends React.PureComponent {
                             </Row>
                         </View>
                     </View>
-                    {app.me.id == item.user.id ? (
-                        <View style={styles.rightTextWrap}>
-                            <Image source={require('@src/assets/images/diamond.png')} style={styles.rewardIcon} />
-                            <Text style={{ fontSize: PxFit(11), color: '#FBB960' }}>+100</Text>
-                            <Image
-                                source={require('@src/assets/images/gongxian.png')}
-                                style={{
-                                    width: PxFit(13),
-                                    height: PxFit(13),
-                                    marginLeft: PxFit(5),
-                                    marginRight: PxFit(3),
-                                }}
-                            />
-                            <Text style={{ fontSize: PxFit(11), color: '#FBB960' }}>+10</Text>
-                        </View>
-                    ) : (
-                        <View style={styles.rightTextWrap}>
-                            <Text style={{ fontSize: PxFit(11), color: '#FBB960' }}>优质反馈</Text>
-                        </View>
-                    )}
+                    {
+                        //     app.me.id == item.user.id ? (
+                        //     <View style={styles.rightTextWrap}>
+                        //         <Image source={require('@src/assets/images/diamond.png')} style={styles.rewardIcon} />
+                        //         <Text style={{ fontSize: PxFit(11), color: '#FBB960' }}>+100</Text>
+                        //         <Image
+                        //             source={require('@src/assets/images/gongxian.png')}
+                        //             style={{
+                        //                 width: PxFit(13),
+                        //                 height: PxFit(13),
+                        //                 marginLeft: PxFit(5),
+                        //                 marginRight: PxFit(3),
+                        //             }}
+                        //         />
+                        //         <Text style={{ fontSize: PxFit(11), color: '#FBB960' }}>+10</Text>
+                        //     </View>
+                        // ) : (
+                        //     <View style={styles.rightTextWrap}>
+                        //         <Text style={{ fontSize: PxFit(11), color: '#FBB960' }}>优质反馈</Text>
+                        //     </View>
+                        //         )
+                    }
                 </View>
                 <View style={styles.content}>
                     <Text style={styles.body} numberOfLines={3}>

@@ -86,7 +86,8 @@ class FeedbackBody extends Component {
                                         />
                                     );
                                 })}
-                                <View
+                                {/*
+                                    <View
                                     style={{
                                         paddingVertical: PxFit(2),
                                         backgroundColor: '#FFF7E4',
@@ -100,6 +101,7 @@ class FeedbackBody extends Component {
                                         优质反馈，已发放官方奖励
                                     </Text>
                                 </View>
+                                    */}
                             </View>
                             <View style={{ height: PxFit(5), backgroundColor: Theme.lightBorder }} />
                             <View style={styles.commentsTab}>
