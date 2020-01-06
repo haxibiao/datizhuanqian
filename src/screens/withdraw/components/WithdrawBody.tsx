@@ -109,7 +109,7 @@ const WithdrawBody = props => {
     };
 
     const checkWithdrawType = (value: any) => {
-        if (withdrawType !== 'dongdezhuan') {
+        if (user.force_alert && withdrawType !== 'dongdezhuan') {
             DownloadApkIntro.show();
         } else {
             createWithdraw(value);
@@ -203,7 +203,7 @@ const WithdrawBody = props => {
                 <WithdrawHeader navigation={navigation} user={user} />
 
                 <View style={{ paddingHorizontal: PxFit(Theme.itemSpace) }}>
-                    <Row style={{ flexWrap: 'wrap' }}>
+                    <Row style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
                         {WithdrawType.map((data, index) => {
                             if (ISIOS && data.type === 'wechat') return null;
                             return (
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     withdrawType: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: (SCREEN_WIDTH - 40) / 2,
+        width: (SCREEN_WIDTH - PxFit(40)) / 2,
         height: PxFit(50),
         justifyContent: 'center',
         borderColor: Theme.borderColor,
