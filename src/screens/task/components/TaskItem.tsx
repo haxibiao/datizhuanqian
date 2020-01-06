@@ -325,7 +325,7 @@ const TaskItem = (props: Props) => {
 
     return (
         <Fragment>
-            <TouchFeedback style={styles.container} onPress={task.details && showTaskDetail}>
+            <TouchFeedback style={styles.container} onPress={task.details.length > 0 && showTaskDetail}>
                 <Image
                     source={task.icon || require('@src/assets/images/task_money_icon.png')}
                     style={{ width: PxFit(42), height: PxFit(42), marginRight: PxFit(5), marginLeft: PxFit(15) }}
@@ -343,7 +343,7 @@ const TaskItem = (props: Props) => {
                     <Row>
                         <Text style={styles.name}>{task.name}</Text>
                         {task.details ? (
-                            <TouchFeedback onPress={task.details && showTaskDetail}>
+                            <TouchFeedback onPress={task.details.length > 0 && showTaskDetail}>
                                 <Image
                                     source={require('@src/assets/images/question.png')}
                                     style={{ width: PxFit(14), height: PxFit(14), marginHorizontal: PxFit(2) }}

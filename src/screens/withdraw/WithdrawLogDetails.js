@@ -75,7 +75,11 @@ class WithdrawLogDetails extends Component {
                                     <View style={styles.row}>
                                         <Text style={styles.textLeft}>提现平台 </Text>
                                         <Text style={styles.textRight}>
-                                            {withdraw.to_platform == 'alipay' ? '支付宝' : '微信'}{' '}
+                                            {withdraw.to_platform == 'alipay'
+                                                ? '支付宝'
+                                                : withdraw.to_platform == 'dongdezhuan'
+                                                ? '懂得赚'
+                                                : '微信'}
                                         </Text>
                                     </View>
                                     <View style={styles.row}>

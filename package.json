@@ -60,6 +60,7 @@
         "react-navigation": "^3.11.1",
         "react-navigation-hooks": "^1.0.3",
         "socket.io-client": "^2.2.0",
+        "rn-fetch-blob": "0.11.2",
         "teaset": "^0.6.3"
     },
     "devDependencies": {

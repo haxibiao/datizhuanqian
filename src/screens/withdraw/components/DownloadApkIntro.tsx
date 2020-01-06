@@ -1,0 +1,125 @@
+/*
+ * @Author: Gaoxuan
+ * @Date:   2019-03-21 16:28:10
+ */
+import React, { Fragment } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { Row, TouchFeedback, Iconfont } from '@src/components';
+
+import { Overlay } from 'teaset';
+import { Config, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from 'utils';
+
+import DownLoadApk from './DownLoadApk';
+
+class DownloadApkIntro {
+    static OverlayKey: any;
+    static show() {
+        const overlayView = (
+            <Overlay.View animated>
+                <View style={styles.container}>
+                    <View style={styles.content}>
+                        <Row style={{ marginTop: PxFit(25) }}>
+                            <Image source={require('@src/assets/images/dongdezhuan.png')} style={styles.icon} />
+                            <View style={{ marginLeft: PxFit(5) }}>
+                                <Text style={styles.title}>懂得赚</Text>
+                                <Text style={styles.appInfo} numberOfLines={1}>
+                                    高收益，秒提现，不限时，不限额！
+                                </Text>
+                            </View>
+                        </Row>
+                        <View style={styles.intro}>
+                            <Text style={styles.text}>1.{Config.AppName}智慧点需统一到懂得赚进行提现</Text>
+                            <Text style={styles.text}>2.下载安装打开懂得赚</Text>
+                            <Text style={styles.text}>3.前往设置-账号中心设置手机与密码</Text>
+                            <Text style={styles.text}>
+                                4.回到{Config.AppName}，提现到懂得赚，在懂得赚内提现到支付宝
+                            </Text>
+                            <Text
+                                style={{
+                                    color: Theme.grey,
+                                    paddingTop: PxFit(6),
+                                    fontSize: PxFit(13),
+                                }}>
+                                tips：{Config.AppName}将自动绑定同设备懂得赚账号，请勿在懂得赚上重新注册其他账号！
+                            </Text>
+                        </View>
+                        <View style={{ marginBottom: PxFit(20), marginTop: PxFit(30) }}>
+                            <DownLoadApk
+                                hide={() => {
+                                    Overlay.hide(this.OverlayKey);
+                                }}
+                            />
+                        </View>
+                    </View>
+                    <TouchFeedback
+                        style={{ marginTop: PxFit(40), alignItems: 'center' }}
+                        onPress={() => {
+                            Overlay.hide(this.OverlayKey);
+                        }}>
+                        <View style={styles.close}>
+                            <Iconfont name={'close'} color={'#FFF'} size={30} />
+                        </View>
+                    </TouchFeedback>
+                </View>
+            </Overlay.View>
+        );
+        this.OverlayKey = Overlay.show(overlayView);
+    }
+
+    static hide() {
+        Overlay.hide(this.OverlayKey);
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        backgroundColor: 'rgba(255,255,255,0)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    content: {
+        width: SCREEN_WIDTH - PxFit(48),
+        borderRadius: PxFit(6),
+        backgroundColor: '#FFF',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: PxFit(17),
+        color: '#000',
+    },
+
+    appInfo: {
+        fontSize: PxFit(13),
+        color: Theme.subTextColor,
+        marginTop: PxFit(3),
+    },
+    intro: {
+        marginVertical: PxFit(20),
+        paddingHorizontal: PxFit(25),
+    },
+    icon: {
+        width: PxFit(58),
+        height: PxFit(58),
+        borderRadius: PxFit(5),
+    },
+    text: {
+        lineHeight: PxFit(22),
+        color: Theme.subTextColor,
+        paddingTop: PxFit(6),
+        fontSize: PxFit(15),
+    },
+    close: {
+        width: PxFit(42),
+        height: PxFit(42),
+        borderRadius: PxFit(29),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#fff',
+        borderWidth: PxFit(1),
+    },
+});
+
+export default DownloadApkIntro;

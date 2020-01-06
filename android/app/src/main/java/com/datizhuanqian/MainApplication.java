@@ -12,7 +12,7 @@ import com.facebook.soloader.SoLoader;
 import cn.jpush.reactnativejpush.JPushPackage;
 import cn.jpush.android.api.JPushInterface;
 
-import com.haxibiao.share.NativeSharePackage;
+
 import com.haxibiao.toolkits.ToolkitsPackage;
 
 import com.bytedance.sdk.open.aweme.TikTokOpenApiFactory;
@@ -49,7 +49,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             // packages.add(new MyReactNativePackage());
 
             packages.add(new JPushPackage(true, true));
-            packages.add(new NativeSharePackage());
             packages.add(new AdPackage());
             packages.add(new WxEntryPackage());
             packages.add(new ToolkitsPackage());

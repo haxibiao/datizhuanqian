@@ -6,6 +6,7 @@ import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT, ISIOS } from 'utils';
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ad } from 'native';
+import DownloadApkIntro from './DownloadApkIntro';
 
 import WithdrawHeader from './WithdrawHeader';
 
@@ -102,52 +103,73 @@ const WithdrawBody = props => {
                 content: `智慧点不足提现${value}元，快去赚钱智慧点吧`,
             });
         } else {
+            // createWithdraw(value);
+            checkWithdrawType(value);
+        }
+    };
+
+    const checkWithdrawType = (value: any) => {
+        if (withdrawType !== 'dongdezhuan') {
+            DownloadApkIntro.show();
+        } else {
             createWithdraw(value);
         }
     };
 
     const renderBindTips = () => {
-        if (withdrawType === 'alipay' && Tools.syncGetter('wallet.bind_platforms.alipay', user)) {
-            return null;
+        let name = '已绑定';
+        let action = () => {
+            navigation.navigate('AccountSecurity', { user });
+        };
+        let playform = '懂得赚';
+
+        if (withdrawType === 'alipay' && !Tools.syncGetter('wallet.bind_platforms.alipay', user)) {
+            name = '立即绑定';
+            action = () => checkUserInfo();
         }
-        console.log('Tools.syncGetter :', Tools.syncGetter('wallet.platforms.wechat', user));
         if (
-            (withdrawType === 'wechat' && Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||
+            (withdrawType === 'wechat' && !Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||
             ISIOS
         ) {
-            return null;
+            name = '立即绑定';
+            action = () => {
+                setSubmit(true);
+                bindWechat({
+                    onSuccess: () => {
+                        setSubmit(false);
+                        Toast.show({
+                            content: '绑定成功',
+                        });
+                    },
+                    onFailed: (error: { message: any }[]) => {
+                        setSubmit(false);
+                    },
+                });
+            };
+        }
+
+        switch (withdrawType) {
+            case 'wechat':
+                playform = '微信';
+                break;
+            case 'alipay':
+                playform = '支付宝';
+                break;
+            default:
+                playform = '懂得赚';
+                break;
         }
         return (
             <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10), marginBottom: PxFit(5) }}>
-                <Text style={{ fontSize: PxFit(13) }}>{`绑定${
-                    withdrawType == 'alipay' ? '支付宝' : '微信'
-                }后可直接提现`}</Text>
-                <TouchFeedback
-                    style={{ flexDirection: 'row', alignItems: 'center' }}
-                    onPress={() => {
-                        if (withdrawType == 'alipay') {
-                            checkUserInfo();
-                        } else {
-                            setSubmit(true);
-                            bindWechat({
-                                onSuccess: () => {
-                                    setSubmit(false);
-                                    Toast.show({
-                                        content: '绑定成功',
-                                    });
-                                },
-                                onFailed: (error: { message: any }[]) => {
-                                    setSubmit(false);
-                                },
-                            });
-                        }
-                    }}>
-                    <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>立即绑定</Text>
+                <Text style={{ fontSize: PxFit(13) }}>{`绑定${playform}后可直接提现`}</Text>
+                <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={action}>
+                    <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>{name}</Text>
                     <Iconfont name="right" size={PxFit(13)} color={Theme.subTextColor} />
                 </TouchFeedback>
             </Row>
         );
     };
+
     const WithdrawType = [
         {
             type: 'alipay',
@@ -158,6 +180,11 @@ const WithdrawBody = props => {
             type: 'wechat',
             name: '微信',
             icon: require('@src/assets/images/wechat.png'),
+        },
+        {
+            type: 'dongdezhuan',
+            name: '懂得赚',
+            icon: require('@src/assets/images/dongdezhuan.png'),
         },
     ];
 
@@ -176,7 +203,7 @@ const WithdrawBody = props => {
                 <WithdrawHeader navigation={navigation} user={user} />
 
                 <View style={{ paddingHorizontal: PxFit(Theme.itemSpace) }}>
-                    <Row style={{ marginTop: PxFit(10) }}>
+                    <Row style={{ flexWrap: 'wrap' }}>
                         {WithdrawType.map((data, index) => {
                             if (ISIOS && data.type === 'wechat') return null;
                             return (
@@ -296,6 +323,7 @@ const styles = StyleSheet.create({
         borderColor: Theme.borderColor,
         borderWidth: PxFit(0.5),
         borderRadius: PxFit(5),
+        marginTop: PxFit(10),
     },
     withdrawTypeText: {
         width: PxFit(24),

@@ -8,4 +8,8 @@ export const CheckApkExist = (packageName: any, callback: Function) => {
     return module.isPackageInstalled(packageName, callback);
 };
 
-export default { CheckApkExist };
+export const OpenApk = (packageName: any) => {
+    return module.openApk(packageName);
+};
+
+export default { CheckApkExist, OpenApk };

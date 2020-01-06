@@ -332,7 +332,6 @@ dependencies {
     implementation project(':jcore-react-native')  // 添加 jcore 依赖
     
     implementation project(':toolkits')
-    implementation project(':share')
 
     //穿山甲必须
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'

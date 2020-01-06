@@ -55,7 +55,9 @@ function WithdrawLogItem(props) {
             <Image source={image_url} style={{ width: size, height: size, marginVertical: PxFit(15) }} />
             <Row style={styles.content}>
                 <View style={{ width: (SCREEN_WIDTH * 4) / 7 }}>
-                    <Text style={styles.statusText}>{statusText}</Text>
+                    <Text style={styles.statusText}>
+                        {`${statusText}`} {item.to_platform === 'dongdezhuan' ? '(提现到懂得赚)' : ''}
+                    </Text>
                     {item.remark && (
                         <Text
                             style={{ fontSize: 12, color: Theme.themeRed }}

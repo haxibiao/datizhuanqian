@@ -164,6 +164,13 @@ query UserQuery($id: Int) {
         is_bind_wechat
         is_admin
         verified_at
+        force_alert
+        is_bind_dongdezhuan
+        dongdezhuanUser {
+            id
+            name
+            account
+        }
     }
 }
 
@@ -332,6 +339,13 @@ query UserMeansQuery($id: Int!) {
             }
         }
         is_admin
+        force_alert
+        is_bind_dongdezhuan
+        dongdezhuanUser {
+            id
+            name
+            account
+        }
     }
 }
 

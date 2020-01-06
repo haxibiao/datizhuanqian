@@ -23,6 +23,8 @@ class AccountSecurity extends Component {
         this.state = {
             is_bind_wechat: Tools.syncGetter('wallet.platforms.wechat', user),
             is_bind_alipay: Tools.syncGetter('wallet.bind_platforms.alipay', user),
+            is_bind_dongdezhuan: Tools.syncGetter('is_bind_dongdezhuan', user) || false,
+            dongdezhuanUser: Tools.syncGetter('dongdezhuanUser', user) || {},
         };
     }
 
@@ -62,7 +64,7 @@ class AccountSecurity extends Component {
 
     render() {
         const { navigation, data } = this.props;
-        const { is_bind_wechat, is_bind_alipay } = this.state;
+        const { is_bind_wechat, is_bind_alipay, is_bind_dongdezhuan, dongdezhuanUser } = this.state;
         const { loading, user } = data;
 
         if (loading) {
@@ -126,7 +128,9 @@ class AccountSecurity extends Component {
                             leftComponent={<Text style={styles.itemText}>微信账号</Text>}
                             rightComponent={
                                 <View style={styles.rightWrap}>
-                                    <Text style={styles.linkText}>{is_bind_wechat ? '已绑定' : '去绑定'}</Text>
+                                    <Text style={[styles.linkText, { color: is_bind_wechat ? Theme.grey : '#407FCF' }]}>
+                                        {is_bind_wechat ? '已绑定' : '去绑定'}
+                                    </Text>
                                     <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
                             }
@@ -148,6 +152,19 @@ class AccountSecurity extends Component {
                                     {is_bind_alipay
                                         ? `已绑定（${Tools.syncGetter('wallet.real_name', user)}）`
                                         : '去绑定'}
+                                </Text>
+                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                            </View>
+                        }
+                    />
+                    <ListItem
+                        onPress={this.handlerBindDongdezhuan}
+                        style={styles.listItem}
+                        leftComponent={<Text style={styles.itemText}>懂得赚账号</Text>}
+                        rightComponent={
+                            <View style={styles.rightWrap}>
+                                <Text style={is_bind_dongdezhuan ? styles.rightText : styles.linkText}>
+                                    {is_bind_dongdezhuan ? `已绑定(${dongdezhuanUser.name})` : '去绑定'}
                                 </Text>
                                 <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                             </View>

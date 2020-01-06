@@ -10,6 +10,3 @@ project(':jcore-react-native').projectDir = new File(rootProject.projectDir, '..
 //本地组件
 include ':toolkits'
 project(':toolkits').projectDir = new File('../../../android/toolkits')
-
-include ':share'
-project(':share').projectDir = new File('../../../android/share')
