@@ -28,11 +28,14 @@ class DownloadApkIntro {
                             </View>
                         </Row>
                         <View style={styles.intro}>
-                            <Text style={styles.text}>1.{Config.AppName}智慧点需统一到懂得赚进行提现</Text>
-                            <Text style={styles.text}>2.下载安装打开懂得赚</Text>
-                            <Text style={styles.text}>3.前往设置-账号中心设置手机与密码</Text>
                             <Text style={styles.text}>
-                                4.回到{Config.AppName}，提现到懂得赚，在懂得赚内提现到支付宝
+                                懂得赚是答题赚钱、答妹等时下热门赚钱APP的官方专属钱包，汇聚百款赚钱APP收益一键提现，不限时秒提现，是千万网赚用户必备的赚钱提现法宝。
+                            </Text>
+
+                            <Text style={styles.text}>1.下载安装打开懂得赚</Text>
+                            <Text style={styles.text}>2.自动绑定懂得赚登录账号</Text>
+                            <Text style={styles.text}>
+                                3.回到{Config.AppName}，提现到懂得赚，在懂得赚内将余额提现到支付宝
                             </Text>
                             <Text
                                 style={{
@@ -40,7 +43,8 @@ class DownloadApkIntro {
                                     paddingTop: PxFit(6),
                                     fontSize: PxFit(13),
                                 }}>
-                                tips：{Config.AppName}将自动绑定同设备懂得赚账号，请勿在懂得赚上重新注册其他账号！
+                                温馨提示：{Config.AppName}
+                                将自动绑定同设备懂得赚账号，不支持绑定手机号！，如遇无法绑定的问题，请联系官方QQ群：735220029
                             </Text>
                         </View>
                         <View style={{ marginBottom: PxFit(20), marginTop: PxFit(30) }}>
@@ -106,10 +110,10 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(5),
     },
     text: {
-        lineHeight: PxFit(22),
+        lineHeight: PxFit(18),
         color: Theme.subTextColor,
         paddingTop: PxFit(6),
-        fontSize: PxFit(15),
+        fontSize: PxFit(14),
     },
     close: {
         width: PxFit(42),

@@ -161,7 +161,25 @@ const WithdrawBody = props => {
         }
         return (
             <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10), marginBottom: PxFit(5) }}>
-                <Text style={{ fontSize: PxFit(13) }}>{`绑定${playform}后可直接提现`}</Text>
+                {playform === '懂得赚' ? (
+                    <TouchFeedback
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                        onPress={() => {
+                            DownloadApkIntro.show();
+                        }}>
+                        <Text style={{ fontSize: PxFit(13) }}>
+                            {`绑定`}
+                            <Text style={{ color: Theme.theme }}>{playform}</Text>后可直接提现
+                        </Text>
+                        <Image
+                            source={require('../../../assets/images/question.png')}
+                            style={{ width: PxFit(12), height: PxFit(12), marginLeft: PxFit(3) }}
+                        />
+                    </TouchFeedback>
+                ) : (
+                    <Text style={{ fontSize: PxFit(13) }}>{`绑定${playform}后可直接提现`}</Text>
+                )}
+
                 <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={action}>
                     <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>{name}</Text>
                     <Iconfont name="right" size={PxFit(13)} color={Theme.subTextColor} />
