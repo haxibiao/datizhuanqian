@@ -6,51 +6,37 @@
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { storage, keys } from '../../store/storage';
-import UpdateOverlay from '../../components/Overlay/UpdateOverlay';
+import AppUpdateOverlay from '../../components/Overlay/AppUpdateOverlay';
 import { Config } from 'utils';
+import { contrastVersion } from '../helper';
 
-// 版本号转数值
-function numberVersion(version) {
-    version = version.split('');
-    version.splice(3, 1);
-    version = parseFloat(version.join(''));
-    return version;
-}
+function manualUpdate(versionData: { version: any }) {
+    const localVersion = Config.Version || '1.0.0'; // 本地版本
+    const onlineVersion = versionData.version || '1.0.0'; // 线上版本
+    const showUpdateTips = contrastVersion({ onlineVersion, localVersion });
 
-//  线上版本大于本地版本并且是强更版本
-//  或者线上版本领先本地2个版本
-function forceUpdate(localVersion, serverVersion, versionData) {
-    return (localVersion < serverVersion && versionData.is_force) || serverVersion > 0.1 + localVersion;
-}
-
-//  线上版本大于本地版本并且strogeVesiron版本小于线上版本
-function selectUpdate(localVersion, serverVersion, versionData, viewedVersion) {
-    return localVersion < serverVersion && !versionData.is_force && viewedVersion < serverVersion;
-}
-
-function manualUpdate(versionData) {
-    const localVersion = Config.AppVersionNumber; // 本地版本
-    const serverVersion = numberVersion(versionData.version); // 线上版本
-
-    if (localVersion < serverVersion) {
-        UpdateOverlay.show(versionData, serverVersion);
+    if (showUpdateTips) {
+        AppUpdateOverlay.show({ versionData, onlineVersion });
     } else {
         Toast.show({ content: '已经是最新版本了' });
     }
 }
 
-async function autoUpdate(versionData) {
-    const viewedVersion = (await storage.getItem(keys.viewedVersion)) || 1;
+async function autoUpdate(versionData: { version: any, is_force: any }) {
+    const viewedVersion = (await storage.getItem(keys.viewedVersion)) || '1.0.0';
+    console.log('viewedVersion', Config.Version);
     // viewedVersion 观测当前版本用户是否已查看过更新日志
 
-    const localVersion = Config.AppVersionNumber; // 本地版本
-    const serverVersion = numberVersion(versionData.version); // 线上版本
+    const localVersion = Config.Version || '1.0.0'; // 本地版本
+    const onlineVersion = versionData.version || '1.0.0'; // 线上版本
 
-    if (forceUpdate(localVersion, serverVersion, versionData)) {
-        UpdateOverlay.show(versionData, serverVersion);
+    const showUpdateTips = contrastVersion({ onlineVersion, localVersion });
+    const onlyOnceTips = contrastVersion({ onlineVersion, localVersion: viewedVersion });
+    if (showUpdateTips && versionData.is_force) {
+        AppUpdateOverlay.show({ versionData, onlineVersion });
         //  强制更新
-    } else if (selectUpdate(localVersion, serverVersion, versionData, viewedVersion)) {
-        UpdateOverlay.show(versionData, serverVersion);
+    } else if (showUpdateTips && !versionData.is_force && onlyOnceTips) {
+        AppUpdateOverlay.show({ versionData, onlineVersion });
         //  选择更新
     } else {
         return false;

@@ -12,8 +12,10 @@ const DownLoadApk = props => {
     const [total, setTotal] = useState(100000);
     const [installDDZ, setInstallDDZ] = useState(false);
 
+    const { packageName } = props;
+
     useEffect(() => {
-        AppUtil.CheckApkExist('com.dongdezhuan', (data: any) => {
+        AppUtil.CheckApkExist(packageName || 'com.dongdezhuan', (data: any) => {
             if (data) {
                 setInstallDDZ(true);
             }
