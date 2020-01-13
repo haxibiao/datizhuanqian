@@ -25,6 +25,7 @@ import ScrollableTabBar from './components/ScrollableTabBar';
 import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
 import TagList from './TagList';
+import { useDetainment } from 'common';
 
 // 监听新用户登录
 when(
@@ -184,6 +185,8 @@ const index = observer(props => {
             JPushModule.removeReceiveOpenNotificationListener(openNotificationListener);
         };
     }, []);
+
+    useDetainment(navigation, true);
 
     const Content = useMemo(() => {
         if (tags) {

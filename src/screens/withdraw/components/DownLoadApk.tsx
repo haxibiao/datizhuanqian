@@ -12,7 +12,9 @@ const DownLoadApk = props => {
     const [total, setTotal] = useState(100000);
     const [installDDZ, setInstallDDZ] = useState(false);
 
-    const { packageName } = props;
+    const { packageName, name } = props;
+
+    let buttonName = name || '立即安装';
 
     useEffect(() => {
         AppUtil.CheckApkExist(packageName || 'com.dongdezhuan', (data: any) => {
@@ -94,6 +96,16 @@ const DownLoadApk = props => {
         props.hide();
     };
 
+    if (downloading) {
+        buttonName = '取消';
+    } else {
+        if (name) {
+            buttonName = name;
+        } else if (installDDZ) {
+            buttonName = '打开';
+        }
+    }
+
     return (
         <TouchFeedback
             onPress={() => {
@@ -109,7 +121,7 @@ const DownLoadApk = props => {
                         width: downloading ? ((SCREEN_WIDTH - PxFit(88)) * received) / total : SCREEN_WIDTH - PxFit(88),
                     },
                 ]}>
-                <Text style={styles.downloadText}>{downloading ? '取消' : installDDZ ? '打开' : '立即安装'}</Text>
+                <Text style={styles.downloadText}>{buttonName}</Text>
             </View>
         </TouchFeedback>
     );

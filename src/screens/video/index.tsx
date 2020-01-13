@@ -13,6 +13,7 @@ import VideoStore from './VideoStore';
 import CommentOverlay from '../comment/CommentOverlay';
 import { useNavigation } from 'react-navigation-hooks';
 import service from 'service';
+import { useDetainment } from 'common';
 
 export default observer(props => {
     const { launched } = app;
@@ -159,6 +160,8 @@ export default observer(props => {
             VideoStore.reset();
         };
     }, [launched]);
+
+    useDetainment(navigation);
 
     return (
         <View style={styles.container} onLayout={onLayout}>
