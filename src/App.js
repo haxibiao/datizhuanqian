@@ -75,9 +75,9 @@ class App extends Component {
         // 禁止横屏
         Orientation.lockToPortrait();
 
-        ad.RewardVideo.loadAd().then(data => {
-            config.rewardVideoAdCache = data;
-        });
+        // ad.RewardVideo.loadAd().then(data => {
+        //     config.rewardVideoAdCache = data;
+        // });
 
         // fetch('https://v.douyin.com/QydxYX/')
         //     .then(response => response.text())
