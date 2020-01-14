@@ -12,7 +12,7 @@ const DownLoadApk = props => {
     const [total, setTotal] = useState(100000);
     const [installDDZ, setInstallDDZ] = useState(false);
 
-    const { packageName, name } = props;
+    const { packageName, name, url } = props;
 
     let buttonName = name || '立即安装';
 
@@ -59,7 +59,10 @@ const DownLoadApk = props => {
                 path: dirs.DownloadDir + '/' + '懂得赚' + '.apk',
                 fileCache: true,
                 appendExt: 'apk',
-            }).fetch('GET', 'http://dongdezhuan-1254284941.cos.ap-guangzhou.myqcloud.com/dongdezhuan-release.apk');
+            }).fetch(
+                'GET',
+                url || 'http://dongdezhuan-1254284941.cos.ap-guangzhou.myqcloud.com/dongdezhuan-release.apk',
+            );
 
             setDonwloadTask(_donwloadTask);
             console.log('_donwloadTask :', _donwloadTask);

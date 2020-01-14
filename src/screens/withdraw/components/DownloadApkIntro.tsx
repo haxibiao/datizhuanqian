@@ -44,7 +44,7 @@ class DownloadApkIntro {
                                     fontSize: PxFit(13),
                                 }}>
                                 温馨提示：{Config.AppName}
-                                将自动绑定同设备懂得赚账号，不支持绑定手机号！，如遇无法绑定的问题，请联系官方QQ群：735220029
+                                将自动绑定同设备懂得赚账号，不支持绑定手机号！如遇无法绑定的问题，请联系官方QQ群：735220029
                             </Text>
                         </View>
                         <View style={{ marginBottom: PxFit(20), marginTop: PxFit(30) }}>

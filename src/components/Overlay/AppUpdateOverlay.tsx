@@ -58,7 +58,7 @@ export const show = (props: Props) => {
                         <Text style={styles.centerInfo}>{versionData.description}</Text>
                     </View>
                     <View style={{ alignItems: 'center', paddingVertical: PxFit(15) }}>
-                        <DownLoadApk packageName={'appUpdate'} />
+                        <DownLoadApk packageName={'appUpdate'} url={versionData.apk} />
                     </View>
                 </View>
             </View>
