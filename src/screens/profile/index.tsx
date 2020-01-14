@@ -1,17 +1,13 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import { StyleSheet, View, ScrollView, Text, Image, NativeModules } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '../../components';
-import { Config, Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
-import { GQL, Query, withApollo, compose, useQuery } from 'apollo';
-import { observer, app, config, keys, storage } from 'store';
-
-import JPushModule from 'jpush-react-native';
+import { Config, Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { GQL, Query, useQuery } from 'apollo';
+import { observer, app, config } from 'store';
 
 import { BoxShadow } from 'react-native-shadow';
 import { useDetainment } from '@src/common';
-
-import { ad } from 'native';
 
 interface User {
     name: string;
@@ -230,8 +226,8 @@ const index = observer(props => {
                         </Row>
                         {login ? (
                             <Query query={GQL.userUnreadQuery} variables={{ id: user.id }} fetchPolicy="network-only">
-                                {({ data, error, refetch }) => {
-                                    navigation.addListener('didFocus', payload => {
+                                {({ data, refetch }) => {
+                                    navigation.addListener('didFocus', () => {
                                         refetch();
                                     });
                                     if (data && data.user && data.user.unread_notifications_count) {

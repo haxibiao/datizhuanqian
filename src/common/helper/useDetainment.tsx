@@ -7,12 +7,11 @@ import DownLoadApk from '@src/screens/withdraw/components/DownLoadApk';
 
 import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from '@src/utils';
 
+import { storage, keys } from 'store';
+
 export const useDetainment = (navigation: any, isEntry: boolean) => {
-    const continuous = useRef(true);
-    const firstExecute = useRef(isEntry);
-    const entryListener = useRef();
     const overlayKey = useRef();
-    // const navigation: any = useRef(Tools.rootNavigation);
+
     const OverlayContent = useMemo(() => {
         return (
             <View style={styles.container}>
@@ -42,6 +41,7 @@ export const useDetainment = (navigation: any, isEntry: boolean) => {
                             style={{ paddingTop: PxFit(5), fontSize: PxFit(13), color: Theme.grey }}
                             onPress={() => {
                                 BackHandler.exitApp();
+                                storage.setItem(keys.leaveAppTips, true);
                             }}>
                             残忍离开
                         </Text>
@@ -51,52 +51,30 @@ export const useDetainment = (navigation: any, isEntry: boolean) => {
         );
     }, []);
 
-    const handle = useCallback(() => {
-        // if (continuous.current) {
-        //     // 确保在1.5s内连续点击两次
-        //     continuous.current = false;
-        //     Toast.show({ content: '再次点击退出', layout: 'bottom' });
-        //     setTimeout(() => {
-        //         continuous.current = true;
-        //     }, 1500);
-        //     return true;
-        // }
-        // 直接退出
-        // return false;
+    const handle = useCallback(async () => {
         // 挽留弹窗
+        const leaveAppTips = await storage.getItem(keys.leaveAppTips);
 
-        overlayKey.current = Overlay.show(<Overlay.View animated>{OverlayContent}</Overlay.View>);
-        return true;
+        if (!leaveAppTips) {
+            overlayKey.current = Overlay.show(<Overlay.View animated>{OverlayContent}</Overlay.View>);
+            return true;
+        } else {
+            BackHandler.exitApp();
+        }
     }, []);
 
     useEffect(() => {
-        // App启动，首页navigation没有立马收到监听，需要自己挂载监听
-        if (firstExecute.current && !entryListener.current) {
-            entryListener.current = BackHandler.addEventListener('hardwareBackPress', handle);
-        }
-        let hardwareBackPressListener;
+        let hardwareBackPressListener: any;
         navigation.addListener('willFocus', () => {
-            if (firstExecute.current && entryListener.current) {
-                entryListener.current.remove();
-                firstExecute.current = false;
-            }
             hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', handle);
         });
         navigation.addListener('willBlur', () => {
-            if (firstExecute.current && entryListener.current) {
-                entryListener.current.remove();
-                firstExecute.current = false;
-            }
             if (hardwareBackPressListener) {
                 hardwareBackPressListener.remove();
                 hardwareBackPressListener = null;
             }
         });
         return () => {
-            if (firstExecute.current && entryListener.current) {
-                entryListener.current.remove();
-                firstExecute.current = false;
-            }
             if (hardwareBackPressListener) {
                 hardwareBackPressListener.remove();
                 hardwareBackPressListener = null;

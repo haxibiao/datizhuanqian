@@ -25,18 +25,4 @@ const index = observer(props => {
     );
 });
 
-const styles = StyleSheet.create({
-    overlayInner: {
-        flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    rule: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-});
-
 export default index;

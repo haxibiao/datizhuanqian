@@ -186,7 +186,7 @@ const index = observer(props => {
         };
     }, []);
 
-    useDetainment(navigation, true);
+    useDetainment(navigation);
 
     const Content = useMemo(() => {
         if (tags) {

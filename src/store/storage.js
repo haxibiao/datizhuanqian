@@ -22,6 +22,7 @@ export const keys = {
     BeginnerGuidance_SubmitQuestion: 'BeginnerGuidance_SubmitQuestion',
     answeredId: 'answeredId',
     searchRecord: 'searchRecord',
+    leaveAppTips: 'leaveAppTips',
 };
 
 async function removeItem(key) {
