@@ -444,7 +444,7 @@ class index extends Component {
             return (
                 <StatusView.EmptyView
                     titleStyle={{ textAlign: 'center', fontSize: PxFit(13), lineHeight: PxFit(18) }}
-                    title={`暂时没有题目了，刷新几次试试看吧！\n我们会不断更新，先去其它分类下答题吧~`}
+                    title={`暂时没有题目了，试试去出题吧！\n或先去其它分类下答题吧~`}
                 />
             );
         } else if (!question) {
@@ -569,6 +569,7 @@ class index extends Component {
 
     render() {
         const { category = {} } = this.props.navigation.state.params;
+        const { question } = this.state;
         return (
             <React.Fragment>
                 <PageContainer
@@ -577,12 +578,14 @@ class index extends Component {
                     autoKeyboardInsets={false}
                     onWillBlur={this.hideComment}
                     rightView={
-                        <TouchFeedback
-                            disabled={!this.state.question}
-                            style={styles.optionsButton}
-                            onPress={this.showOptions}>
-                            <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
-                        </TouchFeedback>
+                        question && (
+                            <TouchFeedback
+                                disabled={!this.state.question}
+                                style={styles.optionsButton}
+                                onPress={this.showOptions}>
+                                <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
+                            </TouchFeedback>
+                        )
                     }
                     hiddenNavBar={config.isFullScreen}
                     onLayout={this.onContainerLayout}
