@@ -165,7 +165,7 @@ class QuestionShareCard extends Component {
                         </View>
                         <View style={{ height: 40, width: 40 }}>
                             <QRCode
-                                value={`https://datizhuanqian.com/invitation?user_id=${app.me.id}`}
+                                value={`https://datizhuanqian.com`}
                                 size={40}
                                 color={'#000'}
                                 backgroundColor={'#FFF'}
