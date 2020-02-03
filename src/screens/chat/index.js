@@ -31,7 +31,14 @@ const index = observer(props => {
     }, []);
 
     const renderBubble = useCallback(props => {
-        return <Bubble {...props} wrapperStyle={chatStyle.bubbleWrapper} textStyle={chatStyle.bubbleText} />;
+        return (
+            <Bubble
+                {...props}
+                optionTitles={['复制文字', '取消']}
+                wrapperStyle={chatStyle.bubbleWrapper}
+                textStyle={chatStyle.bubbleText}
+            />
+        );
     }, []);
 
     const renderSend = useCallback(props => {
