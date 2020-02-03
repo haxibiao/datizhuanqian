@@ -131,6 +131,7 @@ query UserQuery($id: Int) {
         next_level_exp
         follow_users_count
         followers_count
+        followed_user_status
         adinfo {
             tt_appid
             tt_codeid
