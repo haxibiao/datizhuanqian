@@ -390,11 +390,13 @@ class index extends Component {
                                 <Text style={styles.buttonText}>{signIn ? '登 录' : '注 册'}</Text>
                             </Button>
 
-                            <View style={styles.bottomInfo}>
+                            {/*
+                                <View style={styles.bottomInfo}>
                                 <TouchFeedback onPress={this.toggleMutation}>
                                     <Text style={styles.bottomLinkText}>{signIn ? '注册' : '登录'}</Text>
                                 </TouchFeedback>
-                            </View>
+                                    </View>
+                                */}
                         </View>
                         <View style={{ alignItems: 'center' }}>
                             <View
