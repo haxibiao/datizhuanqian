@@ -34,7 +34,7 @@ interface Props {
 export const show = (props: Props) => {
     const { versionData, serverVersion } = props;
     const overlayView = (
-        <Overlay.View animated>
+        <Overlay.View animated modal>
             <View style={styles.container}>
                 <View style={styles.content}>
                     {!versionData.is_force && (

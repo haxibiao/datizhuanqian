@@ -391,7 +391,7 @@ class index extends Component {
     showAnswerResult(answer_count, error_count) {
         const { data, client } = this.props;
         const overlayView = (
-            <Overlay.View animated>
+            <Overlay.View animated modal>
                 <View style={styles.overlayInner}>
                     <AnswerResult
                         hide={() => Overlay.hide(this.OverlayKey)}
