@@ -8,6 +8,8 @@ import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ad } from 'native';
 import DownloadApkIntro from './DownloadApkIntro';
 
+import { AppUtil } from 'native';
+
 import WithdrawHeader from './WithdrawHeader';
 
 const withdrawData = [
@@ -46,6 +48,7 @@ const WithdrawBody = props => {
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
     const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
+    const [installDDZ, setInstallDDZ] = useState(false);
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
@@ -67,6 +70,14 @@ const WithdrawBody = props => {
             navDidFocusListener.remove();
         };
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
+
+    useEffect(() => {
+        AppUtil.CheckApkExist('com.dongdezhuan', (data: any) => {
+            if (data) {
+                setInstallDDZ(true);
+            }
+        });
+    }, []);
 
     const createWithdraw = async (value: any, type?: any) => {
         setSubmit(true);
@@ -111,6 +122,8 @@ const WithdrawBody = props => {
 
     const checkWithdrawType = (value: any) => {
         if (user.force_alert && withdrawType !== 'dongdezhuan') {
+            DownloadApkIntro.show(createWithdraw, value);
+        } else if (withdrawType === 'dongdezhuan' && !installDDZ) {
             DownloadApkIntro.show(createWithdraw, value);
         } else {
             createWithdraw(value);
