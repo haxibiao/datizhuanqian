@@ -207,10 +207,6 @@ class index extends Component {
     submitAnswer = async () => {
         const { answer, question } = this.state;
         const { data } = this.props;
-        const adinfo = {
-            tt_appid: Tools.syncGetter('user.adinfo.bannerAd.appid', data),
-            tt_codeid: Tools.syncGetter('user.adinfo.bannerAd.codeid', data),
-        };
 
         let result = {};
         if (answer) {
@@ -413,22 +409,11 @@ class index extends Component {
     loadAd() {
         const { data } = this.props;
         if (data && data.user && !ISIOS && config.enableQuestion) {
-            const fullScreenVideoAdinfo = {
-                tt_appid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.appid', this.props.data),
-                tt_codeid: Tools.syncGetter('user.adinfo.fullScreenVideoAd.codeid', this.props.data),
-            };
-
-            const rewardVideoAdinfo = {
-                tt_appid: Tools.syncGetter('user.adinfo.tt_appid', this.props.data),
-                tt_codeid: Tools.syncGetter('user.adinfo.tt_codeid', this.props.data),
-                uid: data.user.id,
-            };
-
-            ad.FullScreenVideo.loadFullScreenVideoAd(fullScreenVideoAdinfo).then(result => {
+            ad.FullScreenVideo.loadFullScreenVideoAd().then(result => {
                 this.loadFullVideoAd = result;
             });
 
-            ad.RewardVideo.loadAd(rewardVideoAdinfo).then(result => {
+            ad.RewardVideo.loadAd().then(result => {
                 this.loadRewardVideoAd = result;
             });
         }

@@ -132,20 +132,6 @@ query UserQuery($id: Int) {
         follow_users_count
         followers_count
         followed_user_status
-        adinfo {
-            tt_appid
-            tt_codeid
-            cpc_ad_id
-            cpc_ad_url
-            bannerAd {
-                appid
-                codeid
-            }
-            fullScreenVideoAd {
-                appid
-                codeid
-            }
-        }
         level {
             id
             name
@@ -327,18 +313,6 @@ query UserMeansQuery($id: Int!) {
         today_left_questions_count
         today_withdraw_left
         exchange_rate
-        adinfo {
-            tt_codeid
-            tt_appid
-            bannerAd {
-                appid
-                codeid
-            }
-            fullScreenVideoAd {
-                appid
-                codeid
-            }
-        }
         is_admin
         force_alert
         is_bind_dongdezhuan

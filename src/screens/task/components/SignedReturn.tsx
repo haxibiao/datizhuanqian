@@ -28,7 +28,7 @@ const SignedReturn = (props: Props) => {
 
         console.log('start');
         playVideo({ type: 'Sigin' });
-    }, [close, me.adinfo, me.id]);
+    }, [close, me.id]);
 
     return (
         <View
