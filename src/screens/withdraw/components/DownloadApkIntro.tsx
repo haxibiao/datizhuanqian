@@ -13,7 +13,8 @@ import DownLoadApk from './DownLoadApk';
 
 class DownloadApkIntro {
     static OverlayKey: any;
-    static show() {
+
+    static show(createWithdraw, value) {
         const overlayView = (
             <Overlay.View animated>
                 <View style={styles.container}>
@@ -52,6 +53,8 @@ class DownloadApkIntro {
                                 hide={() => {
                                     Overlay.hide(this.OverlayKey);
                                 }}
+                                createWithdraw={createWithdraw}
+                                value={value}
                             />
                         </View>
                     </View>

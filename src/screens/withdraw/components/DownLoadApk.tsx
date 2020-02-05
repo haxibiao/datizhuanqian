@@ -12,7 +12,7 @@ const DownLoadApk = props => {
     const [total, setTotal] = useState(100000);
     const [installDDZ, setInstallDDZ] = useState(false);
 
-    const { packageName, name, url } = props;
+    const { packageName, name, url, createWithdraw, value } = props;
 
     let buttonName = name || '立即安装';
 
@@ -95,7 +95,8 @@ const DownLoadApk = props => {
     };
 
     const openApk = () => {
-        AppUtil.OpenApk('com.dongdezhuan');
+        // AppUtil.OpenApk('com.dongdezhuan');
+        createWithdraw(value, 'dongdezhuan');
         props.hide();
     };
 
@@ -105,7 +106,7 @@ const DownLoadApk = props => {
         if (name) {
             buttonName = name;
         } else if (installDDZ) {
-            buttonName = '打开';
+            buttonName = '提现到懂得赚';
         }
     }
 

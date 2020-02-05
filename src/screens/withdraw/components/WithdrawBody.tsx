@@ -68,14 +68,15 @@ const WithdrawBody = props => {
         };
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
-    const createWithdraw = async value => {
+    const createWithdraw = async (value: any, type?: any) => {
         setSubmit(true);
+
         try {
             const result = await app.client.mutate({
                 mutation: GQL.CreateWithdrawMutation,
                 variables: {
                     amount: value,
-                    platform: withdrawType,
+                    platform: type || withdrawType,
                 },
                 refetchQueries: () => [
                     {
@@ -110,7 +111,7 @@ const WithdrawBody = props => {
 
     const checkWithdrawType = (value: any) => {
         if (user.force_alert && withdrawType !== 'dongdezhuan') {
-            DownloadApkIntro.show();
+            DownloadApkIntro.show(createWithdraw, value);
         } else {
             createWithdraw(value);
         }
