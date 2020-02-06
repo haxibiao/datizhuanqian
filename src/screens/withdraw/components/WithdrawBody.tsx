@@ -49,6 +49,7 @@ const WithdrawBody = props => {
     const [withdrawType, setWithdrawType] = useState('alipay');
     const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
     const [installDDZ, setInstallDDZ] = useState(false);
+    let forceAlert = true;
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
@@ -121,7 +122,8 @@ const WithdrawBody = props => {
     };
 
     const checkWithdrawType = (value: any) => {
-        if (user.force_alert && withdrawType !== 'dongdezhuan') {
+        forceAlert = user ? user.force_alert : forceAlert;
+        if (forceAlert && withdrawType !== 'dongdezhuan') {
             DownloadApkIntro.show(createWithdraw, value);
         } else if (withdrawType === 'dongdezhuan' && !installDDZ) {
             DownloadApkIntro.show(createWithdraw, value);
