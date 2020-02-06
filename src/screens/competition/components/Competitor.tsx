@@ -44,6 +44,7 @@ const competitor = observer(props => {
             <ImageBackground style={theLeft ? styles.leftUser : styles.rightUser} source={source}>
                 <Avatar
                     source={user.avatar_url}
+                    userId={user.id}
                     size={height - PxFit(16)}
                     style={theLeft ? styles.competeLeftAvatar : styles.competeRightAvatar}
                 />

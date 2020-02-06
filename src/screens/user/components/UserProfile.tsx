@@ -32,7 +32,7 @@ const UserProfile = props => {
         <View style={styles.userInfoContainer}>
             <View style={styles.main}>
                 <View>
-                    <Avatar source={Tools.syncGetter('avatar', user)} size={PxFit(90)} />
+                    <Avatar source={Tools.syncGetter('avatar', user)} userId={user.id} size={PxFit(90)} />
                     <View
                         style={[
                             styles.badge,
@@ -81,20 +81,20 @@ const UserProfile = props => {
                             <Text style={styles.editText}>编辑资料</Text>
                         </Button>
                     ) : (
-                            <Row>
-                                <FollowButton
-                                    id={user.id}
-                                    followedStatus={Tools.syncGetter('followed_user_status', user)}
-                                    style={StyleSheet.flatten([styles.button, { flex: 1, marginRight: PxFit(5) }])}
-                                    titleStyle={styles.buttonText}
-                                />
-                                <TouchableOpacity
-                                    style={styles.chatButton}
-                                    onPress={() => navigation.navigate('Chat', { user })}>
-                                    <Text style={styles.buttonText}>私信</Text>
-                                </TouchableOpacity>
-                            </Row>
-                        )}
+                        <Row>
+                            <FollowButton
+                                id={user.id}
+                                followedStatus={Tools.syncGetter('followed_user_status', user)}
+                                style={StyleSheet.flatten([styles.button, { flex: 1, marginRight: PxFit(5) }])}
+                                titleStyle={styles.buttonText}
+                            />
+                            <TouchableOpacity
+                                style={styles.chatButton}
+                                onPress={() => navigation.navigate('Chat', { user })}>
+                                <Text style={styles.buttonText}>私信</Text>
+                            </TouchableOpacity>
+                        </Row>
+                    )}
                 </View>
             </View>
             <View style={styles.bottom}>

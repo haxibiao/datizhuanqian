@@ -25,7 +25,7 @@ class FeedbackItem extends React.PureComponent {
                 style={styles.container}>
                 <View style={styles.top}>
                     <View style={styles.topLeft}>
-                        <Avatar source={{ uri: item.user.avatar }} size={42} />
+                        <Avatar source={{ uri: item.user.avatar }} userId={item.user.id} size={42} />
                         <View style={{ marginLeft: PxFit(8) }}>
                             <Text
                                 style={{

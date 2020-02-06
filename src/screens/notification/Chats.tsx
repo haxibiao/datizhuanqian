@@ -15,7 +15,7 @@ const Chat = ({ chat }) => {
     return (
         <TouchableOpacity style={styles.notifyItem} onPress={() => navigation.navigate('Chat', { chat, user })}>
             <TouchableOpacity style={styles.avatar} onPress={() => navigation.navigate('User', { user })}>
-                <Avatar source={syncGetter('avatar', user)} size={PxFit(50)} />
+                <Avatar source={syncGetter('avatar', user)} userId={user.id} size={PxFit(50)} />
             </TouchableOpacity>
             <View style={styles.itemContent}>
                 <Row style={styles.itemContentTop}>

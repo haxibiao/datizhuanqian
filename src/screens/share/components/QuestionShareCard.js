@@ -57,7 +57,7 @@ class QuestionShareCard extends Component {
                                     headerHeight: event.nativeEvent.layout.height,
                                 });
                             }}>
-                            <Avatar source={{ uri: question.user.avatar }} size={56} />
+                            <Avatar source={{ uri: question.user.avatar }} userId={question.user.id} size={56} />
                             <View style={{ paddingLeft: 15 }}>
                                 <Text style={{ color: '#363636', fontSize: 15, lineHeight: 22 }}>
                                     {question.user.name}

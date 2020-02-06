@@ -72,7 +72,7 @@ const PostItem = (props: Props) => {
             <Row style={{ justifyContent: 'space-between' }}>
                 <TouchFeedback onPress={() => navigation.navigate('User', { user })}>
                     <Row>
-                        <Avatar source={{ uri: user.avatar }} size={42} />
+                        <Avatar source={{ uri: user.avatar }} size={42} userId={Tools.syncGetter('id', user)} />
                         <View style={{ marginLeft: PxFit(8) }}>
                             <Text style={styles.userName}>{user.name}</Text>
                             <Row>

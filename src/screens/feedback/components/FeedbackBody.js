@@ -36,7 +36,11 @@ class FeedbackBody extends Component {
                                 <View style={styles.user}>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('User', { user: feedback.user })}>
-                                        <Avatar source={{ uri: feedback.user.avatar }} size={34} />
+                                        <Avatar
+                                            source={{ uri: feedback.user.avatar }}
+                                            userId={feedback.user.id}
+                                            size={34}
+                                        />
                                     </TouchableOpacity>
 
                                     <View style={styles.userRight}>

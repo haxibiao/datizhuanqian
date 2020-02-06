@@ -107,6 +107,7 @@ export default function CorrectAnsRank(props: Props) {
                                                 />
                                                 <Avatar
                                                     source={data[1].avatar}
+                                                    userId={data[1].id}
                                                     size={30}
                                                     style={{ position: 'absolute', zIndex: -9, top: 8, left: 10 }}
                                                 />
@@ -128,6 +129,7 @@ export default function CorrectAnsRank(props: Props) {
                                                 />
                                                 <Avatar
                                                     source={data[0].avatar}
+                                                    userId={data[0].id}
                                                     size={44}
                                                     style={{ position: 'absolute', zIndex: -9, top: 10.8, left: 11 }}
                                                 />
@@ -149,6 +151,7 @@ export default function CorrectAnsRank(props: Props) {
                                                 />
                                                 <Avatar
                                                     source={data[2].avatar}
+                                                    userId={data[2].id}
                                                     size={30}
                                                     style={{ position: 'absolute', zIndex: -9, top: 8, left: 10 }}
                                                 />
@@ -170,6 +173,7 @@ export default function CorrectAnsRank(props: Props) {
                                         />
                                         <Avatar
                                             source={data[0].avatar}
+                                            userId={data[0].id}
                                             size={44}
                                             style={{ position: 'absolute', zIndex: -9, top: 10.8, left: 11 }}
                                         />
@@ -187,6 +191,7 @@ export default function CorrectAnsRank(props: Props) {
                                         />
                                         <Avatar
                                             source={data[0].avatar}
+                                            userId={data[0].id}
                                             size={44}
                                             style={{ position: 'absolute', zIndex: -9, top: 10.8, left: 11 }}
                                         />
@@ -207,7 +212,7 @@ export default function CorrectAnsRank(props: Props) {
                 {merank && me.id ? (
                     <View style={styles.me}>
                         <View style={styles.left}>
-                            <Avatar source={merank.avatar} size={45} style={{ marginStart: 8 }} />
+                            <Avatar source={merank.avatar} userId={merank.id} size={45} style={{ marginStart: 8 }} />
                             <Text style={styles.meTitle}>{merank.name}</Text>
                         </View>
                         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -281,7 +286,7 @@ export default function CorrectAnsRank(props: Props) {
                     <View style={styles.item}>
                         <View style={styles.left}>
                             {_renderBadge(index)}
-                            <Avatar source={item.avatar} size={40} style={{ marginHorizontal: 12 }} />
+                            <Avatar source={item.avatar} userId={item.id} size={40} style={{ marginHorizontal: 12 }} />
                             <Text style={styles.title}>{item.name}</Text>
                         </View>
                         <Text style={styles.rightText}>{item.correct_count}题</Text>

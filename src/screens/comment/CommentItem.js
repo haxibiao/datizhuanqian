@@ -157,7 +157,7 @@ class CommentItem extends Component<Props> {
             <Animated.View>
                 <TouchFeedback style={styles.comment} onPress={() => this.showOverlay(comment)}>
                     <TouchFeedback onPress={() => navigation.navigate('User', { user: comment.user })}>
-                        <Avatar source={comment.user.avatar} size={PxFit(34)} />
+                        <Avatar source={comment.user.avatar} userId={comment.user.id} size={PxFit(34)} />
                     </TouchFeedback>
                     <View style={{ flex: 1, marginLeft: PxFit(10) }}>
                         <View style={styles.profile}>

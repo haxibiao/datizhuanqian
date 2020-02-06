@@ -23,6 +23,7 @@ import { app } from 'store';
 import { GQL, useMutation } from 'apollo';
 import RetryOverlay from './RetryOverlay';
 interface User {
+    id: Numberl;
     avatar: String;
     name: String;
 }
@@ -162,7 +163,7 @@ const SpiderItem = (props: Props) => {
             <Row style={{ justifyContent: 'space-between' }}>
                 <TouchFeedback onPress={() => navigation.navigate('User', { user })}>
                     <Row>
-                        <Avatar source={{ uri: user.avatar }} size={42} />
+                        <Avatar source={{ uri: user.avatar }} userId={user.id} size={42} />
                         <View style={{ marginLeft: PxFit(8) }}>
                             <Text style={styles.userName}>{user.name}</Text>
                             <Row>

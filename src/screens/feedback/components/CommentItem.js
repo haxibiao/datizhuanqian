@@ -81,7 +81,12 @@ class CommentItem extends Component {
                 <View style={styles.top}>
                     <View style={styles.topLeft}>
                         <TouchableOpacity onPress={() => navigation.navigate('User', { user: item.user })}>
-                            <Avatar source={{ uri: item.user.avatar }} size={34} borderStyle={{}} />
+                            <Avatar
+                                source={{ uri: item.user.avatar }}
+                                userId={item.user.id}
+                                size={34}
+                                borderStyle={{}}
+                            />
                         </TouchableOpacity>
                         <View style={styles.user}>
                             <View style={styles.row}>

@@ -75,7 +75,11 @@ class CommentNotification extends Component {
                             onPress={() =>
                                 navigation.navigate('User', { user: Tools.syncGetter('comment.user', notification) })
                             }>
-                            <Avatar source={{ uri: Tools.syncGetter('comment.user.avatar', notification) }} size={34} />
+                            <Avatar
+                                source={{ uri: Tools.syncGetter('comment.user.avatar', notification) }}
+                                userId={Tools.syncGetter('comment.user.id', notification)}
+                                size={34}
+                            />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
                                     <Text

@@ -55,6 +55,7 @@ const MatchTheUser = observer(props => {
                     source={user.avatar_url || require('@src/assets/images/default_avatar.png')}
                     size={height * 0.76}
                     style={styles.avatar}
+                    userId={user.id}
                 />
             </ImageBackground>
         </Animated.View>

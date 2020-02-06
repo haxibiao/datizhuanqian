@@ -225,13 +225,23 @@ const over = observer(props => {
                     contentContainerStyle={styles.content}>
                     <View style={styles.competitor}>
                         <ImageBackground style={styles.playerBg} source={avatarWidget[result][0]}>
-                            <Avatar source={store.me.avatar_url} size={PxFit(100)} style={styles.playerAvatar} />
+                            <Avatar
+                                source={store.me.avatar_url}
+                                userId={store.me.id}
+                                size={PxFit(100)}
+                                style={styles.playerAvatar}
+                            />
                         </ImageBackground>
                         <Image style={styles.competeVs} source={require('@src/assets/images/compete_vs.png')} />
                         <ImageBackground
                             style={[styles.playerBg, { alignItems: 'flex-start' }]}
                             source={avatarWidget[result][1]}>
-                            <Avatar source={store.rival.avatar_url} size={PxFit(100)} style={styles.playerAvatar} />
+                            <Avatar
+                                source={store.rival.avatar_url}
+                                userId={store.rival.id}
+                                size={PxFit(100)}
+                                style={styles.playerAvatar}
+                            />
                         </ImageBackground>
                     </View>
                     {loading ? (

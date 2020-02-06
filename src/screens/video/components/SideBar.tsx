@@ -48,7 +48,12 @@ export default observer(props => {
                     onPress={() => {
                         navigation.navigate('User', { user: media.user });
                     }}>
-                    <Avatar source={media.user.avatar} size={46} style={{ borderColor: Theme.white, borderWidth: 1 }} />
+                    <Avatar
+                        source={media.user.avatar}
+                        userId={media.user.id}
+                        size={46}
+                        style={{ borderColor: Theme.white, borderWidth: 1 }}
+                    />
                 </TouchableOpacity>
             </View>
             <View style={styles.itemWrap}>

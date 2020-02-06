@@ -813,3 +813,10 @@ query MedalsQuery($user_id: Int, $limit: Int, $offset: Int) {
         owned
     }
 }
+
+#修复头像
+mutation FixUserAvatarMutation($user_id: Int!) {
+    fixAvatar(user_id: $user_id) {
+        id
+    }
+}

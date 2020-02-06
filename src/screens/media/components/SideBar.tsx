@@ -19,7 +19,12 @@ export default observer(props => {
                     onPress={() => {
                         Tools.navigate('User', { user: user });
                     }}>
-                    <Avatar source={user.avatar} size={46} style={{ borderColor: Theme.white, borderWidth: 1 }} />
+                    <Avatar
+                        source={user.avatar}
+                        size={46}
+                        userId={user.id}
+                        style={{ borderColor: Theme.white, borderWidth: 1 }}
+                    />
                 </TouchableOpacity>
             </View>
             <View style={styles.itemWrap}>

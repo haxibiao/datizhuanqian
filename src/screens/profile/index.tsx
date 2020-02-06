@@ -82,6 +82,7 @@ const index = observer(props => {
                                     onPress={() => navigation.navigate('User', { user })}>
                                     <Avatar
                                         source={user.avatar + '?t=' + Date.now()}
+                                        userId={user.id}
                                         size={PxFit(60)}
                                         style={styles.userAvatar}
                                     />

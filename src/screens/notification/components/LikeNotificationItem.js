@@ -50,7 +50,11 @@ class CommentNotification extends Component {
                 return (
                     <TouchFeedback style={styles.container} onPress={this.navigationAction}>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
-                            <Avatar source={{ uri: Tools.syncGetter('avatar', user) }} size={34} />
+                            <Avatar
+                                source={{ uri: Tools.syncGetter('avatar', user) }}
+                                size={34}
+                                userId={Tools.syncGetter('id', user)}
+                            />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
                                     <Text
@@ -77,7 +81,11 @@ class CommentNotification extends Component {
                 return (
                     <TouchFeedback style={styles.container}>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
-                            <Avatar source={{ uri: Tools.syncGetter('avatar', user) }} size={34} />
+                            <Avatar
+                                source={{ uri: Tools.syncGetter('avatar', user) }}
+                                size={34}
+                                userId={Tools.syncGetter('id', user)}
+                            />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
                                     <Text
@@ -111,7 +119,11 @@ class CommentNotification extends Component {
                             })
                         }>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
-                            <Avatar source={{ uri: Tools.syncGetter('avatar', user) }} size={34} />
+                            <Avatar
+                                source={{ uri: Tools.syncGetter('avatar', user) }}
+                                size={34}
+                                userId={Tools.syncGetter('id', user)}
+                            />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
                                     <Text

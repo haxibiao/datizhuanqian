@@ -159,7 +159,7 @@ class CommentItem extends Component<Props> {
                     <TouchFeedback
                         onPress={() => navigation.navigate('User', { user: comment.user })}
                         style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Avatar source={comment.user.avatar} size={PxFit(24)} />
+                        <Avatar source={comment.user.avatar} userId={comment.user.id} size={PxFit(24)} />
                         <View style={[styles.profile, { marginLeft: PxFit(10) }]}>
                             <Row>
                                 <SafeText style={styles.name}>{comment.user.name}</SafeText>

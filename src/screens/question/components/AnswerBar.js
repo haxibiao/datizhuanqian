@@ -26,7 +26,7 @@ class AnswerBar extends Component {
                                     key={index}
                                     style={{ marginRight: -PxFit(6) }}
                                     onPress={() => this.props.navigation.navigate('User', { user: elem.user })}>
-                                    <Avatar source={elem.user.avatar} size={PxFit(24)} />
+                                    <Avatar source={elem.user.avatar} userId={elem.user.id} size={PxFit(24)} />
                                 </TouchFeedback>
                             );
                         }
