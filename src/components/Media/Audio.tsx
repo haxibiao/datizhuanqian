@@ -44,7 +44,7 @@ function TimeFormat(second) {
 export type RecordStatus = 'none' | 'recording' | 'stopped' | 'played';
 
 // 录音器
-export const Recorder = ({ completeRecording, minimumTime = 2 }) => {
+export const Recorder = ({ style, onLayout, completeRecording, minimumTime = 2 }) => {
     const hasPermission = useRef(true);
     const audioDirectoryPath = useRef(AudioUtils.DocumentDirectoryPath + '/test.aac');
     const [audioFilePath, setAudioFilePath] = useState('');
@@ -200,9 +200,10 @@ export const Recorder = ({ completeRecording, minimumTime = 2 }) => {
 
     const complete = useCallback(() => {
         if (completeRecording) {
-            completeRecording();
+            completeRecording(audioFilePath);
+            deleteAudio();
         }
-    }, []);
+    }, [audioFilePath]);
 
     const showDeleteModal = useCallback(() => {
         let overlayRef;
@@ -240,7 +241,7 @@ export const Recorder = ({ completeRecording, minimumTime = 2 }) => {
     );
 
     return (
-        <View style={styles.recorderContainer}>
+        <View style={[styles.recorderContainer, style || {}]} onLayout={onLayout}>
             <View style={styles.audioInfo}>
                 <Text style={styles.audioProgress}>{TimeFormat(duration)}</Text>
                 <View style={styles.audioStateWrap}>
@@ -285,6 +286,12 @@ export const Recorder = ({ completeRecording, minimumTime = 2 }) => {
                     </TouchableWithoutFeedback>
                 )}
             </View>
+            {/* <View style={{ alignItems: 'center', marginTop: PxFit(40) }}>
+                <Player
+                    audio={audioFilePath}
+                    style={{ width: PxFit(140), height: PxFit(40), borderRadius: PxFit(20), padding: PxFit(10) }}
+                />
+            </View> */}
         </View>
     );
 };
