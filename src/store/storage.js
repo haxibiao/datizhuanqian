@@ -15,6 +15,7 @@ export const keys = {
     withdrawTips: 'withdrawTips',
     firstReadSpiderVideoTask: 'firstReadSpiderVideoTask',
     firstOpenVideoOperation: 'firstOpenVideoOperation',
+    firstOpenContributeVideo: 'firstOpenContributeVideo',
     competitionGuide: 'competitionGuide',
     BeginnerGuidance_VideoTask: 'BeginnerGuidance_VideoTask',
     BeginnerGuidance_Answer: 'BeginnerGuidance_Answer',

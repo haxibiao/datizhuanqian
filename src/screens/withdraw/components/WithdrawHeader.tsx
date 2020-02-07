@@ -34,6 +34,25 @@ const WithdrawHeader = (props: Props) => {
         const OverlayKey = Overlay.show(overlayView);
     };
 
+    const fetchGuidanceVideo = () => {
+        if (!app.firstOpenContributeVideo) {
+            app.setOpenContributeVideo(true);
+            app.client
+                .query({
+                    query: GQL.PostQuery,
+                    variables: { id: 33796 },
+                    fetchPolicy: 'network-only',
+                })
+                .then((result: any) => {
+                    const post = Tools.syncGetter('data.post', result);
+                    Tools.navigate('VideoPost', { medium: [post], isPost: true });
+                })
+                .catch((error: any) => {});
+        } else {
+            navigation.navigate('MakeMoenyManual');
+        }
+    };
+
     return (
         <View>
             <ImageBackground
@@ -86,7 +105,7 @@ const WithdrawHeader = (props: Props) => {
                     <View style={styles.accumulat}>
                         <View style={styles.accumulated}>
                             <TouchFeedback
-                                onPress={() => navigation.navigate('MakeMoenyManual')}
+                                onPress={fetchGuidanceVideo}
                                 style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.greyText}>今日贡献值</Text>
                                 <Image

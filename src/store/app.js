@@ -136,6 +136,13 @@ class app {
         await storage.setItem(keys.firstOpenVideoOperation, firstOpenVideoOperation);
     }
 
+    // 贡献值玩法提示
+    @action.bound
+    async setOpenContributeVideo(firstOpenContributeVideo) {
+        this.firstOpenContributeVideo = firstOpenContributeVideo;
+        await storage.setItem(keys.firstOpenContributeVideo, firstOpenContributeVideo);
+    }
+
     // 答题PK提示
     @action.bound
     async recordCompetitionGuide(isShow) {
@@ -196,6 +203,7 @@ class app {
         this.withdrawTips = await storage.getItem(keys.withdrawTips);
         this.firstReadSpiderVideoTask = await storage.getItem(keys.firstReadSpiderVideoTask);
         this.firstOpenVideoOperation = await storage.getItem(keys.firstOpenVideoOperation);
+        this.firstOpenContributeVideo = await storage.getItem(keys.firstOpenContributeVideo);
         this.competitionGuide = await storage.getItem(keys.competitionGuide);
 
         if (resetVersion === Config.AppVersionNumber) {
