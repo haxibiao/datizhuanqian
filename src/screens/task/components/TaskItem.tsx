@@ -178,7 +178,7 @@ const TaskItem = (props: Props) => {
                         <Text style={styles.rewordText}>{`+${task.ticket}`}</Text>
                     </Row>
                 )}
-                {task.gold && (
+                {task.gold ? (
                     <Row style={styles.reword}>
                         <Image
                             source={require('../../../assets/images/diamond.png')}
@@ -186,7 +186,7 @@ const TaskItem = (props: Props) => {
                         />
                         <Text style={styles.rewordText}>{`+${task.gold}`}</Text>
                     </Row>
-                )}
+                ) : null}
                 {task.contribute > 0 && (
                     <Row style={styles.reword}>
                         <Image
