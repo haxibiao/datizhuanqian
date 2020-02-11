@@ -45,7 +45,7 @@ class app {
         const json = await storage.getItem(keys.me);
         const resetVersion = await storage.getItem(keys.resetVersion);
 
-        if (json && resetVersion == Config.AppVersionNumber) {
+        if (json && resetVersion == Config.Version) {
             runInAction(() => {
                 // this.me = new user(json.id, json.name, json.avatar, json.token);
                 this.me = json;
@@ -206,7 +206,7 @@ class app {
         this.firstOpenContributeVideo = await storage.getItem(keys.firstOpenContributeVideo);
         this.competitionGuide = await storage.getItem(keys.competitionGuide);
 
-        if (resetVersion === Config.AppVersionNumber) {
+        if (resetVersion === Config.Version) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
             this.tagsCache = await storage.getItem(keys.tagsCache);

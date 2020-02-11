@@ -77,7 +77,7 @@ const TaskItem = (props: Props) => {
         if (res.data.taskReward == 1) {
             Toast.show({ content: '领取成功' });
         } else {
-            Toast.show({ content: '已经领取该任务了哦~' });
+            Toast.show({ content: '已经领取该奖励了哦~' });
         }
     };
 

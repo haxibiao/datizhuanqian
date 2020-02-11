@@ -78,7 +78,7 @@ const index = observer(props => {
         const resetVersion = await storage.getItem(keys.resetVersion);
         const me = (await storage.getItem(keys.me)) || (await storage.getItem(keys.user));
 
-        if (resetVersion !== Config.AppVersionNumber && me) {
+        if (resetVersion !== Config.Version && me) {
             client
                 .mutate({
                     mutation: GQL.signToken,
@@ -88,7 +88,7 @@ const index = observer(props => {
                 })
                 .then(result => {
                     app.signIn(result.data.signInWithToken);
-                    app.updateResetVersion(Config.AppVersionNumber);
+                    app.updateResetVersion(Config.Version);
                     app.updateUserCache(result.data.signInWithToken);
                 });
         }

@@ -28,8 +28,8 @@ class WithdrawApply extends Component {
     }
 
     async loadCache() {
-        let commentAppStoreVersion = (await storage.getItem(keys.commentAppStoreVersion)) || 1;
-        if (Config.AppVersionNumber > commentAppStoreVersion) {
+        const commentAppStoreVersion = (await storage.getItem(keys.commentAppStoreVersion)) || 1;
+        if (Config.Version !== commentAppStoreVersion) {
             this.timer = setTimeout(() => {
                 this.showTips();
             }, 500);
@@ -59,7 +59,7 @@ class WithdrawApply extends Component {
                             <TouchFeedback
                                 onPress={() => {
                                     Overlay.hide(this.OverlayKey);
-                                    this.updateVersion(Config.AppVersionNumber);
+                                    this.updateVersion(Config.Version);
                                 }}>
                                 <Text style={{ fontSize: 15, color: Theme.grey, textAlign: 'center' }}>下次吧</Text>
                             </TouchFeedback>
@@ -72,7 +72,7 @@ class WithdrawApply extends Component {
                                     );
                                     // 除华为 小米  oppo 之外改名com.damei
                                     Overlay.hide(this.OverlayKey);
-                                    this.updateVersion(Config.AppVersionNumber);
+                                    this.updateVersion(Config.Version);
                                 }}>
                                 <Text style={{ fontSize: 15, color: Theme.theme }}>去评价</Text>
                             </TouchFeedback>

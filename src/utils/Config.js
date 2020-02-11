@@ -1,6 +1,5 @@
 import {
     AppName,
-    AppVersionNumber,
     Version,
     Build,
     SocketServer,
@@ -23,7 +22,6 @@ export default {
     UploadServer, //视频上传地址
     SocketServer, //socket服务地址
     Version, // App版本号  对应android versionName
-    AppVersionNumber, // float类型的版本号  用于检查版本更新   小数点后只能保留一位，区间为1~9
     Build, // App 构建版本  不与android versionCode一致
     PackageName, // App 包名  对于android applicationId
     AppVersion: Version + '.' + Build, // 用于mattom统计展示的version
