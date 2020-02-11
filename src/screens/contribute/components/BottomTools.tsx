@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Animated } from 'react-native';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { StyleSheet, View, Image, Text, TouchableOpacity, Animated, Keyboard } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { useLinearAnimation } from '@src/common';
+import { useLinearAnimation, useKeyboardListener } from '@src/common';
 import { Audio } from '@src/components';
 import { observer, useQuestionStore } from '../store';
 import SelectionItem from './SelectionItem';
@@ -14,7 +14,7 @@ export default observer(props => {
     const [audioHeight, setAudioHeight] = useState(0);
     const [slideIn, setSlideIn] = useState(false);
     const { contentImagePicker, contentVideoPicker, picture, video, audio, setQuestionAudio } = store;
-    const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 300 });
+    const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 200 });
 
     useEffect(() => {
         if (firstRender.current) {
@@ -32,6 +32,19 @@ export default observer(props => {
         inputRange: [0, 1],
         outputRange: [audioHeight == 0 ? 400 : 0, audioHeight],
     });
+
+    const toggleAudioTool = useCallback(e => {
+        Keyboard.dismiss();
+        setSlideIn(slideIn => {
+            return !slideIn;
+        });
+    }, []);
+
+    const showAudio = useCallback(e => {
+        setSlideIn(false);
+    }, []);
+
+    useKeyboardListener(showAudio);
 
     return (
         <View style={styles.container}>
@@ -58,10 +71,7 @@ export default observer(props => {
                     />
                     <Text style={[styles.toolName, !!(picture || audio) && { color: '#999EAD' }]}>视频</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    disabled={!!(picture || video)}
-                    style={styles.toolItem}
-                    onPress={() => setSlideIn(s => !s)}>
+                <TouchableOpacity disabled={!!(picture || video)} style={styles.toolItem} onPress={toggleAudioTool}>
                     <Image
                         style={styles.toolImg}
                         source={
@@ -78,7 +88,7 @@ export default observer(props => {
                 </TouchableOpacity>
             </View>
             <Animated.View
-                style={[{ height, overflow: 'hidden' }, audioHeight == 0 && { position: 'absolute', bottom: -400 }]}>
+                style={[{ overflow: 'hidden', height }, audioHeight == 0 && { position: 'absolute', bottom: -500 }]}>
                 <Audio.Recorder
                     onLayout={event => {
                         if (audioHeight == 0) {
@@ -86,7 +96,7 @@ export default observer(props => {
                         }
                     }}
                     style={styles.audioContainer}
-                    completeRecording={path => setQuestionAudio({ ...audio, path })}
+                    completeRecording={(path, key) => setQuestionAudio({ ...audio, path, key })}
                 />
             </Animated.View>
         </View>
@@ -94,9 +104,11 @@ export default observer(props => {
 });
 
 const styles = StyleSheet.create({
+    container: {
+        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+    },
     toolsContainer: {
         flexDirection: 'row',
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
         backgroundColor: '#fff',
         borderTopWidth: PxFit(1),
         borderTopColor: '#F1EFFA',

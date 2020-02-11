@@ -15,7 +15,7 @@ export default observer(props => {
                         key={index}
                         item={item}
                         style={{ marginBottom: PxFit(10) }}
-                        onChange={() => setSelectionText(index)}
+                        onChange={text => setSelectionText(index, text)}
                         onCheck={() => setAnswers(index)}
                     />
                 );

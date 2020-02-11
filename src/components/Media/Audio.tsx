@@ -200,7 +200,7 @@ export const Recorder = ({ style, onLayout, completeRecording, minimumTime = 2 }
 
     const complete = useCallback(() => {
         if (completeRecording) {
-            completeRecording(audioFilePath);
+            completeRecording(audioFilePath, Math.random(0, 1));
             deleteAudio();
         }
     }, [audioFilePath]);

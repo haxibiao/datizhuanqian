@@ -1,20 +1,27 @@
-import { useCallback, useRef, useEffect } from 'react';
-import { Keyboard } from 'react-native';
+import { useRef, useEffect } from 'react';
+import { Keyboard, Platform } from 'react-native';
 
 type Listener = (e: any) => any;
 
 export const useKeyboardListener = (onKeyboardShow: Listener, onKeyboardHide: Listener) => {
-    const showListener = useRef({});
-    const hideListener = useRef({});
+    const isIos = useRef(Platform.OS === 'ios');
 
     useEffect(() => {
-        const showListenerName = Device.IOS ? 'keyboardWillShow' : 'keyboardDidShow';
-        showListener.current = Keyboard.addListener(showListenerName, e => onKeyboardShow(e));
-        const hideListenerName = Device.IOS ? 'keyboardWillHide' : 'keyboardDidHide';
-        hideListener.current = Keyboard.addListener(hideListenerName, e => onKeyboardHide(e));
+        const showListenerName = isIos ? 'keyboardWillShow' : 'keyboardDidShow';
+        const showListener = Keyboard.addListener(showListenerName, e => {
+            if (onKeyboardShow instanceof Function) {
+                onKeyboardShow(e);
+            }
+        });
+        const hideListenerName = isIos ? 'keyboardWillHide' : 'keyboardDidHide';
+        const hideListener = Keyboard.addListener(hideListenerName, e => {
+            if (onKeyboardHide instanceof Function) {
+                onKeyboardHide(e);
+            }
+        });
         return () => {
-            showListener.current.remove();
-            hideListener.current.remove();
+            showListener.remove();
+            hideListener.remove();
         };
     }, []);
 };

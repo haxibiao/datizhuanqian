@@ -11,6 +11,9 @@ import {
 } from '@src/components';
 import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from '@src/utils';
 import { useApolloClient, useMutation, GQL } from '@src/apollo';
+import { storage, keys, app } from '@src/store';
+import service from '@src/service';
+import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
 import { observer, useQuestionStore } from './store';
 import Selections from './components/Selections';
@@ -23,6 +26,7 @@ export default observer(props => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const store = useQuestionStore();
+    const [submitting, setSubmitting] = useState(false);
     const {
         description,
         category,
@@ -34,12 +38,121 @@ export default observer(props => {
         setContentPicture,
         setContentVideo,
     } = store;
+
+    const onError = useCallback(error => {
+        setSubmitting(false);
+        Toast.show({
+            content: error,
+        });
+    }, []);
+
+    const onCompleted = useCallback(() => {
+        setSubmitting(false);
+        let { userCache } = app;
+        client.query({
+            query: GQL.UserMetaQuery,
+            variables: {
+                id: app.me.id,
+            },
+            fetchPolicy: 'network-only',
+        });
+        store.removeInstance();
+        navigation.replace('ContributeSubmited', {
+            noTicket: userCache.ticket === 0,
+        });
+    }, [client]);
+
+    const createQuestion = useCallback(
+        async explanation_id => {
+            let { variables } = store;
+            const promiseFn = () => {
+                return client.mutate({
+                    mutation: GQL.createQuestionMutation,
+                    variables: {
+                        data: {
+                            ...variables,
+                            explanation_id,
+                        },
+                    },
+                });
+            };
+
+            const [error, result] = await exceptionCapture(promiseFn);
+            if (error) {
+                onError(error.message || '创建失败');
+            } else {
+                onCompleted();
+            }
+        },
+        [client, onCompleted],
+    );
+
+    const createExplanation = useCallback(
+        async explanation => {
+            const promiseFn = () => {
+                return client.mutate({
+                    mutation: GQL.createExplanationMutation,
+                    variables: explanation,
+                });
+            };
+
+            const [error, result] = await exceptionCapture(promiseFn);
+            if (error) {
+                onError(error.message || '题目解析提交失败');
+            } else {
+                createQuestion(syncGetter('data.createExplanation.id', result) || null);
+            }
+        },
+        [client, createQuestion],
+    );
+
+    const onSubmit = useCallback(() => {
+        if (store.validator(store.variables)) {
+            setSubmitting(true);
+            let { explanationVariables } = store;
+            if (explanationVariables) {
+                createExplanation(explanationVariables);
+            } else {
+                createQuestion();
+            }
+        }
+    }, [createExplanation, createQuestion]);
+
+    useEffect(() => {
+        service.dataReport({
+            data: {
+                category: '用户行为',
+                action: 'user_click_contribute_screen',
+                name: '进入出题页面',
+            },
+            callback: result => {
+                console.warn('result', result);
+            },
+        });
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            let contributeRuleRead = await storage.getItem(keys.contributeRuleRead);
+            let overlayRef;
+            if (!contributeRuleRead) {
+                let overlayView = (
+                    <Overlay.View animated ref={ref => (overlayRef = ref)}>
+                        <View style={styles.overlayInner}>
+                            <Rules hide={() => overlayRef.close()} />
+                        </View>
+                    </Overlay.View>
+                );
+            }
+        })();
+    }, []);
+
     return (
         <PageContainer
             white
             title="我的试题"
             rightView={
-                <TouchableOpacity style={styles.saveButton}>
+                <TouchableOpacity style={styles.saveButton} onPress={onSubmit}>
                     <Text style={styles.saveText}>提交</Text>
                 </TouchableOpacity>
             }>
@@ -72,7 +185,9 @@ export default observer(props => {
                             setVideo={setContentVideo}
                         />
                     )}
-                    {audio && audio.path && <Audio.Player style={styles.audioContainer} audio={audio.path} />}
+                    {audio && audio.path && (
+                        <Audio.Player style={styles.audioContainer} audio={audio.path} key={audio.key} />
+                    )}
                 </View>
                 <View style={styles.selectionsWrap}>
                     <Selections />

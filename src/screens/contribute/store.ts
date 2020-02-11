@@ -19,6 +19,7 @@ interface Video {
 
 interface Audio {
     path: string;
+    key?: number;
     id?: number;
 }
 
@@ -263,7 +264,10 @@ class QuestionStore {
     buildOptions(): any {
         let selections,
             answers: Value[] = [];
-        selections = this.selections.map((selection, index) => {
+        console.log('====================================');
+        console.log('this.selections', this.selections);
+        console.log('====================================');
+        selections = this.selections.filter((selection, index) => {
             if (selection.Text) {
                 selection.isCorrect && answers.push(values[index]);
                 return {
@@ -286,7 +290,9 @@ class QuestionStore {
             answers: '请设置正确答案',
             category_id: '请选择题库',
         };
-
+        console.log('====================================');
+        console.log('this.variables', this.variables);
+        console.log('====================================');
         for (var k in tips) {
             if (!this.variables[k]) {
                 Toast.show({
