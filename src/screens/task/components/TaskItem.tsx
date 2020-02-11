@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated, Linking, AppState } from 'react-native';
 
-import { Button, Row, Iconfont, TouchFeedback } from 'components';
+import { Button, Row, Iconfont, TouchFeedback, FeedOverlay, RewardTipsOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
 
 import { Mutation, compose, useMutation, GQL } from 'apollo';
@@ -75,7 +75,16 @@ const TaskItem = (props: Props) => {
         }
         setUnLoading();
         if (res.data.taskReward == 1) {
-            Toast.show({ content: '领取成功' });
+            RewardTipsOverlay.show({
+                reward: {
+                    gold: task.gold,
+                    ticket: task.ticket,
+                    contribute: 0,
+                },
+                title: '领取任务奖励成功',
+                rewardVideo: true,
+            });
+            // Toast.show({ content: '领取成功' });
         } else {
             Toast.show({ content: '已经领取该奖励了哦~' });
         }
@@ -83,9 +92,6 @@ const TaskItem = (props: Props) => {
 
     //领取任务
     const getTask = async () => {
-        const {
-            task: { type },
-        } = props;
         setLoading();
         const [error, res] = await exceptionCapture(receiveTask);
         if (error) {
@@ -94,7 +100,9 @@ const TaskItem = (props: Props) => {
         }
         setUnLoading();
         if (res.data.receiveTask == 1) {
-            Toast.show({ content: '领取成功' });
+            FeedOverlay.show({
+                title: '领取任务成功',
+            });
 
             if (task.type == 2 && task.package) {
                 // Tools.navigate('任务详情', { task: task });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Image, AppState } from 'react-native';
-import { TouchFeedback, RewardTipsOverlay, ErrorOverlay } from 'components';
+import { TouchFeedback, RewardTipsOverlay, FeedOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools, Theme } from 'utils';
 
@@ -78,7 +78,7 @@ const TimeReward = (props: Props) => {
         } catch (e) {
             let str = e.toString().replace(/Error: GraphQL error: /, '');
             // Toast.show({ content: str });
-            ErrorOverlay.show({
+            FeedOverlay.show({
                 title: str,
             });
         }

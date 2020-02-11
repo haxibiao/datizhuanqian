@@ -22,7 +22,7 @@ interface Props {
     title: String;
 }
 
-class ErrorOverlay {
+class FeedOverlay {
     static OverlayKey: any;
     static show(props: Props) {
         const { title } = props;
@@ -35,7 +35,7 @@ class ErrorOverlay {
                                 <Image source={require('@src/assets/images/money_.png')} style={styles.headerImage} />
                             </View>
                             <View style={styles.wrap}>
-                                <Text style={{ fontSize: PxFit(12), textAlign: 'center' }}>{title}</Text>
+                                <Text style={{ fontSize: PxFit(14), textAlign: 'center' }}>{title}</Text>
                             </View>
                             <View>
                                 <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
@@ -47,7 +47,7 @@ class ErrorOverlay {
                                     textColor={Theme.white}
                                     title={'知道了'}
                                     onPress={() => {
-                                        ErrorOverlay.hide();
+                                        FeedOverlay.hide();
                                     }}
                                 />
                             </View>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     wrap: {
         alignItems: 'center',
         paddingBottom: PxFit(15),
-        paddingHorizontal: PxFit(15),
+        paddingHorizontal: PxFit(25),
     },
     reword: {
         marginLeft: PxFit(2),
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ErrorOverlay;
+export default FeedOverlay;
