@@ -5,7 +5,7 @@
 import { Dimensions, Platform } from 'react-native';
 import Api from './Api';
 import Config from './Config';
-import Theme,{iPhone11} from './Theme';
+import Theme, { iPhone11 } from './Theme';
 import Tools from './Tools';
 import { WPercent, HPercent, PxFit, FontSize } from './Scale';
 
@@ -50,4 +50,3 @@ export {
     // 字体适配
     FontSize,
 };
-

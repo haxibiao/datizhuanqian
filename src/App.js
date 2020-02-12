@@ -78,23 +78,6 @@ class App extends Component {
         ad.RewardVideo.loadAd().then(data => {
             // config.rewardVideoAdCache = data;
         });
-
-        // fetch('https://v.douyin.com/QydxYX/')
-        //     .then(response => response.text())
-        //     .then(data => {
-        //         console.log('data', data);
-        //         const reg = new RegExp('background-image:url(.*?)');
-        //         const rege = /background-image:url\(.*?\)/;
-        //         // const reg = /background-image:url\((.*?)\)/;
-        //         // const result = reg.exec(data.toString());
-        //         const result = data.match(rege);
-        //         const res = reg.test(data.toString());
-        //         console.log('res', res);
-        //         console.log('data', result);
-        //     })
-        //     .catch(err => {
-        //         console.log('err', err);
-        //     });
     }
 
     checkServer = () => {

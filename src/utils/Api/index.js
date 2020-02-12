@@ -7,7 +7,6 @@ import videoPicker from './videoPicker';
 import videoUpload, { cancelUpload } from './videoUpload';
 // import checkUpdate from './checkUpdate';
 import viewShotUtil from './viewShotUtil';
-import checkLoginInfo from './checkLoginInfo';
 
 export default {
     imagePicker,
@@ -16,5 +15,4 @@ export default {
     cancelUpload,
     // checkUpdate,
     viewShotUtil,
-    checkLoginInfo,
 };
