@@ -25,7 +25,7 @@ interface Task {
     ticket: Number;
     contribute: Number;
     taskAction: Number;
-    taskStatus: Number;
+    userTaskStatus: Number;
     submit_name: string;
     details: string;
     type: Number;
@@ -158,7 +158,7 @@ const TaskItem = (props: Props) => {
     const stateChangeHandle = (event: any) => {
         const { task } = props;
 
-        if (event === 'active' && task.package && task.taskStatus == 0) {
+        if (event === 'active' && task.package && task.userTaskStatus == 0) {
             AppUtil.CheckApkExist(task.package, (data: any) => {
                 if (data) {
                     completeTask();
@@ -219,7 +219,7 @@ const TaskItem = (props: Props) => {
         let backgroundColor = Theme.primaryColor;
         let disabled = false;
 
-        switch (task.taskStatus) {
+        switch (task.userTaskStatus) {
             case -1:
                 name = '任务失败';
                 backgroundColor = Theme.themeRed;

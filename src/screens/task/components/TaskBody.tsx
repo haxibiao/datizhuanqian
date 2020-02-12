@@ -24,7 +24,7 @@ const TaskBody = props => {
     const [isVisible, setIsVisible] = useState(false);
 
     const TasksQuery = useQuery(GQL.TasksQuery, {
-        variables: { offest: 0, limit: 20 },
+        variables: { offest: 0, limit: 100 },
     });
 
     const { data: userData, refetch: refetchChatsQuery, loading } = useQuery(GQL.UserQuery, {
@@ -39,6 +39,7 @@ const TaskBody = props => {
             },
         });
     }, []);
+    console.log('TasksQuery :', TasksQuery);
 
     useEffect(() => {
         // 构建tasklist
@@ -97,7 +98,7 @@ const TaskBody = props => {
                 {
                     name: '看视频赚钱',
                     status: iPhone11() || config.disableAd ? 0 : Tools.syncGetter('status', reward),
-                    taskStatus: 4,
+                    userTaskStatus: 4,
                     gold: Tools.syncGetter('gold', reward),
                     ticket: Tools.syncGetter('ticket', reward),
                     contribute: Tools.syncGetter('contribute', reward),
@@ -109,7 +110,7 @@ const TaskBody = props => {
                 {
                     name: '出题目赚钱',
                     status: Tools.syncGetter('status', chuti),
-                    taskStatus: 5,
+                    userTaskStatus: 5,
                     gold: Tools.syncGetter('gold', chuti) + '~40',
                     ticket: Tools.syncGetter('ticket', chuti),
                     contribute: Tools.syncGetter('contribute', chuti),
@@ -121,7 +122,7 @@ const TaskBody = props => {
                 {
                     name: '分享领现金',
                     status: Tools.syncGetter('status', invitation),
-                    taskStatus: 6,
+                    userTaskStatus: 6,
                     gold: Tools.syncGetter('gold', invitation),
                     ticket: Tools.syncGetter('ticket', invitation),
                     contribute: Tools.syncGetter('contribute', invitation),
@@ -132,7 +133,7 @@ const TaskBody = props => {
                 {
                     name: '玩抖音赚钱',
                     status: Tools.syncGetter('status', spider_video),
-                    taskStatus: 7,
+                    userTaskStatus: 7,
                     gold: Tools.syncGetter('gold', spider_video),
                     ticket: Tools.syncGetter('ticket', spider_video),
                     contribute: Tools.syncGetter('contribute', spider_video),

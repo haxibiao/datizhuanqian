@@ -8,7 +8,7 @@ query TasksQuery($type: Int, $offset: Int, $limit: Int) {
         ticket
         count
         status
-        taskStatus
+        userTaskStatus
         route
         submit_name
         package

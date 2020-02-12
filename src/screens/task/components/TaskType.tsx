@@ -23,7 +23,7 @@ interface Task {
     gold: Number;
     ticket: Number;
     contribute: Number;
-    taskStatus: Number;
+    userTaskStatus: Number;
     submit_name: string;
     details: string;
     type?: Number;
