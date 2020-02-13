@@ -280,7 +280,7 @@ class index extends Component {
                     rightView={
                         status == 1 || this.isOwn ? (
                             <TouchFeedback style={styles.optionsButton} onPress={this.showOptions}>
-                                <Iconfont name="more-horizontal" color="#fff" size={PxFit(18)} />
+                                <Iconfont name="more-horizontal" color="#000" size={PxFit(18)} />
                             </TouchFeedback>
                         ) : null
                     }
