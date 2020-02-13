@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { SafeText, Row } from 'components';
+import { SafeText, Row, FeedOverlay } from 'components';
 import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ad } from 'native';
 import { observer, app, config } from 'store';
@@ -33,7 +33,7 @@ export default observer(props => {
 
     const getReward = async (media: any) => {
         const drawFeedAdId = media.id.toString();
-
+        console.log('media :', media);
         if (VideoStore.getReward.indexOf(drawFeedAdId) === -1) {
             VideoStore.addGetRewardId(drawFeedAdId);
             // 发放给精力奖励
@@ -44,9 +44,12 @@ export default observer(props => {
                 });
             } else {
                 const contribute = Tools.syncGetter('data.userReward.contribute', res);
-                Toast.show({
-                    content: `恭喜你获得+${contribute}贡献值`,
-                    duration: 2000,
+                // Toast.show({
+                //     content: `恭喜你获得+${contribute}贡献值`,
+                //     duration: 2000,
+                // });
+                FeedOverlay.show({
+                    title: `点击广告详情，获得+${contribute}贡献值`,
                 });
             }
 
@@ -56,6 +59,11 @@ export default observer(props => {
                     console.warn('result', result);
                 },
             }); // 上报drawFeed点击量
+        } else {
+            Toast.show({
+                content: `该视频已获取过点击奖励`,
+                duration: 2000,
+            });
         }
     };
 

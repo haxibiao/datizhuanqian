@@ -22,6 +22,7 @@ const DrawFeedAd = (props: Props) => {
     return (
         <NativeDrawFeedAd
             codeid={codeid}
+            is_express={'false'}
             style={{ ...styles.container }}
             onError={e => {
                 console.log('onError feed', e.nativeEvent);
