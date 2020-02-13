@@ -16,4 +16,6 @@ declare const __: any;
 
 declare const Toast: any;
 
+declare const Config: any;
+
 declare let TOKEN: any;

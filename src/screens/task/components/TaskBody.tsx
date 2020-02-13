@@ -1,18 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
 
-import {
-    SubmitLoading,
-    Banner,
-    TouchFeedback,
-    RewardTipsOverlay,
-    TipsOverlay,
-    beginnerGuidance,
-    TaskGuidance,
-} from 'components';
-import { Theme, SCREEN_WIDTH, Config, Tools, ISIOS, PxFit, iPhone11 } from 'utils';
-import { Query, Mutation, graphql, withApollo, compose, GQL, useQuery } from 'apollo';
-import { observer, app, config, keys, storage } from 'store';
+import { SubmitLoading, beginnerGuidance, TaskGuidance } from 'components';
+import { Tools, ISIOS, PxFit, iPhone11 } from 'utils';
+import { GQL, useQuery } from 'apollo';
+import { app, config } from 'store';
 
 import service from 'service';
 
@@ -27,7 +19,7 @@ const TaskBody = props => {
         variables: { offest: 0, limit: 100 },
     });
 
-    const { data: userData, refetch: refetchChatsQuery, loading } = useQuery(GQL.UserQuery, {
+    const { data: userData, loading } = useQuery(GQL.UserQuery, {
         variables: { id: app.me.id },
     });
 
@@ -49,7 +41,7 @@ const TaskBody = props => {
             app.updateTaskCache(TasksQuery.data.tasks);
         }
         // 命中刷新
-        const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
+        const navDidFocusListener = props.navigation.addListener('didFocus', () => {
             TasksQuery.refetch();
             !config.disableAd && Tools.syncGetter('user.wallet.total_withdraw_amount', userData) == 1;
             beginnerGuidance({
@@ -76,20 +68,20 @@ const TaskBody = props => {
         }
 
         const {
-            taskConfig: { chuti, reward, cpc, invitation, spider_video },
+            taskConfig: { chuti, reward, invitation, spider_video },
             taskConfig,
         } = config;
         if (!loading && tasks.length > 0 && taskConfig) {
             // 新人任务
-            const newUserTask = tasks.filter((elem, i) => {
+            const newUserTask = tasks.filter(elem => {
                 return elem.type == 0;
             });
             // 每日任务
-            const dailyTask = tasks.filter((elem, i) => {
+            const dailyTask = tasks.filter(elem => {
                 return elem.type == 1;
             });
             //成长任务
-            const growUpTask = tasks.filter((elem, i) => {
+            const growUpTask = tasks.filter(elem => {
                 return elem.type == 2;
             });
 

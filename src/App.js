@@ -18,7 +18,7 @@ import { ad, WeChat } from 'native';
 import { ISIOS, Config, PxFit, Theme, iPhone11 } from 'utils';
 
 import service from 'service';
-import { checkUpdate } from 'common';
+import { checkUpdate, readPhoneState } from 'common';
 
 import Apollo from './Apollo';
 
@@ -74,6 +74,8 @@ class App extends Component {
         global.Toast = this.toast;
         // 禁止横屏
         Orientation.lockToPortrait();
+
+        readPhoneState();
 
         ad.RewardVideo.loadAd().then(data => {
             // config.rewardVideoAdCache = data;
