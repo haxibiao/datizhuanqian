@@ -287,7 +287,7 @@ const AnswerScreen = observer((props: Props) => {
             setErrorCount(errorCount + 1);
         }
 
-        AnswerOverlay.show({ gold: gold, ticket: ticket, result, type: 'answer' });
+        AnswerOverlay.show({ gold: gold, ticket: ticket, result, type: 'answer', question });
     };
 
     const resetState = useCallback(() => {
