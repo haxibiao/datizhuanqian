@@ -61,7 +61,7 @@ const DownLoadApk = props => {
                 appendExt: 'apk',
             }).fetch(
                 'GET',
-                url || 'http://dongdezhuan-1254284941.cos.ap-guangzhou.myqcloud.com/dongdezhuan-release.apk',
+                url || 'http://cos.dongdezhuan.com/dongdezhuan.apk',
             );
 
             setDonwloadTask(_donwloadTask);
