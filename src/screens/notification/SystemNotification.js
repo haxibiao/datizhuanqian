@@ -48,6 +48,7 @@ class SystemNotification extends Component {
                             'LEVEL_UP',
                             'REPORT_SUCCEED',
                             'NEW_MEDAL',
+                            'OFFICIAL_REWARD',
                         ],
                     }}
                     fetchPolicy="network-only">

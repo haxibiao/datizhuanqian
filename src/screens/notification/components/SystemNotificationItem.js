@@ -43,7 +43,6 @@ class NotificationItem extends Component {
                     <CurationNotificationItem notification={notification} navigation={navigation} />
                     //纠错
                 )}
-
                 {notification.type == 2 && (
                     <View style={styles.item}>
                         <View style={styles.titleInfo}>
@@ -60,7 +59,6 @@ class NotificationItem extends Component {
                     </View>
                     //精力点恢复
                 )}
-
                 {notification.type == 'REPORT_SUCCEED' && (
                     <View style={styles.item}>
                         <View style={styles.titleInfo}>
@@ -118,7 +116,6 @@ class NotificationItem extends Component {
                         </View>
                     </View>
                 )}
-
                 {notification.type === 'NEW_MEDAL' && notification.medal && (
                     <TouchFeedback
                         style={styles.item}
@@ -148,6 +145,36 @@ class NotificationItem extends Component {
                             </View>
                         </View>
                     </TouchFeedback>
+                )}
+                {notification.type === 'OFFICIAL_REWARD' && (
+                    <View style={styles.item}>
+                        <View style={styles.titleInfo}>
+                            <Iconfont name={'task'} size={20} color={Theme.primaryColor} />
+                            <Text style={styles.title}>系统通知</Text>
+                        </View>
+                        <View style={styles.bottomInfo}>
+                            <Text style={[styles.text, { color: Theme.weixin }]}>恭喜您获得系统奖励</Text>
+                            <Text style={styles.infoItem}>
+                                奖励：
+                                {`${
+                                    Tools.syncGetter('user_reward.gold', notification)
+                                        ? Tools.syncGetter('user_reward.gold', notification) + '智慧点 '
+                                        : ''
+                                } `}
+                                {`${
+                                    Tools.syncGetter('user_reward.ticket', notification)
+                                        ? Tools.syncGetter('user_reward.ticket', notification) + '精力点'
+                                        : '  '
+                                } `}
+                                {`${
+                                    Tools.syncGetter('user_reward.contribute', notification)
+                                        ? Tools.syncGetter('user_reward.contribute', notification) + '贡献点  '
+                                        : ''
+                                } `}
+                            </Text>
+                            <Text style={[styles.infoItem, { lineHeight: 20 }]}>内容：平台贡献奖励</Text>
+                        </View>
+                    </View>
                 )}
             </View>
         );

@@ -101,6 +101,11 @@ query systemNotificationsQuery($filter: [NotificationEnum], $limit: Int, $offset
             undone_icon_url
             owned
         }
+        user_reward {
+            gold
+            contribute
+            ticket
+        }
     }
 }
 
