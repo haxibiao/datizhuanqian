@@ -16,7 +16,6 @@ import {
     UpwardImage,
     beginnerGuidance,
     AnswerGuidance,
-    RewardTipsOverlay,
 } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
 

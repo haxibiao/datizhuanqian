@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 import { ad } from 'native';
 import { app, config } from 'store';
 import { ISAndroid, Tools, Config } from 'utils';
-import { RewardTipsOverlay } from 'components';
+import { RewardOverlay } from 'components';
 import { GQL } from 'apollo';
 import service from 'service';
 
@@ -209,7 +209,7 @@ function getReward(props: Props, video: Video) {
         .then((res: any) => {
             console.log('res', res);
             const reward = Tools.syncGetter('data.userReward', res);
-            RewardTipsOverlay.show({ reward, rewardVideo: true, title });
+            RewardOverlay.show({ reward, rewardVideo: true, title });
         })
         .catch((err: any) => {
             console.log('reward video error', err);

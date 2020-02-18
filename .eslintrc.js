@@ -13,6 +13,8 @@ module.exports = {
         PxDp: true,
         Config: true,
         TOKEN: true,
+        PxFit: true,
+        Tools: true,
     },
     extends: [
         'eslint:recommended',

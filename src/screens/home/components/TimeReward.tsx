@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Image, AppState } from 'react-native';
-import { TouchFeedback, RewardTipsOverlay, FeedOverlay } from 'components';
+import { TouchFeedback, RewardOverlay, FeedOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools, Theme } from 'utils';
 
@@ -94,7 +94,7 @@ const TimeReward = (props: Props) => {
 
         const title = '时段奖励领取成功';
 
-        RewardTipsOverlay.show({ reward: rewardContent, navigation, title, type: 'TimeReward' });
+        RewardOverlay.show({ reward: rewardContent, navigation, title, type: 'TimeReward' });
     };
 
     const minute = Math.floor(time / 60) > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);

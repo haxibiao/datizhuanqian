@@ -18,4 +18,8 @@ declare const Toast: any;
 
 declare const Config: any;
 
+declare const PxFit: any;
+
+declare const Tools: any;
+
 declare let TOKEN: any;

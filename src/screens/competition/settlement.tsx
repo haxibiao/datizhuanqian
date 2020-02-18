@@ -11,7 +11,7 @@ import {
     BackHandler,
     Animated,
 } from 'react-native';
-import { PageContainer, NavigatorBar, Avatar, RewardTipsOverlay } from '@src/components';
+import { PageContainer, NavigatorBar, Avatar, RewardOverlay } from '@src/components';
 import { playVideo, syncGetter, useCirculationAnimation } from '@src/common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app, storage } from 'store';
@@ -56,7 +56,7 @@ const over = observer(props => {
         if (error) {
             Toast.show({ content: syncGetter('message', error) ? syncGetter('message', error) : '奖励领取失败' });
         } else if (syncGetter('data.gameReward', res)) {
-            RewardTipsOverlay.show({
+            RewardOverlay.show({
                 reward: syncGetter('data.gameReward', res),
                 rewardVideo: true,
                 title: result === 'victory' ? '胜者奖励领取成功' : '安慰奖领取成功',

@@ -49,6 +49,7 @@ import LoadingOverlay from './Overlay/LoadingOverlay';
 import FeedOverlay from './Overlay/FeedOverlay';
 import AppUpdateOverlay from './Overlay/AppUpdateOverlay';
 import LeaveAppOverlay from './Overlay/LeaveAppOverlay';
+import * as RewardOverlay from './Overlay/RewardOverlay';
 // Layout
 import MasonryList from './Layout/MasonryList';
 // List
@@ -133,6 +134,7 @@ export {
     FeedOverlay,
     AppUpdateOverlay,
     LeaveAppOverlay,
+    RewardOverlay,
     MasonryList,
     PullList,
     ListFooter,

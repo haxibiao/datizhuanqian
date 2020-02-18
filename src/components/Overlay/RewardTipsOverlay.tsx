@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 /*
  * @Author: Gaoxuan
  * @Date:   2019-03-21 16:28:10
  */
 import React, { Fragment } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-
-import Button from '../TouchableView/Button';
 
 import Theme from '../../utils/Theme';
 import { PxFit } from '../../utils/Scale';
@@ -20,9 +19,9 @@ const SCREEN_WIDTH = width;
 const SCREEN_HEIGHT = height;
 
 interface Reward {
-    gold: Number;
-    ticket?: Number;
-    contribute?: Number;
+    gold: number;
+    ticket?: number;
+    contribute?: number;
 }
 
 interface Props {

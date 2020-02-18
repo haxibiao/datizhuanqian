@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated, Linking, AppState } from 'react-native';
 
-import { Button, Row, Iconfont, TouchFeedback, FeedOverlay, RewardTipsOverlay } from 'components';
+import { Button, Row, Iconfont, TouchFeedback, FeedOverlay, RewardOverlay } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
 
 import { Mutation, compose, useMutation, GQL } from 'apollo';
@@ -75,7 +75,7 @@ const TaskItem = (props: Props) => {
         }
         setUnLoading();
         if (res.data.taskReward == 1) {
-            RewardTipsOverlay.show({
+            RewardOverlay.show({
                 reward: {
                     gold: task.gold,
                     ticket: task.ticket,
