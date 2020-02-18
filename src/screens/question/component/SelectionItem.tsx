@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { Iconfont } from '@src/components';
 import { Theme, PxFit } from '@src/utils';
-import { observer, useQuestionStore } from '../store';
+import { observer, useQuestionStore } from '@src/screens/answer/store';
 
 export default observer(({ value, text, style }) => {
     const store = useQuestionStore();
@@ -10,11 +10,11 @@ export default observer(({ value, text, style }) => {
     const [checked, setChecked] = useState(false);
     const choose = useCallback(() => {
         setChecked(c => !c);
-        selectAnswer(answer);
+        selectAnswer(value);
     }, []);
 
     const correct = useMemo(() => {
-        return answer.includes(value.toLocaleLowerCase());
+        return question.answer.includes(value.toLocaleLowerCase());
     }, [value]);
 
     const Label = useMemo(() => {
@@ -49,7 +49,7 @@ export default observer(({ value, text, style }) => {
             <TouchableOpacity opacity={0.8} disabled={submitted} style={[styles.optionItem, style]} onPress={choose}>
                 {Label}
                 <View style={styles.content}>
-                    <Text style={[styles.contentText, contentStyle]}>{option.Text}</Text>
+                    <Text style={styles.contentText}>{text}</Text>
                 </View>
             </TouchableOpacity>
         );

@@ -46,12 +46,15 @@ class QuestionStore {
     }
 
     @action.bound
-    setQuestions(data: Question[]) {
+    public setQuestions(data: Question[]) {
         this.questions = data;
+        if (this.question == null) {
+            this.nextQuestion();
+        }
     }
 
     @action.bound
-    nextQuestion() {
+    public nextQuestion() {
         if (this.questions) {
             this.question = this.questions[QuestionStore.cursor];
             if (this.question.status == 0) {
@@ -66,7 +69,7 @@ class QuestionStore {
     }
 
     @action.bound
-    answerQuestion() {
+    public answerQuestion() {
         this.submitted = true;
         this.answerCount++;
         if (this.question?.answer === this.selectedAnswers.sort().join('')) {
@@ -75,12 +78,12 @@ class QuestionStore {
     }
 
     @action.bound
-    auditQuestion() {
+    public auditQuestion() {
         this.audited = true;
     }
 
     @action.bound
-    selectAnswer(Value: any) {
+    public selectAnswer(Value: any) {
         const convertData = new Set(this.selectedAnswers);
         if (convertData.has(Value)) {
             convertData.delete(Value);

@@ -1,12 +1,21 @@
-import React, { Component } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { TouchFeedback, Row, VideoMark } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { observer, useQuestionStore } from '../store';
+import { observer, useQuestionStore } from '@src/screens/answer/store';
+import { useNavigation } from 'react-navigation-hooks';
 
 const MEDIA_WIDTH = SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(12) * 2;
 
-export default ({ text, picture, video, navigation }) => {
+export default ({ explanation }) => {
+    const navigation = useNavigation();
+    const content = useMemo(() => {
+        const explain = {};
+        explain.video = Tools.syncGetter('video', explanation);
+        explain.text = Tools.syncGetter('content', explanation);
+        explain.image = Tools.syncGetter('images.0.path', explanation);
+    }, [explanation]);
+
     return (
         <View style={styles.shadowView} elevation={10}>
             <View style={styles.shadowTitle}>
@@ -15,18 +24,21 @@ export default ({ text, picture, video, navigation }) => {
                     <Text style={styles.title}>视频解析</Text>
                 </Row>
             </View>
-            {text ? <Text style={styles.explainText}>{'   ' + text}</Text> : null}
-            {picture && (
+            {content.text ? <Text style={styles.explainText}>{'   ' + content.text}</Text> : null}
+            {content.picture && (
                 <TouchFeedback onPress={() => this.showPicture(picture)}>
-                    <Image source={{ uri: picture }} style={styles.imageCover} />
+                    <Image source={{ uri: content.picture }} style={styles.imageCover} />
                 </TouchFeedback>
             )}
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('VideoExplanation', { video })}>
-                <View style={styles.mediaWrap}>
-                    <Image source={require('../../../assets/images/video_explain.jpg')} style={styles.imageCover} />
-                    <VideoMark size={PxFit(60)} />
-                </View>
-            </TouchableWithoutFeedback>
+            {content.video && (
+                <TouchableWithoutFeedback
+                    onPress={() => navigation.navigate('VideoExplanation', { video: content.video })}>
+                    <View style={styles.mediaWrap}>
+                        <Image source={require('../../../assets/images/video_explain.jpg')} style={styles.imageCover} />
+                        <VideoMark size={PxFit(60)} />
+                    </View>
+                </TouchableWithoutFeedback>
+            )}
         </View>
     );
 };

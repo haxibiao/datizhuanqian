@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, ActivityIndicator } from 'react-native';
 import { Player, overlayView, TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont } from '@src/components';
 import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
-import { observer, useQuestionStore } from '../store';
+import { observer, useQuestionStore } from '@src/screens/answer/store';
 import Selections from './Selections';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import question from 'src/screens/question';
@@ -75,7 +75,7 @@ export default observer(({ question }) => {
         <View style={styles.content}>
             <Text style={styles.description}>
                 {answerType}
-                {description}
+                {question.description}
                 {answerReward}
             </Text>
             {content}

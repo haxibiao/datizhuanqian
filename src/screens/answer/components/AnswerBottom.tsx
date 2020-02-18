@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { TouchFeedback, Avatar } from '@src/components';
 import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
@@ -7,13 +7,19 @@ import { exceptionCapture, syncGetter } from '@src/common';
 import { app, config } from '@src/store';
 import { observer, useQuestionStore } from '../store';
 import LinearGradient from 'react-native-linear-gradient';
-import { AnswerOverlay, FirstWithdrawTips, AnswerResult } from './components';
+import { useNavigation } from 'react-navigation-hooks';
+import AnswerOverlay from './AnswerOverlay';
+import FirstWithdrawTips from './FirstWithdrawTips';
+import AnswerResult from './AnswerResult';
 import { Overlay } from 'teaset';
 
 export default observer(({ showComment, isAnswered, isSelf, user }) => {
+    const client = useApolloClient();
+    const navigation = useNavigation();
     const store = useQuestionStore();
     const {
         submitted,
+        isAudit,
         audited,
         question,
         answerCount,
@@ -131,7 +137,7 @@ export default observer(({ showComment, isAnswered, isSelf, user }) => {
             Overlay.show(overlayView);
             resetCursor();
         }
-    }, [client, navigation, answerCount, overlayViewRef]);
+    }, [client, navigation, answerCount]);
 
     useEffect(() => {
         if (!config.disableAd && (submitted || audited)) {
@@ -167,7 +173,7 @@ export default observer(({ showComment, isAnswered, isSelf, user }) => {
                 <Image
                     style={styles.sideButtonIcon}
                     source={
-                        true ? require('@sec/assets/images/ic_like.png') : require('@sec/assets/images/ic_liked.png')
+                        true ? require('@src/assets/images/ic_like.png') : require('@src/assets/images/ic_liked.png')
                     }
                 />
                 <Text style={styles.sideButtonText}>{'100点赞'}</Text>
@@ -175,11 +181,11 @@ export default observer(({ showComment, isAnswered, isSelf, user }) => {
             <TouchableOpacity
                 disabled={buttonInfo.disabled}
                 style={[styles.middleButton, { backgroundColor: buttonInfo.color }]}
-                onPress={oSubmit}>
+                onPress={onSubmit}>
                 <Text style={styles.middleButtonText}>{buttonInfo.name}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.sideButton} onPress={showComment}>
-                <Image style={styles.sideButtonIcon} source={require('@sec/assets/images/comment_item.png')} />
+                <Image style={styles.sideButtonIcon} source={require('@src/assets/images/comment_item.png')} />
                 <Text style={styles.sideButtonText}>{'20评论'}</Text>
             </TouchableOpacity>
         </LinearGradient>

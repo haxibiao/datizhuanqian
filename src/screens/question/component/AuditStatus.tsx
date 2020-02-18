@@ -1,9 +1,9 @@
 import React, { useRef, useState, useMemo, useEffect, useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { Iconfont } from '@src/components';
+import { Iconfont, Row, TouchFeedback } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { observer, useQuestionStore } from '../store';
+import { observer, useQuestionStore } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
 
 export default observer(() => {

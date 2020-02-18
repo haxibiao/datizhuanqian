@@ -3,16 +3,21 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { Iconfont } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { observer, useQuestionStore } from '../store';
+import { observer, useQuestionStore } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
 
 export default observer(() => {
     const store = useQuestionStore();
     const { question } = store;
     const selections = useMemo(() => question.selections_array, [question]);
-    const animations = useRef(() => selections.map(() => new Animated.Value(0)), [selections]).current;
+    const animations = useRef(
+        selections.map(() => new Animated.Value(0)),
+        [selections],
+    ).current;
     const stopPropagation = useRef(true);
-
+    console.log('====================================');
+    console.log('animations', animations);
+    console.log('====================================');
     useEffect(() => {
         stopPropagation.current = true;
         Animated.parallel(
@@ -37,14 +42,16 @@ export default observer(() => {
                 {
                     translateX: animation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [index % 2 === 0 ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                        outputRange: [order % 2 === 0 ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
                         extrapolate: 'clamp',
                     }),
                 },
             ],
         };
     }, []);
-
+    console.log('====================================');
+    console.log('animations', animations);
+    console.log('====================================');
     return useMemo(() => {
         return (
             <View onStartShouldSetResponder={event => stopPropagation.current}>

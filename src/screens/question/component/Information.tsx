@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { TouchFeedback, Avatar } from '@src/components';
 import { Theme, PxFit, Tools } from '@src/utils';
-import { observer, useQuestionStore } from '../store';
+import { observer, useQuestionStore } from '@src/screens/answer/store';
 
 export default observer(({ question }) => {
     const store = useQuestionStore();
@@ -24,7 +24,7 @@ export default observer(({ question }) => {
         if (count < 1) {
             return '暂无统计';
         }
-        return ((correct / count) * 100).toFixed(1) + '%';
+        return ((correct_count / count) * 100).toFixed(1) + '%';
     }, [question]);
 
     if (Tools.NumberFormat(count) == 0) {
