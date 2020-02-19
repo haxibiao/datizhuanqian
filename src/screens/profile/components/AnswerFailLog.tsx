@@ -4,11 +4,12 @@ import { PageContainer, CustomRefreshControl, ListFooter } from 'components';
 import { Theme, PxFit, Tools } from 'utils';
 
 import { useQuery, GQL } from '@src/apollo';
+import { correctRate } from 'common';
 
 const AnswerFailLog = props => {
     const { navigation } = props;
     const [finished, setFinished] = useState(false);
-    const { data, loading, error, fetchMore, refetch } = useQuery(GQL.answerHistoriesQuery, {
+    const { data, loading, error, fetchMore, refetch } = useQuery(GQL.WrongAnswersQuery, {
         fetchPolicy: 'network-only',
     });
 
@@ -40,13 +41,14 @@ const AnswerFailLog = props => {
                             style={[
                                 styles.answerText,
                                 {
-                                    color:
-                                        Tools.syncGetter('correct_count', item) > 0
-                                            ? Theme.correctColor
-                                            : Theme.errorColor,
+                                    color: Theme.errorColor,
                                 },
                             ]}>
-                            {Tools.syncGetter('correct_count', item) > 0 ? '您答对了' : '您答错了'}
+                            错误率
+                            {correctRate(
+                                Tools.syncGetter('question.wrong_count', item),
+                                Tools.syncGetter('question.count', item),
+                            )}
                         </Text>
                         <Text style={[styles.answerText]}>#{Tools.syncGetter('question.id', item)}</Text>
                     </View>
@@ -55,14 +57,14 @@ const AnswerFailLog = props => {
         </TouchableWithoutFeedback>
     );
 
-    const answerHistories = Tools.syncGetter('user.answerHistories', data);
-    const empty = answerHistories && answerHistories.length === 0;
+    const wrongAnswers = Tools.syncGetter('wrongAnswers', data);
+    const empty = wrongAnswers && wrongAnswers.length === 0;
 
     return (
         <PageContainer hiddenNavBar refetch={refetch} loading={loading} error={error} empty={empty}>
             <FlatList
                 contentContainerStyle={styles.container}
-                data={answerHistories}
+                data={wrongAnswers}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => questionItem(item)}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
@@ -70,27 +72,21 @@ const AnswerFailLog = props => {
                 onEndReached={() => {
                     fetchMore({
                         variables: {
-                            offset: answerHistories.length,
+                            offset: wrongAnswers.length,
                         },
-                        updateQuery: (prev: { user: { answerHistories: any } }, { fetchMoreResult }: any) => {
+                        updateQuery: (prev: { wrongAnswers: any }, { fetchMoreResult }: any) => {
                             if (
                                 !(
                                     fetchMoreResult &&
-                                    fetchMoreResult.user &&
-                                    fetchMoreResult.user.answerHistories &&
-                                    fetchMoreResult.user.answerHistories.length > 0
+                                    fetchMoreResult.wrongAnswers &&
+                                    fetchMoreResult.wrongAnswers.length > 0
                                 )
                             ) {
                                 setFinished(true);
                                 return prev;
                             }
                             return Object.assign({}, prev, {
-                                user: Object.assign({}, prev.user, {
-                                    answerHistories: [
-                                        ...prev.user.answerHistories,
-                                        ...fetchMoreResult.user.answerHistories,
-                                    ],
-                                }),
+                                wrongAnswers: [...prev.wrongAnswers, ...fetchMoreResult.wrongAnswers],
                             });
                         },
                     });

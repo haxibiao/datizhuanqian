@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
 
-import { View, StyleSheet, BackHandler } from 'react-native';
-import { PageContainer, EmptyView, Banner, LeaveAppOverlay } from 'components';
+import { View, StyleSheet } from 'react-native';
+import { PageContainer, EmptyView, Banner } from 'components';
 import { Theme } from 'utils';
 
 import TaskBody from './components/TaskBody';
