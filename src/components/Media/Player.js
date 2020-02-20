@@ -65,7 +65,7 @@ class Player extends Component {
     };
 
     render() {
-        let { video, style } = this.props;
+        let { video, style, size = { width: SCREEN_WIDTH, height: SCREEN_WIDTH * 0.65 } } = this.props;
         let {
             status,
             orientation,
@@ -93,7 +93,7 @@ class Player extends Component {
                               position: 'absolute',
                               zIndex: 10000,
                           }
-                        : styles.defaultSize,
+                        : size,
                 ]}>
                 {status !== 'notWifi' && (
                     <Video
@@ -136,10 +136,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#000000',
-    },
-    defaultSize: {
-        width: SCREEN_WIDTH,
-        height: SCREEN_WIDTH * 0.65,
     },
     videoStyle: {
         position: 'absolute',

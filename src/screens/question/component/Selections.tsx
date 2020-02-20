@@ -3,11 +3,10 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { Iconfont } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { observer, useQuestionStore } from '@src/screens/answer/store';
+import { observer } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
 
-export default observer(() => {
-    const store = useQuestionStore();
+export default observer(({ store }) => {
     const { question } = store;
     const selections = useMemo(() => question.selections_array, [question]);
     const animations = useRef(
@@ -49,9 +48,7 @@ export default observer(() => {
             ],
         };
     }, []);
-    console.log('====================================');
-    console.log('animations', animations);
-    console.log('====================================');
+
     return useMemo(() => {
         return (
             <View onStartShouldSetResponder={event => stopPropagation.current}>
@@ -59,6 +56,7 @@ export default observer(() => {
                     return (
                         <Animated.View style={createAnimate(animations[index], index)} key={option + index}>
                             <SelectionItem
+                                store={store}
                                 value={option.Value}
                                 text={option.Text}
                                 style={{ marginBottom: PxFit(20) }}

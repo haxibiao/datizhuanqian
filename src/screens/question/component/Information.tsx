@@ -1,97 +1,129 @@
-import React, { useMemo, useEffect } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
-import { TouchFeedback, Avatar } from '@src/components';
-import { Theme, PxFit, Tools } from '@src/utils';
-import { observer, useQuestionStore } from '@src/screens/answer/store';
+import React, { useMemo, useEffect, useCallback } from 'react';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { TouchFeedback, Avatar, Iconfont } from '@src/components';
+import { Theme, PxFit, Tools, SCREEN_HEIGHT } from '@src/utils';
+import { observer } from '@src/screens/answer/store';
+import { Overlay } from 'teaset';
+import { useNavigation } from 'react-navigation-hooks';
+import Explain from './Explain';
 
 export default observer(({ question }) => {
-    const store = useQuestionStore();
-    const { user, correct_count, count } = question;
+    const { explanation } = question;
+    const navigation = useNavigation();
 
-    const askQuestionUser = useMemo(() => {
-        if (user.id == 1) {
-            return null;
-        }
-        return (
-            <TouchFeedback style={styles.userItem} onPress={() => navigation.navigate('User', { user })}>
-                <Avatar source={user.avatar} userId={user.id} size={PxFit(24)} />
-                <Text style={styles.userName}>{user.name}</Text>
-            </TouchFeedback>
+    const showExplanation = useCallback(() => {
+        let overlayRef;
+        const explainContent = (
+            <Overlay.PullView
+                style={{ flexDirection: 'column', justifyContent: 'flex-end' }}
+                containerStyle={{ backgroundColor: 'transparent' }}
+                animated={true}
+                ref={ref => (overlayRef = ref)}>
+                <View style={styles.explainWrap}>
+                    <ScrollView contentContainerStyle={styles.explainContainer} showsVerticalScrollIndicator={false}>
+                        <View style={styles.overlayHeader}>
+                            <Text style={styles.titleText}>题目解析</Text>
+                            <TouchableOpacity style={styles.closeButton} onPress={() => overlayRef.close()}>
+                                <Iconfont name="close" size={PxFit(20)} color={'#9E9E9E'} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.overlayContent}>
+                            <Explain explanation={explanation} navigation={navigation} />
+                        </View>
+                    </ScrollView>
+                </View>
+            </Overlay.PullView>
         );
-    }, [user]);
+        Overlay.show(explainContent);
+    }, [explanation, navigation]);
 
     const correctRate = useMemo(() => {
-        if (count < 1) {
+        if (question.count < 1) {
             return '暂无统计';
         }
-        return ((correct_count / count) * 100).toFixed(1) + '%';
+        return ((question.correct_count / question.count) * 100).toFixed(1) + '%';
     }, [question]);
 
-    if (Tools.NumberFormat(count) == 0) {
-        return null;
-    }
-
     return (
-        <View style={styles.shadowView} elevation={20}>
-            <View style={styles.wrap}>
-                <View style={styles.analysisItem}>
-                    <Text style={styles.itemName}>正确答案</Text>
-                    <Text style={{ fontSize: PxFit(14), color: Theme.correctColor }}>{question.answer}</Text>
+        <View style={styles.information}>
+            <View style={styles.infoItemWrap}>
+                <View style={styles.infoItem}>
+                    <Text style={styles.answerText}>{`正确答案：${question.answer}`}</Text>
                 </View>
-                {askQuestionUser}
+                {explanation && (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.infoItem} onPress={showExplanation}>
+                        <Iconfont
+                            name="question"
+                            size={PxFit(16)}
+                            color={'#27AFF8'}
+                            style={{ marginRight: PxFit(2), marginTop: PxFit(1) }}
+                        />
+                        <Text style={styles.explainText}>查看解析</Text>
+                    </TouchableOpacity>
+                )}
             </View>
-            <View style={styles.wrap}>
-                <View style={styles.analysisItem}>
-                    <Text style={styles.itemName}>作答人数</Text>
-                    <Text style={{ fontSize: PxFit(14), color: Theme.secondaryColor }}>
-                        {Tools.NumberFormat(count)}
-                    </Text>
+            {question.count > 1 && (
+                <View style={styles.answerCount}>
+                    <Text style={styles.countText}>{`${Tools.NumberFormat(
+                        question.count,
+                    )}人答过，答对率为${correctRate}`}</Text>
                 </View>
-                <View style={styles.analysisItem}>
-                    <Text style={styles.itemName}>正确率</Text>
-                    <Text style={{ fontSize: PxFit(14), color: Theme.primaryColor }}>{correctRate}</Text>
-                </View>
-            </View>
+            )}
         </View>
     );
 });
 
 const styles = StyleSheet.create({
-    itemName: {
-        color: Theme.secondaryTextColor,
-        fontSize: PxFit(15),
-        fontWeight: '500',
-        marginBottom: PxFit(Theme.itemSpace),
-    },
-    shadowView: {
-        backgroundColor: '#fff',
+    information: {
+        backgroundColor: '#F2F5F7',
         borderRadius: PxFit(5),
-        flexDirection: 'row',
         marginBottom: PxFit(20),
-        padding: PxFit(Theme.itemSpace),
-        shadowColor: '#b4b4b4',
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 1,
+        padding: PxFit(15),
     },
-    analysisItem: {
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'center',
-    },
-    usersContainer: {
-        alignItems: 'center',
+    infoItemWrap: {
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: PxFit(Theme.itemSpace),
     },
-    userItem: {
+    infoItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: PxFit(Theme.itemSpace),
     },
-    userName: { fontSize: PxFit(13), color: Theme.defaultTextColor, paddingLeft: PxFit(6) },
+    answerCount: {
+        marginTop: PxFit(20),
+    },
+    answerText: { fontSize: PxFit(15), color: Theme.defaultTextColor, fontWeight: 'bold' },
+    explainText: { fontSize: PxFit(15), color: '#27AFF8' },
+    countText: { fontSize: PxFit(14), color: '#525252' },
+    explainWrap: {
+        height: PxFit(400),
+        maxHeight: SCREEN_HEIGHT / 2,
+        backgroundColor: '#fff',
+        overflow: 'hidden',
+        borderTopLeftRadius: PxFit(6),
+        borderTopRightRadius: PxFit(6),
+    },
+    explainContainer: {
+        flexGrow: 1,
+        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+    },
+    overlayHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottomWidth: PxFit(1),
+        borderBottomColor: '#F2F5F7',
+    },
+    titleText: {
+        marginLeft: PxFit(12),
+        fontSize: PxFit(16),
+        color: '#212121',
+    },
+    closeButton: {
+        padding: PxFit(12),
+        alignSelf: 'stretch',
+    },
+    overlayContent: {
+        flex: 1,
+    },
 });

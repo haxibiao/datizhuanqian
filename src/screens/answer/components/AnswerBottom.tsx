@@ -12,11 +12,24 @@ import AnswerOverlay from './AnswerOverlay';
 import FirstWithdrawTips from './FirstWithdrawTips';
 import AnswerResult from './AnswerResult';
 import { Overlay } from 'teaset';
+import { BoxShadow } from 'react-native-shadow';
+const shadowOpt = {
+    width: SCREEN_WIDTH,
+    height: Theme.HOME_INDICATOR_HEIGHT + PxFit(60),
+    color: '#E8E8E8',
+    border: PxFit(1),
+    // radius: PxFit(10),
+    opacity: 0.5,
+    x: 0,
+    y: -1,
+    style: {
+        marginTop: 0,
+    },
+};
 
-export default observer(({ showComment, isAnswered, isSelf, user }) => {
+export default observer(({ showComment, isAnswered, isSelf, user, store }) => {
     const client = useApolloClient();
     const navigation = useNavigation();
-    const store = useQuestionStore();
     const {
         submitted,
         isAudit,
@@ -31,7 +44,7 @@ export default observer(({ showComment, isAnswered, isSelf, user }) => {
     } = store;
     const [likeState, setLikeState] = useState({ likes: question.count_likes, liked: question.liked });
 
-    const [likeMutation] = useMutation(GQL.QuestionAnswerMutation, {
+    const [likeMutation] = useMutation(GQL.toggleLikeMutation, {
         variables: {
             likable_id: question.id,
             likable_type: 'QUESTION',
@@ -63,42 +76,50 @@ export default observer(({ showComment, isAnswered, isSelf, user }) => {
     }, [likeMutation]);
 
     // 提交后显示模态框
-    const showResultsOverlay = useCallback(() => {
-        // 计算模态框所需参数;
-        let result, gold, ticket;
-        const type = isAudit ? 'audit' : 'answer';
-        if (isAudit) {
-            gold = 0;
-            ticket = question.ticket;
-            result = audited;
-        } else {
-            if (question.answer === selectedAnswers.sort().join('')) {
-                gold = question.gold;
-                ticket = user.ticket || 0;
-                result = true;
-            } else {
+    const showResultsOverlay = useCallback(
+        ({ question, isAudit, audited, selectedAnswers }) => {
+            // 计算模态框所需参数;
+            let result, gold, ticket;
+            const type = isAudit ? 'audit' : 'answer';
+            if (isAudit) {
                 gold = 0;
                 ticket = question.ticket;
-                result = false;
+                result = audited;
+            } else {
+                if (question.answer === selectedAnswers.sort().join('')) {
+                    gold = question.gold;
+                    ticket = user.ticket || 0;
+                    result = true;
+                } else {
+                    gold = 0;
+                    ticket = question.ticket;
+                    result = false;
+                }
             }
-        }
-        AnswerOverlay.show({ gold, ticket, result, type, question });
-    }, [isAudit, question, selectedAnswers, audited]);
+            AnswerOverlay.show({ question, result, gold, ticket, type });
+        },
+        [user],
+    );
 
     // 提交
     const onSubmit = useCallback(async () => {
-        if (selectedAnswers.length > 0) {
+        if (selectedAnswers.length > 0 && !submitted) {
             answerQuestion();
+            showResultsOverlay({
+                isAudit,
+                audited,
+                question,
+                selectedAnswers,
+            });
             try {
                 await answerMutation();
-            } catch (ex) {
-                Toast.show({ content: syncGetter('0.message', ex) || '好像出了点问题' });
+            } catch (err) {
+                Toast.show({ content: err.toString().replace(/Error: GraphQL error: /, '') || '好像出了点问题' });
             }
-            showResultsOverlay();
         } else {
             nextQuestion();
         }
-    }, [selectedAnswers, showResultsOverlay, answerMutation]);
+    }, [isAudit, audited, submitted, question, selectedAnswers, showResultsOverlay, answerMutation]);
 
     // 提现提示
     const withdrawTips = useCallback(() => {
@@ -147,48 +168,48 @@ export default observer(({ showComment, isAnswered, isSelf, user }) => {
     }, [submitted, audited]);
 
     const buttonInfo = useMemo(() => {
+        // 5F93FD
         const info = {
             name: '下一题',
-            color: '#4884FD',
+            color: '#FFCC01',
             disabled: false,
         };
         if (isAnswered || isSelf) {
             info.name = isSelf ? '仅浏览' : '已答过';
             info.color = '#666666';
             info.disabled = true;
-        } else if (selectedAnswers) {
+        } else if (selectedAnswers.length > 0 && !submitted) {
             info.name = '提交答案';
-            info.color = '#2AC89F';
+            info.color = '#74A1FF';
         }
         return info;
     }, [selectedAnswers, submitted, isAudit]);
-
     return (
-        <LinearGradient
-            style={styles.container}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
-            colors={['rgba(255,255,255,1)', 'rgba(255,255,255,0)']}>
-            <TouchableOpacity style={styles.sideButton} onPress={likeQuestion}>
-                <Image
-                    style={styles.sideButtonIcon}
-                    source={
-                        true ? require('@src/assets/images/ic_like.png') : require('@src/assets/images/ic_liked.png')
-                    }
-                />
-                <Text style={styles.sideButtonText}>{'100点赞'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                disabled={buttonInfo.disabled}
-                style={[styles.middleButton, { backgroundColor: buttonInfo.color }]}
-                onPress={onSubmit}>
-                <Text style={styles.middleButtonText}>{buttonInfo.name}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sideButton} onPress={showComment}>
-                <Image style={styles.sideButtonIcon} source={require('@src/assets/images/comment_item.png')} />
-                <Text style={styles.sideButtonText}>{'20评论'}</Text>
-            </TouchableOpacity>
-        </LinearGradient>
+        <BoxShadow setting={shadowOpt}>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.sideButton} onPress={likeQuestion}>
+                    <Image
+                        style={styles.sideButtonIcon}
+                        source={
+                            likeState.liked
+                                ? require('@src/assets/images/ic_liked.png')
+                                : require('@src/assets/images/ic_like.png')
+                        }
+                    />
+                    {/* <Text style={styles.sideButtonText}>{'100点赞'}</Text> */}
+                </TouchableOpacity>
+                <TouchableOpacity
+                    disabled={buttonInfo.disabled}
+                    style={[styles.middleButton, { backgroundColor: buttonInfo.color }]}
+                    onPress={onSubmit}>
+                    <Text style={styles.middleButtonText}>{buttonInfo.name}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.sideButton} onPress={showComment}>
+                    <Image style={styles.sideButtonIcon} source={require('@src/assets/images/comment_item.png')} />
+                    {/* <Text style={styles.sideButtonText}>{'20评论'}</Text> */}
+                </TouchableOpacity>
+            </View>
+        </BoxShadow>
     );
 });
 
@@ -198,21 +219,23 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         paddingTop: PxFit(10),
         paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(10),
+        backgroundColor: '#fff',
         // borderTopLeftRadius: PxFit(10),
         // borderTopRightRadius: PxFit(10),
     },
     sideButton: {
-        width: PxFit(40),
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: PxFit(20),
     },
     sideButtonIcon: {
-        width: PxFit(40),
-        height: PxFit(40),
-        borderRadius: PxFit(20),
+        width: PxFit(36),
+        height: PxFit(36),
+        borderRadius: PxFit(18),
     },
     sideButtonText: {
         fontSize: PxFit(12),
@@ -220,16 +243,16 @@ const styles = StyleSheet.create({
         marginTop: PxFit(4),
     },
     middleButton: {
-        width: middleButtonWidth,
-        height: PxFit(48),
-        borderRadius: PxFit(24),
+        width: PxFit(130),
+        height: PxFit(40),
+        borderRadius: PxFit(20),
         justifyContent: 'center',
         alignItems: 'center',
     },
     middleButtonText: {
         fontSize: PxFit(16),
-        color: '#212121',
+        color: '#fff',
         fontWeight: '500',
-        letterSpacing: PxFit(4),
+        letterSpacing: PxFit(2),
     },
 });

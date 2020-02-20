@@ -3,8 +3,10 @@ import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { Iconfont, TouchFeedback } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { observer, useQuestionStore } from '@src/screens/answer/store';
-import AuditResultOverlay from '@src/answer/components/AuditResultOverlay';
+import { app, config } from '@src/store';
+import { useMutation, GQL } from '@src/apollo';
+import { observer } from '@src/screens/answer/store';
+import AuditResultOverlay from '@src/screens/answer/components/AuditResultOverlay';
 
 const auditImage = {
     pending: require('@src/assets/images/auditing.png'),
@@ -14,11 +16,23 @@ const auditImage = {
 
 type AuditStatus = 'pending' | 'reject' | 'resolve';
 
-export default observer(({ callback }) => {
-    const store = useQuestionStore();
+export default observer(({ store }) => {
     const { question, audited, auditQuestion } = store;
     const [auditStatus, setAuditStatus] = useState('pending');
     const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 300 });
+    const [auditMutation] = useMutation(GQL.auditMutation, {
+        variables: {
+            question_id: question.id,
+            status: auditStatus === 'resolve',
+        },
+        refetchQueries: () => [
+            {
+                query: GQL.UserMetaQuery,
+                variables: { id: app.me.id },
+                fetchPolicy: 'network-only',
+            },
+        ],
+    });
 
     useEffect(() => {
         startAnimation();
@@ -39,38 +53,18 @@ export default observer(({ callback }) => {
         };
     }, [animation]);
 
-    const onAudit = useCallback((status: AuditStatus) => {
-        callback();
-        setApprove(status);
+    const onAudit = useCallback(async (status: AuditStatus) => {
+        setAuditStatus(status);
+        AuditResultOverlay.show({});
+        try {
+            await auditMutation();
+        } catch (errors) {
+            const str = errors.toString().replace(/Error: GraphQL error: /, '');
+            Toast.show({ content: str });
+            setAuditStatus('pending');
+        }
         auditQuestion();
     }, []);
-
-    // onSubmitOpinion = async status => {
-    //     this.setState({ auditStatus: status }, () => {
-    //         // this.showResultsOverlay();
-    //         AuditResultOverlay.show({});
-    //     });
-    //     try {
-    //         await this.props.auditMutation({
-    //             variables: {
-    //                 question_id: this.state.question.id,
-    //                 status: status > 0 ? true : false,
-    //             },
-    //             refetchQueries: () => [
-    //                 {
-    //                     query: GQL.UserMetaQuery,
-    //                     variables: { id: app.me.id },
-    //                     fetchPolicy: 'network-only',
-    //                 },
-    //             ],
-    //         });
-    //     } catch (errors) {
-    //         const str = errors.toString().replace(/Error: GraphQL error: /, '');
-    //         Toast.show({ content: str });
-    //         this.setState({ auditStatus: 0 });
-    //     }
-    //     this.setState({ submited: true });
-    // };
 
     return (
         <Animated.View style={[styles.footerBar, animationStyle]}>

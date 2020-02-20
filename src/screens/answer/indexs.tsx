@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useMemo, useCallback, useEffect, createContext } from 'react';
 import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity } from 'react-native';
 import {
     Row,
@@ -22,32 +22,31 @@ import Placeholder from './components/Placeholder';
 import ChooseOverlay from './components/ChooseOverlay';
 import AnswerBottom from './components/AnswerBottom';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
-import { observer, useQuestionStore } from './store';
+import { observer, QuestionStore } from './store';
 import CommentOverlay from '@src/screens/comment/CommentOverlay';
 
 export default observer(props => {
     const client = useApolloClient();
+    const store = useRef(new QuestionStore()).current;
     const navigation = useNavigation();
     const category = useMemo(() => navigation.getParam('category', {}), []);
-    const store = useQuestionStore();
     const { setQuestions, question, isAudit, submitted } = store;
-
     const [finished, setFinished] = useState(false);
     const [error, setError] = useState(false);
     const [minLevel, setMinLevel] = useState(2);
     const commentRef = useRef();
 
-    // const showComment = useCallback(() => {
-    //     if (!isAudit && !submitted) {
-    //         Toast.show({ content: '答完此题再评论哦', layout: 'bottom' });
-    //     } else {
-    //         commentRef.current.slideUp();
-    //     }
-    // }, [isAudit, submitted, commentRef]);
+    const showComment = useCallback(() => {
+        if (!isAudit && !submitted) {
+            Toast.show({ content: '答完此题再评论哦', layout: 'bottom' });
+        } else {
+            commentRef.current.slideUp();
+        }
+    }, [isAudit, submitted, commentRef]);
 
-    // const hideComment = useCallback(() => {
-    //     commentRef.current.slideDown();
-    // }, [commentRef]);
+    const hideComment = useCallback(() => {
+        commentRef.current.slideDown();
+    }, [commentRef]);
 
     const { data: user } = useQuery(GQL.UserMeansQuery, {
         variables: { variables: { id: app.me.id } },
@@ -73,7 +72,7 @@ export default observer(props => {
             Toast.show({ content: str });
             setError(error);
         }
-    }, [client]);
+    }, [store, client, category]);
 
     useEffect(() => {
         fetchQuestions();
@@ -129,10 +128,9 @@ export default observer(props => {
 
         return (
             <View style={styles.container}>
-                {!config.isFullScreen && <Banner isAnswer showWithdraw navigation={navigation} />}
                 <ScrollView
                     contentContainerStyle={[
-                        styles.scrollStyle,
+                        styles.scrollContent,
                         {
                             paddingBottom: isAudit ? SCREEN_WIDTH / 3 : 0,
                         },
@@ -141,20 +139,24 @@ export default observer(props => {
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                     scrollEnabled={!config.isFullScreen}>
-                    <View style={styles.content}>
-                        <Question question={question} />
+                    <View style={styles.content} key={question.id}>
+                        <Question question={question} store={store} />
                         {submitted && <Information question={question} />}
-                        {isAudit && <AuditStatus question={question} />}
-                        {(submitted || isAudit) && question.explanation && (
-                            <Explain explanation={question.explanation} />
-                        )}
+                        {isAudit && <AuditStatus question={question} store={store} />}
                     </View>
-                    {isAudit && <Audit question={question} />}
+                    {isAudit && <Audit question={question} store={store} key={question.id} />}
                 </ScrollView>
-                <AnswerBottom question={question} user={user} />
+                <AnswerBottom
+                    key={question.id}
+                    showComment={showComment}
+                    question={question}
+                    user={user}
+                    store={store}
+                />
             </View>
         );
-    }, [submitted, fetchQuestions, question, finished, error, isAudit, navigation, user]);
+    });
+    // [submitted, fetchQuestions, question, finished, error, isAudit, navigation, user]
 
     return (
         <React.Fragment>
@@ -173,15 +175,15 @@ export default observer(props => {
                 hiddenNavBar={config.isFullScreen}
                 titleStyle={{ color: Theme.defaultTextColor }}
                 navBarStyle={{
-                    borderBottomWidth: 0,
-                    borderBottomColor: '#fff',
+                    borderBottomWidth: PxFit(1),
+                    borderBottomColor: '#f0f0f0',
                     backgroundColor: '#fff',
                 }}
                 backButtonColor={Theme.defaultTextColor}>
                 {config.isFullScreen && <StatusBar translucent={true} hidden />}
                 {content}
             </PageContainer>
-            {/* <CommentOverlay ref={commentRef} question={question} /> */}
+            <CommentOverlay ref={commentRef} question={question} />
         </React.Fragment>
     );
 });
@@ -197,8 +199,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: PxFit(40),
     },
-    scrollStyle: {
+    scrollContent: {
         backgroundColor: '#fefefe',
         flexGrow: 1,
+    },
+    content: {
+        paddingVertical: PxFit(15),
+        paddingHorizontal: PxFit(12),
     },
 });

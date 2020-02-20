@@ -1,20 +1,25 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { Iconfont } from '@src/components';
 import { Theme, PxFit } from '@src/utils';
-import { observer, useQuestionStore } from '@src/screens/answer/store';
+import { observer } from '@src/screens/answer/store';
 
-export default observer(({ value, text, style }) => {
-    const store = useQuestionStore();
-    const { question, submitted, selectAnswer, selectedAnswers } = store;
+export default observer(({ value, text, style, store }) => {
+    const { question, submitted, selectAnswer, selectedAnswers, isMultiple } = store;
     const [checked, setChecked] = useState(false);
     const choose = useCallback(() => {
         setChecked(c => !c);
         selectAnswer(value);
     }, []);
 
+    useEffect(() => {
+        if (!isMultiple && !selectedAnswers.includes(value)) {
+            setChecked(false);
+        }
+    }, [value, selectedAnswers, isMultiple]);
+
     const correct = useMemo(() => {
-        return question.answer.includes(value.toLocaleLowerCase());
+        return question.answer.includes(value);
     }, [value]);
 
     const Label = useMemo(() => {
@@ -29,8 +34,8 @@ export default observer(({ value, text, style }) => {
                 style = { backgroundColor: Theme.errorColor, borderWidth: 0 };
                 color = '#fff';
             } else {
-                style = { borderColor: '#BCBCBC' };
-                color = '#BCBCBC';
+                style = { borderWidth: PxFit(1), borderColor: '#9E9E9E' };
+                color = '#9E9E9E';
             }
         } else if (checked) {
             style = { backgroundColor: '#b6c2e1', borderWidth: 0 };
@@ -80,6 +85,6 @@ const styles = StyleSheet.create({
     contentText: {
         fontSize: PxFit(16),
         lineHeight: PxFit(26),
-        color: '#6C6C6C',
+        color: '#525252',
     },
 });

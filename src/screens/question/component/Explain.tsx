@@ -1,86 +1,93 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import React, { useMemo, useCallback } from 'react';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { TouchFeedback, Row, VideoMark } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
+import { Theme, PxFit, SCREEN_WIDTH, Tools } from '@src/utils';
 import { observer, useQuestionStore } from '@src/screens/answer/store';
-import { useNavigation } from 'react-navigation-hooks';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
-const MEDIA_WIDTH = SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(12) * 2;
+const MEDIA_WIDTH = SCREEN_WIDTH - PxFit(24);
 
-export default ({ explanation }) => {
-    const navigation = useNavigation();
-    const content = useMemo(() => {
-        const explain = {};
-        explain.video = Tools.syncGetter('video', explanation);
-        explain.text = Tools.syncGetter('content', explanation);
-        explain.image = Tools.syncGetter('images.0.path', explanation);
+export default ({ explanation, navigation }) => {
+    const explain = useMemo(() => {
+        const result = {};
+        result.video = Tools.syncGetter('video', explanation);
+        result.text = Tools.syncGetter('content', explanation);
+        result.image = Tools.syncGetter('images.0.path', explanation);
+        return result;
     }, [explanation]);
 
+    const showPicture = useCallback(() => {
+        const imageViewer = (
+            <ImageViewer
+                onSwipeDown={() => OverlayViewer.hide()}
+                imageUrls={[{ url: explain.image }]}
+                enableSwipeDown
+                saveToLocalByLongPress={false}
+                loadingRender={() => {
+                    return <ActivityIndicator size="large" color={'#fff'} />;
+                }}
+            />
+        );
+        OverlayViewer.show(imageViewer);
+    }, [explain]);
+
     return (
-        <View style={styles.shadowView} elevation={10}>
-            <View style={styles.shadowTitle}>
-                <Row>
-                    <View style={styles.yellowDot} />
-                    <Text style={styles.title}>视频解析</Text>
-                </Row>
-            </View>
-            {content.text ? <Text style={styles.explainText}>{'   ' + content.text}</Text> : null}
-            {content.picture && (
-                <TouchFeedback onPress={() => this.showPicture(picture)}>
-                    <Image source={{ uri: content.picture }} style={styles.imageCover} />
-                </TouchFeedback>
+        <View style={styles.explainContainer} elevation={10}>
+            {explain.text && (
+                <View style={styles.contentContainer}>
+                    <Text style={styles.content}>{`解析：${explain.text}`}</Text>
+                </View>
             )}
-            {content.video && (
-                <TouchableWithoutFeedback
-                    onPress={() => navigation.navigate('VideoExplanation', { video: content.video })}>
-                    <View style={styles.mediaWrap}>
-                        <Image source={require('../../../assets/images/video_explain.jpg')} style={styles.imageCover} />
-                        <VideoMark size={PxFit(60)} />
-                    </View>
-                </TouchableWithoutFeedback>
+
+            {explain.picture && (
+                <View style={styles.mediaContainer}>
+                    <TouchableWithoutFeedback onPress={showPicture}>
+                        <Image source={{ uri: explain.picture }} style={styles.imageCover} />
+                    </TouchableWithoutFeedback>
+                </View>
+            )}
+
+            {explain.video && (
+                <View style={styles.mediaContainer}>
+                    <TouchableWithoutFeedback
+                        onPress={() => navigation.navigate('VideoExplanation', { video: explain.video })}>
+                        <View style={styles.imageCover}>
+                            <Image source={require('@src/assets/images/video_explain.jpg')} style={styles.cover} />
+                            <VideoMark size={PxFit(60)} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    shadowView: {
-        marginBottom: PxFit(20),
+    explainContainer: {
         padding: PxFit(12),
-        borderRadius: PxFit(5),
         backgroundColor: '#fff',
-        shadowColor: '#b4b4b4',
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowRadius: 1,
-        shadowOpacity: 0.3,
     },
-    shadowTitle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: PxFit(Theme.itemSpace),
+    contentContainer: {
+        backgroundColor: '#F2F5F7',
+        borderRadius: PxFit(2),
+        marginBottom: PxFit(20),
+        padding: PxFit(10),
     },
-    yellowDot: {
-        marginRight: PxFit(6),
-        width: PxFit(6),
-        height: PxFit(6),
-        borderRadius: PxFit(3),
-        backgroundColor: Theme.primaryColor,
+    content: {
+        fontSize: PxFit(17),
+        lineHeight: PxFit(25),
+        color: '#525252',
     },
-    title: {
-        fontSize: PxFit(14),
-        color: Theme.defaultTextColor,
+    mediaContainer: {
+        marginBottom: PxFit(20),
     },
-    mediaWrap: {
+    imageCover: {
         width: MEDIA_WIDTH,
         height: MEDIA_WIDTH * 0.6,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    imageCover: {
+    cover: {
         position: 'absolute',
         width: null,
         height: null,
@@ -90,11 +97,5 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    explainText: {
-        marginTop: PxFit(Theme.itemSpace),
-        fontSize: PxFit(16),
-        lineHeight: PxFit(24),
-        color: Theme.defaultTextColor,
     },
 });
