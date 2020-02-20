@@ -27,7 +27,7 @@ export default function(callback: Promise) {
         .then(result => {
             callback(result);
         })
-        .catch(err => {
+        .catch(() => {
             callback({
                 enable_splash: false,
                 enable_question: true,

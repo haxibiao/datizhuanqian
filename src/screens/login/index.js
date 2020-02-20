@@ -1,34 +1,21 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Image, Text } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, PopOverlay, Button, CustomTextInput } from 'components';
+import { StyleSheet, View, Image, Text } from 'react-native';
+import { PageContainer, TouchFeedback, Iconfont, Row, Button, CustomTextInput } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Config } from 'utils';
 
-import { Query, withApollo, compose, graphql, GQL } from 'apollo';
+import { withApollo, compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
-import { WeChat } from 'native';
+import { WeChat, Util } from 'native';
 
 import UserRewardOverlay from '../home/components/UserRewardOverlay';
 
-import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
+import service from 'service';
 
-import { Util } from 'native';
 import DeviceInfo from 'react-native-device-info';
 
-const shadowOpt = {
-    width: SCREEN_WIDTH - Theme.itemSpace * 3,
-    color: '#E8E8E8',
-    border: PxFit(3),
-    radius: PxFit(10),
-    opacity: 0.5,
-    x: 0,
-    y: 1,
-    style: {
-        marginTop: 0,
-    },
-};
 var showThumbType = ['accpunt', 'password'];
 class index extends Component {
     constructor(props) {
@@ -140,7 +127,7 @@ class index extends Component {
 
     //处理注册来源
     signUp = async () => {
-        let { signIn, account, password } = this.state;
+        let { account } = this.state;
         let { client, navigation } = this.props;
         this.setState({
             submitting: true,
@@ -264,47 +251,66 @@ class index extends Component {
                             submitting: true,
                         });
                         console.log('code', code);
-                        this.getWechatInfo(code);
+                        service.getWechatInfo(
+                            code,
+                            result => {
+                                if (result.data && result.data.unionid) {
+                                    // 新用户绑定手机号
+                                    this.props.navigation.navigate('PhoneBind', { data: result.data });
+                                    this.setState({
+                                        submitting: false,
+                                    });
+                                } else {
+                                    // 老用户直接登录
+                                    this.getUserData(result.data.user);
+                                }
+                            },
+                            () => {
+                                Toast.show({ content: '微信账号获取失败' });
+                                this.setState({
+                                    submitting: false,
+                                });
+                            },
+                        );
                     });
                 } else {
                     Toast.show({ content: '未安装微信或当前微信版本较低' });
                 }
             })
             .catch(err => {
-                console.log('err=' + err);
                 Toast.show({ content: '微信请求失败，请使用手机号登录' });
             });
     };
 
-    //获取微信身份信息
-    getWechatInfo = code => {
-        var data = new FormData();
-        data.append('code', code);
+    // //获取微信身份信息
+    // getWechatInfo = code => {
+    //     var data = new FormData();
+    //     data.append('code', code);
 
-        fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
-            method: 'POST',
-            body: data,
-        })
-            .then(response => response.json())
-            .then(result => {
-                if (result.data && result.data.unionid) {
-                    //新用户绑定手机号
-                    this.props.navigation.navigate('PhoneBind', { data: result.data });
-                    this.setState({
-                        submitting: false,
-                    });
-                } else {
-                    //老用户直接登录
-                    this.getUserData(result.data.user);
-                }
-            })
-            .catch(error => {
-                Toast.show({ content: '微信账号获取失败' });
-                this.setState({
-                    submitting: false,
-                });
-            });
-    };
+    //     fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
+    //         method: 'POST',
+    //         body: data,
+    //     })
+    //         .then(response => response.json())
+    //         .then(result => {
+    //             if (result.data && result.data.unionid) {
+    //                 //新用户绑定手机号
+    //                 this.props.navigation.navigate('PhoneBind', { data: result.data });
+    //                 this.setState({
+    //                     submitting: false,
+    //                 });
+    //             } else {
+    //                 //老用户直接登录
+    //                 this.getUserData(result.data.user);
+    //             }
+    //         })
+    //         .catch(() => {
+    //             Toast.show({ content: '微信账号获取失败' });
+    //             this.setState({
+    //                 submitting: false,
+    //             });
+    //         });
+    // };
 
     //微信已存在，直接登录
     getUserData = user => {
@@ -317,11 +323,10 @@ class index extends Component {
                 },
             })
             .then(result => {
-                let token = { token: user.api_token };
                 let userLoginInfo = { ...result.data.user, token: user.api_token };
                 this._saveUserData(userLoginInfo);
             })
-            .catch(error => {
+            .catch(() => {
                 let str = rejected.toString().replace(/Error: GraphQL error: /, '');
                 Toast.show({ content: str });
                 this.setState({
@@ -331,9 +336,8 @@ class index extends Component {
     };
 
     render() {
-        let { me } = app;
         let { navigation } = this.props;
-        let { signIn, submitting, account, password, showThumb, secure, submitTips, readed } = this.state;
+        let { signIn, submitting, account, showThumb, submitTips, readed } = this.state;
         // let disabled = signIn ? !(account && password) : !account;
         let disabled = !account;
         return (
