@@ -22,14 +22,12 @@ import com.alipay.sdk.app.PayTask;
 
 import com.datizhuanqian.R;
 
-
 class AlipayEntryModule extends ReactContextBaseJavaModule {
 
     private String mScope = "user_info";
     static Promise promise = null;
 
     public static final String CODE_KEY = "code";
-
 
     private Context mContext;
 
@@ -39,7 +37,6 @@ class AlipayEntryModule extends ReactContextBaseJavaModule {
 
     }
 
-
     @Override
     public String getName() {
         return "AlipayEntryModule";
@@ -48,10 +45,12 @@ class AlipayEntryModule extends ReactContextBaseJavaModule {
     final OpenAuthTask.Callback openAuthCallback = new OpenAuthTask.Callback() {
         @Override
         public void onResult(int i, String s, Bundle bundle) {
-            String code = bundle.getString("auth_code");
-            AlipayEntryModule.promise.resolve(code);
-            Log.e("code结果",code);
-            Log.e("返回结果",String.format("结果码: %s\n结果信息: %s\n结果数据: %s", i, s, bundleToString(bundle)));
+            if (bundle == null) {
+                AlipayEntryModule.promise.reject("授权失败，请检查是否更新登录或未关闭支付保护");
+            } else {
+                String code = bundle.getString("auth_code");
+                AlipayEntryModule.promise.resolve(code);
+            }
         }
     };
 
@@ -60,10 +59,8 @@ class AlipayEntryModule extends ReactContextBaseJavaModule {
             return "null";
         }
 
-
-
         final StringBuilder sb = new StringBuilder();
-        for (String key: bundle.keySet()) {
+        for (String key : bundle.keySet()) {
             sb.append(key).append("=>").append(bundle.get(key)).append("\n");
         }
         return sb.toString();
@@ -75,7 +72,8 @@ class AlipayEntryModule extends ReactContextBaseJavaModule {
 
         // 传递给支付宝应用的业务参数
         final Map<String, String> bizParams = new HashMap<>();
-        bizParams.put("url", "https://authweb.alipay.com/auth?auth_type=PURE_OAUTH_SDK&app_id=2019112969489742&scope=auth_user&state=init");
+        bizParams.put("url",
+                "https://authweb.alipay.com/auth?auth_type=PURE_OAUTH_SDK&app_id=2019112969489742&scope=auth_user&state=init");
 
         // 支付宝回跳到你的应用时使用的 Intent Scheme。请设置为不和其它应用冲突的值。
         // 如果不设置，将无法使用 H5 中间页的方法(OpenAuthTask.execute() 的最后一个参数)回跳至
@@ -86,16 +84,12 @@ class AlipayEntryModule extends ReactContextBaseJavaModule {
         final String scheme = "dtzq";
         final Activity _this = getCurrentActivity();
         // 唤起授权业务
-        final OpenAuthTask task = new OpenAuthTask(_this
-        );
-        task.execute(
-                scheme,	// Intent Scheme
+        final OpenAuthTask task = new OpenAuthTask(_this);
+        task.execute(scheme, // Intent Scheme
                 OpenAuthTask.BizType.AccountAuth, // 业务类型
                 bizParams, // 业务参数
                 openAuthCallback, // 业务结果回调。注意：此回调必须被你的应用保持强引用
                 false); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转
     }
-
-
 
 }
