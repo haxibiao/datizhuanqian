@@ -59,10 +59,7 @@ const DownLoadApk = props => {
                 path: dirs.DownloadDir + '/' + '懂得赚' + '.apk',
                 fileCache: true,
                 appendExt: 'apk',
-            }).fetch(
-                'GET',
-                url || 'http://cos.dongdezhuan.com/dongdezhuan.apk',
-            );
+            }).fetch('GET', url || 'http://cos.dongdezhuan.com/dongdezhuan.apk');
 
             setDonwloadTask(_donwloadTask);
             console.log('_donwloadTask :', _donwloadTask);
@@ -96,7 +93,7 @@ const DownLoadApk = props => {
 
     const openApk = () => {
         // AppUtil.OpenApk('com.dongdezhuan');
-        createWithdraw(value, 'dongdezhuan');
+        value ? createWithdraw(value, 'dongdezhuan') : AppUtil.OpenApk('com.dongdezhuan');
         props.hide();
     };
 
