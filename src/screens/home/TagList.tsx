@@ -111,7 +111,7 @@ const TagList = props => {
         } else {
             props = { category: item };
         }
-        return <TagItem title={item.name} {...props} />;
+        return <TagItem tag={tag} title={item.name} {...props} />;
     }, []);
 
     return (

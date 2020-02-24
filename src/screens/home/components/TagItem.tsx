@@ -5,7 +5,7 @@ import { Iconfont } from '@src/components';
 import { useNavigation } from 'react-navigation-hooks';
 import CategoryItem from './CategoryItem';
 
-const TagItem = ({ category, data, title }) => {
+const TagItem = ({ category, data, title, tag }) => {
     const navigation = useNavigation();
 
     const categories = useMemo(() => {
@@ -47,7 +47,7 @@ const TagItem = ({ category, data, title }) => {
                 </View>
                 <FlatList
                     data={categories.slice(0, 3)}
-                    renderItem={({ item }) => <CategoryItem category={item} />}
+                    renderItem={({ item }) => <CategoryItem tag={tag} category={item} />}
                     ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
                     keyExtractor={keyExtractor}
                     showsVerticalScrollIndicator={false}
@@ -57,7 +57,7 @@ const TagItem = ({ category, data, title }) => {
     } else if (category) {
         return (
             <View style={styles.container}>
-                <CategoryItem category={category} />
+                <CategoryItem tag={tag} category={category} />
             </View>
         );
     } else {

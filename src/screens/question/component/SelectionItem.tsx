@@ -14,6 +14,7 @@ export default observer(({ value, text, style, question, store }) => {
             return !c;
         });
         const answer = selectAnswer(value);
+        // 考试题逻辑
         if (isExam) {
             if ((!isMultiple && isTurnable) || answer.length == question.selections_array.length) {
                 DeviceEventEmitter.emit('turnThePage', order);

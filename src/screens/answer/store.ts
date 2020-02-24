@@ -76,7 +76,8 @@ export class QuestionStore {
             convertData.clear();
             convertData.add(Value);
         }
-        return (this.selectedAnswers = [...convertData].sort().join(''));
+        this.selectedAnswers = [...convertData].sort().join('');
+        return this.selectedAnswers;
     }
 }
 

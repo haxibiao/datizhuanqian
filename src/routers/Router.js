@@ -2,7 +2,6 @@
  * @Author: Gaoxuan
  * @Date:   2019-08-01 09:55:03
  */
-
 import MainTabNavigator from './MainTabNavigator';
 // 登录注验证
 import LoginScreen from '../screens/login';
@@ -14,6 +13,8 @@ import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
 import AnswerScreen from '../screens/answer';
+import ExerciseScreen from '../screens/answer/Exercise'; //新的答题页
+import ExamScreen from '../screens/answer/Exam'; //新的考试页
 import UserAnswerScreen from '../screens/answer/UserAnswer';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
 import SearchScreen from '../screens/home/Search';
@@ -43,6 +44,7 @@ import RankScreen from '../screens/rank';
 import ParticipationScreen from '../screens/participation';
 
 // 出题
+import NewContribute from '../screens/contribute/new'; //新的出题页
 import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
 import ContributeRuleScreen from '../screens/contribute/ContributeRule';
@@ -136,7 +138,10 @@ export default {
     },
     // 答题
     Answer: {
-        screen: AnswerScreen,
+        screen: ExerciseScreen,
+    },
+    Exam: {
+        screen: ExamScreen,
     },
     // 答题
     UserAnswer: {
@@ -209,6 +214,9 @@ export default {
     // 出题
     Contribute: {
         screen: ContributeScreen,
+    },
+    NewContribute: {
+        screen: NewContribute,
     },
     Contributes: {
         screen: ContributesScreen,

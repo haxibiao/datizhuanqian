@@ -1,16 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { Row, Iconfont } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { useNavigation } from 'react-navigation-hooks';
 import LinearGradient from 'react-native-linear-gradient';
 
-const CategoryItem = ({ category }) => {
+const CategoryItem = ({ tag, category }) => {
     const navigation = useNavigation();
+    const isExam = useMemo(() => tag.name == '考试' && category.is_official > 0, []);
 
     const navigator = useCallback(() => {
         if (TOKEN) {
-            navigation.navigate('Answer', { category, question_id: null });
+            navigation.navigate(isExam ? 'Exam' : 'Answer', { category, question_id: null });
         } else {
             navigation.navigate('Login');
         }

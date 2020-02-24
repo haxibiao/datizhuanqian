@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { PageContainer, TouchFeedback, Row } from '@src/components';
 import { playVideo } from 'common';
@@ -7,52 +7,26 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const ExamResult = (props: { navigation: any }) => {
     const { navigation } = props;
+    const category = useMemo(() => navigation.getParam('category', {}), []);
+    const transcript = useMemo(() => navigation.getParam('transcript', []), []);
     const answerResult = false;
-    const category = { name: '地理知识' };
-    const [getRewaded, setGetRewaded] = useState(false);
-    const questions = [
-        {
-            id: 1,
-            answer: 'A',
-            selected: ['A'],
-        },
-        {
-            id: 2,
-            answer: 'A',
-            selected: ['A'],
-        },
-        {
-            id: 3,
-            answer: 'A',
-            selected: [],
-        },
-        {
-            id: 4,
-            answer: 'A',
-            selected: ['A'],
-        },
-        {
-            id: 5,
-            answer: 'A',
-            selected: [],
-        },
-    ];
+    const [getRewarded, setGetRewarded] = useState(false);
 
-    const getRewad = () => {
+    const getReward = () => {
         playVideo({
             type: answerResult ? 'AnswerPass' : 'AnswerFail',
             callback: () => {
-                memoizedCallback();
+                memorizedCallback();
             },
         });
     };
 
-    const memoizedCallback = useCallback(() => {
-        setGetRewaded(true);
-    }, [getRewaded]);
+    const memorizedCallback = useCallback(() => {
+        setGetRewarded(true);
+    }, [getRewarded]);
 
-    const answerPassQuesitons = questions.filter(question => {
-        return question.answer === question.selected.sort().join('');
+    const correctItems = transcript.filter(result => {
+        return result === 'correct';
     });
 
     return (
@@ -67,20 +41,20 @@ const ExamResult = (props: { navigation: any }) => {
                         <View style={styles.progressContainer}>
                             <View style={styles.progressCenter}>
                                 <View style={styles.answerResult}>
-                                    <Text style={styles.answerCorrect}>{answerPassQuesitons.length}</Text>
+                                    <Text style={styles.answerCorrect}>{correctItems.length}</Text>
                                     <Text style={{ color: Theme.grey, fontSize: PxFit(13), marginTop: PxFit(5) }}>
-                                        （共{questions.length}题）
+                                        （共{transcript.length}题）
                                     </Text>
                                 </View>
                             </View>
-                            <Progress.Circle
-                                progress={answerPassQuesitons.length / questions.length}
+                            {/* <Progress.Circle
+                                progress={transcript.length / correctItems.length}
                                 size={Device.WIDTH * 0.45}
                                 borderWidth={0}
                                 color="#45B7FF"
                                 thickness={10}
                                 strokeCap="round"
-                            />
+                            /> */}
                         </View>
                     </View>
                     <View style={styles.cardInfo}>
@@ -97,24 +71,27 @@ const ExamResult = (props: { navigation: any }) => {
                                         <Text>错误</Text>
                                     </Row>
                                 </Row>
-                                <Text>共{questions.length}题</Text>
+                                <Text>共{transcript.length}题</Text>
                             </Row>
                         </View>
                         <Row style={styles.questions}>
-                            {questions.map((question, index) => {
+                            {transcript.map((result, index) => {
+                                let backgroundColor = '#f0f0f0';
+                                if (result === 'correct') {
+                                    backgroundColor = '#3BD4C2';
+                                } else if (result === 'error') {
+                                    backgroundColor = '#FF7271';
+                                }
                                 return (
                                     <TouchFeedback
                                         key={index}
                                         onPress={() => {
-                                            navigation.navigate('');
+                                            navigation.navigate('Exam', { viewableQuestionIndex: index });
                                             // 跳转题目详情
                                         }}
                                         style={{
                                             ...styles.question,
-                                            backgroundColor:
-                                                question.answer === question.selected.sort().join('')
-                                                    ? '#3BD4C2'
-                                                    : '#FF7271',
+                                            backgroundColor,
                                         }}>
                                         <Text style={styles.questionText}>{index + 1}</Text>
                                     </TouchFeedback>
@@ -126,7 +103,7 @@ const ExamResult = (props: { navigation: any }) => {
             </ScrollView>
 
             <Row>
-                {(getRewaded || answerResult) && (
+                {(getRewarded || answerResult) && (
                     <TouchFeedback
                         style={styles.bottomLeft}
                         onPress={() => {
@@ -139,10 +116,10 @@ const ExamResult = (props: { navigation: any }) => {
                 <TouchFeedback
                     style={{
                         ...styles.bottomRight,
-                        width: getRewaded || answerResult ? Device.WIDTH * 0.5 : Device.WIDTH,
+                        width: getRewarded || answerResult ? Device.WIDTH * 0.5 : Device.WIDTH,
                     }}
-                    onPress={getRewad}
-                    disabled={getRewaded}>
+                    onPress={getReward}
+                    disabled={getRewarded}>
                     <Text style={styles.bottomText}>领取奖励</Text>
                 </TouchFeedback>
             </Row>
