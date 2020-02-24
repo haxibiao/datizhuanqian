@@ -75,7 +75,7 @@ export default observer(({ question }) => {
 
 const styles = StyleSheet.create({
     information: {
-        backgroundColor: '#F2F5F7',
+        backgroundColor: '#fff',
         borderRadius: PxFit(5),
         marginBottom: PxFit(20),
         padding: PxFit(15),

@@ -3,6 +3,8 @@ export { observer } from 'mobx-react';
 import { observable, action, runInAction, autorun, computed, when } from 'mobx';
 import { app, config } from '@src/store';
 
+type AnswerResult = 'correct' | 'error' | 'miss';
+
 interface Selection {
     Text: string;
     Value: string;
@@ -24,80 +26,48 @@ interface Question {
     count_likes?: number;
     count_comments?: number;
     explanation?: any;
+    [P: string]: any;
 }
 
 export class QuestionStore {
-    static instance: QuestionStore | null;
-    static cursor: number = 0;
-    public answerScope: number = config.disableAd ? 100 : 5;
-    public answerCount: number = 0;
-    public correctCount: number = 0;
-    @observable public category = {};
-    @observable public question: Question | null = null;
-    @observable public questions: Question[] = [];
-    @observable public submitted: boolean = false; // 是否已经作答
-    @observable public audited: boolean = false; // 是否已经审核
+    @observable public question: Question;
+    @observable public order: number = -1; //题目排序
+    @observable public answered: boolean = false; // 是否已经作答
+    @observable public isAudited: boolean = false; // 是否已经审核
     @observable public isAudit: boolean = false; // 是否为审核题
     @observable public isMultiple: boolean = false; // 是否为多选题
-    @observable public selectedAnswers: any[] = []; // 选择的答案
+    @observable public isExam: boolean = false; // 是否为考试题
+    @observable public selectedAnswers: string = ''; // 选择的答案
+    @observable public answerResult: AnswerResult = 'miss'; // 题目状态:错误、正确、未作答
 
-    // constructor() {
-    //     if (!QuestionStore.instance) {
-    //         QuestionStore.instance = this;
-    //     }
-    //     return QuestionStore.instance;
-    // }
-
-    resetCursor() {
-        this.answerCount = 0;
-        this.correctCount = 0;
-    }
-
-    @action.bound
-    public setQuestions(data: Question[]) {
-        this.questions = this.questions.concat(data);
-        if (!this.question) {
-            this.nextQuestion();
+    constructor(question: Question, order?: number) {
+        this.question = question;
+        this.isAudit = this.question.status == 0;
+        this.isMultiple = String(this.question.answer).length > 1;
+        if (order !== undefined) {
+            this.isExam = true;
+            this.order = order;
         }
     }
 
+    // 提交答案
     @action.bound
-    public nextQuestion() {
-        this.selectedAnswers = [];
-
-        if (this.questions) {
-            this.question = this.questions[QuestionStore.cursor];
-
-            if (this.question.status == 0) {
-                this.submitted = true;
-                this.isAudit = true;
-                this.isMultiple = String(this.question.answer).length > 1;
-            } else {
-                this.submitted = false;
-                this.isAudit = false;
-                this.isMultiple = String(this.question.answer).length > 1;
-            }
-            QuestionStore.cursor++;
-        }
+    public answerQuestion(): AnswerResult {
+        this.answered = true;
+        this.answerResult = this.selectedAnswers == this.question.answer ? 'correct' : 'error';
+        return this.answerResult;
     }
 
-    @action.bound
-    public answerQuestion() {
-        this.submitted = true;
-        this.answerCount++;
-        if (this.question?.answer === this.selectedAnswers.sort().join('')) {
-            this.correctCount++;
-        }
-    }
-
+    // 审核题目
     @action.bound
     public auditQuestion() {
-        this.audited = true;
+        this.isAudited = true;
     }
 
+    // 选择答案
     @action.bound
     public selectAnswer(Value: any) {
-        const convertData = new Set(this.selectedAnswers);
+        const convertData = new Set(this.selectedAnswers.split(''));
         if (convertData.has(Value)) {
             convertData.delete(Value);
         } else if (this.isMultiple) {
@@ -106,6 +76,24 @@ export class QuestionStore {
             convertData.clear();
             convertData.add(Value);
         }
-        this.selectedAnswers = [...convertData];
+        return (this.selectedAnswers = [...convertData].sort().join(''));
+    }
+}
+
+export class QuestionsStore {
+    public correctCount: number = 0;
+    @observable public questions: Question[] = [];
+    @observable public transcript: AnswerResult[] = []; //成绩单
+    @observable public viewableItemIndex: number = 0;
+
+    @action.bound
+    public addQuestions(data: Question[]) {
+        this.questions = data;
+        this.transcript = Array.from({ length: data.length });
+    }
+
+    @action.bound
+    public setTranscript(serialNumber: number, result: AnswerResult) {
+        this.transcript[serialNumber] = result;
     }
 }

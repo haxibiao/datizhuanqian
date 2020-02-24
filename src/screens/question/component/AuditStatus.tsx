@@ -7,8 +7,7 @@ import { observer } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
 import { useNavigation } from 'react-navigation-hooks';
 
-export default observer(({ store }) => {
-    const { question } = store;
+export default observer(({ store, question }) => {
     const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 300 });
     const navigation = useNavigation();
 

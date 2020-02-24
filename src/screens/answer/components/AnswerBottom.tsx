@@ -1,59 +1,63 @@
 import React, { useMemo, useEffect, useState, useCallback } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { TouchFeedback, Avatar } from '@src/components';
+import {
+    DeviceEventEmitter,
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Animated,
+} from 'react-native';
+import { TouchFeedback, Avatar, Iconfont } from '@src/components';
 import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
 import { useApolloClient, useMutation, useQuery, GQL } from '@src/apollo';
-import { exceptionCapture, syncGetter } from '@src/common';
+import { exceptionCapture, syncGetter, useBounceAnimation } from '@src/common';
 import { app, config } from '@src/store';
 import { observer, useQuestionStore } from '../store';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from 'react-navigation-hooks';
 import AnswerOverlay from './AnswerOverlay';
-import FirstWithdrawTips from './FirstWithdrawTips';
-import AnswerResult from './AnswerResult';
 import { Overlay } from 'teaset';
-import { BoxShadow } from 'react-native-shadow';
-const shadowOpt = {
-    width: SCREEN_WIDTH,
-    height: Theme.HOME_INDICATOR_HEIGHT + PxFit(60),
-    color: '#E8E8E8',
-    border: PxFit(1),
-    // radius: PxFit(10),
-    opacity: 0.5,
-    x: 0,
-    y: -1,
-    style: {
-        marginTop: 0,
-    },
-};
+import _ from 'lodash';
 
-export default observer(({ showComment, isAnswered, isSelf, user, store }) => {
+export default observer(({ isAnswered, isSelf, user, question, store }) => {
     const client = useApolloClient();
     const navigation = useNavigation();
-    const {
-        submitted,
-        isAudit,
-        audited,
-        question,
-        answerCount,
-        correctCount,
-        selectedAnswers,
-        nextQuestion,
-        answerQuestion,
-        resetCursor,
-    } = store;
-    const [likeState, setLikeState] = useState({ likes: question.count_likes, liked: question.liked });
+    const { order, answered, isAudit, isAudited, selectedAnswers, answerQuestion } = store;
+    const [isFavorite, setFavorite] = useState(question.favorite_status);
+    const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
 
-    const [likeMutation] = useMutation(GQL.toggleLikeMutation, {
+    const showComment = useCallback(() => {
+        if (!isAudit && !answered) {
+            Toast.show({ content: '答完此题再评论哦', layout: 'bottom' });
+        } else {
+            DeviceEventEmitter.emit('showComment', question);
+        }
+    }, [isAudit, isAudited, question]);
+
+    const nextQuestion = useCallback(() => {
+        DeviceEventEmitter.emit('nextQuestion', order);
+    }, [order]);
+
+    const [favoriteMutation] = useMutation(GQL.toggleFavoriteMutation, {
+        variables: {
+            data: {
+                favorable_id: question.id,
+            },
+        },
+    });
+
+    const [toggleLikeMutation] = useMutation(GQL.toggleLikeMutation, {
         variables: {
             likable_id: question.id,
             likable_type: 'QUESTION',
         },
     });
+
     const [answerMutation] = useMutation(GQL.QuestionAnswerMutation, {
         variables: {
             id: question.id,
-            answer: selectedAnswers.join(''),
+            answer: selectedAnswers,
         },
         errorPolicy: 'all',
         refetchQueries: () => [
@@ -65,28 +69,42 @@ export default observer(({ showComment, isAnswered, isSelf, user, store }) => {
         ],
     });
 
-    const likeQuestion = useCallback(() => {
-        setLikeState(state => {
-            likeMutation();
-            return {
-                liked: !state.liked,
-                count_likes: state.liked ? --state.likes : ++state.likes,
-            };
-        });
-    }, [likeMutation]);
+    const toggleFavorite = useCallback(() => {
+        setFavorite(f => !f);
+        favoriteMutation();
+    }, [favoriteMutation]);
+
+    const likeQuestion = useCallback(async () => {
+        question.liked ? question.count_likes-- : question.count_likes++;
+        question.liked = !question.liked;
+        if (question.liked) {
+            startAnimation();
+        }
+        const [error, result] = await exceptionCapture(toggleLikeMutation);
+        if (error) {
+            question.liked ? question.count_likes-- : question.count_likes++;
+            question.liked = !question.liked;
+            Toast.show({ content: '点赞失败' });
+        }
+    }, [question]);
+
+    const scale = animation.interpolate({
+        inputRange: [1, 1.1, 1.2],
+        outputRange: [1, 1.25, 1],
+    });
 
     // 提交后显示模态框
     const showResultsOverlay = useCallback(
-        ({ question, isAudit, audited, selectedAnswers }) => {
+        ({ question, isAudit, isAudited, selectedAnswers }) => {
             // 计算模态框所需参数;
             let result, gold, ticket;
             const type = isAudit ? 'audit' : 'answer';
             if (isAudit) {
                 gold = 0;
                 ticket = question.ticket;
-                result = audited;
+                result = isAudited;
             } else {
-                if (question.answer === selectedAnswers.sort().join('')) {
+                if (question.answer === selectedAnswers) {
                     gold = question.gold;
                     ticket = user.ticket || 0;
                     result = true;
@@ -101,13 +119,15 @@ export default observer(({ showComment, isAnswered, isSelf, user, store }) => {
         [user],
     );
 
-    // 提交
-    const onSubmit = useCallback(async () => {
-        if (selectedAnswers.length > 0 && !submitted) {
-            answerQuestion();
+    // 手动提交
+    const handler = useCallback(async () => {
+        // 提交答案
+        if (selectedAnswers.length > 0 && !answered) {
+            // 触发answerQuestion事件，传递答题结果
+            DeviceEventEmitter.emit('answerQuestion', answerQuestion());
             showResultsOverlay({
                 isAudit,
-                audited,
+                isAudited,
                 question,
                 selectedAnswers,
             });
@@ -117,58 +137,15 @@ export default observer(({ showComment, isAnswered, isSelf, user, store }) => {
                 Toast.show({ content: err.toString().replace(/Error: GraphQL error: /, '') || '好像出了点问题' });
             }
         } else {
+            // 下一题
             nextQuestion();
         }
-    }, [isAudit, audited, submitted, question, selectedAnswers, showResultsOverlay, answerMutation]);
+    }, [isAudit, isAudited, answered, question, selectedAnswers, showResultsOverlay, answerMutation]);
 
-    // 提现提示
-    const withdrawTips = useCallback(() => {
-        if (syncGetter('gold', user) >= 600 && !app.withdrawTips) {
-            if (syncGetter('wallet.total_withdraw_amount', user) <= 0 || !data.user.wallet) {
-                let overlayViewRef;
-                const overlayView = (
-                    <Overlay.View animated ref={ref => (overlayViewRef = ref)}>
-                        <View style={styles.overlayInner}>
-                            <FirstWithdrawTips hide={() => overlayViewRef.close()} navigation={this.props.navigation} />
-                        </View>
-                    </Overlay.View>
-                );
-                Overlay.show(overlayView);
-            }
-        }
-    }, []);
-
-    // 广告触发, iOS不让苹果审核轻易发现答题触发广告，设置多一点，比如答题100个
-    // 安卓提高到5个题计算及格和视频奖励
-    const showAnswerResult = useCallback(() => {
-        if (answerCount === answerScope) {
-            let overlayViewRef;
-            const overlayView = (
-                <Overlay.View animated modal ref={ref => (overlayViewRef = ref)}>
-                    <View style={styles.overlayInner}>
-                        <AnswerResult
-                            hide={() => overlayViewRef.close()}
-                            navigation={navigation}
-                            answer_count={answerCount}
-                            error_count={answerCount - correctCount}
-                        />
-                    </View>
-                </Overlay.View>
-            );
-            Overlay.show(overlayView);
-            resetCursor();
-        }
-    }, [client, navigation, answerCount]);
-
-    useEffect(() => {
-        if (!config.disableAd && (submitted || audited)) {
-            withdrawTips();
-            showAnswerResult();
-        }
-    }, [submitted, audited]);
+    const onSubmit = useMemo(() => _.debounce(handler, 400), []);
 
     const buttonInfo = useMemo(() => {
-        // 5F93FD
+        // #5F93FD
         const info = {
             name: '下一题',
             color: '#FFCC01',
@@ -178,81 +155,113 @@ export default observer(({ showComment, isAnswered, isSelf, user, store }) => {
             info.name = isSelf ? '仅浏览' : '已答过';
             info.color = '#666666';
             info.disabled = true;
-        } else if (selectedAnswers.length > 0 && !submitted) {
+        } else if (selectedAnswers.length > 0 && !answered) {
             info.name = '提交答案';
             info.color = '#74A1FF';
         }
         return info;
-    }, [selectedAnswers, submitted, isAudit]);
+    }, [selectedAnswers, answered, isAudit]);
+
     return (
-        <BoxShadow setting={shadowOpt}>
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.sideButton} onPress={likeQuestion}>
-                    <Image
-                        style={styles.sideButtonIcon}
-                        source={
-                            likeState.liked
-                                ? require('@src/assets/images/ic_liked.png')
-                                : require('@src/assets/images/ic_like.png')
-                        }
-                    />
-                    {/* <Text style={styles.sideButtonText}>{'100点赞'}</Text> */}
+        <View style={styles.container}>
+            <View style={styles.sideTools}>
+                <TouchableOpacity activeOpacity={0.8} style={styles.toolItem} onPress={toggleFavorite}>
+                    <View style={styles.iconWrap}>
+                        <Iconfont
+                            name={isFavorite ? 'collection-fill' : 'collection'}
+                            size={PxFit(22)}
+                            color={isFavorite ? Theme.primaryColor : Theme.defaultTextColor}
+                        />
+                    </View>
+                    <Text
+                        style={[styles.itemName, { color: isFavorite ? Theme.primaryColor : Theme.defaultTextColor }]}>
+                        {isFavorite ? '已收藏' : '收藏'}
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    disabled={buttonInfo.disabled}
-                    style={[styles.middleButton, { backgroundColor: buttonInfo.color }]}
-                    onPress={onSubmit}>
-                    <Text style={styles.middleButtonText}>{buttonInfo.name}</Text>
+                <TouchableOpacity activeOpacity={0.8} style={styles.toolItem} onPress={showComment}>
+                    <View style={styles.iconWrap}>
+                        <Iconfont name="message" size={PxFit(19)} color={Theme.defaultTextColor} />
+                    </View>
+                    <Text style={styles.itemName}>
+                        评论
+                        {Tools.NumberFormat(question.count_comments) > 0 &&
+                            ' ' + Tools.NumberFormat(question.count_comments)}
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.sideButton} onPress={showComment}>
-                    <Image style={styles.sideButtonIcon} source={require('@src/assets/images/comment_item.png')} />
-                    {/* <Text style={styles.sideButtonText}>{'20评论'}</Text> */}
-                </TouchableOpacity>
+                <Animated.View style={[styles.toolItem, { transform: [{ scale }] }]}>
+                    <TouchableOpacity style={styles.toolItem} activeOpacity={0.8} onPress={likeQuestion}>
+                        <View style={styles.iconWrap}>
+                            <Iconfont
+                                name={question.liked ? 'praise-fill' : 'praise'}
+                                size={PxFit(19)}
+                                color={question.liked ? Theme.primaryColor : Theme.defaultTextColor}
+                            />
+                        </View>
+                        <Text
+                            style={[
+                                styles.itemName,
+                                { color: question.liked ? Theme.primaryColor : Theme.defaultTextColor },
+                            ]}>
+                            点赞
+                            {Tools.NumberFormat(question.count_likes) > 0 &&
+                                ' ' + Tools.NumberFormat(question.count_likes)}
+                        </Text>
+                    </TouchableOpacity>
+                </Animated.View>
             </View>
-        </BoxShadow>
+            <TouchableOpacity
+                disabled={buttonInfo.disabled}
+                style={[styles.mainButton, { backgroundColor: buttonInfo.color }]}
+                onPress={onSubmit}>
+                <Text style={styles.mainButtonText}>{buttonInfo.name}</Text>
+            </TouchableOpacity>
+        </View>
     );
 });
 
-const middleButtonWidth = SCREEN_WIDTH / 3;
-
 const styles = StyleSheet.create({
     container: {
+        width: SCREEN_WIDTH,
+        height: Theme.HAS_HOME_INDICATOR ? PxFit(64) : PxFit(52),
+        paddingBottom: Theme.HAS_HOME_INDICATOR ? PxFit(12) : 0,
+        paddingHorizontal: PxFit(10),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        paddingTop: PxFit(10),
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(10),
         backgroundColor: '#fff',
-        // borderTopLeftRadius: PxFit(10),
-        // borderTopRightRadius: PxFit(10),
     },
-    sideButton: {
+    sideTools: {
         flex: 1,
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        alignItems: 'stretch',
+    },
+    toolItem: {
+        flex: 1,
+        alignSelf: 'stretch',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: PxFit(20),
     },
-    sideButtonIcon: {
-        width: PxFit(36),
+    iconWrap: {
+        height: PxFit(30),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    itemName: {
+        fontSize: PxFit(11),
+        color: Theme.defaultTextColor,
+    },
+    mainButton: {
+        flex: 1,
         height: PxFit(36),
         borderRadius: PxFit(18),
-    },
-    sideButtonText: {
-        fontSize: PxFit(12),
-        color: '#212121',
-        marginTop: PxFit(4),
-    },
-    middleButton: {
-        width: PxFit(130),
-        height: PxFit(40),
-        borderRadius: PxFit(20),
         justifyContent: 'center',
         alignItems: 'center',
     },
-    middleButtonText: {
-        fontSize: PxFit(16),
+    mainButtonText: {
+        fontSize: PxFit(14),
         color: '#fff',
         fontWeight: '500',
-        letterSpacing: PxFit(2),
+        letterSpacing: PxFit(4),
     },
 });

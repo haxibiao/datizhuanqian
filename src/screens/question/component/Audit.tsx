@@ -16,8 +16,8 @@ const auditImage = {
 
 type AuditStatus = 'pending' | 'reject' | 'resolve';
 
-export default observer(({ store }) => {
-    const { question, audited, auditQuestion } = store;
+export default observer(({ store, question }) => {
+    const { audited, auditQuestion } = store;
     const [auditStatus, setAuditStatus] = useState('pending');
     const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 300 });
     const [auditMutation] = useMutation(GQL.auditMutation, {

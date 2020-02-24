@@ -1,15 +1,28 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image, DeviceEventEmitter } from 'react-native';
 import { Iconfont } from '@src/components';
 import { Theme, PxFit } from '@src/utils';
 import { observer } from '@src/screens/answer/store';
 
-export default observer(({ value, text, style, store }) => {
-    const { question, submitted, selectAnswer, selectedAnswers, isMultiple } = store;
+export default observer(({ value, text, style, question, store }) => {
+    const { order, answered, selectAnswer, selectedAnswers, isMultiple, isExam } = store;
     const [checked, setChecked] = useState(false);
     const choose = useCallback(() => {
-        setChecked(c => !c);
-        selectAnswer(value);
+        let isTurnable = false;
+        setChecked(c => {
+            isTurnable = !c;
+            return !c;
+        });
+        const answer = selectAnswer(value);
+        if (isExam) {
+            if ((!isMultiple && isTurnable) || answer.length == question.selections_array.length) {
+                DeviceEventEmitter.emit('turnThePage', order);
+            }
+            DeviceEventEmitter.emit('selectAnswer', {
+                order,
+                result: answer == question.answer ? 'correct' : 'error',
+            });
+        }
     }, []);
 
     useEffect(() => {
@@ -26,7 +39,7 @@ export default observer(({ value, text, style, store }) => {
         let style = { borderWidth: PxFit(1), borderColor: '#74A1FF' };
         let color = '#5F93FD';
 
-        if (submitted) {
+        if (answered) {
             if (correct) {
                 style = { backgroundColor: Theme.correctColor, borderWidth: 0 };
                 color = '#fff';
@@ -47,18 +60,18 @@ export default observer(({ value, text, style, store }) => {
                 <Text style={[styles.labelValue, { color }]}>{value}</Text>
             </View>
         );
-    }, [value, correct, submitted, checked]);
+    }, [value, correct, answered, checked]);
 
     return useMemo(() => {
         return (
-            <TouchableOpacity opacity={0.8} disabled={submitted} style={[styles.optionItem, style]} onPress={choose}>
+            <TouchableOpacity opacity={0.8} disabled={answered} style={[styles.optionItem, style]} onPress={choose}>
                 {Label}
                 <View style={styles.content}>
                     <Text style={styles.contentText}>{text}</Text>
                 </View>
             </TouchableOpacity>
         );
-    }, [style, submitted, checked]);
+    }, [style, answered, checked]);
 });
 
 const styles = StyleSheet.create({

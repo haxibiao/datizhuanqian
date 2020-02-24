@@ -6,8 +6,7 @@ import { useLinearAnimation } from '@src/common';
 import { observer } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
 
-export default observer(({ store }) => {
-    const { question } = store;
+export default observer(({ store, question }) => {
     const selections = useMemo(() => question.selections_array, [question]);
     const animations = useRef(
         selections.map(() => new Animated.Value(0)),
@@ -56,6 +55,7 @@ export default observer(({ store }) => {
                     return (
                         <Animated.View style={createAnimate(animations[index], index)} key={option + index}>
                             <SelectionItem
+                                question={question}
                                 store={store}
                                 value={option.Value}
                                 text={option.Text}

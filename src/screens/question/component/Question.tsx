@@ -5,11 +5,10 @@ import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
 import { observer, useQuestionStore } from '@src/screens/answer/store';
 import Selections from './Selections';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import question from 'src/screens/question';
 import { useNavigation } from 'react-navigation-hooks';
 
-export default observer(({ store }) => {
-    const { question, selections, setSelectionText, setAnswers, isMultiple } = store;
+export default observer(({ store, question }) => {
+    const { selections, setSelectionText, setAnswers, isMultiple } = store;
     const navigation = useNavigation();
 
     const showPicture = useCallback(url => {
@@ -46,25 +45,6 @@ export default observer(({ store }) => {
         }
     }, [question]);
 
-    const askQuestionUser = useMemo(() => {
-        const user = question.user;
-        if (user.id == 1) {
-            return null;
-        }
-        return (
-            <View style={styles.askUser}>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={styles.userItem}
-                    onPress={() => navigation.navigate('User', { user })}>
-                    <Text style={styles.userItemText}>出题人：</Text>
-                    <Text style={styles.userName}>({user.name})</Text>
-                    <Avatar source={user.avatar} userId={user.id} size={PxFit(22)} />
-                </TouchableOpacity>
-            </View>
-        );
-    }, [question]);
-
     const content = useMemo(() => {
         const { image, video } = question;
         if (image) {
@@ -88,8 +68,27 @@ export default observer(({ store }) => {
         return null;
     }, [question]);
 
+    const askQuestionUser = useMemo(() => {
+        const user = question.user;
+        if (user.id == 1) {
+            return null;
+        }
+        return (
+            <View style={styles.askUser}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.userItem}
+                    onPress={() => navigation.navigate('User', { user })}>
+                    <Avatar source={user.avatar} userId={user.id} size={PxFit(22)} />
+                    <Text style={styles.userName}>{user.name}</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }, [question]);
+
     return (
         <View style={styles.content}>
+            {askQuestionUser}
             <Text style={styles.description}>
                 {answerType}
                 {question.description}
@@ -97,9 +96,8 @@ export default observer(({ store }) => {
             </Text>
             {content}
             <View style={{ marginTop: PxFit(20) }}>
-                <Selections store={store} />
+                <Selections question={question} store={store} />
             </View>
-            {askQuestionUser}
         </View>
     );
 });
@@ -109,7 +107,7 @@ const styles = StyleSheet.create({
     description: {
         color: '#525252',
         fontSize: PxFit(16),
-        lineHeight: PxFit(22),
+        lineHeight: PxFit(28),
     },
     imageCover: {
         marginTop: PxFit(Theme.itemSpace),
@@ -144,15 +142,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    askUser: {
+        flexDirection: 'row',
+    },
     userItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: PxFit(20),
-        backgroundColor: '#E3F2FD',
+        marginBottom: PxFit(5),
         borderRadius: PxFit(5),
-        paddingHorizontal: PxFit(10),
         paddingVertical: PxFit(5),
     },
-    userItemText: { fontSize: PxFit(14), color: '#5F93FD' },
-    userName: { fontSize: PxFit(14), color: '#5F93FD', paddingRight: PxFit(5) },
+    userItemText: { fontSize: PxFit(14), color: '#212121' },
+    userName: { fontSize: PxFit(14), color: '#212121', paddingHorizontal: PxFit(5) },
 });
