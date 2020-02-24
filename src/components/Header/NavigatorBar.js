@@ -68,7 +68,7 @@ class NavigatorBar extends Component {
             paddingTop: PxFit(Theme.statusBarHeight),
             paddingLeft: PxFit(Theme.itemSpace),
             paddingRight: PxFit(Theme.itemSpace),
-            borderBottomWidth: PxFit(0.5),
+            borderBottomWidth: PxFit(0.2),
             borderBottomColor: Theme.navBarSeparatorColor,
             flexDirection: 'row',
             alignItems: 'center',

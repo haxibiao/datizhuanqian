@@ -10,23 +10,23 @@ export const show = (props: any) => {
     const questions = [
         {
             id: 1,
-            answered: 'A',
+            selected: 'A',
         },
         {
             id: 2,
-            answered: 'A',
+            selected: 'A',
         },
         {
             id: 3,
-            answered: null,
+            selected: null,
         },
         {
             id: 4,
-            answered: 'A',
+            selected: 'A',
         },
         {
             id: 5,
-            answered: null,
+            selected: null,
         },
     ];
 
@@ -55,7 +55,7 @@ export const show = (props: any) => {
                                         style={[
                                             styles.question,
                                             {
-                                                backgroundColor: quesiton.answered ? '#45B7FF' : Theme.lightBorder,
+                                                backgroundColor: quesiton.selected ? '#45B7FF' : Theme.lightBorder,
                                             },
                                         ]}>
                                         <Text style={styles.questionText}>{index + 1}</Text>
@@ -64,7 +64,12 @@ export const show = (props: any) => {
                             })}
                         </Row>
                     </View>
-                    <TouchFeedback style={styles.button}>
+                    <TouchFeedback
+                        style={styles.button}
+                        onPress={() => {
+                            Tools.navigate('ExamResult');
+                            hide();
+                        }}>
                         <Text style={styles.buttonText}>提交练习</Text>
                     </TouchFeedback>
                 </View>

@@ -17,6 +17,7 @@ import AnswerScreen from '../screens/answer';
 import UserAnswerScreen from '../screens/answer/UserAnswer';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
 import SearchScreen from '../screens/home/Search';
+import ExamResultScreen from '../screens/answer/ExamResult';
 // 答题对垒
 import CompetitionCategoriesScreen from '../screens/competition/categories';
 import CompetitionMatchingScreen from '../screens/competition/matching';
@@ -146,6 +147,9 @@ export default {
     },
     Search: {
         screen: SearchScreen,
+    },
+    ExamResult: {
+        screen: ExamResultScreen,
     },
     // 答题对垒
     CompetitionCategories: {

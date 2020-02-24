@@ -130,11 +130,12 @@ function loadFullScreenVideo(props: Props) {
 
 // 播放全屏视频
 function startFullScreenVideo(props: Props) {
-    const { noReward } = props;
+    const { noReward, callback } = props;
     ad.FullScreenVideo.startFullScreenVideoAd()
         .then((result: string) => {
             console.log('result', result);
             if (result) {
+                callback && callback();
                 !noReward && getReward(props);
             } else {
                 Toast.show({
