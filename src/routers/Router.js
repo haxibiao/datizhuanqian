@@ -44,7 +44,7 @@ import RankScreen from '../screens/rank';
 import ParticipationScreen from '../screens/participation';
 
 // 出题
-import NewContribute from '../screens/contribute/new'; //新的出题页
+import editQuestion from '../screens/contribute/edit'; //新的出题页
 import ContributeScreen from '../screens/contribute';
 import ContributesScreen from '../screens/contribute/Contributes';
 import ContributeRuleScreen from '../screens/contribute/ContributeRule';
@@ -213,7 +213,7 @@ export default {
     },
     // 出题
     Contribute: {
-        screen: ContributeScreen,
+        screen: editQuestion,
     },
     NewContribute: {
         screen: NewContribute,

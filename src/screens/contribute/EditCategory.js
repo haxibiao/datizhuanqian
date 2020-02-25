@@ -9,12 +9,10 @@ import {
     TouchableWithoutFeedback,
     FlatList,
 } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Button, SearchBar } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
-
-import { Query, GQL } from 'apollo';
-import { observer, app } from 'store';
-import ContributeStore from './ContributeStore';
+import { PageContainer, TouchFeedback, Iconfont, Row, Button, SearchBar } from '@src/components';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from '@src/utils';
+import { Query, GQL } from '@src/apollo';
+import { observer, useQuestionStore } from './store';
 
 const CategoryItem = observer(props => {
     let { category, selectedCategory, selectCategory } = props;
@@ -43,7 +41,9 @@ const CategoryItem = observer(props => {
 });
 
 export default observer(props => {
-    const { category: selectedCategory, selectCategory } = new ContributeStore();
+    const store = useQuestionStore();
+    const { category: selectedCategory, selectCategory } = store;
+
     const [keyword, setKeyword] = useState();
 
     const onChangeText = useCallback(text => {

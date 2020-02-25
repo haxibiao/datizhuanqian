@@ -39,7 +39,7 @@ export default observer(props => {
     const [minLevel, setMinLevel] = useState(2);
     const commentRef = useRef();
     const flag = useRef(false);
-    const advertisingInterval = useMemo(() => (config.disableAds ? 100 : 5), []);
+    const advertisingInterval = useMemo(() => (config.disableAd ? 100 : 5), []);
     const answerCount = useRef({ count: 0, error: 0 });
 
     const showComment = useCallback(() => {
@@ -58,7 +58,7 @@ export default observer(props => {
 
     // 加载广告缓存
     const loadAd = useCallback(() => {
-        if (user && !!ISIOS && config.enableQuestion) {
+        if (user && !ISIOS && config.enableQuestion) {
             ad.FullScreenVideo.loadFullScreenVideoAd().then(result => {});
             ad.RewardVideo.loadAd().then(result => {});
         }
@@ -179,7 +179,7 @@ export default observer(props => {
         DeviceEventEmitter.addListener('answerQuestion', isError => {
             answerCount.current.count++;
             isError && answerCount.current.error++;
-            if (!config.disableAds) {
+            if (!config.disableAd) {
                 withdrawTips();
                 showAnswerResult();
             }
