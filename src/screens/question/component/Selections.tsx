@@ -13,9 +13,6 @@ export default observer(({ store, question }) => {
         [selections],
     ).current;
     const stopPropagation = useRef(true);
-    console.log('====================================');
-    console.log('animations', animations);
-    console.log('====================================');
     useEffect(() => {
         stopPropagation.current = true;
         Animated.parallel(

@@ -41,7 +41,7 @@ export default observer(props => {
     const viewableQuestionIndex = useMemo(() => navigation.getParam('viewableQuestionIndex', 0), [navigation]);
     const store = useMemo(() => new QuestionsStore(), []);
     const { questions, addQuestions, transcript, setTranscript } = store;
-    const question = useMemo(() => questions[store.viewableItemIndex], [questions]);
+    const question = useMemo(() => questions[viewableQuestionIndex], [questions, viewableQuestionIndex]);
     const [error, setError] = useState(false);
     const [minLevel, setMinLevel] = useState(2);
     const listRef = useRef();

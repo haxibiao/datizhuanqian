@@ -108,7 +108,7 @@ module.exports = {
         'no-extra-boolean-cast': 0,
         'no-useless-computed-key': 0,
         'no-console': [
-            'error',
+            'false',
             {
                 allow: ['warn', 'error', 'info', 'disableYellowBox'],
             },
