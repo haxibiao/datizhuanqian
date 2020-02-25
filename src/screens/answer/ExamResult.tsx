@@ -4,12 +4,14 @@ import { PageContainer, TouchFeedback, Row } from '@src/components';
 import { playVideo } from 'common';
 import * as Progress from 'react-native-progress';
 import { ScrollView } from 'react-native-gesture-handler';
+import { observer } from './store';
 
-const ExamResult = (props: { navigation: any }) => {
+const ExamResult = observer((props: { navigation: any }) => {
     const { navigation } = props;
     const category = useMemo(() => navigation.getParam('category', {}), []);
     const transcript = useMemo(() => navigation.getParam('transcript', []), []);
-    const answerResult = false;
+    const store = useMemo(() => navigation.getParam('store', {}), []);
+
     const [getRewarded, setGetRewarded] = useState(false);
 
     const getReward = () => {
@@ -25,16 +27,27 @@ const ExamResult = (props: { navigation: any }) => {
         setGetRewarded(true);
     }, [getRewarded]);
 
+    const resetAction = () => {
+        store.reset();
+        navigation.replace('Exam', { category, question_id: null });
+    };
+
     const correctItems = transcript.filter(result => {
         return result === 'correct';
     });
+
+    const answerResult = correctItems.length / transcript.length >= 0.6;
+    const newDate = new Date(+new Date() + 8 * 3600 * 1000)
+        .toISOString()
+        .replace(/T/g, ' ')
+        .replace(/\.[\d]{3}Z/, '');
 
     return (
         <PageContainer title="练习报告" white>
             <ScrollView style={{ flex: 1 }}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>考试分区：{category.name}</Text>
-                    <Text style={styles.headerText}>交卷时间：2020.02.20 11:39</Text>
+                    <Text style={styles.headerText}>交卷时间：{newDate}</Text>
                 </View>
                 <View style={styles.body}>
                     <View style={{ alignItems: 'center' }}>
@@ -47,14 +60,14 @@ const ExamResult = (props: { navigation: any }) => {
                                     </Text>
                                 </View>
                             </View>
-                            {/* <Progress.Circle
-                                progress={transcript.length / correctItems.length}
+                            <Progress.Circle
+                                progress={correctItems.length / transcript.length}
                                 size={Device.WIDTH * 0.45}
                                 borderWidth={0}
-                                color="#45B7FF"
+                                color="#3BD4C2"
                                 thickness={10}
                                 strokeCap="round"
-                            /> */}
+                            />
                         </View>
                     </View>
                     <View style={styles.cardInfo}>
@@ -75,26 +88,25 @@ const ExamResult = (props: { navigation: any }) => {
                             </Row>
                         </View>
                         <Row style={styles.questions}>
-                            {transcript.map((result, index) => {
-                                let backgroundColor = '#f0f0f0';
+                            {transcript.map((result: string, index: number) => {
+                                let backgroundColor = '#FF7271';
                                 if (result === 'correct') {
                                     backgroundColor = '#3BD4C2';
-                                } else if (result === 'error') {
-                                    backgroundColor = '#FF7271';
                                 }
                                 return (
-                                    <TouchFeedback
-                                        key={index}
-                                        onPress={() => {
-                                            navigation.navigate('Exam', { viewableQuestionIndex: index });
-                                            // 跳转题目详情
-                                        }}
-                                        style={{
-                                            ...styles.question,
-                                            backgroundColor,
-                                        }}>
-                                        <Text style={styles.questionText}>{index + 1}</Text>
-                                    </TouchFeedback>
+                                    <View style={styles.questionWrap} key={index}>
+                                        <TouchFeedback
+                                            // onPress={() => {
+                                            //     navigation.navigate('Exam', { viewableQuestionIndex: index });
+                                            //     // 跳转题目详情
+                                            // }}
+                                            style={{
+                                                ...styles.question,
+                                                backgroundColor,
+                                            }}>
+                                            <Text style={styles.questionText}>{index + 1}</Text>
+                                        </TouchFeedback>
+                                    </View>
                                 );
                             })}
                         </Row>
@@ -104,11 +116,7 @@ const ExamResult = (props: { navigation: any }) => {
 
             <Row>
                 {(getRewarded || answerResult) && (
-                    <TouchFeedback
-                        style={styles.bottomLeft}
-                        onPress={() => {
-                            navigation.navigate('');
-                        }}>
+                    <TouchFeedback style={styles.bottomLeft} onPress={resetAction}>
                         <Text style={styles.bottomText}>继续答题</Text>
                     </TouchFeedback>
                 )}
@@ -125,7 +133,7 @@ const ExamResult = (props: { navigation: any }) => {
             </Row>
         </PageContainer>
     );
-};
+});
 
 const styles = StyleSheet.create({
     header: {
@@ -194,8 +202,15 @@ const styles = StyleSheet.create({
         marginLeft: PxFit(20),
     },
     questions: {
-        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        // justifyContent: 'space-between',
         paddingVertical: PxFit(15),
+    },
+    questionWrap: {
+        width: (Device.WIDTH - PxFit(30)) * 0.2,
+        height: (Device.WIDTH - PxFit(30)) * 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     question: {
         backgroundColor: '#45B7FF',

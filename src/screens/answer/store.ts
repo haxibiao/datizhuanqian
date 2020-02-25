@@ -97,4 +97,10 @@ export class QuestionsStore {
     public setTranscript(serialNumber: number, result: AnswerResult) {
         this.transcript[serialNumber] = result;
     }
+
+    @action.bound
+    public reset() {
+        this.transcript = [];
+        this.viewableItemIndex = 0;
+    }
 }

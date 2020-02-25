@@ -1,13 +1,21 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, DeviceEventEmitter } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, DeviceEventEmitter } from 'react-native';
 import { TouchFeedback, Row, Iconfont } from '@src/components';
-import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, ISIOS } from '@src/utils';
+import { Theme, PxFit, Tools } from '@src/utils';
 import { observer } from 'mobx-react';
 import { Overlay } from 'teaset';
 
 let OverlayKey: any = null;
 
-export const AnswerCard = observer(({ transcript, category }) => {
+interface Props {
+    transcript: any;
+    category: object;
+    store: any;
+    navigation: any;
+    scrollTo: Function;
+}
+
+export const AnswerCard = observer(({ transcript, category, store, navigation, scrollTo }) => {
     return (
         <View style={styles.actionSheetView}>
             <View style={styles.header}>
@@ -19,24 +27,30 @@ export const AnswerCard = observer(({ transcript, category }) => {
             <View style={styles.container}>
                 <View>
                     <View>
-                        <Text style={{ fontSize: PxFit(16), color: 'black' }}>地理知识</Text>
+                        <Text style={{ fontSize: PxFit(16), color: 'black' }}>{category.name}</Text>
                     </View>
                     <Row style={styles.transcript}>
-                        {transcript.map((result, index) => {
+                        {transcript.map((result: string, index: number) => {
+                            let backgroundColor = Theme.lightBorder;
+                            if (result !== undefined) {
+                                backgroundColor = '#45B7FF';
+                            }
                             return (
-                                <TouchFeedback
-                                    key={index}
-                                    onPress={() => {
-                                        // 跳转题目
-                                    }}
-                                    style={[
-                                        styles.question,
-                                        {
-                                            backgroundColor: result !== undefined ? '#45B7FF' : Theme.lightBorder,
-                                        },
-                                    ]}>
-                                    <Text style={styles.questionText}>{index + 1}</Text>
-                                </TouchFeedback>
+                                <View style={styles.questionWrap} key={index}>
+                                    <TouchFeedback
+                                        onPress={() => {
+                                            scrollTo(index);
+                                            hide();
+                                        }}
+                                        style={[
+                                            styles.question,
+                                            {
+                                                backgroundColor,
+                                            },
+                                        ]}>
+                                        <Text style={styles.questionText}>{index + 1}</Text>
+                                    </TouchFeedback>
+                                </View>
                             );
                         })}
                     </Row>
@@ -45,7 +59,7 @@ export const AnswerCard = observer(({ transcript, category }) => {
                     style={styles.button}
                     onPress={() => {
                         DeviceEventEmitter.emit('submitAnswer');
-                        Tools.navigate('ExamResult', { category, transcript });
+                        navigation.replace('ExamResult', { category, transcript, store });
                         hide();
                     }}>
                     <Text style={styles.buttonText}>提交练习</Text>
@@ -55,7 +69,7 @@ export const AnswerCard = observer(({ transcript, category }) => {
     );
 });
 
-export const show = (props: any) => {
+export const show = (props: Props) => {
     const overlayView = (
         <Overlay.PullView containerStyle={{ backgroundColor: Theme.white, borderRadius: PxFit(10) }} animated>
             <AnswerCard {...props} />
@@ -102,6 +116,12 @@ const styles = StyleSheet.create({
     transcript: {
         flexWrap: 'wrap',
         paddingVertical: PxFit(15),
+    },
+    questionWrap: {
+        width: (Device.WIDTH - PxFit(30)) * 0.2,
+        height: (Device.WIDTH - PxFit(30)) * 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     question: {
         backgroundColor: '#45B7FF',

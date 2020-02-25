@@ -1,40 +1,18 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect, createContext } from 'react';
-import {
-    DeviceEventEmitter,
-    StyleSheet,
-    ScrollView,
-    View,
-    Image,
-    Text,
-    TouchableOpacity,
-    FlatList,
-} from 'react-native';
-import {
-    Row,
-    Banner,
-    Iconfont,
-    PullChooser,
-    TouchFeedback,
-    PageContainer,
-    beginnerGuidance,
-    SetQuestionGuidance,
-    StatusView,
-} from '@src/components';
-import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, ISIOS } from '@src/utils';
-import { useApolloClient, useMutation, useQuery, GQL } from '@src/apollo';
-import { storage, keys, app, config } from '@src/store';
-import { ad } from '@app/native';
+import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
+import { DeviceEventEmitter, StyleSheet, View, FlatList } from 'react-native';
+import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
+import { Theme, SCREEN_WIDTH, PxFit, Tools, ISIOS } from '@src/utils';
+import { useApolloClient, useQuery, GQL } from '@src/apollo';
+import { app, config } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
-import { Audit, AuditStatus, Explain, Information, Question } from '@src/screens/question/component';
-import Placeholder from './components/Placeholder';
 import ChooseOverlay from './components/ChooseOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import AnswerQuestion from './components/AnswerQuestion';
-import { AnswerCard } from './components/AnswerCardOverlay';
+import { show } from './components/AnswerCardOverlay';
 import { observer, QuestionsStore } from './store';
 import CommentOverlay from '@src/screens/comment/CommentOverlay';
 
-export default observer(props => {
+export default observer(() => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const category = useMemo(() => navigation.getParam('category', {}), []);
@@ -62,19 +40,13 @@ export default observer(props => {
         commentRef.current.slideDown();
     }, [commentRef]);
 
-    const { data } = useQuery(GQL.UserMeansQuery, {
-        variables: { variables: { id: app.me.id } },
+    const { data, error: errros } = useQuery(GQL.UserMeansQuery, {
+        variables: { id: app.me.id },
     });
 
-    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
+    console.log('errros :', errros);
 
-    // 加载广告缓存
-    const loadAd = useCallback(() => {
-        if (user && !ISIOS && config.enableQuestion) {
-            ad.FullScreenVideo.loadFullScreenVideoAd().then(result => {});
-            ad.RewardVideo.loadAd().then(result => {});
-        }
-    }, [user]);
+    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
 
     const fetchQuestions = useCallback(async () => {
         if (flag.current) {
@@ -112,30 +84,39 @@ export default observer(props => {
             .catch(err => {
                 console.warn('加载task config err', err);
             });
-        // 加载广告
-        loadAd();
     }, [fetchQuestions]);
 
+    const scrollTo = (index: any) => {
+        listRef.current && listRef.current.scrollToIndex({ animated: false, index });
+    };
+
     useEffect(() => {
-        DeviceEventEmitter.addListener('selectAnswer', ({ order, result }) => {
+        console.log('进入');
+        const selectAnswerListener = DeviceEventEmitter.addListener('selectAnswer', ({ order, result }) => {
+            console.log('object :', store.viewableItemIndex, store.questions.length);
             setTranscript(order, result);
+            if (store.viewableItemIndex + 1 === store.questions.length) {
+                console.log('DeviceEventEmitter :', show);
+                show({ transcript: store.transcript, category, store, navigation, scrollTo });
+            }
         });
         DeviceEventEmitter.addListener('showComment', () => {
             showComment();
         });
-        DeviceEventEmitter.addListener('turnThePage', index => {
-            listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
+        const turnThePageListener = DeviceEventEmitter.addListener('turnThePage', index => {
+            if (index + 1 < store.questions.length) {
+                listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
+            }
         });
         DeviceEventEmitter.addListener('nextQuestion', index => {
             listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
         });
         return () => {
-            DeviceEventEmitter.removeListener('selectAnswer');
-            DeviceEventEmitter.removeListener('showComment');
-            DeviceEventEmitter.removeListener('turnThePage');
-            DeviceEventEmitter.removeListener('nextQuestion');
+            selectAnswerListener.remove();
+            turnThePageListener.remove();
+            console.log('退出');
         };
-    }, [setTranscript, showComment]);
+    }, [showComment]);
 
     const showOptions = useCallback(() => {
         if (ISIOS) {
@@ -170,13 +151,6 @@ export default observer(props => {
 
     const renderItem = useCallback(
         ({ item, index }) => {
-            if (item.name === 'submit') {
-                return (
-                    <View style={styles.itemContainer}>
-                        <AnswerCard transcript={transcript} category={category} />
-                    </View>
-                );
-            }
             return (
                 <AnswerQuestion key={item.id} order={index} questions={questions} question={item} category={category} />
             );
@@ -194,7 +168,7 @@ export default observer(props => {
             <View style={styles.container}>
                 <FlatList
                     ref={listRef}
-                    data={[...questions, { name: 'submit' }]}
+                    data={questions}
                     contentContainerStyle={{ flexGrow: 1 }}
                     bounces={false}
                     scrollsToTop={false}
@@ -211,7 +185,7 @@ export default observer(props => {
             </View>
         );
     }, [fetchQuestions, questions, error]);
-
+    console.log('exam data :', store.transcript, store.viewableItemIndex);
     return (
         <React.Fragment>
             <PageContainer

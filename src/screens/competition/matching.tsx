@@ -12,6 +12,7 @@ import Guide from './components/Guide';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
 import service from 'service';
+import Sound from 'react-native-sound';
 
 export default observer(props => {
     const navigation = useNavigation();
@@ -92,6 +93,12 @@ export default observer(props => {
         );
     }, []);
 
+    // const music = new Sound(require('@src/assets/sound/competition_bg.mp3'), error => {
+    //     if (error) {
+    //         console.log('error :', error);
+    //     }
+    // });
+
     useEffect(() => {
         if (!app.competitionGuide) {
             app.recordCompetitionGuide(true);
@@ -110,6 +117,8 @@ export default observer(props => {
                 console.warn('result', result);
             },
         });
+
+        // music.play();
     }, []);
 
     // const guideText = useMemo(() => {
