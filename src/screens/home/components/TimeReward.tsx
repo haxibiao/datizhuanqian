@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Text, View, StyleSheet, Image, AppState } from 'react-native';
 import { TouchFeedback, RewardOverlay, FeedOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools, Theme } from 'utils';
+import _ from 'lodash';
 
 interface Props {
     navigation: Function;
@@ -68,7 +69,7 @@ const TimeReward = (props: Props) => {
         };
     };
 
-    const getReward = async () => {
+    const getReward = useCallback(async () => {
         try {
             const result = await timeReward();
             const reward = Tools.syncGetter('data.timeReward', result);
@@ -83,7 +84,9 @@ const TimeReward = (props: Props) => {
             });
         }
         setReceived(true);
-    };
+    }, []);
+
+    const debounceHandler = useMemo(() => _.debounce(getReward, 400), [getReward]);
 
     const showRewardTips = (reward: { gold_reward: any; ticket_reward: any; contribute_reward: any }) => {
         const rewardContent = {
@@ -105,13 +108,7 @@ const TimeReward = (props: Props) => {
     }
 
     return (
-        <TouchFeedback
-            style={styles.container}
-            navigation={navigation}
-            authenticated
-            onPress={() => {
-                getReward();
-            }}>
+        <TouchFeedback style={styles.container} navigation={navigation} authenticated onPress={debounceHandler}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image
                     source={require('../../../assets/images/time_reward.png')}
