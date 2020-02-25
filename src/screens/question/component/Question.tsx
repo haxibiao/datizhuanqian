@@ -1,6 +1,15 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { Player, overlayView, TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont, Avatar } from '@src/components';
+import {
+    Player,
+    overlayView,
+    TouchFeedback,
+    PlaceholderImage,
+    OverlayViewer,
+    Iconfont,
+    Avatar,
+    Audio,
+} from '@src/components';
 import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
 import { observer, useQuestionStore } from '@src/screens/answer/store';
 import Selections from './Selections';
@@ -46,7 +55,7 @@ export default observer(({ store, question }) => {
     }, [question]);
 
     const content = useMemo(() => {
-        const { image, video } = question;
+        const { image, video, audio } = question;
         if (image) {
             const { width, height, path } = image;
             const style = Tools.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(24));
@@ -63,6 +72,10 @@ export default observer(({ store, question }) => {
         }
         if (video && video.url) {
             return <Player style={{ marginTop: PxFit(Theme.itemSpace) }} size={styles.video} video={video} />;
+        }
+
+        if (audio && audio.url) {
+            return <Audio.Player style={styles.audioContainer} audio={audio.url} />;
         }
 
         return null;
@@ -131,6 +144,13 @@ const styles = StyleSheet.create({
     video: {
         width: SCREEN_WIDTH - PxFit(24),
         height: (SCREEN_WIDTH - PxFit(24)) * 0.65,
+    },
+    audioContainer: {
+        marginTop: PxFit(Theme.itemSpace),
+        width: PxFit(160),
+        height: PxFit(36),
+        paddingHorizontal: PxFit(14),
+        borderRadius: PxFit(18),
     },
     amplification: {
         position: 'absolute',

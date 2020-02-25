@@ -50,6 +50,11 @@ query QuestionListQuery($category_id: Int, $offset: Int, $limit: Int) {
             Text
             Value
         }
+        audio {
+            id
+            url
+            name
+        }
         image {
             id
             path
