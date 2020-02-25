@@ -90,12 +90,13 @@ export default observer(props => {
             <Animated.View
                 style={[{ overflow: 'hidden', height }, audioHeight == 0 && { position: 'absolute', bottom: -500 }]}>
                 <Audio.Recorder
+                    style={styles.audioContainer}
+                    invisible={slideIn}
                     onLayout={event => {
                         if (audioHeight == 0) {
                             setAudioHeight(event.nativeEvent.layout.height);
                         }
                     }}
-                    style={styles.audioContainer}
                     completeRecording={(path, key) => setQuestionAudio({ ...audio, path, key })}
                 />
             </Animated.View>

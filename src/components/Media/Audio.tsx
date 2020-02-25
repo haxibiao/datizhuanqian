@@ -9,6 +9,7 @@ import Sound from 'react-native-sound';
 import * as Progress from 'react-native-progress';
 import { Overlay } from 'teaset';
 import AudioTracks, { AnimatedTracks } from './AudioTracks';
+import RNFetchBlob from 'rn-fetch-blob';
 
 // playingListener
 // stoppedListener
@@ -44,7 +45,7 @@ function TimeFormat(second) {
 export type RecordStatus = 'none' | 'recording' | 'stopped' | 'played';
 
 // 录音器
-export const Recorder = ({ style, onLayout, completeRecording, minimumTime = 2 }) => {
+export const Recorder = ({ style, onLayout, invisible, completeRecording, minimumTime = 3 }) => {
     const hasPermission = useRef(true);
     const audioDirectoryPath = useRef(AudioUtils.DocumentDirectoryPath + '/test.aac');
     const [audioFilePath, setAudioFilePath] = useState('');
@@ -53,6 +54,16 @@ export const Recorder = ({ style, onLayout, completeRecording, minimumTime = 2 }
     const recordStatus = useRef('none');
     const whoosh = useRef();
     const minDuration = useRef();
+
+    useEffect(() => {
+        if (invisible) {
+            if (status === 'recording') {
+                stopRecord();
+            } else if (status === 'played') {
+                stopSound();
+            }
+        }
+    }, [invisible, status, stopRecord, stopSound]);
 
     useEffect(() => {
         recordStatus.current = status;
@@ -198,8 +209,58 @@ export const Recorder = ({ style, onLayout, completeRecording, minimumTime = 2 }
         setStatus('none');
     }, []);
 
-    const complete = useCallback(() => {
+    const uploadAudio = useCallback((audio, callback) => {
+        return new Promise((resolve, reject) => {
+            RNFetchBlob.fetch(
+                'POST',
+                'http://video.datizhuanqian.com/api/audio',
+                {
+                    Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: 'Bearer access-token',
+                },
+                [{ api_token: TOKEN, type: 'audio/aac', data: RNFetchBlob.wrap(audio) }],
+            )
+                .then(resp => {
+                    const res = resp.text();
+                    console.log('resp', res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('err', err);
+                    reject(err);
+                });
+        });
+
+        // return new Promise((resolve, reject) => {
+        //     var data = new FormData();
+        //     data.append('api_token', TOKEN);
+        //     data.append('audio', audio);
+        //     const config = {
+        //         method: 'POST',
+        //         headers: {
+        //             Accept: 'application/json',
+        //             'Content-Type': 'multipart/form-data',
+        //         },
+        //         body: data,
+        //     };
+        //     console.log('config', config);
+        //     fetch('http://video.datizhuanqian.com/api/audio', config)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log('data', data);
+        //             resolve(data);
+        //         })
+        //         .catch(err => {
+        //             console.log('err', err);
+        //             reject(err);
+        //         });
+        // });
+    }, []);
+
+    const complete = useCallback(async () => {
         if (completeRecording) {
+            await uploadAudio(audioFilePath);
             completeRecording(audioFilePath, Math.random(0, 1));
             deleteAudio();
         }
@@ -286,12 +347,6 @@ export const Recorder = ({ style, onLayout, completeRecording, minimumTime = 2 }
                     </TouchableWithoutFeedback>
                 )}
             </View>
-            {/* <View style={{ alignItems: 'center', marginTop: PxFit(40) }}>
-                <Player
-                    audio={audioFilePath}
-                    style={{ width: PxFit(140), height: PxFit(40), borderRadius: PxFit(20), padding: PxFit(10) }}
-                />
-            </View> */}
         </View>
     );
 };

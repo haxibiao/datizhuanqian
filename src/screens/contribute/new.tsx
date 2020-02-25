@@ -34,6 +34,7 @@ export default observer(props => {
         audio,
         picture,
         explain,
+        setQuestionAudio,
         setDescription,
         setContentPicture,
         setContentVideo,
@@ -61,6 +62,10 @@ export default observer(props => {
             noTicket: userCache.ticket === 0,
         });
     }, [client]);
+
+    const deleteQuestionAudio = useCallback(() => {
+        setQuestionAudio(null);
+    }, []);
 
     const createQuestion = useCallback(
         async explanation_id => {
@@ -186,7 +191,15 @@ export default observer(props => {
                         />
                     )}
                     {audio && audio.path && (
-                        <Audio.Player style={styles.audioContainer} audio={audio.path} key={audio.key} />
+                        <View style={styles.audioPlayer}>
+                            <Audio.Player style={styles.audioContainer} audio={audio.path} key={audio.key} />
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                style={styles.deleteAudio}
+                                onPress={deleteQuestionAudio}>
+                                <Iconfont name="trash" color="#5E5E5E" size={PxFit(24)} />
+                            </TouchableOpacity>
+                        </View>
                     )}
                 </View>
                 <View style={styles.selectionsWrap}>
@@ -259,8 +272,17 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(5),
         backgroundColor: '#f4f4f4',
     },
-    audioContainer: {
+    audioPlayer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginTop: PxFit(15),
+    },
+    deleteAudio: {
+        paddingHorizontal: PxFit(8),
+        paddingVertical: PxFit(4),
+        marginLeft: PxFit(5),
+    },
+    audioContainer: {
         width: PxFit(160),
         height: PxFit(36),
         paddingHorizontal: PxFit(14),

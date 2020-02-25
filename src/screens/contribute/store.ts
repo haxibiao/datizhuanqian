@@ -42,23 +42,23 @@ class Selection {
 
 class QuestionStore {
     static instance: QuestionStore | null;
-    public videoDuration: number = app.me.video_duration || 40;
-    public explainDuration: number = app.me.explanation_video_duration || 100;
+    public videoDuration: number = app.me.video_duration || 40; //上传时间限制
+    public explainDuration: number = app.me.explanation_video_duration || 100; //上传时间限制
     @observable public description: string = '';
     @observable public category: Category = <Category>{};
-    @observable public picture: string | null = null;
-    @observable public video: Video | null = null;
-    @observable public audio: Audio | null = null;
-    @observable public explain: Explain | null = null;
+    @observable public picture: string | null = null; // 图片
+    @observable public video: Video | null = null; // 视频对象
+    @observable public audio: Audio | null = null; // 音频对象
+    @observable public explain: Explain | null = null; // 解析对象
     @observable public selections = values.map(item => new Selection(item));
-
+    // 缓存实例
     constructor() {
         if (QuestionStore.instance) {
             QuestionStore.instance = this;
         }
         return QuestionStore.instance as QuestionStore;
     }
-
+    // 删除实例
     removeInstance() {
         QuestionStore.instance = null;
     }
@@ -102,7 +102,7 @@ class QuestionStore {
     setExplain(explain: Explain | null) {
         this.explain = explain;
     }
-
+    // 选择题干的图片
     @action.bound
     contentImagePicker() {
         Api.imagePicker(
@@ -118,7 +118,7 @@ class QuestionStore {
             },
         );
     }
-
+    // 选择解析的图片
     @action.bound
     explainImagePicker() {
         Api.imagePicker(
@@ -134,7 +134,7 @@ class QuestionStore {
             },
         );
     }
-
+    // 选择题干的视频
     @action.bound
     contentVideoPicker() {
         Api.videoPicker(
@@ -181,7 +181,7 @@ class QuestionStore {
             },
         );
     }
-
+    // 选择解析的视频
     @action.bound
     explainVideoPicker() {
         Api.videoPicker(
@@ -230,7 +230,7 @@ class QuestionStore {
             },
         );
     }
-
+    // 获取提交后端的题目参数
     @computed get variables(): any {
         let { selections, answers } = this.buildOptions();
         let description = null;
@@ -249,7 +249,7 @@ class QuestionStore {
             answers,
         };
     }
-
+    // 获取提交后端的解析参数
     @computed get explanationVariables() {
         if (this.explain && Object.keys(this.explain).length > 0) {
             return {
@@ -260,7 +260,7 @@ class QuestionStore {
         }
         return null;
     }
-
+    // 构建提交后端的选项和答案参数格式
     buildOptions(): any {
         let selections,
             answers: Value[] = [];
@@ -281,7 +281,7 @@ class QuestionStore {
             answers,
         };
     }
-
+    // 参数验证
     validator() {
         var verified = true;
         var tips: any = {
