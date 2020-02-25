@@ -215,9 +215,6 @@ export default {
     Contribute: {
         screen: editQuestion,
     },
-    NewContribute: {
-        screen: NewContribute,
-    },
     Contributes: {
         screen: ContributesScreen,
     },

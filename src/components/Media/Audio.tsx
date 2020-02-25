@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions, Platform, View, Text, Image, TouchableWithoutFe
 import Iconfont from '../Iconfont';
 import WaveView from '../Container/WaveView';
 import GradientView from '../Basics/GradientView';
+import LoadingOverlay from '../Overlay/LoadingOverlay';
 import { Theme, PxFit, Tools } from '../../utils';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Sound from 'react-native-sound';
@@ -209,17 +210,24 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
         setStatus('none');
     }, []);
 
-    const uploadAudio = useCallback((audio, callback) => {
+    // 上传录音
+    const uploadAudio = useCallback(audio => {
         return new Promise((resolve, reject) => {
             RNFetchBlob.fetch(
                 'POST',
                 'http://video.datizhuanqian.com/api/audio',
                 {
                     Accept: 'application/json',
-                    'Content-Type': 'multipart/form-data',
                     Authorization: 'Bearer access-token',
+                    'Content-Type': 'multipart/form-data',
                 },
-                [{ api_token: TOKEN, type: 'audio/aac', data: RNFetchBlob.wrap(audio) }],
+                {
+                    type: 'audio/aac',
+                    data: JSON.stringify({
+                        api_token: TOKEN,
+                        audio: RNFetchBlob.wrap(audio),
+                    }),
+                },
             )
                 .then(resp => {
                     const res = resp.text();
@@ -260,9 +268,23 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
 
     const complete = useCallback(async () => {
         if (completeRecording) {
-            await uploadAudio(audioFilePath);
-            completeRecording(audioFilePath, Math.random(0, 1));
-            deleteAudio();
+            LoadingOverlay.show({});
+            // 模拟UI
+            setTimeout(() => {
+                LoadingOverlay.hide();
+                completeRecording({ path: audioFilePath, key: new Date().getTime(), id: 1 });
+                deleteAudio();
+            }, 3000);
+            // 真实情况
+            // try {
+            //     const audioObj = await uploadAudio(audioFilePath);
+            //     if (Tools.syncGetter('id', audioObj)) {
+            //         // path: 本地音频路径  key：时间戳   id：上传完成的id
+            //         completeRecording({ path: audioFilePath, key: new Date().getTime(), id: audioObj.id });
+            //         deleteAudio();
+            //     }
+            // } catch (error) {}
+            // LoadingOverlay.hide();
         }
     }, [audioFilePath]);
 

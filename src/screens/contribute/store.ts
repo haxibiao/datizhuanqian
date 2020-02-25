@@ -244,6 +244,7 @@ class QuestionStore {
             category_id: this.category ? this.category.id : null,
             description,
             selections,
+            audio_id: this.audio?.id,
             video_id: this.video?.id,
             image: this.picture,
             answers,

@@ -97,7 +97,7 @@ export default observer(props => {
                             setAudioHeight(event.nativeEvent.layout.height);
                         }
                     }}
-                    completeRecording={(path, key) => setQuestionAudio({ ...audio, path, key })}
+                    completeRecording={audio => setQuestionAudio(audio)}
                 />
             </Animated.View>
         </View>
