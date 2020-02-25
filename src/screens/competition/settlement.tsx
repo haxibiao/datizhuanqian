@@ -188,12 +188,13 @@ const over = observer(props => {
 
         return () => {
             clearTimeout(fetchResultTimer.current);
-            clearTimeout(fetchResultTimer.current);
+            clearTimeout(setLoadingTimer.current);
         };
     }, []);
 
     useEffect(() => {
         const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', () => {
+            navigation.pop(2);
             return true;
         });
         return () => {

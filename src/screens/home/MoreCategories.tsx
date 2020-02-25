@@ -11,13 +11,13 @@ import CategoryItem from './components/CategoryItem';
 
 const MoreCategories = props => {
     const navigation = useNavigation();
-    const { categories, title } = navigation.state.params;
+    const { categories, title, tag } = navigation.state.params;
     const keyExtractor = useCallback((item, index) => {
         return item.id ? item.id.toString() : index.toString();
     }, []);
 
     const renderItem = useCallback(({ item }) => {
-        return <CategoryItem title={item.name} category={item} />;
+        return <CategoryItem title={item.name} tag={tag} category={item} />;
     }, []);
 
     return (

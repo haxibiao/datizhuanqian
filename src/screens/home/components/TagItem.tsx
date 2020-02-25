@@ -38,6 +38,7 @@ const TagItem = ({ category, data, title, tag }) => {
                                 navigation.navigate('MoreCategories', {
                                     categories,
                                     title,
+                                    tag,
                                 })
                             }>
                             <Text style={styles.moreCategoryText}>更多</Text>
