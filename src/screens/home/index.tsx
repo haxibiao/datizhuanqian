@@ -124,6 +124,7 @@ const index = observer(props => {
                     })
                     .then(({ data }) => {})
                     .catch(error => {
+                        console.log('error :', error);
                         const info = error.toString().indexOf('登录');
                         if (info > -1) {
                             app.forget();

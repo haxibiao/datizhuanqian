@@ -91,16 +91,14 @@ export default observer(() => {
     };
 
     useEffect(() => {
-        console.log('进入');
         const selectAnswerListener = DeviceEventEmitter.addListener('selectAnswer', ({ order, result }) => {
-            console.log('object :', store.viewableItemIndex, store.questions.length);
             setTranscript(order, result);
             if (store.viewableItemIndex + 1 === store.questions.length) {
-                console.log('DeviceEventEmitter :', show);
                 show({ transcript: store.transcript, category, store, navigation, scrollTo });
             }
         });
-        DeviceEventEmitter.addListener('showComment', () => {
+
+        const showCommentListener = DeviceEventEmitter.addListener('showComment', () => {
             showComment();
         });
         const turnThePageListener = DeviceEventEmitter.addListener('turnThePage', index => {
@@ -108,13 +106,14 @@ export default observer(() => {
                 listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
             }
         });
-        DeviceEventEmitter.addListener('nextQuestion', index => {
+        const nextQuestionListener = DeviceEventEmitter.addListener('nextQuestion', index => {
             listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
         });
         return () => {
             selectAnswerListener.remove();
             turnThePageListener.remove();
-            console.log('退出');
+            showCommentListener.remove();
+            nextQuestionListener.remove();
         };
     }, [showComment]);
 

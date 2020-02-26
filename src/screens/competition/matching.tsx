@@ -13,6 +13,7 @@ import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
 import service from 'service';
 import Sound from 'react-native-sound';
+import { playSound } from './playSound';
 
 export default observer(props => {
     const navigation = useNavigation();
@@ -43,6 +44,8 @@ export default observer(props => {
     // 匹配成功，出现遮罩禁用UI，随即跳转PK
     useEffect(() => {
         if (store.rival.id) {
+            console.log(' 匹配成功 :');
+            playSound('match_success.mp3');
             Overlay.show(
                 <Overlay.PopView modal={true} style={styles.overlay} ref={ref => (overlayRef.current = ref)}>
                     <View style={styles.modal} />
@@ -93,12 +96,6 @@ export default observer(props => {
         );
     }, []);
 
-    // const music = new Sound(require('@src/assets/sound/competition_bg.mp3'), error => {
-    //     if (error) {
-    //         console.log('error :', error);
-    //     }
-    // });
-
     useEffect(() => {
         if (!app.competitionGuide) {
             app.recordCompetitionGuide(true);
@@ -117,8 +114,14 @@ export default observer(props => {
                 console.warn('result', result);
             },
         });
+    }, []);
 
-        // music.play();
+    //背景音乐
+    useEffect(() => {
+        const music = playSound('competition_bg.mp3', true);
+        return () => {
+            music.stop();
+        };
     }, []);
 
     // const guideText = useMemo(() => {
@@ -142,7 +145,10 @@ export default observer(props => {
                         <ChallengeButton
                             matching={store.matching}
                             matched={!!store.rival.id}
-                            onPress={store.matchGame}
+                            onPress={() => {
+                                playSound('start_match.mp3');
+                                store.matchGame();
+                            }}
                         />
                     </View>
                     <View style={styles.competitorRight}>

@@ -12,6 +12,7 @@ import Ready from './components/Ready';
 import { useQuery, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
+import { playSound } from './playSound';
 
 const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
@@ -64,6 +65,7 @@ const compete = observer(props => {
     }, []);
 
     const resetState = useCallback(() => {
+        playSound('load_question.mp3');
         setIndex(i => i + 1);
         setAnswerStatus('');
     }, []);
@@ -100,6 +102,14 @@ const compete = observer(props => {
         });
         return () => {
             hardwareBackPress.remove();
+        };
+    }, []);
+
+    //背景音乐
+    useEffect(() => {
+        const music = playSound('competition_bg.mp3', true);
+        return () => {
+            music.stop();
         };
     }, []);
 

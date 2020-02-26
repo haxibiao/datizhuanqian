@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text } from 'react-native';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+import { playSound } from '../playSound';
 
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
 
@@ -44,6 +45,9 @@ const RepeatCountDown = (props: Props) => {
                     resetState();
                     return duration;
                 }
+                // if (prevCount === 4) {
+                //     playSound('count_down.mp3');
+                // }
                 return prevCount - 1;
             });
         }, 1000);

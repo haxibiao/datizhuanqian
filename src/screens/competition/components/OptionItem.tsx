@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { playSound } from '../playSound';
 
 interface Props {
     questionId: Number;
@@ -56,8 +57,11 @@ const OptionItem = (props: Props) => {
     const onPress = () => {
         if (flag.current) return;
         let { option, question, selectOption, setAnswerStatus, index } = props;
+        let result = question.answer === option.Value;
+        playSound(result ? 'answer_pass.mp3' : 'answer_fail.mp3');
+
         setOptionIndex(index);
-        setAnswerStatus(question.answer === option.Value ? 'correct' : 'error');
+        setAnswerStatus(result ? 'correct' : 'error');
         selectOption(option.Value);
     };
 

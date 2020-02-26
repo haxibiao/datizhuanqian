@@ -16,6 +16,7 @@ import { playVideo, syncGetter, useCirculationAnimation } from '@src/common';
 import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app, storage } from 'store';
 import { useNavigation } from 'react-navigation-hooks';
+import { playSound } from './playSound';
 
 const avatarWidget = {
     victory: [
@@ -216,6 +217,14 @@ const over = observer(props => {
         inputRange: [0, 0.5, 1],
         outputRange: [1, 1.2, 1],
     });
+
+    useEffect(() => {
+        // console.log('object :', object);
+        const music = playSound(result == 'victory' ? 'game_winner.mp3' : 'game_loser.mp3');
+        return () => {
+            music.stop();
+        };
+    }, []);
 
     return (
         <PageContainer hiddenNavBar>
