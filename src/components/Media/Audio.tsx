@@ -213,78 +213,56 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
     // 上传录音
     const uploadAudio = useCallback(audio => {
         return new Promise((resolve, reject) => {
-            RNFetchBlob.fetch(
-                'POST',
-                'http://video.datizhuanqian.com/api/audio',
-                {
+            let data = new FormData();
+            data.append('api_token', TOKEN);
+            data.append('audio', {
+                uri: 'file://' + audio,
+                name: 'test.aac',
+                type: 'audio/aac',
+            });
+            const config = {
+                method: 'POST',
+                headers: {
                     Accept: 'application/json',
-                    Authorization: 'Bearer access-token',
                     'Content-Type': 'multipart/form-data',
+                    Authorization: TOKEN,
                 },
-                {
-                    type: 'audio/aac',
-                    data: JSON.stringify({
-                        api_token: TOKEN,
-                        audio: RNFetchBlob.wrap(audio),
-                    }),
-                },
-            )
-                .then(resp => {
-                    const res = resp.text();
-                    console.log('resp', res);
-                    resolve(res);
+                body: data,
+            };
+
+            fetch('http://video.datizhuanqian.com/api/audio', config)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('data', data);
+                    resolve(data);
                 })
                 .catch(err => {
                     console.log('err', err);
                     reject(err);
                 });
         });
-
-        // return new Promise((resolve, reject) => {
-        //     var data = new FormData();
-        //     data.append('api_token', TOKEN);
-        //     data.append('audio', audio);
-        //     const config = {
-        //         method: 'POST',
-        //         headers: {
-        //             Accept: 'application/json',
-        //             'Content-Type': 'multipart/form-data',
-        //         },
-        //         body: data,
-        //     };
-        //     console.log('config', config);
-        //     fetch('http://video.datizhuanqian.com/api/audio', config)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log('data', data);
-        //             resolve(data);
-        //         })
-        //         .catch(err => {
-        //             console.log('err', err);
-        //             reject(err);
-        //         });
-        // });
     }, []);
 
     const complete = useCallback(async () => {
         if (completeRecording) {
             LoadingOverlay.show({});
             // 模拟UI
-            setTimeout(() => {
-                LoadingOverlay.hide();
-                completeRecording({ path: audioFilePath, key: new Date().getTime(), id: 1 });
-                deleteAudio();
-            }, 3000);
+            // setTimeout(() => {
+            //     LoadingOverlay.hide();
+            //     completeRecording({ path: audioFilePath, key: new Date().getTime(), id: 1 });
+            //     deleteAudio();
+            // }, 3000);
             // 真实情况
-            // try {
-            //     const audioObj = await uploadAudio(audioFilePath);
-            //     if (Tools.syncGetter('id', audioObj)) {
-            //         // path: 本地音频路径  key：时间戳   id：上传完成的id
-            //         completeRecording({ path: audioFilePath, key: new Date().getTime(), id: audioObj.id });
-            //         deleteAudio();
-            //     }
-            // } catch (error) {}
-            // LoadingOverlay.hide();
+            try {
+                const audioObj = await uploadAudio(audioFilePath);
+                console.log('audioObj :', audioObj);
+                if (Tools.syncGetter('data.id', audioObj)) {
+                    // path: 本地音频路径  key：时间戳   id：上传完成的id
+                    completeRecording({ path: audioFilePath, key: new Date().getTime(), id: audioObj.data.id });
+                    deleteAudio();
+                }
+            } catch (error) {}
+            LoadingOverlay.hide();
         }
     }, [audioFilePath]);
 
