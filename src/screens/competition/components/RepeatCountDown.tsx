@@ -45,9 +45,6 @@ const RepeatCountDown = (props: Props) => {
                     resetState();
                     return duration;
                 }
-                // if (prevCount === 4) {
-                //     playSound('count_down.mp3');
-                // }
                 return prevCount - 1;
             });
         }, 1000);
@@ -55,6 +52,12 @@ const RepeatCountDown = (props: Props) => {
             clearInterval(timer);
         };
     }, []);
+
+    useEffect(() => {
+        if (subTime === 3) {
+            playSound('count_down.mp3');
+        }
+    }, [subTime]);
 
     return (
         <View

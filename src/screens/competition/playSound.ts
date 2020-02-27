@@ -11,6 +11,7 @@ export const playSound = (soundName: any, repeat?: boolean) => {
                     console.log('加载错误', error);
                     return;
                 }
+                sound.play(() => sound.release());
             },
             {
                 playingListener: () => {},
@@ -18,18 +19,18 @@ export const playSound = (soundName: any, repeat?: boolean) => {
             },
         );
     }
-    console.log('playSound', sound);
-    setTimeout(() => {
-        if (sound) {
-            sound.play(success => {
-                if (success) {
-                    console.log('successfully finished playing');
-                } else {
-                    console.log('playback failed due to audio decoding errors');
-                }
-            });
-            repeat && sound.setNumberOfLoops(-1);
-        }
-    }, 1);
+    // console.log('playSound', sound);
+    // setTimeout(() => {
+    //     if (sound) {
+    //         sound.play(success => {
+    //             if (success) {
+    //                 console.log('successfully finished playing');
+    //             } else {
+    //                 console.log('playback failed due to audio decoding errors');
+    //             }
+    //         });
+    //         repeat && sound.setNumberOfLoops(-1);
+    //     }
+    // }, 1);
     return sound;
 };
