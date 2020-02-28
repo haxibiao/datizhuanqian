@@ -28,7 +28,7 @@ export default observer(({ question }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.overlayContent}>
-                            <Explain explanation={explanation} navigation={navigation} />
+                            <Explain explanation={explanation} />
                         </View>
                     </ScrollView>
                 </View>

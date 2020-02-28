@@ -5,8 +5,9 @@ import { Iconfont } from '@src/components';
 import { useLinearAnimation } from '@src/common';
 import { observer } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
+import AuditSelectionItem from './AuditSelectionItem';
 
-export default observer(({ store, question }) => {
+export default observer(({ store, question, audit }) => {
     const selections = useMemo(() => question.selections_array, [question]);
     const animations = useRef(
         selections.map(() => new Animated.Value(0)),
@@ -54,13 +55,23 @@ export default observer(({ store, question }) => {
                 {selections.map((option, index) => {
                     return (
                         <Animated.View style={createAnimate(animations[index], index)} key={option + index}>
-                            <SelectionItem
-                                question={question}
-                                store={store}
-                                value={option.Value}
-                                text={option.Text}
-                                style={{ marginBottom: PxFit(20) }}
-                            />
+                            {audit ? (
+                                <AuditSelectionItem
+                                    question={question}
+                                    store={store}
+                                    value={option.Value}
+                                    text={option.Text}
+                                    style={{ marginBottom: PxFit(20) }}
+                                />
+                            ) : (
+                                <SelectionItem
+                                    question={question}
+                                    store={store}
+                                    value={option.Value}
+                                    text={option.Text}
+                                    style={{ marginBottom: PxFit(20) }}
+                                />
+                            )}
                         </Animated.View>
                     );
                 })}

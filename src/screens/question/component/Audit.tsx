@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo, useEffect, useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, DeviceEventEmitter } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { Iconfont, TouchFeedback } from '@src/components';
 import { useLinearAnimation } from '@src/common';
@@ -64,6 +64,7 @@ export default observer(({ store, question }) => {
             setAuditStatus('pending');
         }
         auditQuestion();
+        DeviceEventEmitter.emit('nextQuestion');
     }, []);
 
     return (

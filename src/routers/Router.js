@@ -19,6 +19,8 @@ import UserAnswerScreen from '../screens/answer/UserAnswer';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
 import SearchScreen from '../screens/home/Search';
 import ExamResultScreen from '../screens/answer/ExamResult';
+//审题
+import AuditScreen from '../screens/audit';
 // 答题对垒
 import CompetitionCategoriesScreen from '../screens/competition/categories';
 import CompetitionMatchingScreen from '../screens/competition/matching';
@@ -155,6 +157,9 @@ export default {
     },
     ExamResult: {
         screen: ExamResultScreen,
+    },
+    Audit: {
+        screen: AuditScreen,
     },
     // 答题对垒
     CompetitionCategories: {

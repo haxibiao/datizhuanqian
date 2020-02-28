@@ -16,7 +16,7 @@ import Selections from './Selections';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { useNavigation } from 'react-navigation-hooks';
 
-export default observer(({ store, question }) => {
+export default observer(({ store, question, audit }) => {
     const { selections, setSelectionText, setAnswers, isMultiple } = store;
     const navigation = useNavigation();
 
@@ -109,7 +109,7 @@ export default observer(({ store, question }) => {
             </Text>
             {content}
             <View style={{ marginTop: PxFit(20) }}>
-                <Selections question={question} store={store} />
+                <Selections question={question} store={store} audit={audit} />
             </View>
         </View>
     );

@@ -5,9 +5,9 @@ import { Theme, PxFit, SCREEN_WIDTH, Tools } from '@src/utils';
 import { observer, useQuestionStore } from '@src/screens/answer/store';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-const MEDIA_WIDTH = SCREEN_WIDTH - PxFit(24);
+export default ({ explanation, audit }) => {
+    const MEDIA_WIDTH = audit ? SCREEN_WIDTH - PxFit(48) : SCREEN_WIDTH - PxFit(24);
 
-export default ({ explanation, navigation }) => {
     const explain = useMemo(() => {
         const result = {};
         result.video = Tools.syncGetter('video', explanation);
@@ -39,10 +39,13 @@ export default ({ explanation, navigation }) => {
                 </View>
             )}
 
-            {explain.picture && (
+            {explain.image && (
                 <View style={styles.mediaContainer}>
                     <TouchableWithoutFeedback onPress={showPicture}>
-                        <Image source={{ uri: explain.picture }} style={styles.imageCover} />
+                        <Image
+                            source={{ uri: explain.image }}
+                            style={[styles.imageCover, { width: MEDIA_WIDTH, height: MEDIA_WIDTH * 0.6 }]}
+                        />
                     </TouchableWithoutFeedback>
                 </View>
             )}
@@ -50,7 +53,7 @@ export default ({ explanation, navigation }) => {
             {explain.video && (
                 <View style={styles.mediaContainer}>
                     <TouchableWithoutFeedback
-                        onPress={() => navigation.navigate('VideoExplanation', { video: explain.video })}>
+                        onPress={() => Tools.navigate('VideoExplanation', { video: explain.video })}>
                         <View style={styles.imageCover}>
                             <Image source={require('@src/assets/images/video_explain.jpg')} style={styles.cover} />
                             <VideoMark size={PxFit(60)} />
@@ -82,8 +85,6 @@ const styles = StyleSheet.create({
         marginBottom: PxFit(20),
     },
     imageCover: {
-        width: MEDIA_WIDTH,
-        height: MEDIA_WIDTH * 0.6,
         justifyContent: 'center',
         alignItems: 'center',
     },

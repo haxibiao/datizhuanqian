@@ -16,23 +16,40 @@ const ListHeader = observer(props => {
                     activeOpacity={1}
                     onPress={() => navigation.navigate('Matching')}>
                     <ImageBackground
-                        source={require('@src/assets/images/competitor.png')}
-                        style={[styles.entrance, { marginRight: PxFit(10) }]}>
+                        source={require('@src/assets/images/ic_answer_match.png')}
+                        style={styles.letEntrance}>
                         <Text style={styles.entranceName}>答题对战</Text>
                         <Text style={styles.entranceDescription}>{!config.disableAd ? 'PK赢奖金' : '知识对决'}</Text>
                     </ImageBackground>
                 </TouchFeedback>
-                <TouchFeedback
-                    authenticated
-                    navigation={navigation}
-                    style={styles.enterWrap}
-                    activeOpacity={1}
-                    onPress={() => navigation.navigate('Rank')}>
-                    <ImageBackground source={require('@src/assets/images/answer_rank.png')} style={styles.entrance}>
-                        <Text style={styles.entranceName}>排行榜</Text>
-                        <Text style={styles.entranceDescription}>今日榜单排名</Text>
-                    </ImageBackground>
-                </TouchFeedback>
+                <View style={{ justifyContent: 'space-between' }}>
+                    <TouchFeedback
+                        authenticated
+                        navigation={navigation}
+                        style={styles.enterWrap}
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate('Rank')}>
+                        <ImageBackground
+                            source={require('@src/assets/images/ic_answer_rank.png')}
+                            style={styles.entrance}>
+                            <Text style={styles.entranceName}>排行榜</Text>
+                            <Text style={styles.entranceDescription}>今日榜单排名</Text>
+                        </ImageBackground>
+                    </TouchFeedback>
+                    <TouchFeedback
+                        authenticated
+                        navigation={navigation}
+                        style={styles.enterWrap}
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate('Audit')}>
+                        <ImageBackground
+                            source={require('@src/assets/images/ic_audit_question.png')}
+                            style={styles.entrance}>
+                            <Text style={styles.entranceName}>审核题目</Text>
+                            <Text style={styles.entranceDescription}>净化题库环境</Text>
+                        </ImageBackground>
+                    </TouchFeedback>
+                </View>
             </View>
         );
     } else {
@@ -47,6 +64,16 @@ const styles = StyleSheet.create({
         marginVertical: PxFit(Theme.itemSpace),
     },
     enterWrap: {},
+    letEntrance: {
+        width: entranceWidth,
+        height: entranceWidth,
+        // justifyContent: 'center',
+        alignItems: 'center',
+        padding: PxFit(10),
+        borderRadius: PxFit(5),
+        overflow: 'hidden',
+        marginRight: PxFit(10),
+    },
     entrance: {
         width: entranceWidth,
         height: (entranceWidth * 228) / 505,
