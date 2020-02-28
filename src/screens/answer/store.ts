@@ -42,6 +42,7 @@ export class QuestionStore {
 
     constructor(question: Question, order?: number) {
         this.question = question;
+        this.answered = this.question.answerResult !== undefined;
         this.isAudit = this.question.status == 0;
         this.isMultiple = String(this.question.answer).length > 1;
         if (order !== undefined) {
@@ -54,7 +55,8 @@ export class QuestionStore {
     @action.bound
     public answerQuestion(): AnswerResult {
         this.answered = true;
-        this.answerResult = this.selectedAnswers == this.question.answer ? 'correct' : 'error';
+        this.question.answerResult = this.answerResult =
+            this.selectedAnswers == this.question.answer ? 'correct' : 'error';
         return this.answerResult;
     }
 
@@ -84,23 +86,21 @@ export class QuestionStore {
 export class QuestionsStore {
     public correctCount: number = 0;
     @observable public questions: Question[] = [];
-    @observable public transcript: AnswerResult[] = []; //成绩单
     @observable public viewableItemIndex: number = 0;
+
+    constructor(data?: Question[]) {
+        if (data) {
+            this.questions = data;
+        }
+    }
 
     @action.bound
     public addQuestions(data: Question[]) {
         this.questions = data;
-        this.transcript = Array.from({ length: data.length });
-    }
-
-    @action.bound
-    public setTranscript(serialNumber: number, result: AnswerResult) {
-        this.transcript[serialNumber] = result;
     }
 
     @action.bound
     public reset() {
-        this.transcript = [];
         this.viewableItemIndex = 0;
     }
 }

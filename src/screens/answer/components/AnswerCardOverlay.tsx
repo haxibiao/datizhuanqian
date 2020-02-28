@@ -8,14 +8,16 @@ import { Overlay } from 'teaset';
 let OverlayKey: any = null;
 
 interface Props {
-    transcript: any;
+    questions: any;
     category: object;
     store: any;
     navigation: any;
     scrollTo: Function;
 }
 
-export const AnswerCard = observer(({ transcript, category, store, navigation, scrollTo }) => {
+export const AnswerCard = observer(({ questions, category, store, navigation, scrollTo }) => {
+    console.log('questions', questions);
+
     return (
         <View style={styles.actionSheetView}>
             <View style={styles.header}>
@@ -29,10 +31,10 @@ export const AnswerCard = observer(({ transcript, category, store, navigation, s
                     <View>
                         <Text style={{ fontSize: PxFit(16), color: 'black' }}>{category.name}</Text>
                     </View>
-                    <Row style={styles.transcript}>
-                        {transcript.map((result: string, index: number) => {
+                    <Row style={styles.questions}>
+                        {questions.map((question: string, index: number) => {
                             let backgroundColor = Theme.lightBorder;
-                            if (result !== undefined) {
+                            if (question.submittedAnswer && question.submittedAnswer !== '') {
                                 backgroundColor = '#45B7FF';
                             }
                             return (
@@ -59,7 +61,7 @@ export const AnswerCard = observer(({ transcript, category, store, navigation, s
                     style={styles.button}
                     onPress={() => {
                         DeviceEventEmitter.emit('submitAnswer');
-                        navigation.replace('ExamResult', { category, transcript, store });
+                        navigation.replace('ExamResult', { category, questions, store });
                         hide();
                     }}>
                     <Text style={styles.buttonText}>提交练习</Text>
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
     },
-    transcript: {
+    questions: {
         flexWrap: 'wrap',
         paddingVertical: PxFit(15),
     },

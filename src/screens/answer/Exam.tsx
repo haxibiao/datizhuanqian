@@ -16,9 +16,10 @@ export default observer(() => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const category = useMemo(() => navigation.getParam('category', {}), []);
+    const examData = useMemo(() => navigation.getParam('questions'), []);
     const viewableQuestionIndex = useMemo(() => navigation.getParam('viewableQuestionIndex', 0), [navigation]);
-    const store = useMemo(() => new QuestionsStore(), []);
-    const { questions, addQuestions, transcript, setTranscript } = store;
+    const store = useMemo(() => new QuestionsStore(examData), [examData]);
+    const { questions, addQuestions } = store;
     const question = useMemo(() => questions[viewableQuestionIndex], [questions, viewableQuestionIndex]);
     const [error, setError] = useState(false);
     const [minLevel, setMinLevel] = useState(2);
@@ -49,7 +50,7 @@ export default observer(() => {
     const user = useMemo(() => Tools.syncGetter('user', data), [data]);
 
     const fetchQuestions = useCallback(async () => {
-        if (flag.current) {
+        if (flag.current || examData) {
             return;
         }
         flag.current = true;
@@ -71,7 +72,7 @@ export default observer(() => {
             setError(error);
         }
         flag.current = false;
-    }, [client, category]);
+    }, [client, category, examData]);
 
     useEffect(() => {
         fetchQuestions();
@@ -91,31 +92,28 @@ export default observer(() => {
     };
 
     useEffect(() => {
-        const selectAnswerListener = DeviceEventEmitter.addListener('selectAnswer', ({ order, result }) => {
-            setTranscript(order, result);
-            if (store.viewableItemIndex + 1 === store.questions.length) {
-                show({ transcript: store.transcript, category, store, navigation, scrollTo });
+        const selectAnswerListener = DeviceEventEmitter.addListener('selectAnswer', () => {
+            if (store.viewableItemIndex === store.questions.length - 1) {
+                show({ questions: store.questions, category, store, navigation, scrollTo });
             }
         });
 
         const showCommentListener = DeviceEventEmitter.addListener('showComment', () => {
             showComment();
         });
-        const turnThePageListener = DeviceEventEmitter.addListener('turnThePage', index => {
-            if (index + 1 < store.questions.length) {
-                listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
+
+        const nextQuestionListener = DeviceEventEmitter.addListener('nextQuestion', () => {
+            if (store.viewableItemIndex < store.questions.length - 1) {
+                listRef.current &&
+                    listRef.current.scrollToIndex({ animated: true, index: store.viewableItemIndex + 1 });
             }
-        });
-        const nextQuestionListener = DeviceEventEmitter.addListener('nextQuestion', index => {
-            listRef.current && listRef.current.scrollToIndex({ animated: true, index: ++index });
         });
         return () => {
             selectAnswerListener.remove();
-            turnThePageListener.remove();
             showCommentListener.remove();
             nextQuestionListener.remove();
         };
-    }, [showComment]);
+    }, [store, showComment]);
 
     const showOptions = useCallback(() => {
         if (ISIOS) {
@@ -154,7 +152,7 @@ export default observer(() => {
                 <AnswerQuestion key={item.id} order={index} questions={questions} question={item} category={category} />
             );
         },
-        [transcript, questions],
+        [questions],
     );
 
     const content = useMemo(() => {
@@ -184,7 +182,7 @@ export default observer(() => {
             </View>
         );
     }, [fetchQuestions, questions, error]);
-    console.log('exam data :', store.transcript, store.viewableItemIndex);
+
     return (
         <React.Fragment>
             <PageContainer

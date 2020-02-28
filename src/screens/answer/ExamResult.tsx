@@ -9,7 +9,7 @@ import { observer } from './store';
 const ExamResult = observer((props: { navigation: any }) => {
     const { navigation } = props;
     const category = useMemo(() => navigation.getParam('category', {}), []);
-    const transcript = useMemo(() => navigation.getParam('transcript', []), []);
+    const questions = useMemo(() => navigation.getParam('questions', []), []);
     const store = useMemo(() => navigation.getParam('store', {}), []);
 
     const [getRewarded, setGetRewarded] = useState(false);
@@ -32,11 +32,12 @@ const ExamResult = observer((props: { navigation: any }) => {
         navigation.replace('Exam', { category, question_id: null });
     };
 
-    const correctItems = transcript.filter(result => {
-        return result === 'correct';
+    const correctItems = questions.filter(question => {
+        return question.submittedAnswer === question.answer;
     });
+    console.log('correctItems', correctItems);
 
-    const answerResult = correctItems.length / transcript.length >= 0.6;
+    const answerResult = correctItems.length / questions.length >= 0.6;
     const newDate = new Date(+new Date() + 8 * 3600 * 1000)
         .toISOString()
         .replace(/T/g, ' ')
@@ -56,12 +57,12 @@ const ExamResult = observer((props: { navigation: any }) => {
                                 <View style={styles.answerResult}>
                                     <Text style={styles.answerCorrect}>{correctItems.length}</Text>
                                     <Text style={{ color: Theme.grey, fontSize: PxFit(13), marginTop: PxFit(5) }}>
-                                        （共{transcript.length}题）
+                                        （共{questions.length}题）
                                     </Text>
                                 </View>
                             </View>
                             <Progress.Circle
-                                progress={correctItems.length / transcript.length}
+                                progress={correctItems.length / questions.length}
                                 size={Device.WIDTH * 0.45}
                                 borderWidth={0}
                                 color="#3BD4C2"
@@ -84,22 +85,29 @@ const ExamResult = observer((props: { navigation: any }) => {
                                         <Text>错误</Text>
                                     </Row>
                                 </Row>
-                                <Text>共{transcript.length}题</Text>
+                                <Text>共{questions.length}题</Text>
                             </Row>
                         </View>
                         <Row style={styles.questions}>
-                            {transcript.map((result: string, index: number) => {
-                                let backgroundColor = '#FF7271';
-                                if (result === 'correct') {
-                                    backgroundColor = '#3BD4C2';
+                            {questions.map((question: string, index: number) => {
+                                let backgroundColor = '#969696';
+                                if (question.submittedAnswer) {
+                                    backgroundColor = '#FF7271';
+                                    if (question.submittedAnswer === question.answer) {
+                                        backgroundColor = '#3BD4C2';
+                                    }
                                 }
+
                                 return (
                                     <View style={styles.questionWrap} key={index}>
                                         <TouchFeedback
-                                            // onPress={() => {
-                                            //     navigation.navigate('Exam', { viewableQuestionIndex: index });
-                                            //     // 跳转题目详情
-                                            // }}
+                                            onPress={() => {
+                                                navigation.navigate('Exam', {
+                                                    viewableQuestionIndex: index,
+                                                    questions,
+                                                    category,
+                                                });
+                                            }}
                                             style={{
                                                 ...styles.question,
                                                 backgroundColor,

@@ -14,15 +14,13 @@ export default observer(({ value, text, style, question, store }) => {
             return !c;
         });
         const answer = selectAnswer(value);
+        question.submittedAnswer = answer;
         // 考试题逻辑
-        if (isExam) {
+        if (isExam && answer) {
             if ((!isMultiple && isTurnable) || answer.length == question.selections_array.length) {
-                DeviceEventEmitter.emit('turnThePage', order);
+                DeviceEventEmitter.emit('nextQuestion');
             }
-            DeviceEventEmitter.emit('selectAnswer', {
-                order,
-                result: answer == question.answer ? 'correct' : 'error',
-            });
+            DeviceEventEmitter.emit('selectAnswer');
         }
     }, []);
 
