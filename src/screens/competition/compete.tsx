@@ -9,6 +9,7 @@ import Progress from './components/Progress';
 import Competitor from './components/Competitor';
 import LeaveGameOverlay from './components/LeaveGameOverlay';
 import Ready from './components/Ready';
+import MusicPlayer from './components/MusicPlayer';
 import { useQuery, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
@@ -21,6 +22,7 @@ const compete = observer(props => {
     const navigation = useNavigation();
     const game = navigation.getParam('game');
     const store = navigation.getParam('store');
+    const isGuessSong = navigation.getParam('isGuessSong', true);
 
     const [index, setIndex] = useState(0); // 题目下标值
     const [answerStatus, setAnswerStatus] = useState('');
@@ -116,9 +118,7 @@ const compete = observer(props => {
     if (!gameQuestions) {
         return <Ready />;
     }
-    console.log('====================================');
-    console.log('store.rival', store.me, store.rival);
-    console.log('====================================');
+
     return (
         <ImageBackground style={styles.background} source={require('@src/assets/images/compete_bg.png')}>
             <PageContainer
@@ -132,14 +132,26 @@ const compete = observer(props => {
                     <Progress questions={gameQuestions} index={index} />
                     <View style={styles.userContainer}>
                         <Competitor user={store.me} compete theLeft />
-                        <RepeatCountDown
-                            duration={10}
-                            repeat={gameQuestions.length}
-                            callback={handlerResult}
-                            resetState={resetState}
-                            store={store}
-                            score={gameQuestions}
-                        />
+                        {isGuessSong ? (
+                            <MusicPlayer
+                                audio={'http://cos.datizhuanqian.com/storage/app/audio/202002191554515e4ce9cbcb45d.mp3'}
+                                duration={10}
+                                repeat={gameQuestions.length}
+                                callback={handlerResult}
+                                resetState={resetState}
+                                store={store}
+                                score={gameQuestions}
+                            />
+                        ) : (
+                            <RepeatCountDown
+                                duration={10}
+                                repeat={gameQuestions.length}
+                                callback={handlerResult}
+                                resetState={resetState}
+                                store={store}
+                                score={gameQuestions}
+                            />
+                        )}
                         <Competitor user={store.rival} compete />
                     </View>
                     <Row style={styles.textWrap}>
@@ -151,6 +163,7 @@ const compete = observer(props => {
                         <Text style={styles.score}>{store.score[1]}</Text>
                     </Row>
                     <QuestionBody
+                        isGuessSong={isGuessSong}
                         question={gameQuestions[index]}
                         selectOption={selectOption}
                         setAnswerStatus={setAnswerStatus}
