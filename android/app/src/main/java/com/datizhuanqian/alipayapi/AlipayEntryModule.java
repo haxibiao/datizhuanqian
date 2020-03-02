@@ -89,7 +89,7 @@ class AlipayEntryModule extends ReactContextBaseJavaModule {
                 OpenAuthTask.BizType.AccountAuth, // 业务类型
                 bizParams, // 业务参数
                 openAuthCallback, // 业务结果回调。注意：此回调必须被你的应用保持强引用
-                false); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转
+                true); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转
     }
 
 }

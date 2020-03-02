@@ -13,25 +13,16 @@ const SettingWithdrawInfo = props => {
     const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
     const { navigation } = props;
     const getAuthCode = () => {
-        AppUtil.CheckApkExist('com.eg.android.AlipayGphone', (data: any) => {
-            console.log('CheckApkExist data :', data);
-            if (data) {
-                Alipay.AlipayAuth()
-                    .then((code: any) => {
-                        console.log('code', code);
-                        setAuthCode(code);
-                    })
-                    .catch(err => {
-                        Toast.show({
-                            content: '请登录或尝试更新支付宝再授权',
-                        });
-                    });
-            } else {
+        Alipay.AlipayAuth()
+            .then((code: any) => {
+                console.log('code', code);
+                setAuthCode(code);
+            })
+            .catch(err => {
                 Toast.show({
-                    content: '请先安装登录支付宝',
+                    content: '请登录或尝试更新支付宝再授权',
                 });
-            }
-        });
+            });
     };
 
     const bindRealName = () => {
