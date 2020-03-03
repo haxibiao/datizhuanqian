@@ -54,6 +54,7 @@ const beginnerGuidance = (props: Props) => {
     (async function() {
         // OverlayKey = Overlay.show(overlayView);
         const result = await storage.getItem(guidanceType);
+        console.log('result', result);
         if (!result) {
             OverlayKey = Overlay.show(overlayView);
             if (ISAndroid) {

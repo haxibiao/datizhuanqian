@@ -21,6 +21,8 @@ export const keys = {
     BeginnerGuidance_Answer: 'BeginnerGuidance_Answer',
     BeginnerGuidance_InputQuestion: 'BeginnerGuidance_InputQuestion',
     BeginnerGuidance_SubmitQuestion: 'BeginnerGuidance_SubmitQuestion',
+    BeginnerGuidance_Task: 'BeginnerGuidance_Task',
+    BeginnerGuidance_Exam: 'BeginnerGuidance_Exam',
     answeredId: 'answeredId',
     searchRecord: 'searchRecord',
     leaveAppTips: 'leaveAppTips',

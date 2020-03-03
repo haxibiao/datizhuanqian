@@ -64,7 +64,7 @@ export const AnswerCard = observer(({ questions, category, store, navigation, sc
                         navigation.replace('ExamResult', { category, questions, store });
                         hide();
                     }}>
-                    <Text style={styles.buttonText}>提交练习</Text>
+                    <Text style={styles.buttonText}>提交答案</Text>
                 </TouchFeedback>
             </View>
         </View>

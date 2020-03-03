@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     enterWrap: {},
     letEntrance: {
         width: entranceWidth,
-        height: entranceWidth,
+        height: (entranceWidth * 485) / 505,
         // justifyContent: 'center',
         alignItems: 'center',
         padding: PxFit(10),

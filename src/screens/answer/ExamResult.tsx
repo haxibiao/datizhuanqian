@@ -84,13 +84,17 @@ const ExamResult = observer((props: { navigation: any }) => {
                                         <View style={styles.fail} />
                                         <Text>错误</Text>
                                     </Row>
+                                    <Row>
+                                        <View style={styles.noAnswer} />
+                                        <Text>未答</Text>
+                                    </Row>
                                 </Row>
                                 <Text>共{questions.length}题</Text>
                             </Row>
                         </View>
                         <Row style={styles.questions}>
                             {questions.map((question: string, index: number) => {
-                                let backgroundColor = '#969696';
+                                let backgroundColor = Theme.lightBorder;
                                 if (question.submittedAnswer) {
                                     backgroundColor = '#FF7271';
                                     if (question.submittedAnswer === question.answer) {
@@ -203,6 +207,14 @@ const styles = StyleSheet.create({
     },
     fail: {
         backgroundColor: '#FF7271',
+        width: PxFit(16),
+        height: PxFit(16),
+        borderRadius: PxFit(8),
+        marginRight: PxFit(5),
+        marginLeft: PxFit(20),
+    },
+    noAnswer: {
+        backgroundColor: Theme.lightBorder,
         width: PxFit(16),
         height: PxFit(16),
         borderRadius: PxFit(8),

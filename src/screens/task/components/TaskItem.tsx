@@ -333,7 +333,13 @@ const TaskItem = (props: Props) => {
 
     return (
         <Fragment>
-            <TouchFeedback style={styles.container} onPress={task.details.length > 0 && showTaskDetail}>
+            <TouchFeedback
+                style={styles.container}
+                onPress={() => {
+                    if (task.details.length > 0) {
+                        showTaskDetail();
+                    }
+                }}>
                 <Image
                     source={task.icon || require('@src/assets/images/task_money_icon.png')}
                     style={{ width: PxFit(42), height: PxFit(42), marginRight: PxFit(5), marginLeft: PxFit(15) }}

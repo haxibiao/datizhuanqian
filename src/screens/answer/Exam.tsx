@@ -1,6 +1,15 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, StyleSheet, View, FlatList } from 'react-native';
-import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
+import { DeviceEventEmitter, StyleSheet, View, FlatList, BackHandler } from 'react-native';
+import {
+    Iconfont,
+    PullChooser,
+    TouchFeedback,
+    PageContainer,
+    StatusView,
+    beginnerGuidance,
+    ExamGuidance,
+    Row,
+} from '@src/components';
 import { Theme, SCREEN_WIDTH, PxFit, Tools, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
@@ -8,9 +17,10 @@ import { useNavigation } from 'react-navigation-hooks';
 import ChooseOverlay from './components/ChooseOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import AnswerQuestion from './components/AnswerQuestion';
-import { show } from './components/AnswerCardOverlay';
+import AnswerCardOverlay from './components/AnswerCardOverlay';
 import { observer, QuestionsStore } from './store';
 import CommentOverlay from '@src/screens/comment/CommentOverlay';
+import LeaveExam from './components/LeaveExam';
 
 export default observer(() => {
     const client = useApolloClient();
@@ -94,7 +104,7 @@ export default observer(() => {
     useEffect(() => {
         const selectAnswerListener = DeviceEventEmitter.addListener('selectAnswer', () => {
             if (store.viewableItemIndex === store.questions.length - 1) {
-                show({ questions: store.questions, category, store, navigation, scrollTo });
+                AnswerCardOverlay.show({ questions: store.questions, category, store, navigation, scrollTo });
             }
         });
 
@@ -108,10 +118,28 @@ export default observer(() => {
                     listRef.current.scrollToIndex({ animated: true, index: store.viewableItemIndex + 1 });
             }
         });
+
+        beginnerGuidance({
+            guidanceKey: 'Exam',
+            GuidanceView: ExamGuidance,
+            dismissEnabled: true,
+        });
+
+        console.log('examData :', examData);
+
+        const hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', () => {
+            console.log('退出');
+            if (!examData) {
+                LeaveExam.show(navigation, category, store.questions);
+                return true;
+            }
+        });
+
         return () => {
             selectAnswerListener.remove();
             showCommentListener.remove();
             nextQuestionListener.remove();
+            hardwareBackPressListener.remove();
         };
     }, [store, showComment]);
 
@@ -192,9 +220,23 @@ export default observer(() => {
                 onWillBlur={hideComment}
                 rightView={
                     question && (
-                        <TouchFeedback disabled={!question} style={styles.optionsButton} onPress={showOptions}>
-                            <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
-                        </TouchFeedback>
+                        <Row style={styles.optionsButton}>
+                            <TouchFeedback
+                                onPress={() =>
+                                    AnswerCardOverlay.show({
+                                        questions: store.questions,
+                                        category,
+                                        store,
+                                        navigation,
+                                        scrollTo,
+                                    })
+                                }>
+                                <Iconfont name={'order'} size={20} style={{ marginRight: 15 }} />
+                            </TouchFeedback>
+                            <TouchFeedback disabled={!question} onPress={showOptions}>
+                                <Iconfont name="more-vertical" color="#000" size={PxFit(18)} />
+                            </TouchFeedback>
+                        </Row>
                     )
                 }
                 hiddenNavBar={config.isFullScreen}
@@ -218,7 +260,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     optionsButton: {
-        alignItems: 'flex-end',
+        alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
         width: PxFit(40),
