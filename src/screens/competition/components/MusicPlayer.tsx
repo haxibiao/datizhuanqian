@@ -10,6 +10,7 @@ const MusicPlayer = props => {
     const [subTime, setSubTime] = useState(duration);
     const count = useRef(1);
     const answered = useRef(false);
+    const whoosh = useRef();
 
     const randomAnswer = useCallback(() => {
         if (!answered.current) {

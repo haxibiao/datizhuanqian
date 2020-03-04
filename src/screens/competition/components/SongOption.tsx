@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
         minWidth: PxFit(240),
         width: SCREEN_WIDTH * 0.8,
         height: PxFit(44),
+        paddingHorizontal: PxFit(10),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: PxFit(5),
