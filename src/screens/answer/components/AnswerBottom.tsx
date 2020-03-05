@@ -122,7 +122,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
     // 手动提交
     const handler = useCallback(async () => {
         // 提交答案
-        if (selectedAnswers.length > 0 && !answered) {
+        if (!answered) {
             // 触发answerQuestion事件，传递答题结果
             DeviceEventEmitter.emit('answerQuestion', answerQuestion());
             showResultsOverlay({
@@ -155,9 +155,10 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
             info.name = isSelf ? '仅浏览' : '已答过';
             info.color = '#666666';
             info.disabled = true;
-        } else if (selectedAnswers.length > 0 && !answered) {
+        } else if (!answered) {
             info.name = '提交答案';
             info.color = '#74A1FF';
+            info.disabled = selectedAnswers.length > 0 ? false : true;
         }
         return info;
     }, [selectedAnswers, answered, isAudit]);
