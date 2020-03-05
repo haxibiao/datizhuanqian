@@ -5,8 +5,8 @@
 
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { storage, keys } from '../../store/storage';
-import AppUpdateOverlay from '../../components/Overlay/AppUpdateOverlay';
+import { storage, keys } from 'store';
+import { AppUpdateOverlay } from 'components';
 import { Config } from 'utils';
 import { contrastVersion } from '../helper';
 
@@ -24,7 +24,6 @@ function manualUpdate(versionData: { version: any }) {
 
 async function autoUpdate(versionData: { version: any, is_force: any }) {
     const viewedVersion = (await storage.getItem(keys.viewedVersion)) || '1.0.0';
-    console.log('viewedVersion', Config.Version);
     // viewedVersion 观测当前版本用户是否已查看过更新日志
 
     const localVersion = Config.Version || '1.0.0'; // 本地版本

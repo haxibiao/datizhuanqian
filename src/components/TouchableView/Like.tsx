@@ -1,9 +1,9 @@
 import React, { Component, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react-native';
-import { exceptionCapture, useBounceAnimation } from 'common';
+import { exceptionCapture, useBounceAnimation } from '@src/common/helper';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils';
+
 import Iconfont from '../Iconfont';
 import _ from 'lodash';
 

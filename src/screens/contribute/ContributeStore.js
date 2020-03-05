@@ -5,7 +5,7 @@
 import { View, Image, Keyboard } from 'react-native';
 import { observable, action, runInAction, autorun, computed, when } from 'mobx';
 import { ProgressOverlay, beginnerGuidance, SetQuestionGuidance } from 'components';
-import { Api } from '../../utils';
+import { videoPicker, imagePicker } from 'common';
 import { app } from '@src/store';
 
 const ANSWERS = ['A', 'B', 'C', 'D'];
@@ -124,7 +124,7 @@ export default class ContributeStore {
 
     @action.bound
     imagePicke(type: target = '') {
-        Api.imagePicker(
+        imagePicker(
             image => {
                 image = `data:${image.mime};base64,${image.data}`;
                 runInAction(() => {
@@ -140,7 +140,7 @@ export default class ContributeStore {
 
     @action.bound
     videoPicke(type: target = '', uploadType: String) {
-        Api.videoPicker(
+        videoPicker(
             video => {
                 runInAction(() => {
                     this[type + 'video'] = video;

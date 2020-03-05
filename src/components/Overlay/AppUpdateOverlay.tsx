@@ -1,24 +1,13 @@
 'use strict';
 
-import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    NativeModules,
-    Dimensions,
-    PermissionsAndroid,
-    Platform,
-} from 'react-native';
-import { Config } from '../../utils';
-import Theme from '../../utils/Theme';
-import { WPercent, HPercent, PxFit, FontSize } from '../../utils/Scale';
-import app from '../../store/app';
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+
+import { app } from 'store';
 
 import Iconfont from '../Iconfont';
 import { Overlay } from 'teaset';
-import DownLoadApk from '@src/screens/withdraw/components/DownLoadApk';
+import DownLoadApk from '../Utils/DownLoadApk';
 
 const { height, width } = Dimensions.get('window');
 const SCREEN_WIDTH = width;

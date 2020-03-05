@@ -60,7 +60,7 @@ export default observer(props => {
         }
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
-        console.log('result :', result, error);
+        // console.log('result :', result, error);
         const videoSource = Tools.syncGetter('data.posts', result);
         if (error) {
             VideoStore.isError = true;
@@ -68,7 +68,7 @@ export default observer(props => {
             if (Array.isArray(videoSource) && videoSource.length > 0) {
                 VideoStore.addSource(videoSource);
                 VideoStore.addVisit(videoSource[0]);
-                console.log('videoSource:', VideoStore.dataSource);
+                // console.log('videoSource:', VideoStore.dataSource);
             } else {
                 VideoStore.isFinish = true;
             }

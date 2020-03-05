@@ -97,7 +97,6 @@ class config {
         this.enableBanner = data.enable_banner;
         this.enableDrawFeed = data.enable_drawfeed;
         this.disableAd = data.disable[Platform.OS === 'ios' ? 'ios' : Config.AppStore];
-        console.log('this.disableAd', this.disableAd);
     }
 
     @action.bound

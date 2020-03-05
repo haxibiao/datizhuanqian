@@ -3,7 +3,8 @@ export { observer } from 'mobx-react';
 import { observable, action, runInAction, autorun, computed, when } from 'mobx';
 import { ProgressOverlay, beginnerGuidance, SetQuestionGuidance } from '@src/components';
 import { app } from '@src/store';
-import { Api } from '@src/utils';
+// import { Api } from '@src/utils';
+import { imagePicker, videoPicker } from 'common';
 
 type Value = 'A' | 'B' | 'C' | 'D';
 
@@ -105,7 +106,7 @@ class QuestionStore {
     // 选择题干的图片
     @action.bound
     contentImagePicker() {
-        Api.imagePicker(
+        imagePicker(
             (image: any) => {
                 image = `data:${image.mime};base64,${image.data}`;
                 runInAction(() => {
@@ -121,7 +122,7 @@ class QuestionStore {
     // 选择解析的图片
     @action.bound
     explainImagePicker() {
-        Api.imagePicker(
+        imagePicker(
             (image: any) => {
                 image = `data:${image.mime};base64,${image.data}`;
                 runInAction(() => {
@@ -137,7 +138,7 @@ class QuestionStore {
     // 选择题干的视频
     @action.bound
     contentVideoPicker() {
-        Api.videoPicker(
+        videoPicker(
             (video: any) => {
                 runInAction(() => {
                     this.video = { path: video.path };
@@ -184,7 +185,7 @@ class QuestionStore {
     // 选择解析的视频
     @action.bound
     explainVideoPicker() {
-        Api.videoPicker(
+        videoPicker(
             (video: any) => {
                 runInAction(() => {
                     this.setExplain({ ...this.explain, video: { path: video.path } });

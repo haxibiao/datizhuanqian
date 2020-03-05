@@ -5,17 +5,15 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
-import { Button, Avatar, PageContainer, TouchFeedback, CustomTextInput, Row, Iconfont } from '../../../components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, Api } from '../../../utils';
-import UserInfo from '../../question/components/UserInfo';
-import { Share } from 'native';
-import { connect } from 'react-redux';
+import { Avatar } from 'components';
+
+import { viewShotUtil } from 'common';
 
 import { BoxShadow } from 'react-native-shadow';
 import QRCode from 'react-native-qrcode';
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - PxFit(80),
+    width: Device.WIDTH - PxFit(80),
     color: '#E8E8E8',
     border: PxFit(10),
     radius: PxFit(10),
@@ -37,7 +35,7 @@ class ShareCard extends Component {
         };
     }
     render() {
-        const { navigation, question, shareMiniProgram } = this.props;
+        const { question } = this.props;
         // let { question } = navigation.state.params;
 
         return (
@@ -92,8 +90,8 @@ class ShareCard extends Component {
                             <Image
                                 style={{
                                     marginTop: PxFit(Theme.itemSpace),
-                                    width: SCREEN_WIDTH - PxFit(80),
-                                    height: ((SCREEN_WIDTH - PxFit(80)) * 9) / 16,
+                                    width: Device.WIDTH - PxFit(80),
+                                    height: ((Device.WIDTH - PxFit(80)) * 9) / 16,
                                 }}
                                 source={{ uri: question.image.path }}
                             />
@@ -179,8 +177,8 @@ class ShareCard extends Component {
     }
 
     onCapture = async isShow => {
-        let image = await Api.viewShotUtil.capture(this.shareCard);
-        let result = await Api.viewShotUtil.saveImage(image, isShow);
+        let image = await viewShotUtil.capture(this.shareCard);
+        let result = await viewShotUtil.saveImage(image, isShow);
         console.log('Api.viewShotUtil.saveImage(image);', result);
         // this.props.navigation.goBack();
         return result;
@@ -230,8 +228,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect(store => {
-    return {
-        user: store.users.user,
-    };
-})(ShareCard);
+export default ShareCard;

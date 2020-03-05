@@ -42,14 +42,14 @@ import SubmitLoading from './Overlay/SubmitLoading';
 import OverlayViewer from './Overlay/OverlayViewer';
 import UpdateOverlay from './Overlay/UpdateOverlay';
 import TipsOverlay from './Overlay/TipsOverlay';
-import RewardTipsOverlay from './Overlay/RewardTipsOverlay';
 import CaptureVideoOverlay from './Overlay/CaptureVideoOverlay';
-import RewardVideoTipsOverlay from './Overlay/RewardVideoTipsOverlay';
+// import RewardVideoTipsOverlay from './Overlay/RewardVideoTipsOverlay';
 import LoadingOverlay from './Overlay/LoadingOverlay';
 import FeedOverlay from './Overlay/FeedOverlay';
 import AppUpdateOverlay from './Overlay/AppUpdateOverlay';
 import LeaveAppOverlay from './Overlay/LeaveAppOverlay';
 import * as RewardOverlay from './Overlay/RewardOverlay';
+import DownloadApkIntro from './Overlay/DownloadApkIntro';
 // Layout
 import MasonryList from './Layout/MasonryList';
 // List
@@ -128,14 +128,14 @@ export {
     OverlayViewer,
     UpdateOverlay,
     TipsOverlay,
-    RewardTipsOverlay,
     CaptureVideoOverlay,
-    RewardVideoTipsOverlay,
+    // RewardVideoTipsOverlay,
     LoadingOverlay,
     FeedOverlay,
     AppUpdateOverlay,
     LeaveAppOverlay,
     RewardOverlay,
+    DownloadApkIntro,
     MasonryList,
     PullList,
     ListFooter,

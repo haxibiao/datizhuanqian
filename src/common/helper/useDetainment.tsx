@@ -1,15 +1,16 @@
 import React, { useMemo, useEffect, useCallback, useRef } from 'react';
-import { StyleSheet, BackHandler, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, BackHandler, View, Text, Image } from 'react-native';
 import { Overlay } from 'teaset';
 
-import { TouchFeedback, Iconfont } from '@src/components';
-import DownLoadApk from '@src/screens/withdraw/components/DownLoadApk';
+import TouchFeedback from '@src/components/TouchableView/TouchFeedback';
+import Iconfont from '@src/components/Iconfont';
+import DownLoadApk from '@src/components/Utils/DownLoadApk';
 
 import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from '@src/utils';
 
 import { storage, keys } from 'store';
 
-export const useDetainment = (navigation: any, isEntry: boolean) => {
+export const useDetainment = (navigation: any) => {
     const overlayKey = useRef();
 
     const OverlayContent = useMemo(() => {

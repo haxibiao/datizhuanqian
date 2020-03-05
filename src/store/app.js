@@ -185,9 +185,9 @@ class app {
     @action.bound
     async updateTagListCache(id, tag) {
         this.tagListData[id] = tag;
-        console.log('====================================');
-        console.log('this.tagListData', id, this.tagListData[id]);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('this.tagListData', id, this.tagListData[id]);
+        // console.log('====================================');
         await storage.setItem(keys.tagListCache + '.' + id, tag);
     }
 
@@ -238,9 +238,9 @@ class app {
         });
 
         const gameConfig = syncGetter('data.systemConfig.modules.game', res);
-        console.log('====================================');
-        console.log('gameConfig', gameConfig);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('gameConfig', gameConfig);
+        // console.log('====================================');
         if (gameConfig) {
             this.gameConfig = gameConfig;
         }

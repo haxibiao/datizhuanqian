@@ -3,15 +3,12 @@
  * created by wyk made in 2019-09-09 11:10:28
  */
 import React, { useState, useMemo } from 'react';
-import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
+import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 import { app } from 'store';
-import { ad } from 'native';
-import { playVideo } from 'common';
 
 function VideoGuidance({ onDismiss }) {
     const [step, setStep] = useState(0);
-    const me = useMemo(() => app.me, [app]);
     const guidesView = useMemo(() => {
         return [
             <TouchableWithoutFeedback

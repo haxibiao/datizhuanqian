@@ -2,21 +2,15 @@
  * @Author: Gaoxuan
  * @Date:   2019-03-21 16:28:10
  */
-import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 import Button from '../TouchableView/Button';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 
-import Theme from '../../utils/Theme';
-import { PxFit } from '../../utils/Scale';
-const { height, width } = Dimensions.get('window');
-const SCREEN_WIDTH = width;
-const SCREEN_HEIGHT = height;
-
 import { Overlay } from 'teaset';
 import { ad } from 'native';
-import { playVideo } from 'common';
+import { playVideo } from '@src/common/ad';
 
 interface Props {
     callback: Function;
@@ -37,7 +31,7 @@ class RewardVideoTipsOverlay {
                                 <Text style={{ fontSize: PxFit(15) }}>看激励视频才可继续发布</Text>
                             </View>
                             <View>
-                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
+                                <ad.FeedAd adWidth={Device.WIDTH - PxFit(48)} />
                             </View>
 
                             <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: 10 }}>
@@ -79,14 +73,14 @@ class RewardVideoTipsOverlay {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     content: {
-        width: SCREEN_WIDTH - PxFit(48),
+        width: Device.WIDTH - PxFit(48),
         borderRadius: PxFit(6),
         backgroundColor: '#FFF',
         alignItems: 'center',
@@ -114,12 +108,12 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.themeRed,
         borderRadius: PxFit(19),
         height: PxFit(38),
-        width: (SCREEN_WIDTH * 5) / 12,
+        width: (Device.WIDTH * 5) / 12,
     },
     line: {
         backgroundColor: Theme.theme,
         height: PxFit(0.5),
-        width: SCREEN_WIDTH / 4,
+        width: Device.WIDTH / 4,
     },
 });
 

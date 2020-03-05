@@ -1,8 +1,8 @@
 import React, { useRef, useCallback, useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Theme, PxFit, Tools } from '../../utils';
-import { useCirculationAnimation } from '../../common';
+
+import { useCirculationAnimation } from '@src/common/animation';
 
 const trackHeight = [2, 4, 6, 3, 3, 5, 2, 6, 3, 3, 2, 2, 10, 2, 4, 6, 3, 3, 6, 2, 7, 2, 2, 7, 9, 6];
 

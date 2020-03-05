@@ -6,7 +6,7 @@ import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT, ISIOS } from 'utils';
 import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { ad } from 'native';
-import DownloadApkIntro from './DownloadApkIntro';
+import { DownloadApkIntro } from 'components';
 
 import { AppUtil } from 'native';
 
@@ -223,7 +223,6 @@ const WithdrawBody = props => {
     ];
 
     if (!user) {
-        console.log('userCache :', app.userCache);
         if (app && app.userCache) {
             user = app.userCache;
         } else {

@@ -39,6 +39,7 @@ class App extends Component {
             'Warning: componentWillReceiveProps is deprecated',
             'Warning: componentWillMount is deprecated',
             'Warning: ViewPagerAndroid',
+            'Warning:',
         ]);
     }
 

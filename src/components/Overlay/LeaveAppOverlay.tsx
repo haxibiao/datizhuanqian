@@ -19,7 +19,7 @@ import app from '../../store/app';
 
 import Iconfont from '../Iconfont';
 import { Overlay } from 'teaset';
-import DownLoadApk from '@src/screens/withdraw/components/DownLoadApk';
+import DownLoadApk from '../Utils/DownLoadApk';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 
 const { height, width } = Dimensions.get('window');

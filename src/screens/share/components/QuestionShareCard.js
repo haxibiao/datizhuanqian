@@ -5,9 +5,10 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
-import { Button, Avatar, PageContainer, TouchFeedback, CustomTextInput, Row, Iconfont } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, Api, Config } from 'utils';
-import { app } from 'store';
+import { Avatar } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, Api } from 'utils';
+
+import { viewShotUtil } from 'common';
 
 import { BoxShadow } from 'react-native-shadow';
 import QRCode from 'react-native-qrcode-svg';
@@ -33,7 +34,7 @@ class QuestionShareCard extends Component {
         };
     }
     render() {
-        const { navigation, question, shareMiniProgram } = this.props;
+        const { question } = this.props;
         // let { question } = navigation.state.params;
 
         return (
@@ -178,8 +179,8 @@ class QuestionShareCard extends Component {
     }
 
     onCapture = async isShow => {
-        let image = await Api.viewShotUtil.capture(this.shareCard);
-        let result = await Api.viewShotUtil.saveImage(image, isShow);
+        let image = await viewShotUtil.capture(this.shareCard);
+        let result = await viewShotUtil.saveImage(image, isShow);
         console.log('Api.viewShotUtil.saveImage(image);', result);
         // this.props.navigation.goBack();
         return result;

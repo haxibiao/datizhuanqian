@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, PermissionsAndroid, Platform, StyleSheet } from 'react-native';
-import { TouchFeedback } from '@src/components';
+import TouchFeedback from '../TouchableView/TouchFeedback';
 import RNFetchBlob from 'rn-fetch-blob';
 import { AppUtil } from 'native';
-import { Config, PxFit, Theme, SCREEN_WIDTH } from 'utils';
 
 const DownLoadApk = props => {
     const [downloading, setDownloading] = useState(false);
@@ -119,7 +118,7 @@ const DownLoadApk = props => {
                     {
                         borderTopRightRadius: downloading ? 0 : PxFit(5),
                         borderBottomRightRadius: downloading ? 0 : PxFit(5),
-                        width: downloading ? ((SCREEN_WIDTH - PxFit(88)) * received) / total : SCREEN_WIDTH - PxFit(88),
+                        width: downloading ? ((Device.WIDTH - PxFit(88)) * received) / total : Device.WIDTH - PxFit(88),
                     },
                 ]}>
                 <Text style={styles.downloadText}>{buttonName}</Text>
@@ -132,13 +131,13 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: Theme.primaryColor,
         borderRadius: PxFit(5),
-        width: SCREEN_WIDTH - PxFit(88),
+        width: Device.WIDTH - PxFit(88),
         height: PxFit(42),
     },
     download: {
         backgroundColor: '#F0F0F0',
         borderRadius: PxFit(5),
-        width: SCREEN_WIDTH - PxFit(88),
+        width: Device.WIDTH - PxFit(88),
         height: PxFit(42),
     },
     downloadProgress: {
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         left: 0,
         top: 0,
-        width: SCREEN_WIDTH - PxFit(88),
+        width: Device.WIDTH - PxFit(88),
         height: PxFit(42),
     },
 });

@@ -6,11 +6,8 @@ import { Util } from 'native';
 export const readPhoneState = async () => {
     try {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE);
-        console.log('granted', granted, DeviceInfo);
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             const phoneNumber = await Util.getPhoneNumber();
-            console.log('phoneNumber', phoneNumber);
-
             service.dataReport({
                 data: {
                     category: '用户行为',

@@ -3,22 +3,21 @@
  * created by wyk made in 2019-01-14 11:44:03
  */
 import { VideoUploader } from 'native';
-import Config from '../Config';
+import { Config } from 'utils';
 
-export const cancelUpload = VideoUploader.cancelUpload;
+export const { cancelUpload } = VideoUploader;
 
 export type UploadOption = {
-    videoPath: string,
-    uploadType: string,
-    onBeforeUpload?: Function,
-    onStarted?: Function,
-    onProcess?: Function,
-    onCancelled?: Function,
-    onCompleted?: Function,
-    onError?: Function,
+    videoPath: string;
+    onBeforeUpload?: Function;
+    onStarted?: Function;
+    onProcess?: Function;
+    onCancelled?: Function;
+    onCompleted?: Function;
+    onError?: Function;
 };
 
-export default function(props: UploadOption) {
+export function videoUpload(props: UploadOption) {
     let { videoPath, uploadType, onBeforeUpload, onStarted, onProcess, onCancelled, onCompleted, onError } = props;
     console.log('videoPath', videoPath);
     console.log('UploadServer', Config.UploadServer, uploadType);

@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Keyboard, FlatList, ScrollView } from 'react-native';
 import { PageContainer, Iconfont, SubmitLoading, ListFooter, CustomRefreshControl, ErrorView } from 'components';
 
-import { Theme, Api, PxFit, SCREEN_WIDTH } from 'utils';
+import { imagePicker } from 'common';
 
 import { compose, graphql, Query, GQL } from 'apollo';
 import { app } from 'store';
@@ -220,7 +220,7 @@ class FeedbackDetails extends Component {
     };
 
     openPhotos = () => {
-        Api.imagePicker(
+        imagePicker(
             image => {
                 console.log('image', image, image.data);
                 this.setState({

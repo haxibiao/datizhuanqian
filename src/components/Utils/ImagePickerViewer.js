@@ -6,11 +6,12 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Image } from 'react-native';
-import { Theme, PxFit, Api } from '../../utils';
+// import { Theme, PxFit, Api } from '../../utils';
 import Iconfont from '../Iconfont';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import OverlayViewer from '../Overlay/OverlayViewer';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { imagePicker } from '@src/common/contribute';
 
 type Props = {
     multiple?: boolean,
@@ -41,7 +42,7 @@ class ImagePickedViewer extends Component<Props> {
 
     openImagePicker = () => {
         const { multiple } = this.props;
-        Api.imagePicker(
+        imagePicker(
             images => {
                 let imagesPath;
                 if (multiple) {

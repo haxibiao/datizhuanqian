@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { AppState, Clipboard, Alert } from 'react-native';
+import { AppState, Clipboard } from 'react-native';
 import { GQL } from '@src/apollo';
-import { exceptionCapture } from '@src/common';
+import { exceptionCapture } from '../helper';
 import { app } from 'store';
-import { RewardVideoTipsOverlay, LoadingOverlay, TipsOverlay } from 'components';
+import { TipsOverlay } from 'components';
+import RewardVideoTipsOverlay from '@src/components/Overlay/RewardVideoTipsOverlay';
 import { Tools } from 'utils';
 
 interface Props {
@@ -73,8 +74,6 @@ export const useCaptureVideo = (props: Props) => {
 
     const stateChangeHandle = useCallback(
         async event => {
-            console.log('event', event);
-
             if (event === 'active') {
                 const path = await Clipboard.getString();
                 if (

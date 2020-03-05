@@ -17,6 +17,7 @@ import {
 } from 'components';
 
 import { Theme, PxFit, SCREEN_WIDTH, Api, Config } from 'utils';
+import { imagePicker } from 'common';
 
 import { graphql, compose, withApollo, GQL } from 'apollo';
 
@@ -39,7 +40,7 @@ class SubmitTaskScreen extends Component {
 
     // 打开相册
     openPhotos = () => {
-        Api.imagePicker(
+        imagePicker(
             images => {
                 const { pictures } = this.state;
                 images.map(image => {
@@ -175,7 +176,7 @@ class SubmitTaskScreen extends Component {
                         </View>
                     </BoxShadow>
                     <DropdownMenu
-                        style={{ marginTop: PxFit(20),height:500 }}
+                        style={{ marginTop: PxFit(20), height: 500 }}
                         dropStyle={{
                             paddingHorizontal: PxFit(20),
                             borderBottomWidth: PxFit(0.5),

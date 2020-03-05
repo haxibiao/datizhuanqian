@@ -44,7 +44,7 @@ export function makeClient(user = {}, checkServer) {
         onError: ({ graphQLErrors, networkError, operation, forward }) => {
             if (graphQLErrors) {
                 graphQLErrors.map(error => {
-                    console.log(`gql error: ${error}`);
+                    console.log('gql error', error);
                 });
             }
             if (networkError) {

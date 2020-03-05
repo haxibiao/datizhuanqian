@@ -22,7 +22,7 @@ const compete = observer(props => {
     const navigation = useNavigation();
     const game = navigation.getParam('game');
     const store = navigation.getParam('store');
-    const isGuessSong = navigation.getParam('isGuessSong', true);
+    const isGuessSong = navigation.getParam('isGuessSong', false);
 
     const [index, setIndex] = useState(0); // 题目下标值
     const [answerStatus, setAnswerStatus] = useState('');
