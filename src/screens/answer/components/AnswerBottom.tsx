@@ -33,7 +33,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
         } else {
             DeviceEventEmitter.emit('showComment', question);
         }
-    }, [isAudit, isAudited, question]);
+    }, [isAudit, answered, question]);
 
     const nextQuestion = useCallback(() => {
         DeviceEventEmitter.emit('nextQuestion', order);

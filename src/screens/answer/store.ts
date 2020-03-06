@@ -51,7 +51,7 @@ export class QuestionStore {
         }
     }
 
-    // 提交答案
+    // 提交答案 保存了该题的结果
     @action.bound
     public answerQuestion(): AnswerResult {
         this.answered = true;

@@ -16,6 +16,7 @@ export default observer(({ category, question, questions, order }) => {
     const navigation = useNavigation();
     const store = useMemo(() => new QuestionStore(question, order), [question]);
     const { isExam, isAudit, answered, answerResult, answerQuestion } = store;
+
     const { data } = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
@@ -31,13 +32,15 @@ export default observer(({ category, question, questions, order }) => {
                     styles.header,
                     answered && { borderBottomWidth: 0 },
                     answered &&
-                        (answerResult == 'correct' ? { backgroundColor: '#E3F7EC' } : { backgroundColor: '#F7E3E2' }),
+                        (question.answerResult == 'correct'
+                            ? { backgroundColor: '#E3F7EC' }
+                            : { backgroundColor: '#F7E3E2' }),
                 ]}>
                 <Text style={styles.categoryName}>{category.name}</Text>
                 <Text style={styles.orderText}>{`${order + 1}/${questions.length}`}</Text>
             </View>
         );
-    }, [isExam, answered, answerResult, questions]);
+    }, [isExam, answered, question, questions]);
 
     const footer = useMemo(() => {
         if (isExam && !answered) {

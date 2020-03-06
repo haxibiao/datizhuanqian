@@ -6,7 +6,7 @@ import { observer } from '@src/screens/answer/store';
 
 export default observer(({ value, text, style, question, store }) => {
     const { order, answered, selectAnswer, selectedAnswers, isMultiple, isExam } = store;
-    const [checked, setChecked] = useState(false);
+    const [checked, setChecked] = useState(question.submittedAnswer ? question.submittedAnswer.includes(value) : false);
     const choose = useCallback(() => {
         let isTurnable = false;
         setChecked(c => {
@@ -24,12 +24,6 @@ export default observer(({ value, text, style, question, store }) => {
         }
     }, []);
 
-    useEffect(() => {
-        if (!isMultiple && !selectedAnswers.includes(value)) {
-            setChecked(false);
-        }
-    }, [value, selectedAnswers, isMultiple]);
-
     const correct = useMemo(() => {
         return question.answer.includes(value);
     }, [value]);
@@ -37,7 +31,6 @@ export default observer(({ value, text, style, question, store }) => {
     const Label = useMemo(() => {
         let style = { borderWidth: PxFit(1), borderColor: '#74A1FF' };
         let color = '#5F93FD';
-
         if (answered) {
             if (correct) {
                 style = { backgroundColor: Theme.correctColor, borderWidth: 0 };
