@@ -1,31 +1,16 @@
 import React, { useState, Fragment, useEffect, useRef, useCallback } from 'react';
-import { Text, View, Animated, StyleSheet, StatusBar, ScrollView, FlatList } from 'react-native';
+import { View, Animated, StyleSheet, StatusBar, ScrollView, FlatList } from 'react-native';
 
-import {
-    PageContainer,
-    TouchFeedback,
-    Iconfont,
-    Banner,
-    StatusView,
-    PullChooser,
-    Player,
-    UpwardImage,
-    beginnerGuidance,
-    AnswerGuidance,
-} from 'components';
-import { GQL, useMutation, useQuery } from 'apollo';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
+import { PageContainer, TouchFeedback, Iconfont, Banner, StatusView, PullChooser, Player } from 'components';
+import { GQL, useQuery } from 'apollo';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS } from 'utils';
 import { app, config, observer } from 'store';
-import { ad } from 'native';
 import { Overlay } from 'teaset';
 
 import ChooseOverlay from './components/ChooseOverlay';
 import AnswerOverlay from './components/AnswerOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import FooterBar from './components/FooterBar';
-import AuditTitle from './components/AuditTitle';
-import Audit from './components/Audit';
-import FirstWithdrawTips from './components/FirstWithdrawTips';
 import AnswerResult from './components/AnswerResult';
 
 import UserInfo from '../question/components/UserInfo';
@@ -77,10 +62,9 @@ const AnswerScreen = observer((props: Props) => {
     // const [question, setQuestion] = useState(Object);
     const [submited, setSubmited] = useState(false);
     const [answer, setAnswer] = useState(null);
-    const [auditStatus, setAuditStatus] = useState(0);
-    const [finished, setFinished] = useState(false);
-    const [error, setError] = useState(null);
-    const activeItem = useRef(0);
+    const [, setAuditStatus] = useState(0);
+    const [finished] = useState(false);
+    const [error] = useState(null);
 
     const { navigation } = props;
     const questions = navigation.getParam('questions') || [];
@@ -192,7 +176,6 @@ const AnswerScreen = observer((props: Props) => {
             showResultsOverlay(question);
             setSubmited(true);
         }
-        let result = {};
 
         app.client
             .mutate({
@@ -210,7 +193,7 @@ const AnswerScreen = observer((props: Props) => {
                     },
                 ],
             })
-            .then((result: any) => {
+            .then(() => {
                 //存储题目ID
             })
             .catch((error: any) => {

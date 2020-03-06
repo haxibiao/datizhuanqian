@@ -306,3 +306,19 @@ query TagQuery($id: Int!, $tagsOffset: Int, $categoriesOffset: Int, $limit: Int)
         }
     }
 }
+
+# 考试提交答案
+mutation TestAnswersMutation($answers: [AnswerDataInputType!]) {
+    testAnswers(answers: $answers) {
+        id
+    }
+}
+
+# 考试领取奖励
+mutation TestAnswerRewardMutation($answers: [AnswerDataInputType], $isWatchedAd: Boolean) {
+    testAnswerReward(answers: $answers, is_watched_ad: $isWatchedAd) {
+        gold
+        ticket
+        contribute
+    }
+}

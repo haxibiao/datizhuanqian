@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, DeviceEventEmitter } from 'react-native';
 import { TouchFeedback, Row, Iconfont } from '@src/components';
 import { Theme, PxFit, Tools } from '@src/utils';
 import { observer } from 'mobx-react';
 import { Overlay } from 'teaset';
+import { GQL } from 'apollo';
+import { app } from '@src/store';
 
 let OverlayKey: any = null;
 
@@ -14,6 +16,32 @@ interface Props {
     navigation: any;
     scrollTo: Function;
 }
+
+// 考试模式上报答题结果
+const submitAnswer = (questions: any[]) => {
+    const answers: object[] = [];
+
+    questions.map((data: { id: any; submittedAnswer: any }, index: any) => {
+        answers.push({
+            question_id: data.id,
+            answer: data.submittedAnswer || 'null',
+        });
+    });
+
+    app.client
+        .mutate({
+            mutation: GQL.TestAnswersMutation,
+            variables: {
+                answers,
+            },
+        })
+        .then((result: any) => {
+            console.log('result :', result);
+        })
+        .catch((err: any) => {
+            console.log('err :', err);
+        });
+};
 
 export const AnswerCard = observer(({ questions, category, store, navigation, scrollTo }) => {
     console.log('questions', questions);
@@ -32,7 +60,7 @@ export const AnswerCard = observer(({ questions, category, store, navigation, sc
                         <Text style={{ fontSize: PxFit(16), color: 'black' }}>{category.name}</Text>
                     </View>
                     <Row style={styles.questions}>
-                        {questions.map((question: string, index: number) => {
+                        {questions.map((question: object, index: number) => {
                             let backgroundColor = Theme.lightBorder;
                             if (question.submittedAnswer && question.submittedAnswer !== '') {
                                 backgroundColor = '#45B7FF';
@@ -63,6 +91,7 @@ export const AnswerCard = observer(({ questions, category, store, navigation, sc
                         DeviceEventEmitter.emit('submitAnswer');
                         navigation.replace('ExamResult', { category, questions, store });
                         hide();
+                        submitAnswer(questions);
                     }}>
                     <Text style={styles.buttonText}>提交答案</Text>
                 </TouchFeedback>

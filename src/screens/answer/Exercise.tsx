@@ -1,25 +1,12 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect, createContext } from 'react';
-import { DeviceEventEmitter, StyleSheet, ScrollView, View, Image, Text, TouchableOpacity } from 'react-native';
-import {
-    Row,
-    Banner,
-    Iconfont,
-    PullChooser,
-    TouchFeedback,
-    PageContainer,
-    beginnerGuidance,
-    SetQuestionGuidance,
-    StatusView,
-} from '@src/components';
-import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, ISIOS } from '@src/utils';
-import { useApolloClient, useMutation, useQuery, GQL } from '@src/apollo';
-import { storage, keys, app, config } from '@src/store';
-import service from '@src/service';
+import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
+import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
+import { Theme, PxFit, Tools, ISIOS } from '@src/utils';
+import { useApolloClient, useQuery, GQL } from '@src/apollo';
+import { app, config } from '@src/store';
 import { ad } from '@app/native';
 import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
-import { Audit, AuditStatus, Explain, Information, Question } from '@src/screens/question/component';
-import Placeholder from './components/Placeholder';
 import ChooseOverlay from './components/ChooseOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import AnswerQuestion from './components/AnswerQuestion';
@@ -28,7 +15,7 @@ import AnswerResult from './components/AnswerResult';
 import { observer } from './store';
 import CommentOverlay from '@src/screens/comment/CommentOverlay';
 
-export default observer(props => {
+export default observer(() => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const category = useMemo(() => navigation.getParam('category', {}), []);
@@ -59,8 +46,8 @@ export default observer(props => {
     // 加载广告缓存
     const loadAd = useCallback(() => {
         if (user && !ISIOS && config.enableQuestion) {
-            ad.FullScreenVideo.loadFullScreenVideoAd().then(result => {});
-            ad.RewardVideo.loadAd().then(result => {});
+            ad.FullScreenVideo.loadFullScreenVideoAd().then(() => {});
+            ad.RewardVideo.loadAd().then(() => {});
         }
     }, [user]);
 

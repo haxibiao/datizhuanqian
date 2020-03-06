@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { PageContainer, TouchFeedback, Row } from '@src/components';
+import { PageContainer, TouchFeedback, Row, RewardOverlay } from '@src/components';
 import { playVideo } from 'common';
 import * as Progress from 'react-native-progress';
 import { ScrollView } from 'react-native-gesture-handler';
 import { observer } from './store';
+import { app } from '@src/store';
+import { GQL } from 'apollo';
 
 const ExamResult = observer((props: { navigation: any }) => {
     const { navigation } = props;
@@ -14,30 +16,70 @@ const ExamResult = observer((props: { navigation: any }) => {
 
     const [getRewarded, setGetRewarded] = useState(false);
 
-    const getReward = () => {
+    const getReward = (isWatchedAd: boolean) => {
         playVideo({
             type: answerResult ? 'AnswerPass' : 'AnswerFail',
             callback: () => {
-                memorizedCallback();
+                memorizedCallback(isWatchedAd);
             },
+            noReward: true,
         });
     };
 
-    const memorizedCallback = useCallback(() => {
-        setGetRewarded(true);
-    }, [getRewarded]);
+    const memorizedCallback = useCallback(
+        isWatchedAd => {
+            setGetRewarded(true);
+            submitAnswer(isWatchedAd);
+        },
+        [getRewarded],
+    );
+
+    // 考试模式上报答题结果
+    const submitAnswer = (isWatchedAd: any) => {
+        const answers: object[] = [];
+        questions.map((data: { id: any; submittedAnswer: any }, index: any) => {
+            answers.push({
+                question_id: data.id,
+                answer: data.submittedAnswer || 'null',
+            });
+        });
+        console.log('isWatchedAd :', isWatchedAd);
+        app.client
+            .mutate({
+                mutation: GQL.TestAnswerRewardMutation,
+                variables: {
+                    answers,
+                    isWatchedAd: isWatchedAd || false,
+                },
+            })
+            .then((result: any) => {
+                console.log('result :', result);
+                const reward = result.data.testAnswerReward;
+                RewardOverlay.show({
+                    reward: {
+                        ...reward,
+                    },
+                    title: '领取答题奖励成功',
+                    rewardVideo: true,
+                });
+            })
+            .catch((err: any) => {
+                console.log('err :', err);
+            });
+    };
 
     const resetAction = () => {
         store.reset();
         navigation.replace('Exam', { category, question_id: null });
     };
 
-    const correctItems = questions.filter(question => {
+    const correctItems = questions.filter((question: { submittedAnswer: any; answer: any }) => {
         return question.submittedAnswer === question.answer;
     });
     console.log('correctItems', correctItems);
 
     const answerResult = correctItems.length / questions.length >= 0.6;
+    // const answerResult = true;
     const newDate = new Date(+new Date() + 8 * 3600 * 1000)
         .toISOString()
         .replace(/T/g, ' ')
@@ -128,8 +170,8 @@ const ExamResult = observer((props: { navigation: any }) => {
 
             <Row>
                 {(getRewarded || answerResult) && (
-                    <TouchFeedback style={styles.bottomLeft} onPress={resetAction}>
-                        <Text style={styles.bottomText}>继续答题</Text>
+                    <TouchFeedback style={styles.bottomLeft} onPress={getRewarded ? resetAction : memorizedCallback}>
+                        <Text style={styles.bottomText}>{getRewarded ? '继续答题' : '领奖励'}</Text>
                     </TouchFeedback>
                 )}
 
@@ -138,9 +180,9 @@ const ExamResult = observer((props: { navigation: any }) => {
                         ...styles.bottomRight,
                         width: getRewarded || answerResult ? Device.WIDTH * 0.5 : Device.WIDTH,
                     }}
-                    onPress={getReward}
+                    onPress={() => getReward(true)}
                     disabled={getRewarded}>
-                    <Text style={styles.bottomText}>领取奖励</Text>
+                    <Text style={styles.bottomText}>{answerResult ? '领加倍奖励' : '领安慰奖励'}</Text>
                 </TouchFeedback>
             </Row>
         </PageContainer>
