@@ -27,13 +27,13 @@ interface GameRoom {
 }
 
 export default class CompetitionStore {
-    public scoreMultiple: number = 1;
-    public robotOdds: number = 0.3;
+    public scoreMultiple: number = 1; //得分倍数
+    public robotOdds: number = 0.3; //机器人答题正确率
     public matched: boolean = false;
     public isRobot: boolean = false;
     public isLeaving: boolean = false;
-    public timer: any;
-    public answerPassCount: number = 0;
+    public timer: any; //匹配计时器
+    public answerPassCount: number = 0; //统计答对数
     @observable public game: Game = <Game>{};
     @observable public matching: boolean = false;
     @observable public error: boolean = false;
@@ -73,6 +73,7 @@ export default class CompetitionStore {
             });
             this.matching = false;
         } else {
+            // 超时就匹配机器人
             this.timer = setTimeout(() => {
                 console.log('====================================');
                 console.log('setTimeout', this.matched);
@@ -86,7 +87,7 @@ export default class CompetitionStore {
                 if (this.matched) {
                     return;
                 }
-                // 通知超时 阻止逻辑
+                // 游戏通知超时 阻止逻辑
                 if (Math.ceil(new Date().getTime() / 1000) > room.game.end_at_unix) {
                     this.matching = false;
                     return;
@@ -139,11 +140,14 @@ export default class CompetitionStore {
         }
     }
 
+    // 取消匹配
     @action.bound
     public async cancelMatch() {
+        // 清除机器匹配计时器
         if (this.timer) {
             clearTimeout(this.timer);
         }
+        // 如果已经匹配成功了，阻止取消
         if (this.rival.id) {
             return;
         }
@@ -162,6 +166,7 @@ export default class CompetitionStore {
         }
     }
 
+    // 离开游戏
     private async leaveGameMutate(user_id: number, game_id: number) {
         const [error, result] = await exceptionCapture(() => {
             return app.client.mutate({
@@ -175,6 +180,7 @@ export default class CompetitionStore {
         console.log('====================================');
     }
 
+    // 离开房间
     @action.bound
     public leaveGame() {
         if (this.game.id) {
@@ -189,7 +195,7 @@ export default class CompetitionStore {
         const variables: { game_id: number; score?: number; user_id?: number } = { game_id: this.game.id };
         if (type === 'ME') {
             this.score[0] += score;
-            this.answerPassCount += 1;
+            score > 0 && this.answerPassCount++;
             variables.user_id = this.me.id;
             variables.score = this.score[0];
         } else {
@@ -206,6 +212,7 @@ export default class CompetitionStore {
         console.log('ReceiveGameScore', result, error, this.answerPassCount);
     }
 
+    // 游戏事件监听
     @action.bound
     public playGame() {
         console.log('playGame');
@@ -233,6 +240,7 @@ export default class CompetitionStore {
             });
     }
 
+    // 结束游戏
     @action.bound
     public async gameOver() {
         return await exceptionCapture(() => {
@@ -244,6 +252,7 @@ export default class CompetitionStore {
         });
     }
 
+    // 查询游戏状态
     @action.bound
     public async gameQuery() {
         return await exceptionCapture(() => {
@@ -255,6 +264,7 @@ export default class CompetitionStore {
         });
     }
 
+    // 游戏奖励
     @action.bound
     public async receiveGameReward() {
         return await exceptionCapture(() => {

@@ -14,6 +14,7 @@ import { Overlay } from 'teaset';
 import service from 'service';
 import Sound from 'react-native-sound';
 import { playSound } from './playSound';
+import _ from 'lodash';
 
 export default observer(props => {
     const navigation = useNavigation();
@@ -21,9 +22,18 @@ export default observer(props => {
     const store = useRef(new localStore()).current;
     const overlayRef = useRef();
     const timer = useRef();
+    const canceling = useRef(false);
     const [disableCancel, setDisableCancel] = useState(true);
     const cancelDisable = useCallback(() => {
         setDisableCancel(false);
+    }, []);
+    const cancelMatch = useCallback(async () => {
+        if (canceling.current) {
+            return;
+        }
+        canceling.current = true;
+        await store.cancelMatch();
+        canceling.current = false;
     }, []);
 
     // 开始匹配后执行按钮动画
@@ -68,7 +78,7 @@ export default observer(props => {
                 store.leaveGame();
             }
             if (!store.rival.id && store.matching) {
-                store.cancelMatch();
+                cancelMatch();
             }
         });
 
@@ -156,10 +166,7 @@ export default observer(props => {
                     </View>
                     {store.matching && !store.rival.id && (
                         <Animated.View style={[styles.cancelMatchWrap, animateStyles]}>
-                            <TouchableOpacity
-                                style={styles.cancelMatch}
-                                onPress={store.cancelMatch}
-                                disabled={disableCancel}>
+                            <TouchableOpacity style={styles.cancelMatch} onPress={cancelMatch} disabled={disableCancel}>
                                 <Text style={styles.cancelMatchText}>取消匹配</Text>
                             </TouchableOpacity>
                         </Animated.View>

@@ -37,6 +37,7 @@ const compete = observer(props => {
 
     const selectOption = useCallback(
         (value: any) => {
+            // 回答正确，计算分数
             if (gameQuestions[index].answer === value) {
                 store.calculateScore(gameQuestions[index].gold * store.scoreMultiple);
             }
@@ -46,10 +47,11 @@ const compete = observer(props => {
 
     const handlerResult = useCallback(() => {
         let result;
-        // 答题结束如果得分为0，同样提交分数
+        // 用户答题结束如果得分为0，同样提交分数
         if (store.score[0] === 0) {
             store.calculateScore(0);
         }
+        // 机器人答题结束如果得分为0，同样提交分数
         if (store.isRobot && store.score[1] === 0) {
             store.calculateScore(0, 'RIVAL');
         }

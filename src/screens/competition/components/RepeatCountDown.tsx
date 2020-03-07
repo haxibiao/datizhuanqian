@@ -17,10 +17,11 @@ const RepeatCountDown = (props: Props) => {
     const [subTime, setSubTime] = useState(duration);
     const count = useRef(1);
     const answered = useRef(false);
-
+    // 机器人随机答题
     const randomAnswer = useCallback(() => {
         if (!answered.current) {
             answered.current = true;
+            // 正确率
             if (Math.random() > store.robotOdds) {
                 store.calculateScore(score[count.current - 1].gold * store.scoreMultiple, 'RIVAL');
             }
