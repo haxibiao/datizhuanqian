@@ -58,6 +58,8 @@ class DownloadApkIntro {
                                 }}
                                 createWithdraw={createWithdraw}
                                 value={value}
+                                name={'懂得赚'}
+                                packageName={'con.dongdezhuan'}
                             />
                         </View>
                     </View>

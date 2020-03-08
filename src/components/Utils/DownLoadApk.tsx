@@ -9,16 +9,17 @@ const DownLoadApk = props => {
     const [donwloadTask, setDonwloadTask] = useState();
     const [received, setReceived] = useState(1);
     const [total, setTotal] = useState(100000);
-    const [installDDZ, setInstallDDZ] = useState(false);
+    const [installApk, setInstallApk] = useState(false);
 
     const { packageName, name, url, createWithdraw, value } = props;
 
-    let buttonName = name || '立即安装';
+    let buttonName = '立即安装';
 
     useEffect(() => {
+        //
         AppUtil.CheckApkExist(packageName || 'com.dongdezhuan', (data: any) => {
             if (data) {
-                setInstallDDZ(true);
+                setInstallApk(true);
             }
         });
     }, []);
@@ -55,13 +56,13 @@ const DownLoadApk = props => {
             const dirs = RNFetchBlob.fs.dirs;
 
             const _donwloadTask = RNFetchBlob.config({
-                path: dirs.DownloadDir + '/' + '懂得赚' + '.apk',
+                path: dirs.DownloadDir + '/' + `${name}` + '.apk',
                 fileCache: true,
                 appendExt: 'apk',
             }).fetch('GET', url || 'http://cos.dongdezhuan.com/dongdezhuan.apk');
 
             setDonwloadTask(_donwloadTask);
-            console.log('_donwloadTask :', _donwloadTask);
+            // console.log('_donwloadTask :', _donwloadTask);
             _donwloadTask
                 .progress((received, total) => {
                     console.log('received, total :', received, total);
@@ -92,24 +93,22 @@ const DownLoadApk = props => {
 
     const openApk = () => {
         // AppUtil.OpenApk('com.dongdezhuan');
-        value ? createWithdraw(value, 'dongdezhuan') : AppUtil.OpenApk('com.dongdezhuan');
+        value ? createWithdraw(value, 'dongdezhuan') : AppUtil.OpenApk(packageName);
         props.hide();
     };
 
     if (downloading) {
         buttonName = '取消';
     } else {
-        if (name) {
-            buttonName = name;
-        } else if (installDDZ) {
-            buttonName = '提现到懂得赚';
+        if (installApk) {
+            buttonName = `提现到${name}`;
         }
     }
 
     return (
         <TouchFeedback
             onPress={() => {
-                installDDZ ? openApk() : checkPermission();
+                installApk ? openApk() : checkPermission();
             }}
             style={downloading ? styles.download : styles.button}>
             <View

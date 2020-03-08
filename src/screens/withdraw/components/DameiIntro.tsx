@@ -4,48 +4,41 @@
  */
 import React, { Fragment } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Row, TouchFeedback, Iconfont } from '@src/components';
+
+import { Iconfont, TouchFeedback, Row } from '@src/components';
 
 import { Overlay } from 'teaset';
-import { Config, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from 'utils';
 
-import DownLoadApk from './DownLoadApk';
+import DownLoadApk from '@src/components/Utils/DownLoadApk';
 
-class DownloadApkIntro {
+class DameiIntro {
     static OverlayKey: any;
 
-    static show(createWithdraw, value) {
+    static show() {
         const overlayView = (
             <Overlay.View animated>
                 <View style={styles.container}>
                     <View style={styles.content}>
                         <Row style={{ marginTop: PxFit(25) }}>
-                            <Image source={require('@src/assets/images/dongdezhuan.png')} style={styles.icon} />
+                            <Image source={require('@src/assets/images/damei.png')} style={styles.icon} />
                             <View style={{ marginLeft: PxFit(5) }}>
-                                <Text style={styles.title}>懂得赚</Text>
-                                <Text style={styles.appInfo} numberOfLines={1}>
-                                    高收益，秒提现，不限时，不限额！
-                                </Text>
+                                <Text style={styles.title}>答妹</Text>
+                                <Text style={styles.appInfo} numberOfLines={1}></Text>
                             </View>
                         </Row>
                         <View style={styles.intro}>
                             <Text style={styles.text}>
-                                懂得赚是答题赚钱、答妹等时下热门赚钱APP的官方专属钱包，汇聚百款赚钱APP收益一键提现，不限时秒提现，是千万网赚用户必备的赚钱提现法宝。
+                                答妹是答题赚钱旗下的青春简洁版，同样享受百万题库，知识问答，是学习赚钱的不二之选。
                             </Text>
 
-                            <Text style={styles.text}>1.下载安装打开懂得赚</Text>
-                            <Text style={styles.text}>2.自动绑定懂得赚登录账号</Text>
+                            <Text style={styles.text}>1.下载安装打开答妹</Text>
+                            <Text style={styles.text}>2.使用一键登录App</Text>
                             <Text style={styles.text}>
-                                3.回到{Config.AppName}，提现到懂得赚，在懂得赚内将余额提现到支付宝
+                                3.回到{Config.AppName}，提现到答妹，在答妹内将余额提现到支付宝
                             </Text>
-                            <Text
-                                style={{
-                                    color: Theme.grey,
-                                    paddingTop: PxFit(6),
-                                    fontSize: PxFit(13),
-                                }}>
-                                温馨提示：{Config.AppName}
-                                将自动绑定同设备懂得赚账号，不支持绑定手机号！如遇无法绑定的问题，请联系官方QQ群：735220029
+                            <Text style={styles.text}>
+                                4：{Config.AppName}
+                                将自动绑定一键登录的答妹账号，请勿手动注册账号哦！如遇无法绑定的问题，请联系官方QQ群：735220029
                             </Text>
                         </View>
                         <View style={{ marginBottom: PxFit(20), marginTop: PxFit(30) }}>
@@ -53,8 +46,8 @@ class DownloadApkIntro {
                                 hide={() => {
                                     Overlay.hide(this.OverlayKey);
                                 }}
-                                createWithdraw={createWithdraw}
-                                value={value}
+                                name={'答妹'}
+                                packageName={'con.damei'}
                             />
                         </View>
                     </View>
@@ -81,14 +74,14 @@ class DownloadApkIntro {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     content: {
-        width: SCREEN_WIDTH - PxFit(48),
+        width: Device.WIDTH - PxFit(48),
         borderRadius: PxFit(6),
         backgroundColor: '#FFF',
         alignItems: 'center',
@@ -129,4 +122,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DownloadApkIntro;
+export default DameiIntro;

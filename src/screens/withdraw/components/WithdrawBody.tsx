@@ -1,47 +1,14 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, ImageBackground } from 'react-native';
-import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, Iconfont } from 'components';
-import { useQuery, GQL, useMutation } from 'apollo';
-import { app, config } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISAndroid, NAVBAR_HEIGHT, ISIOS } from 'utils';
-import { playVideo, bindWechat, checkUserInfo } from 'common';
-import { ad } from 'native';
+import React, { useState, useEffect, Fragment, useCallback } from 'react';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components';
+import { useQuery, GQL } from 'apollo';
+import { app } from 'store';
+import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISIOS } from 'utils';
+import { bindWechat, checkUserInfo } from 'common';
 import { DownloadApkIntro } from 'components';
-
 import { AppUtil } from 'native';
-
 import WithdrawHeader from './WithdrawHeader';
-
-const withdrawData = [
-    {
-        tips: '秒到账',
-        amount: 1,
-        description: '新人无门槛',
-        fontColor: '#FFA200',
-        bgColor: Theme.themeRed,
-    },
-    {
-        tips: '限量抢',
-        amount: 3,
-        description: '108日贡献',
-        fontColor: Theme.subTextColor,
-        bgColor: Theme.primaryColor,
-    },
-    {
-        tips: '限量抢',
-        amount: 5,
-        description: '180日贡献',
-        fontColor: Theme.subTextColor,
-        bgColor: Theme.primaryColor,
-    },
-    {
-        tips: '限量抢',
-        amount: 10,
-        description: '360日贡献',
-        fontColor: Theme.subTextColor,
-        bgColor: Theme.primaryColor,
-    },
-];
+import DameiIntro from './DameiIntro';
 
 const WithdrawBody = props => {
     const { navigation } = props;
@@ -61,10 +28,7 @@ const WithdrawBody = props => {
         if (UserMeansQuery.data && UserMeansQuery.data.user) {
             setwithdrawInfo(Tools.syncGetter('data.user.withdrawInfo', UserMeansQuery));
         }
-    }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
-
-    useEffect(() => {
-        const navDidFocusListener = props.navigation.addListener('didFocus', (payload: any) => {
+        const navDidFocusListener = props.navigation.addListener('didFocus', () => {
             UserMeansQuery.refetch();
         });
         return () => {
@@ -72,7 +36,7 @@ const WithdrawBody = props => {
         };
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
-    useEffect(() => {
+    const CheckApkExist = useCallback(() => {
         AppUtil.CheckApkExist('com.dongdezhuan', (data: any) => {
             if (data) {
                 setInstallDDZ(true);
@@ -80,9 +44,24 @@ const WithdrawBody = props => {
         });
     }, []);
 
-    const createWithdraw = async (value: any, type?: any) => {
-        setSubmit(true);
+    useEffect(() => {
+        CheckApkExist();
+    }, []);
 
+    // const createWithdraw = async (value: any, type?: any) => {
+    //     setSubmit(true);
+    //     try {
+    //         navigation.navigate('WithdrawApply', { amount: value });
+    //         setSubmit(false);
+    //     } catch (e) {
+    //         let str = e.toString().replace(/Error: GraphQL error: /, '');
+    //         Toast.show({ content: str });
+    //         setSubmit(false);
+    //     }
+    // };
+
+    const createWithdraw = useCallback(async (value: any, type?: any) => {
+        setSubmit(true);
         try {
             const result = await app.client.mutate({
                 mutation: GQL.CreateWithdrawMutation,
@@ -100,7 +79,6 @@ const WithdrawBody = props => {
                     },
                 ],
             });
-
             navigation.navigate('WithdrawApply', { amount: value });
             setSubmit(false);
         } catch (e) {
@@ -108,7 +86,7 @@ const WithdrawBody = props => {
             Toast.show({ content: str });
             setSubmit(false);
         }
-    };
+    }, []);
 
     const selectWithdrawCount = (value: number) => {
         if (user.gold < value * user.exchange_rate) {
@@ -157,7 +135,7 @@ const WithdrawBody = props => {
                             content: '绑定成功',
                         });
                     },
-                    onFailed: (error: { message: any }[]) => {
+                    onFailed: () => {
                         setSubmit(false);
                     },
                 });
@@ -171,17 +149,20 @@ const WithdrawBody = props => {
             case 'alipay':
                 playform = '支付宝';
                 break;
+            case 'damei':
+                playform = '答妹';
+                break;
             default:
                 playform = '懂得赚';
                 break;
         }
         return (
             <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10), marginBottom: PxFit(5) }}>
-                {playform === '懂得赚' ? (
+                {playform === '懂得赚' || playform === '答妹' ? (
                     <TouchFeedback
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                         onPress={() => {
-                            DownloadApkIntro.show();
+                            playform === '懂得赚' ? DownloadApkIntro.show() : DameiIntro.show();
                         }}>
                         <Text style={{ fontSize: PxFit(13) }}>
                             {`绑定`}
@@ -203,24 +184,6 @@ const WithdrawBody = props => {
             </Row>
         );
     };
-
-    const WithdrawType = [
-        {
-            type: 'alipay',
-            name: '支付宝',
-            icon: require('@src/assets/images/zhifubao.png'),
-        },
-        {
-            type: 'wechat',
-            name: '微信',
-            icon: require('@src/assets/images/wechat.png'),
-        },
-        {
-            type: 'dongdezhuan',
-            name: '懂得赚',
-            icon: require('@src/assets/images/dongdezhuan.png'),
-        },
-    ];
 
     if (!user) {
         if (app && app.userCache) {
@@ -316,6 +279,60 @@ const WithdrawBody = props => {
         </ScrollView>
     );
 };
+
+const withdrawData = [
+    {
+        tips: '秒到账',
+        amount: 1,
+        description: '新人无门槛',
+        fontColor: '#FFA200',
+        bgColor: Theme.themeRed,
+    },
+    {
+        tips: '限量抢',
+        amount: 3,
+        description: '108日贡献',
+        fontColor: Theme.subTextColor,
+        bgColor: Theme.primaryColor,
+    },
+    {
+        tips: '限量抢',
+        amount: 5,
+        description: '180日贡献',
+        fontColor: Theme.subTextColor,
+        bgColor: Theme.primaryColor,
+    },
+    {
+        tips: '限量抢',
+        amount: 10,
+        description: '360日贡献',
+        fontColor: Theme.subTextColor,
+        bgColor: Theme.primaryColor,
+    },
+];
+
+const WithdrawType = [
+    {
+        type: 'alipay',
+        name: '支付宝',
+        icon: require('@src/assets/images/zhifubao.png'),
+    },
+    {
+        type: 'wechat',
+        name: '微信',
+        icon: require('@src/assets/images/wechat.png'),
+    },
+    {
+        type: 'dongdezhuan',
+        name: '懂得赚',
+        icon: require('@src/assets/images/dongdezhuan.png'),
+    },
+    {
+        type: 'damei',
+        name: '答妹',
+        icon: require('@src/assets/images/damei.png'),
+    },
+];
 
 const styles = StyleSheet.create({
     container: {
