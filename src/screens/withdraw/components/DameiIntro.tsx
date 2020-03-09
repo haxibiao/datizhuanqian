@@ -21,9 +21,11 @@ class DameiIntro {
                     <View style={styles.content}>
                         <Row style={{ marginTop: PxFit(25) }}>
                             <Image source={require('@src/assets/images/damei.png')} style={styles.icon} />
-                            <View style={{ marginLeft: PxFit(5) }}>
+                            <View style={{ marginLeft: PxFit(10) }}>
                                 <Text style={styles.title}>答妹</Text>
-                                <Text style={styles.appInfo} numberOfLines={1}></Text>
+                                <Text style={styles.appInfo} numberOfLines={1}>
+                                    书中只有颜如玉
+                                </Text>
                             </View>
                         </Row>
                         <View style={styles.intro}>
@@ -48,6 +50,7 @@ class DameiIntro {
                                 }}
                                 name={'答妹'}
                                 packageName={'con.damei'}
+                                url={'http://dtzq-1251052432.cos.ap-shanghai.myqcloud.com/damei-release.apk'}
                             />
                         </View>
                     </View>
@@ -101,8 +104,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: PxFit(25),
     },
     icon: {
-        width: PxFit(58),
-        height: PxFit(58),
+        width: PxFit(42),
+        height: PxFit(42),
         borderRadius: PxFit(5),
     },
     text: {
