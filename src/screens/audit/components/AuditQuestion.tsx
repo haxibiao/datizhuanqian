@@ -3,10 +3,11 @@ import { StyleSheet, ScrollView, View, Text } from 'react-native';
 import { PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
 import { useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
-import { useNavigation } from 'react-navigation-hooks';
-import { Audit, AuditStatus, Question, Information } from '@src/screens/question/component';
+
+import { Question } from '@src/screens/question/component';
+import Audit from './Audit';
+import AuditStatus from './AuditStatus';
 import AnswerBottom from '@src/screens/answer/components/AnswerBottom';
-// import VideoExplain from '@src/screens/answer/components/VideoExplain';
 import Explain from '@src/screens/question/component/Explain';
 import { observer, QuestionStore } from '@src/screens/answer/store';
 
@@ -24,17 +25,6 @@ export default observer(({ category, question, questions, order }) => {
         result.image = Tools.syncGetter('explanation.images.0.path', question);
         return result;
     }, [question]);
-    const header = useMemo(() => {
-        if (!isExam) {
-            return null;
-        }
-        return (
-            <View style={[styles.header]}>
-                <Text style={styles.categoryName}>{category.name}</Text>
-                <Text style={styles.orderText}>{`${order + 1}/${questions.length}`}</Text>
-            </View>
-        );
-    }, [isExam, answerResult, questions]);
 
     const footer = useMemo(() => {
         return <AnswerBottom user={user} question={question} store={store} />;
@@ -42,7 +32,6 @@ export default observer(({ category, question, questions, order }) => {
 
     return (
         <View style={styles.container}>
-            {header}
             <ScrollView
                 contentContainerStyle={[
                     styles.scrollContent,
@@ -57,14 +46,13 @@ export default observer(({ category, question, questions, order }) => {
                 scrollEnabled={!config.isFullScreen}>
                 <View style={styles.content}>
                     <Question question={question} store={store} audit={true} />
-                    {/* <VideoExplain video={Tools.syncGetter('explanation.video', question)} /> */}
                     <AuditStatus question={question} store={store} />
                     {(explain.text || explain.image || explain.video) && (
                         <Explain explanation={question.explanation} audit={true} />
                     )}
                 </View>
-                <Audit question={question} store={store} />
             </ScrollView>
+            <Audit question={question} store={store} />
             {footer}
         </View>
     );
