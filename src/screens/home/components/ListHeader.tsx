@@ -41,7 +41,12 @@ const ListHeader = observer(props => {
                         navigation={navigation}
                         style={styles.enterWrap}
                         activeOpacity={1}
-                        onPress={() => navigation.navigate('Audit')}>
+                        onPress={() => {
+                            // navigation.navigate('Audit');
+                            Toast.show({
+                                content: '敬请期待',
+                            });
+                        }}>
                         <ImageBackground
                             source={require('@src/assets/images/ic_audit_question.png')}
                             style={styles.entrance}>
