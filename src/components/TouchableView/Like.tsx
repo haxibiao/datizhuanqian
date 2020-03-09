@@ -1,6 +1,7 @@
 import React, { Component, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react-native';
-import { exceptionCapture, useBounceAnimation } from '@src/common/helper';
+import { exceptionCapture } from '@src/common/helper';
+import { useBounceAnimation } from '@src/common/animation';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
 
