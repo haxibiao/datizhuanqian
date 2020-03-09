@@ -4,32 +4,17 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
-import ProgressWithdrawal from './ProgressWithdrawal';
 import Iconfont from '../Iconfont';
-
-import { BoxShadow } from 'react-native-shadow';
 
 import { app } from 'store';
 
-import { GQL, Query, compose, graphql } from 'apollo';
+import { GQL, compose, graphql } from 'apollo';
 
 import { Overlay } from 'teaset';
 
-const shadowOpt = {
-    width: SCREEN_WIDTH,
-    color: '#E8E8E8',
-    border: 5,
-    radius: 5,
-    opacity: 0.2,
-    x: 0,
-    y: 5,
-    style: {
-        marginTop: 0,
-    },
-};
 class Banner extends Component {
     constructor(props) {
         super(props);
@@ -50,15 +35,11 @@ class Banner extends Component {
     }
 
     render() {
-        const { showWithdraw, isShow, isAnswer, data } = this.props;
-        let { login, me } = app;
+        const { data } = this.props;
 
         const { error, user } = data;
         if (error) return null;
         if (!(data && data.user)) return null;
-        let progress = (data.user.exp / data.user.next_level_exp) * 100 + '%';
-        let step = (data.user.gold / data.user.exchange_rate) * 5;
-        let stepData = ['¥0.2', '¥0.4', '¥0.6', '¥0.8', '¥1.0'];
         return (
             <View style={styles.container}>
                 <View style={styles.rowItem}>
@@ -249,7 +230,7 @@ const styles = StyleSheet.create({
 
 export default compose(
     graphql(GQL.UserMetaQuery, {
-        options: props => ({ variables: { id: app.me.id } }),
+        options: () => ({ variables: { id: app.me.id } }),
         fetchPolicy: 'network-only',
     }),
 )(Banner);
