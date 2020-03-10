@@ -16,6 +16,7 @@ const WithdrawBody = props => {
     const [withdrawType, setWithdrawType] = useState('alipay');
     const [withdrawInfo, setwithdrawInfo] = useState(withdrawData);
     const [installDDZ, setInstallDDZ] = useState(false);
+    const [installDM, setInstallDM] = useState(false);
     let forceAlert = true;
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
@@ -40,6 +41,11 @@ const WithdrawBody = props => {
         AppUtil.CheckApkExist('com.dongdezhuan', (data: any) => {
             if (data) {
                 setInstallDDZ(true);
+            }
+        });
+        AppUtil.CheckApkExist('com.damei', (data: any) => {
+            if (data) {
+                setInstallDM(true);
             }
         });
     }, []);
@@ -101,10 +107,10 @@ const WithdrawBody = props => {
 
     const checkWithdrawType = (value: any) => {
         forceAlert = user ? user.force_alert : forceAlert;
-        if (forceAlert && withdrawType !== 'dongdezhuan') {
+        if (withdrawType === 'dongdezhuan' && !installDDZ) {
             DownloadApkIntro.show(createWithdraw, value);
-        } else if (withdrawType === 'dongdezhuan' && !installDDZ) {
-            DownloadApkIntro.show(createWithdraw, value);
+        } else if (withdrawType === 'damei' && !installDM) {
+            DameiIntro.show();
         } else {
             createWithdraw(value);
         }
