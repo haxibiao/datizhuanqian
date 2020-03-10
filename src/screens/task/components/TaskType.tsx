@@ -53,7 +53,9 @@ const TaskType = observer((props: Props) => {
                 Tools.navigate('EditProfile', { user: userData });
                 break;
             case 1:
-                Tools.navigate('答题');
+                Tools.navigate(task.route);
+                //实际需求写法
+                // Tools.navigate(task.route,{...task.params});
                 break;
             case 2:
                 Tools.navigate(task.route, {
