@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment, useCallback } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, AppState } from 'react-native';
 import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components';
 import { useQuery, GQL } from 'apollo';
 import { app } from 'store';
@@ -9,6 +9,7 @@ import { DownloadApkIntro } from 'components';
 import { AppUtil } from 'native';
 import WithdrawHeader from './WithdrawHeader';
 import DameiIntro from './DameiIntro';
+import JAnalytics from 'janalytics-react-native';
 
 const WithdrawBody = props => {
     const { navigation } = props;
@@ -37,22 +38,31 @@ const WithdrawBody = props => {
         };
     }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
 
-    const CheckApkExist = useCallback(() => {
-        AppUtil.CheckApkExist('com.dongdezhuan', (data: any) => {
-            if (data) {
-                setInstallDDZ(true);
+    const CheckApkExist = useCallback(
+        event => {
+            if (event === 'active') {
+                AppUtil.CheckApkExist('com.dongdezhuan', (data: any) => {
+                    if (data) {
+                        setInstallDDZ(true);
+                    }
+                });
+                AppUtil.CheckApkExist('com.damei', (data: any) => {
+                    console.log('data :', data);
+                    if (data) {
+                        setInstallDM(true);
+                    }
+                });
             }
-        });
-        AppUtil.CheckApkExist('com.damei', (data: any) => {
-            if (data) {
-                setInstallDM(true);
-            }
-        });
-    }, []);
+        },
+        [installDM],
+    );
 
     useEffect(() => {
-        CheckApkExist();
-    }, []);
+        AppState.addEventListener('change', CheckApkExist);
+        return () => {
+            AppState.removeEventListener('change', CheckApkExist);
+        };
+    }, [CheckApkExist]);
 
     // const createWithdraw = async (value: any, type?: any) => {
     //     setSubmit(true);
@@ -95,6 +105,14 @@ const WithdrawBody = props => {
     }, []);
 
     const selectWithdrawCount = (value: number) => {
+        JAnalytics.postEvent({
+            type: 'count',
+            id: app.me.id.toString(),
+            extra: {
+                提现方式: withdrawType,
+                提现金额: value.toString(),
+            },
+        });
         if (user.gold < value * user.exchange_rate) {
             Toast.show({
                 content: `智慧点不足提现${value}元，快去赚钱智慧点吧`,
@@ -110,7 +128,7 @@ const WithdrawBody = props => {
         if (withdrawType === 'dongdezhuan' && !installDDZ) {
             DownloadApkIntro.show(createWithdraw, value);
         } else if (withdrawType === 'damei' && !installDM) {
-            DameiIntro.show();
+            DameiIntro.show(installDM);
         } else {
             createWithdraw(value);
         }
@@ -168,7 +186,8 @@ const WithdrawBody = props => {
                     <TouchFeedback
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                         onPress={() => {
-                            playform === '懂得赚' ? DownloadApkIntro.show() : DameiIntro.show();
+                            console.log('installDM', installDM);
+                            playform === '懂得赚' ? DownloadApkIntro.show() : DameiIntro.show(installDM);
                         }}>
                         <Text style={{ fontSize: PxFit(13) }}>
                             {`绑定`}
@@ -329,14 +348,14 @@ const WithdrawType = [
         icon: require('@src/assets/images/wechat.png'),
     },
     {
-        type: 'dongdezhuan',
-        name: '懂得赚',
-        icon: require('@src/assets/images/dongdezhuan.png'),
-    },
-    {
         type: 'damei',
         name: '答妹',
         icon: require('@src/assets/images/damei.png'),
+    },
+    {
+        type: 'dongdezhuan',
+        name: '懂得赚',
+        icon: require('@src/assets/images/dongdezhuan.png'),
     },
 ];
 

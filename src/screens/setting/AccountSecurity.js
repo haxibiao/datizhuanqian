@@ -24,6 +24,8 @@ class AccountSecurity extends Component {
             is_bind_wechat: Tools.syncGetter('wallet.platforms.wechat', user),
             is_bind_alipay: Tools.syncGetter('wallet.bind_platforms.alipay', user),
             is_bind_dongdezhuan: Tools.syncGetter('is_bind_dongdezhuan', user) || false,
+            is_bind_damei: Tools.syncGetter('is_bind_damei', user) || false,
+            dameiUser: Tools.syncGetter('dameiUser', user) || false,
             dongdezhuanUser: Tools.syncGetter('dongdezhuanUser', user) || {},
         };
     }
@@ -152,6 +154,19 @@ class AccountSecurity extends Component {
                                     {is_bind_alipay
                                         ? `已绑定（${Tools.syncGetter('wallet.real_name', user)}）`
                                         : '去绑定'}
+                                </Text>
+                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                            </View>
+                        }
+                    />
+                    <ListItem
+                        onPress={this.handlerBindDongdezhuan}
+                        style={styles.listItem}
+                        leftComponent={<Text style={styles.itemText}>答妹账号</Text>}
+                        rightComponent={
+                            <View style={styles.rightWrap}>
+                                <Text style={is_bind_damei ? styles.rightText : styles.linkText}>
+                                    {is_bind_damei ? `已绑定(${dameiUser.name})` : '去绑定'}
                                 </Text>
                                 <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                             </View>

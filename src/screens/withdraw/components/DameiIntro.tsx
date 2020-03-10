@@ -3,18 +3,19 @@
  * @Date:   2019-03-21 16:28:10
  */
 import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image, Linking } from 'react-native';
 
 import { Iconfont, TouchFeedback, Row } from '@src/components';
 
 import { Overlay } from 'teaset';
 
 import DownLoadApk from '@src/components/Utils/DownLoadApk';
+import { AppUtil } from 'native';
 
 class DameiIntro {
     static OverlayKey: any;
 
-    static show() {
+    static show(installDM) {
         const overlayView = (
             <Overlay.View animated>
                 <View style={styles.container}>
@@ -44,14 +45,19 @@ class DameiIntro {
                             </Text>
                         </View>
                         <View style={{ marginBottom: PxFit(20), marginTop: PxFit(30) }}>
-                            <DownLoadApk
-                                hide={() => {
-                                    Overlay.hide(this.OverlayKey);
+                            <TouchFeedback
+                                onPress={() => {
+                                    installDM
+                                        ? AppUtil.OpenApk('com.damei')
+                                        : Linking.openURL(
+                                              Device.IOS
+                                                  ? 'itms-apps://itunes.apple.com/app/id1462854524'
+                                                  : 'market://details?id=' + 'com.damei',
+                                          );
                                 }}
-                                name={'答妹'}
-                                packageName={'con.damei'}
-                                url={'http://dtzq-1251052432.cos.ap-shanghai.myqcloud.com/damei-release.apk'}
-                            />
+                                style={styles.button}>
+                                <Text style={styles.downloadText}>{installDM ? '打开答妹' : '立即安装'}</Text>
+                            </TouchFeedback>
                         </View>
                     </View>
                     <TouchFeedback
@@ -122,6 +128,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#fff',
         borderWidth: PxFit(1),
+    },
+    button: {
+        backgroundColor: Theme.primaryColor,
+        borderRadius: PxFit(5),
+        width: Device.WIDTH - PxFit(88),
+        height: PxFit(42),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    downloadText: {
+        color: '#FFF',
     },
 });
 
