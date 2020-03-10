@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const CategoryItem = ({ tag, category }) => {
     const navigation = useNavigation();
-    const isExam = useMemo(() => tag.name == '考试' && category.is_official > 0, []);
+    const isExam = useMemo(() => tag && tag.name == '考试' && category.is_official > 0, []);
 
     const navigator = useCallback(() => {
         if (TOKEN) {
