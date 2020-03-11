@@ -6,22 +6,37 @@ import { Theme, PxFit, Tools } from 'utils';
 import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 import { Alipay, AppUtil } from 'native';
+import JAnalytics from 'janalytics-react-native';
 
 const SettingWithdrawInfo = props => {
     const [realName, setRealName] = useState(Tools.syncGetter('userCache.wallet.real_name', app) || '');
     const [submitting, setSubmitting] = useState(false);
     const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
     const { navigation } = props;
+
+    const track = error => {
+        JAnalytics.postEvent({
+            type: 'count',
+            id: '10002',
+            extra: {
+                绑定类型: error ? '支付宝绑定失败' : '点击支付宝绑定',
+                错误信息: error ? error.toString() : null,
+            },
+        });
+    };
+
     const getAuthCode = () => {
+        track(null);
         Alipay.AlipayAuth()
             .then((code: any) => {
                 console.log('code', code);
                 setAuthCode(code);
             })
-            .catch(err => {
+            .catch(error => {
                 Toast.show({
                     content: '请登录或尝试更新支付宝再授权',
                 });
+                track(error);
             });
     };
 
@@ -57,11 +72,12 @@ const SettingWithdrawInfo = props => {
                     bindWithdrawInfo();
                 }
             })
-            .catch(err => {
+            .catch(error => {
                 setSubmitting(false);
                 Toast.show({
-                    content: err.toString().replace(/Error: GraphQL error: /, ''),
+                    content: error.toString().replace(/Error: GraphQL error: /, ''),
                 });
+                track(error);
             });
     };
 
@@ -91,12 +107,13 @@ const SettingWithdrawInfo = props => {
                 });
                 navigation.navigate('Main', null, navigation.navigate({ routeName: '提现' }));
             })
-            .catch((err: { toString: () => { replace: (arg0: RegExp, arg1: string) => void } }) => {
+            .catch((error: { toString: () => { replace: (arg0: RegExp, arg1: string) => void } }) => {
                 setSubmitting(false);
                 setAuthCode('');
                 Toast.show({
-                    content: err.toString().replace(/Error: GraphQL error: /, ''),
+                    content: error.toString().replace(/Error: GraphQL error: /, ''),
                 });
+                track(error);
             });
     };
 

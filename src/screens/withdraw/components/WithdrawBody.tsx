@@ -160,8 +160,17 @@ const WithdrawBody = props => {
                             content: '绑定成功',
                         });
                     },
-                    onFailed: () => {
+                    onFailed: (error: { toString: () => any }) => {
                         setSubmit(false);
+                        //数据上报
+                        JAnalytics.postEvent({
+                            type: 'count',
+                            id: '10002',
+                            extra: {
+                                绑定事件: '绑定微信失败',
+                                错误信息: error.toString(),
+                            },
+                        });
                     },
                 });
             };

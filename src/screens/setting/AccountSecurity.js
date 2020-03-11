@@ -15,7 +15,7 @@ import { app } from 'store';
 
 import { compose, graphql, GQL } from 'apollo';
 import { checkUserInfo, bindWechat } from 'common';
-
+import JAnalytics from 'janalytics-react-native';
 class AccountSecurity extends Component {
     constructor(props) {
         super(props);
@@ -59,6 +59,14 @@ class AccountSecurity extends Component {
     };
 
     onFailed = error => {
+        JAnalytics.postEvent({
+            type: 'count',
+            id: '10002',
+            extra: {
+                绑定事件: '绑定微信失败',
+                错误信息: error.toString(),
+            },
+        });
         this.setState({
             submitting: false,
         });
