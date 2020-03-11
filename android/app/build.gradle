@@ -101,16 +101,16 @@ project.ext.react = [
 ]
 
 project.ext.envConfigFiles = [
-    debug: ".env",
-    release: ".env.prod",
-    hotfix: ".env.hotfix",
-    staging: ".env.staging",
-    xiaomi: ".env.xiaomi",
-    baidu: ".env.baidu",
-    wandoujia:".env.wandoujia",
-    oppo:".env.oppo",
-    huawei:".env.huawei",
-    meizu:".env.meizu",
+    debug:"android/env/.env",
+    release:"android/env/.env.prod",
+    hotfix:"android/env/.env.hotfix",
+    staging:"android/env/.env.staging",
+    xiaomi:"android/env/.env.xiaomi",
+    baidu:"android/env/.env.baidu",
+    wandoujia:"android/env/.env.wandoujia",
+    oppo:"android/env/.env.oppo",
+    huawei:"android/env/.env.huawei",
+    meizu:"android/env/.env.meizu",
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -163,11 +163,14 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.datizhuanqian"
+        def appConfigJsonFile = file('../../app.json')
+        def appConfigJson = new groovy.json.JsonSlurper().parseText(appConfigJsonFile.text)
+
+        applicationId appConfigJson.PackageName
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 27
-        versionName "2.6.4"
+        versionName appConfigJson.Version
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         manifestPlaceholders = [
