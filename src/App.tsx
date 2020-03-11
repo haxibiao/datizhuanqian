@@ -1,63 +1,33 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, { Fragment, Component } from 'react';
+import React, { Fragment, Component, useEffect, useState } from 'react';
 import { StyleSheet, YellowBox, View, Image, Text } from 'react-native';
-import { Toast, ErrorBoundary } from 'components';
-import { app, config } from 'store';
+import { Toast, ErrorBoundary } from '@src/components';
+import ApolloApp from '@src/apollo/ApolloApp';
 
-import SplashScreen from 'react-native-splash-screen';
+import { ad, WeChat } from '@app/native';
+import { app, config } from '@src/store';
+import { checkUpdate, readPhoneState } from '@src/common';
+import service from 'service';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
-import { ad, WeChat } from 'native';
-import { ISIOS, Config, PxFit, Theme, iPhone11 } from 'utils';
 
-import service from 'service';
-import { checkUpdate, readPhoneState } from 'common';
+const App = () => {
+    const [responseText, setResponseText] = useState('');
+    const [serverMaintenance, setServerMaintenance] = useState();
+    let toast: Toast | null = null;
 
-import Apollo from './Apollo';
-
-class App extends Component {
-    toast: Toast;
-    constructor(props) {
-        super(props);
-        global.TOKEN = null;
-        this.state = {
-            serverMaintenance: false,
-            responseText: null,
-        };
-
-        YellowBox.ignoreWarnings([
-            'Accessing view manager configs',
-            'Remote debugger is in a background tab',
-            'Task orphaned',
-            'Warning: componentWillReceiveProps is deprecated',
-            'Warning: componentWillMount is deprecated',
-            'Warning: ViewPagerAndroid',
-            'Warning:',
-        ]);
-    }
-
-    componentDidMount() {
+    useEffect(() => {
         // 初始化 AdManager, 之后才能启动开屏
         ad.AdManager.init();
         // 信息流广告先预加载，提速第一次签到时显示的速度
         ad.AdManager.loadFeedAd();
-
         // 获取广告开放状态
-        service.enableAdvert(data => {
+        service.enableAdvert((data: { disable: { [x: string]: any } }) => {
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
                 ad.Splash.loadSplashAd();
             }
             config.saveAdvertConfig(data);
         });
-
         if (Config.AppStore !== 'huawei') {
             ad.Splash.loadSplashAd();
         }
@@ -67,43 +37,35 @@ class App extends Component {
         app.recallCache();
         // 检查更新
         checkUpdate('autoCheck');
-        // 检查GQL接口状态
-        this.checkServer();
         // 微信注册
         WeChat.registerApp('wx6fee77d331d42a27');
         // 注册全局变量Toast
-        global.Toast = this.toast;
+        global.Toast = toast;
         // 禁止横屏
         Orientation.lockToPortrait();
-
+        //获取手机号
         readPhoneState();
+        //加载激励视频缓存
+        ad.RewardVideo.loadAd().then(() => {});
+    }, []);
 
-        ad.RewardVideo.loadAd().then(data => {
-            // config.rewardVideoAdCache = data;
-        });
-    }
-
-    checkServer = () => {
+    const checkServer = () => {
         fetch(Config.ServerRoot)
             .then(response => {
                 if (response.status === 503) {
-                    this.setState({ serverMaintenance: response });
+                    setServerMaintenance(response);
                 }
                 return response.text();
             })
             .then(responseText => {
-                this.setState({
-                    responseText: responseText,
-                });
+                setResponseText(responseText);
             })
             .catch(error => {
                 console.warn('server error', error);
             });
     };
 
-    _showMaintenance() {
-        const { serverMaintenance, responseText } = this.state;
-
+    const showMaintenance = () => {
         if (serverMaintenance) {
             return (
                 <View style={styles.maintenance}>
@@ -116,22 +78,20 @@ class App extends Component {
         } else {
             return null;
         }
-    }
+    };
 
-    render() {
-        return (
-            <Fragment>
-                <View style={styles.container} onLayout={config.listenLayoutChange}>
-                    <ErrorBoundary>
-                        <Apollo checkServer={this.checkServer} />
-                    </ErrorBoundary>
-                    {this._showMaintenance()}
-                    <Toast ref={ref => (this.toast = ref)} />
-                </View>
-            </Fragment>
-        );
-    }
-}
+    return (
+        <Fragment>
+            <View style={styles.container} onLayout={config.listenLayoutChange}>
+                <ErrorBoundary>
+                    <ApolloApp checkServer={checkServer} />
+                </ErrorBoundary>
+                {showMaintenance()}
+                <Toast ref={(ref: any) => (toast = ref)} />
+            </View>
+        </Fragment>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -140,12 +100,12 @@ const styles = StyleSheet.create({
     },
     image: {
         bottom: 0,
-        height: null,
         left: 0,
         position: 'absolute',
         right: 0,
         top: 0,
         width: null,
+        height: null,
     },
     maintenance: {
         alignItems: 'center',

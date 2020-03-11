@@ -3,7 +3,7 @@ import { View, Image, PixelRatio } from 'react-native';
 import { Theme, PxFit } from '../../utils';
 
 import { app } from 'store';
-import { GQL } from 'apollo';
+import { GQL } from '@src/apollo';
 
 const Avatar = props => {
     const [loading, setlLoading] = useState(true);

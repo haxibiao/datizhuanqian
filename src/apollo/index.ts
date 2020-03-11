@@ -3,8 +3,25 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-boost';
 import DeviceInfo from 'react-native-device-info';
 import { Config } from 'utils';
+import ApolloApp from './ApolloApp';
 
-const deviceHeaders = {};
+const deviceHeaders = {
+    os: '',
+    build: '',
+    referrer: '',
+    version: '',
+    appid: '',
+    package: '',
+    brand: '',
+    deviceCountry: '',
+    systemVersion: '',
+    uniqueId: '',
+    deviceId: '',
+    ip: '',
+};
+
+// const deviceHeaders = {};
+
 const isEmulator = DeviceInfo.isEmulator();
 
 deviceHeaders.os = Platform.OS; // 操作系统
@@ -27,7 +44,7 @@ if (!isEmulator) {
         }); // ip地址
 }
 
-export function makeClient(user = {}, checkServer) {
+export function makeClient(user = {}, checkServer: () => void) {
     const { token } = user;
     return new ApolloClient({
         uri: Config.ServerRoot + '/graphql',
@@ -55,6 +72,6 @@ export function makeClient(user = {}, checkServer) {
     });
 }
 
-export { GQL } from 'graphql';
+export { GQL } from 'gqls';
 export { Query, Mutation, compose, graphql, withApollo, ApolloProvider } from 'react-apollo';
 export * from '@apollo/react-hooks';

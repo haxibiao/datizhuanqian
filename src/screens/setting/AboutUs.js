@@ -19,7 +19,7 @@ class AboutUs extends Component {
                         <View style={{ marginTop: PxFit(30) }}>
                             <View style={{ alignItems: 'center', paddingVertical: PxFit(15) }}>
                                 <Image
-                                    source={require('../../../icon.png')}
+                                    source={require('@src/assets/images/icon.png')}
                                     style={{
                                         width: SCREEN_WIDTH / 4,
                                         height: SCREEN_WIDTH / 4,

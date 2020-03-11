@@ -143,7 +143,7 @@ class QuestionShareCard extends Component {
                             // paddingHorizontal: 5,
                             paddingBottom: 5,
                         }}>
-                        <Image source={require('../../../../icon.png')} style={{ width: 48, height: 48 }} />
+                        <Image source={require('@src/assets/images/icon.png')} style={{ width: 48, height: 48 }} />
 
                         <View style={{ height: 40, justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

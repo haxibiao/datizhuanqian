@@ -1,19 +1,19 @@
 import React, { Component, useContext, useCallback, useEffect } from 'react';
 import { Platform, View, Text } from 'react-native';
 
-import { makeClient, ApolloProvider } from 'apollo';
+import { makeClient, ApolloProvider } from './index';
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 
 import { observer, app, config } from 'store';
-import { Config, Tools, SCREEN_WIDTH, PxFit } from 'utils';
-import { ad } from 'native';
-import { TipsOverlay } from 'components';
+
+import { ad } from '@app/native';
+import { TipsOverlay } from '@src/components';
 
 import JPushModule from 'jpush-react-native';
 import Echo from 'laravel-echo';
 import Socketio from 'socket.io-client';
 
-import AppRouter from './routers';
+import AppRouter from '@src/routers';
 
 import { useCaptureVideo } from '@src/common';
 

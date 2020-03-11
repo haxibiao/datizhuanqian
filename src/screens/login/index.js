@@ -356,7 +356,7 @@ class index extends Component {
                     <View style={styles.formContainer}>
                         <View style={{ alignItems: 'center' }}>
                             <Image
-                                source={require('../../../icon.png')}
+                                source={require('@src/assets/images/icon.png')}
                                 style={{ width: 90, height: 90, marginTop: SCREEN_HEIGHT / 12 }}
                             />
                             <View style={{ alignItems: 'center', marginVertical: 40 }}>
