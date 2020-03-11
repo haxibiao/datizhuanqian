@@ -164,6 +164,9 @@ const index = observer(props => {
 
     // 推送通知
     useEffect(() => {
+        JPushModule.getRegistrationID(registrationId => {
+            console.log('registrationId', registrationId);
+        });
         const receiveNotificationListener = message => {
             push_content.current = message.alertContent;
             push_type.current = JSON.parse(message.extras).type;

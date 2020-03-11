@@ -107,12 +107,13 @@ const WithdrawBody = props => {
     const selectWithdrawCount = (value: number) => {
         JAnalytics.postEvent({
             type: 'count',
-            id: app.me.id.toString(),
+            id: '1',
             extra: {
                 提现方式: withdrawType,
                 提现金额: value.toString(),
             },
         });
+
         if (user.gold < value * user.exchange_rate) {
             Toast.show({
                 content: `智慧点不足提现${value}元，快去赚钱智慧点吧`,
