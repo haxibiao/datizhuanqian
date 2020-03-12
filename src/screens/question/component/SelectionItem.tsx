@@ -7,6 +7,7 @@ import { observer } from '@src/screens/answer/store';
 export default observer(({ value, text, style, question, store }) => {
     const { order, answered, selectAnswer, selectedAnswers, isMultiple, isExam } = store;
     const [checked, setChecked] = useState(question.submittedAnswer ? question.submittedAnswer.includes(value) : false);
+
     const choose = useCallback(() => {
         let isTurnable = false;
         setChecked(c => {
@@ -17,7 +18,7 @@ export default observer(({ value, text, style, question, store }) => {
         question.submittedAnswer = answer;
         // 考试题逻辑
         if (isExam && answer) {
-            if ((!isMultiple && isTurnable) || answer.length == question.selections_array.length) {
+            if ((!isMultiple && isTurnable) || answer.length >= question.answer.length) {
                 DeviceEventEmitter.emit('nextQuestion');
             }
             DeviceEventEmitter.emit('selectAnswer');
@@ -27,6 +28,12 @@ export default observer(({ value, text, style, question, store }) => {
     const correct = useMemo(() => {
         return question.answer.includes(value);
     }, [value]);
+
+    useEffect(() => {
+        if (question.submittedAnswer) {
+            setChecked(question.submittedAnswer.includes(value));
+        }
+    }, [question.submittedAnswer]);
 
     const Label = useMemo(() => {
         let style = { borderWidth: PxFit(1), borderColor: '#74A1FF' };
