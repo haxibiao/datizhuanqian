@@ -6,7 +6,7 @@ import { Theme, PxFit, Tools } from 'utils';
 import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 import { Alipay, AppUtil } from 'native';
-import JAnalytics from 'janalytics-react-native';
+import { bindAlipayFailedTrack, bindAlipaySucceedTrack, bindAlipayTrack } from 'common';
 
 const SettingWithdrawInfo = props => {
     const [realName, setRealName] = useState(Tools.syncGetter('userCache.wallet.real_name', app) || '');
@@ -14,19 +14,8 @@ const SettingWithdrawInfo = props => {
     const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
     const { navigation } = props;
 
-    const track = error => {
-        JAnalytics.postEvent({
-            type: 'count',
-            id: '10002',
-            extra: {
-                绑定类型: error ? '支付宝绑定失败' : '点击支付宝绑定',
-                错误信息: error ? error.toString() : null,
-            },
-        });
-    };
-
     const getAuthCode = () => {
-        track(null);
+        bindAlipayTrack();
         Alipay.AlipayAuth()
             .then((code: any) => {
                 console.log('code', code);
@@ -36,7 +25,7 @@ const SettingWithdrawInfo = props => {
                 Toast.show({
                     content: '请登录或尝试更新支付宝再授权',
                 });
-                track(error);
+                bindAlipayFailedTrack(error);
             });
     };
 
@@ -77,7 +66,7 @@ const SettingWithdrawInfo = props => {
                 Toast.show({
                     content: error.toString().replace(/Error: GraphQL error: /, ''),
                 });
-                track(error);
+                bindAlipayFailedTrack(error);
             });
     };
 
@@ -105,6 +94,7 @@ const SettingWithdrawInfo = props => {
                 Toast.show({
                     content: '绑定成功',
                 });
+                bindAlipaySucceedTrack();
                 navigation.navigate('Main', null, navigation.navigate({ routeName: '提现' }));
             })
             .catch((error: { toString: () => { replace: (arg0: RegExp, arg1: string) => void } }) => {
@@ -113,7 +103,7 @@ const SettingWithdrawInfo = props => {
                 Toast.show({
                     content: error.toString().replace(/Error: GraphQL error: /, ''),
                 });
-                track(error);
+                bindAlipayFailedTrack(error);
             });
     };
 

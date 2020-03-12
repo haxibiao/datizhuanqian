@@ -10,6 +10,7 @@ import { AppUtil } from 'native';
 import WithdrawHeader from './WithdrawHeader';
 import DameiIntro from './DameiIntro';
 import JAnalytics from 'janalytics-react-native';
+import { withdrawTrack, bindWeChatFailTrack } from 'common';
 
 const WithdrawBody = props => {
     const { navigation } = props;
@@ -64,18 +65,6 @@ const WithdrawBody = props => {
         };
     }, [CheckApkExist]);
 
-    // const createWithdraw = async (value: any, type?: any) => {
-    //     setSubmit(true);
-    //     try {
-    //         navigation.navigate('WithdrawApply', { amount: value });
-    //         setSubmit(false);
-    //     } catch (e) {
-    //         let str = e.toString().replace(/Error: GraphQL error: /, '');
-    //         Toast.show({ content: str });
-    //         setSubmit(false);
-    //     }
-    // };
-
     const createWithdraw = useCallback(async (value: any, type?: any) => {
         setSubmit(true);
         try {
@@ -105,21 +94,14 @@ const WithdrawBody = props => {
     }, []);
 
     const selectWithdrawCount = (value: number) => {
-        JAnalytics.postEvent({
-            type: 'count',
-            id: '1',
-            extra: {
-                提现方式: withdrawType,
-                提现金额: value.toString(),
-            },
-        });
+        console.log('selectWithdrawCount value :', value);
+        withdrawTrack({ withdrawType, value: value.toString() });
 
         if (user.gold < value * user.exchange_rate) {
             Toast.show({
                 content: `智慧点不足提现${value}元，快去赚钱智慧点吧`,
             });
         } else {
-            // createWithdraw(value);
             checkWithdrawType(value);
         }
     };
@@ -162,15 +144,6 @@ const WithdrawBody = props => {
                     },
                     onFailed: (error: { toString: () => any }) => {
                         setSubmit(false);
-                        //数据上报
-                        JAnalytics.postEvent({
-                            type: 'count',
-                            id: '10002',
-                            extra: {
-                                绑定事件: '绑定微信失败',
-                                错误信息: error.toString(),
-                            },
-                        });
                     },
                 });
             };
