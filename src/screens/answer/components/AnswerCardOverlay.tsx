@@ -43,9 +43,7 @@ const submitAnswer = (questions: any[]) => {
         });
 };
 
-export const AnswerCard = observer(({ questions, category, store, navigation, scrollTo }) => {
-    console.log('questions', questions);
-
+export const AnswerCard = ({ questions, category, store, navigation, scrollTo }) => {
     return (
         <View style={styles.actionSheetView}>
             <View style={styles.header}>
@@ -98,7 +96,7 @@ export const AnswerCard = observer(({ questions, category, store, navigation, sc
             </View>
         </View>
     );
-});
+};
 
 export const show = (props: Props) => {
     const overlayView = (

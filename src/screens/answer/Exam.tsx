@@ -55,11 +55,15 @@ export default observer(() => {
         commentRef.current.slideDown();
     }, [commentRef]);
 
+    const showExamCard = useCallback(() => {
+        if (store.viewableItemIndex === store.questions.length - 1) {
+            AnswerCardOverlay.show({ questions: store.questions, category, store, navigation, scrollTo });
+        }
+    }, []);
+
     const { data, error: errros } = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
-
-    console.log('errros :', errros);
 
     const user = useMemo(() => Tools.syncGetter('user', data), [data]);
 
@@ -74,7 +78,7 @@ export default observer(() => {
                 variables: { category_id: category.id, limit: 10 },
                 fetchPolicy: 'network-only',
             });
-
+            console.log('result :', result);
             const questionsData = Tools.syncGetter('data.questions', result);
 
             if (Array.isArray(questionsData) && questionsData.length > 0) {
@@ -99,7 +103,7 @@ export default observer(() => {
             .catch(err => {
                 console.warn('加载task config err', err);
             });
-    }, [fetchQuestions]);
+    }, []);
 
     const scrollTo = (index: any) => {
         listRef.current && listRef.current.scrollToIndex({ animated: false, index });
@@ -107,9 +111,7 @@ export default observer(() => {
 
     useEffect(() => {
         const selectAnswerListener = DeviceEventEmitter.addListener('selectAnswer', () => {
-            if (store.viewableItemIndex === store.questions.length - 1) {
-                AnswerCardOverlay.show({ questions: store.questions, category, store, navigation, scrollTo });
-            }
+            showExamCard();
         });
 
         const showCommentListener = DeviceEventEmitter.addListener('showComment', () => {
@@ -130,8 +132,6 @@ export default observer(() => {
             GuidanceView: ExamGuidance,
             dismissEnabled: true,
         });
-
-        console.log('examData :', examData);
 
         const hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', () => {
             console.log('退出');
@@ -217,7 +217,7 @@ export default observer(() => {
             </View>
         );
     }, [fetchQuestions, questions, error]);
-    console.log('store.viewableItemIndex :', store.viewableItemIndex);
+
     return (
         <React.Fragment>
             <PageContainer
