@@ -91,13 +91,36 @@ const ExamResult = observer((props: { navigation: any }) => {
                 <View style={styles.header}>
                     <Text style={styles.headerText}>考试分区：{category.name}</Text>
                     <Text style={styles.headerText}>交卷时间：{newDate}</Text>
+                    <Text style={styles.headerText}>
+                        考试结果：
+                        <Text
+                            style={{
+                                fontSize: PxFit(13),
+                                lineHeight: PxFit(22),
+                                color: answerResult ? '#3BD4C2' : '#FF7271',
+                            }}>
+                            {answerResult ? '通过' : '未及格，领安慰奖励'}
+                        </Text>
+                    </Text>
                 </View>
                 <View style={styles.body}>
                     <View style={{ alignItems: 'center' }}>
                         <View style={styles.progressContainer}>
                             <View style={styles.progressCenter}>
                                 <View style={styles.answerResult}>
-                                    <Text style={styles.answerCorrect}>{correctItems.length}</Text>
+                                    <Row>
+                                        <Text style={styles.answerCorrect}>{correctItems.length}</Text>
+                                        <Text
+                                            style={{
+                                                fontSize: PxFit(10),
+                                                color: Theme.grey,
+                                                position: 'absolute',
+                                                bottom: PxFit(8),
+                                                left: PxFit(25),
+                                            }}>
+                                            正确
+                                        </Text>
+                                    </Row>
                                     <Text style={{ color: Theme.grey, fontSize: PxFit(13), marginTop: PxFit(5) }}>
                                         （共{questions.length}题）
                                     </Text>
@@ -115,7 +138,9 @@ const ExamResult = observer((props: { navigation: any }) => {
                     </View>
                     <View style={styles.cardInfo}>
                         <View>
-                            <Text style={styles.cardTitle}>答题卡</Text>
+                            <Row style={{ justifyContent: 'space-between' }}>
+                                <Text style={styles.cardTitle}>答题卡</Text>
+                            </Row>
                             <Row style={{ justifyContent: 'space-between' }}>
                                 <Row>
                                     <Row>
