@@ -165,7 +165,7 @@ export default observer(() => {
         });
         DeviceEventEmitter.addListener('answerQuestion', isError => {
             answerCount.current.count++;
-            isError && answerCount.current.error++;
+            isError == 'error' && answerCount.current.error++;
             if (!config.disableAd) {
                 withdrawTips();
                 showAnswerResult();
