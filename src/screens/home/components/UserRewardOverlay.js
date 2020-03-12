@@ -66,6 +66,7 @@ class UserRewardOverlay extends Component {
 
                         navigation.navigate(router);
                         Toast.show({ content });
+                        app.updateResetVersion(Config.Version);
                     } else {
                         navigation.navigate('Login');
                     }
