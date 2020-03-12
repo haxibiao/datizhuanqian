@@ -36,6 +36,10 @@ export default observer(() => {
     const listRef = useRef();
     const commentRef = useRef();
     const flag = useRef(false);
+    const viewabilityConfig = useRef({
+        // waitForInteraction: true,
+        viewAreaCoveragePercentThreshold: 95,
+    });
 
     useEffect(() => {
         if (viewableQuestionIndex !== store.viewableItemIndex) {
@@ -113,6 +117,8 @@ export default observer(() => {
         });
 
         const nextQuestionListener = DeviceEventEmitter.addListener('nextQuestion', () => {
+            console.log('下一题 :');
+
             if (store.viewableItemIndex < store.questions.length - 1) {
                 listRef.current &&
                     listRef.current.scrollToIndex({ animated: true, index: store.viewableItemIndex + 1 });
@@ -206,11 +212,12 @@ export default observer(() => {
                     pagingEnabled={true}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={renderItem}
+                    viewabilityConfig={viewabilityConfig.current}
                 />
             </View>
         );
     }, [fetchQuestions, questions, error]);
-
+    console.log('store.viewableItemIndex :', store.viewableItemIndex);
     return (
         <React.Fragment>
             <PageContainer
