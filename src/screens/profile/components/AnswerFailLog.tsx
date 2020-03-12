@@ -10,6 +10,9 @@ const AnswerFailLog = props => {
     const { navigation } = props;
     const [finished, setFinished] = useState(false);
     const { data, loading, error, fetchMore, refetch } = useQuery(GQL.WrongAnswersQuery, {
+        variables: {
+            limit: 100,
+        },
         fetchPolicy: 'network-only',
     });
 
@@ -68,30 +71,30 @@ const AnswerFailLog = props => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => questionItem(item)}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}
-                onEndReachedThreshold={0.3}
-                onEndReached={() => {
-                    fetchMore({
-                        variables: {
-                            offset: wrongAnswers.length,
-                        },
-                        updateQuery: (prev: { wrongAnswers: any }, { fetchMoreResult }: any) => {
-                            if (
-                                !(
-                                    fetchMoreResult &&
-                                    fetchMoreResult.wrongAnswers &&
-                                    fetchMoreResult.wrongAnswers.length > 0
-                                )
-                            ) {
-                                setFinished(true);
-                                return prev;
-                            }
-                            return Object.assign({}, prev, {
-                                wrongAnswers: [...prev.wrongAnswers, ...fetchMoreResult.wrongAnswers],
-                            });
-                        },
-                    });
-                }}
-                ListFooterComponent={() => <ListFooter finished={finished} />}
+                // onEndReachedThreshold={0.3}
+                // onEndReached={() => {
+                //     fetchMore({
+                //         variables: {
+                //             offset: wrongAnswers.length,
+                //         },
+                //         updateQuery: (prev: { wrongAnswers: any }, { fetchMoreResult }: any) => {
+                //             if (
+                //                 !(
+                //                     fetchMoreResult &&
+                //                     fetchMoreResult.wrongAnswers &&
+                //                     fetchMoreResult.wrongAnswers.length > 0
+                //                 )
+                //             ) {
+                //                 setFinished(true);
+                //                 return prev;
+                //             }
+                //             return Object.assign({}, prev, {
+                //                 wrongAnswers: [...prev.wrongAnswers, ...fetchMoreResult.wrongAnswers],
+                //             });
+                //         },
+                //     });
+                // }}
+                // ListFooterComponent={() => <ListFooter finished={finished} />}
             />
         </PageContainer>
     );
