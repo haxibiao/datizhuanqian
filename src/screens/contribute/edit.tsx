@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import {
     PageContainer,
     Row,
@@ -13,6 +13,7 @@ import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from '@src/utils';
 import { useApolloClient, useMutation, GQL } from '@src/apollo';
 import { storage, keys, app } from '@src/store';
 import service from '@src/service';
+import { exceptionCapture } from '@src/common';
 import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
 import { observer, useQuestionStore } from './store';
@@ -40,6 +41,10 @@ export default observer(props => {
         setContentVideo,
     } = store;
 
+    const onResponderRelease = useCallback(() => {
+        DeviceEventEmitter.emit('hideBottomView');
+    }, []);
+
     const onError = useCallback(error => {
         setSubmitting(false);
         Toast.show({
@@ -57,7 +62,7 @@ export default observer(props => {
             },
             fetchPolicy: 'network-only',
         });
-        store.removeInstance();
+        store.resetStore();
         navigation.replace('ContributeSubmited', {
             noTicket: userCache.ticket === 0,
         });
@@ -155,13 +160,18 @@ export default observer(props => {
     return (
         <PageContainer
             white
+            submitting={submitting}
             title="我的试题"
             rightView={
                 <TouchableOpacity style={styles.saveButton} onPress={onSubmit}>
                     <Text style={styles.saveText}>提交</Text>
                 </TouchableOpacity>
             }>
-            <ScrollView contentContainerStyle={styles.container} style={styles.container}>
+            <ScrollView
+                contentContainerStyle={styles.container}
+                style={styles.container}
+                keyboardDismissMode={Device.IOS ? 'interactive' : 'on-drag'}
+                onResponderRelease={onResponderRelease}>
                 <TouchableOpacity onPress={() => navigation.navigate('EditCategory')}>
                     <View style={styles.topicItem}>
                         <Row>

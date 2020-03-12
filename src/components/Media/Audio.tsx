@@ -246,13 +246,6 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
     const complete = useCallback(async () => {
         if (completeRecording) {
             LoadingOverlay.show({});
-            // 模拟UI
-            // setTimeout(() => {
-            //     LoadingOverlay.hide();
-            //     completeRecording({ path: audioFilePath, key: new Date().getTime(), id: 1 });
-            //     deleteAudio();
-            // }, 3000);
-            // 真实情况
             try {
                 const audioObj = await uploadAudio(audioFilePath);
                 console.log('audioObj :', audioObj);
@@ -261,7 +254,9 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
                     completeRecording({ path: audioFilePath, key: new Date().getTime(), id: audioObj.data.id });
                     deleteAudio();
                 }
-            } catch (error) {}
+            } catch (error) {
+                Toast.show({ content: error.message || '上传失败，请重新上传' });
+            }
             LoadingOverlay.hide();
         }
     }, [audioFilePath]);

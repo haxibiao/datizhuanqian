@@ -42,7 +42,6 @@ class Selection {
 }
 
 class QuestionStore {
-    static instance: QuestionStore | null;
     public videoDuration: number = app.me.video_duration || 40; //上传时间限制
     public explainDuration: number = app.me.explanation_video_duration || 100; //上传时间限制
     @observable public description: string = '';
@@ -52,16 +51,16 @@ class QuestionStore {
     @observable public audio: Audio | null = null; // 音频对象
     @observable public explain: Explain | null = null; // 解析对象
     @observable public selections = values.map(item => new Selection(item));
-    // 缓存实例
-    constructor() {
-        if (QuestionStore.instance) {
-            QuestionStore.instance = this;
-        }
-        return QuestionStore.instance as QuestionStore;
-    }
+
     // 删除实例
-    removeInstance() {
-        QuestionStore.instance = null;
+    resetStore() {
+        this.description = '';
+        this.category = <Category>{};
+        this.picture = '';
+        this.video = null;
+        this.audio = null;
+        this.explain = null;
+        this.selections = values.map(item => new Selection(item));
     }
 
     @action.bound
@@ -266,10 +265,7 @@ class QuestionStore {
     buildOptions(): any {
         let selections,
             answers: Value[] = [];
-        console.log('====================================');
-        console.log('this.selections', this.selections);
-        console.log('====================================');
-        selections = this.selections.filter((selection, index) => {
+        selections = this.selections.map((selection, index) => {
             if (selection.Text) {
                 selection.isCorrect && answers.push(values[index]);
                 return {

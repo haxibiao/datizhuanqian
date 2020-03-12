@@ -4,7 +4,7 @@ import { Keyboard, Platform } from 'react-native';
 type Listener = (e: any) => any;
 
 export const useKeyboardListener = (onKeyboardShow: Listener, onKeyboardHide: Listener) => {
-    const isIos = useRef(Platform.OS === 'ios');
+    const isIos = useRef(Platform.OS === 'ios').current;
 
     useEffect(() => {
         const showListenerName = isIos ? 'keyboardWillShow' : 'keyboardDidShow';

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Animated, Keyboard } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, Animated, Keyboard, DeviceEventEmitter } from 'react-native';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { useLinearAnimation, useKeyboardListener } from '@src/common';
 import { Audio } from '@src/components';
@@ -40,11 +40,20 @@ export default observer(props => {
         });
     }, []);
 
-    const showAudio = useCallback(e => {
+    const hideAudio = useCallback(e => {
         setSlideIn(false);
     }, []);
 
-    useKeyboardListener(showAudio);
+    useKeyboardListener(hideAudio);
+
+    useEffect(() => {
+        DeviceEventEmitter.addListener('hideBottomView', () => {
+            setSlideIn(false);
+        });
+        return () => {
+            DeviceEventEmitter.removeListener('hideBottomView');
+        };
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -88,10 +97,13 @@ export default observer(props => {
                 </TouchableOpacity>
             </View>
             <Animated.View
-                style={[{ overflow: 'hidden', height }, audioHeight == 0 && { position: 'absolute', bottom: -500 }]}>
+                style={[
+                    { overflow: 'hidden', height },
+                    (audioHeight == 0 || !slideIn) && { position: 'absolute', bottom: -500 },
+                ]}>
                 <Audio.Recorder
                     style={styles.audioContainer}
-                    invisible={slideIn}
+                    invisible={!slideIn}
                     onLayout={event => {
                         if (audioHeight == 0) {
                             setAudioHeight(event.nativeEvent.layout.height);
