@@ -173,8 +173,8 @@ class AccountSecurity extends Component {
                             leftComponent={<Text style={styles.itemText}>答妹账号</Text>}
                             rightComponent={
                                 <View style={styles.rightWrap}>
-                                    <Text style={is_bind_damei ? styles.rightText : styles.linkText}>
-                                        {is_bind_damei ? `已绑定(${dameiUser.name})` : '去绑定'}
+                                    <Text style={dameiUser ? styles.rightText : styles.linkText}>
+                                        {dameiUser ? `已绑定(${dameiUser.name})` : '去绑定'}
                                     </Text>
                                     <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
                                 </View>
