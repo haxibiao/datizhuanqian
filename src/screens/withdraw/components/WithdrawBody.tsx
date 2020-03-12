@@ -9,8 +9,11 @@ import { DownloadApkIntro } from 'components';
 import { AppUtil } from 'native';
 import WithdrawHeader from './WithdrawHeader';
 import DameiIntro from './DameiIntro';
-import JAnalytics from 'janalytics-react-native';
-import { withdrawTrack, bindWeChatFailTrack } from 'common';
+import { withdrawTrack } from 'common';
+
+import DeviceInfo from 'react-native-device-info';
+const SystemVersion = DeviceInfo.getSystemVersion();
+const Brand = DeviceInfo.getBrand();
 
 const WithdrawBody = props => {
     const { navigation } = props;
@@ -58,8 +61,15 @@ const WithdrawBody = props => {
         [installDM],
     );
 
+    const deviceCheck = () => {
+        if (SystemVersion == '10' && Brand == 'huawei') {
+            WithdrawType.splice(2, 2);
+        }
+    };
+
     useEffect(() => {
         AppState.addEventListener('change', CheckApkExist);
+        deviceCheck();
         return () => {
             AppState.removeEventListener('change', CheckApkExist);
         };

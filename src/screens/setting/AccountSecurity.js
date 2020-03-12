@@ -5,17 +5,14 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, ListItem, Avatar, ItemSeparator, TipsOverlay } from 'components';
-import { Theme, PxFit, Config, ISIOS, Tools } from 'utils';
+import { PageContainer, Iconfont, ListItem, ItemSeparator } from 'components';
+import { Theme, PxFit, ISIOS, Tools } from 'utils';
 
 import UserPanel from './components/UserPanel';
-import { WeChat } from 'native';
-
-import { app } from 'store';
 
 import { compose, graphql, GQL } from 'apollo';
 import { checkUserInfo, bindWechat } from 'common';
-import JAnalytics from 'janalytics-react-native';
+import DeviceInfo from 'react-native-device-info';
 class AccountSecurity extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +22,7 @@ class AccountSecurity extends Component {
             is_bind_alipay: Tools.syncGetter('wallet.bind_platforms.alipay', user),
             is_bind_dongdezhuan: Tools.syncGetter('is_bind_dongdezhuan', user) || false,
             is_bind_damei: Tools.syncGetter('is_bind_damei', user) || false,
-            dameiUser: Tools.syncGetter('dameiUser', user) || false,
+            dameiUser: Tools.syncGetter('dameiUser', user) || {},
             dongdezhuanUser: Tools.syncGetter('dongdezhuanUser', user) || {},
         };
     }
@@ -58,7 +55,7 @@ class AccountSecurity extends Component {
         });
     };
 
-    onFailed = error => {
+    onFailed = () => {
         this.setState({
             submitting: false,
         });
@@ -66,7 +63,14 @@ class AccountSecurity extends Component {
 
     render() {
         const { navigation, data } = this.props;
-        const { is_bind_wechat, is_bind_alipay, is_bind_dongdezhuan, dongdezhuanUser } = this.state;
+        const {
+            is_bind_wechat,
+            is_bind_alipay,
+            is_bind_dongdezhuan,
+            is_bind_damei,
+            dongdezhuanUser,
+            dameiUser,
+        } = this.state;
         const { loading, user } = data;
 
         if (loading) {
@@ -81,6 +85,9 @@ class AccountSecurity extends Component {
         }
 
         console.log('user', user);
+
+        const SystemVersion = DeviceInfo.getSystemVersion();
+        const Brand = DeviceInfo.getBrand();
         return (
             <PageContainer title="账号与安全" white loading={!user}>
                 <View style={styles.container}>
@@ -159,32 +166,36 @@ class AccountSecurity extends Component {
                             </View>
                         }
                     />
-                    <ListItem
-                        onPress={this.handlerBindDongdezhuan}
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>答妹账号</Text>}
-                        rightComponent={
-                            <View style={styles.rightWrap}>
-                                <Text style={is_bind_damei ? styles.rightText : styles.linkText}>
-                                    {is_bind_damei ? `已绑定(${dameiUser.name})` : '去绑定'}
-                                </Text>
-                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                            </View>
-                        }
-                    />
-                    <ListItem
-                        onPress={this.handlerBindDongdezhuan}
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>懂得赚账号</Text>}
-                        rightComponent={
-                            <View style={styles.rightWrap}>
-                                <Text style={is_bind_dongdezhuan ? styles.rightText : styles.linkText}>
-                                    {is_bind_dongdezhuan ? `已绑定(${dongdezhuanUser.name})` : '去绑定'}
-                                </Text>
-                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                            </View>
-                        }
-                    />
+                    {!(SystemVersion == '10' && Brand == 'huawei') && (
+                        <ListItem
+                            onPress={this.handlerBindDongdezhuan}
+                            style={styles.listItem}
+                            leftComponent={<Text style={styles.itemText}>答妹账号</Text>}
+                            rightComponent={
+                                <View style={styles.rightWrap}>
+                                    <Text style={is_bind_damei ? styles.rightText : styles.linkText}>
+                                        {is_bind_damei ? `已绑定(${dameiUser.name})` : '去绑定'}
+                                    </Text>
+                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                </View>
+                            }
+                        />
+                    )}
+                    {!(SystemVersion == '10' && Brand == 'huawei') && (
+                        <ListItem
+                            onPress={this.handlerBindDongdezhuan}
+                            style={styles.listItem}
+                            leftComponent={<Text style={styles.itemText}>懂得赚账号</Text>}
+                            rightComponent={
+                                <View style={styles.rightWrap}>
+                                    <Text style={is_bind_dongdezhuan ? styles.rightText : styles.linkText}>
+                                        {is_bind_dongdezhuan ? `已绑定(${dongdezhuanUser.name})` : '去绑定'}
+                                    </Text>
+                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                </View>
+                            }
+                        />
+                    )}
                 </View>
             </PageContainer>
         );
