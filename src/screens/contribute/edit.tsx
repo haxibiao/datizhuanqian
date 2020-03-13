@@ -75,6 +75,7 @@ export default observer(props => {
     const createQuestion = useCallback(
         async explanation_id => {
             let { variables } = store;
+
             const promiseFn = () => {
                 return client.mutate({
                     mutation: GQL.createQuestionMutation,
@@ -88,6 +89,7 @@ export default observer(props => {
             };
 
             const [error, result] = await exceptionCapture(promiseFn);
+
             if (error) {
                 onError(error.message || '创建失败');
             } else {

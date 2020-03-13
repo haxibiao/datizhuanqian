@@ -5,7 +5,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Animated, StatusBar, Image } from 'react-native';
-import { PageContainer, TouchFeedback, PopOverlay, Iconfont, PullChooser, EmptyView, Player } from 'components';
+import { PageContainer, TouchFeedback, PopOverlay, Iconfont, PullChooser, EmptyView, Player, Audio } from 'components';
 import { Theme, PxFit, SCREEN_WIDTH, Tools, ISIOS } from 'utils';
 
 import QuestionOptions from './components/QuestionOptions';
@@ -264,9 +264,9 @@ class index extends Component {
                 </PageContainer>
             );
         }
-        let { id, selections_array, answer, status, user, explanation, video, category } = this.question;
+        let { id, selections_array, answer, status, user, explanation, video, audio, category } = this.question;
+
         this.isOwn = user.id === app.me.id;
-        console.log('this.question', this.question);
         return (
             <React.Fragment>
                 <PageContainer
@@ -304,6 +304,9 @@ class index extends Component {
                                     </Animated.View>
                                     {video && video.url && (
                                         <Player style={{ marginTop: PxFit(Theme.itemSpace) }} video={video} />
+                                    )}
+                                    {audio && audio.url && (
+                                        <Audio.Player style={styles.audioContainer} audio={audio.url} />
                                     )}
                                     <View
                                         style={{
@@ -367,6 +370,13 @@ const styles = StyleSheet.create({
     content: {
         paddingTop: PxFit(20),
         marginBottom: PxFit(Theme.itemSpace),
+    },
+    audioContainer: {
+        marginTop: PxFit(Theme.itemSpace),
+        width: PxFit(160),
+        height: PxFit(36),
+        paddingHorizontal: PxFit(14),
+        borderRadius: PxFit(18),
     },
     optionsButton: {
         flex: 1,

@@ -263,15 +263,17 @@ class QuestionStore {
     }
     // 构建提交后端的选项和答案参数格式
     buildOptions(): any {
-        let selections,
-            answers: Value[] = [];
-        selections = this.selections.map((selection, index) => {
+        let cursor = 0;
+        const selections: any[] = [];
+        const answers: Value[] = [];
+        this.selections.forEach((selection, index) => {
             if (selection.Text) {
-                selection.isCorrect && answers.push(values[index]);
-                return {
-                    Value: values[index],
+                selection.isCorrect && answers.push(values[cursor]);
+                selections.push({
+                    Value: values[cursor],
                     Text: selection.Text,
-                };
+                });
+                cursor++;
             }
         });
         return {

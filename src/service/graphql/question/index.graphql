@@ -140,6 +140,11 @@ query QuestionQuery($id: Int) {
             Text
             Value
         }
+        audio {
+            id
+            url
+            name
+        }
         image {
             id
             path
