@@ -1,6 +1,6 @@
 import enableAdvert from './enableAdvert';
 import taskConfig from './taskConfig';
-import userInfo from './userInfo';
+import getWechatInfo from './getWechatInfo';
 import dataReport from './dataReport';
 
-export default { enableAdvert, taskConfig, userInfo, dataReport };
+export default { enableAdvert, taskConfig, getWechatInfo, dataReport };

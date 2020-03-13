@@ -3,7 +3,7 @@
     "AppName": "答题赚钱",
     "Version": "2.7.0",
     "Build": 1,
-    "ServerRoot": "http://staging.datizhuanqian.com",
+    "ServerRoot": "http://gql.datizhuanqian.com",
     "UploadServer": "http://upload.datizhuanqian.com",
     "SocketServer": "ws://socket.datizhuanqian.cn:6001",
     "PackageName": "com.datizhuanqian",
