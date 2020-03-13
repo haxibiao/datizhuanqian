@@ -75,33 +75,37 @@ const WithdrawBody = props => {
         };
     }, [CheckApkExist]);
 
-    const createWithdraw = useCallback(async (value: any, type?: any) => {
-        setSubmit(true);
-        try {
-            const result = await app.client.mutate({
-                mutation: GQL.CreateWithdrawMutation,
-                variables: {
-                    amount: value,
-                    platform: type || withdrawType,
-                },
-                refetchQueries: () => [
-                    {
-                        query: GQL.UserMeansQuery,
-                        variables: { id: app.me.id },
+    const createWithdraw = useCallback(
+        async (value: any, type?: any) => {
+            setSubmit(true);
+            try {
+                const result = await app.client.mutate({
+                    mutation: GQL.CreateWithdrawMutation,
+                    variables: {
+                        amount: value,
+                        platform: type || withdrawType,
+                        version: Config.Version,
                     },
-                    {
-                        query: GQL.WithdrawsQuery,
-                    },
-                ],
-            });
-            navigation.navigate('WithdrawApply', { amount: value });
-            setSubmit(false);
-        } catch (e) {
-            let str = e.toString().replace(/Error: GraphQL error: /, '');
-            Toast.show({ content: str });
-            setSubmit(false);
-        }
-    }, []);
+                    refetchQueries: () => [
+                        {
+                            query: GQL.UserMeansQuery,
+                            variables: { id: app.me.id },
+                        },
+                        {
+                            query: GQL.WithdrawsQuery,
+                        },
+                    ],
+                });
+                navigation.navigate('WithdrawApply', { amount: value });
+                setSubmit(false);
+            } catch (e) {
+                let str = e.toString().replace(/Error: GraphQL error: /, '');
+                Toast.show({ content: str });
+                setSubmit(false);
+            }
+        },
+        [withdrawType],
+    );
 
     const selectWithdrawCount = (value: number) => {
         console.log('selectWithdrawCount value :', value);

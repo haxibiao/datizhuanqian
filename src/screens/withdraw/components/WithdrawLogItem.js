@@ -13,6 +13,7 @@ function WithdrawLogItem(props) {
     let statusText,
         color,
         image_url,
+        withdrawTips,
         size = 40;
     switch (item.status) {
         case -1:
@@ -38,6 +39,11 @@ function WithdrawLogItem(props) {
             break;
         case 'dongdezhuan':
             image_url = require('../../../assets/images/dongdezhuan.png');
+            withdrawTips = '(提现到懂得赚)';
+            break;
+        case 'damei':
+            image_url = require('../../../assets/images/damei.png');
+            withdrawTips = '(提现到答妹)';
             break;
         default:
             image_url = require('../../../assets/images/money_icon.png');
@@ -59,7 +65,7 @@ function WithdrawLogItem(props) {
             <Row style={styles.content}>
                 <View style={{ width: (SCREEN_WIDTH * 4) / 7 }}>
                     <Text style={styles.statusText}>
-                        {`${statusText}`} {item.to_platform === 'dongdezhuan' ? '(提现到懂得赚)' : ''}
+                        {`${statusText}`} {withdrawTips}
                     </Text>
                     {item.remark && (
                         <Text

@@ -21,6 +21,7 @@ class WithdrawLogDetails extends Component {
     render() {
         const { navigation } = this.props;
         const { withdraw_id } = navigation.state.params;
+
         return (
             <PageContainer title="提现详情" white>
                 <Query
@@ -33,7 +34,20 @@ class WithdrawLogDetails extends Component {
                         if (loading) return <LoadingSpinner />;
                         if (!(data && data.withdraw)) return <EmptyView />;
                         let withdraw = data.withdraw;
-
+                        let withdrawType = '支付宝';
+                        switch (withdraw.to_platform) {
+                            case 'wechat':
+                                withdrawType = '微信';
+                                break;
+                            case 'dongdezhuan':
+                                withdrawType = '懂得赚';
+                                break;
+                            case 'damei':
+                                withdrawType = '答妹';
+                                break;
+                            default:
+                                break;
+                        }
                         return (
                             <View
                                 style={{
@@ -74,13 +88,7 @@ class WithdrawLogDetails extends Component {
                                     </View>
                                     <View style={styles.row}>
                                         <Text style={styles.textLeft}>提现平台 </Text>
-                                        <Text style={styles.textRight}>
-                                            {withdraw.to_platform == 'alipay'
-                                                ? '支付宝'
-                                                : withdraw.to_platform == 'dongdezhuan'
-                                                ? '懂得赚'
-                                                : '微信'}
-                                        </Text>
+                                        <Text style={styles.textRight}>{withdrawType}</Text>
                                     </View>
                                     <View style={styles.row}>
                                         <Text style={styles.textLeft}>提现单号 </Text>
