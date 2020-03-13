@@ -225,6 +225,22 @@ export default observer(() => {
                 white
                 autoKeyboardInsets={false}
                 onWillBlur={hideComment}
+                leftView={
+                    <TouchFeedback
+                        onPress={() => {
+                            if (!examData) {
+                                LeaveExam.show(navigation, category, store.questions);
+                                return true;
+                            }
+                        }}
+                        style={{
+                            flex: 1,
+                            width: Theme.navBarContentHeight,
+                            justifyContent: 'center',
+                        }}>
+                        <Iconfont name="left" size={PxFit(21)} />
+                    </TouchFeedback>
+                }
                 rightView={
                     question && (
                         <Row style={styles.optionsButton}>
