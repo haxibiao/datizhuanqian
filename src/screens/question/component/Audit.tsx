@@ -7,6 +7,7 @@ import { app, config } from '@src/store';
 import { useMutation, GQL } from '@src/apollo';
 import { observer } from '@src/screens/answer/store';
 import AuditResultOverlay from '@src/screens/answer/components/AuditResultOverlay';
+import _ from 'lodash';
 
 const auditImage = {
     pending: require('@src/assets/images/auditing.png'),
@@ -53,7 +54,10 @@ export default observer(({ store, question }) => {
         };
     }, [animation]);
 
+    // const debounceHandler = useMemo(() => _.debounce(() => onAudit('reject'), 400), []);
+
     const onAudit = useCallback(async (status: AuditStatus) => {
+        console.log('status :', status);
         setAuditStatus(status);
         AuditResultOverlay.show({});
         try {
@@ -73,7 +77,7 @@ export default observer(({ store, question }) => {
                 <TouchFeedback
                     style={[styles.opinionItemButton, audited && { opacity: 0.7 }]}
                     disabled={audited}
-                    onPress={() => onAudit('reject')}>
+                    onPress={_.debounce(() => onAudit('reject'), 400)}>
                     <Text style={[styles.opinionText, { color: Theme.errorColor, marginRight: PxFit(4) }]}>反对</Text>
                     <Image source={require('@src/assets/images/oppose.png')} style={styles.opinionImage} />
                 </TouchFeedback>
@@ -83,7 +87,7 @@ export default observer(({ store, question }) => {
                 <TouchFeedback
                     style={[styles.opinionItemButton, audited && { opacity: 0.7 }]}
                     disabled={audited}
-                    onPress={() => onAudit('resolve')}>
+                    onPress={_.debounce(() => onAudit('resolve'), 400)}>
                     <Image source={require('@src/assets/images/approve.png')} style={styles.opinionImage} />
                     <Text style={[styles.opinionText, { marginLeft: PxFit(4) }]}>赞成</Text>
                 </TouchFeedback>

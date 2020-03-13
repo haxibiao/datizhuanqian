@@ -160,10 +160,11 @@ export default observer(() => {
     }, [fetchQuestions]);
     // 处理答题、下一页、显示评论等事件
     useEffect(() => {
-        DeviceEventEmitter.addListener('nextQuestion', () => {
+        const nextQuestionListener = DeviceEventEmitter.addListener('nextQuestion', () => {
+            console.log('nextQuestion :');
             nextQuestion();
         });
-        DeviceEventEmitter.addListener('answerQuestion', isError => {
+        const answerQuestionListener = DeviceEventEmitter.addListener('answerQuestion', isError => {
             answerCount.current.count++;
             isError == 'error' && answerCount.current.error++;
             if (!config.disableAd) {
@@ -171,13 +172,13 @@ export default observer(() => {
                 showAnswerResult();
             }
         });
-        DeviceEventEmitter.addListener('showComment', () => {
+        const showCommentListener = DeviceEventEmitter.addListener('showComment', () => {
             showComment();
         });
         return () => {
-            DeviceEventEmitter.removeListener('nextQuestion');
-            DeviceEventEmitter.removeListener('answerQuestion');
-            DeviceEventEmitter.removeListener('showComment');
+            answerQuestionListener.remove();
+            showCommentListener.remove();
+            nextQuestionListener.remove();
         };
     }, [nextQuestion, showComment]);
     // 页面UI

@@ -30,7 +30,6 @@ export default observer(({ value, text, style, question, store }) => {
     }, [value]);
 
     useEffect(() => {
-        console.log('question.submittedAnswer :', question.submittedAnswer);
         if (question.submittedAnswer) {
             setChecked(question.submittedAnswer.includes(value));
         } else {
