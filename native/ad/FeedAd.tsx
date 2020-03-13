@@ -8,7 +8,7 @@ import { SCREEN_WIDTH } from 'utils';
 import { config, app } from 'store';
 
 // import { GQL } from 'apollo';
-import { GQL } from 'graphql';
+import { GQL } from 'gqls';
 
 import service from 'service';
 
@@ -73,7 +73,6 @@ const FeedAd = (props: Props) => {
     return (
         <NativeFeedAd
             codeid={codeid}
-
             // provider={'百度'}
             // codeid={'6804265'}
 
