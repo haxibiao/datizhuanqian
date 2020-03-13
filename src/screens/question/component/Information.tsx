@@ -20,13 +20,13 @@ export default observer(({ question }) => {
                 animated={true}
                 ref={ref => (overlayRef = ref)}>
                 <View style={styles.explainWrap}>
+                    <View style={styles.overlayHeader}>
+                        <Text style={styles.titleText}>题目解析</Text>
+                        <TouchableOpacity style={styles.closeButton} onPress={() => overlayRef.close()}>
+                            <Iconfont name="close" size={PxFit(20)} color={'#9E9E9E'} />
+                        </TouchableOpacity>
+                    </View>
                     <ScrollView contentContainerStyle={styles.explainContainer} showsVerticalScrollIndicator={false}>
-                        <View style={styles.overlayHeader}>
-                            <Text style={styles.titleText}>题目解析</Text>
-                            <TouchableOpacity style={styles.closeButton} onPress={() => overlayRef.close()}>
-                                <Iconfont name="close" size={PxFit(20)} color={'#9E9E9E'} />
-                            </TouchableOpacity>
-                        </View>
                         <View style={styles.overlayContent}>
                             <Explain explanation={explanation} />
                         </View>
