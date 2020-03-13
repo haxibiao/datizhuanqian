@@ -80,7 +80,7 @@ export default observer(props => {
                     />
                     <Text style={[styles.toolName, !!(picture || audio) && { color: '#999EAD' }]}>视频</Text>
                 </TouchableOpacity>
-                <TouchableOpacity disabled={!!(picture || video)} style={styles.toolItem} onPress={toggleAudioTool}>
+                {/*  <TouchableOpacity disabled={!!(picture || video)} style={styles.toolItem} onPress={toggleAudioTool}>
                     <Image
                         style={styles.toolImg}
                         source={
@@ -90,7 +90,7 @@ export default observer(props => {
                         }
                     />
                     <Text style={[styles.toolName, !!(picture || video) && { color: '#999EAD' }]}>录音</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity style={styles.toolItem} onPress={() => navigation.navigate('EditExplain')}>
                     <Image style={styles.toolImg} source={require('@src/assets/images/icon_add_vote.png')} />
                     <Text style={styles.toolName}>解析</Text>

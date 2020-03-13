@@ -169,7 +169,7 @@ android {
         applicationId appConfigJson.PackageName
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
+        versionCode 28
         versionName appConfigJson.Version
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
