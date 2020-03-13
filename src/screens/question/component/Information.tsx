@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     explainText: { fontSize: PxFit(15), color: '#27AFF8' },
     countText: { fontSize: PxFit(14), color: '#525252' },
     explainWrap: {
-        height: PxFit(400),
+        // height: PxFit(400),
         maxHeight: SCREEN_HEIGHT / 2,
         backgroundColor: '#fff',
         overflow: 'hidden',
