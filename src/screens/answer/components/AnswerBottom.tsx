@@ -122,7 +122,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
     // 手动提交
     const handler = useCallback(async () => {
         // 提交答案
-        if (!answered) {
+        if (!answered && !isAudit) {
             // 触发answerQuestion事件，传递答题结果
             DeviceEventEmitter.emit('answerQuestion', answerQuestion());
             showResultsOverlay({
@@ -155,14 +155,19 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
             info.name = isSelf ? '仅浏览' : '已答过';
             info.color = '#666666';
             info.disabled = true;
+        } else if (isAudit) {
+            info.name = '下一题';
+            info.color = '#FFCC01';
+            info.disabled = false;
         } else if (!answered) {
             info.name = '提交答案';
             info.color = '#74A1FF';
             info.disabled = selectedAnswers.length > 0 ? false : true;
         }
+        console.log('info :', info);
         return info;
     }, [selectedAnswers, answered, isAudit]);
-
+    console.log('isAudit :', isAudit);
     return (
         <View style={styles.container}>
             <View style={styles.sideTools}>
