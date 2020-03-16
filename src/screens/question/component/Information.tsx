@@ -7,7 +7,7 @@ import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
 import Explain from './Explain';
 
-export default observer(({ question }) => {
+export default observer(({ question, category }) => {
     const { explanation } = question;
     const navigation = useNavigation();
 
@@ -67,6 +67,19 @@ export default observer(({ question }) => {
                     <Text style={styles.countText}>{`${Tools.NumberFormat(
                         question.count,
                     )}人答过，答对率为${correctRate}`}</Text>
+
+                    {category.tips && (
+                        <Text
+                            style={{
+                                fontSize: PxFit(14),
+                                color: '#525252',
+                                paddingTop: PxFit(15),
+                                borderTopColor: Theme.borderColor,
+                                borderTopWidth: PxFit(0.5),
+                            }}>
+                            {category.tips}
+                        </Text>
+                    )}
                 </View>
             )}
         </View>
@@ -90,11 +103,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     answerCount: {
-        marginTop: PxFit(20),
+        // marginTop: PxFit(15),
     },
     answerText: { fontSize: PxFit(15), color: Theme.defaultTextColor, fontWeight: 'bold' },
     explainText: { fontSize: PxFit(15), color: '#27AFF8' },
-    countText: { fontSize: PxFit(14), color: '#525252' },
+    countText: {
+        fontSize: PxFit(14),
+        color: '#525252',
+        paddingVertical: PxFit(15),
+    },
     explainWrap: {
         // height: PxFit(400),
         maxHeight: SCREEN_HEIGHT / 2,

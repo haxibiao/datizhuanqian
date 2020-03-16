@@ -75,7 +75,7 @@ export default observer(({ category, question, questions, order }) => {
                 scrollEnabled={!config.isFullScreen}>
                 <View style={styles.content}>
                     <Question question={question} store={store} audit={isAudit} />
-                    {answered && <Information question={question} question={question} />}
+                    {answered && <Information question={question} question={question} category={category} />}
                     {isAudit && <AuditStatus question={question} store={store} />}
                 </View>
                 {isAudit && <Audit question={question} store={store} />}

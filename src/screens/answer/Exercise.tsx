@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { DeviceEventEmitter, StyleSheet, View, Text } from 'react-native';
 import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
 import { Theme, PxFit, Tools, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
@@ -195,7 +195,7 @@ export default observer(() => {
                 />
             );
         }
-        return <AnswerQuestion key={question.id} question={question} />;
+        return <AnswerQuestion key={question.id} question={question} category={category} />;
     }, [fetchQuestions, question, finished, error]);
 
     return (
