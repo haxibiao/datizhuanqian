@@ -283,6 +283,7 @@ query TagQuery($id: Int!, $tagsOffset: Int, $categoriesOffset: Int, $limit: Int)
         tags(offset: $tagsOffset, limit: $limit) {
             id
             name
+            tips
             categories {
                 id
                 icon
@@ -291,6 +292,7 @@ query TagQuery($id: Int!, $tagsOffset: Int, $categoriesOffset: Int, $limit: Int)
                 is_official
                 questions_count
                 answers_count
+                tips
             }
         }
         categories(offset: $categoriesOffset, limit: $limit) {
@@ -301,6 +303,7 @@ query TagQuery($id: Int!, $tagsOffset: Int, $categoriesOffset: Int, $limit: Int)
             is_official
             questions_count
             answers_count
+            tips
             children {
                 id
                 icon
