@@ -204,7 +204,11 @@ export default observer(props => {
                     )}
                     {audio && audio.path && (
                         <View style={styles.audioPlayer}>
-                            <Audio.Player style={styles.audioContainer} audio={audio.path} key={audio.key} />
+                            <Audio.Player
+                                style={styles.audioContainer}
+                                audio={{ ...audio, url: audio.path }}
+                                key={audio.key}
+                            />
                             <TouchableOpacity
                                 activeOpacity={0.8}
                                 style={styles.deleteAudio}

@@ -305,9 +305,7 @@ class index extends Component {
                                     {video && video.url && (
                                         <Player style={{ marginTop: PxFit(Theme.itemSpace) }} video={video} />
                                     )}
-                                    {audio && audio.url && (
-                                        <Audio.Player style={styles.audioContainer} audio={audio.url} />
-                                    )}
+                                    {audio && audio.url && <Audio.Player style={styles.audioContainer} audio={audio} />}
                                     <View
                                         style={{
                                             marginHorizontal: PxFit(Theme.itemSpace),
@@ -373,6 +371,7 @@ const styles = StyleSheet.create({
     },
     audioContainer: {
         marginTop: PxFit(Theme.itemSpace),
+        marginHorizontal: PxFit(Theme.itemSpace),
         width: PxFit(160),
         height: PxFit(36),
         paddingHorizontal: PxFit(14),

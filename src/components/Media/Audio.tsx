@@ -43,6 +43,12 @@ function TimeFormat(second) {
     return [zero(i), zero(s)].join(':');
 }
 
+type Audio = {
+    id: number;
+    url: string;
+    duration: number;
+};
+
 export type RecordStatus = 'none' | 'recording' | 'stopped' | 'played';
 
 // 录音器
@@ -174,6 +180,7 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
                     }
                 },
                 {
+                    // 需要npm fix
                     playingListener: () => {
                         // setStatus('stopped');
                     },
@@ -349,7 +356,7 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
 // 语音播放
 export const Player = ({ audio, style, fontSize = PxFit(14) }) => {
     const [status, setStatus] = useState('paused');
-    const [duration, setDuration] = useState(0);
+    const [duration, setDuration] = useState(Tools.syncGetter('duration', audio) || 0);
     const [currentTime, setCurrentTime] = useState(0);
     const whoosh = useRef();
     const currentStatus = useRef('paused');
@@ -376,16 +383,18 @@ export const Player = ({ audio, style, fontSize = PxFit(14) }) => {
     }, [status]);
 
     useEffect(() => {
-        if (audio) {
+        if (audio && audio.url) {
             whoosh.current = new Sound(
-                audio,
+                audio.url,
                 '',
                 error => {
                     if (error) {
                         Toast.show({ content: '播放异常' });
                         return;
                     }
-                    setDuration(Math.ceil(whoosh.current.getDuration()));
+                    if (duration <= 1) {
+                        setDuration(Math.ceil(whoosh.current.getDuration()));
+                    }
                 },
                 {
                     playingListener: () => {

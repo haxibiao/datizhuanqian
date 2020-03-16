@@ -54,6 +54,7 @@ query QuestionListQuery($category_id: Int, $offset: Int, $limit: Int) {
             id
             url
             name
+            duration
         }
         image {
             id
@@ -144,6 +145,7 @@ query QuestionQuery($id: Int) {
             id
             url
             name
+            duration
         }
         image {
             id

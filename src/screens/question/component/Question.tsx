@@ -75,7 +75,7 @@ export default observer(({ store, question, audit }) => {
         }
 
         if (audio && audio.url) {
-            return <Audio.Player style={styles.audioContainer} audio={audio.url} />;
+            return <Audio.Player style={styles.audioContainer} audio={audio} />;
         }
 
         return null;
