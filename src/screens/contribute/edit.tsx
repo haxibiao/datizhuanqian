@@ -112,7 +112,7 @@ export default observer(props => {
             if (error) {
                 onError(error.message || '题目解析提交失败');
             } else {
-                createQuestion(syncGetter('data.createExplanation.id', result) || null);
+                createQuestion(Tools.syncGetter('data.createExplanation.id', result) || null);
             }
         },
         [client, createQuestion],
