@@ -32,7 +32,7 @@ export default observer(props => {
     const onSuccess = useCallback(() => {
         TipsOverlay.show({
             title: '粘贴板视频分享成功',
-            content: <View>{config.enableBanner && <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />}</View>,
+            content: <View>{config.enableBanner && <ad.FeedAd adWidth={Device.WIDTH - PxFit(40)} />}</View>,
             onConfirm: () => {
                 Tools.navigate('MyPublish');
                 TipsOverlay.hide();
