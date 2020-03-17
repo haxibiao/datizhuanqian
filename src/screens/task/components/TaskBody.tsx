@@ -31,7 +31,6 @@ const TaskBody = props => {
             },
         });
     }, []);
-    console.log('TasksQuery :', TasksQuery);
 
     useEffect(() => {
         // 构建tasklist
@@ -176,6 +175,7 @@ const TaskBody = props => {
                             userData={(userData && userData.user) || app.me}
                             setLoading={() => setIsVisible(true)}
                             setUnLoading={() => setIsVisible(false)}
+                            navigation={props.navigation}
                         />
                     );
                 })}

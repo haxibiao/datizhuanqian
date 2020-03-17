@@ -86,7 +86,7 @@ const TimeReward = (props: Props) => {
         setReceived(true);
     }, []);
 
-    const debounceHandler = useMemo(() => _.debounce(getReward, 1000), [getReward]);
+    const debounceHandler = useMemo(() => _.debounce(getReward, 3000), [getReward]);
 
     const showRewardTips = (reward: { gold_reward: any; ticket_reward: any; contribute_reward: any }) => {
         const rewardContent = {

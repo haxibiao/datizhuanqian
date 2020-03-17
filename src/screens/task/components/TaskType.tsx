@@ -15,6 +15,7 @@ interface Props {
     userData: User;
     setLoading: Function;
     setUnLoading: Function;
+    navigation: any;
 }
 
 interface Task {
@@ -27,7 +28,7 @@ interface Task {
     submit_name: string;
     details: string;
     type?: Number;
-    route?: String;
+    route?: string;
 }
 
 interface User {
@@ -43,7 +44,7 @@ interface Level {
 
 const TaskType = observer((props: Props) => {
     const [taskTypeHeight, setTaskTypeHeight] = useState(70);
-    const { typeName, tasks, userData, setLoading, setUnLoading } = props;
+    const { typeName, tasks, userData, setLoading, setUnLoading, navigation } = props;
 
     const handler = (task: Task) => {
         //TODO: 后端无业务逻辑的任务需完善task.route
@@ -53,8 +54,13 @@ const TaskType = observer((props: Props) => {
                 Tools.navigate('EditProfile', { user: userData });
                 break;
             case 1:
+                const resetAction = NavigationActions.navigate({
+                    routeName: task.route || '答题',
+                });
+                navigation.dispatch(resetAction);
+
                 // Tools.navigate(task.route);
-                Tools.navigate('答题');
+                // Tools.navigate('答题');
                 //实际需求写法
                 // Tools.navigate(task.route,{...task.params});
                 break;
