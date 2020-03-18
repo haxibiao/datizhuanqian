@@ -43,7 +43,6 @@ import { app, config, observer } from 'store';
 
 import { ad } from 'native';
 import { Overlay } from 'teaset';
-import { toJS } from 'mobx';
 
 @observer
 class index extends Component {
@@ -53,8 +52,8 @@ class index extends Component {
         this.gold = 0;
         this.ticket = 0;
         this._animated = new Animated.Value(0);
-        this.onSubmitOpinion = Tools.throttle(this.onSubmitOpinion, 1500);
-        this.onSubmit = Tools.throttle(this.onSubmit, 1500);
+        this.onSubmitOpinion = __.throttle(this.onSubmitOpinion, 1500);
+        this.onSubmit = __.throttle(this.onSubmit, 1500);
         this.category_id = props.navigation.getParam('category', {}).id;
         this.containerHeight = SCREEN_HEIGHT - PxFit(170);
         this.answer_count = 0;

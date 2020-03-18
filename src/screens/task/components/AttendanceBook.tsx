@@ -65,7 +65,7 @@ const AttendanceBook = (props): JSX.Element => {
     }, [signIns]);
 
     const toDaySignIn = useCallback(
-        Tools.throttle(async () => {
+        __.throttle(async () => {
             if (!today_signed) {
                 try {
                     const result = await createSignIn();

@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, Image, AppState } from 'react-native';
 import { TouchFeedback, RewardOverlay, FeedOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
 import { Tools, Theme } from 'utils';
-import _ from 'lodash';
 
 interface Props {
     navigation: Function;
@@ -86,7 +85,7 @@ const TimeReward = (props: Props) => {
         setReceived(true);
     }, []);
 
-    const debounceHandler = useMemo(() => _.debounce(getReward, 3000), [getReward]);
+    const debounceHandler = useMemo(() => __.throttle(getReward, 5000), [getReward]);
 
     const showRewardTips = (reward: { gold_reward: any; ticket_reward: any; contribute_reward: any }) => {
         const rewardContent = {

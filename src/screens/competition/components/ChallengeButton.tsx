@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
 import { Avatar, Row, Center, Iconfont, WaveView } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { throttle, useCountDown, syncGetter, useAppState } from '@src/common';
+import { useCountDown, syncGetter, useAppState } from '@src/common';
 import { BoxShadow } from 'react-native-shadow';
 import { GQL, useMutation, useQuery } from '@src/apollo';
 import { observer, app } from 'store';
@@ -59,7 +59,7 @@ const challenge = observer(props => {
                     {matching && <WaveView containerStyle={styles.waveContainer} style={styles.wave} />}
                     <TouchableOpacity
                         disabled={matching || matched}
-                        onPress={throttle(onPress)}
+                        onPress={__.throttle(onPress)}
                         style={styles.matchingButton}>
                         <Image style={styles.battle} source={require('@src/assets/images/battle.png')} />
                         <Text style={styles.text}>{matched ? '匹配成功' : matching ? '正在匹配' : '立即PK'}</Text>

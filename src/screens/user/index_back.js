@@ -34,7 +34,7 @@ const ORDER = ['ANSWERS_COUNT', 'CREATED_AT'];
 class index extends Component {
     constructor(props) {
         super(props);
-        this.switchOrder = Tools.throttle(this.switchOrder.bind(this), 500);
+        this.switchOrder = __.throttle(this.switchOrder.bind(this), 500);
         this.state = {
             finished: false,
             orderByHot: false,
@@ -65,7 +65,7 @@ class index extends Component {
             <Query
                 query={GQL.UserInfoQuery}
                 variables={{ id: user.id, order: orderByHot ? ORDER[0] : ORDER[1], filter: 'publish' }}
-                fetchPolicy='network-only'>
+                fetchPolicy="network-only">
                 {({ data, loading, error, refetch, fetchMore }) => {
                     let user = Tools.syncGetter('user', data),
                         questions = [];
@@ -85,7 +85,7 @@ class index extends Component {
                                 user.id == app.me.id ? null : (
                                     <TouchFeedback onPress={this.showOptions} style={styles.optionsButton}>
                                         <Iconfont
-                                            name='more-horizontal'
+                                            name="more-horizontal"
                                             color={Theme.defaultTextColor}
                                             size={PxFit(18)}
                                         />
@@ -111,7 +111,7 @@ class index extends Component {
                                         orderByHot={orderByHot}
                                     />
                                 }
-                                ListEmptyComponent={<StatusView.EmptyView title='空空如也，没有出过题目' />}
+                                ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
                                 renderItem={({ item, index }) => (
                                     <QuestionItem question={item} navigation={navigation} />
                                 )}

@@ -120,7 +120,7 @@ class FooterBar extends Component {
                                 评论{Tools.NumberFormat(count_comments) > 0 && ' ' + Tools.NumberFormat(count_comments)}
                             </Text>
                         </TouchFeedback>
-                        <TouchableWithoutFeedback onPress={Tools.throttle(this.likeQuestion, 400)}>
+                        <TouchableWithoutFeedback onPress={__.throttle(this.likeQuestion, 400)}>
                             <Animated.View style={[styles.toolItem, { transform: [{ scale: scale }] }]}>
                                 <View style={styles.iconWrap}>
                                     <Iconfont

@@ -168,7 +168,7 @@ class CommentItem extends Component<Props> {
                                 <Animated.View style={{ transform: [{ scale: scale }] }}>
                                     <TouchFeedback
                                         style={styles.touchItem}
-                                        onPress={Tools.throttle(this.likeComment, 400)}>
+                                        onPress={__.throttle(this.likeComment, 400)}>
                                         <Iconfont
                                             name={'like-fill'}
                                             size={PxFit(20)}

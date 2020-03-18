@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
 import { observer, app, config as configStore } from 'store';
-import { exceptionCapture, throttle } from 'common';
+import { exceptionCapture } from 'common';
 import { PxFit, Tools, Theme } from 'utils';
 import { beginnerGuidance, VideoGuidance } from 'components';
 
@@ -77,7 +77,7 @@ export default observer(props => {
     }, [VideosQuery]);
 
     const reportData = useCallback(
-        throttle(() => {
+        __.throttle(() => {
             client
                 .mutate({
                     mutation: GQL.SaveVisitsMutation,

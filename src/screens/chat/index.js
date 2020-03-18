@@ -2,7 +2,6 @@ import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Theme, PxFit, Tools, ISAndroid } from '@src/utils';
 import { PageContainer, PullChooser, TouchFeedback, Iconfont } from '@src/components';
-import { throttle } from '@src/common';
 import { observer, app } from '@src/store';
 import {
     GiftedChat,
@@ -45,7 +44,7 @@ const index = observer(props => {
         return (
             <Send
                 {...props}
-                onSend={throttle(chatStore.sendMessage)}
+                onSend={__.throttle(chatStore.sendMessage, 400)}
                 containerStyle={[chatStyle.sendButton, !chatStore.textMessage && chatStyle.disabledButton]}
                 alwaysShowSend
                 disabled={!chatStore.textMessage}>
@@ -69,7 +68,7 @@ const index = observer(props => {
             <View style={styles.loadEarlier}>
                 {chatStore.status === 'loadMore' && <ActivityIndicator size="small" color="rgba(255, 87, 51 ,0.6)" />}
                 {chatStore.status === 'loaded' && (
-                    <TouchableOpacity style={styles.touchView} onPress={throttle(chatStore.fetchMessages)}>
+                    <TouchableOpacity style={styles.touchView} onPress={__.throttle(chatStore.fetchMessages, 500)}>
                         <Text style={styles.loadMoreText}>点击加载更多</Text>
                     </TouchableOpacity>
                 )}

@@ -334,7 +334,9 @@ const index = observer(props => {
                             <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
                         </TouchFeedback>
                     )}
-                    <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('Setting', { user })}>
+                    <TouchFeedback
+                        style={styles.columnItem}
+                        onPress={__.throttle(() => navigation.navigate('Setting', { user }), 500)}>
                         <Row>
                             <Image
                                 style={styles.metaIconRank}
