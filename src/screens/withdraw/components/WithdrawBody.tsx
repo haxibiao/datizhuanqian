@@ -4,7 +4,7 @@ import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components'
 import { useQuery, GQL } from 'apollo';
 import { app } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISIOS } from 'utils';
-import { bindWechat, checkUserInfo } from 'common';
+import { bindWechat } from 'common';
 import { DownloadApkIntro } from 'components';
 import { AppUtil } from 'native';
 import WithdrawHeader from './WithdrawHeader';
@@ -140,7 +140,7 @@ const WithdrawBody = props => {
 
         if (withdrawType === 'alipay' && !Tools.syncGetter('wallet.bind_platforms.alipay', user)) {
             name = '立即绑定';
-            action = () => checkUserInfo();
+            action = () => Tools.navigate('SettingWithdrawInfo');
         }
         if (
             (withdrawType === 'wechat' && !Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||

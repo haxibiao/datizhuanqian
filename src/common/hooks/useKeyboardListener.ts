@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { Keyboard, Platform } from 'react-native';
 
 type Listener = (e: any) => any;
-
+//键盘监听
 export const useKeyboardListener = (onKeyboardShow: Listener, onKeyboardHide: Listener) => {
     const isIos = useRef(Platform.OS === 'ios').current;
 

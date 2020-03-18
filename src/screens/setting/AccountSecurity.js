@@ -11,7 +11,7 @@ import { Theme, PxFit, ISIOS, Tools } from 'utils';
 import UserPanel from './components/UserPanel';
 
 import { compose, graphql, GQL } from 'apollo';
-import { checkUserInfo, bindWechat } from 'common';
+import { bindWechat } from 'common';
 import DeviceInfo from 'react-native-device-info';
 class AccountSecurity extends Component {
     constructor(props) {
@@ -150,7 +150,7 @@ class AccountSecurity extends Component {
                             if (user.wallet && user.wallet.pay_info_change_count === -1) {
                                 Toast.show({ content: '支付宝信息更改次数已达上限' });
                             } else {
-                                checkUserInfo();
+                                Tools.navigate('SettingWithdrawInfo');
                             }
                         }}
                         style={styles.listItem}

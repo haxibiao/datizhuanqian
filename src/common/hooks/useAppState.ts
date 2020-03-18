@@ -6,12 +6,13 @@ interface Props {
     (Event?: any): any;
 }
 
+//App状态
 export const useAppState = (callback: Props) => {
     const stateChangeHandle = useCallback(async event => {
         if (event === 'active') {
-            console.log('====================================');
-            console.log('callback', callback);
-            console.log('====================================');
+            // console.log('====================================');
+            // console.log('callback', callback);
+            // console.log('====================================');
             callback();
         }
     }, []);

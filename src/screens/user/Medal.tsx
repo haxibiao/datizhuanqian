@@ -14,7 +14,7 @@ import {
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
-import { playVideo, bindWechat, checkUserInfo } from 'common';
+import { playVideo, bindWechat } from 'common';
 import { Overlay } from 'teaset';
 import MedalIntro from './components/MedalIntro';
 import service from 'service';

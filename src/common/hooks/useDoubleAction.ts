@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react';
 
+//双击检查
 export const useDoubleAction = (doubleCallback: (e?: any) => any, interval: number, callback: (e?: any) => any) => {
     const now = useRef(new Date());
     const lastExec = useRef(new Date(0));

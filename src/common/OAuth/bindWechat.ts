@@ -8,7 +8,7 @@ interface Props {
     onFailed?: Function;
 }
 
-export function bindWechat(props: Props) {
+export const getAuthCode = (props: Props) => {
     const { onFailed } = props;
     bindWeChatTrack();
     WeChat.isSupported()
@@ -16,7 +16,7 @@ export function bindWechat(props: Props) {
             if (isSupported) {
                 WeChat.wechatLogin()
                     .then((code: any) => {
-                        bindWx(code, props);
+                        bindWechat(code, props);
                     })
                     .catch(() => {
                         Toast.show({ content: '微信身份信息获取失败，请检查微信是否登录' });
@@ -34,9 +34,9 @@ export function bindWechat(props: Props) {
             onFailed && onFailed();
             bindWeChatFailedTrack({ error: '获取微信安装状态失败' });
         });
-}
+};
 
-function bindWx(code: any, props: Props) {
+function bindWechat(code: any, props: Props) {
     const { onSuccess, onFailed } = props;
     app.client
         .mutate({

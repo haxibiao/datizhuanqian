@@ -4,7 +4,6 @@ import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, 
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
 import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
-import { playVideo, bindWechat, checkUserInfo } from 'common';
 import { Overlay } from 'teaset';
 import RuleDescription from './RuleDescription';
 import { BoxShadow } from 'react-native-shadow';

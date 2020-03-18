@@ -13,6 +13,7 @@ interface Props {
     onFailed?: (Event?: any) => any;
 }
 
+//采集视频
 export const useCaptureVideo = (props: Props) => {
     const { client, onSuccess, onFailed } = props;
     const clipboardString = useRef('');

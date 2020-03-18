@@ -122,7 +122,7 @@ export const bindAlipaySucceedTrack = () => {
     service.dataReport({
         data: {
             category: '用户行为',
-            action: 'user_click_bind_wechat_succeed',
+            action: 'user_click_bind_alipay_succeed',
             name: `用户支付宝绑定成功`,
         },
     });
@@ -143,7 +143,7 @@ export const bindAlipayFailedTrack = (props: { error: any }) => {
     service.dataReport({
         data: {
             category: '用户行为',
-            action: 'user_click_bind_wechat_failed',
+            action: 'user_click_bind_alipay_failed',
             name: `用户支付宝绑定失败`,
         },
     });

@@ -11,6 +11,7 @@ import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from '@src/utils';
 import { storage, keys } from 'store';
 import { AppUtil } from 'native';
 
+//退出监听
 export const useDetainment = (navigation: any) => {
     const overlayKey = useRef();
 

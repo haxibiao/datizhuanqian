@@ -1,12 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PageContainer, Iconfont, Row, Button, CustomTextInput, TouchFeedback } from 'components';
 import { Theme, PxFit, Tools } from 'utils';
 
-import { compose, graphql, GQL } from 'apollo';
+import { GQL } from 'apollo';
 import { app } from 'store';
-import { Alipay, AppUtil } from 'native';
-import { bindAlipayFailedTrack, bindAlipaySucceedTrack, bindAlipayTrack } from 'common';
+import { Alipay } from 'native';
+import { bindAlipayFailedTrack, bindAlipaySucceedTrack, bindAlipayTrack, getAlipayAuthCode, bindAlipay } from 'common';
 
 const SettingWithdrawInfo = props => {
     const [realName, setRealName] = useState(Tools.syncGetter('userCache.wallet.real_name', app) || '');
@@ -14,21 +14,14 @@ const SettingWithdrawInfo = props => {
     const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
     const { navigation } = props;
 
+    //支付宝授权
     const getAuthCode = () => {
-        bindAlipayTrack();
-        Alipay.AlipayAuth()
-            .then((code: any) => {
-                console.log('code', code);
-                setAuthCode(code);
-            })
-            .catch(error => {
-                Toast.show({
-                    content: '请登录或尝试更新支付宝再授权',
-                });
-                bindAlipayFailedTrack(error);
-            });
+        getAlipayAuthCode({
+            callback: (code: any) => setAuthCode(code),
+        });
     };
 
+    //绑定真实姓名
     const bindRealName = () => {
         setSubmitting(true);
         app.client
@@ -50,7 +43,7 @@ const SettingWithdrawInfo = props => {
                     },
                 ],
             })
-            .then(data => {
+            .then(() => {
                 setSubmitting(false);
                 if (Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app)) {
                     Toast.show({
@@ -58,52 +51,18 @@ const SettingWithdrawInfo = props => {
                     });
                     navigation.navigate('Main', null, navigation.navigate({ routeName: '提现' }));
                 } else {
-                    bindWithdrawInfo();
+                    bindAlipay({
+                        authCode,
+                        onFaild: () => setAuthCode(''),
+                    });
                 }
             })
-            .catch(error => {
+            .catch((error: { toString: () => string }) => {
                 setSubmitting(false);
                 Toast.show({
                     content: error.toString().replace(/Error: GraphQL error: /, ''),
                 });
-                bindAlipayFailedTrack(error);
-            });
-    };
-
-    const bindWithdrawInfo = () => {
-        app.client
-            .mutate({
-                mutation: GQL.OAuthBindMutation,
-                variables: {
-                    code: authCode,
-                    oauth_type: 'ALIPAY',
-                },
-                refetchQueries: () => [
-                    {
-                        query: GQL.UserMeansQuery,
-                        variables: { id: app.me.id },
-                    },
-                    {
-                        query: GQL.UserQuery,
-                        variables: { id: app.me.id },
-                    },
-                ],
-            })
-            .then((data: any) => {
-                setSubmitting(false);
-                Toast.show({
-                    content: '绑定成功',
-                });
-                bindAlipaySucceedTrack();
-                navigation.navigate('Main', null, navigation.navigate({ routeName: '提现' }));
-            })
-            .catch((error: { toString: () => { replace: (arg0: RegExp, arg1: string) => void } }) => {
-                setSubmitting(false);
-                setAuthCode('');
-                Toast.show({
-                    content: error.toString().replace(/Error: GraphQL error: /, ''),
-                });
-                bindAlipayFailedTrack(error);
+                bindAlipayFailedTrack(error.toString());
             });
     };
 

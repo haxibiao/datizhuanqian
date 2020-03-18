@@ -11,7 +11,7 @@ import Iconfont from '../Iconfont';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import OverlayViewer from '../Overlay/OverlayViewer';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { imagePicker } from '@src/common/contribute';
+import { imagePicker } from '@src/common/media';
 
 type Props = {
     multiple?: boolean,

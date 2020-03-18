@@ -4,6 +4,7 @@ interface Props {
     expirationTime: number | string;
 }
 
+//计时器
 export const useCountDown = (props: Props) => {
     const { expirationTime } = props;
     const [subTime, setSubTime] = useState(expirationTime);
