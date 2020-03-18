@@ -16,12 +16,15 @@ const App = () => {
     let toast: Toast | null = null;
 
     useEffect(() => {
+        //启动就检查下刷子账号,禁用一切操作
+        checkServer();
+
         // 初始化 AdManager, 之后才能启动开屏
         ad.AdManager.init();
         // 信息流广告先预加载，提速第一次签到时显示的速度
         ad.AdManager.loadFeedAd();
         // 获取广告开放状态
-        service.enableAdvert((data: { disable: { [x: string]: any } }) => {
+        service.enableAdvert((data: { disable: { [x: string]: any; }; }) => {
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
                 ad.Splash.loadSplashAd();
@@ -46,11 +49,14 @@ const App = () => {
         //获取手机号
         readPhoneState();
         //加载激励视频缓存
-        ad.RewardVideo.loadAd().then(() => {});
+        ad.RewardVideo.loadAd().then(() => { });
     }, []);
 
     const checkServer = () => {
-        fetch(Config.ServerRoot)
+        let { token } = app.me;
+
+        //根据不同的用户返回503，可以用来封掉刷子账号在机器上的无效操作
+        fetch(Config.ServerRoot + "/api/user?api_token=" + token)
             .then(response => {
                 if (response.status === 503) {
                     setServerMaintenance(response);
