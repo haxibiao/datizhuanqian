@@ -18,7 +18,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from 'react-navigation-hooks';
 import AnswerOverlay from './AnswerOverlay';
 import { Overlay } from 'teaset';
-import _ from 'lodash';
 
 export default observer(({ isAnswered, isSelf, user, question, store }) => {
     const client = useApolloClient();
@@ -142,7 +141,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
         }
     }, [isAudit, isAudited, answered, question, selectedAnswers, showResultsOverlay, answerMutation]);
 
-    const onSubmit = useMemo(() => _.debounce(handler, 400), [handler]);
+    const onSubmit = useMemo(() => __.throttle(handler, 400), [handler]);
 
     const buttonInfo = useMemo(() => {
         // #5F93FD

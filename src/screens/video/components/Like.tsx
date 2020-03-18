@@ -37,7 +37,7 @@ export default observer((props: Props) => {
         },
     });
 
-    const likeHandler = _.debounce(async function() {
+    const likeHandler = __.throttle(async function() {
         const [error, result] = await exceptionCapture(likeArticle);
         console.log('err', error, result);
         if (error) {

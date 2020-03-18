@@ -47,7 +47,7 @@ export default observer(props => {
     const [keyword, setKeyword] = useState();
 
     const onChangeText = useCallback(text => {
-        Tools.debounce(() => setKeyword(text), 300);
+        __.debounce(() => setKeyword(text), 300);
     }, []);
 
     return (

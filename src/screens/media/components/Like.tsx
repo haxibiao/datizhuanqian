@@ -1,22 +1,14 @@
-import React, { Component, useContext } from 'react';
-import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, Animated, Image, Text } from 'react-native';
 import { exceptionCapture, useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from 'utils';
-import _ from 'lodash';
+import { PxFit } from 'utils';
 
 const imageSource = {
     liked: require('../../../assets/images/ic_liked.png'),
     unlike: require('../../../assets/images/ic_like.png'),
 };
-
-interface Question {
-    id: number | string;
-    liked: boolean;
-    count_likes: number | string;
-    [key: string]: any;
-}
 
 interface Props {
     [key: string]: any;
@@ -32,7 +24,7 @@ export default observer((props: Props) => {
         },
     });
 
-    const likeHandler = _.debounce(async function() {
+    const likeHandler = __.debounce(async function() {
         try {
             const result = await exceptionCapture(likeArticle);
             console.log('result', result);

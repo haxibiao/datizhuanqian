@@ -8,7 +8,6 @@ import { useApolloClient, useQuery, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import SearchRecord from './components/SearchRecord';
 import CategoryItem from './components/CategoryItem';
-import { debounce } from 'src/utils/Tools/adapter';
 
 const Search = () => {
     const navigation = useNavigation();
@@ -23,7 +22,7 @@ const Search = () => {
     const [recordData, setRecordData] = useState([]);
 
     const searchCategories = useMemo(() => {
-        return Tools.debounce(async (keyword, isCache) => {
+        return __.debounce(async (keyword, isCache) => {
             const trimmedKeyword = keyword && keyword.trim();
             if (trimmedKeyword && trimmedKeyword.length > 0) {
                 const categoriesQuery = () => {
