@@ -20,7 +20,6 @@ import ErrorBoundary from './Container/ErrorBoundary';
 import WaveView from './Container/WaveView';
 // Content
 import UserItem from './Content/UserItem';
-import GridImage from './Content/GridImage';
 import Placeholder from './Content/Placeholder';
 import UserTitle from './Content/UserTitle';
 import VideoMark from './Content/VideoMark';
@@ -110,7 +109,6 @@ export {
     ErrorBoundary,
     WaveView,
     UserItem,
-    GridImage,
     Placeholder,
     UserTitle,
     VideoMark,

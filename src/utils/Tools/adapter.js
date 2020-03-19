@@ -14,30 +14,6 @@ export function syncGetter(str, data) {
         }
     }
     return result;
-
-
-export function isContained(aa, bb) {
-    if (!(aa instanceof Array) || !(bb instanceof Array) || aa.length < bb.length) {
-        return false;
-    }
-    var aaStr = aa.toString();
-    for (var i = 0; i < bb.length; i++) {
-        if (aaStr.indexOf(bb[i]) < 0) return false;
-    }
-    return true;
-}
-
-export function arrayRandomSort(arr) {
-    if (!(arr instanceof Array)) {
-        throw new Error(arr + 'is not a Array');
-    }
-    var res = [];
-    for (var i = 0; i < arr.length; i++) {
-        var randomIndex = Math.floor(Math.random() * arr.length);
-        res[i] = arr[randomIndex];
-        arr.splice(randomIndex, 1);
-    }
-    return res;
 }
 
 export function Mixes(obj1, obj2) {

@@ -27,6 +27,7 @@ const index = observer(props => {
         if (data && data.user) {
             app.updateUserCache(data.user);
         }
+        console.log('Helper :', Helper);
     }, [data, refetch, loading]);
 
     useDetainment(navigation);

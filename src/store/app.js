@@ -59,10 +59,6 @@ class app {
     @action.bound
     async remember(json) {
         await storage.setItem(keys.me, json);
-        // runInAction(() => {
-        //   // this.me = new user(json.id, json.name, json.avatar, json.token);
-        //   this.me = json;
-        // });
     }
 
     @action.bound

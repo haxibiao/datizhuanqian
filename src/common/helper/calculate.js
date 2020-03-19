@@ -50,60 +50,6 @@ export function singleImageResponse(width: number, height: number, max: number) 
     return size;
 }
 
-//postItem images response
-export function gridImage(imgCount, space = 4, maxWidth = divece.width) {
-    let width,
-        height,
-        i = 0;
-    let imgSize = [];
-    switch (true) {
-        case imgCount == 1:
-            maxWidth = (maxWidth * 2) / 3;
-            width = maxWidth;
-            height = maxWidth / 2;
-            imgSize.push({ width, height, marginRight: space, marginTop: space });
-            break;
-        case imgCount == 7:
-            for (; i < imgCount; i++) {
-                if (i == 0) {
-                    width = maxWidth;
-                    height = maxWidth / 2;
-                } else {
-                    width = height = (maxWidth - space * 2) / 3;
-                }
-                imgSize.push({ width, height, marginRight: space, marginTop: space });
-            }
-            break;
-        case imgCount == 5:
-        case imgCount == 8:
-            for (; i < imgCount; i++) {
-                if (i == 0 || i == 1) {
-                    width = height = (maxWidth - space) / 2;
-                } else {
-                    width = height = (maxWidth - space * 2) / 3;
-                }
-                imgSize.push({ width, height, marginRight: space, marginTop: space });
-            }
-            break;
-        case imgCount == 2:
-        case imgCount == 4:
-            width = height = (maxWidth - space) / 2;
-            for (; i < imgCount; i++) {
-                imgSize.push({ width, height, marginRight: space, marginTop: space });
-            }
-            break;
-        case imgCount == 3:
-        case imgCount == 6:
-        case imgCount == 9:
-            width = height = (maxWidth - space * 2) / 3;
-            for (; i < imgCount; i++) {
-                imgSize.push({ width, height, marginRight: space, marginTop: space });
-            }
-            break;
-    }
-    return imgSize;
-}
-
 export function imgsLayoutSize(imgCount, images, space = 5, maxWidth = width - 30) {
     let width,
         height,
@@ -168,19 +114,6 @@ export function imgsLayoutSize(imgCount, images, space = 5, maxWidth = width - 3
             break;
     }
     return imgSize;
-}
-
-export function generateGenderLable(gender: '男' | '女' | '保密') {
-    switch (gender) {
-        case '男':
-            return { name: 'boy', color: '#00C8FF' };
-            break;
-        case '女':
-            return { name: 'girl', color: '#FF5C9D' };
-            break;
-        default:
-            return { name: 'boy', color: '#00C8FF' };
-    }
 }
 
 export function imageSize({ width, height, padding }) {

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Config from './Config';
 import Theme from './Theme';
 import * as Scale from './Scale';
-// import * as Helper from './helper';
+import * as Helper from './helper';
 import Tools from './Tools';
 
 const { height, width } = Dimensions.get('window');
@@ -14,7 +14,6 @@ const Global = global || window || {};
 const device = {
     WIDTH: width,
     HEIGHT: height,
-    INNER_HEIGHT: height - Theme.HOME_INDICATOR_HEIGHT - Theme.NAVBAR_HEIGHT - Theme.statusBarHeight,
     OS: Platform.OS,
     IOS: Platform.OS === 'ios',
     Android: Platform.OS === 'android',
@@ -31,8 +30,10 @@ Global.Theme = Theme;
 // // 屏幕适配
 // Global.PxDp = Helper.PxDp;
 // helper
-// Global.Helper = Helper;
+Global.Helper = Helper;
+//
 Global.PxFit = Scale.PxFit;
+//
 Global.Tools = Tools;
 // App配置
 Global.Config = Config;

@@ -1,56 +1,37 @@
-/*
- * @flow
- * created by wyk made in 2018-12-05 21:47:45
- */
-
 import { Dimensions } from 'react-native';
 const { height, width } = Dimensions.get('window');
 
 const SCREEN_WIDTH = width;
 
-// number Format
-export function NumberFormat(number) {
-    number = parseFloat(number);
-    if (number >= 1000) {
-        return Math.round((number / 1000).toFixed(2) * 10) / 10 + 'k';
-    } else {
-        return number || 0;
-    }
-}
-// time Format
-export function TimeFormat(second) {
-    let h = 0,
-        i = 0,
-        s = parseInt(second);
-    if (s > 60) {
-        i = parseInt(s / 60);
-        s = parseInt(s % 60);
-    }
-    // 补零
-    let zero = function(v) {
-        return v >> 0 < 10 ? '0' + v : v;
-    };
-    return [zero(h), zero(i), zero(s)].join(':');
-}
-
-// response images layout
-export function singleImageResponse(width: number, height: number, max: number) {
-    let size = {};
-    if (width > max || height > max) {
-        if (width >= height) {
-            size.width = max;
-            size.height = Math.round((max * height) / width);
+export const syncGetter = (str: string, data: any) => {
+    if (data === null || data === undefined || typeof data !== 'object') return null;
+    let result: any = { ...data };
+    const keys: string[] = str.split('.');
+    for (const key of keys) {
+        if (result[key] !== undefined && result[key] !== null) {
+            result = result[key];
         } else {
-            size.height = max;
-            size.width = Math.round((max * width) / height);
+            return undefined;
         }
-    } else {
-        size = { width, height };
     }
-    return size;
-}
+    return result;
+};
 
-export function imgsLayoutSize(imgCount, images, space = 5, maxWidth = width - 30) {
+//手机 邮箱 正则验证
+export const regular = (account: string) => {
+    const phoneReg = /^1[3-9]\d{9}$/;
+    const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+
+    let value = phoneReg.test(account) || mailReg.test(account);
+    return value;
+};
+
+export const imgsLayoutSize = (
+    imgCount: number,
+    images: { height: any; width: any }[],
+    space = 5,
+    maxWidth = width - 30,
+) => {
     let width,
         height,
         i = 0;
@@ -114,10 +95,13 @@ export function imgsLayoutSize(imgCount, images, space = 5, maxWidth = width - 3
             break;
     }
     return imgSize;
-}
+};
 
-export function imageSize({ width, height, padding }) {
-    var size = {};
+export const imageSize = ({ width, height, padding }) => {
+    let size = {
+        height: 0,
+        width: 0,
+    };
     if (width > SCREEN_WIDTH) {
         size.width = SCREEN_WIDTH - padding;
         size.height = ((SCREEN_WIDTH - padding) * height) / width;
@@ -125,13 +109,4 @@ export function imageSize({ width, height, padding }) {
         size = { width, height };
     }
     return size;
-}
-
-//手机 邮箱 正则验证
-export function regular(account) {
-    const phoneReg = /^1[3-9]\d{9}$/;
-    const mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-
-    let value = phoneReg.test(account) || mailReg.test(account);
-    return value;
-}
+};
