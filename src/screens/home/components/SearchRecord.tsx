@@ -1,16 +1,11 @@
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
-import { TouchFeedback, Iconfont, Row } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
-import { observer, app, storage, keys } from '@src/store';
-import { useNavigation } from 'react-navigation-hooks';
+import { TouchFeedback, Iconfont } from 'components';
 
 const SearchRecord = ({ data, remove, search }) => {
-    const navigation = useNavigation();
-
     const recordList = useMemo(() => {
         if (Array.isArray(data)) {
-            return data.map((name, index) => {
+            return data.map(name => {
                 return (
                     <TouchableWithoutFeedback key={name} onPress={() => search(name)}>
                         <View style={styles.categoryItem}>

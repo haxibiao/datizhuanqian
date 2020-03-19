@@ -3,21 +3,11 @@
  * created by wyk made in 2019-03-29 16:41:46
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, Animated, ActivityIndicator } from 'react-native';
-import {
-    TouchFeedback,
-    Iconfont,
-    Center,
-    SafeText,
-    Avatar,
-    Row,
-    PullChooser,
-    UserTitle,
-    GenderLabel,
-} from 'components';
-import { Theme, PxFit, WPercent, Tools } from 'utils';
+import { StyleSheet, View, Text, Animated, ActivityIndicator } from 'react-native';
+import { TouchFeedback, Iconfont, SafeText, Avatar, Row, PullChooser } from 'components';
+import { Theme, PxFit } from 'utils';
 
-import { Query, Mutation, compose, withApollo, graphql, GQL } from 'apollo';
+import { Query, compose, graphql, GQL } from 'apollo';
 
 import { withNavigation } from 'react-navigation';
 
@@ -108,7 +98,7 @@ class CommentItem extends Component<Props> {
     };
 
     showOverlay = comment => {
-        const { navigation, showCommentModal, replyComment, isAnswer, question } = this.props;
+        const { navigation, showCommentModal, replyComment } = this.props;
 
         if (app.me.is_admin) {
             PullChooser.show([
@@ -147,7 +137,7 @@ class CommentItem extends Component<Props> {
 
     render() {
         const { comment, navigation, questionId, showCommentModal, replyComment } = this.props;
-        const { liked, count_likes, bounce, visible, limit, loadingMore } = this.state;
+        const { liked, count_likes, bounce, limit, loadingMore } = this.state;
         const scale = bounce.interpolate({
             inputRange: [1, 1.1, 1.2],
             outputRange: [1, 1.25, 1],
@@ -202,7 +192,7 @@ class CommentItem extends Component<Props> {
                     query={GQL.childCommentQuery}
                     variables={{ comment_id: comment.id, limit: limit }}
                     fetchPolicy="network-only">
-                    {({ data, loading, error, refetch, fetchMore }) => {
+                    {({ data, loading, fetchMore }) => {
                         if (!(data && data.comments && data.comments[0] && data.comments[0].comments.length > 0))
                             return null;
                         let comments = data.comments[0];

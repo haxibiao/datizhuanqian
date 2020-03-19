@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, ScrollView, ImageBackground } from 'reac
 import { TouchFeedback, Button, SubmitLoading, TipsOverlay, ItemSeparator, Row, Iconfont } from 'components';
 import { useQuery, GQL, useMutation } from 'apollo';
 import { app, config } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT, NAVBAR_HEIGHT } from 'utils';
 import { Overlay } from 'teaset';
 import RuleDescription from './RuleDescription';
 import { BoxShadow } from 'react-native-shadow';
@@ -43,8 +43,8 @@ const WithdrawHeader = (props: Props) => {
                     fetchPolicy: 'network-only',
                 })
                 .then((result: any) => {
-                    const post = Tools.syncGetter('data.post', result);
-                    Tools.navigate('VideoPost', { medium: [post], isPost: true });
+                    const post = Helper.syncGetter('data.post', result);
+                    Helper.middlewareNavigate('VideoPost', { medium: [post], isPost: true });
                 })
                 .catch((error: any) => {});
         } else {

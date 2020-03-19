@@ -1,22 +1,13 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Theme, PxFit, Tools, ISAndroid } from '@src/utils';
+import { Theme, PxFit, ISAndroid } from '@src/utils';
 import { PageContainer, PullChooser, TouchFeedback, Iconfont } from '@src/components';
 import { observer, app } from '@src/store';
-import {
-    GiftedChat,
-    Bubble,
-    Actions,
-    Send,
-    Composer,
-    Accessory,
-    InputToolbar,
-    SystemMessage,
-} from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, Send, Composer, InputToolbar, SystemMessage } from 'react-native-gifted-chat';
 import { useNavigation } from 'react-navigation-hooks';
 import store from './store';
 
-const index = observer(props => {
+const index = observer(() => {
     const navigation = useNavigation();
     const { user, chat = {} } = navigation.state.params;
     const chatStore = useMemo(() => new store({ me: app.me, friend: user, chatId: chat.id }), []);

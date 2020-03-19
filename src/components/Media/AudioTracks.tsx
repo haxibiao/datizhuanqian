@@ -38,8 +38,8 @@ export const AnimatedTracks = ({ style, maxWidth, multiple = PxFit(1) }) => {
 export default ({ multiple = PxFit(1), currentTime, duration }) => {
     const [maxWidth, setMaxWidth] = useState(0);
     const onLayout = useCallback(event => {
-        if (Tools.syncGetter('nativeEvent.layout.width', event)) {
-            setMaxWidth(Math.floor(Tools.syncGetter('nativeEvent.layout.width', event)));
+        if (Helper.syncGetter('nativeEvent.layout.width', event)) {
+            setMaxWidth(Math.floor(Helper.syncGetter('nativeEvent.layout.width', event)));
         }
     }, []);
     const renderAudioTrack = useMemo(() => {

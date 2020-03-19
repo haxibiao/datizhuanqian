@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, Animated, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, Keyboard } from 'react-native';
 import {
     PageContainer,
     TouchFeedback,
@@ -12,8 +12,8 @@ import {
     ItemSeparator,
     WheelPicker,
 } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Api, Tools, ISIOS } from 'utils';
-import { Query, compose, withApollo, graphql, Mutation, GQL } from 'apollo';
+import { ISIOS } from 'utils';
+import { compose, withApollo, graphql, GQL } from 'apollo';
 import { app, observer } from 'store';
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -25,13 +25,13 @@ class index extends Component {
         console.log('edit user', user);
         this.user = user;
         this.name = user.name;
-        this.introduction = Tools.syncGetter('profile.introduction', user);
+        this.introduction = Helper.syncGetter('profile.introduction', user);
         this.state = {
             submitting: false,
             avatar: user.avatar,
             gender: user.gender,
-            age: Tools.syncGetter('profile.age', user),
-            birthday: Tools.syncGetter('profile.birthday', user),
+            age: Helper.syncGetter('profile.age', user),
+            birthday: Helper.syncGetter('profile.birthday', user),
         };
     }
 
@@ -63,7 +63,7 @@ class index extends Component {
         }, 100);
     };
 
-    onKeyboardHide = event => {
+    onKeyboardHide = () => {
         this.hideTimer && clearTimeout(this.hideTimer);
         this.hideTimer = setTimeout(() => {
             this._ScrollView &&
@@ -82,7 +82,7 @@ class index extends Component {
         Picker._showDatePicker(this.parseBirthday());
     };
 
-    onDatePickerConfirm = (value, index) => {
+    onDatePickerConfirm = value => {
         console.log('onDatePickerConfirm', value.join(''));
         this.setState({
             age: this.calcAge(value[0]),
@@ -116,7 +116,7 @@ class index extends Component {
                     avatar: `data:${image.mime};base64,${image.data}`,
                 });
             })
-            .catch(error => {});
+            .catch(() => {});
     };
 
     changeName = value => {
@@ -158,7 +158,7 @@ class index extends Component {
 
     promisesGenerator = () => {
         let promises = [];
-        let { avatar, gender, birthday, age } = this.state;
+        let { avatar, gender, birthday } = this.state;
         if (avatar !== this.user.avatar) {
             promises.push(this.updateAvatar());
         }
@@ -191,7 +191,7 @@ class index extends Component {
                 this.setState({
                     submitting: false,
                 });
-                let avatar = Tools.syncGetter('data.updateUserAvatar.avatar', posts[0]);
+                let avatar = Helper.syncGetter('data.updateUserAvatar.avatar', posts[0]);
                 if (avatar) {
                     app.changeAvatar(avatar + '?t=' + Date.now());
                 }

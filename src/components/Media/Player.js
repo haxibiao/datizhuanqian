@@ -3,24 +3,17 @@
  * created by wyk made in 2019-02-25 17:34:23
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Animated, Easing, TouchableOpacity, BackHandler } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, BackHandler } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
-import { Theme, PxFit, Config, SCREEN_WIDTH, ISAndroid, Tools } from '../../utils';
-import Iconfont from '../Iconfont';
+import { SCREEN_WIDTH, ISAndroid } from '../../utils';
 import VideoStatus from './VideoStatus';
 import VideoControl from './VideoControl';
 
-import { observer, Provider, inject } from 'mobx-react';
-import { config, app } from 'store';
+import { observer } from 'mobx-react';
+import { config } from 'store';
 import VideoStore from './VideoStore';
 import Orientation from 'react-native-orientation';
-
-let TestVideo = {
-    width: 800,
-    height: 600,
-    url: 'https://1251052432.vod2.myqcloud.com/3ef5dd60vodtransgzp1251052432/1b0ce41b5285890784373984093/v.f30.mp4',
-};
 
 @observer
 class Player extends Component {
@@ -39,7 +32,7 @@ class Player extends Component {
         if (ISAndroid) {
             BackHandler.addEventListener('hardwareBackPress', this._backButtonPress);
         }
-        this.willBlurSubscription = navigation.addListener('willBlur', payload => {
+        this.willBlurSubscription = navigation.addListener('willBlur', () => {
             this.videoStore.paused = true;
         });
     }
@@ -68,7 +61,6 @@ class Player extends Component {
         let { video, style, size = { width: SCREEN_WIDTH, height: SCREEN_WIDTH * 0.65 } } = this.props;
         let {
             status,
-            orientation,
             paused,
             getVideoRef,
             controlSwitch,

@@ -1,27 +1,15 @@
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
-import {
-    DeviceEventEmitter,
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Animated,
-} from 'react-native';
-import { TouchFeedback, Avatar, Iconfont } from '@src/components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
-import { useApolloClient, useMutation, useQuery, GQL } from '@src/apollo';
-import { exceptionCapture, syncGetter, useBounceAnimation } from '@src/common';
-import { app, config } from '@src/store';
-import { observer, useQuestionStore } from '../store';
-import LinearGradient from 'react-native-linear-gradient';
+import React, { useMemo, useState, useCallback } from 'react';
+import { DeviceEventEmitter, StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
+import { Iconfont } from '@src/components';
+import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
+import { useApolloClient, useMutation, GQL } from '@src/apollo';
+import { exceptionCapture, useBounceAnimation } from '@src/common';
+import { app } from '@src/store';
+import { observer } from '../store';
 import { useNavigation } from 'react-navigation-hooks';
 import AnswerOverlay from './AnswerOverlay';
-import { Overlay } from 'teaset';
 
 export default observer(({ isAnswered, isSelf, user, question, store }) => {
-    const client = useApolloClient();
-    const navigation = useNavigation();
     const { order, answered, isAudit, isAudited, selectedAnswers, answerQuestion } = store;
     const [isFavorite, setFavorite] = useState(question.favorite_status);
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
@@ -79,7 +67,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
         if (question.liked) {
             startAnimation();
         }
-        const [error, result] = await exceptionCapture(toggleLikeMutation);
+        const [error] = await exceptionCapture(toggleLikeMutation);
         if (error) {
             question.liked ? question.count_likes-- : question.count_likes++;
             question.liked = !question.liked;
@@ -189,8 +177,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
                     </View>
                     <Text style={styles.itemName}>
                         评论
-                        {Tools.NumberFormat(question.count_comments) > 0 &&
-                            ' ' + Tools.NumberFormat(question.count_comments)}
+                        {Helper.count(question.count_comments) > 0 && ' ' + Helper.count(question.count_comments)}
                     </Text>
                 </TouchableOpacity>
                 <Animated.View style={[styles.toolItem, { transform: [{ scale }] }]}>
@@ -208,8 +195,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
                                 { color: question.liked ? Theme.primaryColor : Theme.defaultTextColor },
                             ]}>
                             点赞
-                            {Tools.NumberFormat(question.count_likes) > 0 &&
-                                ' ' + Tools.NumberFormat(question.count_likes)}
+                            {Helper.count(question.count_likes) > 0 && ' ' + Helper.count(question.count_likes)}
                         </Text>
                     </TouchableOpacity>
                 </Animated.View>

@@ -1,10 +1,8 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { DeviceEventEmitter, StyleSheet } from 'react-native';
 import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
-import { Theme, PxFit, Tools, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config, observer } from '@src/store';
-import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
 
 import AnswerPlaceholder from '@src/screens/answer/components/AnswerPlaceholder';
@@ -21,7 +19,7 @@ export default observer(() => {
     const [question, setQuestion] = useState(null);
     const [finished, setFinished] = useState(false);
     const [error, setError] = useState(false);
-    const [minLevel] = useState(2);
+    const [] = useState(2);
     const commentRef = useRef();
     const flag = useRef(false);
     const answerCount = useRef({ count: 0, error: 0 });
@@ -38,8 +36,6 @@ export default observer(() => {
         variables: { variables: { id: app.me.id } },
     });
 
-    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
-
     const fetchQuestions = useCallback(async () => {
         if (flag.current) {
             return;
@@ -52,7 +48,7 @@ export default observer(() => {
                 fetchPolicy: 'network-only',
             });
 
-            const resource = Tools.syncGetter('data.questions', result);
+            const resource = Helper.syncGetter('data.questions', result);
 
             if (Array.isArray(resource) && resource.length > 0) {
                 questions.current = resource;

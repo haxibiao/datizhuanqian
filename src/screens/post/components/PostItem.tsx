@@ -7,7 +7,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { Iconfont, Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
 import ImageItem from './ImageItem';
 
 interface Props {
@@ -72,7 +71,7 @@ const PostItem = (props: Props) => {
             <Row style={{ justifyContent: 'space-between' }}>
                 <TouchFeedback onPress={() => navigation.navigate('User', { user })}>
                     <Row>
-                        <Avatar source={{ uri: user.avatar }} size={42} userId={Tools.syncGetter('id', user)} />
+                        <Avatar source={{ uri: user.avatar }} size={42} userId={Helper.syncGetter('id', user)} />
                         <View style={{ marginLeft: PxFit(8) }}>
                             <Text style={styles.userName}>{user.name}</Text>
                             <Row>
@@ -84,7 +83,7 @@ const PostItem = (props: Props) => {
                 </TouchFeedback>
                 {isQuestion && (
                     <View style={styles.rightTextWrap}>
-                        <Text style={{ fontSize: 12, color: '#C5C5C5' }}>{Tools.NumberFormat(count)}人答过</Text>
+                        <Text style={{ fontSize: 12, color: '#C5C5C5' }}>{Helper.count(count)}人答过</Text>
                     </View>
                 )}
             </Row>
@@ -95,13 +94,13 @@ const PostItem = (props: Props) => {
                         <Text
                             onPress={() =>
                                 navigation.navigate('Answer', {
-                                    category: Tools.syncGetter('category', post),
+                                    category: Helper.syncGetter('category', post),
                                     question_id: null,
                                 })
                             }
                             style={{ color: Theme.primaryColor }}>
                             {` #`}
-                            {Tools.syncGetter('category.name', post)}
+                            {Helper.syncGetter('category.name', post)}
                         </Text>
                     )}
                 </Text>

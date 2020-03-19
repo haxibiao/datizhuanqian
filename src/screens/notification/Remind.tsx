@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Iconfont, PageContainer, Avatar, Badge, TouchFeedback, Row, SafeText } from '@src/components';
-import { Theme, PxFit, Tools } from '@src/utils';
-import { Query, compose, graphql, GQL } from '@src/apollo';
-import { app, config } from '@src/store';
+import React from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import { Iconfont, Badge, TouchFeedback, SafeText } from '@src/components';
+import { Theme, PxFit } from '@src/utils';
+import { config } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 
 const Remind = ({ unreadCount }) => {

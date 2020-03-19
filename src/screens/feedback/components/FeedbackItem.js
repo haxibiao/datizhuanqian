@@ -3,11 +3,9 @@
  * @Date:   2019-03-22 13:29:29
  */
 
-import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
-import { Iconfont, Avatar, UserTitle, GenderLabel, Row, TouchFeedback } from 'components';
-import { Theme, Tools, PxFit } from 'utils';
-import { app } from 'store';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { Avatar, UserTitle, GenderLabel, Row, TouchFeedback } from 'components';
 
 class FeedbackItem extends React.PureComponent {
     constructor(props) {
@@ -94,7 +92,7 @@ class FeedbackItem extends React.PureComponent {
 
     renderImage = images => {
         let images_length = images.length;
-        let sizeArr = Tools.imgsLayoutSize(images_length, images);
+        let sizeArr = Helper.imgsLayoutSize(images_length, images);
         return (
             <View style={styles.images}>
                 {images.map((image, index) => {

@@ -5,7 +5,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
-import { Theme, Tools, PxFit } from 'utils';
 import { Avatar, Iconfont, UserTitle, GenderLabel } from 'components';
 
 import { Query, GQL } from 'apollo';
@@ -76,7 +75,7 @@ class FeedbackBody extends Component {
                                     let width = image.width;
                                     let height = image.height;
                                     let padding = 30;
-                                    let size = Tools.imageSize({ width, height, padding });
+                                    let size = Helper.imageSize({ width, height, padding });
                                     return (
                                         <Image
                                             source={{ uri: image.path }}

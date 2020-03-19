@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, DeviceEventEmitter } from 'react-native';
 import { TouchFeedback, Row, Iconfont } from '@src/components';
-import { Theme, PxFit, Tools } from '@src/utils';
-import { observer } from 'mobx-react';
+
 import { Overlay } from 'teaset';
 import { GQL } from 'apollo';
 import { app } from '@src/store';

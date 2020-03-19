@@ -1,23 +1,14 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import {
-    Player,
-    overlayView,
-    TouchFeedback,
-    PlaceholderImage,
-    OverlayViewer,
-    Iconfont,
-    Avatar,
-    Audio,
-} from '@src/components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
-import { observer, useQuestionStore } from '@src/screens/answer/store';
+import React, { useMemo, useCallback } from 'react';
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Player, TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont, Avatar, Audio } from '@src/components';
+import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
+import { observer } from '@src/screens/answer/store';
 import Selections from './Selections';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { useNavigation } from 'react-navigation-hooks';
 
 export default observer(({ store, question, audit }) => {
-    const { selections, setSelectionText, setAnswers, isMultiple } = store;
+    const { isMultiple } = store;
     const navigation = useNavigation();
 
     const showPicture = useCallback(url => {
@@ -41,24 +32,11 @@ export default observer(({ store, question, audit }) => {
         );
     }, [isMultiple]);
 
-    const answerReward = useMemo(() => {
-        if (!question.audit && question.gold > 0) {
-            return (
-                <Text style={{ color: Theme.primaryColor }}>
-                    （{question.gold}*
-                    <Iconfont name="diamond" size={PxFit(14)} color={Theme.primaryColor} />）
-                </Text>
-            );
-        } else {
-            return null;
-        }
-    }, [question]);
-
     const content = useMemo(() => {
         const { image, video, audio } = question;
         if (image) {
             const { width, height, path } = image;
-            const style = Tools.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(24));
+            const style = Helper.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(24));
             return (
                 <View style={styles.imageCover}>
                     <TouchFeedback style={{ overflow: 'hidden' }} onPress={() => showPicture(path)}>

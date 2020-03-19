@@ -2,11 +2,11 @@
  * @flow
  * created by wyk made in 2019-09-10 14:32:24
  */
-import React, { useState, useMemo } from 'react';
-import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
-function ExamGuidance({ onDismiss }) {
+function ExamGuidance() {
     return (
         <View style={styles.flexCenter}>
             <View style={{ alignItems: 'center', height: Device.HEIGHT * 0.6, justifyContent: 'space-between' }}>
@@ -39,7 +39,6 @@ function ExamGuidance({ onDismiss }) {
 
 const WIDTH = SCREEN_WIDTH;
 const HEIGHT = (WIDTH * 1059) / 1040;
-const TOP = SCREEN_HEIGHT - HEIGHT / 2;
 // const RIGHT = WIDTH / 2 - (WIDTH * 140) / 411;
 
 const styles = StyleSheet.create({

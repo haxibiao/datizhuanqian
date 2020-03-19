@@ -3,11 +3,10 @@
  * @Date:   2019-03-27 11:52:27
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button, PageContainer, CustomTextInput } from '@src/components';
 
-import { Mutation, compose, graphql, GQL } from 'apollo';
+import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 
 import DeviceInfo from 'react-native-device-info';
@@ -25,7 +24,6 @@ class SetLoginInfo extends Component {
     setLoginInfo = async () => {
         const { navigation } = this.props;
         let { account } = this.state;
-        let deviceId = DeviceInfo.getUniqueID();
         let result = {};
 
         this.setState({
@@ -59,7 +57,6 @@ class SetLoginInfo extends Component {
             this.setState({
                 submitting: false,
             });
-            const user = result.data.uuidBind;
             Toast.show({ content: '设置成功' });
             navigation.goBack();
         }
@@ -67,7 +64,7 @@ class SetLoginInfo extends Component {
 
     render() {
         const { navigation } = this.props;
-        let { verificationCode, tips, submitting, password, account } = this.state;
+        let { submitting, password, account } = this.state;
         let { phone } = navigation.state.params;
         return (
             <PageContainer title="设置登录信息" white submitting={submitting} submitTips="注册中...">

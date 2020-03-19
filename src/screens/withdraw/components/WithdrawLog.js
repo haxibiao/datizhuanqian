@@ -6,83 +6,82 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { Query, GQL } from 'apollo';
 
 import WithdrawLogItem from './WithdrawLogItem';
 
 class WithdrawLog extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			finished: false
-		};
-	}
+    constructor(props) {
+        super(props);
+        this.state = {
+            finished: false,
+        };
+    }
 
-	render() {
-		const { navigation } = this.props;
+    render() {
+        const { navigation } = this.props;
 
-		return (
-			<View style={{ flex: 1 }}>
-				<Query query={GQL.WithdrawsQuery} fetchPolicy="network-only">
-					{({ data, error, loading, refetch, fetchMore }) => {
-						let withdraws = Tools.syncGetter('withdraws', data);
-						if (error) return <ErrorView onPress={refetch} error={error} />;
-						if (loading) return <LoadingSpinner />;
-						if (!withdraws || withdraws.length === 0)
-							return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
-						return (
-							<FlatList
-								data={withdraws}
-								keyExtractor={(item, index) => index.toString()}
-								refreshControl={
-									<CustomRefreshControl
-										refreshing={loading}
-										onRefresh={refetch}
-										reset={() =>
-											this.setState({
-												finished: false
-											})
-										}
-									/>
-								}
-								renderItem={({ item, index }) => (
-									<WithdrawLogItem item={item} navigation={navigation} />
-								)}
-								ListHeaderComponent={this._userWithdrawInfo}
-								onEndReachedThreshold={0.3}
-								onEndReached={() => {
-									fetchMore({
-										variables: {
-											offset: withdraws.length
-										},
-										updateQuery: (prev, { fetchMoreResult }) => {
-											if (
-												!(
-													fetchMoreResult &&
-													fetchMoreResult.withdraws &&
-													fetchMoreResult.withdraws.length > 0
-												)
-											) {
-												this.setState({
-													finished: true
-												});
-												return prev;
-											}
-											return Object.assign({}, prev, {
-												withdraws: [...prev.withdraws, ...fetchMoreResult.withdraws]
-											});
-										}
-									});
-								}}
-								ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
-							/>
-						);
-					}}
-				</Query>
-			</View>
-		);
-	}
+        return (
+            <View style={{ flex: 1 }}>
+                <Query query={GQL.WithdrawsQuery} fetchPolicy="network-only">
+                    {({ data, error, loading, refetch, fetchMore }) => {
+                        let withdraws = Helper.syncGetter('withdraws', data);
+                        if (error) return <ErrorView onPress={refetch} error={error} />;
+                        if (loading) return <LoadingSpinner />;
+                        if (!withdraws || withdraws.length === 0)
+                            return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
+                        return (
+                            <FlatList
+                                data={withdraws}
+                                keyExtractor={(item, index) => index.toString()}
+                                refreshControl={
+                                    <CustomRefreshControl
+                                        refreshing={loading}
+                                        onRefresh={refetch}
+                                        reset={() =>
+                                            this.setState({
+                                                finished: false,
+                                            })
+                                        }
+                                    />
+                                }
+                                renderItem={({ item, index }) => (
+                                    <WithdrawLogItem item={item} navigation={navigation} />
+                                )}
+                                ListHeaderComponent={this._userWithdrawInfo}
+                                onEndReachedThreshold={0.3}
+                                onEndReached={() => {
+                                    fetchMore({
+                                        variables: {
+                                            offset: withdraws.length,
+                                        },
+                                        updateQuery: (prev, { fetchMoreResult }) => {
+                                            if (
+                                                !(
+                                                    fetchMoreResult &&
+                                                    fetchMoreResult.withdraws &&
+                                                    fetchMoreResult.withdraws.length > 0
+                                                )
+                                            ) {
+                                                this.setState({
+                                                    finished: true,
+                                                });
+                                                return prev;
+                                            }
+                                            return Object.assign({}, prev, {
+                                                withdraws: [...prev.withdraws, ...fetchMoreResult.withdraws],
+                                            });
+                                        },
+                                    });
+                                }}
+                                ListFooterComponent={() => <ListFooter finished={this.state.finished} />}
+                            />
+                        );
+                    }}
+                </Query>
+            </View>
+        );
+    }
 }
 
 // class WithdrawLogItem extends Component {
@@ -118,15 +117,15 @@ class WithdrawLog extends Component {
 // 	}
 // }
 const styles = StyleSheet.create({
-	item: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingVertical: 10,
-		borderBottomColor: Theme.lightBorder,
-		borderBottomWidth: 0.5,
-		paddingHorizontal: 15
-	}
+    item: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        borderBottomColor: Theme.lightBorder,
+        borderBottomWidth: 0.5,
+        paddingHorizontal: 15,
+    },
 });
 
 export default WithdrawLog;

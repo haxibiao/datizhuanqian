@@ -3,11 +3,10 @@
  * @Date:   2019-03-27 11:52:27
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer, TouchFeedback } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button, PageContainer, CustomTextInput, TouchFeedback } from 'components';
 
-import { Mutation, compose, graphql, GQL } from 'apollo';
+import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 
 class PasswordLogin extends Component {
@@ -27,7 +26,6 @@ class PasswordLogin extends Component {
 
         const { navigation } = this.props;
         const { hasPassword } = navigation.state.params;
-        let result = {};
 
         this.setState({
             submitting: true,
@@ -112,7 +110,7 @@ class PasswordLogin extends Component {
 
     render() {
         const { navigation } = this.props;
-        let { verificationCode, tips, submitting, password } = this.state;
+        let { submitting } = this.state;
         let { phone, hasPassword } = navigation.state.params;
 
         return (

@@ -36,7 +36,7 @@ export default observer(props => {
             title: '粘贴板视频分享成功',
             content: <View>{config.enableBanner && <ad.FeedAd adWidth={Device.WIDTH - PxFit(40)} />}</View>,
             onConfirm: () => {
-                Tools.navigate('MyPublish');
+                Helper.middlewareNavigate('MyPublish');
                 TipsOverlay.hide();
             },
         });
@@ -104,7 +104,7 @@ export default observer(props => {
     return (
         <ApolloProvider client={client}>
             <ApolloHooksProvider client={client}>
-                <AppRouter ref={Tools.setRootNavigation} />
+                <AppRouter ref={Helper.setRootNavigation} />
             </ApolloHooksProvider>
         </ApolloProvider>
     );

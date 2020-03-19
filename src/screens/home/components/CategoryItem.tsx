@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { Row, Iconfont } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
 import { useNavigation } from 'react-navigation-hooks';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -52,11 +51,11 @@ const CategoryItem = ({ tag, category }) => {
                     <View style={styles.metaCount}>
                         <Row>
                             <Iconfont name="order-fill" color={Theme.watermelon} size={PxFit(11)} />
-                            <Text style={styles.countText}>{Tools.NumberFormat(category.questions_count)}道题</Text>
+                            <Text style={styles.countText}>{Helper.count(category.questions_count)}道题</Text>
                         </Row>
                         <Row>
                             <Iconfont name="answerLog" color={Theme.watermelon} size={PxFit(11)} />
-                            <Text style={styles.countText}>{Tools.NumberFormat(category.answers_count)}人答过</Text>
+                            <Text style={styles.countText}>{Helper.count(category.answers_count)}人答过</Text>
                         </Row>
                     </View>
                 </View>

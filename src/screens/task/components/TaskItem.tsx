@@ -1,13 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Animated, Linking, AppState } from 'react-native';
+import { StyleSheet, View, Text, Image, Animated, Linking, AppState } from 'react-native';
 
-import { Button, Row, Iconfont, TouchFeedback, FeedOverlay, RewardOverlay } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from 'utils';
+import { Button, Row, TouchFeedback, FeedOverlay, RewardOverlay } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
-import { Mutation, compose, useMutation, GQL } from 'apollo';
+import { useMutation, GQL } from 'apollo';
 import { exceptionCapture } from 'common';
 import { app } from 'store';
-import { ad, AppUtil } from 'native';
+import { AppUtil } from 'native';
 import service from 'service';
 import { Overlay } from 'teaset';
 
@@ -36,10 +36,10 @@ interface Task {
 }
 
 const TaskItem = (props: Props) => {
-    const { handler, task, setLoading, setUnLoading } = props;
-    const [taskDetailVisiable, setTaskDetailVisiable] = useState(false);
-    const [rotateValue, setRotateValue] = useState(new Animated.Value(0));
-    const [fadeValue, setFadeValue] = useState(new Animated.Value(0));
+    const { task, setLoading, setUnLoading } = props;
+    const [taskDetailVisiable] = useState(false);
+    const [] = useState(new Animated.Value(0));
+    const [fadeValue] = useState(new Animated.Value(0));
 
     const refetchQuery = () => [
         {
@@ -105,7 +105,7 @@ const TaskItem = (props: Props) => {
             });
 
             if (task.type == 2 && task.package) {
-                // Tools.navigate('任务详情', { task: task });
+                // Helper.middlewareNavigate('任务详情', { task: task });
                 viewTask();
             }
         } else {
@@ -146,12 +146,12 @@ const TaskItem = (props: Props) => {
             })
             .then((result: any) => {
                 console.log('result :', result);
-                const post = Tools.syncGetter('data.post', result);
+                const post = Helper.syncGetter('data.post', result);
                 if (post) {
-                    Tools.navigate('VideoPost', { medium: [post], isPost: true });
+                    Helper.middlewareNavigate('VideoPost', { medium: [post], isPost: true });
                 }
             })
-            .catch((error: any) => {});
+            .catch(() => {});
     };
 
     //处理下载任务
@@ -224,7 +224,7 @@ const TaskItem = (props: Props) => {
                 name = '任务失败';
                 backgroundColor = Theme.themeRed;
                 doTask = () => {
-                    Tools.navigate('失败详情', {
+                    Helper.middlewareNavigate('失败详情', {
                         task: task,
                     });
                 };

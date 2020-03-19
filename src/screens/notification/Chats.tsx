@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import React, { useRef, useEffect, useMemo } from 'react';
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import { SafeText, Row, Badge, Avatar, StatusView, CustomRefreshControl } from '@src/components';
-import { syncGetter, exceptionCapture } from '@src/common';
-import { Query, useQuery, GQL } from '@src/apollo';
-import { Theme, PxFit, Tools } from '@src/utils';
+import { syncGetter } from '@src/common';
+import { useQuery, GQL } from '@src/apollo';
+import { Theme, PxFit } from '@src/utils';
 import { app } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 
 const Chat = ({ chat }) => {
     const navigation = useNavigation();
-    const user = chat.users.filter((item, index) => {
+    const user = chat.users.filter(item => {
         return item.id !== app.me.id;
     })[0];
     return (
@@ -60,7 +60,7 @@ const Chats = props => {
         const navWillBlurListener = navigation.addListener('willBlur', () => {
             isFocused.current = false;
         });
-        app.echo.private(`App.User.${app.me.id}`).listen('NewMessage', message => {
+        app.echo.private(`App.User.${app.me.id}`).listen('NewMessage', () => {
             if (isFocused.current) {
                 refetch();
             }

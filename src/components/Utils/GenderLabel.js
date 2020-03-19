@@ -7,8 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Iconfont from '../Iconfont';
-import { Theme, PxFit, Tools } from '../../utils';
-import { app } from 'store';
 
 class GenderLabel extends Component {
     render() {
@@ -27,7 +25,7 @@ class GenderLabel extends Component {
                 }}>
                 <Iconfont name={user.gender ? 'woman' : 'man'} size={PxFit(8)} color={Theme.white} />
                 <Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10), paddingLeft: PxFit(1) }}>
-                    {Tools.syncGetter('profile.age', user) || 1}
+                    {Helper.syncGetter('profile.age', user) || 1}
                 </Text>
             </View>
         );

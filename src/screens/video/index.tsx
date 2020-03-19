@@ -3,7 +3,6 @@ import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
 import { observer, app, config as configStore } from 'store';
 import { exceptionCapture } from 'common';
-import { PxFit, Tools, Theme } from 'utils';
 import { beginnerGuidance, VideoGuidance } from 'components';
 
 import VideoItem from './components/VideoItem';
@@ -61,7 +60,7 @@ export default observer(props => {
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
         // console.log('result :', result, error);
-        const videoSource = Tools.syncGetter('data.posts', result);
+        const videoSource = Helper.syncGetter('data.posts', result);
         if (error) {
             VideoStore.isError = true;
         } else {
@@ -145,7 +144,7 @@ export default observer(props => {
                 fetchPolicy: 'network-only',
             })
             .then((result: any) => {
-                const post = Tools.syncGetter('data.post', result);
+                const post = Helper.syncGetter('data.post', result);
                 VideoStore.setGuidanceVideo(post);
             })
             .catch((error: any) => {});

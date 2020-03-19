@@ -4,9 +4,9 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
-import { PageContainer, Iconfont, Button, TipsOverlay } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { PageContainer, TipsOverlay } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { playVideo } from 'common';
 import { config } from 'store';
 import { ad } from 'native';
@@ -24,7 +24,7 @@ class Submit extends Component {
             content = '系统会尽快审核您的题目，请耐心等待哦!';
         }
         return (
-            <PageContainer title='提交结果' white>
+            <PageContainer title="提交结果" white>
                 <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
                     <View style={styles.submitContainer}>
                         <ImageBackground source={require('../../assets/images/submit.png')} style={styles.submitImage}>
@@ -37,7 +37,7 @@ class Submit extends Component {
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={() => {
-                                    Tools.navigate('任务');
+                                    Helper.middlewareNavigate('任务');
                                     playVideo({
                                         type: 'Contribute',
                                         noReward: true,
@@ -52,7 +52,7 @@ class Submit extends Component {
                                                     </View>
                                                 ),
                                                 onConfirm: () => {
-                                                    Tools.navigate('MyPublish', { initialPage: 1 });
+                                                    Helper.middlewareNavigate('MyPublish', { initialPage: 1 });
                                                     TipsOverlay.hide();
                                                 },
                                             });

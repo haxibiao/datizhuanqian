@@ -1,16 +1,8 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
-import {
-    PageContainer,
-    Row,
-    Iconfont,
-    CustomTextInput,
-    beginnerGuidance,
-    SetQuestionGuidance,
-    Audio,
-} from '@src/components';
-import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from '@src/utils';
-import { useApolloClient, useMutation, GQL } from '@src/apollo';
+import { PageContainer, Row, Iconfont, CustomTextInput, Audio } from '@src/components';
+import { Theme, PxFit } from '@src/utils';
+import { useApolloClient, GQL } from '@src/apollo';
 import { storage, keys, app } from '@src/store';
 import service from '@src/service';
 import { exceptionCapture } from '@src/common';
@@ -23,7 +15,7 @@ import MediaTool from './components/MediaTool';
 import Explain from '../question/components/Explain';
 import VideoExplain from '../question/components/VideoExplain';
 
-export default observer(props => {
+export default observer(() => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const store = useQuestionStore();
@@ -88,7 +80,7 @@ export default observer(props => {
                 });
             };
 
-            const [error, result] = await exceptionCapture(promiseFn);
+            const [error] = await exceptionCapture(promiseFn);
 
             if (error) {
                 onError(error.message || '创建失败');
@@ -112,7 +104,7 @@ export default observer(props => {
             if (error) {
                 onError(error.message || '题目解析提交失败');
             } else {
-                createQuestion(Tools.syncGetter('data.createExplanation.id', result) || null);
+                createQuestion(Helper.syncGetter('data.createExplanation.id', result) || null);
             }
         },
         [client, createQuestion],
@@ -148,13 +140,6 @@ export default observer(props => {
             let contributeRuleRead = await storage.getItem(keys.contributeRuleRead);
             let overlayRef;
             if (!contributeRuleRead) {
-                let overlayView = (
-                    <Overlay.View animated ref={ref => (overlayRef = ref)}>
-                        <View style={styles.overlayInner}>
-                            <Rules hide={() => overlayRef.close()} />
-                        </View>
-                    </Overlay.View>
-                );
             }
         })();
     }, []);
@@ -224,13 +209,16 @@ export default observer(props => {
                 <View style={styles.explainWrap}>
                     <VideoExplain
                         video={
-                            Tools.syncGetter('video.path', explain) && {
+                            Helper.syncGetter('video.path', explain) && {
                                 ...explain.video,
                                 url: explain.video.path,
                             }
                         }
                     />
-                    <Explain text={Tools.syncGetter('text', explain)} picture={Tools.syncGetter('picture', explain)} />
+                    <Explain
+                        text={Helper.syncGetter('text', explain)}
+                        picture={Helper.syncGetter('picture', explain)}
+                    />
                 </View>
             </ScrollView>
             <BottomTools />

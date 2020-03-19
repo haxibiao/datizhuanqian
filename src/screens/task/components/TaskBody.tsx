@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 
 import { SubmitLoading, beginnerGuidance, TaskGuidance } from 'components';
-import { Tools, ISIOS, PxFit, iPhone11 } from 'utils';
+import { ISIOS, PxFit, iPhone11 } from 'utils';
 import { GQL, useQuery } from 'apollo';
 import { app, config } from 'store';
 
@@ -42,7 +42,7 @@ const TaskBody = props => {
         // 命中刷新
         const navDidFocusListener = props.navigation.addListener('didFocus', () => {
             TasksQuery.refetch();
-            !config.disableAd && Tools.syncGetter('user.wallet.total_withdraw_amount', userData) == 1;
+            !config.disableAd && Helper.syncGetter('user.wallet.total_withdraw_amount', userData) == 1;
             beginnerGuidance({
                 guidanceKey: 'Task',
                 GuidanceView: TaskGuidance,
@@ -57,7 +57,7 @@ const TaskBody = props => {
     const constructTask = () => {
         const { loading } = TasksQuery;
 
-        let tasks = Tools.syncGetter('data.tasks', TasksQuery);
+        let tasks = Helper.syncGetter('data.tasks', TasksQuery);
         if (!tasks) {
             if (app.taskCache) {
                 tasks = app.taskCache;
@@ -88,11 +88,11 @@ const TaskBody = props => {
             const customTask = [
                 {
                     name: '看视频赚钱',
-                    status: iPhone11() || config.disableAd ? 0 : Tools.syncGetter('status', reward),
+                    status: iPhone11() || config.disableAd ? 0 : Helper.syncGetter('status', reward),
                     userTaskStatus: 4,
-                    gold: Tools.syncGetter('gold', reward),
-                    ticket: Tools.syncGetter('ticket', reward),
-                    contribute: Tools.syncGetter('contribute', reward),
+                    gold: Helper.syncGetter('gold', reward),
+                    ticket: Helper.syncGetter('ticket', reward),
+                    contribute: Helper.syncGetter('contribute', reward),
                     type: 4,
                     submit_name: '领奖励',
                     details: `看完视频才可获取精力点奖励,点击下载、查看详情才能够获取智慧点或贡献点奖励`,
@@ -100,11 +100,11 @@ const TaskBody = props => {
                 },
                 {
                     name: '出题目赚钱',
-                    status: Tools.syncGetter('status', chuti),
+                    status: Helper.syncGetter('status', chuti),
                     userTaskStatus: 5,
-                    gold: Tools.syncGetter('gold', chuti) + '~40',
-                    ticket: Tools.syncGetter('ticket', chuti),
-                    contribute: Tools.syncGetter('contribute', chuti),
+                    gold: Helper.syncGetter('gold', chuti) + '~40',
+                    ticket: Helper.syncGetter('ticket', chuti),
+                    contribute: Helper.syncGetter('contribute', chuti),
                     type: 5,
                     submit_name: '去出题',
                     details: `每次成功出题都要消耗1精力点,出题被审核通过才能获取奖励。出题添加更加详细的解析会获取最高的奖励哦，恶意刷题和乱出解析将会受到惩罚哦！`,
@@ -112,22 +112,22 @@ const TaskBody = props => {
                 },
                 {
                     name: '分享领现金',
-                    status: Tools.syncGetter('status', invitation),
+                    status: Helper.syncGetter('status', invitation),
                     userTaskStatus: 6,
-                    gold: Tools.syncGetter('gold', invitation),
-                    ticket: Tools.syncGetter('ticket', invitation),
-                    contribute: Tools.syncGetter('contribute', invitation),
+                    gold: Helper.syncGetter('gold', invitation),
+                    ticket: Helper.syncGetter('ticket', invitation),
+                    contribute: Helper.syncGetter('contribute', invitation),
                     type: 6,
                     submit_name: '领现金',
                     details: '每成功分享一个用户注册登录，即可获取600智慧点和36贡献点奖励',
                 },
                 {
                     name: '玩抖音赚钱',
-                    status: Tools.syncGetter('status', spider_video),
+                    status: Helper.syncGetter('status', spider_video),
                     userTaskStatus: 7,
-                    gold: Tools.syncGetter('gold', spider_video),
-                    ticket: Tools.syncGetter('ticket', spider_video),
-                    contribute: Tools.syncGetter('contribute', spider_video),
+                    gold: Helper.syncGetter('gold', spider_video),
+                    ticket: Helper.syncGetter('ticket', spider_video),
+                    contribute: Helper.syncGetter('contribute', spider_video),
                     type: 7,
                     submit_name: '领奖励',
                     details: `打开抖音视频点击分享按钮选择复制链接，回到答题APP即可触发视频采集，采集成功即可获取智慧点奖励,优质作者有机会获得更多贡献奖励`,

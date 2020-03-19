@@ -5,10 +5,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { PxFit, Theme, Tools } from 'utils';
-import Iconfont from '../Iconfont';
 
 import { GQL, graphql, compose } from 'apollo';
 import { app } from 'store';
@@ -106,7 +104,7 @@ class FollowButton extends Component<Props> {
 
     follow = async () => {
         console.log('follow');
-        let { id, followUser } = this.props;
+        let { id } = this.props;
         try {
             await this.props.followUser({
                 variables: {
@@ -125,7 +123,5 @@ class FollowButton extends Component<Props> {
         }
     };
 }
-
-const styles = StyleSheet.create({});
 
 export default compose(withNavigation, graphql(GQL.FollowToggbleMutation, { name: 'followUser' }))(FollowButton);

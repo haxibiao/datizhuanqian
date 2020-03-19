@@ -5,7 +5,6 @@
 import { Dimensions, Platform } from 'react-native';
 import Config from './Config';
 import Theme, { iPhone11 } from './Theme';
-import Tools from './Tools';
 import { WPercent, HPercent, PxFit, FontSize } from './Scale';
 
 const { height, width } = Dimensions.get('window');
@@ -38,8 +37,6 @@ export {
     Config,
     // APP主题
     Theme,
-    // 工具函数
-    Tools,
     // 宽度百分比适配
     WPercent,
     // 高度百分比适配

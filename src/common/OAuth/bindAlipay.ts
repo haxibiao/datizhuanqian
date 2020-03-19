@@ -46,7 +46,7 @@ export const bindAlipay = (props: { authCode: any; onFaild: Function }) => {
                 content: '绑定成功',
             });
             bindAlipaySucceedTrack();
-            Tools.navigate('Main', null, Tools.navigate({ routeName: '提现' }));
+            Helper.middlewareNavigate('Main', null, Helper.middlewareNavigate({ routeName: '提现' }));
         })
         .catch((error: { toString?: any; error?: any }) => {
             Loading.hide();

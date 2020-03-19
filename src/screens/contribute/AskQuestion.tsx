@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { TouchFeedback, PageContainer, Iconfont, CustomTextInput, Row } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import MediaSelect from './components/MediaSelect';
 import ContributeStore from './ContributeStore';
 import { observer, Provider } from 'mobx-react';
@@ -37,7 +37,7 @@ const AskQuestion = observer((props: Props) => {
                 },
             })
             .then(result => {
-                setUserGold(Tools.syncGetter('data.user.gold', result));
+                setUserGold(Helper.syncGetter('data.user.gold', result));
             })
             .catch(err => {
                 console.log('err', err);
@@ -77,7 +77,7 @@ const AskQuestion = observer((props: Props) => {
                     Toast.show({
                         content: '发布成功',
                     });
-                    let questions = [Tools.syncGetter('data.createQuestion', result)];
+                    let questions = [Helper.syncGetter('data.createQuestion', result)];
                     navigation.replace('VideoPost', { questions, index: 0 });
                     // navigation.goBack();
                     contributeStore.removeInstance();

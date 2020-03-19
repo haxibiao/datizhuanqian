@@ -6,9 +6,8 @@
 //TODO:通知待完善
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { Iconfont, TouchFeedback } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
 
 import WithdrawNotificationItem from './WithdrawNotificationItem';
 import ContributeNotificationItem from './ContributeNotificationItem';
@@ -22,7 +21,7 @@ class NotificationItem extends Component {
     }
 
     render() {
-        const { navigation, user, notification } = this.props;
+        const { navigation, notification } = this.props;
         console.log('navigation', notification);
         return (
             <View>
@@ -68,12 +67,14 @@ class NotificationItem extends Component {
                         <View style={styles.bottomInfo}>
                             <Text style={styles.text}>您的举报已生效</Text>
                             <Text style={styles.infoItem}>奖励：2贡献值</Text>
-                            <Text style={styles.infoItem}>内容：{Tools.syncGetter('report.reason', notification)}</Text>
                             <Text style={styles.infoItem}>
-                                时间：{Tools.syncGetter('report.created_at', notification)}
+                                内容：{Helper.syncGetter('report.reason', notification)}
+                            </Text>
+                            <Text style={styles.infoItem}>
+                                时间：{Helper.syncGetter('report.created_at', notification)}
                             </Text>
                             <Text style={[styles.infoItem, { lineHeight: 20 }]}>
-                                题目名：{Tools.syncGetter('report.question.description', notification)}
+                                题目名：{Helper.syncGetter('report.question.description', notification)}
                             </Text>
                         </View>
                     </View>
@@ -87,13 +88,13 @@ class NotificationItem extends Component {
                         <View style={styles.bottomInfo}>
                             <Text style={styles.text}>恭喜你升级了！</Text>
                             <Text style={styles.infoItem}>
-                                当前等级: LV{Tools.syncGetter('user.level.level', notification)}{' '}
+                                当前等级: LV{Helper.syncGetter('user.level.level', notification)}{' '}
                             </Text>
                             <Text style={styles.infoItem}>
-                                精力点上限: {Tools.syncGetter('user.level.ticket_max', notification)}{' '}
+                                精力点上限: {Helper.syncGetter('user.level.ticket_max', notification)}{' '}
                             </Text>
                             <Text style={styles.infoItem}>
-                                距离下一级升级还需: {Tools.syncGetter('user.next_level_exp', notification)}经验{' '}
+                                距离下一级升级还需: {Helper.syncGetter('user.next_level_exp', notification)}经验{' '}
                             </Text>
                         </View>
                     </View>
@@ -106,12 +107,12 @@ class NotificationItem extends Component {
                         </View>
                         <View style={styles.bottomInfo}>
                             <Text style={[styles.text, { color: Theme.weixin }]}>您发布的内容已审核通过</Text>
-                            <Text style={styles.infoItem}>奖励：{Tools.syncGetter('gold', data)}智慧点 </Text>
+                            <Text style={styles.infoItem}>奖励：{Helper.syncGetter('gold', data)}智慧点 </Text>
                             <Text style={[styles.infoItem, { lineHeight: 20 }]}>
-                                内容：{Tools.syncGetter('question.description', notification)}
+                                内容：{Helper.syncGetter('question.description', notification)}
                             </Text>
                             <Text style={styles.infoItem}>
-                                时间：{Tools.syncGetter('question.created_at', notification)}
+                                时间：{Helper.syncGetter('question.created_at', notification)}
                             </Text>
                         </View>
                     </View>
@@ -120,7 +121,7 @@ class NotificationItem extends Component {
                     <TouchFeedback
                         style={styles.item}
                         onPress={() => {
-                            Tools.navigate('Medal', { user: app.userCache });
+                            Helper.middlewareNavigate('Medal', { user: app.userCache });
                         }}>
                         <View style={styles.titleInfo}>
                             <Image
@@ -137,9 +138,9 @@ class NotificationItem extends Component {
                         <View style={styles.bottomInfo}>
                             <Text style={[styles.text, { color: Theme.black }]}>恭喜达成新的勋章成就</Text>
                             <View styles={{ alignItems: 'center' }}>
-                                <Text>{Tools.syncGetter('medal.name_cn', notification)}</Text>
+                                <Text>{Helper.syncGetter('medal.name_cn', notification)}</Text>
                                 <Image
-                                    source={{ uri: Tools.syncGetter('medal.done_icon_url', notification) }}
+                                    source={{ uri: Helper.syncGetter('medal.done_icon_url', notification) }}
                                     style={{ width: PxFit(60), height: PxFit(60), marginTop: PxFit(15) }}
                                 />
                             </View>
@@ -157,18 +158,18 @@ class NotificationItem extends Component {
                             <Text style={styles.infoItem}>
                                 奖励：
                                 {`${
-                                    Tools.syncGetter('user_reward.gold', notification)
-                                        ? Tools.syncGetter('user_reward.gold', notification) + '智慧点 '
+                                    Helper.syncGetter('user_reward.gold', notification)
+                                        ? Helper.syncGetter('user_reward.gold', notification) + '智慧点 '
                                         : ''
                                 } `}
                                 {`${
-                                    Tools.syncGetter('user_reward.ticket', notification)
-                                        ? Tools.syncGetter('user_reward.ticket', notification) + '精力点'
+                                    Helper.syncGetter('user_reward.ticket', notification)
+                                        ? Helper.syncGetter('user_reward.ticket', notification) + '精力点'
                                         : '  '
                                 } `}
                                 {`${
-                                    Tools.syncGetter('user_reward.contribute', notification)
-                                        ? Tools.syncGetter('user_reward.contribute', notification) + '贡献点  '
+                                    Helper.syncGetter('user_reward.contribute', notification)
+                                        ? Helper.syncGetter('user_reward.contribute', notification) + '贡献点  '
                                         : ''
                                 } `}
                             </Text>

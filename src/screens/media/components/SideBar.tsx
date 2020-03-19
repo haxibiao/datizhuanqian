@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, Animated, TouchableOpacity } from 'react
 
 import { Avatar, Iconfont } from 'components';
 import { observer } from 'store';
-import { PxFit, Theme, Tools } from 'utils';
+
 import Like from './Like';
 import VideoStore from '../VideoStore';
 
@@ -17,7 +17,7 @@ export default observer(props => {
             <View style={styles.itemWrap}>
                 <TouchableOpacity
                     onPress={() => {
-                        Tools.navigate('User', { user: user });
+                        Helper.middlewareNavigate('User', { user: user });
                     }}>
                     <Avatar
                         source={user.avatar}
@@ -33,9 +33,7 @@ export default observer(props => {
             <View style={styles.itemWrap}>
                 <TouchableOpacity onPress={VideoStore.showComment}>
                     <Image source={require('@src/assets/images/comment_item.png')} style={styles.imageStyle} />
-                    <Text style={styles.countText}>
-                        {Tools.NumberFormat(isPost ? count_comments : video.count_comments)}
-                    </Text>
+                    <Text style={styles.countText}>{Helper.count(isPost ? count_comments : video.count_comments)}</Text>
                 </TouchableOpacity>
             </View>
             {/* <View style={styles.itemWrap}>

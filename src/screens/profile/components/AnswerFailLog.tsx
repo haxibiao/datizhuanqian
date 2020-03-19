@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { PageContainer, CustomRefreshControl, ListFooter } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
-
 import { useQuery, GQL } from '@src/apollo';
 import { correctRate } from 'common';
 
@@ -18,12 +16,12 @@ const AnswerFailLog = props => {
 
     const questionItem = (item: any) => (
         <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('Question', { question: Tools.syncGetter('question', item) })}>
+            onPress={() => navigation.navigate('Question', { question: Helper.syncGetter('question', item) })}>
             <View style={styles.questionItem}>
                 <View style={styles.content}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.subjectText} numberOfLines={3}>
-                            {Tools.syncGetter('question.description', item)}
+                            {Helper.syncGetter('question.description', item)}
                         </Text>
                     </View>
                     <View style={{ alignItems: 'flex-end' }}>
@@ -31,7 +29,7 @@ const AnswerFailLog = props => {
                             style={{ padding: PxFit(10) }}
                             onPress={() =>
                                 navigation.navigate('ReportQuestion', {
-                                    question: Tools.syncGetter('question', item),
+                                    question: Helper.syncGetter('question', item),
                                 })
                             }>
                             <Text style={{ fontSize: PxFit(13), color: Theme.correctColor }}>举报</Text>
@@ -49,18 +47,18 @@ const AnswerFailLog = props => {
                             ]}>
                             错误率
                             {correctRate(
-                                Tools.syncGetter('question.wrong_count', item),
-                                Tools.syncGetter('question.count', item),
+                                Helper.syncGetter('question.wrong_count', item),
+                                Helper.syncGetter('question.count', item),
                             )}
                         </Text>
-                        <Text style={[styles.answerText]}>#{Tools.syncGetter('question.id', item)}</Text>
+                        <Text style={[styles.answerText]}>#{Helper.syncGetter('question.id', item)}</Text>
                     </View>
                 </View>
             </View>
         </TouchableWithoutFeedback>
     );
 
-    const wrongAnswers = Tools.syncGetter('wrongAnswers', data);
+    const wrongAnswers = Helper.syncGetter('wrongAnswers', data);
     const empty = wrongAnswers && wrongAnswers.length === 0;
 
     return (

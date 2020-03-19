@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { PxFit, Theme, ISIOS, Tools } from 'utils';
+import { PxFit, Theme, ISIOS } from 'utils';
 import { ad } from 'native';
 
 import { observer, app, config } from 'store';
@@ -44,7 +44,7 @@ export default observer(props => {
                     content: '遇到未知错误，领取失败',
                 });
             } else {
-                const contribute = Tools.syncGetter('data.userReward.contribute', res);
+                const contribute = Helper.syncGetter('data.userReward.contribute', res);
                 Toast.show({
                     content: `恭喜你获得+${contribute}贡献值`,
                     duration: 2000,

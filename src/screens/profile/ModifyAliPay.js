@@ -4,18 +4,8 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import {
-    PageContainer,
-    TouchFeedback,
-    Iconfont,
-    Row,
-    ListItem,
-    Button,
-    CustomTextInput,
-    KeyboardSpacer,
-    SubmitLoading,
-} from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
+import { PageContainer, TouchFeedback, Button, CustomTextInput } from 'components';
+import { Theme, PxFit } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
@@ -70,7 +60,7 @@ class EditProfileScreen extends Component {
 
     render() {
         let { navigation, data } = this.props;
-        const { pay_account, submitting } = this.state;
+        const { submitting } = this.state;
         if (loading) return null;
         let { loading, user } = data;
         return (
@@ -168,5 +158,5 @@ const styles = StyleSheet.create({
 
 export default compose(
     graphql(GQL.SendVerificationCodeMutation, { name: 'SendVerificationCodeMutation' }),
-    graphql(GQL.UserQuery, { options: props => ({ variables: { id: app.me.id } }) }),
+    graphql(GQL.UserQuery, { options: () => ({ variables: { id: app.me.id } }) }),
 )(EditProfileScreen);

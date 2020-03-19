@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
-import { PxFit, Tools, SCREEN_WIDTH } from '@src/utils';
+
 import { useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
 
@@ -17,12 +17,12 @@ export default observer(({ category, question, questions, order }) => {
     const { data } = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
-    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
+    const user = useMemo(() => Helper.syncGetter('user', data), [data]);
     const explain = useMemo(() => {
         const result = { video: null, text: null, image: null };
-        result.video = Tools.syncGetter('explanation.video', question);
-        result.text = Tools.syncGetter('explanation.content', question);
-        result.image = Tools.syncGetter('explanation.images.0.path', question);
+        result.video = Helper.syncGetter('explanation.video', question);
+        result.text = Helper.syncGetter('explanation.content', question);
+        result.image = Helper.syncGetter('explanation.images.0.path', question);
         return result;
     }, [question]);
 
@@ -36,7 +36,7 @@ export default observer(({ category, question, questions, order }) => {
                 contentContainerStyle={[
                     styles.scrollContent,
                     {
-                        paddingBottom: isAudit ? SCREEN_WIDTH / 3 : 0,
+                        paddingBottom: isAudit ? Device.WIDTH / 3 : 0,
                         backgroundColor: answered ? '#F3F3F3' : '#ffffff',
                     },
                 ]}
@@ -60,7 +60,7 @@ export default observer(({ category, question, questions, order }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
         flex: 1,
     },
     optionsButton: {

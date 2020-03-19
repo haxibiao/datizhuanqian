@@ -1,26 +1,20 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect, createContext } from 'react';
-import { DeviceEventEmitter, StyleSheet, ScrollView, View, Image, Text, TouchableOpacity } from 'react-native';
-import { Row, Iconfont, TouchFeedback } from '@src/components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH, SCREEN_HEIGHT } from '@src/utils';
-import { useApolloClient, useMutation, useQuery, GQL } from '@src/apollo';
-import { storage, keys, app, config } from '@src/store';
-import service from '@src/service';
-import { ad } from '@app/native';
-import { Overlay } from 'teaset';
-import { useNavigation } from 'react-navigation-hooks';
-import { Audit, AuditStatus, Explain, Information, Question } from '@src/screens/question/component';
+import React, { useMemo, useEffect } from 'react';
+import { DeviceEventEmitter, StyleSheet, ScrollView, View, Text } from 'react-native';
+import { PxFit, SCREEN_WIDTH } from '@src/utils';
+import { useQuery, GQL } from '@src/apollo';
+import { app, config } from '@src/store';
+import { Audit, AuditStatus, Information, Question } from '@src/screens/question/component';
 import AnswerBottom from './AnswerBottom';
 import { observer, QuestionStore } from '../store';
 
 export default observer(({ category, question, questions, order }) => {
-    const navigation = useNavigation();
     const store = useMemo(() => new QuestionStore(question, order), [question]);
-    const { isExam, isAudit, answered, answerResult, answerQuestion } = store;
+    const { isExam, isAudit, answered, answerQuestion } = store;
 
     const { data } = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
     });
-    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
+    const user = useMemo(() => Helper.syncGetter('user', data), [data]);
 
     const header = useMemo(() => {
         if (!isExam) {

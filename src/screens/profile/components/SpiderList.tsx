@@ -4,32 +4,10 @@
  */
 'use strict';
 
-import React, { Component, useEffect, useState, useCallback } from 'react';
-import {
-    StyleSheet,
-    Platform,
-    View,
-    FlatList,
-    Image,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-} from 'react-native';
-import {
-    PageContainer,
-    Iconfont,
-    TouchFeedback,
-    StatusView,
-    Placeholder,
-    CustomRefreshControl,
-    ItemSeparator,
-    ListFooter,
-    Row,
-} from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
-import { compose, useQuery, Mutation, graphql, GQL } from 'apollo';
-import { app } from 'store';
-import { exceptionCapture } from 'common';
+import React, { useState } from 'react';
+import { StyleSheet, FlatList } from 'react-native';
+import { PageContainer, CustomRefreshControl, ListFooter } from 'components';
+import { useQuery, GQL } from 'apollo';
 
 import SpiderItem from './SpiderItem';
 
@@ -43,7 +21,7 @@ const SpiderList = (props: any) => {
         fetchPolicy: 'network-only',
     });
 
-    const spiders = Tools.syncGetter('spiders', data);
+    const spiders = Helper.syncGetter('spiders', data);
     console.log('spiders', spiders);
     return (
         <PageContainer hiddenNavBar loading={loading} empty={spiders && spiders.length < 1} error={error}>
@@ -51,7 +29,7 @@ const SpiderList = (props: any) => {
                 contentContainerStyle={styles.container}
                 data={spiders}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
+                renderItem={({ item }) => (
                     <SpiderItem video={item.video} spiders={spiders} navigation={props.navigation} spider={item} />
                 )}
                 refreshControl={<CustomRefreshControl onRefresh={refetch} reset={() => setFinished(false)} />}

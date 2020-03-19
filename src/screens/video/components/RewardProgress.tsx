@@ -1,7 +1,6 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { StyleSheet, View, Image, TouchableWithoutFeedback, Animated } from 'react-native';
 import { observer, app } from 'store';
-import { PxFit, Tools, ISIOS } from '../../../utils';
 import * as Progress from 'react-native-progress';
 import VideoStore from '../VideoStore';
 import { GQL, useMutation } from 'apollo';
@@ -34,7 +33,7 @@ const RewardProgress = observer(props => {
             if (error) {
                 setReward('领取失败');
             } else {
-                const gold = Tools.syncGetter('data.userReward.gold', res);
+                const gold = Helper.syncGetter('data.userReward.gold', res);
                 setReward(`+${gold}智慧点`);
                 startTextAnimation();
             }
@@ -68,9 +67,9 @@ const RewardProgress = observer(props => {
         <TouchableWithoutFeedback
             onPress={() => {
                 if (app.login) {
-                    Tools.navigate('BillingRecord', { initialPage: 1 });
+                    Helper.middlewareNavigate('BillingRecord', { initialPage: 1 });
                 } else {
-                    Tools.navigate('Login');
+                    Helper.middlewareNavigate('Login');
                 }
             }}>
             <Animated.View style={[styles.circleProgress, { transform: [{ scale: imageScale }] }]}>
@@ -82,7 +81,7 @@ const RewardProgress = observer(props => {
                     {rewardGold}
                 </Animated.Text>
                 <Image source={require('@src/assets/images/video_reward_progress.png')} style={styles.rewardImage} />
-                {progress > 0 && !ISIOS && (
+                {progress > 0 && !Device.IOS && (
                     <Progress.Circle
                         progress={progress / 100}
                         size={PxFit(54)}

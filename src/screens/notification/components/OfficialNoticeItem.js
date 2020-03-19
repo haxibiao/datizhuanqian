@@ -6,9 +6,9 @@
 //TODO:通知待完善
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Iconfont, TouchFeedback } from 'components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH } from 'utils';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { TouchFeedback } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class OfficialNoticeItem extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class OfficialNoticeItem extends Component {
     }
 
     render() {
-        const { navigation, user, notice } = this.props;
+        const { navigation, notice } = this.props;
         console.log('notice', notice);
         return (
             <View>

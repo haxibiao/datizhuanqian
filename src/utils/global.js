@@ -5,7 +5,6 @@ import Config from './Config';
 import Theme from './Theme';
 import * as Scale from './Scale';
 import * as Helper from './helper';
-import Tools from './Tools';
 
 const { height, width } = Dimensions.get('window');
 
@@ -33,8 +32,7 @@ Global.Theme = Theme;
 Global.Helper = Helper;
 //
 Global.PxFit = Scale.PxFit;
-//
-Global.Tools = Tools;
+
 // App配置
 Global.Config = Config;
 // 用户token

@@ -1,11 +1,9 @@
-import React, { Component, useRef, useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 
 import { Avatar, Iconfont, FollowButton, Button, TouchFeedback, Row } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
 
 import { app } from 'store';
-import service from 'service';
 import { getRole } from 'common';
 import { useQuery, GQL } from 'apollo';
 
@@ -32,16 +30,16 @@ const UserProfile = props => {
         <View style={styles.userInfoContainer}>
             <View style={styles.main}>
                 <View>
-                    <Avatar source={Tools.syncGetter('avatar', user)} userId={user.id} size={PxFit(90)} />
+                    <Avatar source={Helper.syncGetter('avatar', user)} userId={user.id} size={PxFit(90)} />
                     <View
                         style={[
                             styles.badge,
-                            { backgroundColor: Tools.syncGetter('gender', user) ? '#FFEAEF' : '#E6F2FF' },
+                            { backgroundColor: Helper.syncGetter('gender', user) ? '#FFEAEF' : '#E6F2FF' },
                         ]}>
                         <Iconfont
-                            name={Tools.syncGetter('gender', user) ? 'woman' : 'man'}
+                            name={Helper.syncGetter('gender', user) ? 'woman' : 'man'}
                             size={PxFit(18)}
-                            color={Tools.syncGetter('gender', user) ? '#ED5D87' : '#0588FF'}
+                            color={Helper.syncGetter('gender', user) ? '#ED5D87' : '#0588FF'}
                         />
                     </View>
                 </View>
@@ -50,8 +48,8 @@ const UserProfile = props => {
                         <View style={styles.metaItem}>
                             <Text style={styles.metaCount} numberOfLines={1}>
                                 {isQuestion
-                                    ? Tools.syncGetter('profile.questions_count', user)
-                                    : Tools.syncGetter('profile.posts_count', user)}
+                                    ? Helper.syncGetter('profile.questions_count', user)
+                                    : Helper.syncGetter('profile.posts_count', user)}
                             </Text>
                             <Text style={styles.metaLabel} numberOfLines={1}>
                                 {isQuestion ? '题目' : '动态'}
@@ -59,7 +57,7 @@ const UserProfile = props => {
                         </View>
                         <TouchFeedback style={styles.metaItem}>
                             <Text style={styles.metaCount} numberOfLines={1}>
-                                {Tools.syncGetter('follow_users_count', user) || 0}
+                                {Helper.syncGetter('follow_users_count', user) || 0}
                             </Text>
                             <Text style={styles.metaLabel} numberOfLines={1}>
                                 关注
@@ -67,7 +65,7 @@ const UserProfile = props => {
                         </TouchFeedback>
                         <TouchFeedback style={styles.metaItem}>
                             <Text style={styles.metaCount} numberOfLines={1}>
-                                {Tools.syncGetter('followers_count', user) || 0}
+                                {Helper.syncGetter('followers_count', user) || 0}
                             </Text>
                             <Text style={styles.metaLabel} numberOfLines={1}>
                                 粉丝
@@ -84,7 +82,7 @@ const UserProfile = props => {
                         <Row>
                             <FollowButton
                                 id={user.id}
-                                followedStatus={Tools.syncGetter('followed_user_status', user)}
+                                followedStatus={Helper.syncGetter('followed_user_status', user)}
                                 style={StyleSheet.flatten([styles.button, { flex: 1, marginRight: PxFit(5) }])}
                                 titleStyle={styles.buttonText}
                             />
@@ -100,7 +98,7 @@ const UserProfile = props => {
             <View style={styles.bottom}>
                 <Row style={{ paddingBottom: 10 }}>
                     <Text style={{ fontSize: PxFit(20), fontWeight: '700', color: Theme.black }}>
-                        {Tools.syncGetter('name', user)}
+                        {Helper.syncGetter('name', user)}
                     </Text>
                     {(subName === '官方账号' || subName === '官方小编') && (
                         <Image
@@ -111,7 +109,7 @@ const UserProfile = props => {
                 </Row>
                 <View>
                     <Text style={styles.introduction} numberOfLines={2}>
-                        {Tools.syncGetter('profile.introduction', user) || '这个人很神秘，什么介绍都没有'}
+                        {Helper.syncGetter('profile.introduction', user) || '这个人很神秘，什么介绍都没有'}
                     </Text>
                 </View>
             </View>

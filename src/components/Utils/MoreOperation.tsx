@@ -4,7 +4,6 @@ import { GQL, useMutation } from '@src/apollo';
 import { config, app, observer } from 'store';
 import useReport from './useReport';
 import TouchFeedback from '../TouchableView/TouchFeedback';
-import { Theme, PxFit, Tools } from 'utils';
 import VideoStore from '../../screens/video/VideoStore';
 
 const MoreOperation = props => {
@@ -58,7 +57,7 @@ const MoreOperation = props => {
         if (app.firstReadSpiderVideoTask) {
             Linking.openURL('snssdk1128://');
         } else {
-            Tools.navigate('VideoPost', { medium: [VideoStore.guidanceVideo], isPost: true });
+            Helper.middlewareNavigate('VideoPost', { medium: [VideoStore.guidanceVideo], isPost: true });
             app.setReadSpiderVideoTask(true);
         }
     }, []);

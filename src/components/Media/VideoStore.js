@@ -2,12 +2,10 @@
  * @flow
  * created by wyk made in 2019-07-01 14:03:10
  */
-import { View, Image, Keyboard } from 'react-native';
-import { observable, action, runInAction, autorun, reaction, computed } from 'mobx';
+import { observable, action, reaction } from 'mobx';
 import Orientation from 'react-native-orientation';
 import Video from 'react-native-video';
-import { Api, Tools } from '../../utils';
-import { app, config } from 'store';
+import { config } from 'store';
 
 type Status = 'error' | 'notWifi' | 'loading' | 'finished' | 'hide';
 type Layout = 'portrait' | 'landscape';
@@ -28,11 +26,11 @@ class VideoStore {
     @observable controlIntervel: any = null;
 
     constructor(props) {
-        let { video, navigation, inScreen, isVideoList, isIntoView } = props;
+        let { video, navigation, inScreen, isVideoList } = props;
 
         this.video = video;
         this.navigation = navigation;
-        if (Tools.syncGetter('width', video) > Tools.syncGetter('height', video)) {
+        if (Helper.syncGetter('width', video) > Helper.syncGetter('height', video)) {
             this.orientation = 'landscape';
         } else {
             this.orientation = 'portrait';

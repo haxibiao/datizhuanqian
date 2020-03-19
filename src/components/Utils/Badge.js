@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ViewPropTypes } from 'react-native';
-import { Theme, PxFit, Tools } from '../../utils';
 
 export default class Badge extends Component {
     static propTypes = {

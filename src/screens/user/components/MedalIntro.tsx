@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
-import { Button, TouchFeedback } from 'components';
-import { Config, Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
+import { TouchFeedback } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { BoxShadow } from 'react-native-shadow';
 import service from 'service';
 

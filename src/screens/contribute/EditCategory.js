@@ -1,16 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    Image,
-    ScrollView,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    FlatList,
-} from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Button, SearchBar } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from '@src/utils';
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { PageContainer, TouchFeedback, Iconfont, SearchBar } from '@src/components';
+import { Theme, PxFit } from '@src/utils';
 import { Query, GQL } from '@src/apollo';
 import { observer, useQuestionStore } from './store';
 
@@ -40,7 +31,7 @@ const CategoryItem = observer(props => {
     );
 });
 
-export default observer(props => {
+export default observer(() => {
     const store = useQuestionStore();
     const { category: selectedCategory, selectCategory } = store;
 
@@ -59,8 +50,8 @@ export default observer(props => {
                 allow_submit: 1,
             }}
             fetchPolicy="network-only">
-            {({ data, loading, error, refetch, fetchMore }) => {
-                let categories = Tools.syncGetter('categories', data);
+            {({ data, loading, refetch }) => {
+                let categories = Helper.syncGetter('categories', data);
                 let empty = categories && categories.length === 0;
                 loading = !categories;
                 return (
@@ -85,7 +76,7 @@ export default observer(props => {
                                 showsVerticalScrollIndicator={false}
                                 data={categories}
                                 keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-                                renderItem={({ item, index }) => (
+                                renderItem={({ item }) => (
                                     <CategoryItem
                                         category={item}
                                         selectedCategory={selectedCategory}

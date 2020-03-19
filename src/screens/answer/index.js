@@ -4,7 +4,7 @@
  * created by wyk made in 2019-03-19 11:22:26
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Animated, StatusBar, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, StatusBar } from 'react-native';
 import {
     PageContainer,
     TouchFeedback,
@@ -17,7 +17,7 @@ import {
     beginnerGuidance,
     AnswerGuidance,
 } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS, Config } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Config } from 'utils';
 
 import UserInfo from '../question/components/UserInfo';
 import QuestionBody from '../question/components/QuestionBody';
@@ -123,7 +123,7 @@ class index extends Component {
                 variables: { category_id: this.category_id, limit: 10 },
                 fetchPolicy: 'network-only',
             });
-            const questions = Tools.syncGetter('questions', result.data);
+            const questions = Helper.syncGetter('questions', result.data);
             if (questions && questions instanceof Array && questions.length > 0) {
                 this.questions = [...questions];
                 this.resetState();
@@ -259,7 +259,6 @@ class index extends Component {
     // 下一题
     nextQuestion = () => {
         this.hideUpward();
-        const { data } = this.props;
 
         if (this.questions.length === 0) {
             this.refetchQuery();
@@ -280,7 +279,7 @@ class index extends Component {
     showUpward() {
         if (this.markView) {
             this.markView.measure((x, y, width, height, pageX, pageY) => {
-                if (Tools.syncGetter('explanation', this.state.question) && pageY >= this.containerHeight) {
+                if (Helper.syncGetter('explanation', this.state.question) && pageY >= this.containerHeight) {
                     this._upwardImage && this._upwardImage.show();
                 }
             });
@@ -289,7 +288,7 @@ class index extends Component {
 
     onContainerLayout = event => {
         if (event) {
-            const { x, y, width, height } = event.nativeEvent.layout;
+            const { height } = event.nativeEvent.layout;
             this.containerHeight = height;
         }
     };
@@ -305,7 +304,7 @@ class index extends Component {
     // 切换题目,重置UI状态
     resetState() {
         this.setState(
-            preState => ({
+            () => ({
                 question: this.questions.shift(),
                 submited: false,
                 answer: null,
@@ -387,7 +386,6 @@ class index extends Component {
 
     // 答题结果
     showAnswerResult(answer_count, error_count) {
-        const { data, client } = this.props;
         const overlayView = (
             <Overlay.View animated modal>
                 <View style={styles.overlayInner}>
@@ -507,12 +505,12 @@ class index extends Component {
                             <AnswerBar isShow={audit || submited} question={question} navigation={navigation} />
                         )}
                         {(audit || submited) && (
-                            <VideoExplain video={Tools.syncGetter('explanation.video', question)} />
+                            <VideoExplain video={Helper.syncGetter('explanation.video', question)} />
                         )}
                         {(audit || submited) && (
                             <Explain
-                                text={Tools.syncGetter('explanation.content', question)}
-                                picture={Tools.syncGetter('explanation.images.0.path', question)}
+                                text={Helper.syncGetter('explanation.content', question)}
+                                picture={Helper.syncGetter('explanation.images.0.path', question)}
                             />
                         )}
                     </View>
@@ -630,7 +628,7 @@ export default compose(
     graphql(GQL.QuestionAnswerMutation, { name: 'QuestionAnswerMutation' }),
     graphql(GQL.auditMutation, { name: 'auditMutation' }),
     graphql(GQL.UserMeansQuery, {
-        options: props => ({ variables: { id: app.me.id } }),
+        options: () => ({ variables: { id: app.me.id } }),
     }),
     graphql(GQL.UserRewardMutation, { name: 'UserReward' }),
 )(index);

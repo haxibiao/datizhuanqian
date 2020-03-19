@@ -10,7 +10,7 @@ import {
     ExamGuidance,
     Row,
 } from '@src/components';
-import { Theme, SCREEN_WIDTH, PxFit, Tools, ISIOS } from '@src/utils';
+import { SCREEN_WIDTH, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
@@ -65,7 +65,7 @@ export default observer(() => {
         variables: { id: app.me.id },
     });
 
-    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
+    const user = useMemo(() => Helper.syncGetter('user', data), [data]);
 
     const fetchQuestions = useCallback(async () => {
         if (flag.current || examData) {
@@ -79,7 +79,7 @@ export default observer(() => {
                 fetchPolicy: 'network-only',
             });
             console.log('result :', result);
-            const questionsData = Tools.syncGetter('data.questions', result);
+            const questionsData = Helper.syncGetter('data.questions', result);
 
             if (Array.isArray(questionsData) && questionsData.length > 0) {
                 addQuestions(questionsData);
@@ -98,7 +98,7 @@ export default observer(() => {
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + app.me.token)
             .then(response => response.json())
             .then(result => {
-                setMinLevel(Tools.syncGetter('chuti.min_level', result));
+                setMinLevel(Helper.syncGetter('chuti.min_level', result));
             })
             .catch(err => {
                 console.warn('加载task config err', err);

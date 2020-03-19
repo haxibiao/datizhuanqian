@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PageContainer, Iconfont, Row, Button, CustomTextInput, TouchFeedback } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
 
 import { GQL } from 'apollo';
 import { app } from 'store';
@@ -9,9 +8,9 @@ import { Alipay } from 'native';
 import { bindAlipayFailedTrack, bindAlipaySucceedTrack, bindAlipayTrack, getAlipayAuthCode, bindAlipay } from 'common';
 
 const SettingWithdrawInfo = props => {
-    const [realName, setRealName] = useState(Tools.syncGetter('userCache.wallet.real_name', app) || '');
+    const [realName, setRealName] = useState(Helper.syncGetter('userCache.wallet.real_name', app) || '');
     const [submitting, setSubmitting] = useState(false);
-    const [authCode, setAuthCode] = useState(Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
+    const [authCode, setAuthCode] = useState(Helper.syncGetter('userCache.wallet.bind_platforms.alipay', app) || '');
     const { navigation } = props;
 
     //支付宝授权
@@ -45,7 +44,7 @@ const SettingWithdrawInfo = props => {
             })
             .then(() => {
                 setSubmitting(false);
-                if (Tools.syncGetter('userCache.wallet.bind_platforms.alipay', app)) {
+                if (Helper.syncGetter('userCache.wallet.bind_platforms.alipay', app)) {
                     Toast.show({
                         content: '绑定成功',
                     });
@@ -77,7 +76,7 @@ const SettingWithdrawInfo = props => {
                 </View>
                 <View style={styles.inputWrap}>
                     <CustomTextInput
-                        placeholder={Tools.syncGetter('userCache.wallet.real_name', app) || '请输入支付宝真实姓名'}
+                        placeholder={Helper.syncGetter('userCache.wallet.real_name', app) || '请输入支付宝真实姓名'}
                         style={{ height: PxFit(48) }}
                         onChangeText={(value: React.SetStateAction<string>) => {
                             setRealName(value);

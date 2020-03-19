@@ -6,7 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
 
 class CommentNotification extends Component {
     constructor(props) {
@@ -15,45 +14,45 @@ class CommentNotification extends Component {
     }
 
     siwthType = notification => {
-        if (Tools.syncGetter('like.comment', notification)) {
-            this.content = { tips: '赞了我的评论', body: Tools.syncGetter('like.comment.content', notification) };
-        } else if (Tools.syncGetter('like.question', notification)) {
+        if (Helper.syncGetter('like.comment', notification)) {
+            this.content = { tips: '赞了我的评论', body: Helper.syncGetter('like.comment.content', notification) };
+        } else if (Helper.syncGetter('like.question', notification)) {
             this.content = {
                 tips: '赞了我的题目',
-                body: Tools.syncGetter('like.question.description', notification),
+                body: Helper.syncGetter('like.question.description', notification),
             };
-        } else if (Tools.syncGetter('like.post', notification)) {
+        } else if (Helper.syncGetter('like.post', notification)) {
             this.content = {
                 tips: '赞了我的动态',
-                body: Tools.syncGetter('like.post.description', notification),
+                body: Helper.syncGetter('like.post.description', notification),
             };
         }
     };
 
     navigationAction = () => {
         const { navigation, notification } = this.props;
-        if (Tools.syncGetter('like.question', notification)) {
+        if (Helper.syncGetter('like.question', notification)) {
             navigation.navigate('Question', {
-                question: Tools.syncGetter('like.question', notification),
+                question: Helper.syncGetter('like.question', notification),
             });
-        } else if (Tools.syncGetter('like.post', notification)) {
-            navigation.navigate('VideoPost', { videos: [Tools.syncGetter('like.post', notification)] });
+        } else if (Helper.syncGetter('like.post', notification)) {
+            navigation.navigate('VideoPost', { videos: [Helper.syncGetter('like.post', notification)] });
         }
     };
 
     render() {
         const { navigation, notification } = this.props;
-        const user = Tools.syncGetter('like.user', notification);
+        const user = Helper.syncGetter('like.user', notification);
         if (notification.like) {
             this.siwthType(notification);
-            if (Tools.syncGetter('like.question', notification)) {
+            if (Helper.syncGetter('like.question', notification)) {
                 return (
                     <TouchFeedback style={styles.container} onPress={this.navigationAction}>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
                             <Avatar
-                                source={{ uri: Tools.syncGetter('avatar', user) }}
+                                source={{ uri: Helper.syncGetter('avatar', user) }}
                                 size={34}
-                                userId={Tools.syncGetter('id', user)}
+                                userId={Helper.syncGetter('id', user)}
                             />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
@@ -61,14 +60,14 @@ class CommentNotification extends Component {
                                         style={{
                                             color: Theme.black,
                                         }}>
-                                        {Tools.syncGetter('name', user)}
+                                        {Helper.syncGetter('name', user)}
                                     </Text>
                                     <UserTitle user={user} />
                                     <GenderLabel user={user} />
                                 </View>
 
                                 <Text style={styles.commenTime}>
-                                    {Tools.syncGetter('like.created_at', notification)} {this.content.tips}
+                                    {Helper.syncGetter('like.created_at', notification)} {this.content.tips}
                                 </Text>
                             </View>
                         </TouchFeedback>
@@ -77,14 +76,14 @@ class CommentNotification extends Component {
                         </View>
                     </TouchFeedback>
                 );
-            } else if (Tools.syncGetter('like.comment', notification)) {
+            } else if (Helper.syncGetter('like.comment', notification)) {
                 return (
                     <TouchFeedback style={styles.container}>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
                             <Avatar
-                                source={{ uri: Tools.syncGetter('avatar', user) }}
+                                source={{ uri: Helper.syncGetter('avatar', user) }}
                                 size={34}
-                                userId={Tools.syncGetter('id', user)}
+                                userId={Helper.syncGetter('id', user)}
                             />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
@@ -92,14 +91,14 @@ class CommentNotification extends Component {
                                         style={{
                                             color: Theme.black,
                                         }}>
-                                        {Tools.syncGetter('name', user)}
+                                        {Helper.syncGetter('name', user)}
                                     </Text>
                                     <UserTitle user={user} />
                                     <GenderLabel user={user} />
                                 </View>
 
                                 <Text style={styles.commenTime}>
-                                    {Tools.syncGetter('like.comment.time_ago', notification)} {this.content.tips}
+                                    {Helper.syncGetter('like.comment.time_ago', notification)} {this.content.tips}
                                 </Text>
                             </View>
                         </TouchFeedback>
@@ -108,21 +107,21 @@ class CommentNotification extends Component {
                         </View>
                     </TouchFeedback>
                 );
-            } else if (Tools.syncGetter('like.post', notification)) {
+            } else if (Helper.syncGetter('like.post', notification)) {
                 return (
                     <TouchFeedback
                         style={styles.container}
                         onPress={() =>
                             navigation.navigate('VideoPost', {
-                                medium: [Tools.syncGetter('like.post', notification)],
+                                medium: [Helper.syncGetter('like.post', notification)],
                                 isPost: true,
                             })
                         }>
                         <TouchFeedback style={styles.header} onPress={() => navigation.navigate('User', { user })}>
                             <Avatar
-                                source={{ uri: Tools.syncGetter('avatar', user) }}
+                                source={{ uri: Helper.syncGetter('avatar', user) }}
                                 size={34}
-                                userId={Tools.syncGetter('id', user)}
+                                userId={Helper.syncGetter('id', user)}
                             />
                             <View style={styles.user}>
                                 <View style={styles.userTop}>
@@ -130,14 +129,14 @@ class CommentNotification extends Component {
                                         style={{
                                             color: Theme.black,
                                         }}>
-                                        {Tools.syncGetter('name', user)}
+                                        {Helper.syncGetter('name', user)}
                                     </Text>
                                     <UserTitle user={user} />
                                     <GenderLabel user={user} />
                                 </View>
 
                                 <Text style={styles.commenTime}>
-                                    {Tools.syncGetter('like.post.created_at', notification)} {this.content.tips}
+                                    {Helper.syncGetter('like.post.created_at', notification)} {this.content.tips}
                                 </Text>
                             </View>
                         </TouchFeedback>

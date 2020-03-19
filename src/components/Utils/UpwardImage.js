@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Animated } from 'react-native';
-import { Theme, PxFit, Tools } from '../../utils';
 
 const START_VALUE = 0;
 const END_VALUE = 1;

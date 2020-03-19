@@ -4,10 +4,9 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
+import { Button, PageContainer, CustomTextInput } from 'components';
 
-import { Mutation, compose, graphql, GQL } from 'apollo';
+import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 
 class VerificationCode extends Component {
@@ -89,7 +88,7 @@ class VerificationCode extends Component {
         const { code } = navigation.state.params;
         let result = {};
 
-        if (Tools.regular(this.state.pay_account)) {
+        if (Helper.regular(this.state.pay_account)) {
             if (code == verificationCode) {
                 this.setState({
                     submitting: true,
@@ -131,10 +130,9 @@ class VerificationCode extends Component {
     };
 
     render() {
-        const { navigation } = this.props;
         let { verificationCode, tips, submitting, pay_account, real_name } = this.state;
         return (
-            <PageContainer title='验证' white submitting={submitting} submitTips='验证中...'>
+            <PageContainer title="验证" white submitting={submitting} submitTips="验证中...">
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Text style={styles.title}>支付宝信息</Text>
@@ -145,7 +143,7 @@ class VerificationCode extends Component {
                     </View>
                     <View style={styles.textWrap}>
                         <CustomTextInput
-                            placeholder='请输入收到的验证码'
+                            placeholder="请输入收到的验证码"
                             style={{ height: PxFit(48) }}
                             defaultValue={this.state.verificationCode}
                             maxLength={6}
@@ -172,7 +170,7 @@ class VerificationCode extends Component {
                     </View>
                     <View style={styles.textWrap}>
                         <CustomTextInput
-                            placeholder='请输入支付宝账号'
+                            placeholder="请输入支付宝账号"
                             style={{ height: PxFit(48) }}
                             onChangeText={value => {
                                 this.setState({
@@ -185,7 +183,7 @@ class VerificationCode extends Component {
 
                     <View style={styles.buttonWrap}>
                         <Button
-                            title='保存'
+                            title="保存"
                             onPress={this.setPaymentInfo}
                             style={styles.button}
                             disabled={verificationCode && pay_account && real_name ? false : true}

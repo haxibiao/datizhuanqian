@@ -4,12 +4,12 @@
  */
 'use strict';
 
-import React, { Component, useEffect, useCallback } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
-import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont, PullChooser } from 'components';
+import { PageContainer, ScrollTabBar, TouchFeedback, Iconfont, PullChooser } from 'components';
 
 import Questions from './components/Questions';
 import Posts from './components/Posts';
@@ -23,7 +23,7 @@ const index = props => {
     const { navigation } = props;
     const user = navigation.getParam('user', {});
 
-    const { data, loading, error } = useQuery(GQL.UserQuery, {
+    const { data, loading } = useQuery(GQL.UserQuery, {
         variables: {
             id: user.id,
         },
@@ -62,8 +62,8 @@ const index = props => {
                         tabWidth={SCREEN_WIDTH / 4}
                     />
                 )}>
-                <Questions navigation={navigation} tabLabel="出题" userInfo={Tools.syncGetter('user', data) || user} />
-                <Posts navigation={navigation} tabLabel="动态" userInfo={Tools.syncGetter('user', data) || user} />
+                <Questions navigation={navigation} tabLabel="出题" userInfo={Helper.syncGetter('user', data) || user} />
+                <Posts navigation={navigation} tabLabel="动态" userInfo={Helper.syncGetter('user', data) || user} />
             </ScrollableTabView>
             <View style={styles.header}>
                 <TouchFeedback style={styles.backButton} activeOpacity={1} onPress={() => navigation.goBack()}>

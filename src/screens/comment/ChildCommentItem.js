@@ -3,20 +3,10 @@
  * created by wyk made in 2019-03-29 16:41:46
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions, Animated } from 'react-native';
-import {
-    TouchFeedback,
-    Iconfont,
-    Center,
-    SafeText,
-    Avatar,
-    Row,
-    PullChooser,
-    UserTitle,
-    GenderLabel,
-} from 'components';
-import { Theme, PxFit, WPercent, Tools, SCREEN_WIDTH } from 'utils';
-import { compose, graphql, Query, Mutation, GQL } from 'apollo';
+import { StyleSheet, View, Text, Animated } from 'react-native';
+import { TouchFeedback, Iconfont, SafeText, Avatar, Row, PullChooser } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { compose, graphql, GQL } from 'apollo';
 
 import { withNavigation } from 'react-navigation';
 import { app } from 'store';
@@ -141,8 +131,8 @@ class CommentItem extends Component<Props> {
     };
 
     render() {
-        let { comment, navigation, questionId, user, parent_comment_id } = this.props;
-        let { liked, count_likes, bounce, visible, limit, count_replyComment } = this.state;
+        let { comment, navigation, parent_comment_id } = this.props;
+        let { liked, count_likes, bounce } = this.state;
         let scale = bounce.interpolate({
             inputRange: [1, 1.1, 1.2],
             outputRange: [1, 1.25, 1],

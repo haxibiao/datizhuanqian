@@ -4,10 +4,10 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { Button, Iconfont, PageContainer, CustomTextInput, ImagePickerViewer } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from 'utils';
-import { Mutation, graphql, compose, withApollo, GQL } from 'apollo';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { Button, PageContainer, CustomTextInput, ImagePickerViewer } from 'components';
+
+import { withApollo, GQL } from 'apollo';
 
 class Feedback extends Component {
     constructor(props) {
@@ -22,8 +22,7 @@ class Feedback extends Component {
 
     submitFeedback = async () => {
         const { navigation, client } = this.props;
-        let { title, pictures, content, submitting } = this.state;
-        let result = {};
+        let { title, pictures, content } = this.state;
         this.setState({
             submitting: true,
         });
@@ -68,8 +67,7 @@ class Feedback extends Component {
     };
 
     render() {
-        let { content, pictures, submitting } = this.state;
-        const { navigation } = this.props;
+        let { content, submitting } = this.state;
         return (
             <PageContainer hiddenNavBar tabLabel="意见反馈" submitting={submitting} autoKeyboardInsets={false}>
                 <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'}>

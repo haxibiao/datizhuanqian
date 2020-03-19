@@ -5,25 +5,20 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, FlatList, Image, Animated } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import {
     PageContainer,
     TouchFeedback,
     Iconfont,
-    Row,
-    ListItem,
-    CustomSwitch,
-    ItemSeparator,
-    PopOverlay,
     CustomRefreshControl,
     ListFooter,
     StatusView,
     PullChooser,
 } from 'components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH, NAVBAR_HEIGHT } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import { app } from 'store';
-import { Query, withApollo, compose, graphql, GQL } from 'apollo';
+import { Query, withApollo, compose, GQL } from 'apollo';
 
 import UserProfile from './components/UserProfile';
 import QuestionItem from './components/QuestionItem';
@@ -66,8 +61,8 @@ class index extends Component {
                 query={GQL.UserInfoQuery}
                 variables={{ id: user.id, order: orderByHot ? ORDER[0] : ORDER[1], filter: 'publish' }}
                 fetchPolicy="network-only">
-                {({ data, loading, error, refetch, fetchMore }) => {
-                    let user = Tools.syncGetter('user', data),
+                {({ data, error, refetch, fetchMore }) => {
+                    let user = Helper.syncGetter('user', data),
                         questions = [];
                     if (!user) {
                         return <Placeholder />;
@@ -112,9 +107,7 @@ class index extends Component {
                                     />
                                 }
                                 ListEmptyComponent={<StatusView.EmptyView title="空空如也，没有出过题目" />}
-                                renderItem={({ item, index }) => (
-                                    <QuestionItem question={item} navigation={navigation} />
-                                )}
+                                renderItem={({ item }) => <QuestionItem question={item} navigation={navigation} />}
                                 refreshControl={
                                     <CustomRefreshControl
                                         onRefresh={refetch}

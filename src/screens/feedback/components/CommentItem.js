@@ -6,8 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
 
-import { Theme, Tools, PxFit } from 'utils';
-
 import { Iconfont, Avatar, UserTitle, GenderLabel } from 'components';
 
 import FeedbackOverlay from './FeedbackOverlay';
@@ -156,7 +154,7 @@ class CommentItem extends Component {
                         let width = image.width;
                         let height = image.height;
                         let padding = 103;
-                        let size = Tools.imageSize({ width, height, padding });
+                        let size = Helper.imageSize({ width, height, padding });
                         return (
                             <Image
                                 source={{ uri: image.path }}

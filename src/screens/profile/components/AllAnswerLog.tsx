@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { PageContainer, CustomRefreshControl, ListFooter } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
 
 import { useQuery, GQL } from '@src/apollo';
 
@@ -14,12 +13,12 @@ const AllAnswerLog = props => {
 
     const questionItem = (item: any) => (
         <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('Question', { question: Tools.syncGetter('question', item) })}>
+            onPress={() => navigation.navigate('Question', { question: Helper.syncGetter('question', item) })}>
             <View style={styles.questionItem}>
                 <View style={styles.content}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.subjectText} numberOfLines={3}>
-                            {Tools.syncGetter('question.description', item)}
+                            {Helper.syncGetter('question.description', item)}
                         </Text>
                     </View>
                     <View style={{ alignItems: 'flex-end' }}>
@@ -27,7 +26,7 @@ const AllAnswerLog = props => {
                             style={{ padding: PxFit(10) }}
                             onPress={() =>
                                 navigation.navigate('ReportQuestion', {
-                                    question: Tools.syncGetter('question', item),
+                                    question: Helper.syncGetter('question', item),
                                 })
                             }>
                             <Text style={{ fontSize: PxFit(13), color: Theme.correctColor }}>举报</Text>
@@ -41,21 +40,21 @@ const AllAnswerLog = props => {
                                 styles.answerText,
                                 {
                                     color:
-                                        Tools.syncGetter('correct_count', item) > 0
+                                        Helper.syncGetter('correct_count', item) > 0
                                             ? Theme.correctColor
                                             : Theme.errorColor,
                                 },
                             ]}>
-                            {Tools.syncGetter('correct_count', item) > 0 ? '您答对了' : '您答错了'}
+                            {Helper.syncGetter('correct_count', item) > 0 ? '您答对了' : '您答错了'}
                         </Text>
-                        <Text style={[styles.answerText]}>#{Tools.syncGetter('question.id', item)}</Text>
+                        <Text style={[styles.answerText]}>#{Helper.syncGetter('question.id', item)}</Text>
                     </View>
                 </View>
             </View>
         </TouchableWithoutFeedback>
     );
 
-    const answerHistories = Tools.syncGetter('user.answerHistories', data);
+    const answerHistories = Helper.syncGetter('user.answerHistories', data);
     const empty = answerHistories && answerHistories.length === 0;
 
     return (

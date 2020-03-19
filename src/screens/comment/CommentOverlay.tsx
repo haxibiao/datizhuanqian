@@ -2,11 +2,10 @@
  * @Author: Gaoxuan
  * @Date:   2019-03-21 16:28:10
  */
-import React, { Component, useState, useRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, useImperativeHandle } from 'react';
 import {
     StyleSheet,
     View,
-    Image,
     TouchableOpacity,
     FlatList,
     Text,
@@ -15,18 +14,9 @@ import {
     Easing,
     ScrollView,
 } from 'react-native';
-import {
-    TouchFeedback,
-    Iconfont,
-    Row,
-    ItemSeparator,
-    StatusView,
-    Placeholder,
-    KeyboardSpacer,
-    ListFooter,
-} from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Tools } from 'utils';
-import { Query, Mutation, compose, withApollo, graphql, GQL, useQuery } from 'apollo';
+import { TouchFeedback, Iconfont, StatusView, Placeholder, ListFooter } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+import { GQL, useQuery } from 'apollo';
 import { app } from 'store';
 import CommentItem from './CommentItem';
 import InputCommentModal from './InputCommentModal';
@@ -38,29 +28,16 @@ import { BoxShadow } from 'react-native-shadow';
 const CommentOverlay = React.forwardRef((props, ref) => {
     const { question, isPost, isSpider } = props;
 
-    const [offset, setOffset] = useState(new Animated.Value(0));
+    const [offset] = useState(new Animated.Value(0));
     const [visible, setVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [finished, setFinished] = useState(false);
     // const [count_comments, setCount_comments] = useState((question && question.count_comments) || 0);
     const [reply, setReply] = useState(null);
     const [comment_id, setComment_id] = useState(null);
-    const [childLimit, setChildLimit] = useState(1);
+    const [childLimit] = useState(1);
     const [parent_comment_id, setParent_comment_id] = useState(null);
     const flatListRef = useRef();
-
-    // 显示动画;
-    const slideUp = () => {
-        setVisible(true);
-        app.modalIsShow = true;
-        Animated.parallel([
-            Animated.timing(offset, {
-                easing: Easing.linear,
-                duration: 200,
-                toValue: 1,
-            }),
-        ]).start();
-    };
 
     useImperativeHandle(
         ref,
@@ -136,7 +113,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
         question.count_comments++;
     };
 
-    const _renderCommentHeader = comments => {
+    const _renderCommentHeader = () => {
         return (
             <View style={styles.header}>
                 <Text style={styles.headerText}>
@@ -149,7 +126,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
         );
     };
 
-    const renderContent = (comments, fetchMore, loading) => {
+    const renderContent = (comments, fetchMore) => {
         if (!comments) {
             return <Placeholder type="comment" quantity={5} />;
         }
@@ -165,7 +142,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                     Keyboard.dismiss();
                 }}
                 keyboardShouldPersistTaps="always"
-                keyExtractor={(item, index) => item.id.toString()}
+                keyExtractor={item => item.id.toString()}
                 renderItem={({ item, index }) => {
                     return (
                         <CommentItem
@@ -225,18 +202,18 @@ const CommentOverlay = React.forwardRef((props, ref) => {
         setParent_comment_id(null);
     };
 
-    const { data, loading, error, refetch, fetchMore } = useQuery(GQL.questionCommentsQuery, {
+    const { data, loading, error, fetchMore } = useQuery(GQL.questionCommentsQuery, {
         variables: {
             commentable_type: isPost ? 'posts' : isSpider ? 'videos' : 'questions',
-            commentable_id: Tools.syncGetter('id', question),
+            commentable_id: Helper.syncGetter('id', question),
             limit: 10,
             childLimit: childLimit,
         },
         fetchPolicy: 'network-only',
-        skip: Tools.syncGetter('id', question) ? false : true,
+        skip: Helper.syncGetter('id', question) ? false : true,
     });
 
-    const comments = Tools.syncGetter('comments', data);
+    const comments = Helper.syncGetter('comments', data);
 
     if (!visible || !question || error) {
         return <View />;

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Text, View, StyleSheet, Image, AppState } from 'react-native';
 import { TouchFeedback, RewardOverlay, FeedOverlay } from 'components';
 import { GQL, useMutation, useQuery } from 'apollo';
-import { Tools, Theme } from 'utils';
 
 interface Props {
     navigation: Function;
@@ -71,7 +70,7 @@ const TimeReward = (props: Props) => {
     const getReward = useCallback(async () => {
         try {
             const result = await timeReward();
-            const reward = Tools.syncGetter('data.timeReward', result);
+            const reward = Helper.syncGetter('data.timeReward', result);
             console.log('result', result);
             // const reward = { gold_reward: 10, ticket_reward: 0, contribute_reward: 0 };
             showRewardTips(reward);

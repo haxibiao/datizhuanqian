@@ -4,9 +4,9 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Animated, StatusBar, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, StatusBar } from 'react-native';
 import { PageContainer, TouchFeedback, PopOverlay, Iconfont, PullChooser, EmptyView, Player, Audio } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools, ISIOS } from 'utils';
+import { SCREEN_WIDTH, ISIOS } from 'utils';
 
 import QuestionOptions from './components/QuestionOptions';
 import UserInfo from './components/UserInfo';
@@ -20,8 +20,8 @@ import FooterBar from './components/FooterBar';
 import AnswerPlaceholder from '../answer/components/AnswerPlaceholder';
 import ChooseOverlay from '../answer/components/ChooseOverlay';
 
-import { Query, compose, graphql, GQL } from 'apollo';
-import { observer, inject, app, config } from 'store';
+import { compose, graphql, GQL } from 'apollo';
+import { observer, app, config } from 'store';
 
 @observer
 class index extends Component {
@@ -256,7 +256,7 @@ class index extends Component {
                 },
             ],
         };
-        this.question = Tools.syncGetter('question', questionQuery);
+        this.question = Helper.syncGetter('question', questionQuery);
         if (!this.question) {
             return (
                 <PageContainer title="题目详情" white>
@@ -264,7 +264,7 @@ class index extends Component {
                 </PageContainer>
             );
         }
-        let { id, selections_array, answer, status, user, explanation, video, audio, category } = this.question;
+        let { id, selections_array, answer, status, user, explanation, video, audio } = this.question;
 
         this.isOwn = user.id === app.me.id;
         return (
@@ -326,10 +326,10 @@ class index extends Component {
                                         question={this.question}
                                         navigation={navigation}
                                     />
-                                    <VideoExplain video={Tools.syncGetter('video', explanation)} />
+                                    <VideoExplain video={Helper.syncGetter('video', explanation)} />
                                     <Explain
-                                        text={Tools.syncGetter('content', explanation)}
-                                        picture={Tools.syncGetter('images.0.path', explanation)}
+                                        text={Helper.syncGetter('content', explanation)}
+                                        picture={Helper.syncGetter('images.0.path', explanation)}
                                     />
                                     <AuditUsers
                                         question={this.question}
@@ -419,6 +419,6 @@ export default compose(
         name: 'questionQuery',
     }),
     graphql(GQL.UserMeansQuery, {
-        options: props => ({ variables: { id: app.me.id } }),
+        options: () => ({ variables: { id: app.me.id } }),
     }),
 )(index);

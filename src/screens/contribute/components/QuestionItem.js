@@ -7,8 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback, Text, Image } from 'react-native';
 import { Iconfont, Row, PlaceholderImage } from '../../../components';
-import { Theme, PxFit, Tools } from '../../../utils';
-import Video from 'react-native-video';
 
 class QuestionItem extends Component {
     constructor(props) {
@@ -43,7 +41,7 @@ class QuestionItem extends Component {
 
     renderVideo = () => {
         const {
-            question: { description, image, video, answer },
+            question: { video },
         } = this.props;
         console.log('video', video);
         if (video) {
@@ -69,7 +67,6 @@ class QuestionItem extends Component {
             submit,
             status,
             remark,
-            video,
             accepted_count,
             declined_count,
         } = question;
@@ -112,7 +109,7 @@ class QuestionItem extends Component {
                             )}
                             {status === 1 && (
                                 <Text style={styles.metaText}>
-                                    {Tools.NumberFormat(count) +
+                                    {Helper.count(count) +
                                         '人答过/正确率' +
                                         correctRate(question.correct_count, question.count)}
                                 </Text>

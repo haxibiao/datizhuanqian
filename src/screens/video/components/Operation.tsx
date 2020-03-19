@@ -2,7 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { GQL, useMutation } from '@src/apollo';
 import { TouchFeedback } from '@src/components';
-import { PxFit, Theme, Tools, SCREEN_WIDTH, SCREEN_HEIGHT } from '@src/utils';
+import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '@src/utils';
 import useReport from '@src/components/Utils/useReport';
 import VideoStore from '../VideoStore';
 

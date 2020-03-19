@@ -1,35 +1,22 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    StatusBar,
-    Image,
-    Text,
-    Animated,
-    PanResponder,
-    Dimensions,
-    Easing,
-} from 'react-native';
-import { GQL, useQuery, useLazyQuery, useMutation, useApolloClient } from 'apollo';
-import { observer, app, user } from 'store';
-import { exceptionCapture } from 'common';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils';
-import { Avatar, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from '../../components';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, View, FlatList, Image, Text, Dimensions } from 'react-native';
+import { GQL, useApolloClient } from 'apollo';
+import { app } from 'store';
+import { Avatar, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../components';
 
-const { height, width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface Props {
     index: number;
 }
 
-export default function CorrectAnsRank(props: Props) {
+export default function CorrectAnsRank() {
     const [d, setD] = useState([]);
     const [loading, setLoading] = useState(true);
     const [meLoading, setMeLoading] = useState(true);
     const [error, setError] = useState(false);
     const [merank, setMeRank] = useState();
-    const [meerror, setMeError] = useState(false);
+    const [, setMeError] = useState(false);
     const client = useApolloClient();
 
     console.log('前三 app.me : ', { ...app.me });

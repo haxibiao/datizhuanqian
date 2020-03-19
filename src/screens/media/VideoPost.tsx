@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 
-import { GQL, useQuery, useLazyQuery, useMutation, useApolloClient } from 'apollo';
+import { GQL } from 'apollo';
 import { observer, app } from 'store';
 import { exceptionCapture } from 'common';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools, Theme } from 'utils';
 import { Iconfont, TouchFeedback } from 'components';
 
 import RewardProgress from './components/RewardProgress';
@@ -13,7 +12,6 @@ import VideoItem from './components/VideoItem';
 import Footer from './components/Footer';
 import VideoStore from './VideoStore';
 import CommentOverlay from '../comment/CommentOverlay';
-import { useNavigation } from 'react-navigation-hooks';
 
 // TODO: 视频动态查看需重构
 
@@ -61,7 +59,7 @@ export default observer(props => {
         VideoStore.isLoadMore = true;
         const [error, result] = await exceptionCapture(VideosQuery);
         console.log('result', result, error);
-        const videoSource = Tools.syncGetter('data.posts', result);
+        const videoSource = Helper.syncGetter('data.posts', result);
 
         if (error) {
             VideoStore.isError = true;
@@ -76,16 +74,13 @@ export default observer(props => {
         VideoStore.isLoadMore = false;
     }, [VideosQuery]);
 
-    const onMomentumScrollEnd = useCallback(
-        event => {
-            if (VideoStore.dataSource.length - activeItem.current <= 3) {
-                if (medium.length > 1) {
-                    fetchData();
-                }
+    const onMomentumScrollEnd = useCallback(() => {
+        if (VideoStore.dataSource.length - activeItem.current <= 3) {
+            if (medium.length > 1) {
+                fetchData();
             }
-        },
-        [fetchData],
-    );
+        }
+    }, [fetchData]);
 
     const getVisibleRows = useCallback(info => {
         if (info.viewableItems[0]) {

@@ -5,32 +5,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Platform,
-    View,
-    FlatList,
-    Image,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Animated,
-} from 'react-native';
-import {
-    PageContainer,
-    Iconfont,
-    TouchFeedback,
-    StatusView,
-    Placeholder,
-    CustomRefreshControl,
-    ItemSeparator,
-    ListFooter,
-    Row,
-} from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from 'utils';
-
-import { compose, Query, Mutation, graphql, GQL } from 'apollo';
-import Video from 'react-native-video';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { PageContainer, CustomRefreshControl, ListFooter } from 'components';
+import { compose, Query, graphql, GQL } from 'apollo';
 
 class AnswerLog extends Component {
     constructor(props) {
@@ -46,8 +23,8 @@ class AnswerLog extends Component {
 
         return (
             <Query query={GQL.answerHistoriesQuery} fetchPolicy="network-only">
-                {({ data, loading, error, refetch, fetchMore }) => {
-                    let answerHistories = Tools.syncGetter('user.answerHistories', data);
+                {({ data, loading, refetch, fetchMore }) => {
+                    let answerHistories = Helper.syncGetter('user.answerHistories', data);
                     let empty = answerHistories && answerHistories.length === 0;
                     loading = !answerHistories;
                     return (
@@ -56,7 +33,7 @@ class AnswerLog extends Component {
                                 contentContainerStyle={styles.container}
                                 data={answerHistories}
                                 keyExtractor={(item, index) => index.toString()}
-                                renderItem={({ item, index }) => <QuestionItem answer={item} navigation={navigation} />}
+                                renderItem={({ item }) => <QuestionItem answer={item} navigation={navigation} />}
                                 refreshControl={
                                     <CustomRefreshControl
                                         onRefresh={refetch}
@@ -109,7 +86,6 @@ class QuestionItem extends Component {
         let {
             answer: { question, correct_count },
             navigation,
-            index,
         } = this.props;
         let { description, id } = question;
 

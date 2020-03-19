@@ -1,33 +1,14 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, ImageBackground } from 'react-native';
-import {
-    TouchFeedback,
-    Button,
-    SubmitLoading,
-    TipsOverlay,
-    ItemSeparator,
-    Row,
-    Iconfont,
-    ErrorView,
-    LoadingSpinner,
-} from 'components';
-import { useQuery, GQL, useMutation } from 'apollo';
-import { app, config } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISAndroid, NAVBAR_HEIGHT } from 'utils';
-import { playVideo, bindWechat } from 'common';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
+import { TouchFeedback, Row, Iconfont, ErrorView, LoadingSpinner } from 'components';
+import { useQuery, GQL } from 'apollo';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, NAVBAR_HEIGHT } from 'utils';
 import { Overlay } from 'teaset';
 import MedalIntro from './components/MedalIntro';
 import service from 'service';
 
 interface Props {
     navigation: any;
-}
-
-interface User {
-    id: Number;
-    gold: any;
-    today_contributes: Number;
-    exchange_rate: any;
 }
 
 const Medal = (props: Props) => {
@@ -70,7 +51,7 @@ const Medal = (props: Props) => {
     if (error) return <ErrorView onPress={refetch} />;
     if (loading) return <LoadingSpinner />;
 
-    const owneds = data.medals.filter((elem, i) => {
+    const owneds = data.medals.filter(elem => {
         return elem.owned == true;
     });
 

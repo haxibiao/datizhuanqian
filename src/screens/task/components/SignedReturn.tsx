@@ -3,12 +3,10 @@
  * created by wyk made in 2019-09-12 11:19:10
  */
 
-import React, { useMemo, useCallback, useState, useLayoutEffect, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools, WPercent } from 'utils';
+import React, { useMemo, useCallback } from 'react';
+import { StyleSheet, View, Text, ImageBackground } from 'react-native';
+import { Theme, PxFit, ISIOS, WPercent } from 'utils';
 import { TouchFeedback } from 'components';
-import { GQL, useMutation } from 'apollo';
-import { ad } from 'native';
 import { app, config } from 'store';
 import { playVideo } from 'common';
 
@@ -20,7 +18,7 @@ interface Props {
 }
 
 const SignedReturn = (props: Props) => {
-    const { gold, reward, close, client } = props;
+    const { gold, reward, close } = props;
     const me = useMemo(() => app.me, []);
 
     const loadAd = useCallback(() => {

@@ -29,7 +29,7 @@ export default observer((props: Props) => {
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
-            likable_id: Tools.syncGetter('id', media),
+            likable_id: Helper.syncGetter('id', media),
             likable_type: isQuestion ? 'QUESTION' : 'POST',
         },
     });

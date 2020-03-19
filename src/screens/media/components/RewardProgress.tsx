@@ -1,13 +1,13 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import { StyleSheet, View, Image, TouchableWithoutFeedback, Animated } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Image, TouchableWithoutFeedback, Animated } from 'react-native';
 import { observer, app } from 'store';
-import { PxFit, Tools, ISIOS } from '../../../utils';
+import { PxFit, ISIOS } from '../../../utils';
 import * as Progress from 'react-native-progress';
 import VideoStore from '../VideoStore';
 import { GQL, useMutation } from 'apollo';
 import { useBounceAnimation, useLinearAnimation, exceptionCapture } from 'common';
 
-const RewardProgress = observer(props => {
+const RewardProgress = observer(() => {
     const progress = (VideoStore.rewardProgress / VideoStore.rewardLimit) * 100;
 
     const [rewardGold, setReward] = useState();
@@ -34,7 +34,7 @@ const RewardProgress = observer(props => {
             if (error) {
                 setReward('领取失败');
             } else {
-                const gold = Tools.syncGetter('data.userReward.gold', res);
+                const gold = Helper.syncGetter('data.userReward.gold', res);
                 setReward(`+${gold}智慧点`);
                 startTextAnimation();
             }
@@ -68,9 +68,9 @@ const RewardProgress = observer(props => {
         <TouchableWithoutFeedback
             onPress={() => {
                 if (app.login) {
-                    Tools.navigate('BillingRecord', { initialPage: 1 });
+                    Helper.middlewareNavigate('BillingRecord', { initialPage: 1 });
                 } else {
-                    Tools.navigate('Login');
+                    Helper.middlewareNavigate('Login');
                 }
             }}>
             <Animated.View style={[styles.circleProgress, { transform: [{ scale: imageScale }] }]}>

@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { PageContainer, Iconfont, ListItem, ItemSeparator } from 'components';
-import { Theme, PxFit, ISIOS, Tools } from 'utils';
+import { Theme, PxFit, ISIOS } from 'utils';
 
 import UserPanel from './components/UserPanel';
 
@@ -18,12 +18,12 @@ class AccountSecurity extends Component {
         super(props);
         const user = this.props.navigation.getParam('user');
         this.state = {
-            is_bind_wechat: Tools.syncGetter('wallet.platforms.wechat', user),
-            is_bind_alipay: Tools.syncGetter('wallet.bind_platforms.alipay', user),
-            is_bind_dongdezhuan: Tools.syncGetter('is_bind_dongdezhuan', user) || false,
-            is_bind_damei: Tools.syncGetter('is_bind_damei', user) || false,
-            dameiUser: Tools.syncGetter('dameiUser', user) || {},
-            dongdezhuanUser: Tools.syncGetter('dongdezhuanUser', user) || {},
+            is_bind_wechat: Helper.syncGetter('wallet.platforms.wechat', user),
+            is_bind_alipay: Helper.syncGetter('wallet.bind_platforms.alipay', user),
+            is_bind_dongdezhuan: Helper.syncGetter('is_bind_dongdezhuan', user) || false,
+            is_bind_damei: Helper.syncGetter('is_bind_damei', user) || false,
+            dameiUser: Helper.syncGetter('dameiUser', user) || {},
+            dongdezhuanUser: Helper.syncGetter('dongdezhuanUser', user) || {},
         };
     }
 
@@ -63,14 +63,7 @@ class AccountSecurity extends Component {
 
     render() {
         const { navigation, data } = this.props;
-        const {
-            is_bind_wechat,
-            is_bind_alipay,
-            is_bind_dongdezhuan,
-            is_bind_damei,
-            dongdezhuanUser,
-            dameiUser,
-        } = this.state;
+        const { is_bind_wechat, is_bind_alipay, is_bind_dongdezhuan, dongdezhuanUser, dameiUser } = this.state;
         const { loading, user } = data;
 
         if (loading) {
@@ -150,7 +143,7 @@ class AccountSecurity extends Component {
                             if (user.wallet && user.wallet.pay_info_change_count === -1) {
                                 Toast.show({ content: '支付宝信息更改次数已达上限' });
                             } else {
-                                Tools.navigate('SettingWithdrawInfo');
+                                Helper.middlewareNavigate('SettingWithdrawInfo');
                             }
                         }}
                         style={styles.listItem}
@@ -159,7 +152,7 @@ class AccountSecurity extends Component {
                             <View style={styles.rightWrap}>
                                 <Text style={[styles.linkText, { color: is_bind_alipay ? Theme.grey : '#407FCF' }]}>
                                     {is_bind_alipay
-                                        ? `已绑定（${Tools.syncGetter('wallet.real_name', user)}）`
+                                        ? `已绑定（${Helper.syncGetter('wallet.real_name', user)}）`
                                         : '去绑定'}
                                 </Text>
                                 <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />

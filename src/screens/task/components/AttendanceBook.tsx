@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, Animated } from 'react-native';
-import { Row, Iconfont } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Tools } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 import { GQL, useMutation, useQuery, useApolloClient } from 'apollo';
 import { useCirculationAnimation } from '@src/common';
 import { app, config } from 'store';
@@ -10,24 +9,13 @@ import { Overlay } from 'teaset';
 import { playVideo } from 'common';
 import SignedReturn from './SignedReturn';
 
-interface Sign {
-    id: any;
-    created_at: string;
-    day: string | number;
-    month: string | number;
-    year: string | number;
-    gold_reward: number;
-    withdraw_lines: number;
-    signed: boolean;
-}
-
 interface SignInReturns {
     id: any;
     gold_reward: string | number;
     contribute_reward: string | number;
 }
 
-const AttendanceBook = (props): JSX.Element => {
+const AttendanceBook = (): JSX.Element => {
     const [boxShadowHeight, setBoxShadowHeight] = useState(150);
     const client = useApolloClient();
 
@@ -51,12 +39,12 @@ const AttendanceBook = (props): JSX.Element => {
     });
 
     const signInData = useMemo(() => {
-        return Tools.syncGetter('signIns', data) || {};
+        return Helper.syncGetter('signIns', data) || {};
     }, [data]);
 
-    const keep_signin_days = Tools.syncGetter('keep_signin_days', signInData);
-    const today_signed = Tools.syncGetter('today_signed', signInData);
-    const signIns = Tools.syncGetter('signs', signInData);
+    const keep_signin_days = Helper.syncGetter('keep_signin_days', signInData);
+    const today_signed = Helper.syncGetter('today_signed', signInData);
+    const signIns = Helper.syncGetter('signs', signInData);
 
     useEffect(() => {
         if (today_signed === false) {
@@ -69,7 +57,7 @@ const AttendanceBook = (props): JSX.Element => {
             if (!today_signed) {
                 try {
                     const result = await createSignIn();
-                    const todayReturns = Tools.syncGetter('data.createSignIn', result);
+                    const todayReturns = Helper.syncGetter('data.createSignIn', result);
                     onSignInSuccess(todayReturns);
                 } catch (e) {
                     const str = e.toString().replace(/Error: GraphQL error: /, '');

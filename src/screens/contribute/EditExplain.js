@@ -10,7 +10,7 @@ import {
     Keyboard,
 } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, CustomTextInput, KeyboardSpacer, Button } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools } from '@src/utils';
+
 import MediaTool from './components/MediaTool';
 import { observer, useQuestionStore } from './store';
 
@@ -43,8 +43,8 @@ export default observer(props => {
                             * 插入图片或者视频
                         </Text>
                         <MediaTool
-                            picture={Tools.syncGetter('picture', explain)}
-                            videoPath={Tools.syncGetter('video.path', explain)}
+                            picture={Helper.syncGetter('picture', explain)}
+                            videoPath={Helper.syncGetter('video.path', explain)}
                             setPicture={() => setExplain({ ...explain, picture: null })}
                             setVideo={() => setExplain({ ...explain, video: null })}
                         />

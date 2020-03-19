@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, ScrollView, AppState } from 'react-nativ
 import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components';
 import { useQuery, GQL } from 'apollo';
 import { app } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH, WPercent, Tools, ISIOS } from 'utils';
+import { SCREEN_WIDTH, WPercent, ISIOS } from 'utils';
 import { bindWechat } from 'common';
 import { DownloadApkIntro } from 'components';
 import { AppUtil } from 'native';
@@ -28,11 +28,11 @@ const WithdrawBody = props => {
         variables: { id: app.me.id },
     });
 
-    let user = Tools.syncGetter('data.user', UserMeansQuery);
+    let user = Helper.syncGetter('data.user', UserMeansQuery);
 
     useEffect(() => {
         if (UserMeansQuery.data && UserMeansQuery.data.user) {
-            setwithdrawInfo(Tools.syncGetter('data.user.withdrawInfo', UserMeansQuery));
+            setwithdrawInfo(Helper.syncGetter('data.user.withdrawInfo', UserMeansQuery));
         }
         const navDidFocusListener = props.navigation.addListener('didFocus', () => {
             UserMeansQuery.refetch();
@@ -134,16 +134,16 @@ const WithdrawBody = props => {
     const renderBindTips = () => {
         let name = '已绑定';
         let action = () => {
-            navigation.navigate('AccountSecurity', { user });
+            Helper.middlewareNavigate('AccountSecurity', { user });
         };
         let playform = '懂得赚';
 
-        if (withdrawType === 'alipay' && !Tools.syncGetter('wallet.bind_platforms.alipay', user)) {
+        if (withdrawType === 'alipay' && !Helper.syncGetter('wallet.bind_platforms.alipay', user)) {
             name = '立即绑定';
-            action = () => Tools.navigate('SettingWithdrawInfo');
+            action = () => Helper.middlewareNavigate('SettingWithdrawInfo');
         }
         if (
-            (withdrawType === 'wechat' && !Tools.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||
+            (withdrawType === 'wechat' && !Helper.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||
             ISIOS
         ) {
             name = '立即绑定';
@@ -251,7 +251,7 @@ const WithdrawBody = props => {
                             <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
                         </Row>
                         <Text style={styles.tips}>
-                            总提现:{Tools.syncGetter('wallet.total_withdraw_amount', user) || 0}（元）
+                            总提现:{Helper.syncGetter('wallet.total_withdraw_amount', user) || 0}（元）
                         </Text>
                     </Row>
                 </View>

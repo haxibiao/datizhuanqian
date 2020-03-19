@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { SafeText, Row, FeedOverlay } from 'components';
-import { PxFit, Theme, ISIOS, Tools } from 'utils';
 import { ad } from 'native';
 import { observer, app, config } from 'store';
 import { GQL, useMutation } from 'apollo';
@@ -43,7 +42,7 @@ export default observer(props => {
                     content: '遇到未知错误，领取失败',
                 });
             } else {
-                const contribute = Tools.syncGetter('data.userReward.contribute', res);
+                const contribute = Helper.syncGetter('data.userReward.contribute', res);
                 // Toast.show({
                 //     content: `恭喜你获得+${contribute}贡献值`,
                 //     duration: 2000,
@@ -122,16 +121,16 @@ export default observer(props => {
             <View style={styles.videoContent}>
                 <Row>
                     <SafeText shadowText={true} style={styles.name}>
-                        @{Tools.syncGetter('user.name', media)}
+                        @{Helper.syncGetter('user.name', media)}
                     </SafeText>
-                    <SafeText shadowText={true} style={styles.time}>{` ${Tools.syncGetter(
+                    <SafeText shadowText={true} style={styles.time}>{` ${Helper.syncGetter(
                         'created_at',
                         media,
                     )}`}</SafeText>
                 </Row>
                 <View>
                     <SafeText shadowText={true} style={styles.body} numberOfLines={3}>
-                        {Tools.syncGetter('description', media)}
+                        {Helper.syncGetter('description', media)}
                     </SafeText>
                 </View>
             </View>

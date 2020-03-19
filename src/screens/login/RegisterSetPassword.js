@@ -3,11 +3,10 @@
  * @Date:   2019-03-27 11:52:27
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Button, PageContainer, SubmitLoading, CustomTextInput, KeyboardSpacer } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, Tools } from '../../utils';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button, PageContainer, CustomTextInput } from '@src/components';
 
-import { Mutation, compose, graphql, GQL } from 'apollo';
+import { compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
 
 import DeviceInfo from 'react-native-device-info';
@@ -72,8 +71,7 @@ class RegisterSetPassword extends Component {
 
     render() {
         const { navigation } = this.props;
-        let { verificationCode, tips, submitting, password } = this.state;
-        let { phone } = navigation.state.params;
+        let { submitting } = this.state;
         return (
             <PageContainer title="设置密码" white submitting={submitting} submitTips="注册中...">
                 <View style={styles.container}>

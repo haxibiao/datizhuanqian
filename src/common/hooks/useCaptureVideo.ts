@@ -5,7 +5,6 @@ import { exceptionCapture } from '../helper';
 import { app } from 'store';
 import { TipsOverlay } from 'components';
 import RewardVideoTipsOverlay from '@src/components/Overlay/RewardVideoTipsOverlay';
-import { Tools } from 'utils';
 
 interface Props {
     client: any;
@@ -38,7 +37,7 @@ export const useCaptureVideo = (props: Props) => {
             },
         });
 
-        switch (Tools.syncGetter('data.user.share_spider_status', result)) {
+        switch (Helper.syncGetter('data.user.share_spider_status', result)) {
             case 0:
                 spiderVideo(path);
                 break;

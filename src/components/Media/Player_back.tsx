@@ -1,14 +1,11 @@
-import React, { Component, useEffect } from 'react';
-import { StyleSheet, View, Text, Animated, Easing, TouchableOpacity, BackHandler } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, BackHandler } from 'react-native';
 import Video from 'react-native-video';
-import { Theme, PxFit, Config, SCREEN_WIDTH, ISAndroid, Tools } from '../../utils';
-import Iconfont from '../Iconfont';
+import { SCREEN_WIDTH, ISAndroid } from '../../utils';
 import VideoStatus from './VideoStatus';
 import VideoControl from './VideoControl';
 
-import { observer, Provider, inject } from 'mobx-react';
-import { config, app } from 'store';
+import { config } from 'store';
 import VideoStore from './VideoStore';
 import Orientation from 'react-native-orientation';
 
@@ -41,7 +38,6 @@ const Player = props => {
 
     let {
         status,
-        orientation,
         paused,
         getVideoRef,
         controlSwitch,

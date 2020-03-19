@@ -1,13 +1,11 @@
-import React, { Component, useState } from 'react';
-import { StyleSheet, View, Text, Image, Linking } from 'react-native';
-import { Theme, SCREEN_WIDTH, PxFit, Tools, ISIOS } from 'utils';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Linking } from 'react-native';
+import { Theme, SCREEN_WIDTH, PxFit, ISIOS } from 'utils';
 
-import { BoxShadow } from 'react-native-shadow';
 import TaskItem from './TaskItem';
 import { playVideo } from 'common';
 import { config, app, observer } from 'store';
 import { NavigationActions } from 'react-navigation';
-import { observable } from 'mobx';
 
 interface Props {
     tasks: Array<object>;
@@ -43,7 +41,7 @@ interface Level {
 }
 
 const TaskType = observer((props: Props) => {
-    const [taskTypeHeight, setTaskTypeHeight] = useState(70);
+    const [, setTaskTypeHeight] = useState(70);
     const { typeName, tasks, userData, setLoading, setUnLoading, navigation } = props;
 
     const handler = (task: Task) => {
@@ -51,7 +49,7 @@ const TaskType = observer((props: Props) => {
         console.log('userData', userData);
         switch (task.type) {
             case 0:
-                Tools.navigate('EditProfile', { user: userData });
+                Helper.middlewareNavigate('EditProfile', { user: userData });
                 break;
             case 1:
                 const resetAction = NavigationActions.navigate({
@@ -59,13 +57,13 @@ const TaskType = observer((props: Props) => {
                 });
                 navigation.dispatch(resetAction);
 
-                // Tools.navigate(task.route);
-                // Tools.navigate('答题');
+                // Helper.middlewareNavigate(task.route);
+                // Helper.middlewareNavigate('答题');
                 //实际需求写法
-                // Tools.navigate(task.route,{...task.params});
+                // Helper.middlewareNavigate(task.route,{...task.params});
                 break;
             case 2:
-                Tools.navigate(task.route, {
+                Helper.middlewareNavigate(task.route, {
                     task: task,
                 });
                 break;
@@ -81,21 +79,21 @@ const TaskType = observer((props: Props) => {
                         content: `${config.taskConfig.chuti.min_level}级之后才可以出题哦`,
                     });
                 } else {
-                    Tools.navigate('Contribute');
+                    Helper.middlewareNavigate('Contribute');
                 }
                 break;
             case 6:
-                Tools.navigate('Share');
+                Helper.middlewareNavigate('Share');
             case 7:
                 if (app.firstReadSpiderVideoTask) {
                     Linking.openURL(ISIOS ? 'itms-apps://itunes.apple.com/app/id1142110895' : 'snssdk1128://');
                 } else {
-                    Tools.navigate('SpiderVideoTask');
+                    Helper.middlewareNavigate('SpiderVideoTask');
                     app.setReadSpiderVideoTask(true);
                 }
             //TODO： 唤起抖音   scheme可能存在一旦更改无法唤起的风险
             default:
-                Tools.navigate(task.route, {
+                Helper.middlewareNavigate(task.route, {
                     task: task,
                 });
                 break;
@@ -143,21 +141,6 @@ const TaskType = observer((props: Props) => {
         return null;
     }
 });
-
-const shadowOpt = {
-    width: SCREEN_WIDTH - PxFit(30),
-    height: PxFit(150),
-    color: '#E8E8E8',
-    border: PxFit(10),
-    radius: PxFit(10),
-    opacity: 0.5,
-    x: 0,
-    y: 0,
-    style: {
-        marginHorizontal: PxFit(15),
-        marginVertical: PxFit(15),
-    },
-};
 
 const styles = StyleSheet.create({
     container: {

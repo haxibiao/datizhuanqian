@@ -1,10 +1,9 @@
-import React, { Component, useContext, useRef, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import { SafeText } from 'components';
 import { exceptionCapture, useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
 import { observer } from 'store';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Tools } from 'utils';
 import _ from 'lodash';
 import { useNavigation } from 'react-navigation-hooks';
 
@@ -12,13 +11,6 @@ const imageSource = {
     liked: require('../../../assets/images/ic_liked.png'),
     unlike: require('../../../assets/images/ic_like.png'),
 };
-
-interface Question {
-    id: number | string;
-    liked: boolean;
-    count_likes: number | string;
-    [key: string]: any;
-}
 
 interface Props {
     [key: string]: any;
@@ -32,7 +24,7 @@ export default observer((props: Props) => {
     const [animation, startAnimation] = useBounceAnimation({ value: 1, toValue: 1.2 });
     const [likeArticle] = useMutation(GQL.toggleLikeMutation, {
         variables: {
-            likable_id: Tools.syncGetter('id', media),
+            likable_id: Helper.syncGetter('id', media),
             likable_type: 'POST',
         },
     });

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Animated, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { Iconfont } from '@src/components';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import OptionItem from './OptionItem';
 import SongOption from './SongOption';
 

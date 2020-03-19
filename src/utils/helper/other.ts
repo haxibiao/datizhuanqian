@@ -110,3 +110,23 @@ export const imageSize = ({ width, height, padding }) => {
     }
     return size;
 };
+
+// response images layout
+export const singleImageResponse = (width: number, height: number, max: number) => {
+    let size = {
+        height: 0,
+        width: 0,
+    };
+    if (width > max || height > max) {
+        if (width >= height) {
+            size.width = max;
+            size.height = Math.round((max * height) / width);
+        } else {
+            size.height = max;
+            size.width = Math.round((max * width) / height);
+        }
+    } else {
+        size = { width, height };
+    }
+    return size;
+};

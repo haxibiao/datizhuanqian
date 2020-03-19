@@ -4,7 +4,7 @@
  */
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT, Tools } from 'utils';
+import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT } from 'utils';
 import { app } from 'store';
 
 function VideoTaskGuidance({ onDismiss }) {
@@ -15,7 +15,7 @@ function VideoTaskGuidance({ onDismiss }) {
             <TouchableWithoutFeedback
                 key={1}
                 onPress={() => {
-                    Tools.navigate('提现');
+                    Helper.middlewareNavigate('提现');
                     setStep(1);
                 }}>
                 <Image style={styles.userReward} source={require('../../assets/images/new_user_reward.png')} />
@@ -23,7 +23,7 @@ function VideoTaskGuidance({ onDismiss }) {
             <TouchableWithoutFeedback
                 key={2}
                 onPress={() => {
-                    Tools.navigate('任务');
+                    Helper.middlewareNavigate('任务');
                     setStep(2);
                 }}>
                 <View style={styles.flexCenter}>

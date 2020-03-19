@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { useNavigation } from 'react-navigation-hooks';
 import { GQL, useQuery, useApolloClient } from 'apollo';
 import { syncGetter, exceptionCapture } from 'common';
@@ -212,7 +212,7 @@ const Participation = props => {
                     <View style={styles.profitList}>
                         <View style={styles.listItem}>
                             <Text style={styles.listItemCount}>
-                                {Tools.NumberFormat(statistics.totalBonusEarnings)}
+                                {Helper.count(statistics.totalBonusEarnings)}
                                 <Text style={styles.listItemUnit}>{` RMB`}</Text>
                             </Text>
                             <Text style={styles.listItemName}>我的收益</Text>
@@ -226,7 +226,7 @@ const Participation = props => {
                         </View>
                         <View style={styles.listItem}>
                             <Text style={styles.listItemCount}>
-                                {Tools.NumberFormat(statistics.perStockPrice) || '???'}
+                                {Helper.count(statistics.perStockPrice) || '???'}
                                 <Text style={styles.listItemUnit}>{` RMB`}</Text>
                             </Text>
                             <Text style={styles.listItemName}>每股收益</Text>

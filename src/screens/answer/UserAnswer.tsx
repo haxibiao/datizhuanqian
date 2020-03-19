@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet, StatusBar, ScrollView, FlatList } from 'rea
 
 import { PageContainer, TouchFeedback, Iconfont, Banner, StatusView, PullChooser, Player } from 'components';
 import { GQL, useQuery } from 'apollo';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Tools, ISIOS } from 'utils';
+import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS } from 'utils';
 import { app, config, observer } from 'store';
 import { Overlay } from 'teaset';
 
@@ -146,7 +146,7 @@ const AnswerScreen = observer((props: Props) => {
             QuestionStore.isLoadMore = true;
             const [error, result] = await exceptionCapture(questionsQuery);
             console.log('result', result, error);
-            const questionsSource = Tools.syncGetter('data.user.questions', result);
+            const questionsSource = Helper.syncGetter('data.user.questions', result);
 
             if (error) {
                 QuestionStore.isError = true;
@@ -417,11 +417,11 @@ const AnswerScreen = observer((props: Props) => {
                         <View style={{ marginHorizontal: PxFit(Theme.itemSpace), zIndex: -1 }}>
                             <AnswerBar isShow={submited} question={question} navigation={props.navigation} />
 
-                            {submited && <VideoExplain video={Tools.syncGetter('explanation.video', question)} />}
+                            {submited && <VideoExplain video={Helper.syncGetter('explanation.video', question)} />}
                             {submited && (
                                 <Explain
-                                    text={Tools.syncGetter('explanation.content', question)}
-                                    picture={Tools.syncGetter('explanation.images.0.path', question)}
+                                    text={Helper.syncGetter('explanation.content', question)}
+                                    picture={Helper.syncGetter('explanation.images.0.path', question)}
                                 />
                             )}
                         </View>

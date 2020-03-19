@@ -5,7 +5,7 @@ import { Avatar, Iconfont, SafeText, MoreOperation } from 'components';
 import { observer, app, config } from 'store';
 import { useApolloClient } from '@src/apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { PxFit, Theme, Tools } from 'utils';
+
 import Like from './Like';
 import VideoStore from '../VideoStore';
 import { useNavigation } from 'react-navigation-hooks';
@@ -18,7 +18,7 @@ export default observer(props => {
     const showMoreOperation = useCallback(() => {
         if (!app.firstOpenVideoOperation) {
             app.setOpenVideoOperation(true);
-            Tools.navigate('VideoPost', { medium: [VideoStore.guidanceVideo], isPost: true });
+            Helper.middlewareNavigate('VideoPost', { medium: [VideoStore.guidanceVideo], isPost: true });
         }
         let overlayRef;
         const MoreOperationOverlay = (
@@ -31,8 +31,8 @@ export default observer(props => {
                     <MoreOperation
                         onPressIn={() => overlayRef.close()}
                         target={media}
-                        downloadUrl={Tools.syncGetter('video.url', media)}
-                        downloadUrlTitle={Tools.syncGetter('body', media)}
+                        downloadUrl={Helper.syncGetter('video.url', media)}
+                        downloadUrlTitle={Helper.syncGetter('body', media)}
                         options={[!config.disableAd ? '采集视频' : '拉黑', '不感兴趣', '举报']}
                     />
                 </ApolloProvider>
@@ -63,7 +63,7 @@ export default observer(props => {
                 <TouchableOpacity onPress={VideoStore.showComment}>
                     <Image source={require('@src/assets/images/comment_item.png')} style={styles.imageStyle} />
                     <SafeText style={styles.countText} shadowText={true}>
-                        {Tools.NumberFormat(Tools.syncGetter('count_comments', media))}
+                        {Helper.count(Helper.syncGetter('count_comments', media))}
                     </SafeText>
                 </TouchableOpacity>
             </View>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { StyleSheet, ImageBackground, View, Text, ScrollView, BackHandler } from 'react-native';
 import { PageContainer, Row } from 'components';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app } from 'store';
 import RepeatCountDown from './components/RepeatCountDown';
 import QuestionBody from './components/QuestionBody';
@@ -18,7 +18,7 @@ import { playSound } from './playSound';
 const width = SCREEN_WIDTH / 3;
 const height = ((SCREEN_WIDTH / 3) * 123) / 221;
 
-const compete = observer(props => {
+const compete = observer(() => {
     const navigation = useNavigation();
     const game = navigation.getParam('game');
     const store = navigation.getParam('store');
@@ -27,13 +27,13 @@ const compete = observer(props => {
     const [index, setIndex] = useState(0); // 题目下标值
     const [answerStatus, setAnswerStatus] = useState('');
 
-    const { data, error } = useQuery(GQL.GameQuestionsQuery, {
+    const { data } = useQuery(GQL.GameQuestionsQuery, {
         variables: {
             game_id: game.id,
         },
     });
 
-    const gameQuestions = useMemo(() => Tools.syncGetter('gameQuestions', data), [data]);
+    const gameQuestions = useMemo(() => Helper.syncGetter('gameQuestions', data), [data]);
 
     const selectOption = useCallback(
         (value: any) => {

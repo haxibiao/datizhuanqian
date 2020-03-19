@@ -1,8 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
-import { TouchFeedback, Row, VideoMark } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH, Tools } from '@src/utils';
-import { observer, useQuestionStore } from '@src/screens/answer/store';
+import { VideoMark } from '@src/components';
+import { SCREEN_WIDTH } from '@src/utils';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default ({ explanation, audit }) => {
@@ -10,9 +9,9 @@ export default ({ explanation, audit }) => {
 
     const explain = useMemo(() => {
         const result = {};
-        result.video = Tools.syncGetter('video', explanation);
-        result.text = Tools.syncGetter('content', explanation);
-        result.image = Tools.syncGetter('images.0.path', explanation);
+        result.video = Helper.syncGetter('video', explanation);
+        result.text = Helper.syncGetter('content', explanation);
+        result.image = Helper.syncGetter('images.0.path', explanation);
         return result;
     }, [explanation]);
 
@@ -53,7 +52,7 @@ export default ({ explanation, audit }) => {
             {explain.video && (
                 <View style={styles.mediaContainer}>
                     <TouchableWithoutFeedback
-                        onPress={() => Tools.navigate('VideoExplanation', { video: explain.video })}>
+                        onPress={() => Helper.middlewareNavigate('VideoExplanation', { video: explain.video })}>
                         <View style={styles.imageCover}>
                             <Image source={require('@src/assets/images/video_explain.jpg')} style={styles.cover} />
                             <VideoMark size={PxFit(60)} />

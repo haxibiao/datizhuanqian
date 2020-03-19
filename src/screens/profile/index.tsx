@@ -94,7 +94,7 @@ const index = observer(props => {
                                     </SafeText>
                                     <Text style={styles.introduction} numberOfLines={1}>
                                         {login
-                                            ? Tools.syncGetter('profile.introduction', user) || '快去完善个人资料吧'
+                                            ? Helper.syncGetter('profile.introduction', user) || '快去完善个人资料吧'
                                             : '欢迎来到' + Config.AppName}
                                     </Text>
                                 </View>

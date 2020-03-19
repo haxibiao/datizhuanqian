@@ -4,10 +4,9 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, Keyboard, Animated } from 'react-native';
-import { Theme, PxFit, Tools, SCREEN_WIDTH } from 'utils';
-import { Iconfont, Row, TouchFeedback, Avatar } from 'components';
-import { ad } from 'native';
+import { StyleSheet, View, Text } from 'react-native';
+import { Theme, PxFit } from 'utils';
+import { Row, TouchFeedback, Avatar } from 'components';
 
 class AnswerBar extends Component {
     renderUsers = users => {
@@ -38,17 +37,15 @@ class AnswerBar extends Component {
 
     render() {
         const { question, isShow } = this.props;
-        const { answer_logs, correct_count, count } = question;
-        if (Tools.NumberFormat(count) == 0 || !isShow) {
+        const { correct_count, count } = question;
+        if (Helper.count(count) == 0 || !isShow) {
             return null;
         }
         return (
             <View style={styles.shadowView} elevation={20}>
                 <View style={styles.statisticsItem}>
                     <Text style={styles.itemName}>作答人数</Text>
-                    <Text style={{ fontSize: PxFit(14), color: Theme.secondaryColor }}>
-                        {Tools.NumberFormat(count)}
-                    </Text>
+                    <Text style={{ fontSize: PxFit(14), color: Theme.secondaryColor }}>{Helper.count(count)}</Text>
                 </View>
                 <View style={styles.statisticsItem}>
                     <Text style={styles.itemName}>正确率</Text>

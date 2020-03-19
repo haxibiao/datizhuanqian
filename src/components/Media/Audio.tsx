@@ -4,7 +4,7 @@ import Iconfont from '../Iconfont';
 import WaveView from '../Container/WaveView';
 import GradientView from '../Basics/GradientView';
 import LoadingOverlay from '../Overlay/LoadingOverlay';
-import { Theme, PxFit, Tools } from '../../utils';
+
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Sound from 'react-native-sound';
 import * as Progress from 'react-native-progress';
@@ -256,7 +256,7 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
             try {
                 const audioObj = await uploadAudio(audioFilePath);
                 console.log('audioObj :', audioObj);
-                if (Tools.syncGetter('data.id', audioObj)) {
+                if (Helper.syncGetter('data.id', audioObj)) {
                     // path: 本地音频路径  key：时间戳   id：上传完成的id
                     completeRecording({ path: audioFilePath, key: new Date().getTime(), id: audioObj.data.id });
                     deleteAudio();
@@ -356,7 +356,7 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
 // 语音播放
 export const Player = ({ audio, style, fontSize = PxFit(14) }) => {
     const [status, setStatus] = useState('paused');
-    const [duration, setDuration] = useState(Tools.syncGetter('duration', audio) || 0);
+    const [duration, setDuration] = useState(Helper.syncGetter('duration', audio) || 0);
     const [currentTime, setCurrentTime] = useState(0);
     const whoosh = useRef();
     const currentStatus = useRef('paused');

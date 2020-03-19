@@ -5,8 +5,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Tools } from 'utils';
+import { StyleSheet, View } from 'react-native';
+import { SCREEN_WIDTH, ISIOS } from 'utils';
 import { KeyboardSpacer } from 'components';
 
 import Modal from 'react-native-modal';
@@ -61,7 +61,5 @@ class InputModal extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});
 
 export default InputModal;

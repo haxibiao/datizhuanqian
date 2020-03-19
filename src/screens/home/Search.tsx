@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { PageContainer, Iconfont, CustomTextInput, ListFooter } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, NAVBAR_HEIGHT, Tools } from 'utils';
+import { Theme, PxFit, NAVBAR_HEIGHT } from 'utils';
 import { syncGetter, exceptionCapture } from 'common';
-import { app, storage, keys } from '@src/store';
-import { useApolloClient, useQuery, GQL } from 'apollo';
+import { storage, keys } from '@src/store';
+import { useApolloClient, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import SearchRecord from './components/SearchRecord';
 import CategoryItem from './components/CategoryItem';
@@ -50,7 +50,7 @@ const Search = () => {
 
     const onChangeText = useCallback(
         text => {
-            setKeyword(prv => {
+            setKeyword(() => {
                 setCategories();
                 searchCategories(text);
                 return text;
@@ -124,7 +124,7 @@ const Search = () => {
                         contentContainerStyle={styles.contentStyle}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-                        renderItem={({ item, index }) => <CategoryItem category={item} />}
+                        renderItem={({ item }) => <CategoryItem category={item} />}
                         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
                         ListHeaderComponent={() => {
                             if (Array.isArray(categories)) {

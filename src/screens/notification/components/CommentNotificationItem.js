@@ -5,8 +5,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Iconfont, UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
-import { Theme, PxFit, Tools } from 'utils';
+import { UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
+import { Theme, PxFit } from 'utils';
 
 class CommentNotification extends Component {
     constructor(props) {
@@ -19,19 +19,19 @@ class CommentNotification extends Component {
             case 'FEEDBACK_COMMENT':
                 this.content = {
                     tips: '回复了我的反馈',
-                    body: Tools.syncGetter('comment.feedback.title', notification),
+                    body: Helper.syncGetter('comment.feedback.title', notification),
                 };
                 break;
             case 'QUESTION_COMMENT':
                 this.content = {
                     tips: '评论了我的出题',
-                    body: Tools.syncGetter('comment.question.description', notification),
+                    body: Helper.syncGetter('comment.question.description', notification),
                 };
                 break;
             case 'REPLY_COMMENT':
                 this.content = {
                     tips: '回复了我的评论',
-                    body: Tools.syncGetter('comment.parent_comment.content', notification),
+                    body: Helper.syncGetter('comment.parent_comment.content', notification),
                 };
                 break;
         }
@@ -60,7 +60,7 @@ class CommentNotification extends Component {
                             });
                         } else if (notification.comment.feedback) {
                             navigation.navigate('FeedbackDetails', {
-                                feedback_id: Tools.syncGetter('comment.feedback.id', notification),
+                                feedback_id: Helper.syncGetter('comment.feedback.id', notification),
                             });
                         } else if (notification.comment.question) {
                             navigation.navigate('Question', {
@@ -73,11 +73,11 @@ class CommentNotification extends Component {
                         <TouchFeedback
                             style={styles.header}
                             onPress={() =>
-                                navigation.navigate('User', { user: Tools.syncGetter('comment.user', notification) })
+                                navigation.navigate('User', { user: Helper.syncGetter('comment.user', notification) })
                             }>
                             <Avatar
-                                source={{ uri: Tools.syncGetter('comment.user.avatar', notification) }}
-                                userId={Tools.syncGetter('comment.user.id', notification)}
+                                source={{ uri: Helper.syncGetter('comment.user.avatar', notification) }}
+                                userId={Helper.syncGetter('comment.user.id', notification)}
                                 size={34}
                             />
                             <View style={styles.user}>
@@ -86,14 +86,14 @@ class CommentNotification extends Component {
                                         style={{
                                             color: Theme.black,
                                         }}>
-                                        {Tools.syncGetter('comment.user.name', notification)}
+                                        {Helper.syncGetter('comment.user.name', notification)}
                                     </Text>
-                                    <UserTitle user={Tools.syncGetter('comment.user', notification)} />
-                                    <GenderLabel user={Tools.syncGetter('comment.user', notification)} />
+                                    <UserTitle user={Helper.syncGetter('comment.user', notification)} />
+                                    <GenderLabel user={Helper.syncGetter('comment.user', notification)} />
                                 </View>
 
                                 <Text style={styles.commenTime}>
-                                    {Tools.syncGetter('comment.time_ago', notification)} {this.content.tips}
+                                    {Helper.syncGetter('comment.time_ago', notification)} {this.content.tips}
                                 </Text>
                             </View>
                         </TouchFeedback>
@@ -107,7 +107,7 @@ class CommentNotification extends Component {
                         </TouchFeedback>
                     </View>
                     <View style={styles.center}>
-                        <Text style={styles.content}>{Tools.syncGetter('comment.content', notification)}</Text>
+                        <Text style={styles.content}>{Helper.syncGetter('comment.content', notification)}</Text>
                     </View>
                     <View style={styles.bottom}>
                         <Text>{this.content.body}</Text>

@@ -4,13 +4,11 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, ImageBackground, Animated, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 
-import { Player, overlayView, TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont } from 'components';
-import { SCREEN_WIDTH, Theme, PxFit, Tools } from 'utils';
+import { TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont } from 'components';
+import { SCREEN_WIDTH, Theme, PxFit } from 'utils';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-let VIDEO_WIDTH = SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2;
 
 class QuestionBody extends Component {
     constructor(props) {
@@ -49,7 +47,7 @@ class QuestionBody extends Component {
 
     showImage = image => {
         let { width, height } = image;
-        let style = Tools.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(60));
+        let style = Helper.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(60));
         return (
             <TouchFeedback
                 style={{ marginTop: PxFit(Theme.itemSpace), overflow: 'hidden' }}
@@ -64,7 +62,7 @@ class QuestionBody extends Component {
 
     render() {
         const {
-            question: { description, image, video, answer, gold },
+            question: { description, image, answer, gold },
             audit,
         } = this.props;
         return (

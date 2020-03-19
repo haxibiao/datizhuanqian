@@ -1,7 +1,7 @@
-import React, { useMemo, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { TouchFeedback, Avatar, Iconfont } from '@src/components';
-import { Theme, PxFit, Tools, SCREEN_HEIGHT } from '@src/utils';
+import React, { useMemo, useCallback } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Iconfont } from '@src/components';
+import { Theme, PxFit, SCREEN_HEIGHT } from '@src/utils';
 import { observer } from '@src/screens/answer/store';
 import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
@@ -64,7 +64,7 @@ export default observer(({ question, category }) => {
             </View>
             {question.count > 1 && (
                 <View style={styles.answerCount}>
-                    <Text style={styles.countText}>{`${Tools.NumberFormat(
+                    <Text style={styles.countText}>{`${Helper.count(
                         question.count,
                     )}人答过，答对率为${correctRate}`}</Text>
 

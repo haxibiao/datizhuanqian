@@ -1,23 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, FlatList, Image, Animated } from 'react-native';
-import {
-    PageContainer,
-    TouchFeedback,
-    Iconfont,
-    Row,
-    ListItem,
-    CustomSwitch,
-    ItemSeparator,
-    PopOverlay,
-    CustomRefreshControl,
-    ListFooter,
-    StatusView,
-    PullChooser,
-} from 'components';
-import { Theme, PxFit, Tools, SCREEN_WIDTH, NAVBAR_HEIGHT } from 'utils';
+import React, { useState } from 'react';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { PageContainer, CustomRefreshControl, ListFooter, StatusView } from 'components';
+import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
-import { app } from 'store';
-import { Query, withApollo, compose, useQuery, GQL } from 'apollo';
+import { useQuery, GQL } from 'apollo';
 
 import UserProfile from './UserProfile';
 import PostItem from '../../post/components/PostItem';
@@ -40,7 +26,7 @@ const Posts = props => {
         return <Placeholder />;
     }
 
-    const posts = Tools.syncGetter('posts', data) || [];
+    const posts = Helper.syncGetter('posts', data) || [];
 
     return (
         <PageContainer refetch={refetch} error={error} hiddenNavBar>

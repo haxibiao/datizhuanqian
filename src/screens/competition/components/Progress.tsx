@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Text } from 'react-native';
-import { PageContainer, Avatar, Row } from 'components';
-import { Theme, SCREEN_WIDTH, Tools, PxFit } from 'utils';
-import { observer, app } from 'store';
-import CountDown from './components/CountDown';
-import QuestionBody from './components/QuestionBody';
-import { useCountDown } from 'common';
-import { useQuery, GQL } from 'apollo';
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
 interface Props {
     questions: Array<object>;

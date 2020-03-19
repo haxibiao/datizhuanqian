@@ -6,23 +6,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { Theme, PxFit, Tools } from 'utils';
+import { Avatar, UserTitle, GenderLabel, FollowButton } from 'components';
 
-import { Button, Avatar, UserTitle, Iconfont, GenderLabel, FollowButton } from 'components';
-
-import { Query, withApollo, GQL, compose, graphql } from 'apollo';
-import { app } from 'store';
+import { GQL, compose, graphql } from 'apollo';
 
 class FansNotificationItem extends Component {
     constructor(props) {
         super(props);
-        const { follow } = this.props;
     }
     render() {
         const { follow, navigation } = this.props;
 
         if (!follow) return null;
-        let user = Tools.syncGetter('user', follow);
+        let user = Helper.syncGetter('user', follow);
         let created_at = follow.created_at.substr(5, 5);
 
         return (
@@ -32,15 +28,15 @@ class FansNotificationItem extends Component {
                 onPress={() => navigation.navigate('User', { user })}>
                 <View style={styles.left}>
                     <Avatar
-                        source={{ uri: Tools.syncGetter('avatar', user) }}
-                        userId={Tools.syncGetter('id', user)}
+                        source={{ uri: Helper.syncGetter('avatar', user) }}
+                        userId={Helper.syncGetter('id', user)}
                         size={48}
                     />
                     <View style={styles.leftUserInfo}>
                         <View style={styles.userInfoTop}>
                             <View style={{ flexShrink: 1 }}>
                                 <Text style={{ color: Theme.black }} numberOfLines={1}>
-                                    {Tools.syncGetter('name', user)}
+                                    {Helper.syncGetter('name', user)}
                                 </Text>
                             </View>
                             <UserTitle user={user} />
@@ -51,8 +47,8 @@ class FansNotificationItem extends Component {
                 </View>
 
                 <FollowButton
-                    id={Tools.syncGetter('id', user)}
-                    followedStatus={Tools.syncGetter('followed_user_status', user)}
+                    id={Helper.syncGetter('id', user)}
+                    followedStatus={Helper.syncGetter('followed_user_status', user)}
                     style={{
                         width: PxFit(70),
                         height: PxFit(30),

@@ -94,7 +94,7 @@ export const show = (props: Props) => {
                             onPress={() => {
                                 hide();
                                 if (rewardVideo) {
-                                    Tools.navigate('BillingRecord', { initialPage: 1 });
+                                    Helper.middlewareNavigate('BillingRecord', { initialPage: 1 });
                                 } else {
                                     playVideo({ type });
                                 }

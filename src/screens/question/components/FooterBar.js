@@ -5,11 +5,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableWithoutFeedback, Text, Image, Animated } from 'react-native';
-import { Player, TouchFeedback, Iconfont, Button } from 'components';
-import { Theme, SCREEN_WIDTH, PxFit, Tools } from 'utils';
+import { StyleSheet, View, TouchableWithoutFeedback, Text, Animated } from 'react-native';
+import { TouchFeedback, Iconfont } from 'components';
+import { Theme, PxFit } from 'utils';
 
-import { Mutation, compose, graphql, GQL } from 'apollo';
+import { compose, graphql, GQL } from 'apollo';
 
 class FooterBar extends Component {
     constructor(props) {
@@ -81,7 +81,7 @@ class FooterBar extends Component {
     };
 
     render() {
-        let { navigation, question, showComment, oSubmit, isOwn } = this.props;
+        let { question, showComment, oSubmit, isOwn } = this.props;
         let { favorited, liked, count_likes, count_comments } = this.state;
         if (!isOwn && question.status !== 1) {
             return null;
@@ -115,7 +115,8 @@ class FooterBar extends Component {
                                 <Iconfont name="message" size={PxFit(18)} color={Theme.defaultTextColor} />
                             </View>
                             <Text style={styles.itemName}>
-                                评论{Tools.NumberFormat(count_comments) > 0 && ' ' + Tools.NumberFormat(count_comments)}
+                                评论
+                                {Helper.count(count_comments) > 0 && ' ' + Helper.count(count_comments)}
                             </Text>
                         </TouchFeedback>
                         <TouchableWithoutFeedback onPress={__.throttle(this.likeQuestion, 400)}>
@@ -132,7 +133,7 @@ class FooterBar extends Component {
                                         styles.itemName,
                                         { color: liked ? Theme.primaryColor : Theme.defaultTextColor },
                                     ]}>
-                                    点赞{Tools.NumberFormat(count_likes) > 0 && ' ' + Tools.NumberFormat(count_likes)}
+                                    点赞{Helper.count(count_likes) > 0 && ' ' + Helper.count(count_likes)}
                                 </Text>
                             </Animated.View>
                         </TouchableWithoutFeedback>

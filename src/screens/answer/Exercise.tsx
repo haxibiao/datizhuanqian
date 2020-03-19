@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { DeviceEventEmitter, StyleSheet, View, Text } from 'react-native';
 import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
-import { Theme, PxFit, Tools, ISIOS } from '@src/utils';
+import { Theme, PxFit, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
 import { ad } from '@app/native';
@@ -41,7 +41,7 @@ export default observer(() => {
         variables: { variables: { id: app.me.id } },
     });
 
-    const user = useMemo(() => Tools.syncGetter('user', data), [data]);
+    const user = useMemo(() => Helper.syncGetter('user', data), [data]);
 
     // 加载广告缓存
     const loadAd = useCallback(() => {
@@ -63,7 +63,7 @@ export default observer(() => {
                 fetchPolicy: 'network-only',
             });
 
-            const resource = Tools.syncGetter('data.questions', result);
+            const resource = Helper.syncGetter('data.questions', result);
 
             if (Array.isArray(resource) && resource.length > 0) {
                 questions.current = resource;
@@ -107,8 +107,8 @@ export default observer(() => {
 
     // 提现提示
     const withdrawTips = useCallback(() => {
-        if (Tools.syncGetter('gold', user) >= 600 && !app.withdrawTips) {
-            if (Tools.syncGetter('wallet.total_withdraw_amount', user) <= 0 || !Tools.syncGetter('wallet', user)) {
+        if (Helper.syncGetter('gold', user) >= 600 && !app.withdrawTips) {
+            if (Helper.syncGetter('wallet.total_withdraw_amount', user) <= 0 || !Helper.syncGetter('wallet', user)) {
                 let overlayViewRef;
                 const overlayView = (
                     <Overlay.View animated ref={ref => (overlayViewRef = ref)}>
@@ -150,7 +150,7 @@ export default observer(() => {
         fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + app.me.token)
             .then(response => response.json())
             .then(result => {
-                setMinLevel(Tools.syncGetter('chuti.min_level', result));
+                setMinLevel(Helper.syncGetter('chuti.min_level', result));
             })
             .catch(err => {
                 console.warn('加载task config err', err);
