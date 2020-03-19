@@ -6553,6 +6553,11 @@ react-native-marquee-ab@^1.2.6:
   resolved "https://registry.npm.taobao.org/react-native-marquee-ab/download/react-native-marquee-ab-1.2.6.tgz#5bbbed6f48894d84926210b68453f815b7d38380"
   integrity sha1-W7vtb0iJTYSSYhC2hFP4FbfTg4A=
 
+react-native-matomo@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npm.taobao.org/react-native-matomo/download/react-native-matomo-0.1.1.tgz#399331f3b76f3afa5a01363d62aa1a7db6f11356"
+  integrity sha1-OZMx87dvOvpaATY9YqoafbbxE1Y=
+
 react-native-modal@^11.3.1:
   version "11.3.1"
   resolved "https://registry.npm.taobao.org/react-native-modal/download/react-native-modal-11.3.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-native-modal%2Fdownload%2Freact-native-modal-11.3.1.tgz#9f67728b36fdc299f97d3da1d131190a0337b89b"

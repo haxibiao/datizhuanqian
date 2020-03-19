@@ -10,6 +10,8 @@ import service from 'service';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
 
+import Matomo from 'react-native-matomo';
+
 const App = () => {
     const [responseText, setResponseText] = useState('');
     const [serverMaintenance, setServerMaintenance] = useState();
@@ -24,7 +26,7 @@ const App = () => {
         // 信息流广告先预加载，提速第一次签到时显示的速度
         ad.AdManager.loadFeedAd();
         // 获取广告开放状态
-        service.enableAdvert((data: { disable: { [x: string]: any; }; }) => {
+        service.enableAdvert((data: { disable: { [x: string]: any } }) => {
             // 只针对华为检测是否开启开屏广告 （做请求后再加载开屏广告首屏会先露出）
             if (Config.AppStore === 'huawei' && !data.disable[Config.AppStore]) {
                 ad.Splash.loadSplashAd();
@@ -49,14 +51,21 @@ const App = () => {
         //获取手机号
         readPhoneState();
         //加载激励视频缓存
-        ad.RewardVideo.loadAd().then(() => { });
+        ad.RewardVideo.loadAd().then(() => {});
+
+        Matomo.initTracker('http://matomo.haxibiao.com/index.php', 1);
+        // Matomo.trackScreen('Home', '首页');
+        // Matomo.trackScreen('Profile', '我的');
+        // Matomo.setAppOptOut(true);
+        console.log('Matomo :', Matomo);
+        // Matomo.setUserId('123e4567-e89b-12d3-a456-426655440000');
     }, []);
 
     const checkServer = () => {
         let { token } = app.me;
 
         //根据不同的用户返回503，可以用来封掉刷子账号在机器上的无效操作
-        fetch(Config.ServerRoot + "/api/user?api_token=" + token)
+        fetch(Config.ServerRoot + '/api/user?api_token=' + token)
             .then(response => {
                 if (response.status === 503) {
                     setServerMaintenance(response);

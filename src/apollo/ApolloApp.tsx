@@ -17,6 +17,8 @@ import AppRouter from '@src/routers';
 
 import { useCaptureVideo } from '@src/common';
 
+import Matomo from 'react-native-matomo';
+
 export default observer(props => {
     const { checkServer, navigation } = props;
 
@@ -93,6 +95,10 @@ export default observer(props => {
 
     useEffect(() => {
         mountWebSocket(app.me);
+        console.log('app.me :', app.me);
+        if (app.me && app.me.id) {
+            Matomo.setUserId(app.me.id);
+        }
     }, [app.me]);
 
     return (
