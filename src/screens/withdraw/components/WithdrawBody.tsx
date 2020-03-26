@@ -304,7 +304,7 @@ const WithdrawBody = observer(props => {
 const withdrawData = [
     {
         tips: '秒到账',
-        amount: 1,
+        amount: 0.5,
         description: '新人无门槛',
         fontColor: '#FFA200',
         bgColor: Theme.themeRed,
