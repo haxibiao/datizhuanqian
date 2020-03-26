@@ -327,7 +327,6 @@ const AnswerScreen = observer((props: Props) => {
     };
 
     const showOptions = () => {
-        console.log('data :', data);
         ISIOS
             ? PullChooser.show([
                   {

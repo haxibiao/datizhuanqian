@@ -9,12 +9,13 @@ import { Theme, SCREEN_WIDTH, PxFit } from '../../utils';
 
 import Iconfont from '../Iconfont';
 
-import { app } from 'store';
+import { app, observer } from 'store';
 
 import { GQL, compose, graphql } from 'apollo';
 
 import { Overlay } from 'teaset';
 
+@observer
 class Banner extends Component {
     constructor(props) {
         super(props);
@@ -37,9 +38,16 @@ class Banner extends Component {
     render() {
         const { data } = this.props;
 
-        const { error, user } = data;
-        if (error) return null;
-        if (!(data && data.user)) return null;
+        const { error, loading } = data;
+        let user = data.user;
+        if (!user) {
+            if (app.userCache) {
+                user = app.userCache;
+            } else {
+                return null;
+            }
+        }
+
         return (
             <View style={styles.container}>
                 <View style={styles.rowItem}>

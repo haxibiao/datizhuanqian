@@ -15,7 +15,6 @@ const MoreOperation = props => {
             notlike_id: target.user.id,
         },
         onCompleted: data => {
-            console.log('data', data);
             Toast.show({
                 content: '操作成功，将减少此类型内容的推荐',
             });

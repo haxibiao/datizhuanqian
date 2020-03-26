@@ -10,7 +10,7 @@ import TagsPlaceholder from './components/TagsPlaceholder';
 import ListHeader from './components/ListHeader';
 import TagItem from './components/TagItem';
 
-const TagList = props => {
+const TagList = observer(props => {
     const { tag } = props;
     const flag = useRef(false);
     const hasMoreTags = useRef(true);
@@ -46,12 +46,12 @@ const TagList = props => {
             }
         } else if (categories.length > 0) {
             return categories;
-        } else if ((!loading || error) && app.tagListData[tag.id]) {
+        } else if ((loading || error) && app.tagListData[tag.id]) {
             return app.tagListData[tag.id];
         } else {
             return [];
         }
-    }, [tags, categories, tag, error, loading]);
+    }, [tags, categories, tag, error, loading, app.tagListData]);
 
     useEffect(() => {
         if (listData.length > 0) {
@@ -132,7 +132,7 @@ const TagList = props => {
             showsVerticalScrollIndicator={false}
         />
     );
-};
+});
 
 const styles = StyleSheet.create({
     contentStyle: {

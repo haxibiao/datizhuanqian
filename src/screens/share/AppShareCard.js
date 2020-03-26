@@ -178,7 +178,6 @@ class ShareOverlay {
         fetch(Config.ServerRoot + '/api/app/config/wechat-mg-share-config?api_token=' + user.token)
             .then(response => response.json())
             .then(data => {
-                console.log('data', data);
                 WeChat.shareMiniProgram({
                     title: '分享好友赚钱',
                     miniprogramType: data.miniprogramType,

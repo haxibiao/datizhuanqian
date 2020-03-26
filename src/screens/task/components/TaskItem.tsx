@@ -125,7 +125,6 @@ const TaskItem = (props: Props) => {
                 refetchQueries: refetchQuery,
             })
             .then((data: any) => {
-                console.log('data :', data);
                 Toast.show({
                     content: '任务完成',
                 });

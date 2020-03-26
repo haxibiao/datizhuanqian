@@ -206,6 +206,7 @@ class app {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
             this.tagsCache = await storage.getItem(keys.tagsCache);
+
             if (Array.isArray(this.tagsCache)) {
                 this.tagsCache.forEach(async tag => {
                     this.tagListData[tag.id] = await storage.getItem(keys.tagListCache + '.' + tag.id);

@@ -240,7 +240,6 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
             fetch('http://video.datizhuanqian.com/api/audio', config)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('data', data);
                     resolve(data);
                 })
                 .catch(err => {

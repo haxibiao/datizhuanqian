@@ -1,7 +1,7 @@
 export { observer } from 'mobx-react';
 
-import app from './app';
-import config from './config';
+import appStore from './appStore';
+import userStore from './userStore';
 import { keys, storage } from './localStorage';
 
-export { app, config, storage, keys };
+export { appStore, userStore, storage, keys };

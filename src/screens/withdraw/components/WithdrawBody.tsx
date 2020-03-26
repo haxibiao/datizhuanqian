@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, AppState } from 'react-native';
 import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components';
 import { useQuery, GQL } from 'apollo';
-import { app } from 'store';
+import { app, observer } from 'store';
 import { SCREEN_WIDTH, WPercent, ISIOS } from 'utils';
 import { bindWechat } from 'common';
 import { DownloadApkIntro } from 'components';
@@ -15,7 +15,7 @@ import DeviceInfo from 'react-native-device-info';
 const SystemVersion = DeviceInfo.getSystemVersion();
 const Brand = DeviceInfo.getBrand();
 
-const WithdrawBody = props => {
+const WithdrawBody = observer(props => {
     const { navigation } = props;
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
@@ -51,7 +51,6 @@ const WithdrawBody = props => {
                     }
                 });
                 AppUtil.CheckApkExist('com.damei', (data: any) => {
-                    console.log('data :', data);
                     if (data) {
                         setInstallDM(true);
                     }
@@ -300,7 +299,7 @@ const WithdrawBody = props => {
             </View>
         </ScrollView>
     );
-};
+});
 
 const withdrawData = [
     {

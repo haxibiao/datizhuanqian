@@ -95,7 +95,6 @@ export default observer(props => {
 
     useEffect(() => {
         mountWebSocket(app.me);
-        console.log('app.me :', app.me);
         if (app.me && app.me.id) {
             Matomo.setUserId(app.me.id);
         }

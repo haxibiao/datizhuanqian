@@ -102,12 +102,6 @@ const TaskType = observer((props: Props) => {
 
     if (tasks && tasks.length > 0) {
         return (
-            // <BoxShadow
-            //     setting={Object.assign({}, shadowOpt, {
-            //         height: taskTypeHeight,
-            //     })}>
-
-            // </BoxShadow>
             <View
                 style={[styles.container]}
                 onLayout={event => {
@@ -115,12 +109,10 @@ const TaskType = observer((props: Props) => {
                 }}>
                 <View style={styles.header}>
                     <Text style={styles.text}>{typeName}</Text>
-                    {/*    <View style={styles.badge} /> */}
                 </View>
-
                 {tasks.map((task, index) => {
                     // task status == 1 的时候展示任务
-                    if (task.status > 0) {
+                    if (task.status > 0 || task.status == null) {
                         return (
                             <TaskItem
                                 key={index}

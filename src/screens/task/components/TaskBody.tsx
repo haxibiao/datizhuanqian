@@ -4,14 +4,14 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { SubmitLoading, beginnerGuidance, TaskGuidance } from 'components';
 import { ISIOS, PxFit, iPhone11 } from 'utils';
 import { GQL, useQuery } from 'apollo';
-import { app, config } from 'store';
+import { app, config, observer } from 'store';
 
 import service from 'service';
 
 import AttendanceBook from './AttendanceBook';
 import TaskType from './TaskType';
 
-const TaskBody = props => {
+const TaskBody = observer(props => {
     const [userTasks, setUserTasks] = useState();
     const [isVisible, setIsVisible] = useState(false);
 
@@ -33,8 +33,6 @@ const TaskBody = props => {
     }, []);
 
     useEffect(() => {
-        // 构建tasklist
-        constructTask();
         // 更新缓存
         if (TasksQuery && TasksQuery.data && TasksQuery.data.tasks) {
             app.updateTaskCache(TasksQuery.data.tasks);
@@ -54,10 +52,15 @@ const TaskBody = props => {
         };
     }, [TasksQuery.loading, TasksQuery.refetch, loading]);
 
+    useEffect(() => {
+        constructTask();
+    }, [TasksQuery, app.taskCache]);
+
     const constructTask = () => {
-        const { loading } = TasksQuery;
+        const { loading, error } = TasksQuery;
 
         let tasks = Helper.syncGetter('data.tasks', TasksQuery);
+
         if (!tasks) {
             if (app.taskCache) {
                 tasks = app.taskCache;
@@ -70,7 +73,7 @@ const TaskBody = props => {
             taskConfig: { chuti, reward, invitation, spider_video },
             taskConfig,
         } = config;
-        if (!loading && tasks.length > 0 && taskConfig) {
+        if (tasks.length > 0 && taskConfig) {
             // 新人任务
             const newUserTask = tasks.filter(elem => {
                 return elem.type == 0;
@@ -102,7 +105,7 @@ const TaskBody = props => {
                     name: '出题目赚钱',
                     status: Helper.syncGetter('status', chuti),
                     userTaskStatus: 5,
-                    gold: Helper.syncGetter('gold', chuti) + '~40',
+                    gold: Helper.syncGetter('gold', chuti) || '10' + '~40',
                     ticket: Helper.syncGetter('ticket', chuti),
                     contribute: Helper.syncGetter('contribute', chuti),
                     type: 5,
@@ -158,6 +161,7 @@ const TaskBody = props => {
                     doTask: null,
                 },
             ];
+
             setUserTasks(arry);
         }
     };
@@ -183,7 +187,7 @@ const TaskBody = props => {
             <SubmitLoading isVisible={isVisible} content={'领取中'} />
         </ScrollView>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {
