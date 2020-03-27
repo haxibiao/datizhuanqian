@@ -68,7 +68,7 @@ class KeyboardSpacer extends Component<Props> {
 
     onKeyboardShow(e) {
         let FixTopInsets = 0;
-        if (['Redmi', 'Xiaomi', 'HUAWEI'].includes(DeviceInfo.getBrand())) {
+        if (['Redmi', 'Xiaomi', 'HUAWEI', 'OPPO', 'google'].includes(DeviceInfo.getBrand())) {
             FixTopInsets = app.viewportHeight - Dimensions.get('window').height || 0;
         }
         if (

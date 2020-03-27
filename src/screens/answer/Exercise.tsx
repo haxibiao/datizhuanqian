@@ -105,23 +105,6 @@ export default observer(() => {
         }
     }, [user, navigation, question, category, minLevel]);
 
-    // 提现提示
-    const withdrawTips = useCallback(() => {
-        if (Helper.syncGetter('gold', user) >= 600 && !app.withdrawTips) {
-            if (Helper.syncGetter('wallet.total_withdraw_amount', user) <= 0 || !Helper.syncGetter('wallet', user)) {
-                let overlayViewRef;
-                const overlayView = (
-                    <Overlay.View animated ref={ref => (overlayViewRef = ref)}>
-                        <View style={styles.overlayInner}>
-                            <FirstWithdrawTips hide={() => overlayViewRef.close()} navigation={navigation} />
-                        </View>
-                    </Overlay.View>
-                );
-                Overlay.show(overlayView);
-            }
-        }
-    }, [user, navigation]);
-
     // 广告触发, iOS不让苹果审核轻易发现答题触发广告，设置多一点，比如答题100个
     // 安卓提高到5个题计算及格和视频奖励
     const showAnswerResult = useCallback(() => {
@@ -168,7 +151,6 @@ export default observer(() => {
             answerCount.current.count++;
             isError == 'error' && answerCount.current.error++;
             if (!config.disableAd) {
-                withdrawTips();
                 showAnswerResult();
             }
         });

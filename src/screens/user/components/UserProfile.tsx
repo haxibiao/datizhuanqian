@@ -22,7 +22,7 @@ const UserProfile = props => {
         fetchPolicy: 'network-only',
     });
 
-    const subName = getRole(user);
+    const subName = Helper.userTitle(user);
 
     const showMedal = !loading && !error;
 

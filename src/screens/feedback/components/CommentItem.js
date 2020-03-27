@@ -11,7 +11,6 @@ import { Iconfont, Avatar, UserTitle, GenderLabel } from 'components';
 import FeedbackOverlay from './FeedbackOverlay';
 
 import { graphql, compose, GQL } from 'apollo';
-import { getRole } from 'common';
 
 class CommentItem extends Component {
     constructor(props) {
@@ -66,7 +65,7 @@ class CommentItem extends Component {
         const { navigation, item, replyComment, switchReplyType, user, feedback_id } = this.props;
         let { feedbackCommentVisible } = this.state;
 
-        const Role = getRole(item.user);
+        const Role = Helper.userTitle(item.user);
 
         return (
             <TouchableOpacity

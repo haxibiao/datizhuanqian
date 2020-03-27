@@ -100,7 +100,7 @@ const index = observer(() => {
             white
             title={user.name}
             autoKeyboardInsets={ISAndroid}
-            topInsets={ISAndroid ? 0 : -Theme.statusBarHeight}
+            // topInsets={ISAndroid ? 50 : -Theme.statusBarHeight}
             rightView={
                 <TouchFeedback style={styles.optionsButton} onPress={showOptions}>
                     <Iconfont name="more-horizontal" color="#000" size={PxFit(18)} />
