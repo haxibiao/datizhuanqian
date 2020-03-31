@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { DeviceEventEmitter, StyleSheet, View, Text } from 'react-native';
-import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView } from '@src/components';
+import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView, Banner } from '@src/components';
 import { Theme, PxFit, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
@@ -201,8 +201,14 @@ export default observer(() => {
                     borderBottomColor: '#f0f0f0',
                     backgroundColor: '#fff',
                 }}
+                navBarStyle={{
+                    borderBottomWidth: 0,
+                    borderBottomColor: '#fff',
+                    backgroundColor: '#fff',
+                }}
                 backButtonColor={Theme.defaultTextColor}>
                 {config.isFullScreen && <StatusBar translucent={true} hidden />}
+                {!config.isFullScreen && <Banner isAnswer showWithdraw navigation={navigation} />}
                 {content}
             </PageContainer>
             <CommentOverlay ref={commentRef} question={question} />

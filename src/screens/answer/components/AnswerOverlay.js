@@ -44,7 +44,7 @@ class AnswerOverlay {
         this.timer && clearTimeout(this.timer);
         this.timer = setTimeout(() => {
             this.overlayKey && Overlay.hide(this.overlayKey);
-        }, 1000);
+        }, 500);
     }
 
     static show(props) {

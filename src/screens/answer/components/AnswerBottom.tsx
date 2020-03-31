@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { DeviceEventEmitter, StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
-import { Iconfont } from '@src/components';
+import { Iconfont, TouchFeedback } from '@src/components';
 import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { useApolloClient, useMutation, GQL } from '@src/apollo';
 import { exceptionCapture, useBounceAnimation } from '@src/common';
@@ -200,12 +200,12 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
                     </TouchableOpacity>
                 </Animated.View>
             </View>
-            <TouchableOpacity
+            <TouchFeedback
                 disabled={buttonInfo.disabled}
                 style={[styles.mainButton, { backgroundColor: buttonInfo.color }]}
                 onPress={onSubmit}>
                 <Text style={styles.mainButtonText}>{buttonInfo.name}</Text>
-            </TouchableOpacity>
+            </TouchFeedback>
         </View>
     );
 });
