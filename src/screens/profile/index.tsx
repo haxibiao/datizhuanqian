@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '../../components';
+import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '@src/components';
 import { Config, Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { GQL, Query, useQuery } from 'apollo';
 import { observer, app, config } from 'store';
@@ -22,6 +22,7 @@ const index = observer(props => {
 
     const { data, refetch, loading } = useQuery(GQL.UserQuery, {
         variables: { id: app.me.id },
+        fetchPolicy: 'network-only',
     });
     useEffect(() => {
         if (data && data.user) {
@@ -48,18 +49,18 @@ const index = observer(props => {
 
     const { login, me, userCache } = app;
     let user = me;
-
-    if (login && data && data.user) {
+    console.log('data :', data);
+    if (login && userCache) {
+        user = userAdapter(userCache);
+    } else if (login && data && data.user) {
         data.user.avatar = user.avatar;
         user = data.user;
-    } else if (login && userCache) {
-        user = userAdapter(userCache);
     } else {
         user = userAdapter(user);
     }
 
     return (
-        <PageContainer hiddenNavBar onWillFocus={data && data.refetch}>
+        <PageContainer hiddenNavBar onWillFocus={refetch}>
             <ScrollView style={styles.container} bounces={false}>
                 <View style={{ flex: 1, paddingBottom: PxFit(50) }}>
                     <View style={{ marginBottom: -Theme.itemSpace }}>
