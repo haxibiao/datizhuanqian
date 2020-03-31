@@ -148,3 +148,6 @@ export const bindAlipayFailedTrack = (props: { error: any }) => {
         },
     });
 };
+
+export * from './pageViewTrack';
+export * from './adTrack';

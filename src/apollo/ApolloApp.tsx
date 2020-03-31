@@ -15,7 +15,7 @@ import Socketio from 'socket.io-client';
 
 import AppRouter from '@src/routers';
 
-import { useCaptureVideo } from '@src/common';
+import { useCaptureVideo, pageViewTrack } from '@src/common';
 
 export default observer(props => {
     const { checkServer, navigation } = props;
@@ -95,10 +95,33 @@ export default observer(props => {
         mountWebSocket(app.me);
     }, [app.me]);
 
+    const getActiveRouteName = navigationState => {
+        if (!navigationState) {
+            return null;
+        }
+        const route = navigationState.routes[navigationState.index];
+        if (route.routes) {
+            return getActiveRouteName(route);
+        }
+        return route;
+    };
+    console.log('app.me :', app.me);
     return (
         <ApolloProvider client={client}>
             <ApolloHooksProvider client={client}>
-                <AppRouter ref={Helper.setRootNavigation} />
+                <AppRouter
+                    ref={Helper.setRootNavigation}
+                    onNavigationStateChange={(prevState, currentState, action) => {
+                        const currentRouteName = getActiveRouteName(currentState);
+                        const previousRouteName = getActiveRouteName(prevState);
+
+                        if (previousRouteName.routeName !== currentRouteName.routeName) {
+                            pageViewTrack({
+                                route: currentRouteName,
+                            });
+                        }
+                    }}
+                />
             </ApolloHooksProvider>
         </ApolloProvider>
     );
