@@ -3,6 +3,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-boost';
 import DeviceInfo from 'react-native-device-info';
 import { Config } from 'utils';
+import { Matomo } from 'native';
 import ApolloApp from './ApolloApp';
 
 const deviceHeaders = {
@@ -46,6 +47,15 @@ if (!isEmulator) {
 
 export function makeClient(user = {}, checkServer: () => void) {
     const { token } = user;
+
+    Matomo.setUserId(user.id);
+    Matomo.setCustomDimension(1, deviceHeaders.os);
+    Matomo.setCustomDimension(2, deviceHeaders.referrer);
+    Matomo.setCustomDimension(3, deviceHeaders.version);
+    Matomo.setCustomDimension(4, deviceHeaders.build);
+    //新老用户类型，目前后端事件在区分...
+    Matomo.setCustomDimension(6, deviceHeaders.brand);
+
     return new ApolloClient({
         uri: Config.ServerRoot + '/graphql',
         // uri: 'http://staging.datizhuanqian.com/graphql',

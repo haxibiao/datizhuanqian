@@ -12,5 +12,13 @@ import WeChat from './WeChat';
 import Util from './Util';
 import AppUtil from './AppUtil';
 import Alipay from './Alipay';
+import Matomo from './Matomo';
 
-export { Share, VideoUploader, WeChat, Util, ad, AppUtil, Alipay };
+//答题赚钱在 matomo.haxibiao.com siteid=1
+// Matomo.initTracker(('http://matomo.haxibiao.com', 1));
+Matomo.initTracker(('http://matomo.datizhuanqian.com', 1));
+
+//设置心跳30秒提交统计事件
+Matomo.setDispatchInterval(30);
+
+export { Share, VideoUploader, WeChat, Util, ad, AppUtil, Alipay, Matomo };

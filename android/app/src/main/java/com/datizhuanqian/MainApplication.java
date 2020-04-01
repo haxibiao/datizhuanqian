@@ -21,6 +21,7 @@ import com.bytedance.sdk.open.aweme.TikTokOpenConfig;
 import com.datizhuanqian.wxapi.WxEntryPackage;
 import com.datizhuanqian.tiktokapi.TikTokEntryPackage;
 import com.datizhuanqian.alipayapi.AlipayEntryPackage;
+import com.haxibiao.reactnativematomo.MatomoPackage;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             packages.add(new ToolkitsPackage());
             packages.add(new TikTokEntryPackage());
             packages.add(new AlipayEntryPackage());
+            packages.add(new MatomoPackage());
             return packages;
         }
 

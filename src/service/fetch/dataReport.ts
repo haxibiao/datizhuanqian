@@ -1,6 +1,7 @@
 import { Config } from 'utils';
 import { Platform } from 'react-native';
 import { app } from 'store';
+import { Matomo } from 'native';
 
 type Type =
     | 'ClickTaskRewardAd' //激励任务看激励视频
@@ -24,40 +25,44 @@ interface Props {
 }
 
 // 数据上报
-export default function(props: Props) {
+export default function (props: Props) {
     const { callback } = props;
-    const body = constructData(props);
+    //前端
+    const { category, action, name, value } = props;
+    Matomo.trackEvent(category, action, name, 1);
 
-    fetch(Config.ServerRoot + '/api/app/report/matomo', {
-        method: 'POST',
-        body: body,
-    })
-        .then(response => response.json())
-        .then(result => {
-            callback && callback(result);
-        })
-        .catch(err => {
-            callback && callback(err);
-        });
+    // const body = constructData(props);
+
+    // fetch(Config.ServerRoot + '/api/app/report/matomo', {
+    //     method: 'POST',
+    //     body: body,
+    // })
+    //     .then(response => response.json())
+    //     .then(result => {
+    //         callback && callback(result);
+    //     })
+    //     .catch(err => {
+    //         callback && callback(err);
+    //     });
 }
 
-function constructData(props: Props) {
-    const { data } = props;
-    const reportContent = {
-        category: '上报类型',
-        action: 'user_click_report',
-        name: '上报数据',
-        value: '1',
-        package: Config.PackageName,
-        os: Platform.OS,
-        version: Config.Version,
-        build: Config.Build,
-        user_id: app.me.id,
-        referrer: Config.AppStore,
-    };
+// function constructData(props: Props) {
+//     const { data } = props;
+//     const reportContent = {
+//         category: '事件分组', //APP子场景
+//         action: '事件名', //比如:答题
+//         name: '事件对象', //题目ID
+//         value: 1, //matomo里的value是int: 比如题目ID
+//         package: Config.PackageName,
+//         os: Platform.OS,
+//         version: Config.Version,
+//         build: Config.Build,
+//         user_id: app.me.id,
+//         referrer: Config.AppStore,
+//     };
 
-    const mergeData = JSON.stringify({ ...reportContent, ...data });
-    let body = new FormData();
-    body.append('data', mergeData);
-    return body;
-}
+//     const mergeData = JSON.stringify({ ...reportContent, ...data });
+//     let body = new FormData();
+//     body.append('data', mergeData);
+//     return body;
+// }
