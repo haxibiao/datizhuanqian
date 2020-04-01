@@ -49,7 +49,6 @@ const index = observer(props => {
 
     const { login, me, userCache } = app;
     let user = me;
-    console.log('data :', data);
     if (login && userCache) {
         user = userAdapter(userCache);
     } else if (login && data && data.user) {

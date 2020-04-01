@@ -6445,6 +6445,11 @@ react-native-audio@^4.3.0:
   resolved "https://registry.npm.taobao.org/react-native-audio/download/react-native-audio-4.3.0.tgz#fae22b81f6a4dda706fd4837d0c6a89c66cf2e7e"
   integrity sha1-+uIrgfak3acG/Ug30MaonGbPLn4=
 
+react-native-base64@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npm.taobao.org/react-native-base64/download/react-native-base64-0.0.2.tgz#c28463c2c6779ac3ec5fdd12979ebc8c5f9b410a"
+  integrity sha1-woRjwsZ3msPsX90Sl568jF+bQQo=
+
 react-native-code-push@^5.6.1:
   version "5.7.0"
   resolved "https://registry.npm.taobao.org/react-native-code-push/download/react-native-code-push-5.7.0.tgz#38667c1ba5a5e1a6dd1b4271468c6ef6284b3ca4"

@@ -130,3 +130,7 @@ export const singleImageResponse = (width: number, height: number, max: number) 
     }
     return size;
 };
+
+export const getRndInteger = ({ min, max }) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};

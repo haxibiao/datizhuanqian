@@ -105,7 +105,6 @@ export default observer(props => {
         }
         return route;
     };
-    console.log('app.me :', app.me);
     return (
         <ApolloProvider client={client}>
             <ApolloHooksProvider client={client}>

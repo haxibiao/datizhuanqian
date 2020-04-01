@@ -5,6 +5,7 @@ import DeviceInfo from 'react-native-device-info';
 import { Config } from 'utils';
 import { Matomo } from 'native';
 import ApolloApp from './ApolloApp';
+import base64 from 'react-native-base64';
 
 const deviceHeaders = {
     os: '',
@@ -20,8 +21,6 @@ const deviceHeaders = {
     deviceId: '',
     ip: '',
 };
-
-// const deviceHeaders = {};
 
 const isEmulator = DeviceInfo.isEmulator();
 
@@ -45,7 +44,24 @@ if (!isEmulator) {
         }); // ip地址
 }
 
-export function makeClient(user = {}, checkServer: () => void) {
+let startToday = new Date();
+startToday.setHours(10);
+startToday.setMinutes(0);
+startToday.setSeconds(0);
+startToday.setMilliseconds(0);
+
+let endToday = new Date();
+endToday.setHours(12);
+endToday.setMinutes(0);
+endToday.setSeconds(0);
+endToday.setMilliseconds(0);
+
+const startTimestamp = startToday.getTime() - 24 * 60 * 60 * 1000;
+const endTimestamp = endToday.getTime() - 24 * 60 * 60 * 1000;
+
+console.log('startTimestamp', startTimestamp, endTimestamp);
+
+export function makeClient(user: { id?: any; token?: any }, checkServer: () => void) {
     const { token } = user;
 
     Matomo.setUserId(user.id);
@@ -55,15 +71,42 @@ export function makeClient(user = {}, checkServer: () => void) {
     Matomo.setCustomDimension(4, deviceHeaders.build);
     //新老用户类型，目前后端事件在区分...
     Matomo.setCustomDimension(6, deviceHeaders.brand);
+    //埋点鉴权用的headers
+    let authHeaders = {
+        //前面三个只用来验证防火墙是否挂了参数过来
+        dzuid: base64.encode(Config.Build + '_' + Config.AppStore),
+        dztoken: base64.encode(deviceHeaders.os + '_' + deviceHeaders.systemVersion),
+        dzuuid: base64.encode(Config.PackageName + '_' + Config.Version),
+
+        //后面三个后端会用来封号
+        dz_uid: base64.encode('uid_' + user.id),
+        dz_token: base64.encode('token_' + user.token),
+        dz_uuid: base64.encode('uuid_' + deviceHeaders.uniqueId),
+    };
+
+    let headers = {
+        ...deviceHeaders,
+        ...authHeaders,
+    };
+
+    let uuid = deviceHeaders.uniqueId; //明文传uuid
+    let time = Helper.getRndInteger({ min: startTimestamp, max: endTimestamp }); //随机取一天前的某时间（1天前的中午10-12点），后端可以校检，WAF可以查看拦截
+    let brand = base64.encode(deviceHeaders.brand); //看手机型号
+    let osversion = base64.encode(deviceHeaders.systemVersion); //看安卓版本
+    let ip = deviceHeaders.ip; // ip明文
+    let authQuery = 'u=' + uuid + '&t=' + time + '&b=' + brand + '&o' + osversion + '&i' + ip;
+
+    console.log('authQuery', authQuery);
+    console.log('headers', headers);
 
     return new ApolloClient({
-        uri: Config.ServerRoot + '/graphql',
+        uri: Config.ServerRoot + '/graphql?' + authQuery,
         // uri: 'http://staging.datizhuanqian.com/graphql',
         request: async operation => {
             operation.setContext({
                 headers: {
                     token,
-                    ...deviceHeaders,
+                    ...headers,
                 },
             });
         },
