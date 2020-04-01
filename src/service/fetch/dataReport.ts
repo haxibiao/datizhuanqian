@@ -30,8 +30,9 @@ export default function(props: Props) {
     //前端
     const { data } = props;
 
-    const { category, action, name, value } = data;
-    Matomo.trackEvent(category, action, name, 1);
+    const { category, action, name } = data;
+
+    Matomo.trackEvent(category, name, name, 1);
 
     // const body = constructData(props);
 

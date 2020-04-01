@@ -129,7 +129,7 @@ export default observer(({ isAnswered, isSelf, user, question, store }) => {
         }
     }, [isAudit, isAudited, answered, question, selectedAnswers, showResultsOverlay, answerMutation]);
 
-    const onSubmit = useMemo(() => __.throttle(handler, 400), [handler]);
+    const onSubmit = useMemo(() => __.throttle(handler, 1000), [handler]);
 
     const buttonInfo = useMemo(() => {
         // #5F93FD

@@ -30,6 +30,6 @@ echo "下载地址：http://dtzq-1251052432.cos.ap-shanghai.myqcloud.com/datizhu
 
 else 
 echo "${grn}开始生成${version}版本APK ...${end}"
-./gradlew clean
+# ./gradlew clean
 ./gradlew assembleRelease
 fi

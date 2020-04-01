@@ -1,7 +1,7 @@
 {
     "name": "datizhuanqian",
     "AppName": "答题赚钱",
-    "Version": "2.7.1",
+    "Version": "2.7.2",
     "Build": 1,
     "ServerRoot": "http://gql.datizhuanqian.com",
     "ApiServceRoot": "http://api.datizhuanqian.com",
