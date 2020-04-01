@@ -85,7 +85,7 @@ class index extends Component {
                 dismissEnabled: true,
             });
 
-        fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + me.token)
+        fetch(Config.ApiServceRoot + '/api/app/task/user-config?api_token=' + me.token)
             .then(response => response.json())
             .then(result => {
                 this.setState({

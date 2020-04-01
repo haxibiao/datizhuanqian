@@ -35,7 +35,7 @@ export default function(props: Props) {
 
     // const body = constructData(props);
 
-    // fetch(Config.ServerRoot + '/api/app/report/matomo', {
+    // fetch(Config.ApiServceRoot + '/api/app/report/matomo', {
     //     method: 'POST',
     //     body: body,
     // })

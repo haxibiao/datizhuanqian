@@ -287,7 +287,7 @@ class index extends Component {
     //     var data = new FormData();
     //     data.append('code', code);
 
-    //     fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
+    //     fetch(Config.ApiServceRoot + '/api/v1/wechat/app/auth', {
     //         method: 'POST',
     //         body: data,
     //     })

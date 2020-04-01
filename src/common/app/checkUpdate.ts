@@ -47,7 +47,7 @@ export function checkUpdate(type: String) {
     if (Platform.OS === 'ios') {
         return;
     }
-    fetch(Config.ServerRoot + '/api/app-version' + '?package=' + Config.PackageName, {
+    fetch(Config.ApiServceRoot + '/api/app-version' + '?package=' + Config.PackageName, {
         method: 'POST',
         headers: {
             version: DeviceInfo.getVersion(),

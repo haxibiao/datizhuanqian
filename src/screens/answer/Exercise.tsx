@@ -130,7 +130,7 @@ export default observer(() => {
     useEffect(() => {
         fetchQuestions();
         // 等级限制
-        fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + app.me.token)
+        fetch(Config.ApiServceRoot + '/api/app/task/user-config?api_token=' + app.me.token)
             .then(response => response.json())
             .then(result => {
                 setMinLevel(Helper.syncGetter('chuti.min_level', result));

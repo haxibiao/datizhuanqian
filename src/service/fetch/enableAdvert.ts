@@ -12,7 +12,7 @@ export default function(callback: Promise) {
     deviceHeaders.appid = Config.PackageName; // 手动修改的包名
     deviceHeaders.package = Config.PackageName; // 手动修改的包名
 
-    fetch(Config.ServerRoot + '/api/app-ad-manage?' + Date.now(), {
+    fetch(Config.ApiServceRoot + '/api/app-ad-manage?' + Date.now(), {
         method: 'POST',
         headers: {
             ...deviceHeaders,
@@ -24,7 +24,7 @@ export default function(callback: Promise) {
             callback(result);
         })
         .catch(error => {
-            console.log('error', error);
+            console.log('app-ad-manage error', error);
             callback({
                 enable_splash: false,
                 enable_question: true,

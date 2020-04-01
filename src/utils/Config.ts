@@ -6,6 +6,7 @@ import {
     ServerRoot as serverRoot,
     UploadServer as uploadRoot,
     PackageName,
+    ApiServceRoot,
 } from '../../app.json';
 
 import Config from 'react-native-config';
@@ -25,4 +26,5 @@ export default {
     Build, // App 构建版本  不与android versionCode一致
     PackageName, // App 包名  对于android applicationId
     AppVersion: Version + '.' + Build, // 用于mattom统计展示的version
+    ApiServceRoot,
 };

@@ -56,7 +56,7 @@ const App = () => {
         let { token } = app.me;
 
         //根据不同的用户返回503，可以用来封掉刷子账号在机器上的无效操作
-        fetch(Config.ServerRoot + '/api/user?api_token=' + token)
+        fetch(Config.ApiServceRoot + '/api/user?api_token=' + token)
             .then(response => {
                 if (response.status === 503) {
                     setServerMaintenance(response);

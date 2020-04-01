@@ -8,7 +8,7 @@ interface Props {
 //任务信息配置
 export default function getTaskConfig(props: Props) {
     const { callback } = props;
-    fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + app.me.token)
+    fetch(Config.ApiServceRoot + '/api/app/task/user-config?api_token=' + app.me.token)
         .then(response => response.json())
         .then(result => {
             callback && callback(result);

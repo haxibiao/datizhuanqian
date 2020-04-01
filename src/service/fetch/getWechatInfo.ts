@@ -3,7 +3,7 @@ export default function getWechatInfo(code: string, onSuccess?: Promise, onFaild
     let data = new FormData();
     data.append('code', code);
 
-    fetch(Config.ServerRoot + '/api/v1/wechat/app/auth', {
+    fetch(Config.ApiServceRoot + '/api/v1/wechat/app/auth', {
         method: 'POST',
         body: data,
     })

@@ -175,7 +175,7 @@ class ShareOverlay {
     }
 
     static getWechatConfig(user) {
-        fetch(Config.ServerRoot + '/api/app/config/wechat-mg-share-config?api_token=' + user.token)
+        fetch(Config.ApiServceRoot + '/api/app/config/wechat-mg-share-config?api_token=' + user.token)
             .then(response => response.json())
             .then(data => {
                 WeChat.shareMiniProgram({
