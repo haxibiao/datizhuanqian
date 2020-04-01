@@ -10,8 +10,6 @@ import service from 'service';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
 
-import Matomo from 'react-native-matomo';
-
 const App = () => {
     const [responseText, setResponseText] = useState('');
     const [serverMaintenance, setServerMaintenance] = useState();
@@ -52,13 +50,6 @@ const App = () => {
         readPhoneState();
         //加载激励视频缓存
         ad.RewardVideo.loadAd().then(() => {});
-
-        Matomo.initTracker('http://matomo.haxibiao.com/index.php', 1);
-        // Matomo.trackScreen('Home', '首页');
-        // Matomo.trackScreen('Profile', '我的');
-        // Matomo.setAppOptOut(true);
-        console.log('Matomo :', Matomo);
-        // Matomo.setUserId('123e4567-e89b-12d3-a456-426655440000');
     }, []);
 
     const checkServer = () => {

@@ -25,10 +25,12 @@ interface Props {
 }
 
 // 数据上报
-export default function (props: Props) {
+export default function(props: Props) {
     const { callback } = props;
     //前端
-    const { category, action, name, value } = props;
+    const { data } = props;
+
+    const { category, action, name, value } = data;
     Matomo.trackEvent(category, action, name, 1);
 
     // const body = constructData(props);

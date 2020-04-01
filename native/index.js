@@ -16,7 +16,7 @@ import Matomo from './Matomo';
 
 //答题赚钱在 matomo.haxibiao.com siteid=1
 // Matomo.initTracker(('http://matomo.haxibiao.com', 1));
-Matomo.initTracker(('http://matomo.datizhuanqian.com', 1));
+Matomo.initTracker('http://matomo.haxibiao.com/matomo.php', 1);
 
 //设置心跳30秒提交统计事件
 Matomo.setDispatchInterval(30);
