@@ -4,7 +4,7 @@ import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components'
 import { useQuery, GQL } from 'apollo';
 import { app, observer } from 'store';
 import { SCREEN_WIDTH, WPercent, ISIOS } from 'utils';
-import { bindWechat } from 'common';
+import { getAuthCode } from 'common';
 import { DownloadApkIntro } from 'components';
 import { AppUtil } from 'native';
 import WithdrawHeader from './WithdrawHeader';
@@ -148,7 +148,7 @@ const WithdrawBody = observer(props => {
             name = '立即绑定';
             action = () => {
                 setSubmit(true);
-                bindWechat({
+                getAuthCode({
                     onSuccess: () => {
                         setSubmit(false);
                         Toast.show({
