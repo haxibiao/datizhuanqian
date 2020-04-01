@@ -11,7 +11,7 @@ import { Theme, PxFit, ISIOS } from 'utils';
 import UserPanel from './components/UserPanel';
 
 import { compose, graphql, GQL } from 'apollo';
-import { bindWechat } from 'common';
+import { getAuthCode } from 'common';
 import DeviceInfo from 'react-native-device-info';
 class AccountSecurity extends Component {
     constructor(props) {
@@ -36,7 +36,7 @@ class AccountSecurity extends Component {
             this.setState({
                 submitting: true,
             });
-            bindWechat({
+            getAuthCode({
                 onSuccess: this.onSuccess,
                 onFailed: this.onFailed,
             });
