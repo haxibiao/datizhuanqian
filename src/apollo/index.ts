@@ -64,7 +64,7 @@ console.log('startTimestamp', startTimestamp, endTimestamp);
 export function makeClient(user: { id?: any; token?: any }, checkServer: () => void) {
     const { token } = user;
 
-    Matomo.setUserId(user.id);
+    Matomo.setUserId(user.id || 0);
     Matomo.setCustomDimension(1, deviceHeaders.os);
     Matomo.setCustomDimension(2, deviceHeaders.referrer);
     Matomo.setCustomDimension(3, deviceHeaders.version);
