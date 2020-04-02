@@ -77,7 +77,7 @@ export default observer(() => {
             setError(error);
         }
         flag.current = false;
-    }, [client, category]);
+    }, [category]);
 
     const nextQuestion = useCallback(() => {
         if (questions.current.length > 0) {
