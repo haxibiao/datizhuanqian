@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
-import { VideoMark } from '@src/components';
+import { VideoMark, OverlayViewer } from '@src/components';
 import { SCREEN_WIDTH } from '@src/utils';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
