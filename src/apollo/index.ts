@@ -61,7 +61,7 @@ const endTimestamp = endToday.getTime() - 24 * 60 * 60 * 1000;
 
 console.log('startTimestamp', startTimestamp, endTimestamp);
 
-export function makeClient(user: { id?: any; token?: any }, checkServer: () => void) {
+export function makeClient(user: { id?: any; token?: any; }, checkServer: () => void) {
     const { token } = user;
 
     Matomo.setUserId(user.id || 0);
@@ -94,7 +94,7 @@ export function makeClient(user: { id?: any; token?: any }, checkServer: () => v
     let brand = base64.encode(deviceHeaders.brand); //看手机型号
     let osversion = base64.encode(deviceHeaders.systemVersion); //看安卓版本
     let ip = deviceHeaders.ip; // ip明文
-    let authQuery = 'u=' + uuid + '&t=' + time + '&b=' + brand + '&o' + osversion + '&i' + ip;
+    let authQuery = 'u=' + uuid + '&t=' + time + '&b=' + brand + '&o=' + osversion + '&i=' + ip;
 
     console.log('authQuery', authQuery);
     console.log('headers', headers);
