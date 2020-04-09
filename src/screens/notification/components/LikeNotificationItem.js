@@ -36,7 +36,7 @@ class CommentNotification extends Component {
                 question: Helper.syncGetter('like.question', notification),
             });
         } else if (Helper.syncGetter('like.post', notification)) {
-            navigation.navigate('VideoPost', { videos: [Helper.syncGetter('like.post', notification)] });
+            navigation.navigate('VideoPost', { videos: [Helper.syncGetter('like.post', notification)], isPost: true });
         }
     };
 

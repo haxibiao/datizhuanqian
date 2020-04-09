@@ -207,6 +207,7 @@ export default {
     VideoPost: {
         screen: VideoPostScreen,
         params: { trackName: '视频动态' },
+        path: 'videoPost/:medium',
     },
     VideoExplanation: {
         screen: VideoExplanationScreen,
@@ -422,6 +423,7 @@ export default {
     Setting: {
         screen: SettingScreen,
         params: { trackName: '设置' },
+        path: 'setting/:routName',
     },
     AccountSecurity: {
         screen: AccountSecurityScreen,

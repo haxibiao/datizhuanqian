@@ -71,7 +71,7 @@ const SpiderItem = (props: Props) => {
     const { status, title, remark, reward, user, source_url } = spider;
 
     const navigationAction = () => {
-        props.navigation.navigate('VideoPost', { medium: [spider] });
+        props.navigation.navigate('VideoPost', { medium: [spider], isPost: false });
     };
 
     const [resolveDouyinVideo] = useMutation(GQL.resolveDouyinVideo, {

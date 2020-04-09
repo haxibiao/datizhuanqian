@@ -37,14 +37,14 @@ class CommentNotification extends Component {
         }
     };
 
-    navigationAction = question => {
-        const { navigation } = this.props;
-        if (question.form === 0) {
-            navigation.navigate('Question', { question, referrer: 'user' });
-        } else if (question.form !== 0) {
-            navigation.navigate('VideoPost', { questions: [question] });
-        }
-    };
+    // navigationAction = question => {
+    //     const { navigation } = this.props;
+    //     if (question.form === 0) {
+    //         navigation.navigate('Question', { question, referrer: 'user' });
+    //     } else if (question.form !== 0) {
+    //         navigation.navigate('VideoPost', { questions: [question] });
+    //     }
+    // };
 
     render() {
         const { navigation, notification, replyComment, showCommentModal } = this.props;

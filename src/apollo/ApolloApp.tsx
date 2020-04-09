@@ -109,6 +109,7 @@ export default observer(props => {
         <ApolloProvider client={client}>
             <ApolloHooksProvider client={client}>
                 <AppRouter
+                    uriPrefix={`dtzq://`}
                     ref={Helper.setRootNavigation}
                     onNavigationStateChange={(prevState, currentState, action) => {
                         const currentRouteName = getActiveRouteName(currentState);
