@@ -1,6 +1,6 @@
 query withdrawInfoQuery($id: Int!) {
     user(id: $id) {
-        id       
+        id
         wallet {
             id
             pay_account
@@ -20,6 +20,7 @@ query withdrawInfoQuery($id: Int!) {
             description
             fontColor
             bgColor
+            disable
         }
-    }    
+    }
 }

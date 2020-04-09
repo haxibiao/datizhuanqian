@@ -28,7 +28,7 @@ const WithdrawBottom = props => {
             withdraw = { withdrawInfo: withdrawData };
         }
     }
-
+    console.log('withdraw :', withdraw);
     return (
         <View style={styles.withdraws}>
             <Row style={{ justifyContent: 'space-between', marginTop: PxFit(15), paddingHorizontal: PxFit(15) }}>
@@ -45,6 +45,7 @@ const WithdrawBottom = props => {
                     return (
                         <View key={index}>
                             <TouchFeedback
+                                disabled={data.disable}
                                 style={[styles.withdrawItem]}
                                 onPress={() => {
                                     selectWithdrawCount(data.amount);
@@ -63,7 +64,7 @@ const WithdrawBottom = props => {
                                 style={[
                                     styles.badge,
                                     {
-                                        backgroundColor: data.bgColor,
+                                        backgroundColor: data.disable ? Theme.grey : data.bgColor,
                                     },
                                 ]}>
                                 <Text style={styles.badgeText}>{data.tips}</Text>
@@ -86,6 +87,7 @@ const withdrawData = [
         description: '新人无门槛',
         fontColor: '#FFA200',
         bgColor: Theme.themeRed,
+        disable: false,
     },
     {
         tips: '限量抢',
@@ -93,6 +95,7 @@ const withdrawData = [
         description: '108日贡献',
         fontColor: Theme.subTextColor,
         bgColor: Theme.primaryColor,
+        disable: true,
     },
     {
         tips: '限量抢',
@@ -100,6 +103,7 @@ const withdrawData = [
         description: '180日贡献',
         fontColor: Theme.subTextColor,
         bgColor: Theme.primaryColor,
+        disable: true,
     },
     {
         tips: '限量抢',
@@ -107,6 +111,7 @@ const withdrawData = [
         description: '360日贡献',
         fontColor: Theme.subTextColor,
         bgColor: Theme.primaryColor,
+        disable: true,
     },
 ];
 
