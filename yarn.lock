@@ -3074,6 +3074,11 @@ eventemitter3@^3.0.0:
   resolved "https://registry.npm.taobao.org/eventemitter3/download/eventemitter3-3.1.2.tgz?cache=0&sync_timestamp=1560950873670&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feventemitter3%2Fdownload%2Feventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha1-LT1I+cNGaY/Og6hdfWZOmFNd9uc=
 
+events@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npm.taobao.org/events/download/events-1.0.2.tgz?cache=0&sync_timestamp=1578498298945&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fevents%2Fdownload%2Fevents-1.0.2.tgz#75849dcfe93d10fb057c30055afdbd51d06a8e24"
+  integrity sha1-dYSdz+k9EPsFfDAFWv29UdBqjiQ=
+
 exec-sh@^0.3.2:
   version "0.3.2"
   resolved "https://registry.npm.taobao.org/exec-sh/download/exec-sh-0.3.2.tgz#6738de2eb7c8e671d0366aea0b0db8c6f7d7391b"
@@ -6690,6 +6695,13 @@ react-native-webview@^6.9.0:
   dependencies:
     escape-string-regexp "1.0.5"
     invariant "2.2.4"
+
+react-native-wechat@^1.9.12:
+  version "1.9.12"
+  resolved "https://registry.npm.taobao.org/react-native-wechat/download/react-native-wechat-1.9.12.tgz#db75ab594373685c6097f3024a78e0b293ba0a5d"
+  integrity sha1-23WrWUNzaFxgl/MCSnjgspO6Cl0=
+  dependencies:
+    events "1.0.2"
 
 react-native@0.60.4:
   version "0.60.4"

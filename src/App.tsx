@@ -3,12 +3,13 @@ import { StyleSheet, YellowBox, View, Image, Text } from 'react-native';
 import { Toast, ErrorBoundary } from '@src/components';
 import ApolloApp from '@src/apollo/ApolloApp';
 
-import { ad, WeChat } from '@app/native';
+import { ad } from '@app/native';
 import { app, config } from '@src/store';
 import { checkUpdate, readPhoneState } from '@src/common';
 import service from 'service';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
+import * as WeChat from 'react-native-wechat';
 
 const App = () => {
     const [responseText, setResponseText] = useState('');
