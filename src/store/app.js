@@ -20,6 +20,7 @@ class app {
     @observable taskCache = null;
     @observable tagsCache = null;
     @observable tagListData = {};
+    @observable withdrawCache = null;
     @observable noTicketTips = true;
     @observable unreadNotice = 0;
     @observable withdrawTips = false;
@@ -194,6 +195,12 @@ class app {
     }
 
     @action.bound
+    async updateWithdrawCache(withdraw) {
+        this.withdrawCache = withdraw;
+        await storage.setItem(keys.withdrawCache, withdraw);
+    }
+
+    @action.bound
     async recallCache() {
         const resetVersion = await storage.getItem(keys.resetVersion);
         this.withdrawTips = await storage.getItem(keys.withdrawTips);
@@ -206,7 +213,7 @@ class app {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
             this.tagsCache = await storage.getItem(keys.tagsCache);
-
+            this.withdrawCache = await storage.getItem(keys.withdrawCache);
             if (Array.isArray(this.tagsCache)) {
                 this.tagsCache.forEach(async tag => {
                     this.tagListData[tag.id] = await storage.getItem(keys.tagListCache + '.' + tag.id);

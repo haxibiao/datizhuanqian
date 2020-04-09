@@ -17,7 +17,7 @@ query WithdrawsQuery($limit: Int, $offset: Int) {
         status
         amount
         created_at
-        remark
+        remark   
         to_platform
     }
 }
@@ -51,3 +51,6 @@ mutation SetWalletInfoMutation($data: WalletInput) {
         real_name
     }
 }
+
+
+#import './withdrawInfoQuery.gql'

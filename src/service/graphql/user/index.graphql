@@ -289,26 +289,6 @@ query UserMeansQuery($id: Int!) {
             level
             exp
         }
-        wallet {
-            id
-            pay_account
-            pay_info_change_count
-            total_withdraw_amount
-            platforms {
-                alipay
-                wechat
-            }
-            bind_platforms {
-                alipay
-            }
-        }
-        withdrawInfo {
-            tips
-            amount
-            description
-            fontColor
-            bgColor
-        }
         profile {
             total_contributes
         }

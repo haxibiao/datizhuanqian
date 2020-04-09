@@ -12,6 +12,7 @@ export const keys = {
     categoryCache: 'categoryCache',
     taskCache: 'taskCache',
     userCache: 'userCache',
+    withdrawCache: 'withdrawCache',
     withdrawTips: 'withdrawTips',
     firstReadSpiderVideoTask: 'firstReadSpiderVideoTask',
     firstOpenVideoOperation: 'firstOpenVideoOperation',

@@ -1,0 +1,25 @@
+query withdrawInfoQuery($id: Int!) {
+    user(id: $id) {
+        id       
+        wallet {
+            id
+            pay_account
+            pay_info_change_count
+            total_withdraw_amount
+            platforms {
+                alipay
+                wechat
+            }
+            bind_platforms {
+                alipay
+            }
+        }
+        withdrawInfo {
+            tips
+            amount
+            description
+            fontColor
+            bgColor
+        }
+    }    
+}
