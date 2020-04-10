@@ -104,11 +104,13 @@ const WithdrawHeader = (props: Props) => {
                     <View style={styles.accumulat}>
                         <View style={styles.accumulated}>
                             <TouchFeedback
+                                navigation={navigation}
+                                authenticated
                                 onPress={fetchGuidanceVideo}
                                 style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.greyText}>今日贡献值</Text>
                                 <Image
-                                    source={require('../../../assets/images/question.png')}
+                                    source={require('@src/assets/images/question.png')}
                                     style={{ width: PxFit(11), height: PxFit(11), marginLeft: PxFit(3) }}
                                 />
                             </TouchFeedback>
@@ -126,13 +128,13 @@ const WithdrawHeader = (props: Props) => {
             </View>
             <Row style={styles.withdrawTypeWrap}>
                 <Row>
-                    <View style={styles.titleBadge}></View>
+                    <View style={styles.titleBadge} />
                     <Text style={{ fontSize: PxFit(15) }}>提现到</Text>
                 </Row>
                 <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={showRule}>
                     <Text style={{ color: Theme.grey, fontSize: PxFit(13) }}>提现规则</Text>
                     <Image
-                        source={require('../../../assets/images/question.png')}
+                        source={require('@src/assets/images/question.png')}
                         style={{ width: PxFit(12), height: PxFit(12), marginLeft: PxFit(3) }}
                     />
                 </TouchFeedback>
