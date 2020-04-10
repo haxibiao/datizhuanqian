@@ -94,7 +94,9 @@ export function makeClient(user: { id?: any; token?: any; }, checkServer: () => 
     let brand = base64.encode(deviceHeaders.brand); //看手机型号
     let osversion = base64.encode(deviceHeaders.systemVersion); //看安卓版本
     let ip = deviceHeaders.ip; // ip明文
-    let authQuery = 'u=' + uuid + '&t=' + time + '&b=' + brand + '&o=' + osversion + '&i=' + ip;
+    let encoded_version = "1000000" + Config.Version + "0005821";
+    //后端我来decode版本信息鉴权，注意v不是缺失=号，我是故意的，参数名就是关键信息
+    let authQuery = 'v' + encoded_version + '&u=' + uuid + '&t=' + time + '&b=' + brand + '&o=' + osversion + '&i=' + ip;
 
     console.log('authQuery', authQuery);
     console.log('headers', headers);
