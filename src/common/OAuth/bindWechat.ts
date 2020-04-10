@@ -1,4 +1,4 @@
-import { WeChat } from 'native';
+import * as WeChat from 'react-native-wechat';
 import { app } from 'store';
 import { GQL } from 'apollo';
 import JAnalytics from 'janalytics-react-native';
@@ -10,13 +10,15 @@ interface Props {
 
 export const getAuthCode = (props: Props) => {
     const { onFailed } = props;
+    const scope = 'snsapi_userinfo';
+    const state = 'skit_wx_login';
     bindWeChatTrack();
-    WeChat.isSupported()
+    WeChat.isWXAppInstalled()
         .then((isSupported: any) => {
             if (isSupported) {
-                WeChat.wechatLogin()
-                    .then((code: any) => {
-                        bindWechat(code, props);
+                WeChat.sendAuthRequest(scope, state)
+                    .then((responseCode: any) => {
+                        bindWechat(responseCode.code, props);
                     })
                     .catch(() => {
                         Toast.show({ content: '微信身份信息获取失败，请检查微信是否登录' });

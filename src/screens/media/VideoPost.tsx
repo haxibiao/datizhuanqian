@@ -19,7 +19,7 @@ export default observer(props => {
     const { navigation } = props;
     const medium = navigation.getParam('medium') || [];
     const activeIndex = navigation.getParam('index') || 0;
-    const isPost = navigation.getParam('isPost') || false;
+    const isPost = navigation.getParam('isPost') || true;
     const activeItem = useRef(0);
     // const [questions, setQuestions] = useState(data);
     console.log('medium', medium);

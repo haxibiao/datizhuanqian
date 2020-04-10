@@ -18,7 +18,7 @@ import com.haxibiao.toolkits.ToolkitsPackage;
 import com.bytedance.sdk.open.aweme.TikTokOpenApiFactory;
 import com.bytedance.sdk.open.aweme.TikTokOpenConfig;
 
-import com.datizhuanqian.wxapi.WxEntryPackage;
+// import com.datizhuanqian.wxapi.WxEntryPackage;
 import com.datizhuanqian.tiktokapi.TikTokEntryPackage;
 import com.datizhuanqian.alipayapi.AlipayEntryPackage;
 import com.haxibiao.reactnativematomo.MatomoPackage;
@@ -51,7 +51,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
 
             packages.add(new JPushPackage(true, true));
             packages.add(new AdPackage());
-            packages.add(new WxEntryPackage());
+            // packages.add(new WxEntryPackage());
             packages.add(new ToolkitsPackage());
             packages.add(new TikTokEntryPackage());
             packages.add(new AlipayEntryPackage());

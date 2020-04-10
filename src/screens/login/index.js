@@ -7,7 +7,8 @@ import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Config } from 'utils'
 
 import { withApollo, compose, graphql, GQL } from 'apollo';
 import { app } from 'store';
-import { WeChat, Util } from 'native';
+import { Util } from 'native';
+import * as WeChat from 'react-native-wechat';
 
 import UserRewardOverlay from '../home/components/UserRewardOverlay';
 
@@ -243,41 +244,53 @@ class index extends Component {
 
     //微信登录
     wechatLogin = () => {
-        WeChat.isSupported()
+        const scope = 'snsapi_userinfo';
+        const state = 'skit_wx_login';
+        WeChat.isWXAppInstalled()
             .then(isSupported => {
+                console.log('isSupported', isSupported);
                 if (isSupported) {
-                    WeChat.wechatLogin().then(code => {
-                        this.setState({
-                            submitting: true,
-                        });
-                        console.log('code', code);
-                        service.getWechatInfo(
-                            code,
-                            result => {
-                                if (result.data && result.data.unionid) {
-                                    // 新用户绑定手机号
-                                    this.props.navigation.navigate('PhoneBind', { data: result.data });
+                    WeChat.sendAuthRequest(scope, state)
+                        .then(responseCode => {
+                            console.log('responseCode', responseCode);
+                            this.setState({
+                                submitting: true,
+                            });
+
+                            service.getWechatInfo(
+                                responseCode.code,
+                                result => {
+                                    if (result.data && result.data.unionid) {
+                                        // 新用户绑定手机号
+                                        this.props.navigation.navigate('PhoneBind', {
+                                            data: result.data,
+                                        });
+                                        this.setState({
+                                            submitting: false,
+                                        });
+                                    } else {
+                                        // 老用户直接登录
+                                        this.getUserData(result.data.user);
+                                    }
+                                },
+                                () => {
+                                    Toast.show({ content: '微信账号获取失败' });
                                     this.setState({
                                         submitting: false,
                                     });
-                                } else {
-                                    // 老用户直接登录
-                                    this.getUserData(result.data.user);
-                                }
-                            },
-                            () => {
-                                Toast.show({ content: '微信账号获取失败' });
-                                this.setState({
-                                    submitting: false,
-                                });
-                            },
-                        );
-                    });
+                                },
+                            );
+                        })
+                        .catch(err => {
+                            console.log('err', err);
+                            Toast.show({ content: '登录授权发生错误' });
+                        });
                 } else {
                     Toast.show({ content: '未安装微信或当前微信版本较低' });
                 }
             })
             .catch(err => {
+                console.log('err', err);
                 Toast.show({ content: '微信请求失败，请使用手机号登录' });
             });
     };

@@ -5,7 +5,7 @@ import { config, app, observer } from 'store';
 import useReport from './useReport';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import VideoStore from '../../screens/video/VideoStore';
-
+import * as WeChat from 'react-native-wechat';
 const MoreOperation = props => {
     const { options, target, type, onPressIn, deleteCallback } = props;
     const report = useReport({ target, type });
@@ -77,6 +77,20 @@ const MoreOperation = props => {
         VideoStore.filterUserPost(target.user.id);
     }, []);
 
+    const shareToWechat = useCallback(async () => {
+        onPressIn();
+        //    const link = await fetchShareLink();
+        try {
+            await WeChat.shareToSession({
+                type: 'video',
+                title: '我在答题赚钱发现一个很好看的小视频，分享给你',
+                videoUrl: Config.ServerRoot + '/share/post/' + target.id + '?user_id=' + app.me.id,
+            });
+        } catch (e) {
+            Toast.show({ content: '未安装微信或当前微信版本较低' });
+        }
+    }, []);
+
     const operation = useMemo(
         () => ({
             采集视频: {
@@ -99,6 +113,14 @@ const MoreOperation = props => {
                 image: require('@src/assets/images/more_dislike.png'),
                 callback: dislike,
             },
+            分享微信: {
+                image: require('@src/assets/images/ic_pink_wechat.png'),
+                callback: shareToWechat,
+                style: {
+                    height: PxFit(50),
+                    width: PxFit(50),
+                },
+            },
         }),
         [reportArticle, deleteArticle, dislike],
     );
@@ -107,7 +129,16 @@ const MoreOperation = props => {
         return options.map((option, index) => {
             return (
                 <TouchFeedback style={styles.optionItem} key={index} onPress={operation[option].callback}>
-                    <Image style={styles.optionIcon} source={operation[option].image} />
+                    <View
+                        style={[
+                            styles.optionIcon,
+                            {
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            },
+                        ]}>
+                        <Image style={operation[option].style || styles.optionIcon} source={operation[option].image} />
+                    </View>
                     <Text style={styles.optionName}>{option}</Text>
                 </TouchFeedback>
             );

@@ -66,7 +66,7 @@ class NotLogin extends Component {
 
         return (
             <View style={styles.container}>
-                <WithdrawHeader user={{ gold: 0, today_contributes: 0, exchange_rate: 600 }} />
+                <WithdrawHeader user={{ gold: 0, today_contributes: 0, exchange_rate: 600 }} navigation={navigation} />
                 <Row style={{ marginTop: PxFit(10), paddingHorizontal: PxFit(15) }}>
                     {WithdrawType.map((data, index) => {
                         return (
@@ -74,7 +74,9 @@ class NotLogin extends Component {
                                 <TouchFeedback
                                     style={[
                                         styles.withdrawType,
-                                        this.state.withdrawType === data.type && { borderColor: Theme.primaryColor },
+                                        this.state.withdrawType === data.type && {
+                                            borderColor: Theme.primaryColor,
+                                        },
                                         index === 0 && {
                                             marginRight: PxFit(10),
                                         },

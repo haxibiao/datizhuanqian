@@ -59,6 +59,7 @@
         "react-native-video": "^5.0.0",
         "react-native-view-shot": "^3.0.2",
         "react-native-webview": "^6.9.0",
+        "react-native-wechat": "^1.9.12",
         "react-navigation": "^3.11.1",
         "react-navigation-hooks": "^1.0.3",
         "rn-fetch-blob": "0.11.2",
