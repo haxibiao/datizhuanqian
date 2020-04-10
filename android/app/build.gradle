@@ -88,6 +88,7 @@ project.ext.react = [
     devDisabledInOppo:true,
     devDisabledInHuawei:true,
     devDisabledInMeizu:true,
+    devDisabledInVivo:true,
 
     bundleInDev:true,
     bundleInHotfix: true,
@@ -98,6 +99,7 @@ project.ext.react = [
     bundleInOppo:true,
     bundleInHuawei:true,
     bundleInMeizu:true,
+    bundleInVivo:true,
 ]
 
 project.ext.envConfigFiles = [
@@ -111,6 +113,7 @@ project.ext.envConfigFiles = [
     oppo:"android/env/.env.oppo",
     huawei:"android/env/.env.huawei",
     meizu:"android/env/.env.meizu",
+    vivo:"android/env/.env.vivo",
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -214,20 +217,6 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
-        staging {
-            initWith release
-            applicationIdSuffix '.staging'
-            matchingFallbacks = ['release']
-            signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_staging + '"'
-        }
-        hotfix {
-            initWith release
-            applicationIdSuffix '.hotfix'
-            matchingFallbacks = ['release']
-            signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
-        }
         xiaomi {
             initWith release
             minifyEnabled enableProguardInReleaseBuilds
@@ -276,19 +265,11 @@ android {
             signingConfig signingConfigs.release
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
-        qihoo {
+        vivo {
             initWith release
-            matchingFallbacks = ['release']
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
-        }
-        other {
-            initWith release
             matchingFallbacks = ['release']
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
             buildConfigField "String", "CODEPUSH_KEY", '"' + rootProject.code_push_key_production + '"'
         }
