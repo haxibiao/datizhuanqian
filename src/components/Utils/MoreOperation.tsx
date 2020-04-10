@@ -84,7 +84,7 @@ const MoreOperation = props => {
             await WeChat.shareToSession({
                 type: 'video',
                 title: '我在答题赚钱发现一个很好看的小视频，分享给你',
-                videoUrl: Config.ServerRoot + '/share/post/' + target.id + '?user_id=' + app.me.id,
+                videoUrl: 'http://datizhuanqian.com' + '/share/post/' + target.id + '?user_id=' + app.me.id,
             });
         } catch (e) {
             Toast.show({ content: '未安装微信或当前微信版本较低' });

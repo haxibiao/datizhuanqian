@@ -7,7 +7,7 @@ import NotLogin from './components/NotLogin';
 import { app, observer } from 'store';
 import { useDetainment } from 'common';
 
-import { makeMutationClient } from '@src/apollo/mutationClient';
+import { makeWithdrawClient } from '@src/apollo/withdrawClient';
 
 const index = observer((props: { navigation: any }) => {
     const { navigation } = props;
@@ -15,12 +15,12 @@ const index = observer((props: { navigation: any }) => {
 
     useDetainment(navigation);
 
-    const mutationClient = makeMutationClient(app.me); // 构建apollo client;
-    console.log('mutationClient :', mutationClient);
+    const withdrawClient = makeWithdrawClient(app.me); // 构建apollo client;
+    console.log('withdrawClient :', withdrawClient);
     return (
         <PageContainer hiddenNavBar>
             {login ? (
-                <WithdrawBody navigation={navigation} mutationClient={mutationClient} />
+                <WithdrawBody navigation={navigation} withdrawClient={withdrawClient} />
             ) : (
                 <NotLogin navigation={navigation} />
             )}

@@ -17,7 +17,7 @@ const SystemVersion = DeviceInfo.getSystemVersion();
 const Brand = DeviceInfo.getBrand();
 
 const WithdrawBody = observer(props => {
-    const { navigation, mutationClient } = props;
+    const { navigation, withdrawClient } = props;
     const [submit, setSubmit] = useState(false);
     const [withdrawType, setWithdrawType] = useState('alipay');
 
@@ -76,7 +76,7 @@ const WithdrawBody = observer(props => {
         async (value: any, type?: any) => {
             setSubmit(true);
             try {
-                const result = await mutationClient.mutate({
+                const result = await withdrawClient.mutate({
                     mutation: GQL.CreateWithdrawMutation,
                     variables: {
                         amount: value,

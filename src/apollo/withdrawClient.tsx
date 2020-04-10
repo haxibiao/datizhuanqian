@@ -61,7 +61,7 @@ const endTimestamp = endToday.getTime() - 24 * 60 * 60 * 1000;
 
 console.log('startTimestamp', startTimestamp, endTimestamp);
 
-export function makeMutationClient(user: { id?: any; token?: any }, checkServer: () => void) {
+export function makeWithdrawClient(user: { id?: any; token?: any }, checkServer: () => void) {
     const { token } = user;
 
     Matomo.setUserId(user.id || 0);
@@ -117,7 +117,7 @@ export function makeMutationClient(user: { id?: any; token?: any }, checkServer:
         onError: ({ graphQLErrors, networkError, operation, forward }) => {
             if (graphQLErrors) {
                 graphQLErrors.map(error => {
-                    console.log('mutation client gql error', error);
+                    console.log('withdraw client gql error', error);
                 });
             }
             if (networkError) {
