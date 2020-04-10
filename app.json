@@ -6,6 +6,7 @@
     "ServerRoot": "http://gql.datizhuanqian.com",
     "ApiServceRoot": "http://api.datizhuanqian.com",
     "UploadServer": "http://upload.datizhuanqian.com",
+    "MutationServer": "http://mutation.datizhuanqian.com",
     "SocketServer": "ws://socket.datizhuanqian.cn:6001",
     "PackageName": "com.datizhuanqian",
     "AppSlogan": "学有所伴，见证成长每一步",

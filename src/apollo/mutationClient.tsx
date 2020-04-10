@@ -4,7 +4,7 @@ import ApolloClient from 'apollo-boost';
 import DeviceInfo from 'react-native-device-info';
 import { Config } from 'utils';
 import { Matomo } from 'native';
-import ApolloApp from './ApolloApp';
+
 import base64 from 'react-native-base64';
 
 const deviceHeaders = {
@@ -61,7 +61,7 @@ const endTimestamp = endToday.getTime() - 24 * 60 * 60 * 1000;
 
 console.log('startTimestamp', startTimestamp, endTimestamp);
 
-export function makeClient(user: { id?: any; token?: any }, checkServer: () => void) {
+export function makeMutationClient(user: { id?: any; token?: any }, checkServer: () => void) {
     const { token } = user;
 
     Matomo.setUserId(user.id || 0);
@@ -117,7 +117,7 @@ export function makeClient(user: { id?: any; token?: any }, checkServer: () => v
         onError: ({ graphQLErrors, networkError, operation, forward }) => {
             if (graphQLErrors) {
                 graphQLErrors.map(error => {
-                    console.log('gql error', error);
+                    console.log('mutation client gql error', error);
                 });
             }
             if (networkError) {
@@ -127,7 +127,3 @@ export function makeClient(user: { id?: any; token?: any }, checkServer: () => v
         cache: new InMemoryCache(),
     });
 }
-
-export { GQL } from 'gqls';
-export { Query, Mutation, compose, graphql, withApollo, ApolloProvider } from 'react-apollo';
-export * from '@apollo/react-hooks';
