@@ -11,7 +11,7 @@ export default function getWechatInfo(code: string, onSuccess?: Promise, onFaild
         .then(result => {
             onSuccess && onSuccess(result);
         })
-        .catch(() => {
-            onFaild && onFaild();
+        .catch(error => {
+            onFaild && onFaild(error);
         });
 }

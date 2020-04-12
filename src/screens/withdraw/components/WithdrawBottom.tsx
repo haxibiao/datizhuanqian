@@ -6,29 +6,25 @@ import { app } from 'store';
 import { SCREEN_WIDTH, WPercent } from 'utils';
 
 const WithdrawBottom = props => {
-    const { selectWithdrawCount, navigation } = props;
+    const { selectWithdrawCount, navigation, withdraw } = props;
 
-    const { data, loading, error } = useQuery(GQL.withdrawInfoQuery, {
-        variables: { id: app.me.id },
-    });
-
-    let withdraw = Helper.syncGetter('user', data);
+    let withdrawInfo = withdraw;
 
     useEffect(() => {
         // 更新缓存
-        if (withdraw) {
-            app.updateWithdrawCache(withdraw);
+        if (withdrawInfo) {
+            app.updateWithdrawCache(withdrawInfo);
         }
-    }, [data, loading]);
+    }, [withdrawInfo]);
 
-    if (!withdraw) {
+    if (!withdrawInfo) {
         if (app && app.withdrawCache) {
-            withdraw = app.withdrawCache;
+            withdrawInfo = app.withdrawCache;
         } else {
-            withdraw = { withdrawInfo: withdrawData };
+            withdrawInfo = { withdrawInfo: withdrawData };
         }
     }
-    console.log('withdraw :', withdraw);
+    console.log('withdrawInfo :', withdrawInfo);
     return (
         <View style={styles.withdraws}>
             <Row style={{ justifyContent: 'space-between', marginTop: PxFit(15), paddingHorizontal: PxFit(15) }}>
@@ -37,11 +33,11 @@ const WithdrawBottom = props => {
                     <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
                 </Row>
                 <Text style={styles.tips}>
-                    总提现:{Helper.syncGetter('wallet.total_withdraw_amount', withdraw) || 0}（元）
+                    总提现:{Helper.syncGetter('wallet.total_withdraw_amount', withdrawInfo) || 0}（元）
                 </Text>
             </Row>
             <View style={styles.center}>
-                {withdraw.withdrawInfo.map((data, index) => {
+                {withdrawInfo.withdrawInfo.map((data, index) => {
                     return (
                         <View key={index}>
                             <TouchFeedback

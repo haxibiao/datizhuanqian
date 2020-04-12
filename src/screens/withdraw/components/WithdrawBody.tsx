@@ -31,14 +31,21 @@ const WithdrawBody = observer(props => {
 
     let user = Helper.syncGetter('data.user', UserMeansQuery);
 
+    const { data, loading, error, refetch } = useQuery(GQL.withdrawInfoQuery, {
+        variables: { id: app.me.id },
+    });
+
+    let withdraw = Helper.syncGetter('user', data);
+
     useEffect(() => {
         const navDidFocusListener = props.navigation.addListener('didFocus', () => {
             UserMeansQuery.refetch();
+            refetch();
         });
         return () => {
             navDidFocusListener.remove();
         };
-    }, [UserMeansQuery.loading, UserMeansQuery.refetch]);
+    }, [UserMeansQuery.loading, UserMeansQuery.refetch, refetch]);
 
     const CheckApkExist = useCallback(
         event => {
@@ -211,7 +218,7 @@ const WithdrawBody = observer(props => {
             return null;
         }
     }
-
+    console.log('withdrawB :', withdraw);
     return (
         <ScrollView style={{ flex: 1 }}>
             <View style={styles.container}>
@@ -243,7 +250,7 @@ const WithdrawBody = observer(props => {
                     </Row>
                     {renderBindTips()}
                 </View>
-                <WithdrawBottom selectWithdrawCount={selectWithdrawCount} navigation={navigation} />
+                <WithdrawBottom selectWithdrawCount={selectWithdrawCount} navigation={navigation} withdraw={withdraw} />
                 <SubmitLoading isVisible={submit} content={'加载中...'} />
             </View>
         </ScrollView>

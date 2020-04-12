@@ -260,6 +260,7 @@ class index extends Component {
                             service.getWechatInfo(
                                 responseCode.code,
                                 result => {
+                                    console.log('result', result);
                                     if (result.data && result.data.unionid) {
                                         // 新用户绑定手机号
                                         this.props.navigation.navigate('PhoneBind', {
@@ -273,7 +274,8 @@ class index extends Component {
                                         this.getUserData(result.data.user);
                                     }
                                 },
-                                () => {
+                                error => {
+                                    console.log('error', error);
                                     Toast.show({ content: '微信账号获取失败' });
                                     this.setState({
                                         submitting: false,
@@ -336,15 +338,20 @@ class index extends Component {
                 },
             })
             .then(result => {
-                let userLoginInfo = { ...result.data.user, token: user.api_token };
-                this._saveUserData(userLoginInfo);
-            })
-            .catch(() => {
-                let str = rejected.toString().replace(/Error: GraphQL error: /, '');
-                Toast.show({ content: str });
                 this.setState({
                     submitting: false,
                 });
+                console.log('getUserData result', result);
+                let userLoginInfo = { ...result.data.user, token: user.api_token };
+                this._saveUserData(userLoginInfo);
+            })
+            .catch(error => {
+                this.setState({
+                    submitting: false,
+                });
+                console.log('getUserData error', error);
+                let str = error.toString().replace(/Error: GraphQL error: /, '');
+                Toast.show({ content: str });
             });
     };
 
