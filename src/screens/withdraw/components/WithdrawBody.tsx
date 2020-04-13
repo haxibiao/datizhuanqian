@@ -138,18 +138,15 @@ const WithdrawBody = observer(props => {
     const renderBindTips = () => {
         let name = '已绑定';
         let action = () => {
-            Helper.middlewareNavigate('AccountSecurity', { user });
+            Helper.middlewareNavigate('AccountSecurity', { user: Object.assign({}, user, { ...withdraw }) });
         };
         let playform = '懂得赚';
 
-        if (withdrawType === 'alipay' && !Helper.syncGetter('wallet.bind_platforms.alipay', user)) {
+        if (withdrawType === 'alipay' && !Helper.syncGetter('user.wallet.bind_platforms.alipay', data)) {
             name = '立即绑定';
             action = () => Helper.middlewareNavigate('SettingWithdrawInfo');
         }
-        if (
-            (withdrawType === 'wechat' && !Helper.syncGetter('data.user.wallet.platforms.wechat', UserMeansQuery)) ||
-            ISIOS
-        ) {
+        if ((withdrawType === 'wechat' && !Helper.syncGetter('user.wallet.platforms.wechat', data)) || ISIOS) {
             name = '立即绑定';
             action = () => {
                 setSubmit(true);
