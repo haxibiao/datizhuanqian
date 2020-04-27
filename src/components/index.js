@@ -50,6 +50,7 @@ import LeaveAppOverlay from './Overlay/LeaveAppOverlay';
 import * as RewardOverlay from './Overlay/RewardOverlay';
 import DownloadApkIntro from './Overlay/DownloadApkIntro';
 import Loading from './Overlay/Loading';
+import UserAgreementOverlay from './Overlay/UserAgreementOverlay';
 // Layout
 import MasonryList from './Layout/MasonryList';
 // List
@@ -136,6 +137,7 @@ export {
     RewardOverlay,
     DownloadApkIntro,
     Loading,
+    UserAgreementOverlay,
     MasonryList,
     PullList,
     ListFooter,

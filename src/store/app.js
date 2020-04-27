@@ -35,6 +35,7 @@ class app {
     @observable viewportHeight: number = SCREEN_HEIGHT;
     @observable viewportWidth: number = SCREEN_WIDTH;
     @observable client = {};
+    @observable createUserAgreement: boolean = true; // 用户协议观看记录,默认已看
 
     @action.bound
     setFetching(isFetching) {
@@ -249,6 +250,14 @@ class app {
             this.gameConfig = gameConfig;
         }
     }
+
+    @action.bound
+    async recall() {
+        this.createUserAgreement = await Storage.getItem('createUserAgreement') || false;
+        console.log('是否阅读用户：', this.createUserAgreement);
+
+    }
+    
 }
 
 export default new app();

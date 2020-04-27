@@ -7,7 +7,7 @@ import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 import { observer, app, config } from 'store';
 
 import { ad } from '@app/native';
-import { TipsOverlay } from '@src/components';
+import { TipsOverlay, UserAgreementOverlay } from '@src/components';
 
 import JPushModule from 'jpush-react-native';
 import Echo from 'laravel-echo';
@@ -94,6 +94,14 @@ export default observer(props => {
     useEffect(() => {
         mountWebSocket(app.me);
     }, [app.me]);
+
+    useEffect(() => {
+        // 判断是否阅读用户协议
+        console.log('是否阅读：', app.createUserAgreement);
+        if (!app.createUserAgreement) {
+            UserAgreementOverlay(true);
+        }
+    }, [app.createUserAgreement]);
 
     const getActiveRouteName = navigationState => {
         if (!navigationState) {

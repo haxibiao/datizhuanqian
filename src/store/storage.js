@@ -27,6 +27,7 @@ export const keys = {
     answeredId: 'answeredId',
     searchRecord: 'searchRecord',
     leaveAppTips: 'leaveAppTips',
+    createUserAgreement: 'createUserAgreement',
 };
 
 async function removeItem(key) {
