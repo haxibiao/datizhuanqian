@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image, NativeModules } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '../../components';
-import { Config, Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 import { GQL, Query, withApollo, compose, graphql } from 'apollo';
 import { observer, app, config, keys, storage } from 'store';
 
@@ -363,7 +362,7 @@ class index extends Component {
 }
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - Theme.itemSpace * 2,
+    width: Device.WIDTH - Theme.itemSpace * 2,
     color: '#E8E8E8',
     border: PxFit(3),
     radius: PxFit(10),
@@ -382,7 +381,7 @@ const styles = StyleSheet.create({
     },
     userInfoContainer: {
         padding: Theme.itemSpace,
-        paddingTop: PxFit(Theme.statusBarHeight + 20),
+        paddingTop: PxFit(Device.statusBarHeight + 20),
         backgroundColor: Theme.primaryColor,
     },
     userCoverContainer: {

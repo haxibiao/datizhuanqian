@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet, StatusBar, ScrollView, FlatList } from 'rea
 
 import { PageContainer, TouchFeedback, Iconfont, Banner, StatusView, PullChooser, Player } from 'components';
 import { GQL, useQuery } from 'apollo';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS } from 'utils';
+
 import { app, config, observer } from 'store';
 import { Overlay } from 'teaset';
 
@@ -11,18 +11,17 @@ import ChooseOverlay from './components/ChooseOverlay';
 import AnswerOverlay from './components/AnswerOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import FooterBar from './components/FooterBar';
-import AnswerResult from './components/AnswerResult';
+import AnswerAchievement from './components/AnswerAchievement';
 
 import UserInfo from '../question/components/UserInfo';
 import QuestionBody from '../question/components/QuestionBody';
-import QuestionOptions from '../answer/components/QuestionOptions';
+import QuestionOptions from './components/QuestionOptions';
 import AnswerBar from '../question/components/AnswerBar';
 import Explain from '../question/components/Explain';
 import VideoExplain from '../question/components/VideoExplain';
 import CommentOverlay from '../comment/CommentOverlay';
 
 import QuestionStore from './QuestionStore';
-import { exceptionCapture } from 'common';
 
 type Props = {
     navigation: any;
@@ -144,7 +143,7 @@ const AnswerScreen = observer((props: Props) => {
     const fetchData = useCallback(async () => {
         if (!QuestionStore.isLoadMore) {
             QuestionStore.isLoadMore = true;
-            const [error, result] = await exceptionCapture(questionsQuery);
+            const [error, result] = await Helper.exceptionCapture(questionsQuery);
             console.log('result', result, error);
             const questionsSource = Helper.syncGetter('data.user.questions', result);
 
@@ -177,12 +176,12 @@ const AnswerScreen = observer((props: Props) => {
             setSubmited(true);
         }
 
-        app.client
+        app.mutationClient
             .mutate({
                 mutation: GQL.QuestionAnswerMutation,
                 variables: {
                     id: question.id,
-                    answer: answer.join(''),
+                    answer: answer.join('') || 'A',
                 },
                 errorPolicy: 'all',
                 refetchQueries: () => [
@@ -213,27 +212,13 @@ const AnswerScreen = observer((props: Props) => {
         console.log('answerCount :', answerCount);
         const adWillShowCount = config.disableAd ? 100 : 5;
         if (answerCount + 1 == adWillShowCount) {
-            showAnswerResult(answerCount + 1, errorCount);
-
+            AnswerAchievement.show({
+                answerCount: answerCount + 1,
+                errorCount: errorCount,
+            });
             setErrorCount(0);
             setAnswerCount(0);
         }
-    };
-
-    // 答题结果
-    const showAnswerResult = (answerCount: number, errorCount: number) => {
-        const overlayView = (
-            <Overlay.View animated>
-                <View style={styles.overlayInner}>
-                    <AnswerResult
-                        hide={() => Overlay.hide(OverlayKey)}
-                        answer_count={answerCount}
-                        error_count={errorCount}
-                    />
-                </View>
-            </Overlay.View>
-        );
-        const OverlayKey = Overlay.show(overlayView);
     };
 
     // 下一题
@@ -327,7 +312,7 @@ const AnswerScreen = observer((props: Props) => {
     };
 
     const showOptions = () => {
-        ISIOS
+        Device.IOS
             ? PullChooser.show([
                   {
                       title: '举报',
@@ -511,9 +496,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,0)',
         flex: 1,
-        height: SCREEN_HEIGHT,
+        height: Device.HEIGTH,
         justifyContent: 'center',
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
     },
     scrollStyle: {
         backgroundColor: '#fefefe',
@@ -521,7 +506,7 @@ const styles = StyleSheet.create({
     },
 
     withdrawProgress: {
-        bottom: PxFit(80) + Theme.HOME_INDICATOR_HEIGHT,
+        bottom: PxFit(80) + Device.HOME_INDICATOR_HEIGHT,
         position: 'absolute',
         right: PxFit(20),
     },

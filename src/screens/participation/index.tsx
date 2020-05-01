@@ -1,9 +1,7 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { useNavigation } from 'react-navigation-hooks';
 import { GQL, useQuery, useApolloClient } from 'apollo';
-import { syncGetter, exceptionCapture } from 'common';
 import { app } from 'store';
 import { PageContainer, HxfButton, RewardOverlay } from 'components';
 import BubbleImage from './BubbleImage';
@@ -47,7 +45,7 @@ const Participation = props => {
 
     const receiveStockBonus = useCallback(
         position => {
-            return client.mutate({
+            return app.mutationClient.mutate({
                 mutation: GQL.receiveStockBonusMutation,
                 variables: {
                     position,
@@ -60,11 +58,11 @@ const Participation = props => {
                 ],
             });
         },
-        [client, me],
+        [app.mutationClient, me],
     );
 
     const changeUserStatus = useCallback(() => {
-        return client.mutate({
+        return app.mutationClient.mutate({
             mutation: GQL.updateUserStockInfoMutation,
             variables: {
                 is_first_stock: false,
@@ -76,7 +74,7 @@ const Participation = props => {
                 },
             ],
         });
-    }, [client, me]);
+    }, [app.mutationClient, me]);
 
     const { data: userData, refetch } = useQuery(GQL.UserMeansQuery, {
         fetchPolicy: 'network-only',
@@ -85,8 +83,8 @@ const Participation = props => {
         },
         skip: !me.id,
     });
-    const statistics = useMemo(() => syncGetter('user', userData) || adapterGraphData, [userData]);
-    const rmb = useMemo(() => syncGetter('goldTree.rmb', statistics), [statistics]);
+    const statistics = useMemo(() => Helper.syncGetter('user', userData) || adapterGraphData, [userData]);
+    const rmb = useMemo(() => Helper.syncGetter('goldTree.rmb', statistics), [statistics]);
     // 领取分红 把金币index传递给后端，后端根据下标对应的值来领奖
     const receiveGold = useCallback(
         (value, position) => {
@@ -97,7 +95,7 @@ const Participation = props => {
                 playVideo({
                     type: 'Dividend',
                     callback: async () => {
-                        const [error] = await exceptionCapture(() => receiveStockBonus(position));
+                        const [error] = await Helper.exceptionCapture(() => receiveStockBonus(position));
                         if (error) {
                             Toast.show({ content: error.message || '领取失败' });
                         } else {
@@ -106,7 +104,6 @@ const Participation = props => {
                                     rmb: value,
                                 },
                                 title: '分红奖励领取成功',
-                                rewardVideo: true,
                             });
                         }
                     },
@@ -308,15 +305,15 @@ const Participation = props => {
     );
 };
 
-const yieldImageWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 3) / 2;
+const yieldImageWidth = (Device.WIDTH - PxFit(Theme.itemSpace) * 3) / 2;
 
 const styles = StyleSheet.create({
     bubbleWrap: { position: 'absolute' },
     button: {
-        borderRadius: SCREEN_WIDTH / 9,
-        height: SCREEN_WIDTH / 9,
+        borderRadius: Device.WIDTH / 9,
+        height: Device.WIDTH / 9,
         marginTop: -PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH / 2,
+        width: Device.WIDTH / 2,
     },
     container: {
         flex: 1,
@@ -347,9 +344,9 @@ const styles = StyleSheet.create({
         fontSize: PxFit(12),
     },
     moneyTree: {
-        height: ((SCREEN_WIDTH / 2) * 488) / 521,
+        height: ((Device.WIDTH / 2) * 488) / 521,
         justifyContent: 'center',
-        width: SCREEN_WIDTH / 2,
+        width: Device.WIDTH / 2,
     },
     moneyTreeContainer: {
         alignItems: 'center',

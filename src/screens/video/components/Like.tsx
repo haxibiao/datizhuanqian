@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import { SafeText } from 'components';
-import { exceptionCapture, useBounceAnimation } from 'common';
+import { useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
-import { observer } from 'store';
+import { observer, app } from 'store';
 import _ from 'lodash';
 import { useNavigation } from 'react-navigation-hooks';
 
@@ -27,10 +27,11 @@ export default observer((props: Props) => {
             likable_id: Helper.syncGetter('id', media),
             likable_type: 'POST',
         },
+        client: app.mutationClient,
     });
 
     const likeHandler = __.throttle(async function() {
-        const [error, result] = await exceptionCapture(likeArticle);
+        const [error, result] = await Helper.exceptionCapture(likeArticle);
         console.log('err', error, result);
         if (error) {
             isError.current = true;

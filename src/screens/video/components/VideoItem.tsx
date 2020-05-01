@@ -1,17 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { SafeText, Row, FeedOverlay } from 'components';
+import { SafeText, Row, RewardOverlay } from 'components';
 import { ad } from 'native';
 import { observer, app, config } from 'store';
 import { GQL, useMutation } from 'apollo';
-import { exceptionCapture } from 'common';
 
 import Player from './Player';
 import SideBar from './SideBar';
 import AdRewardProgress from './AdRewardProgress';
 import VideoStore from '../VideoStore';
 
-import service from 'service';
+import { adClickTrack } from '@src/common';
 
 export default observer(props => {
     const { media, index } = props;
@@ -22,6 +21,7 @@ export default observer(props => {
         variables: {
             reward: 'DRAW_FEED_ADVIDEO_REWARD',
         },
+        client: app.mutationClient,
         refetchQueries: () => [
             {
                 query: GQL.UserMetaQuery,
@@ -36,28 +36,26 @@ export default observer(props => {
         if (VideoStore.getReward.indexOf(drawFeedAdId) === -1) {
             VideoStore.addGetRewardId(drawFeedAdId);
             // 发放给精力奖励
-            const [error, res] = await exceptionCapture(onClickReward);
+            const [error, res] = await Helper.exceptionCapture(onClickReward);
             if (error) {
                 Toast.show({
                     content: '遇到未知错误，领取失败',
                 });
             } else {
                 const contribute = Helper.syncGetter('data.userReward.contribute', res);
-                // Toast.show({
-                //     content: `恭喜你获得+${contribute}贡献值`,
-                //     duration: 2000,
-                // });
-                FeedOverlay.show({
-                    title: `点击广告详情，获得+${contribute}贡献值`,
+
+                RewardOverlay.show({
+                    reward: {
+                        contribute: contribute,
+                    },
+                    title: '领取点击详情奖励成功',
                 });
             }
 
-            service.dataReport({
-                data: { category: '广告点击', action: 'user_click_drawfeed_ad', name: '用户点击drawFeed广告' },
-                callback: (result: any) => {
-                    console.warn('result', result);
-                },
-            }); // 上报drawFeed点击量
+            // 上报drawFeed点击量
+            adClickTrack({
+                name: '点击drawFeed广告',
+            });
         } else {
             Toast.show({
                 content: `该视频已获取过点击奖励`,
@@ -80,7 +78,7 @@ export default observer(props => {
                 {VideoStore.getReward.length < 1 && (
                     <View
                         style={{
-                            bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(75),
+                            bottom: Device.HOME_INDICATOR_HEIGHT + PxFit(75),
                             position: 'absolute',
                             right: PxFit(Theme.itemSpace),
                             flexDirection: 'row',
@@ -174,13 +172,13 @@ const styles = StyleSheet.create({
         fontSize: PxFit(15),
     },
     videoContent: {
-        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(80),
+        bottom: Device.HOME_INDICATOR_HEIGHT + PxFit(80),
         left: PxFit(Theme.itemSpace),
         position: 'absolute',
         right: PxFit(90),
     },
     videoSideBar: {
-        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(80),
+        bottom: Device.HOME_INDICATOR_HEIGHT + PxFit(80),
         position: 'absolute',
         right: PxFit(Theme.itemSpace),
     },

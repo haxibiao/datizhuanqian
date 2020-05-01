@@ -1,8 +1,18 @@
 import React, { useEffect } from 'react';
 
 import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Avatar, Badge, SafeText } from '@src/components';
-import { Config, Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import {
+    PageContainer,
+    TouchFeedback,
+    Iconfont,
+    Row,
+    Avatar,
+    Badge,
+    SafeText,
+    beginnerGuidance,
+    WithdrawGuidance,
+} from '@src/components';
+
 import { GQL, Query, useQuery } from 'apollo';
 import { observer, app, config } from 'store';
 
@@ -30,6 +40,20 @@ const index = observer(props => {
         }
     }, [data, refetch, loading]);
 
+    useEffect(() => {
+        // 命中
+        const navDidFocusListener = props.navigation.addListener('didFocus', () => {
+            beginnerGuidance({
+                guidanceKey: 'Withdraw',
+                GuidanceView: WithdrawGuidance,
+                dismissEnabled: true,
+            });
+        });
+        return () => {
+            navDidFocusListener.remove();
+        };
+    }, []);
+
     useDetainment(navigation);
 
     const userAdapter = (userInfo: User) => {
@@ -39,7 +63,7 @@ const index = observer(props => {
             name: userInfo.name || '求学好问',
             avatar: userInfo.avatar
                 ? userInfo.avatar + '?t=' + Date.now()
-                : require('../../assets/images/default_avatar.png'),
+                : require('@src/assets/images/default_avatar.png'),
             level: userInfo.level || { level: 0, name: '初来乍到' },
             exp: userInfo.exp || 0,
             next_level_exp: userInfo.next_level_exp || 50,
@@ -60,13 +84,13 @@ const index = observer(props => {
 
     return (
         <PageContainer hiddenNavBar onWillFocus={refetch}>
-            <ScrollView style={styles.container} bounces={false}>
-                <View style={{ flex: 1, paddingBottom: PxFit(50) }}>
-                    <View style={{ marginBottom: -Theme.itemSpace }}>
+            <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
+                <View style={{ flex: 1, paddingBottom: PxFit(60) }}>
+                    <View style={{}}>
                         <View style={styles.userInfoContainer}>
                             <View style={styles.userCoverContainer}>
                                 <Image
-                                    source={require('../../assets/images/user_cover.png')}
+                                    source={require('@src/assets/images/bg_user_cover.png')}
                                     style={styles.userCover}
                                 />
                             </View>
@@ -76,17 +100,6 @@ const index = observer(props => {
                                 activeOpacity={1}
                                 style={styles.userInfo}
                                 onPress={() => navigation.navigate('EditProfile', { user })}>
-                                <TouchFeedback
-                                    authenticated
-                                    navigation={navigation}
-                                    onPress={() => navigation.navigate('User', { user })}>
-                                    <Avatar
-                                        source={user.avatar + '?t=' + Date.now()}
-                                        userId={user.id}
-                                        size={PxFit(60)}
-                                        style={styles.userAvatar}
-                                    />
-                                </TouchFeedback>
                                 <View style={styles.textInfo}>
                                     <SafeText style={styles.userName} numberOfLines={1}>
                                         {login ? user.name : '登录/注册'}
@@ -97,15 +110,26 @@ const index = observer(props => {
                                             : '欢迎来到' + Config.AppName}
                                     </Text>
                                 </View>
-                                <Iconfont name={'right'} size={PxFit(20)} color={'#fff'} />
+                                <TouchFeedback
+                                    authenticated
+                                    navigation={navigation}
+                                    onPress={() => navigation.navigate('User', { user })}>
+                                    <Avatar
+                                        source={user.avatar + '?t=' + Date.now()}
+                                        userId={user.id}
+                                        size={PxFit(68)}
+                                        style={styles.userAvatar}
+                                    />
+                                </TouchFeedback>
+                                <Iconfont name={'right'} size={Font(13)} color={'#333333'} />
                             </TouchFeedback>
-                            <View style={styles.metaWrap}>
+                            <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
                                 <TouchFeedback
                                     navigation={navigation}
                                     onPress={() => navigation.navigate('GradeDescription', { user })}
                                     authenticated
                                     activeOpacity={1}
-                                    style={styles.metaItem}>
+                                    style={styles.socialCount}>
                                     <SafeText style={styles.metaCount} numberOfLines={1}>
                                         {user.level ? user.level.level : 0}
                                     </SafeText>
@@ -118,7 +142,7 @@ const index = observer(props => {
                                     onPress={() => navigation.navigate('Society')}
                                     authenticated
                                     activeOpacity={1}
-                                    style={styles.metaItem}>
+                                    style={styles.socialCount}>
                                     <Text style={styles.metaCount} numberOfLines={1}>
                                         {user.follow_users_count || 0}
                                     </Text>
@@ -131,7 +155,7 @@ const index = observer(props => {
                                     onPress={() => navigation.navigate('Society', { follower: true })}
                                     authenticated
                                     activeOpacity={1}
-                                    style={styles.metaItem}>
+                                    style={styles.socialCount}>
                                     <Text style={styles.metaCount} numberOfLines={1}>
                                         {user.followers_count || 0}
                                     </Text>
@@ -142,87 +166,85 @@ const index = observer(props => {
                             </View>
                         </View>
                     </View>
-                    <View style={{ paddingHorizontal: Theme.itemSpace, marginBottom: Theme.itemSpace }}>
-                        <BoxShadow
-                            setting={Object.assign({}, shadowOpt, {
-                                height: PxFit(80),
-                            })}>
-                            <View style={[styles.metaWrap, styles.metaWrapBottom]}>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('MyPublish')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/profile_make_question.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        我的发布
-                                    </Text>
-                                </TouchFeedback>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('FavoritesLog')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/profile_collection.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        我的收藏
-                                    </Text>
-                                </TouchFeedback>
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('AnswerLog')}>
-                                    <Image
-                                        style={styles.metaIcon}
-                                        source={require('../../assets/images/profile_answer_history.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        答题记录
-                                    </Text>
-                                </TouchFeedback>
 
-                                <TouchFeedback
-                                    navigation={navigation}
-                                    authenticated
-                                    activeOpacity={1}
-                                    style={styles.metaItem}
-                                    onPress={() => navigation.navigate('Medal', { user })}>
-                                    <Image
-                                        style={{
-                                            width: PxFit(19),
-                                            height: PxFit((19 * 140) / 109),
-                                            resizeMode: 'cover',
-                                            paddingTop: PxFit(4),
-                                        }}
-                                        source={require('../../assets/images/medal_icon.png')}
-                                    />
-                                    <Text style={styles.metaIconLabel} numberOfLines={1}>
-                                        我的勋章
-                                    </Text>
-                                </TouchFeedback>
-                            </View>
-                        </BoxShadow>
+                    <View style={[styles.metaWrap, styles.metaWrapBottom]}>
+                        <TouchFeedback
+                            navigation={navigation}
+                            authenticated
+                            activeOpacity={1}
+                            style={styles.metaItem}
+                            onPress={() => navigation.navigate('MyPublish')}>
+                            <Image
+                                style={styles.metaLabelIcon}
+                                source={require('@src/assets/images/ic_my_publish.png')}
+                            />
+                            <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                我的发布
+                            </Text>
+                        </TouchFeedback>
+                        <TouchFeedback
+                            navigation={navigation}
+                            authenticated
+                            activeOpacity={1}
+                            style={styles.metaItem}
+                            onPress={() => navigation.navigate('MyLikes')}>
+                            <Image style={styles.metaLabelIcon} source={require('@src/assets/images/ic_my_like.png')} />
+                            <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                我的点赞
+                            </Text>
+                        </TouchFeedback>
+                        <TouchFeedback
+                            navigation={navigation}
+                            authenticated
+                            activeOpacity={1}
+                            style={styles.metaItem}
+                            onPress={() => navigation.navigate('AnswerLog')}>
+                            <Image
+                                style={styles.metaLabelIcon}
+                                source={require('@src/assets/images/ic_answer_log.png')}
+                            />
+                            <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                答题记录
+                            </Text>
+                        </TouchFeedback>
+
+                        <TouchFeedback
+                            navigation={navigation}
+                            authenticated
+                            activeOpacity={1}
+                            style={styles.metaItem}
+                            onPress={() => navigation.navigate('Medal', { user })}>
+                            <Image
+                                style={styles.metaLabelIcon}
+                                source={require('@src/assets/images/ic_my_medal.png')}
+                            />
+                            <Text style={styles.metaIconLabel} numberOfLines={1}>
+                                我的勋章
+                            </Text>
+                        </TouchFeedback>
                     </View>
+
+                    {!config.disableAd && (
+                        <TouchFeedback
+                            style={styles.columnItem}
+                            authenticated
+                            navigation={navigation}
+                            onPress={() => navigation.navigate('Withdraw')}>
+                            <Row>
+                                <Image style={styles.metaIcon} source={require('@src/assets/images/ic_wallet.png')} />
+                                <Text style={styles.itemTypeText}>我的钱包</Text>
+                            </Row>
+                            <Text style={{ color: '#BEBEBE', fontSize: Font(14) }}>提现入口在这里哦</Text>
+                        </TouchFeedback>
+                    )}
+                    <View style={{ height: PxFit(15) }} />
                     <TouchFeedback
                         style={styles.columnItem}
                         authenticated
                         navigation={navigation}
                         onPress={() => navigation.navigate('Notification')}>
                         <Row>
-                            <Image
-                                style={styles.metaIcon}
-                                source={require('../../assets/images/profile_notification.png')}
-                            />
+                            <Image style={styles.metaIcon} source={require('@src/assets/images/ic_notification.png')} />
                             <Text style={styles.itemTypeText}>消息通知</Text>
                         </Row>
                         {login ? (
@@ -236,12 +258,12 @@ const index = observer(props => {
                                         return <Badge count={data.user.unread_notifications_count} />;
                                     } else {
                                         app.updateNoticeCount(0);
-                                        return <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />;
+                                        return <Iconfont name="right" size={Font(14)} color={'#C1C1C1'} />;
                                     }
                                 }}
                             </Query>
                         ) : (
-                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                            <Iconfont name="right" size={Font(14)} color={'#C1C1C1'} />
                         )}
                     </TouchFeedback>
                     {!config.disableAd && (
@@ -251,30 +273,34 @@ const index = observer(props => {
                             navigation={navigation}
                             onPress={() => navigation.navigate('BillingRecord')}>
                             <Row>
-                                <Image
-                                    style={styles.metaIcon}
-                                    source={require('../../assets/images/profile_order.png')}
-                                />
+                                <Image style={styles.metaIcon} source={require('@src/assets/images/ic_my_order.png')} />
                                 <Text style={styles.itemTypeText}>我的账单</Text>
                             </Row>
-                            <Iconfont name="right" size={17} color={Theme.subTextColor} />
+                            <Iconfont name="right" size={17} color={'#C1C1C1'} />
                         </TouchFeedback>
                     )}
                     <TouchFeedback
                         style={styles.columnItem}
                         authenticated
                         navigation={navigation}
+                        onPress={() => navigation.navigate('FavoritesLog')}>
+                        <Row>
+                            <Image style={styles.metaIcon} source={require('@src/assets/images/ic_my_favorite.png')} />
+                            <Text style={styles.itemTypeText}>我的收藏</Text>
+                        </Row>
+                        <Iconfont name="right" size={Font(14)} color={'#C1C1C1'} />
+                    </TouchFeedback>
+                    <TouchFeedback
+                        style={styles.columnItem}
+                        authenticated
+                        navigation={navigation}
                         onPress={() => navigation.navigate('Feedback')}>
                         <Row>
-                            <Image
-                                style={styles.metaIcon}
-                                source={require('../../assets/images/profile_feedback.png')}
-                            />
+                            <Image style={styles.metaIcon} source={require('@src/assets/images/ic_feedback.png')} />
                             <Text style={styles.itemTypeText}>反馈建议</Text>
                         </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                        <Iconfont name="right" size={Font(14)} color={'#C1C1C1'} />
                     </TouchFeedback>
-                    <View style={{ height: 10 }} />
 
                     {/*
                             <TouchFeedback
@@ -303,48 +329,45 @@ const index = observer(props => {
                                 // 抖音授权   支付宝授权
                             }}>
                             <Row>
-                                <Image style={styles.metaIcon} source={require('../../assets/images/recruit.png')} />
+                                <Image style={styles.metaIcon} source={require('@src/assets/images/recruit.png')} />
                                 <Text style={styles.itemTypeText}>版主招募</Text>
                             </Row>
-                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                            <Iconfont name="right" size={Font(14)} color={"#C1C1C1"} />
                         </TouchFeedback>
                     */}
 
+                    {/*   {!config.disableAd && (
+                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
+                            <Row>
+                                <Image
+                                    style={styles.metaIcon}
+                                    source={require('@src/assets/images/ic_common_issue.png')}
+                                />
+                                <Text style={styles.itemTypeText}>赚钱攻略</Text>
+                            </Row>
+                            <Iconfont name="right" size={Font(14)} color={"#C1C1C1"} />
+                        </TouchFeedback>
+                    )} */}
                     {!config.disableAd && (
                         <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('MakeMoenyManual')}>
                             <Row>
                                 <Image
                                     style={styles.metaIcon}
-                                    source={require('../../assets/images/profile_explain.png')}
-                                />
-                                <Text style={styles.itemTypeText}>赚钱攻略</Text>
-                            </Row>
-                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
-                        </TouchFeedback>
-                    )}
-                    {!config.disableAd && (
-                        <TouchFeedback style={styles.columnItem} onPress={() => navigation.navigate('CommonIssue')}>
-                            <Row>
-                                <Image
-                                    style={styles.metaIcon}
-                                    source={require('../../assets/images/profile_help.png')}
+                                    source={require('@src/assets/images/ic_common_issue.png')}
                                 />
                                 <Text style={styles.itemTypeText}>常见问题</Text>
                             </Row>
-                            <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                            <Iconfont name="right" size={Font(14)} color={'#C1C1C1'} />
                         </TouchFeedback>
                     )}
                     <TouchFeedback
                         style={styles.columnItem}
                         onPress={__.throttle(() => navigation.navigate('Setting', { user }), 500)}>
                         <Row>
-                            <Image
-                                style={styles.metaIconRank}
-                                source={require('../../assets/images/profile_setting.png')}
-                            />
+                            <Image style={styles.metaIcon} source={require('@src/assets/images/ic_settings.png')} />
                             <Text style={styles.itemTypeText}>设置</Text>
                         </Row>
-                        <Iconfont name="right" size={PxFit(17)} color={Theme.subTextColor} />
+                        <Iconfont name="right" size={Font(14)} color={'#C1C1C1'} />
                     </TouchFeedback>
                 </View>
             </ScrollView>
@@ -353,7 +376,7 @@ const index = observer(props => {
 });
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - Theme.itemSpace * 2,
+    width: Device.WIDTH - Theme.itemSpace * 2,
     color: '#E8E8E8',
     border: PxFit(3),
     radius: PxFit(10),
@@ -368,12 +391,12 @@ const shadowOpt = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Theme.groundColour,
+        // backgroundColor: Theme.groundColour,
     },
     userInfoContainer: {
         padding: Theme.itemSpace,
-        paddingTop: PxFit(Theme.statusBarHeight + 20),
-        backgroundColor: Theme.primaryColor,
+        paddingTop: PxFit(Device.statusBarHeight + PxFit(50)),
+        // backgroundColor: Theme.primaryColor,
     },
     userCoverContainer: {
         position: 'absolute',
@@ -392,35 +415,44 @@ const styles = StyleSheet.create({
     userInfo: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: PxFit(10),
     },
     userAvatar: {
         borderWidth: PxFit(2),
         borderColor: '#fff',
+        marginRight: PxFit(10),
     },
     textInfo: {
         flex: 1,
         paddingHorizontal: Theme.itemSpace,
     },
     userName: {
-        fontSize: PxFit(17),
-        color: '#fff',
-        fontWeight: '500',
+        fontSize: Font(20),
+        color: '#424242',
+        fontWeight: 'bold',
     },
     introduction: {
-        marginTop: PxFit(8),
-        fontSize: PxFit(13),
-        color: '#fff',
+        marginTop: PxFit(6),
+        fontSize: Font(14),
+        color: '#8E8E8E',
+    },
+    socialCount: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: Theme.itemSpace,
+        paddingHorizontal: PxFit(15),
+        marginRight: PxFit(15),
     },
     metaWrap: {
         flexDirection: 'row',
         alignItems: 'stretch',
         paddingHorizontal: 10,
-        height: PxFit(70),
+        // height: PxFit(70),
     },
     metaWrapBottom: {
         backgroundColor: '#fff',
-        borderRadius: PxFit(10),
-        height: PxFit(80),
+        // height: PxFit(80),
+        marginBottom: PxFit(25),
     },
     metaItem: {
         flex: 1,
@@ -430,41 +462,43 @@ const styles = StyleSheet.create({
         paddingHorizontal: PxFit(5),
     },
     metaCount: {
-        fontSize: PxFit(15),
-        color: '#fff',
+        fontSize: Font(15),
+        color: '#333333',
         fontWeight: '500',
     },
     metaLabel: {
-        fontSize: PxFit(13),
-        color: '#fff',
+        fontSize: Font(12),
+        color: '#A1A1A1',
     },
     metaIcon: {
-        width: PxFit(25),
-        height: PxFit(25),
+        width: PxFit(23),
+        height: PxFit(23),
         resizeMode: 'cover',
     },
-    metaIconRank: {
-        width: PxFit(24),
-        height: PxFit(24),
+    metaLabelIcon: {
+        width: PxFit(28),
+        height: PxFit(28),
         resizeMode: 'cover',
     },
     metaIconLabel: {
-        fontSize: PxFit(12),
+        marginTop: PxFit(15),
+        fontSize: Font(14),
         color: Theme.defaultTextColor,
+        fontWeight: '500',
     },
     columnItem: {
-        height: PxFit(52),
-        paddingHorizontal: PxFit(Theme.itemSpace),
-        borderBottomWidth: PxFit(0.5),
-        borderColor: Theme.borderColor,
+        height: PxFit(60),
+        paddingHorizontal: PxFit(20),
+        // borderBottomWidth: PxFit(0.5),
+        // borderColor: Theme.borderColor,
         backgroundColor: '#fff',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     itemTypeText: {
-        marginLeft: PxFit(10),
-        fontSize: PxFit(15),
+        marginLeft: PxFit(15),
+        fontSize: Font(16),
         color: Theme.defaultTextColor,
     },
     itemType: {

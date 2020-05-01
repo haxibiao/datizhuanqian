@@ -6,18 +6,7 @@
 
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import {
-    Iconfont,
-    Row,
-    TouchFeedback,
-    Avatar,
-    UserTitle,
-    GenderLabel,
-    Like,
-    VideoItem,
-    LoadingOverlay,
-} from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { Row, TouchFeedback, Avatar, UserTitle, GenderLabel, Like, VideoItem, Loading, ErrorOverlay } from 'components';
 
 import { app } from 'store';
 import { GQL, useMutation } from 'apollo';
@@ -78,26 +67,34 @@ const SpiderItem = (props: Props) => {
         variables: {
             share_link: source_url,
         },
+        client: app.mutationClient,
     });
 
     const retryUpload = async () => {
-        RetryOverlay.show({
-            callback: async () => {
-                LoadingOverlay.show({ content: '重新采集中...' });
-                try {
-                    const result = await resolveDouyinVideo();
-                    if (result) {
-                        LoadingOverlay.hide();
+        ErrorOverlay.show({
+            title: '重试失败',
+            content: '看视频即可重新采集发布视频',
+            buttonName: '看视频发布',
+            playVideoVariables: {
+                callback: async () => {
+                    Loading.show('重新采集中...');
+                    try {
+                        const result = await resolveDouyinVideo();
+                        if (result) {
+                            Loading.hide();
+                        }
+                        Toast.show({
+                            content: '已进入重新采集队列',
+                        });
+                    } catch (e) {
+                        Loading.hide();
+                        console.log('e :', e);
+                        let str = e.toString().replace(/Error: GraphQL error: /, '');
+                        Toast.show({ content: str });
                     }
-                    Toast.show({
-                        content: '已进入重新采集队列',
-                    });
-                } catch (e) {
-                    LoadingOverlay.hide();
-                    console.log('e :', e);
-                    let str = e.toString().replace(/Error: GraphQL error: /, '');
-                    Toast.show({ content: str });
-                }
+                },
+                noReward: true,
+                type: 'Spider',
             },
         });
     };
@@ -155,7 +152,7 @@ const SpiderItem = (props: Props) => {
         );
     }
 
-    const { image, created_at, count_comments } = video;
+    const { created_at, count_comments } = video;
     // console.log('vidoe', video);
 
     return (

@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { PageContainer, CustomRefreshControl, ListFooter } from 'components';
-import { Theme, PxFit } from 'utils';
 import { Query, GQL } from 'apollo';
 
 import QuestionItem from './components/QuestionItem';

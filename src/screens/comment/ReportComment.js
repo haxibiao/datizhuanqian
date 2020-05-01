@@ -3,19 +3,8 @@
  * @Date:   2019-05-07 15:56:31
  */
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Text,
-    FlatList,
-    Image,
-    TextInput,
-    ScrollView,
-    Keyboard,
-} from 'react-native';
-import { Button, Radio, PageContainer, TouchFeedback, CustomTextInput } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { Radio, PageContainer, TouchFeedback, CustomTextInput } from 'components';
 import { graphql, compose, GQL } from 'apollo';
 
 class ReportComment extends Component {
@@ -75,7 +64,6 @@ class ReportComment extends Component {
     };
 
     render() {
-        let { user, navigation, login, prop } = this.props;
         let { content, type, submitting } = this.state;
         return (
             <PageContainer
@@ -154,7 +142,7 @@ const styles = StyleSheet.create({
     },
     row: {
         paddingHorizontal: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH / 2,
+        width: Device.WIDTH / 2,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: PxFit(10),

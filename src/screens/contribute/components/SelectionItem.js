@@ -4,11 +4,10 @@
  */
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Iconfont, CustomTextInput } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
-import { observer, useQuestionStore } from '../store';
+import { CustomTextInput } from '@src/components';
+import { observer } from '../store';
 
 export default observer(props => {
     const { style, item, onChange, onCheck } = props;

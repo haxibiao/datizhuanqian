@@ -27,7 +27,7 @@ const submitAnswer = (questions: any[]) => {
         });
     });
 
-    app.client
+    app.mutationClient
         .mutate({
             mutation: GQL.TestAnswersMutation,
             variables: {
@@ -112,7 +112,7 @@ export const hide = () => {
 
 const styles = StyleSheet.create({
     actionSheetView: {
-        marginBottom: Theme.HOME_INDICATOR_HEIGHT,
+        marginBottom: Device.HOME_INDICATOR_HEIGHT,
         overflow: 'hidden',
         paddingHorizontal: PxFit(15),
         height: Device.HEIGHT / 2,

@@ -1,10 +1,9 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
-import { Avatar, Row, Center, Iconfont, WaveView } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { useCountDown, syncGetter, useAppState } from '@src/common';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { WaveView } from '@src/components';
+import { useCountDown, useAppState } from '@src/common';
 import { BoxShadow } from 'react-native-shadow';
-import { GQL, useMutation, useQuery } from '@src/apollo';
+import { GQL, useQuery } from '@src/apollo';
 import { observer, app } from 'store';
 
 const challenge = observer(props => {
@@ -13,12 +12,12 @@ const challenge = observer(props => {
     const [surplusMillisecond, setSurplusMillisecond] = useState(0);
     const showToast = useRef(true);
     // 检测是否在游戏中
-    const { data: userGameQuery, loading, error, refetch } = useQuery(GQL.UserGameQuery, {
+    const { data: userGameQuery, loading, refetch } = useQuery(GQL.UserGameQuery, {
         variables: { user_id: app.me.id },
         fetchPolicy: 'network-only',
     });
-    const onlineStatus = useMemo(() => syncGetter('userGame.online_status', userGameQuery), [userGameQuery]);
-    const surplus_ms = useMemo(() => syncGetter('userGame.in_game.surplus_ms', userGameQuery), [userGameQuery]);
+    const onlineStatus = useMemo(() => Helper.syncGetter('userGame.online_status', userGameQuery), [userGameQuery]);
+    const surplus_ms = useMemo(() => Helper.syncGetter('userGame.in_game.surplus_ms', userGameQuery), [userGameQuery]);
     console.log('onlineStatus===================================');
     console.log(surplus_ms);
     console.log('onlineAt===================================');

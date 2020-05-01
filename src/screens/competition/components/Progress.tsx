@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 
 interface Props {
     questions: Array<object>;
@@ -15,14 +14,14 @@ const Progress = (props: Props) => {
             <View
                 style={{
                     height: PxFit(16),
-                    width: SCREEN_WIDTH - PxFit(65),
+                    width: Device.WIDTH - PxFit(65),
                     backgroundColor: 'rgba(110,148,247,0.4)',
                     borderRadius: PxFit(8),
                 }}>
                 <View
                     style={{
                         height: PxFit(16),
-                        width: ((SCREEN_WIDTH - PxFit(65)) * (index + 1)) / questions.length || 1,
+                        width: ((Device.WIDTH - PxFit(65)) * (index + 1)) / questions.length || 1,
                         backgroundColor: '#F5D461',
                         borderRadius: PxFit(8),
                     }}></View>

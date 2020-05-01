@@ -1,9 +1,8 @@
-import React, { useRef, useState, useMemo, useEffect, useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated, DeviceEventEmitter } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { Iconfont, TouchFeedback } from '@src/components';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { StyleSheet, View, Text, Image, Animated, DeviceEventEmitter } from 'react-native';
+import { TouchFeedback } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { app, config } from '@src/store';
+import { app } from '@src/store';
 import { useMutation, GQL } from '@src/apollo';
 import { observer } from '@src/screens/answer/store';
 import AuditResultOverlay from '@src/screens/answer/components/AuditResultOverlay';
@@ -25,6 +24,7 @@ export default observer(({ store, question }) => {
             question_id: question.id,
             status: auditStatus === 'resolve',
         },
+        client: app.mutationClient,
         refetchQueries: () => [
             {
                 query: GQL.UserMetaQuery,
@@ -45,7 +45,7 @@ export default observer(({ store, question }) => {
                 {
                     translateY: animation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [-SCREEN_WIDTH / 3, 0],
+                        outputRange: [-Device.WIDTH / 3, 0],
                         extrapolate: 'clamp',
                     }),
                 },
@@ -138,5 +138,5 @@ const styles = StyleSheet.create({
         width: PxFit(24),
         height: PxFit(24),
     },
-    statusImage: { width: SCREEN_WIDTH / 3, height: SCREEN_WIDTH / 3 },
+    statusImage: { width: Device.WIDTH / 3, height: Device.WIDTH / 3 },
 });

@@ -6,8 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, ListItem } from '../../components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from '../../utils';
+import { PageContainer } from '@src/components';
 import { config } from 'store';
 
 class AboutUs extends Component {
@@ -21,9 +20,9 @@ class AboutUs extends Component {
                                 <Image
                                     source={require('@src/assets/images/icon.png')}
                                     style={{
-                                        width: SCREEN_WIDTH / 4,
-                                        height: SCREEN_WIDTH / 4,
-                                        borderRadius: SCREEN_WIDTH / 8,
+                                        width: Device.WIDTH / 4,
+                                        height: Device.WIDTH / 4,
+                                        borderRadius: Device.WIDTH / 8,
                                     }}
                                 />
                                 <Text style={styles.AppVersion}>
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         backgroundColor: Theme.white,
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT || PxFit(15),
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT || PxFit(15),
     },
     AppVersion: { color: Theme.defaultTextColor, fontSize: PxFit(15), margin: PxFit(20) },
     sectionTitle: { fontSize: 15, color: Theme.defaultTextColor },

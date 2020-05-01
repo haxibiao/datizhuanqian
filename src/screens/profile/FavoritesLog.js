@@ -40,7 +40,7 @@ class FavoritesLog extends Component {
                     let empty = favorites && favorites.length === 0;
                     loading = !favorites;
                     return (
-                        <PageContainer title="我的收藏" refetch={refetch} loading={loading} empty={empty}>
+                        <PageContainer title="我的收藏" refetch={refetch} loading={loading} empty={empty} white>
                             <FlatList
                                 contentContainerStyle={styles.container}
                                 data={favorites}

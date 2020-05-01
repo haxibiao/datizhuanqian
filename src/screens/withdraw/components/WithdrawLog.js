@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
+import { PageContainer, ListFooter, CustomRefreshControl, StatusView } from 'components';
 import { Query, GQL } from 'apollo';
 
 import WithdrawLogItem from './WithdrawLogItem';
@@ -26,10 +26,14 @@ class WithdrawLog extends Component {
                 <Query query={GQL.WithdrawsQuery} fetchPolicy="network-only">
                     {({ data, error, loading, refetch, fetchMore }) => {
                         let withdraws = Helper.syncGetter('withdraws', data);
-                        if (error) return <ErrorView onPress={refetch} error={error} />;
-                        if (loading) return <LoadingSpinner />;
+                        if (error) return <StatusView.ErrorView onPress={refetch} error={error} />;
+                        if (loading) return <StatusView.LoadingSpinner />;
                         if (!withdraws || withdraws.length === 0)
-                            return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
+                            return (
+                                <StatusView.EmptyView
+                                    imageSource={require('../../../assets/images/default_message.png')}
+                                />
+                            );
                         return (
                             <FlatList
                                 data={withdraws}

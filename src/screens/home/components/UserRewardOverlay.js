@@ -7,32 +7,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform } from 'react-native';
 import { TouchFeedback } from 'components';
-import { Config, PxFit, SCREEN_WIDTH } from 'utils';
 import { GQL } from 'apollo';
 import { app } from 'store';
 import service from 'service';
 import DeviceInfo from 'react-native-device-info';
+import { Matomo } from 'native';
 
 class UserRewardOverlay extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            reportContent: {
-                category: '注册奖励',
-                action: 'user_auto_sign_in',
-                name: '静默注册奖励',
-            },
-        };
     }
 
-    componentDidMount() {
-        service.dataReport({
-            data: this.state.reportContent,
-            callback: result => {
-                console.warn('result', result);
-            },
-        });
-    }
+    track = name => {
+        //matomo 数据上报
+        Matomo.trackEvent('用户行为', name, name, 1);
+    };
 
     handleLogin = async () => {
         const { navigation, phone, client } = this.props;
@@ -45,7 +34,7 @@ class UserRewardOverlay extends Component {
 
         if (phoneNumber || deviceId) {
             // 静默注册
-            client
+            app.mutationClient
                 .mutate({
                     mutation: GQL.autoSignInMutation,
                     variables: {
@@ -67,14 +56,23 @@ class UserRewardOverlay extends Component {
                         navigation.navigate(router);
                         Toast.show({ content });
                         app.updateResetVersion(Config.Version);
+
+                        //数据上报
+                        const name =
+                            user.auto_uuid_user && user.auto_phone_user
+                                ? '点击领红包，老用户登录'
+                                : '点击领红包，新用户静默注册';
+                        this.track(name);
                     } else {
                         navigation.navigate('Login');
+                        this.track('点击领红包，静默注册失败，返回值错误');
                     }
                 })
                 .catch(error => {
                     console.warn('err', error);
                     Toast.show({ content: error.toString() });
                     navigation.navigate('Login');
+                    this.track('点击领红包，静默注册失败，未获取到UUID');
                 });
         } else {
             // 手动去注册登录
@@ -91,8 +89,8 @@ class UserRewardOverlay extends Component {
                     this.handleLogin();
                 }}>
                 <Image
-                    source={require('../../../assets/images/new_user_red_packet.png')}
-                    style={{ width: (SCREEN_WIDTH * 4) / 5, height: (((SCREEN_WIDTH * 4) / 5) * 640) / 519 }}
+                    source={require('@src/assets/images/bg_new_user_red_packet.png')}
+                    style={{ width: (Device.WIDTH * 3) / 5, height: (((Device.WIDTH * 3) / 5) * 615) / 471 }}
                 />
             </TouchFeedback>
         );
@@ -101,7 +99,7 @@ class UserRewardOverlay extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH - PxFit(90),
+        width: Device.WIDTH - PxFit(90),
         borderRadius: PxFit(15),
         backgroundColor: 'transparent',
         alignItems: 'center',

@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import { PageContainer, Row, Iconfont, CustomTextInput, Audio } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
 import { useApolloClient, GQL } from '@src/apollo';
 import { storage, keys, app } from '@src/store';
 import service from '@src/service';
-import { exceptionCapture } from '@src/common';
+
 import { Overlay } from 'teaset';
 import { useNavigation } from 'react-navigation-hooks';
 import { observer, useQuestionStore } from './store';
@@ -69,7 +68,7 @@ export default observer(() => {
             let { variables } = store;
 
             const promiseFn = () => {
-                return client.mutate({
+                return app.mutationClient.mutate({
                     mutation: GQL.createQuestionMutation,
                     variables: {
                         data: {
@@ -80,7 +79,7 @@ export default observer(() => {
                 });
             };
 
-            const [error] = await exceptionCapture(promiseFn);
+            const [error] = await Helper.exceptionCapture(promiseFn);
 
             if (error) {
                 onError(error.message || '创建失败');
@@ -88,26 +87,26 @@ export default observer(() => {
                 onCompleted();
             }
         },
-        [client, onCompleted],
+        [app.mutationClient, onCompleted],
     );
 
     const createExplanation = useCallback(
         async explanation => {
             const promiseFn = () => {
-                return client.mutate({
+                return app.mutationClient.mutate({
                     mutation: GQL.createExplanationMutation,
                     variables: explanation,
                 });
             };
 
-            const [error, result] = await exceptionCapture(promiseFn);
+            const [error, result] = await Helper.exceptionCapture(promiseFn);
             if (error) {
                 onError(error.message || '题目解析提交失败');
             } else {
                 createQuestion(Helper.syncGetter('data.createExplanation.id', result) || null);
             }
         },
-        [client, createQuestion],
+        [app.mutationClient, createQuestion],
     );
 
     const onSubmit = useCallback(() => {
@@ -121,19 +120,6 @@ export default observer(() => {
             }
         }
     }, [createExplanation, createQuestion]);
-
-    useEffect(() => {
-        service.dataReport({
-            data: {
-                category: '用户行为',
-                action: 'user_click_contribute_screen',
-                name: '进入出题页面',
-            },
-            callback: result => {
-                console.warn('result', result);
-            },
-        });
-    }, []);
 
     useEffect(() => {
         (async () => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Theme, PxFit, WPercent } from 'utils';
 import { TouchFeedback, SafeText } from '@src/components';
 
 interface Props {
@@ -27,7 +26,10 @@ const LeaveGameOverlay = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
-    border: { borderLeftColor: Theme.tintGray, borderLeftWidth: 1 },
+    border: {
+        borderLeftColor: Theme.tintGray,
+        borderLeftWidth: 1,
+    },
     confirmText: {
         color: Theme.confirmColor,
     },
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
         borderRadius: PxFit(5),
         padding: 0,
         paddingTop: PxFit(15),
-        width: WPercent(80),
+        width: Percent(80),
     },
 });
 

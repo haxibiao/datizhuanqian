@@ -5,7 +5,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Theme, PxFit } from 'utils';
 import { Row, TouchFeedback, Avatar } from 'components';
 
 class AnswerBar extends Component {

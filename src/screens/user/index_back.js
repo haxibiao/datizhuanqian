@@ -15,7 +15,6 @@ import {
     StatusView,
     PullChooser,
 } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import { app } from 'store';
 import { Query, withApollo, compose, GQL } from 'apollo';
@@ -92,7 +91,7 @@ class index extends Component {
                                 bounces={false}
                                 contentContainerStyle={{
                                     flexGrow: 1,
-                                    paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+                                    paddingBottom: Device.statusBarHeight,
                                 }}
                                 style={styles.container}
                                 data={questions}
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
         overflow: 'hidden',
         backgroundColor: '#fff',
     },

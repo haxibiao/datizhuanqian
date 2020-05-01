@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { TouchFeedback, PageContainer, Iconfont, CustomTextInput, Row } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+
 import MediaSelect from './components/MediaSelect';
 import ContributeStore from './ContributeStore';
 import { observer, Provider } from 'mobx-react';
@@ -59,7 +59,7 @@ const AskQuestion = observer((props: Props) => {
     const onSubmit = () => {
         if (category && category.id) {
             setSubmitting(true);
-            app.client
+            app.mutationClient
                 .mutate({
                     mutation: GQL.createQuestionMutation,
                     variables: {
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     },
     scrollStyle: {
         flexGrow: 1,
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + 50,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT + 50,
     },
     question: {
         backgroundColor: '#fff',
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: PxFit(5),
     },
     rewardWrap: {
-        width: (SCREEN_WIDTH - PxFit(40)) / 3,
+        width: (Device.WIDTH - PxFit(40)) / 3,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

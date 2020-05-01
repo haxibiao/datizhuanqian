@@ -3,7 +3,6 @@ export { observer } from 'mobx-react';
 import { observable, action, runInAction, autorun, computed, when } from 'mobx';
 import { ProgressOverlay, beginnerGuidance, SetQuestionGuidance } from '@src/components';
 import { app } from '@src/store';
-// import { Api } from '@src/utils';
 import { imagePicker, videoPicker } from 'common';
 
 type Value = 'A' | 'B' | 'C' | 'D';
@@ -144,7 +143,7 @@ class QuestionStore {
                 });
             },
             {
-                uploadType: 'questions',
+               
                 onBeforeUpload: (metadata: any) => {
                     if (metadata.duration > this.videoDuration) {
                         this.setContentVideo(null);
@@ -163,8 +162,8 @@ class QuestionStore {
                 onCancelled: () => {
                     console.log('onCancelled');
                 },
-                onCompleted: (data: any) => {
-                    let video = JSON.parse(data.responseBody);
+                onCompleted: (video: any) => {
+                    // let video = JSON.parse(data.responseBody);
                     if (video.id) {
                         ProgressOverlay.hide();
                         Toast.show({
@@ -175,7 +174,8 @@ class QuestionStore {
                         this.setContentVideo(null);
                     }
                 },
-                onError: () => {
+             
+               onError: () => {
                     this.setContentVideo(null);
                 },
             },
@@ -191,7 +191,7 @@ class QuestionStore {
                 });
             },
             {
-                uploadType: 'questions',
+                
                 onBeforeUpload: (metadata: any) => {
                     if (metadata.duration > this.explainDuration) {
                         this.setExplain({ ...this.explain, video: null });
@@ -211,8 +211,8 @@ class QuestionStore {
                 onCancelled: () => {
                     console.log('onCancelled');
                 },
-                onCompleted: (data: any) => {
-                    const video = JSON.parse(data.responseBody);
+                onCompleted: (video) => {
+                    // const video = JSON.parse(data.responseBody);
                     if (video.id) {
                         ProgressOverlay.hide();
                         Toast.show({
@@ -310,4 +310,9 @@ const storeContext = React.createContext(new QuestionStore());
 
 export const values: Value[] = ['A', 'B', 'C', 'D'];
 
+
+
+
 export const useQuestionStore = () => React.useContext(storeContext);
+
+

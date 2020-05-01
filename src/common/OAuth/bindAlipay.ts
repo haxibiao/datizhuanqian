@@ -22,7 +22,7 @@ export const getAlipayAuthCode = (props: { callback: Function }) => {
 
 export const bindAlipay = (props: { authCode: any; onFaild: Function }) => {
     const { authCode, onFaild } = props;
-    app.client
+    app.mutationClient
         .mutate({
             mutation: GQL.OAuthBindMutation,
             variables: {

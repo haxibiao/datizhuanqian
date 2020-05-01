@@ -13,6 +13,7 @@ query TasksQuery($type: Int, $offset: Int, $limit: Int) {
         submit_name
         package
         post_id
+        icon
     }
 }
 

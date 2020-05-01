@@ -1,7 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import { app } from '@src/store';
 import { GQL } from '@src/apollo';
-import { syncGetter } from '@src/common';
+
 import JPushModule from 'jpush-react-native';
 
 export type ViewStatus = 'init' | 'loadMore' | 'error' | 'loaded' | 'finished';
@@ -67,7 +67,7 @@ class ChatStore {
 
     @action.bound
     public createChatroom(userId: number) {
-        app.client
+        app.mutationClient
             .mutate({
                 mutation: GQL.CreateChatMutation,
                 variables: {
@@ -156,7 +156,7 @@ class ChatStore {
             const incomingMessage = this.constructNewMessage(text);
             this.appendMessage(incomingMessage);
             this.textMessage = '';
-            app.client
+            app.mutationClient
                 .mutate({
                     mutation: GQL.CreateMessageMutation,
                     variables: {
@@ -201,7 +201,7 @@ class ChatStore {
                 fetchPolicy: 'network-only',
             })
             .then((data: any) => {
-                const messages: Message[] = syncGetter('data.messages', data) || [];
+                const messages: Message[] = Helper.syncGetter('data.messages', data) || [];
                 console.log('====================================');
                 console.log('messages', this.newMessageOffset, messages);
                 console.log('====================================');

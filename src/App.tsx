@@ -1,5 +1,5 @@
 import React, { Fragment, Component, useEffect, useState } from 'react';
-import { StyleSheet, YellowBox, View, Image, Text } from 'react-native';
+import { StyleSheet, YellowBox, View, Image, Text, StatusBar } from 'react-native';
 import { Toast, ErrorBoundary } from '@src/components';
 import ApolloApp from '@src/apollo/ApolloApp';
 
@@ -10,6 +10,7 @@ import service from 'service';
 import Orientation from 'react-native-orientation';
 import codePush from 'react-native-code-push';
 import * as WeChat from 'react-native-wechat';
+import ResetUser from './ResetUser';
 
 const App = () => {
     const [responseText, setResponseText] = useState('');
@@ -21,8 +22,10 @@ const App = () => {
         checkServer();
 
         // 初始化 AdManager, 之后才能启动开屏
+        console.log('ad.AdManager.init');
         ad.AdManager.init();
         // 信息流广告先预加载，提速第一次签到时显示的速度
+        console.log('ad.AdManager.end');
         ad.AdManager.loadFeedAd();
         // 获取广告开放状态
         service.enableAdvert((data: { disable: { [x: string]: any } }) => {
@@ -51,13 +54,16 @@ const App = () => {
         readPhoneState();
         //加载激励视频缓存
         ad.RewardVideo.loadAd().then(() => {});
+
+        StatusBar.setHidden(false);
+        StatusBar.setTranslucent(true);
     }, []);
 
     const checkServer = () => {
         let { token } = app.me;
 
         //根据不同的用户返回503，可以用来封掉刷子账号在机器上的无效操作
-        fetch(Config.ApiServceRoot + '/api/user?api_token=' + token)
+        fetch(Config.ServerRoot + '/api/user?api_token=' + token)
             .then(response => {
                 if (response.status === 503) {
                     setServerMaintenance(response);
@@ -96,6 +102,11 @@ const App = () => {
                 {showMaintenance()}
                 <Toast ref={(ref: any) => (toast = ref)} />
             </View>
+
+            {/*   
+                TODO:// 计划重构的纯业务逻辑代码
+                <ResetUser /> 
+            */}
         </Fragment>
     );
 };

@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text } from 'react-native';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { playSound } from '../playSound';
 
-const height = ((SCREEN_WIDTH / 3) * 123) / 221;
+const height = ((Device.WIDTH / 3) * 123) / 221;
 
 interface Props {
     duration: number;

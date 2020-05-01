@@ -4,9 +4,6 @@ import { Overlay } from 'teaset';
 
 import TouchFeedback from '@src/components/TouchableView/TouchFeedback';
 import Iconfont from '@src/components/Iconfont';
-import DownLoadApk from '@src/components/Utils/DownLoadApk';
-
-import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, Theme } from '@src/utils';
 
 import { storage, keys } from 'store';
 import { AppUtil } from 'native';
@@ -106,8 +103,8 @@ const styles = StyleSheet.create({
     overlay: { alignItems: 'center', justifyContent: 'center' },
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',
@@ -120,7 +117,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     content: {
-        width: SCREEN_WIDTH - PxFit(60),
+        width: Device.WIDTH - PxFit(60),
         borderRadius: PxFit(15),
         backgroundColor: Theme.white,
         padding: 0,

@@ -6,10 +6,8 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import { TouchFeedback, Iconfont, PullChooser, OverlayViewer } from '../../../components';
-import { Theme, PxFit } from '../../../utils';
-import { observable, action, runInAction, autorun, computed } from 'mobx';
-import { observer, Provider, inject } from 'mobx-react';
+import { TouchFeedback, Iconfont, PullChooser, OverlayViewer } from '@src/components';
+import { observer, inject } from 'mobx-react';
 import Video from 'react-native-video';
 import ImageViewer from 'react-native-image-zoom-viewer';
 

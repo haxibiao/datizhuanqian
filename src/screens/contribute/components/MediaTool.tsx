@@ -1,7 +1,6 @@
 import React, { useContext, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { TouchFeedback, Iconfont, PullChooser, OverlayViewer } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
 import Video from 'react-native-video';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { observer, useQuestionStore } from '../store';

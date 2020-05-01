@@ -6,7 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { UserTitle, Avatar, TouchFeedback, GenderLabel } from 'components';
-import { Theme, PxFit } from 'utils';
 
 class CommentNotification extends Component {
     constructor(props) {

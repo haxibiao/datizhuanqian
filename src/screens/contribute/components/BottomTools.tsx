@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, Animated, Keyboard, DeviceEventEmitter } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { useLinearAnimation, useKeyboardListener } from '@src/common';
 import { Audio } from '@src/components';
 import { observer, useQuestionStore } from '../store';
@@ -96,7 +95,7 @@ export default observer(props => {
                     <Text style={styles.toolName}>解析</Text>
                 </TouchableOpacity>
             </View>
-            <Animated.View
+            {/*  <Animated.View
                 style={[
                     { overflow: 'hidden', height },
                     (audioHeight == 0 || !slideIn) && { position: 'absolute', bottom: -500 },
@@ -111,14 +110,14 @@ export default observer(props => {
                     }}
                     completeRecording={audio => setQuestionAudio(audio)}
                 />
-            </Animated.View>
+            </Animated.View> */}
         </View>
     );
 });
 
 const styles = StyleSheet.create({
     container: {
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT,
     },
     toolsContainer: {
         flexDirection: 'row',

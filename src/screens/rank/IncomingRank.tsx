@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, FlatList, Image, Text, Dimensions } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
 import { app } from 'store';
-import { Avatar, ListFooter, ErrorView, LoadingSpinner, EmptyView } from '../../components';
+import { Avatar, ListFooter, StatusView, TouchFeedback } from '@src/components';
+import { useNavigation } from 'react-navigation-hooks';
 
 const { width } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ export default function IncomingRank() {
     const [merank, setMeRank] = useState();
     const [, setMeError] = useState(false);
     const client = useApolloClient();
+    const navigation = useNavigation();
     var me = { ...app.me };
 
     useEffect(() => {
@@ -77,79 +79,127 @@ export default function IncomingRank() {
                                 case 0:
                                     //返回第二名的item
                                     return (
-                                        <View style={styles.topItem}>
+                                        <TouchFeedback
+                                            style={styles.topItem}
+                                            onPress={() =>
+                                                navigation.navigate('User', {
+                                                    user: data[1],
+                                                })
+                                            }>
                                             <View style={{ width: 50, height: 50 }}>
                                                 <Image
                                                     source={require('../../assets/images/topsecond.png')}
-                                                    style={{ width: 50, height: 50 }}
+                                                    style={{
+                                                        width: 50,
+                                                        height: 50,
+                                                    }}
                                                     resizeMode={'contain'}
                                                 />
                                                 <Avatar
                                                     source={data[1].avatar}
                                                     userId={data[1].id}
                                                     size={30}
-                                                    style={{ position: 'absolute', zIndex: -9, top: 8, left: 10 }}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: -9,
+                                                        top: 8,
+                                                        left: 10,
+                                                    }}
                                                 />
                                             </View>
                                             <Text style={styles.topThreeTitle}>{data[1].name}</Text>
                                             <Text style={styles.topThreeNumber}>
                                                 {data[1].transaction_sum_amount}元
                                             </Text>
-                                        </View>
+                                        </TouchFeedback>
                                     );
                                     break;
                                 case 1:
                                     //返回第一名的item
                                     return (
-                                        <View style={styles.topItem}>
+                                        <TouchFeedback
+                                            style={styles.topItem}
+                                            onPress={() =>
+                                                navigation.navigate('User', {
+                                                    user: data[0],
+                                                })
+                                            }>
                                             <View style={{ width: 66, height: 66 }}>
                                                 <Image
                                                     source={require('../../assets/images/topfirst.png')}
-                                                    style={{ width: 66, height: 66 }}
+                                                    style={{
+                                                        width: 66,
+                                                        height: 66,
+                                                    }}
                                                     resizeMode={'contain'}
                                                 />
                                                 <Avatar
                                                     source={data[0].avatar}
                                                     userId={data[0].id}
                                                     size={44}
-                                                    style={{ position: 'absolute', zIndex: -9, top: 10.8, left: 11 }}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: -9,
+                                                        top: 10.8,
+                                                        left: 11,
+                                                    }}
                                                 />
                                             </View>
                                             <Text style={styles.topThreeTitle}>{data[0].name}</Text>
                                             <Text style={styles.topThreeNumber}>
                                                 {data[0].transaction_sum_amount}元
                                             </Text>
-                                        </View>
+                                        </TouchFeedback>
                                     );
                                     break;
                                 case 2:
                                     //返回第三名的item
                                     return (
-                                        <View style={styles.topItem}>
+                                        <TouchFeedback
+                                            style={styles.topItem}
+                                            onPress={() =>
+                                                navigation.navigate('User', {
+                                                    user: data[2],
+                                                })
+                                            }>
                                             <View style={{ width: 50, height: 50 }}>
                                                 <Image
                                                     source={require('../../assets/images/topthird.png')}
-                                                    style={{ width: 50, height: 50 }}
+                                                    style={{
+                                                        width: 50,
+                                                        height: 50,
+                                                    }}
                                                     resizeMode={'contain'}
                                                 />
                                                 <Avatar
                                                     source={data[2].avatar}
                                                     userId={data[2].id}
                                                     size={30}
-                                                    style={{ position: 'absolute', zIndex: -9, top: 8, left: 10 }}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: -9,
+                                                        top: 8,
+                                                        left: 10,
+                                                    }}
                                                 />
                                             </View>
                                             <Text style={styles.topThreeTitle}>{data[2].name}</Text>
                                             <Text style={styles.topThreeNumber}>
                                                 {data[2].transaction_sum_amount}元
                                             </Text>
-                                        </View>
+                                        </TouchFeedback>
                                     );
                                     break;
                             }
                         } else {
                             return index == 1 ? (
-                                <View style={styles.topItem}>
+                                <TouchFeedback
+                                    style={styles.topItem}
+                                    onPress={() =>
+                                        navigation.navigate('User', {
+                                            user: data[0],
+                                        })
+                                    }>
                                     <View style={{ width: 50, height: 50 }}>
                                         <Image
                                             source={require('../../assets/images/topfirst.png')}
@@ -160,14 +210,25 @@ export default function IncomingRank() {
                                             source={data[0].avatar}
                                             userId={data[0].id}
                                             size={44}
-                                            style={{ position: 'absolute', zIndex: -9, top: 10.8, left: 11 }}
+                                            style={{
+                                                position: 'absolute',
+                                                zIndex: -9,
+                                                top: 10.8,
+                                                left: 11,
+                                            }}
                                         />
                                     </View>
                                     <Text style={styles.topThreeTitle}>{data[0].name}</Text>
                                     <Text style={styles.topThreeNumber}>{data[0].transaction_sum_amount}元</Text>
-                                </View>
+                                </TouchFeedback>
                             ) : (
-                                <View style={styles.topItem}>
+                                <TouchFeedback
+                                    style={styles.topItem}
+                                    onPress={() =>
+                                        navigation.navigate('User', {
+                                            user: data[0],
+                                        })
+                                    }>
                                     <View style={{ width: 50, height: 50 }}>
                                         <Image
                                             source={require('../../assets/images/topsecond.png')}
@@ -178,12 +239,17 @@ export default function IncomingRank() {
                                             source={data[0].avatar}
                                             userId={data[0].id}
                                             size={44}
-                                            style={{ position: 'absolute', zIndex: -9, top: 10.8, left: 11 }}
+                                            style={{
+                                                position: 'absolute',
+                                                zIndex: -9,
+                                                top: 10.8,
+                                                left: 11,
+                                            }}
                                         />
                                     </View>
                                     <Text style={styles.topThreeTitle}>{data[1].name}</Text>
                                     <Text style={styles.topThreeNumber}>{data[1].transaction_sum_amount}元</Text>
-                                </View>
+                                </TouchFeedback>
                             );
                         }
                     })}
@@ -206,17 +272,6 @@ export default function IncomingRank() {
                             </Text>
                             <Text style={styles.rightTextBottom}>{merank.transaction_sum_amount}元</Text>
                         </View>
-
-                        <View
-                            style={{
-                                position: 'absolute',
-                                bottom: 0,
-                                height: 1,
-                                backgroundColor: '#FEC50C',
-                                width: '94%',
-                                marginHorizontal: '3%',
-                            }}
-                        />
                     </View>
                 ) : (
                     <View />
@@ -262,31 +317,37 @@ export default function IncomingRank() {
             }
         }
         if (error) {
-            return <ErrorView onPress={() => {}} />;
+            return <StatusView.ErrorView onPress={() => {}} />;
         } else if (d.length > 0) {
             if (d.length > 3 && index >= 3) {
                 console.log('数组长度大于3 返回列表', d.length);
                 return (
                     <View style={styles.item}>
-                        <View style={styles.left}>
+                        <TouchFeedback
+                            style={styles.left}
+                            onPress={() =>
+                                navigation.navigate('User', {
+                                    user: item,
+                                })
+                            }>
                             {_renderBadge(index)}
                             <Avatar source={item.avatar} userId={item.id} size={40} style={{ marginHorizontal: 12 }} />
                             <Text style={styles.title}>{item.name}</Text>
-                        </View>
+                        </TouchFeedback>
                         <Text style={styles.rightText}>{item.transaction_sum_amount}元</Text>
                         <View style={styles.bottomLine} />
                     </View>
                 );
             }
         } else {
-            return <EmptyView />;
+            return <StatusView.EmptyView />;
         }
     }
 
     return (
         <View style={styles.container}>
             {loading ? (
-                <LoadingSpinner />
+                <StatusView.LoadingSpinner />
             ) : (
                 <FlatList
                     data={d}
@@ -341,6 +402,7 @@ const styles = StyleSheet.create({
     badgeNumber: {
         color: '#333',
         fontSize: 17,
+        marginLeft: PxFit(10),
         fontWeight: '400',
         width: 24,
         height: 24,
@@ -383,9 +445,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     bottomLine: {
-        height: 1,
-        width: width * 0.92,
-        marginStart: width * 0.04,
+        height: PxFit(0.5),
+        width: width * 0.86,
+        marginStart: width * 0.07,
         position: 'absolute',
         backgroundColor: '#e8e8e8',
         bottom: 0,

@@ -6,8 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont } from 'components';
-import { Config, SCREEN_WIDTH } from 'utils';
-
 import { viewShotUtil } from 'common';
 
 import { Overlay } from 'teaset';
@@ -39,20 +37,20 @@ class AppShareCard extends Component {
                     </TouchFeedback>
                 }>
                 <ScrollView style={{ flex: 1 }} ref={ref => (this.shareCard = ref)}>
-                    <View style={{ width: SCREEN_WIDTH, height: (SCREEN_WIDTH * 1334) / 720 }}>
+                    <View style={{ width: Device.WIDTH, height: (Device.WIDTH * 1334) / 720 }}>
                         <Image
                             source={require('../../assets/images/app-share-card.png')}
-                            style={{ width: SCREEN_WIDTH, height: (SCREEN_WIDTH * 1334) / 720 }}
+                            style={{ width: Device.WIDTH, height: (Device.WIDTH * 1334) / 720 }}
                         />
                         <View
                             style={{
                                 alignItems: 'center',
-                                marginTop: ((-(SCREEN_WIDTH * 1334) / 720) * 2) / 3,
+                                marginTop: ((-(Device.WIDTH * 1334) / 720) * 2) / 3,
                                 backgroundColor: 'transparent',
                             }}>
                             <QRCode
                                 value={`https://datizhuanqian.com/invitation?user_id=${app.me.id}`}
-                                size={SCREEN_WIDTH / 3}
+                                size={Device.WIDTH / 3}
                                 color={'#000'}
                                 backgroundColor={'#FFF'}
                             />
@@ -175,7 +173,7 @@ class ShareOverlay {
     }
 
     static getWechatConfig(user) {
-        fetch(Config.ApiServceRoot + '/api/app/config/wechat-mg-share-config?api_token=' + user.token)
+        fetch(Config.ServerRoot + '/api/app/config/wechat-mg-share-config?api_token=' + user.token)
             .then(response => response.json())
             .then(data => {
                 WeChat.shareMiniProgram({

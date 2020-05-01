@@ -5,8 +5,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, ImageBackground } from 'react-native';
-import { PageContainer, TipsOverlay } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { PageContainer, TipsOverlay, ErrorOverlay } from 'components';
 import { playVideo } from 'common';
 import { config } from 'store';
 import { ad } from 'native';
@@ -42,18 +41,27 @@ class Submit extends Component {
                                         type: 'Contribute',
                                         noReward: true,
                                         callback: () => {
-                                            TipsOverlay.show({
+                                            // TipsOverlay.show({
+                                            //     title: '审题已加速',
+                                            //     content: (
+                                            //         <View>
+                                            //             {config.enableBanner && (
+                                            //                 <ad.FeedAd adWidth={Device.WIDTH - PxFit(40)} />
+                                            //             )}
+                                            //         </View>
+                                            //     ),
+                                            //     onConfirm: () => {
+                                            //         Helper.middlewareNavigate('MyPublish', { initialPage: 1 });
+                                            //         TipsOverlay.hide();
+                                            //     },
+                                            // });
+
+                                            ErrorOverlay.show({
                                                 title: '审题已加速',
-                                                content: (
-                                                    <View>
-                                                        {config.enableBanner && (
-                                                            <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(40)} />
-                                                        )}
-                                                    </View>
-                                                ),
-                                                onConfirm: () => {
+                                                content: '会优先推荐您的出题',
+                                                buttonName: '查看出题',
+                                                action: () => {
                                                     Helper.middlewareNavigate('MyPublish', { initialPage: 1 });
-                                                    TipsOverlay.hide();
                                                 },
                                             });
                                         },
@@ -85,11 +93,11 @@ const styles = StyleSheet.create({
         paddingVertical: PxFit(30),
     },
     submitImage: {
-        width: SCREEN_WIDTH * 0.52,
-        height: SCREEN_WIDTH * 0.65,
+        width: Device.WIDTH * 0.52,
+        height: Device.WIDTH * 0.65,
         resizeMode: 'contain',
-        paddingTop: SCREEN_WIDTH * 0.07,
-        paddingHorizontal: SCREEN_WIDTH * 0.055,
+        paddingTop: Device.WIDTH * 0.07,
+        paddingHorizontal: Device.WIDTH * 0.055,
     },
     submitStatus: {
         fontSize: PxFit(17),
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     button: {
-        width: (SCREEN_WIDTH * 4) / 5,
+        width: (Device.WIDTH * 4) / 5,
         height: PxFit(42),
         borderRadius: PxFit(21),
         justifyContent: 'center',

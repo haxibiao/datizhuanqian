@@ -6,7 +6,7 @@
 import React, { Component, Fragment } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Dimensions, Slider } from 'react-native';
 import { Row, TouchFeedback, Iconfont } from 'components';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+
 import WithdrawHeader from './WithdrawHeader';
 
 class NotLogin extends Component {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     withdrawType: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: (SCREEN_WIDTH - 40) / 2,
+        width: (Device.WIDTH - 40) / 2,
         height: PxFit(50),
         justifyContent: 'center',
         borderColor: Theme.borderColor,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         height: PxFit(60),
         justifyContent: 'center',
         marginBottom: PxFit(Theme.itemSpace),
-        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+        width: (Device.WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
     },
     content: {
         fontSize: PxFit(16),

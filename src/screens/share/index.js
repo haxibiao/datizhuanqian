@@ -4,15 +4,14 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, Platform, Text, Image, ScrollView } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { PageContainer, TouchFeedback, Row } from 'components';
 import ShareRule from './components/ShareRule';
 import { Overlay } from 'teaset';
 
-import { compose, Query, Mutation, graphql, GQL } from 'apollo';
+import { compose, Query, graphql, GQL } from 'apollo';
 
-import { MarqueeHorizontal, MarqueeVertical } from 'react-native-marquee-ab';
+import { MarqueeVertical } from 'react-native-marquee-ab';
 
 import { app } from 'store';
 import service from 'service';
@@ -20,28 +19,11 @@ import service from 'service';
 class index extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            reportContent: {
-                category: '分享',
-                action: 'user_shared',
-                name: '打开分享页面',
-            },
-        };
-    }
-
-    componentDidMount() {
-        service.dataReport({
-            data: this.state.reportContent,
-            callback: result => {
-                console.warn('result', result);
-            },
-        });
-        // 分享数据上报
     }
 
     render() {
         const { navigation, data } = this.props;
-        const { loading, error } = data;
+        const { loading } = data;
         return (
             <PageContainer title="分享" white>
                 <ScrollView style={styles.container}>
@@ -106,7 +88,7 @@ class index extends Component {
                     </View>
                 </ScrollView>
                 <Query query={GQL.InvitationRewardsQuery} variables={{ limit: 10 }}>
-                    {({ data, loading, error, refetch, fetchMore }) => {
+                    {({ data, loading, error }) => {
                         if (error) return null;
                         if (loading) return null;
                         if (!(data && data.invitationRewards.length > 0)) return null;
@@ -119,7 +101,7 @@ class index extends Component {
                                 <MarqueeVertical
                                     textList={textList}
                                     duration={1000}
-                                    width={SCREEN_WIDTH}
+                                    width={Device.WIDTH}
                                     height={20}
                                     direction={'up'}
                                     numberOfLines={1}
@@ -155,37 +137,37 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     top: {
-        width: SCREEN_WIDTH,
-        height: (SCREEN_WIDTH * 1920) / 1080,
+        width: Device.WIDTH,
+        height: (Device.WIDTH * 1920) / 1080,
     },
     shareRulePosition: {
-        marginTop: -(((SCREEN_WIDTH * 1920) / 1080) * 8) / 13,
+        marginTop: -(((Device.WIDTH * 1920) / 1080) * 8) / 13,
         justifyContent: 'center',
         alignItems: 'flex-end',
     },
     shareRule: {
-        width: SCREEN_WIDTH / 5,
-        height: ((SCREEN_WIDTH / 5) * 99) / 258,
-        marginRight: -SCREEN_WIDTH / 35,
+        width: Device.WIDTH / 5,
+        height: ((Device.WIDTH / 5) * 99) / 258,
+        marginRight: -Device.WIDTH / 35,
     },
     shareButtonPosition: {
-        marginTop: (((SCREEN_WIDTH * 1920) / 1080) * 6) / 13,
+        marginTop: (((Device.WIDTH * 1920) / 1080) * 6) / 13,
         justifyContent: 'center',
         alignItems: 'center',
     },
     shareButton: {
-        width: (SCREEN_WIDTH * 4) / 6,
-        height: (((SCREEN_WIDTH * 4) / 6) * 206) / 810,
+        width: (Device.WIDTH * 4) / 6,
+        height: (((Device.WIDTH * 4) / 6) * 206) / 810,
     },
     bottom: {
-        width: SCREEN_WIDTH,
-        height: (SCREEN_WIDTH * 1505) / 1080,
+        width: Device.WIDTH,
+        height: (Device.WIDTH * 1505) / 1080,
     },
     shareBottomPosition: {
-        marginTop: ((-(SCREEN_WIDTH * 1505) / 1080) * 20) / 24,
+        marginTop: ((-(Device.WIDTH * 1505) / 1080) * 20) / 24,
     },
     inviteeInfo: {
-        width: SCREEN_WIDTH / 2,
+        width: Device.WIDTH / 2,
         alignItems: 'center',
     },
     shareCountText: {
@@ -198,8 +180,8 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     detailButton: {
-        width: SCREEN_WIDTH / 3 + 10,
-        height: ((SCREEN_WIDTH / 3 + 10) * 155) / 399,
+        width: Device.WIDTH / 3 + 10,
+        height: ((Device.WIDTH / 3 + 10) * 155) / 399,
         marginTop: 20,
     },
     headerContainer: {
@@ -213,13 +195,13 @@ const styles = StyleSheet.create({
     },
     overlayInner: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },
 });
 
 export default compose(
-    graphql(GQL.userInvitationInfoQuery, { options: props => ({ variables: { user_id: app.me.id } }) }),
+    graphql(GQL.userInvitationInfoQuery, { options: () => ({ variables: { user_id: app.me.id } }) }),
 )(index);

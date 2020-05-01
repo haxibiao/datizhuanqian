@@ -7,8 +7,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'rea
 
 import { Overlay } from 'teaset';
 import Button from '../TouchableView/Button';
-import { PxFit } from '../../utils/Scale';
-import Theme from '../../utils/Theme';
+
 import Iconfont from '../Iconfont';
 
 const { height, width } = Dimensions.get('window');

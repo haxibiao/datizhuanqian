@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, FlatList, View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { PageContainer, Row } from '@src/components';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+
 import { useNavigation } from 'react-navigation-hooks';
 import { GQL, useQuery } from 'apollo';
-import { syncGetter } from 'common';
+
 import { observer, app } from 'store';
 
 import Category from './components/Category';
@@ -18,7 +18,9 @@ export default observer(props => {
         },
     });
 
-    const categories = useMemo(() => syncGetter('categories', data) || app.categoryCache || Array(12).fill(1), [data]);
+    const categories = useMemo(() => Helper.syncGetter('categories', data) || app.categoryCache || Array(12).fill(1), [
+        data,
+    ]);
 
     return (
         <PageContainer style={styles.container} white={true} title="选择题库">
@@ -83,10 +85,10 @@ const styles = StyleSheet.create({
     randomImage: {
         alignItems: 'center',
         borderRadius: PxFit(10),
-        height: ((SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2) * 170) / 680,
+        height: ((Device.WIDTH - PxFit(Theme.itemSpace) * 2) * 170) / 680,
         justifyContent: 'center',
         overflow: 'hidden',
-        width: SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2,
+        width: Device.WIDTH - PxFit(Theme.itemSpace) * 2,
     },
     randomText: {
         color: '#fff',

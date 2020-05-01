@@ -1,26 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
 import { TouchFeedback } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { BoxShadow } from 'react-native-shadow';
 import service from 'service';
+import { Matomo } from 'native';
 
-const BODY_WIDTH = SCREEN_WIDTH - PxFit(60);
+const BODY_WIDTH = Device.WIDTH - PxFit(60);
 
 const MedalIntro = (props: { hide: any; medal: any }) => {
     const { hide, medal } = props;
     const navigationAction = () => {
         hide();
-        service.dataReport({
-            data: {
-                category: '用户行为',
-                action: 'user_click_medal',
-                name: `用户点击${medal.name_cn}徽章`,
-            },
-            callback: (result: any) => {
-                console.warn('result', result);
-            },
-        });
+        const name = `点击${medal.name_cn}徽章`;
+        Matomo.trackEvent('用户行为', name, name, 1);
     };
     return (
         <View style={styles.container}>
@@ -55,7 +47,7 @@ const MedalIntro = (props: { hide: any; medal: any }) => {
 };
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - PxFit(110),
+    width: Device.WIDTH - PxFit(110),
     height: PxFit(80),
     color: '#E8E8E8',
     border: PxFit(5),
@@ -69,11 +61,11 @@ const shadowOpt = {
 };
 
 const imageShadowOpt = {
-    width: SCREEN_WIDTH - PxFit(109),
-    height: ((SCREEN_WIDTH - PxFit(109)) * 77) / 504,
+    width: Device.WIDTH - PxFit(109),
+    height: ((Device.WIDTH - PxFit(109)) * 77) / 504,
     color: '#E8E8E8',
     border: PxFit(5),
-    radius: ((SCREEN_WIDTH - PxFit(109)) * 77) / 504 / 2,
+    radius: ((Device.WIDTH - PxFit(109)) * 77) / 504 / 2,
     opacity: 0.7,
     x: 0,
     y: 0,
@@ -97,22 +89,22 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         backgroundColor: Theme.white,
-        width: SCREEN_WIDTH - PxFit(110),
+        width: Device.WIDTH - PxFit(110),
         height: (BODY_WIDTH * 2) / 3,
         borderRadius: PxFit(5),
         alignItems: 'center',
         marginTop: PxFit(-70),
     },
     imageBackground: {
-        width: SCREEN_WIDTH / 4 + PxFit(35),
-        height: SCREEN_WIDTH / 4 + PxFit(35),
+        width: Device.WIDTH / 4 + PxFit(35),
+        height: Device.WIDTH / 4 + PxFit(35),
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: PxFit(-30),
     },
     icon: {
-        width: SCREEN_WIDTH / 4 - PxFit(20),
-        height: SCREEN_WIDTH / 4 - PxFit(20),
+        width: Device.WIDTH / 4 - PxFit(20),
+        height: Device.WIDTH / 4 - PxFit(20),
     },
     name: {
         fontSize: 20,

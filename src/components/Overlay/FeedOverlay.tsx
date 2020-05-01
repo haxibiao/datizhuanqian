@@ -8,12 +8,6 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'rea
 import Button from '../TouchableView/Button';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 
-import Theme from '../../utils/Theme';
-import { PxFit } from '../../utils/Scale';
-const { height, width } = Dimensions.get('window');
-const SCREEN_WIDTH = width;
-const SCREEN_HEIGHT = height;
-
 import { Overlay } from 'teaset';
 import { ad } from 'native';
 import { playVideo } from 'common';
@@ -32,14 +26,22 @@ class FeedOverlay {
                     <View style={styles.content}>
                         <View>
                             <View style={{ alignItems: 'center' }}>
-                                <Image source={require('@src/assets/images/money_.png')} style={styles.headerImage} />
+                                <Image
+                                    source={require('@src/assets/images/bg_answer_achievement_top.png')}
+                                    style={styles.headerImage}
+                                />
                             </View>
                             <View style={styles.wrap}>
-                                <Text style={{ fontSize: PxFit(14), textAlign: 'center' }}>{title}</Text>
+                                <Text style={{ fontSize: Font(16), textAlign: 'center', fontWeight: 'bold' }}>
+                                    领取失败
+                                </Text>
+                                <Text style={{ fontSize: Font(14), textAlign: 'center', marginTop: PxFit(8) }}>
+                                    {title}
+                                </Text>
                             </View>
-                            <View>
-                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
-                            </View>
+                            {/*  <View>
+                                <ad.FeedAd adWidth={Device.WIDTH - PxFit(80)} />
+                            </View> */}
 
                             <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: PxFit(15) }}>
                                 <Button
@@ -67,20 +69,21 @@ class FeedOverlay {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     content: {
-        width: SCREEN_WIDTH - PxFit(48),
-        borderRadius: PxFit(6),
+        width: Device.WIDTH - PxFit(48),
+        borderRadius: PxFit(10),
         backgroundColor: '#FFF',
         alignItems: 'center',
     },
     wrap: {
         alignItems: 'center',
+        marginTop: PxFit(15),
         paddingBottom: PxFit(15),
         paddingHorizontal: PxFit(25),
     },
@@ -95,20 +98,20 @@ const styles = StyleSheet.create({
         // fontFamily: '',
     },
     headerImage: {
-        width: 120,
-        height: 120,
-        marginTop: -60,
+        width: (Device.WIDTH * 0.25 * 466) / 232,
+        height: Device.WIDTH * 0.25,
+        marginTop: PxFit(-60),
     },
     button: {
         backgroundColor: Theme.themeRed,
         borderRadius: PxFit(19),
         height: PxFit(38),
-        width: (SCREEN_WIDTH * 5) / 12,
+        width: (Device.WIDTH * 5) / 12,
     },
     line: {
         backgroundColor: Theme.theme,
         height: PxFit(0.5),
-        width: SCREEN_WIDTH / 4,
+        width: Device.WIDTH / 4,
     },
 });
 

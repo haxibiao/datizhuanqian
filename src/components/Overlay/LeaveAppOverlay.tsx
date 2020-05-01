@@ -1,25 +1,11 @@
 'use strict';
 
-import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    NativeModules,
-    Dimensions,
-    PermissionsAndroid,
-    Platform,
-    Image,
-} from 'react-native';
-import { Config } from '../../utils';
-import Theme from '../../utils/Theme';
-import { WPercent, HPercent, PxFit, FontSize } from '../../utils/Scale';
-import app from '../../store/app';
+import React from 'react';
+import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
 
 import Iconfont from '../Iconfont';
 import { Overlay } from 'teaset';
-import DownLoadApk from '../Utils/DownLoadApk';
+import DownLoadApk from '../Other/DownLoadApk';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 
 const { height, width } = Dimensions.get('window');
@@ -30,7 +16,7 @@ let OverlayKey: any = null;
 
 interface Props {}
 
-export const show = (props: Props) => {
+export const show = () => {
     const overlayView = (
         <Overlay.View animated>
             <View style={styles.container}>

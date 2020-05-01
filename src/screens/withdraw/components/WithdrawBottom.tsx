@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { TouchFeedback, Button, Row } from 'components';
-import { useQuery, GQL } from 'apollo';
+import { TouchFeedback, Row } from 'components';
 import { app } from 'store';
-import { SCREEN_WIDTH, WPercent } from 'utils';
 
 const WithdrawBottom = props => {
-    const { selectWithdrawCount, navigation, withdraw } = props;
+    const { setSelectWithdraw, withdraw, selectWithdraw } = props;
 
     let withdrawInfo = withdraw;
 
@@ -27,13 +25,13 @@ const WithdrawBottom = props => {
     console.log('withdrawInfo :', withdrawInfo);
     return (
         <View style={styles.withdraws}>
-            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(15), paddingHorizontal: PxFit(15) }}>
+            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(25), paddingHorizontal: PxFit(15) }}>
                 <Row>
                     <View style={styles.titleBadge} />
-                    <Text style={{ fontSize: PxFit(15) }}>提现金额</Text>
+                    <Text style={{ fontSize: Font(15), color: '#3A3A3A' }}>提现金额</Text>
                 </Row>
                 <Text style={styles.tips}>
-                    总提现:{Helper.syncGetter('wallet.total_withdraw_amount', withdrawInfo) || 0}（元）
+                    总提现:{Helper.syncGetter('wallet.total_withdraw_amount', withdrawInfo) || 0}元
                 </Text>
             </Row>
             <View style={styles.center}>
@@ -42,14 +40,20 @@ const WithdrawBottom = props => {
                         <View key={index}>
                             <TouchFeedback
                                 disabled={data.disable}
-                                style={[styles.withdrawItem]}
+                                style={[
+                                    styles.withdrawItem,
+                                    selectWithdraw.amount == data.amount && {
+                                        borderColor: '#FECF3F',
+                                    },
+                                ]}
                                 onPress={() => {
-                                    selectWithdrawCount(data.amount);
+                                    setSelectWithdraw(data);
                                 }}>
                                 <Text style={[styles.content]}>{data.amount}元</Text>
                                 <Text
                                     style={{
-                                        fontSize: 13,
+                                        marginTop: PxFit(2),
+                                        fontSize: Font(12),
                                         color: data.fontColor,
                                     }}>
                                     {data.description}
@@ -69,9 +73,14 @@ const WithdrawBottom = props => {
                     );
                 })}
             </View>
-            <View style={styles.footer}>
-                <Button title={'提现日志'} style={styles.button} onPress={() => navigation.navigate('BillingRecord')} />
-            </View>
+            {selectWithdraw.rule ? (
+                <View style={styles.rule}>
+                    <Text style={{ color: '#999999', fontSize: Font(13), lineHeight: 18 }}>
+                        {selectWithdraw.amount}元提现说明：
+                    </Text>
+                    <Text style={{ color: '#999999', fontSize: Font(13), lineHeight: 18 }}>{selectWithdraw.rule}</Text>
+                </View>
+            ) : null}
         </View>
     );
 };
@@ -80,34 +89,45 @@ const withdrawData = [
     {
         tips: '秒到账',
         amount: 0.5,
-        description: '新人无门槛',
+        description: '30日贡献',
         fontColor: '#FFA200',
         bgColor: Theme.themeRed,
         disable: false,
+        rule: '0.5元提现不限量，每天仅可提现1次，需要日贡献30。',
+        needContributes: 30,
     },
     {
         tips: '限量抢',
         amount: 3,
-        description: '108日贡献',
+        description: '180日贡献',
         fontColor: Theme.subTextColor,
-        bgColor: Theme.primaryColor,
-        disable: true,
+        bgColor: '#FECF3F',
+        disable: false,
+        rule:
+            '3元提现每天定时进行额度发放，先到先得；提现时间段10:00-18:00，每个整点开始后的0-10分钟内开抢；参与限量抢前需满足日贡献180。',
+        needContributes: 180,
     },
     {
         tips: '限量抢',
         amount: 5,
-        description: '180日贡献',
+        description: '300日贡献',
         fontColor: Theme.subTextColor,
-        bgColor: Theme.primaryColor,
-        disable: true,
+        bgColor: '#FECF3F',
+        disable: false,
+        rule:
+            '5元提现每天定时进行额度发放，先到先得；提现时间段10:00-18:00，每个整点开始后的0-10分钟内开抢；参与限量抢前需满足日贡献300；用户等级需达到5级。',
+        needContributes: 300,
     },
     {
         tips: '限量抢',
         amount: 10,
-        description: '360日贡献',
+        description: '600日贡献',
         fontColor: Theme.subTextColor,
-        bgColor: Theme.primaryColor,
-        disable: true,
+        bgColor: '#FECF3F',
+        disable: false,
+        rule:
+            '10元提现每天定时进行额度发放，先到先得；提现时间段10:00-18:00，每个整点开始后的0-10分钟内开抢；参与限量抢前需满足日贡献600；用户等级需达到9级。',
+        needContributes: 600,
     },
 ];
 
@@ -117,14 +137,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     titleBadge: {
-        height: 16,
-        width: 3,
-        backgroundColor: Theme.primaryColor,
+        height: PxFit(15),
+        width: PxFit(4),
+        backgroundColor: '#FFCB03',
         marginRight: PxFit(10),
+        borderRadius: PxFit(3),
     },
     content: {
-        color: Theme.black,
-        fontSize: PxFit(15),
+        color: '#424242',
+        fontSize: Font(16),
     },
     center: {
         flexDirection: 'row',
@@ -143,37 +164,44 @@ const styles = StyleSheet.create({
         left: 0,
         position: 'absolute',
         top: 0,
-        width: 56,
+        width: PxFit(50),
     },
     badgeText: {
         color: '#FFF',
-        fontSize: PxFit(12),
+        fontSize: Font(11),
         fontWeight: '500',
     },
     withdrawItem: {
         alignItems: 'center',
-        backgroundColor: '#f5f5f5',
+        borderColor: '#f5f5f5',
+        borderWidth: PxFit(1),
         borderRadius: PxFit(5),
-        height: PxFit(60),
+        height: PxFit(65),
         justifyContent: 'center',
         marginBottom: PxFit(Theme.itemSpace),
-        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+        width: (Device.WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+    },
+    rule: {
+        backgroundColor: '#F9F9F9',
+        marginHorizontal: PxFit(Theme.itemSpace),
+        borderRadius: PxFit(5),
+        padding: PxFit(10),
     },
     footer: {
         alignItems: 'center',
-        paddingTop: PxFit(50),
+        paddingTop: PxFit(20),
     },
     tips: {
-        color: Theme.grey,
-        fontSize: PxFit(13),
+        color: '#A3A3A3',
+        fontSize: Font(14),
         lineHeight: PxFit(18),
         textAlign: 'center',
     },
     button: {
-        height: PxFit(38),
-        borderRadius: PxFit(5),
-        backgroundColor: Theme.primaryColor,
-        width: WPercent(90),
+        height: PxFit(44),
+        borderRadius: PxFit(22),
+        backgroundColor: '#FCE13D',
+        width: Percent(88),
     },
 });
 

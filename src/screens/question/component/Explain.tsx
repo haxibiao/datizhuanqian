@@ -1,11 +1,10 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { VideoMark, OverlayViewer } from '@src/components';
-import { SCREEN_WIDTH } from '@src/utils';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default ({ explanation, audit }) => {
-    const MEDIA_WIDTH = audit ? SCREEN_WIDTH - PxFit(48) : SCREEN_WIDTH - PxFit(24);
+    const MEDIA_WIDTH = audit ? Device.WIDTH - PxFit(48) : Device.WIDTH - PxFit(24);
 
     const explain = useMemo(() => {
         const result = {};

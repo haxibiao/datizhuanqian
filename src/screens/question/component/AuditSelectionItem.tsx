@@ -1,10 +1,8 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, DeviceEventEmitter } from 'react-native';
-import { Iconfont } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
+import React, { useMemo } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { observer } from '@src/screens/answer/store';
 
-export default observer(({ value, text, style, question, store }) => {
+export default observer(({ value, text, style, question }) => {
     const correct = useMemo(() => {
         return question.answer.includes(value);
     }, [value]);

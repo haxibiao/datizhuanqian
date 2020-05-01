@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
-
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
-import { Query, GQL } from 'apollo';
+import { PageContainer, ListFooter, StatusView, CustomRefreshControl } from 'components';
+import { GQL, Query } from 'apollo';
 import { app } from 'store';
 
 import FeedbackItem from './FeedbackItem';
@@ -22,6 +20,7 @@ class FeedbackList extends Component {
     render() {
         let { navigation } = this.props;
         let { onPress, filter } = this.state;
+
         return (
             <PageContainer hiddenNavBar tabLabel="反馈记录">
                 <View style={styles.header}>
@@ -47,9 +46,9 @@ class FeedbackList extends Component {
 
                 <Query query={GQL.feedbacksQuery} variables={{ user_id: filter }} fetchPolicy="network-only">
                     {({ data, loading, error, refetch, fetchMore }) => {
-                        if (error) return <ErrorView onPress={refetch} />;
-                        if (loading) return <LoadingSpinner />;
-                        if (!(data && data.feedbacks && data.feedbacks.length > 0)) return <EmptyView />;
+                        if (error) return <StatusView.ErrorView onPress={refetch} />;
+                        if (loading) return <StatusView.LoadingSpinner />;
+                        if (!(data && data.feedbacks && data.feedbacks.length > 0)) return <StatusView.EmptyView />;
                         return (
                             <View style={{ flex: 1 }}>
                                 <FlatList

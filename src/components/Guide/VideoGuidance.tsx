@@ -4,7 +4,7 @@
  */
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+
 import { app } from 'store';
 
 function VideoGuidance({ onDismiss }) {
@@ -17,7 +17,10 @@ function VideoGuidance({ onDismiss }) {
                     setStep(1);
                 }}>
                 <View style={styles.flexCenter}>
-                    <Image style={styles.answerGuide} source={require('../../assets/images/video_guide_1.gif')} />
+                    <Image
+                        style={styles.answerGuide}
+                        source={require('@src/assets/images/bg_video_guidance_one.png')}
+                    />
                 </View>
             </TouchableWithoutFeedback>,
             <TouchableWithoutFeedback
@@ -35,7 +38,7 @@ function VideoGuidance({ onDismiss }) {
                         }}>
                         <Image
                             style={styles.stimulateVideo}
-                            source={require('../../assets/images/video_guide_2.png')}
+                            source={require('@src/assets/images/bg_video_guidance_two.png')}
                         />
                     </TouchableWithoutFeedback>
                 </View>
@@ -48,16 +51,16 @@ function VideoGuidance({ onDismiss }) {
 
 const videoGuideWidth = PxFit(88) * (800 / 252);
 const videoGuideHeight = (videoGuideWidth * 442) / 931;
-const videoGuideBottom = PxFit(380 + Theme.HOME_INDICATOR_HEIGHT);
+const videoGuideBottom = PxFit(380 + Device.HOME_INDICATOR_HEIGHT);
 
-const WIDTH = SCREEN_WIDTH / 2;
+const WIDTH = Device.WIDTH / 2;
 const HEIGHT = (WIDTH * 1026) / 772;
 
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -67,8 +70,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     userReward: {
-        width: (SCREEN_WIDTH * 4) / 5,
-        height: (((SCREEN_WIDTH * 4) / 5) * 640) / 519,
+        width: (Device.WIDTH * 4) / 5,
+        height: (((Device.WIDTH * 4) / 5) * 640) / 519,
         resizeMode: 'contain',
     },
     stimulateVideo: {

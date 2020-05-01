@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, ScrollView, Linking } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, ListItem, ItemSeparator, PopOverlay } from 'components';
-import { Theme, PxFit, Config, ISIOS } from 'utils';
 import { app, config } from 'store';
 import { withApollo, GQL } from 'apollo';
 import { checkUpdate } from 'common';
@@ -17,7 +16,7 @@ class index extends Component {
     signOut = async () => {
         const { navigation, client } = this.props;
 
-        const result = await client.mutate({
+        const result = await app.mutationClient.mutate({
             mutation: GQL.UserAutoQuery,
             variables: {
                 id: app.me.id,

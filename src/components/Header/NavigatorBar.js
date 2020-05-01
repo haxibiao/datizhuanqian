@@ -18,7 +18,6 @@ import {
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import Iconfont from '../Iconfont';
-import { PxFit, Theme, NAVBAR_HEIGHT } from '../../utils';
 
 class NavigatorBar extends Component {
     static propTypes = {
@@ -64,8 +63,8 @@ class NavigatorBar extends Component {
             position: 'absolute',
             left: 0,
             right: 0,
-            height: PxFit(NAVBAR_HEIGHT),
-            paddingTop: PxFit(Theme.statusBarHeight),
+            height: Device.NAVBAR_HEIGHT,
+            paddingTop: PxFit(Device.statusBarHeight),
             paddingLeft: PxFit(Theme.itemSpace),
             paddingRight: PxFit(Theme.itemSpace),
             borderBottomWidth: PxFit(0.2),
@@ -76,12 +75,12 @@ class NavigatorBar extends Component {
             ...style,
         };
 
-        if (!statusBarColor) statusBarColor = Theme.navBarBackground;
+        if (!statusBarColor) statusBarColor = 'transparent';
 
         //build titleViewStyle
         titleViewStyle = {
             position: 'absolute',
-            top: PxFit(Theme.statusBarHeight),
+            top: PxFit(Device.statusBarHeight),
             left: PxFit(Theme.itemSpace),
             right: PxFit(Theme.itemSpace),
             bottom: 0,
@@ -139,7 +138,7 @@ class NavigatorBar extends Component {
                     onPress={this.backButtonPress}
                     style={{
                         flex: 1,
-                        width: Theme.navBarContentHeight,
+                        width: Device.statusBarHeight,
                         justifyContent: 'center',
                     }}>
                     <Iconfont name="left" color={backButtonColor || Theme.navBarTitleColor} size={PxFit(21)} />
@@ -175,7 +174,7 @@ class NavigatorBar extends Component {
             ...others
         } = this.buildProps();
         return (
-            <Animated.View style={style} {...others} onLayout={e => this.onLayout(e)}>
+            <Animated.View style={style} {...others} onLayout={(e) => this.onLayout(e)}>
                 <StatusBar
                     translucent={true}
                     backgroundColor={statusBarColor}

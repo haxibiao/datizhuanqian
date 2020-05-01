@@ -45,7 +45,7 @@ class FollowButton extends Component<Props> {
             textColor = activeColor;
             backgroundColor = Theme.groundColour;
         } else {
-            title = '关注';
+            title = '+关注';
             textColor = tintColor;
             backgroundColor = Theme.primaryColor;
         }
@@ -105,8 +105,10 @@ class FollowButton extends Component<Props> {
     follow = async () => {
         console.log('follow');
         let { id } = this.props;
+
         try {
-            await this.props.followUser({
+            await app.mutationClient.mutate({
+                mutation: GQL.FollowToggbleMutation,
                 variables: {
                     followed_type: 'users',
                     followed_id: id,
@@ -124,4 +126,4 @@ class FollowButton extends Component<Props> {
     };
 }
 
-export default compose(withNavigation, graphql(GQL.FollowToggbleMutation, { name: 'followUser' }))(FollowButton);
+export default withNavigation(FollowButton);

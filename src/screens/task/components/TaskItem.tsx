@@ -1,15 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, Animated, Linking, AppState } from 'react-native';
 
-import { Button, Row, TouchFeedback, FeedOverlay, RewardOverlay } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
-
+import { Button, Row, TouchFeedback, FeedOverlay, RewardOverlay, Avatar, Loading } from '@src/components';
 import { useMutation, GQL } from 'apollo';
-import { exceptionCapture } from 'common';
 import { app } from 'store';
 import { AppUtil } from 'native';
 import service from 'service';
 import { Overlay } from 'teaset';
+import { taskTrack } from '@src/common';
+import * as ReceiveTaskOverlay from './ReceiveTaskOverlay';
 
 interface Props {
     handler: Function;
@@ -36,7 +35,7 @@ interface Task {
 }
 
 const TaskItem = (props: Props) => {
-    const { task, setLoading, setUnLoading } = props;
+    const { task, handler } = props;
     const [taskDetailVisiable] = useState(false);
     const [] = useState(new Animated.Value(0));
     const [fadeValue] = useState(new Animated.Value(0));
@@ -44,6 +43,7 @@ const TaskItem = (props: Props) => {
     const refetchQuery = () => [
         {
             query: GQL.TasksQuery,
+            variables: { offest: 0, limit: 100 },
         },
         {
             query: GQL.UserQuery,
@@ -55,6 +55,7 @@ const TaskItem = (props: Props) => {
         variables: {
             task_id: task.id,
         },
+        client: app.mutationClient,
         refetchQueries: refetchQuery,
     });
 
@@ -62,18 +63,19 @@ const TaskItem = (props: Props) => {
         variables: {
             task_id: task.id,
         },
+        client: app.mutationClient,
         refetchQueries: refetchQuery,
     });
 
     //领取任务奖励
     const getReward = async () => {
-        setLoading();
-        const [error, res] = await exceptionCapture(taskReward);
+        Loading.show('领取中');
+        const [error, res] = await Helper.exceptionCapture(taskReward);
         if (error) {
             let str = error.toString().replace(/Error: GraphQL error: /, '');
             Toast.show({ content: str });
         }
-        setUnLoading();
+        Loading.hide();
         if (res.data.taskReward == 1) {
             RewardOverlay.show({
                 reward: {
@@ -82,7 +84,6 @@ const TaskItem = (props: Props) => {
                     contribute: 0,
                 },
                 title: '领取任务奖励成功',
-                rewardVideo: true,
             });
             // Toast.show({ content: '领取成功' });
         } else {
@@ -92,21 +93,21 @@ const TaskItem = (props: Props) => {
 
     //领取任务
     const getTask = async () => {
-        setLoading();
-        const [error, res] = await exceptionCapture(receiveTask);
+        Loading.show('领取中');
+        const [error, res] = await Helper.exceptionCapture(receiveTask);
         if (error) {
             let str = error.toString().replace(/Error: GraphQL error: /, '');
             Toast.show({ content: str });
         }
-        setUnLoading();
+        Loading.hide();
         if (res.data.receiveTask == 1) {
-            FeedOverlay.show({
-                title: '领取任务成功',
-            });
-
             if (task.type == 2 && task.package) {
                 // Helper.middlewareNavigate('任务详情', { task: task });
                 viewTask();
+            } else {
+                ReceiveTaskOverlay.show({
+                    handler: handler,
+                });
             }
         } else {
             Toast.show({ content: '已经领取该任务了哦~' });
@@ -116,7 +117,7 @@ const TaskItem = (props: Props) => {
     // 完成任务
     const completeTask = () => {
         const { task } = props;
-        app.client
+        app.mutationClient
             .mutate({
                 mutation: GQL.CompleteTask,
                 variables: {
@@ -179,7 +180,7 @@ const TaskItem = (props: Props) => {
                 {task.ticket > 0 && (
                     <Row style={styles.reword}>
                         <Image
-                            source={require('../../../assets/images/heart.png')}
+                            source={require('@src/assets/images/heart.png')}
                             style={{ width: PxFit(17), height: PxFit(17) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.ticket}`}</Text>
@@ -188,7 +189,7 @@ const TaskItem = (props: Props) => {
                 {task.gold ? (
                     <Row style={styles.reword}>
                         <Image
-                            source={require('../../../assets/images/diamond.png')}
+                            source={require('@src/assets/images/diamond.png')}
                             style={{ width: PxFit(17), height: PxFit(17) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.gold}`}</Text>
@@ -197,7 +198,7 @@ const TaskItem = (props: Props) => {
                 {task.contribute > 0 && (
                     <Row style={styles.reword}>
                         <Image
-                            source={require('../../../assets/images/gongxian.png')}
+                            source={require('@src/assets/images/gongxian.png')}
                             style={{ width: PxFit(13), height: PxFit(13) }}
                         />
                         <Text style={styles.rewordText}>{`+${task.contribute}`}</Text>
@@ -215,7 +216,7 @@ const TaskItem = (props: Props) => {
         let name = task.submit_name;
         let textColor = Theme.white;
         let doTask = handler;
-        let backgroundColor = Theme.primaryColor;
+        let backgroundColor = '#2FC6FC';
         let disabled = false;
 
         switch (task.userTaskStatus) {
@@ -233,15 +234,8 @@ const TaskItem = (props: Props) => {
                     name = '去下载';
                     doTask = () => {
                         Linking.openURL(`market://details?id=${task.package}`);
-                        service.dataReport({
-                            data: {
-                                category: '用户行为',
-                                action: 'user_click_try_play_task',
-                                name: `用户点击${task.name}任务`,
-                            },
-                            callback: (result: any) => {
-                                console.warn('result', result);
-                            },
+                        taskTrack({
+                            name: `点击做${task.name}任务`,
                         });
                     };
                 }
@@ -261,6 +255,7 @@ const TaskItem = (props: Props) => {
             case 2:
                 name = '领奖励';
                 doTask = getReward;
+                backgroundColor = '#FCDB09';
                 break;
             case 3:
                 name = '已完成';
@@ -269,19 +264,19 @@ const TaskItem = (props: Props) => {
                 textColor = Theme.grey;
                 backgroundColor = Theme.borderColor;
                 break;
-            //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
-            case 7:
-                backgroundColor = '#FF5267';
+            case 4:
+                backgroundColor = '#FCDB09';
                 break;
+            //TODO: 前端自定义任务扩充项  需逐步由tasksQuery控制
         }
 
         return (
             <Button
                 title={name}
                 style={{
-                    borderRadius: PxFit(15),
-                    height: PxFit(30),
-                    width: PxFit(78),
+                    borderRadius: PxFit(16),
+                    height: PxFit(32),
+                    width: PxFit(76),
                     backgroundColor: backgroundColor,
                 }}
                 textColor={textColor}
@@ -309,7 +304,7 @@ const TaskItem = (props: Props) => {
                 <View style={styles.overlayInner}>
                     <View
                         style={{
-                            width: SCREEN_WIDTH - PxFit(70),
+                            width: Device.WIDTH - PxFit(70),
                             paddingHorizontal: PxFit(25),
                             paddingVertical: PxFit(20),
                             borderRadius: PxFit(10),
@@ -322,7 +317,7 @@ const TaskItem = (props: Props) => {
                         <View style={{ marginVertical: 10 }}>
                             <Text style={{ lineHeight: PxFit(20) }}>{task.details}</Text>
                         </View>
-                        <Button title={'确定'} onPress={() => Overlay.hide(OverlayKey)} style={styles.buttonText} />
+                        <Button title={'知道了'} onPress={() => Overlay.hide(OverlayKey)} style={styles.buttonText} />
                     </View>
                 </View>
             </Overlay.View>
@@ -339,32 +334,37 @@ const TaskItem = (props: Props) => {
                         showTaskDetail();
                     }
                 }}>
-                <Image
-                    source={task.icon || require('@src/assets/images/task_money_icon.png')}
-                    style={{ width: PxFit(42), height: PxFit(42), marginRight: PxFit(5), marginLeft: PxFit(15) }}
+                <Avatar
+                    source={task.icon || Helper.getTaskIcon(task)}
+                    style={{ marginRight: PxFit(5), marginLeft: PxFit(15) }}
+                    size={PxFit(42)}
                 />
 
                 <Row
                     style={{
-                        width: SCREEN_WIDTH - PxFit(65),
+                        width: Device.WIDTH - PxFit(65),
                         justifyContent: 'space-between',
                         paddingRight: PxFit(15),
                         paddingVertical: PxFit(15),
                         borderBottomColor: Theme.borderColor,
                         borderBottomWidth: PxFit(0.5),
                     }}>
-                    <Row>
-                        <Text style={styles.name}>{task.name}</Text>
-                        {task.details ? (
-                            <TouchFeedback onPress={task.details.length > 0 && showTaskDetail}>
-                                <Image
-                                    source={require('@src/assets/images/question.png')}
-                                    style={{ width: PxFit(14), height: PxFit(14), marginHorizontal: PxFit(2) }}
-                                />
-                            </TouchFeedback>
-                        ) : null}
+                    <View>
+                        <Row>
+                            <Text style={styles.name}>{task.name}</Text>
+                            {task.details ? (
+                                <TouchFeedback onPress={task.details.length > 0 && showTaskDetail}>
+                                    <Image
+                                        source={require('@src/assets/images/question.png')}
+                                        style={{ width: PxFit(14), height: PxFit(14), marginHorizontal: PxFit(4) }}
+                                    />
+                                </TouchFeedback>
+                            ) : null}
+                        </Row>
+
                         {RewardContent()}
-                    </Row>
+                    </View>
+
                     {TaskButton()}
                 </Row>
             </TouchFeedback>
@@ -381,8 +381,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     name: {
-        color: '#3c3c3c',
-        fontSize: PxFit(14),
+        color: '#333333',
+        fontSize: Font(14),
     },
     taskRight: {
         paddingVertical: PxFit(5),
@@ -390,16 +390,18 @@ const styles = StyleSheet.create({
         paddingRight: 15,
     },
     reword: {
-        marginLeft: PxFit(2),
+        marginRight: PxFit(8),
+        marginTop: PxFit(5),
     },
     rewordText: {
         color: Theme.primaryColor,
-        fontSize: PxFit(12),
-        fontWeight: '200',
+        fontSize: Font(11),
+        // fontWeight: '200',
+        marginLeft: PxFit(1),
         // fontFamily: '',
     },
     taskDetail: {
-        marginHorizontal: PxFit(15),
+        marginHorizontal: PxFit(20),
         paddingVertical: PxFit(10),
         paddingHorizontal: PxFit(10),
         marginBottom: PxFit(10),
@@ -414,8 +416,8 @@ const styles = StyleSheet.create({
     },
     overlayInner: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },

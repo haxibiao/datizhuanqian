@@ -1,3 +1,12 @@
-import fetch from './fetch';
+import api from './api';
+import clientMutate from './clientMutate';
 
-export default fetch;
+// export { clientMutate };
+// export * from './api';
+
+const service = {
+    ...api,
+    clientMutate,
+};
+
+export default service;

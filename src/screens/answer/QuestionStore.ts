@@ -1,5 +1,4 @@
 import { observable, action, runInAction } from 'mobx';
-import { SCREEN_WIDTH } from 'utils';
 import { keys, storage } from 'store';
 
 interface User {
@@ -39,7 +38,7 @@ class QuestionStore {
     @observable public isLoadMore: boolean = false;
     @observable public answeredId = [];
     @observable public viewableItemIndex: number = -1;
-    @observable public containerWidth: number = SCREEN_WIDTH;
+    @observable public containerWidth: number = Device.WIDTH;
     @action.bound
     public addSource(source: Question[]) {
         this.dataSource = this.dataSource.concat(source);

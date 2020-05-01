@@ -1,7 +1,17 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, StyleSheet, View, Text } from 'react-native';
-import { Iconfont, PullChooser, TouchFeedback, PageContainer, StatusView, Banner } from '@src/components';
-import { Theme, PxFit, ISIOS } from '@src/utils';
+import { DeviceEventEmitter, StyleSheet, View, Text, StatusBar } from 'react-native';
+import {
+    Iconfont,
+    PullChooser,
+    TouchFeedback,
+    PageContainer,
+    StatusView,
+    Banner,
+    beginnerGuidance,
+    AnswerGuidance,
+    AnswerWithdrawGuidance,
+} from '@src/components';
+
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
 import { ad } from '@app/native';
@@ -10,8 +20,7 @@ import { useNavigation } from 'react-navigation-hooks';
 import ChooseOverlay from './components/ChooseOverlay';
 import AnswerPlaceholder from './components/AnswerPlaceholder';
 import AnswerQuestion from './components/AnswerQuestion';
-import FirstWithdrawTips from './components/FirstWithdrawTips';
-import AnswerResult from './components/AnswerResult';
+import AnswerAchievement from './components/AnswerAchievement';
 import { observer } from './store';
 import CommentOverlay from '@src/screens/comment/CommentOverlay';
 
@@ -37,15 +46,15 @@ export default observer(() => {
         commentRef.current.slideDown();
     }, [commentRef]);
 
-    const { data } = useQuery(GQL.UserMeansQuery, {
-        variables: { variables: { id: app.me.id } },
+    const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
+        variables: { id: app.me.id },
     });
 
-    const user = useMemo(() => Helper.syncGetter('user', data), [data]);
+    const user = useMemo(() => Helper.syncGetter('data.user', UserMeansQuery), [UserMeansQuery]);
 
     // 加载广告缓存
     const loadAd = useCallback(() => {
-        if (user && !ISIOS && config.enableQuestion) {
+        if (user && !Device.IOS && config.enableQuestion) {
             ad.FullScreenVideo.loadFullScreenVideoAd().then(() => {});
             ad.RewardVideo.loadAd().then(() => {});
         }
@@ -59,7 +68,10 @@ export default observer(() => {
         try {
             const result = await client.query({
                 query: GQL.QuestionListQuery,
-                variables: { category_id: category.id, limit: 10 },
+                variables: {
+                    category_id: category.id,
+                    limit: 10,
+                },
                 fetchPolicy: 'network-only',
             });
 
@@ -89,7 +101,7 @@ export default observer(() => {
     }, [questions, fetchQuestions]);
 
     const showOptions = useCallback(() => {
-        if (ISIOS) {
+        if (Device.IOS) {
             PullChooser.show([
                 {
                     title: '举报',
@@ -97,7 +109,10 @@ export default observer(() => {
                 },
                 {
                     title: '分享',
-                    onPress: () => navigation.navigate('ShareCard', { question }),
+                    onPress: () =>
+                        navigation.navigate('ShareCard', {
+                            question,
+                        }),
                 },
             ]);
         } else {
@@ -109,28 +124,25 @@ export default observer(() => {
     // 安卓提高到5个题计算及格和视频奖励
     const showAnswerResult = useCallback(() => {
         if (answerCount.current.count === advertisingInterval) {
-            let overlayViewRef;
-            const overlayView = (
-                <Overlay.View animated modal ref={ref => (overlayViewRef = ref)}>
-                    <View style={styles.overlayInner}>
-                        <AnswerResult
-                            hide={() => overlayViewRef.close()}
-                            navigation={navigation}
-                            answer_count={answerCount.current.count}
-                            error_count={answerCount.current.error}
-                        />
-                    </View>
-                </Overlay.View>
-            );
-            Overlay.show(overlayView);
+            AnswerAchievement.show({
+                answerCount: answerCount.current.count,
+                errorCount: answerCount.current.error,
+            });
             answerCount.current = { count: 0, error: 0 };
         }
     }, [navigation]);
 
+    //判断是否展示激励任务引导
+    const canShowTaskGuidance =
+        (Helper.syncGetter('wallet.total_withdraw_amount', user) == undefined ||
+            Number(Helper.syncGetter('wallet.total_withdraw_amount', user)) < 0.3) &&
+        answerCount.current.count > 10;
+
     useEffect(() => {
+        //获取题目
         fetchQuestions();
         // 等级限制
-        fetch(Config.ApiServceRoot + '/api/app/task/user-config?api_token=' + app.me.token)
+        fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + app.me.token)
             .then(response => response.json())
             .then(result => {
                 setMinLevel(Helper.syncGetter('chuti.min_level', result));
@@ -138,8 +150,21 @@ export default observer(() => {
             .catch(err => {
                 console.warn('加载task config err', err);
             });
-        // 加载广告
+        // 加载广告缓存
         loadAd();
+        // 智慧点引导
+        beginnerGuidance({
+            guidanceKey: 'Answer',
+            GuidanceView: AnswerGuidance,
+            dismissEnabled: true,
+        });
+        // 提现引导
+        canShowTaskGuidance &&
+            beginnerGuidance({
+                guidanceKey: 'AnswerWithdraw',
+                GuidanceView: AnswerWithdrawGuidance,
+                dismissEnabled: true,
+            });
     }, [fetchQuestions]);
     // 处理答题、下一页、显示评论等事件
     useEffect(() => {
@@ -172,12 +197,24 @@ export default observer(() => {
         } else if (!question) {
             return (
                 <StatusView.EmptyView
-                    titleStyle={{ textAlign: 'center', fontSize: PxFit(13), lineHeight: PxFit(18) }}
+                    titleStyle={{
+                        textAlign: 'center',
+                        fontSize: PxFit(13),
+                        lineHeight: PxFit(18),
+                    }}
                     title={`暂时没有题目了，试试去出题吧！\n或先去其它分类下答题吧~`}
                 />
             );
         }
-        return <AnswerQuestion key={question.id} question={question} category={category} />;
+        return (
+            <AnswerQuestion
+                key={question.id}
+                question={question}
+                category={category}
+                showAnswerResult={answerCount.current.count + 1 === advertisingInterval}
+                showOptions={showOptions}
+            />
+        );
     }, [fetchQuestions, question, finished, error]);
 
     return (
@@ -195,11 +232,8 @@ export default observer(() => {
                     )
                 }
                 hiddenNavBar={config.isFullScreen}
-                titleStyle={{ color: Theme.defaultTextColor }}
-                navBarStyle={{
-                    borderBottomWidth: PxFit(1),
-                    borderBottomColor: '#f0f0f0',
-                    backgroundColor: '#fff',
+                titleStyle={{
+                    color: Theme.defaultTextColor,
                 }}
                 navBarStyle={{
                     borderBottomWidth: 0,

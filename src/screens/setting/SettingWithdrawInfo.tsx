@@ -23,7 +23,7 @@ const SettingWithdrawInfo = props => {
     //绑定真实姓名
     const bindRealName = () => {
         setSubmitting(true);
-        app.client
+        app.mutationClient
             .mutate({
                 mutation: GQL.SetWalletInfoMutation,
                 variables: {

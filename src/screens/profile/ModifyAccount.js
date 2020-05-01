@@ -10,7 +10,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { PageContainer, TouchFeedback, Button, CustomTextInput } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
 
@@ -173,7 +172,7 @@ class ModifyAccount extends Component {
                             placeholder="验证码"
                             style={{
                                 height: PxFit(48),
-                                width: SCREEN_WIDTH / 2,
+                                width: Device.WIDTH / 2,
                             }}
                             maxLength={6}
                             keyboardType={'numeric'}

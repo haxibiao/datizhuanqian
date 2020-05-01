@@ -6,7 +6,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, BackHandler } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
-import { SCREEN_WIDTH, ISAndroid } from '../../utils';
 import VideoStatus from './VideoStatus';
 import VideoControl from './VideoControl';
 
@@ -29,7 +28,7 @@ class Player extends Component {
     componentDidMount() {
         let { navigation } = this.props;
         // let BackHandler = ReactNative.BackHandler ? ReactNative.BackHandler : ReactNative.BackAndroid;
-        if (ISAndroid) {
+        if (Device.Android) {
             BackHandler.addEventListener('hardwareBackPress', this._backButtonPress);
         }
         this.willBlurSubscription = navigation.addListener('willBlur', () => {
@@ -58,7 +57,7 @@ class Player extends Component {
     };
 
     render() {
-        let { video, style, size = { width: SCREEN_WIDTH, height: SCREEN_WIDTH * 0.65 } } = this.props;
+        let { video, style, size = { width: Device.WIDTH, height: Device.WIDTH * 0.65 } } = this.props;
         let {
             status,
             paused,

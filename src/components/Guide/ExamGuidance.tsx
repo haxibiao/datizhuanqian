@@ -4,7 +4,6 @@
  */
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
 function ExamGuidance() {
     return (
@@ -37,15 +36,15 @@ function ExamGuidance() {
     );
 }
 
-const WIDTH = SCREEN_WIDTH;
+const WIDTH = Device.WIDTH;
 const HEIGHT = (WIDTH * 1059) / 1040;
 // const RIGHT = WIDTH / 2 - (WIDTH * 140) / 411;
 
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },

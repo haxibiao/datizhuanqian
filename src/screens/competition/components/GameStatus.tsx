@@ -1,11 +1,8 @@
-import React, { useMemo, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Avatar, Row, Center, Iconfont } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
+import React from 'react';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { useCountDown } from '@src/common';
 import { BoxShadow } from 'react-native-shadow';
-import { GQL, useMutation } from '@src/apollo';
-import { observer, app } from 'store';
+import { observer } from 'store';
 
 const GameStatus = observer(props => {
     const countDown = useCountDown({ expirationTime: props.expirationTime });

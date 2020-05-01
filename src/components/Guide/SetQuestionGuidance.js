@@ -4,7 +4,6 @@
  */
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT } from 'utils';
 
 function inputGuidance({ onDismiss }) {
     const [step, setStep] = useState(0);
@@ -74,46 +73,46 @@ function submitGuidance({ onDismiss }) {
     return guidesView[step];
 }
 
-const G3Width = SCREEN_WIDTH * 0.45;
-const G5Width = SCREEN_WIDTH - PxFit(Theme.itemSpace * 5);
+const G3Width = Device.WIDTH * 0.45;
+const G5Width = Device.WIDTH - PxFit(Theme.itemSpace * 5);
 
-const isSmallHeight = SCREEN_HEIGHT < 667;
+const isSmallHeight = Device.HEIGTH < 667;
 const G3Height = (G3Width * 505) / 473;
 const G5Height = (G5Width * 280) / 810;
-const G6Height = ((SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2) * 445) / 1001;
-const G7Height = ((SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2) * 357) / 1003;
+const G6Height = ((Device.WIDTH - PxFit(Theme.itemSpace) * 2) * 445) / 1001;
+const G7Height = ((Device.WIDTH - PxFit(Theme.itemSpace) * 2) * 357) / 1003;
 
-const G5Top = isSmallHeight ? SCREEN_HEIGHT - G5Height : NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(360);
-const G6Top = isSmallHeight ? SCREEN_HEIGHT - G6Height : NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(254);
+const G5Top = isSmallHeight ? Device.HEIGTH - G5Height : Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(360);
+const G6Top = isSmallHeight ? Device.HEIGTH - G6Height : Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(254);
 const G7Top = isSmallHeight
-    ? SCREEN_HEIGHT - G7Height
-    : NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(202) - (G7Height * 220) / 357;
+    ? Device.HEIGTH - G7Height
+    : Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(202) - (G7Height * 220) / 357;
 
 const styles = StyleSheet.create({
     flexContainer: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGTH,
     },
     guideImage01: {
         position: 'absolute',
-        top: NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 3,
+        top: Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 3,
         right: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH / 2,
-        height: ((SCREEN_WIDTH / 2) * 253) / 586,
+        width: Device.WIDTH / 2,
+        height: ((Device.WIDTH / 2) * 253) / 586,
         resizeMode: 'contain',
     },
     guideImage02: {
         position: 'absolute',
-        top: NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 3 + PxFit(130),
+        top: Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 3 + PxFit(130),
         left: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH * 0.6,
-        height: (SCREEN_WIDTH * 0.6 * 360) / 731,
+        width: Device.WIDTH * 0.6,
+        height: (Device.WIDTH * 0.6 * 360) / 731,
         resizeMode: 'contain',
     },
     guideImage03: {
         position: 'absolute',
-        top: NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 4 + PxFit(160) - (G3Height * 334) / 505,
+        top: Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 4 + PxFit(160) - (G3Height * 334) / 505,
         left: PxFit(Theme.itemSpace),
         width: G3Width,
         height: G3Height,
@@ -121,10 +120,10 @@ const styles = StyleSheet.create({
     },
     guideImage04: {
         position: 'absolute',
-        top: NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(160),
+        top: Device.NAVBAR_HEIGHT + PxFit(Theme.itemSpace) * 6 + PxFit(160),
         right: PxFit(Theme.itemSpace) + PxFit(10),
-        width: SCREEN_WIDTH / 2,
-        height: ((SCREEN_WIDTH / 2) * 359) / 550,
+        width: Device.WIDTH / 2,
+        height: ((Device.WIDTH / 2) * 359) / 550,
         resizeMode: 'contain',
     },
     guideImage05: {
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: G6Top,
         left: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2,
+        width: Device.WIDTH - PxFit(Theme.itemSpace) * 2,
         height: G6Height,
         resizeMode: 'contain',
     },
@@ -147,13 +146,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: G7Top,
         left: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2,
+        width: Device.WIDTH - PxFit(Theme.itemSpace) * 2,
         height: G7Height,
         resizeMode: 'contain',
     },
     guideImage08: {
         position: 'absolute',
-        top: PxFit(Theme.statusBarHeight),
+        top: PxFit(Device.statusBarHeight),
         right: 0,
         width: 60 * (266 / 150),
         height: (60 * (266 / 150) * 285) / 266,

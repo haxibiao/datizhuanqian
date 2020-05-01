@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Animated } from 'react-native';
 import { useCirculationAnimation } from 'common';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from 'utils';
 
 const VideoLoading = ({ loading }) => {
     if (!loading) {

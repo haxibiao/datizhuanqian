@@ -5,7 +5,6 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, ImageBackground } from 'react-native';
-import { Theme, PxFit, ISIOS, WPercent } from 'utils';
 import { TouchFeedback } from 'components';
 import { app, config } from 'store';
 import { playVideo } from 'common';
@@ -56,22 +55,22 @@ const SignedReturn = (props: Props) => {
                 <View style={styles.ad}>
                     {
                         // <View>
-                        //     <ad.FeedAd adWidth={WPercent(90)} />
+                        //     <ad.FeedAd adWidth={Percent(90)} />
                         // </View>
                     }
                     <TouchFeedback
                         onPress={() => {
-                            ISIOS || config.disableAd ? close() : loadAd();
+                            Device.IOS || config.disableAd ? close() : loadAd();
                         }}>
                         <ImageBackground
                             style={styles.loadAdButton}
                             source={require('../../../assets/images/attendance_button.png')}>
                             <Text style={styles.buttonText}>
-                                {ISIOS || config.disableAd ? '知道了' : '看视频领双倍奖励'}
+                                {Device.IOS || config.disableAd ? '知道了' : '看视频领双倍奖励'}
                             </Text>
                         </ImageBackground>
                     </TouchFeedback>
-                    {!(ISIOS || config.disableAd) && (
+                    {!(Device.IOS || config.disableAd) && (
                         <TouchFeedback onPress={() => close()}>
                             <Text
                                 style={{
@@ -90,7 +89,7 @@ const SignedReturn = (props: Props) => {
     );
 };
 
-const OVERLAY_WIDTH = WPercent(80);
+const OVERLAY_WIDTH = Percent(80);
 const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 2655) / 1819;
 
 const styles = StyleSheet.create({

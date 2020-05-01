@@ -22,7 +22,7 @@ const SearchRecord = ({ data, remove, search }) => {
             <View style={styles.title}>
                 <Text style={styles.titleText}>搜索历史</Text>
                 <TouchFeedback style={styles.deleteButton} onPress={remove}>
-                    <Iconfont name="trash" color={Theme.subTextColor} size={PxFit(20)} />
+                    <Iconfont name="trash" color={'#999999'} size={PxFit(20)} />
                 </TouchFeedback>
             </View>
             <View style={styles.categoryWrap}>{recordList}</View>
@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: PxFit(5),
-        paddingHorizontal: PxFit(Theme.itemSpace),
+        paddingHorizontal: PxFit(15),
     },
     titleText: {
-        color: Theme.primaryTextColor,
-        fontSize: PxFit(14),
-        fontWeight: 'bold',
+        color: '#666666',
+        fontSize: Font(14),
+        // fontWeight: 'bold',
     },
     categoryWrap: {
         flexDirection: 'row',

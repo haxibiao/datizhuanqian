@@ -9,8 +9,6 @@ import {
     StatusView,
     PullChooser,
 } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
-
 import { app } from 'store';
 import { useQuery, GQL } from 'apollo';
 
@@ -23,7 +21,7 @@ const Questions = props => {
     const { navigation, userInfo } = props;
     const [orderByHot, setOrderByHot] = useState(false);
     const [finished, setFinished] = useState(false);
-
+    console.log('userInfo :', userInfo);
     const { data, error, loading, refetch, fetchMore } = useQuery(GQL.UserInfoQuery, {
         variables: {
             id: userInfo.id,
@@ -51,7 +49,7 @@ const Questions = props => {
     if (loading) {
         return <Placeholder />;
     }
-
+    console.log('data :', data, error);
     const user = Helper.syncGetter('user', data);
     let questions = user && user.questions ? user.questions : [];
 
@@ -61,7 +59,7 @@ const Questions = props => {
             error={error}
             hiddenNavBar
             rightView={
-                user.id == app.me.id ? null : (
+                user && user.id == app.me.id ? null : (
                     <TouchFeedback onPress={showOptions} style={styles.optionsButton}>
                         <Iconfont name="more-horizontal" color={Theme.defaultTextColor} size={PxFit(18)} />
                     </TouchFeedback>
@@ -72,7 +70,7 @@ const Questions = props => {
                 bounces={false}
                 contentContainerStyle={{
                     flexGrow: 1,
-                    paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+                    paddingBottom: Device.HOME_INDICATOR_HEIGHT,
                 }}
                 style={styles.container}
                 data={questions}
@@ -140,7 +138,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
         overflow: 'hidden',
         backgroundColor: '#fff',
     },

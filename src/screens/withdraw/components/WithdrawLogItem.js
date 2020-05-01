@@ -5,7 +5,6 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
 import { Row } from 'components';
 
 function WithdrawLogItem(props) {
@@ -38,11 +37,11 @@ function WithdrawLogItem(props) {
             image_url = require('../../../assets/images/wechat.png');
             break;
         case 'dongdezhuan':
-            image_url = require('../../../assets/images/dongdezhuan.png');
+            image_url = require('../../../assets/images/ic_dongdezhuan.png');
             withdrawTips = '(提现到懂得赚)';
             break;
         case 'damei':
-            image_url = require('../../../assets/images/damei.png');
+            image_url = require('../../../assets/images/ic_damei.png');
             withdrawTips = '(提现到答妹)';
             break;
         default:
@@ -63,14 +62,14 @@ function WithdrawLogItem(props) {
             }>
             <Image source={image_url} style={{ width: size, height: size, marginVertical: PxFit(15) }} />
             <Row style={styles.content}>
-                <View style={{ width: (SCREEN_WIDTH * 4) / 7 }}>
+                <View style={{ width: (Device.WIDTH * 4) / 7 }}>
                     <Text style={styles.statusText}>
                         {`${statusText}`} {withdrawTips}
                     </Text>
                     {item.remark && (
-                        <Text
-                            style={{ fontSize: 12, color: Theme.themeRed }}
-                            numberOfLines={1}>{`${item.remark}`}</Text>
+                        <Text style={{ fontSize: 12, color: Theme.themeRed }} numberOfLines={1}>{`${
+                            item.remark
+                        }`}</Text>
                     )}
                     <Text style={styles.time}>{item.created_at}</Text>
                 </View>

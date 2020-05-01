@@ -5,14 +5,14 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
+import { StyleSheet, View, Text, Clipboard, Image } from 'react-native';
 import { Overlay } from 'teaset';
-import { SafeText, TouchFeedback, ItemSeparator, Iconfont } from '../../../components';
+import { SafeText, TouchFeedback, ItemSeparator, Iconfont } from '@src/components';
 
-import { Theme, PxFit, SCREEN_WIDTH, ISIOS, Api } from '../../../utils';
 import { Share } from 'native';
 import QuestionShareCard from '../../share/components/QuestionShareCard';
 import QuestionShareCardOverlay from '../../share/components/QuestionShareCardOverlay';
+import * as WeChat from 'react-native-wechat';
 
 type ChooserItem = {
     title: string,
@@ -45,40 +45,73 @@ class ChooseOverly {
                         <TouchFeedback
                             onPress={async () => {
                                 this.popViewRef.close();
-                                let result = await this._shareCard.onCapture();
-                                let callback = await Share.shareWechat(result);
-                                if (callback == false) {
+
+                                try {
+                                    await WeChat.shareToSession({
+                                        type: 'news',
+                                        // thumbImage:""
+                                        title: '我在答题赚钱发现一道有意思的题目，快来试试吧',
+                                        webpageUrl:
+                                            'http://datizhuanqian.com' +
+                                            '/question/' +
+                                            question.id +
+                                            '?user_id=' +
+                                            user.id,
+                                    });
+                                } catch (e) {
+                                    console.log('e', e);
                                     Toast.show({
-                                        content: '请先安装微信客户端',
+                                        content: '未安装微信或当前微信版本较低',
                                     });
                                 }
                             }}
                             style={{ alignItems: 'center' }}>
-                            <Image source={require('../../../assets/images/wechat.png')} style={styles.imageStyle} />
+                            <Image source={require('@src/assets/images/wechat.png')} style={styles.imageStyle} />
 
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>微信好友</Text>
                         </TouchFeedback>
                         <TouchFeedback
                             onPress={async () => {
                                 this.popViewRef.close();
-                                let result = await this._shareCard.onCapture();
-                                let callback = await Share.shareWechatMoment(result);
+                                // let result = await this._shareCard.onCapture();
+                                // let callback = await Share.shareWechatMoment(result);
 
-                                if (callback == false) {
+                                // if (callback == false) {
+                                //     Toast.show({
+                                //         content: '请先安装微信客户端',
+                                //     });
+                                // }
+
+                                try {
+                                    await WeChat.shareToTimeline({
+                                        type: 'news',
+                                        // thumbImage:""
+                                        title: '我在答题赚钱发现一道有意思的题目，快来试试吧',
+                                        webpageUrl:
+                                            'http://datizhuanqian.com' +
+                                            '/question/' +
+                                            question.id +
+                                            '?user_id=' +
+                                            user.id,
+                                    });
+                                } catch (e) {
+                                    console.log('e', e);
                                     Toast.show({
-                                        content: '请先安装微信客户端',
+                                        content: '未安装微信或当前微信版本较低',
                                     });
                                 }
                             }}
                             style={{ alignItems: 'center' }}>
-                            <Image source={require('../../../assets/images/friends.png')} style={styles.imageStyle} />
+                            <Image source={require('@src/assets/images/friends.png')} style={styles.imageStyle} />
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>朋友圈</Text>
                         </TouchFeedback>
                         <TouchFeedback
                             onPress={async () => {
                                 this.popViewRef.close();
-                                let result = await this._shareCard.onCapture();
-                                let callback = await Share.shareImageToQQ(result);
+                                // let result = await this._shareCard.onCapture();
+                                let callback = await Share.shareTextToQQ(
+                                    'http://datizhuanqian.com' + '/question/' + question.id + '?user_id=' + user.id,
+                                );
                                 if (callback == false) {
                                     Toast.show({
                                         content: '请先安装QQ客户端',
@@ -86,14 +119,16 @@ class ChooseOverly {
                                 }
                             }}
                             style={{ alignItems: 'center' }}>
-                            <Image source={require('../../../assets/images/qq.png')} style={styles.imageStyle} />
+                            <Image source={require('@src/assets/images/qq.png')} style={styles.imageStyle} />
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>QQ好友</Text>
                         </TouchFeedback>
                         <TouchFeedback
                             onPress={async () => {
                                 this.popViewRef.close();
                                 let result = await this._shareCard.onCapture();
-                                let callback = await Share.shareToSinaFriends(result);
+                                let callback = await Share.shareTextToSina(
+                                    'http://datizhuanqian.com' + '/question/' + question.id + '?user_id=' + user.id,
+                                );
                                 if (callback == false) {
                                     Toast.show({
                                         content: '请先安装微博客户端',
@@ -101,14 +136,16 @@ class ChooseOverly {
                                 }
                             }}
                             style={{ alignItems: 'center' }}>
-                            <Image source={require('../../../assets/images/weibo.png')} style={styles.imageStyle} />
+                            <Image source={require('@src/assets/images/weibo.png')} style={styles.imageStyle} />
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>微博</Text>
                         </TouchFeedback>
                         <TouchFeedback
                             onPress={async () => {
                                 this.popViewRef.close();
                                 let result = await this._shareCard.onCapture();
-                                let callback = await Share.shareImageToQQZone(result);
+                                let callback = await Share.shareTextToQQZone(
+                                    'http://datizhuanqian.com' + '/question/' + question.id + '?user_id=' + user.id,
+                                );
                                 if (callback == false) {
                                     Toast.show({
                                         content: '请先安装QQ空间客户端',
@@ -116,7 +153,7 @@ class ChooseOverly {
                                 }
                             }}
                             style={{ alignItems: 'center' }}>
-                            <Image source={require('../../../assets/images/qzone.png')} style={styles.imageStyle} />
+                            <Image source={require('@src/assets/images/qzone.png')} style={styles.imageStyle} />
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>QQ空间</Text>
                         </TouchFeedback>
                     </View>
@@ -138,7 +175,7 @@ class ChooseOverly {
 								this.popViewRef.close();
 								navigation.navigate('Share');
 							}}
-							style={{ alignItems: 'center', marginLeft: (SCREEN_WIDTH - 230) / 5 }}
+							style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}
 						>
 							<View style={styles.iconStyle}>
 								<Iconfont name={'question'} size={24} color={Theme.grey} />
@@ -150,15 +187,16 @@ class ChooseOverly {
                                 this.popViewRef.close();
                                 navigation.navigate('ReportQuestion', { question });
                             }}
-                            style={{ alignItems: 'center', marginLeft: (SCREEN_WIDTH - 230) / 5 }}>
+                            style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
                             <View style={styles.iconStyle}>
                                 <Image
-                                    source={require('../../../assets/images/report.png')}
+                                    source={require('@src/assets/images/report.png')}
                                     style={{ width: 24, height: 24 }}
                                 />
                             </View>
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>举报</Text>
                         </TouchFeedback>
+
                         <TouchFeedback
                             onPress={() => {
                                 this.popViewRef.close();
@@ -170,11 +208,28 @@ class ChooseOverly {
                                     navigation.navigate('Contribute', { category });
                                 }
                             }}
-                            style={{ alignItems: 'center', marginLeft: (SCREEN_WIDTH - 230) / 5 }}>
+                            style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
                             <View style={styles.iconStyle}>
                                 <Iconfont name={'brush'} size={24} color={Theme.grey} />
                             </View>
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>出题</Text>
+                        </TouchFeedback>
+                        <TouchFeedback
+                            onPress={() => {
+                                this.popViewRef.close();
+                                Clipboard.setString('');
+                                Toast.show({
+                                    content: '复制成功，快去分享给好友吧~',
+                                });
+                            }}
+                            style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
+                            <View style={styles.iconStyle}>
+                                <Image
+                                    source={require('@src/assets/images/ic_share_link.png')}
+                                    style={{ width: 24, height: 24 }}
+                                />
+                            </View>
+                            <Text style={{ color: Theme.grey, fontSize: 12 }}>复制链接</Text>
                         </TouchFeedback>
                     </View>
                     <TouchFeedback
@@ -199,8 +254,8 @@ class ChooseOverly {
 
 const styles = StyleSheet.create({
     actionSheetView: {
-        marginBottom: Theme.HOME_INDICATOR_HEIGHT,
-        overflow: 'hidden',
+        marginBottom: Device.HOME_INDICATOR_HEIGHT,
+        // overflow: 'hidden',
     },
     top: {
         flexDirection: 'row',

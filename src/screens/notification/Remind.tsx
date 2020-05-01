@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Iconfont, Badge, TouchFeedback, SafeText } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
 import { config } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 

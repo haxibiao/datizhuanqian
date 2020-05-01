@@ -1,0 +1,75 @@
+query LikesQuery($user_id: Int!, $first: Int, $page: Int) {
+    likes(user_id: $user_id, first: $first, page: $page) {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            question {
+                id
+                user {
+                    id
+                    name
+                    avatar
+                    gender
+                    follow_users_count
+                    followers_count
+                    followed_user_status
+                    is_admin
+                    roles
+                }
+                description
+                created_at
+                image {
+                    id
+                    path
+                    width
+                    height
+                }
+                video {
+                    id
+                    url
+                    path
+                    cover
+                }
+                category {
+                    id
+                    name
+                }
+                count
+                count_likes
+                count_comments
+            }
+            post {
+                id
+                user {
+                    id
+                    name
+                    avatar
+                    gender
+                    follow_users_count
+                    followers_count
+                    followed_user_status
+                    is_admin
+                    roles
+                }
+                content
+                created_at
+                count_likes
+                count_comments
+                created_at
+
+                video {
+                    id
+                    path
+                    width
+                    height
+                    url
+                    cover
+                }
+            }
+            created_at
+        }
+    }
+}

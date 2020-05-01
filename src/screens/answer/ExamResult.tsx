@@ -35,7 +35,7 @@ const ExamResult = observer((props: { navigation: any }) => {
     );
 
     // 考试模式上报答题结果
-    const submitAnswer = (isWatchedAd: any) => {
+    const submitAnswer = (isWatchedAd: boolean) => {
         const answers: object[] = [];
         questions.map((data: { id: any; submittedAnswer: any }, index: any) => {
             answers.push({
@@ -44,7 +44,7 @@ const ExamResult = observer((props: { navigation: any }) => {
             });
         });
         console.log('isWatchedAd :', isWatchedAd);
-        app.client
+        app.mutationClient
             .mutate({
                 mutation: GQL.TestAnswerRewardMutation,
                 variables: {
@@ -60,7 +60,6 @@ const ExamResult = observer((props: { navigation: any }) => {
                         ...reward,
                     },
                     title: '领取答题奖励成功',
-                    rewardVideo: true,
                 });
             })
             .catch((err: any) => {
@@ -195,7 +194,9 @@ const ExamResult = observer((props: { navigation: any }) => {
 
             <Row>
                 {(getRewarded || answerResult) && (
-                    <TouchFeedback style={styles.bottomLeft} onPress={getRewarded ? resetAction : memorizedCallback}>
+                    <TouchFeedback
+                        style={styles.bottomLeft}
+                        onPress={getRewarded ? resetAction : () => memorizedCallback(false)}>
                         <Text style={styles.bottomText}>{getRewarded ? '继续答题' : '领奖励'}</Text>
                     </TouchFeedback>
                 )}

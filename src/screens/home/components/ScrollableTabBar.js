@@ -31,7 +31,9 @@ const ScrollableTabBar = createReactClass({
             inactiveTextStyle: { color: 'black' },
             backgroundColor: null,
             style: {},
-            tabStyle: {},
+            tabStyle: {
+                marginBottom: 20,
+            },
             tabsContainerStyle: {},
             underlineStyle: {},
         };
@@ -150,6 +152,7 @@ const ScrollableTabBar = createReactClass({
             height: 4,
             backgroundColor: 'navy',
             bottom: 0,
+            //  marginLeft: 10,
         };
 
         const dynamicTabUnderline = {
@@ -175,6 +178,7 @@ const ScrollableTabBar = createReactClass({
                         style={[styles.tabs, { width: this.state._containerWidth }, this.props.tabsContainerStyle]}
                         ref={'tabContainer'}
                         onLayout={this.onTabContainerLayout}>
+                        <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle]} />
                         {this.props.tabs.map((name, page) => {
                             const isTabActive = this.props.activeTab === page;
                             const renderTab = this.props.renderTab || this.renderTab;
@@ -186,7 +190,6 @@ const ScrollableTabBar = createReactClass({
                                 this.measureTab.bind(this, page),
                             );
                         })}
-                        <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle]} />
                     </View>
                 </ScrollView>
             </View>
@@ -225,17 +228,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingLeft: 20,
         paddingRight: 20,
+        // backgroundColor: '#0F0',
     },
     container: {
-        height: 50,
-        borderWidth: 1,
+        height: 60,
+        // borderWidth: 1,
         borderTopWidth: 0,
         borderLeftWidth: 0,
         borderRightWidth: 0,
-        borderColor: '#ccc',
+        // borderColor: '#ccc',
+        paddingBottom: 10,
     },
     tabs: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        // backgroundColor: '#F00',
     },
 });

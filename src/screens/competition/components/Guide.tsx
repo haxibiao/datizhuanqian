@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from '@src/components';
-import { Theme, SCREEN_WIDTH, PxFit, WPercent } from '@src/utils';
-import { app } from 'store';
 
 const Guide = props => {
     return (
@@ -24,7 +22,7 @@ const Guide = props => {
 
 const styles = StyleSheet.create({
     contentWrap: {
-        width: WPercent(80),
+        width: Percent(80),
         maxWidth: PxFit(300),
         padding: PxFit(20),
         borderRadius: PxFit(10),

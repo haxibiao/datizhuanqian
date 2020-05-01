@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import Iconfont from '../Iconfont';
 
 interface Video {
@@ -18,7 +17,7 @@ const VideoItem = (props: Props) => {
     const { video } = props;
 
     const maxHeight = 240;
-    const maxWidth = SCREEN_WIDTH - Theme.itemSpace * 2;
+    const maxWidth = Device.WIDTH - Theme.itemSpace * 2;
     const videoWidth = (video && video.width) || 1;
     const videoHeight = (video && video.height) || 1;
 
@@ -44,9 +43,9 @@ const VideoItem = (props: Props) => {
                 }
             />
             <Iconfont
-                name='paused'
+                name="paused"
                 size={PxFit(34)}
-                color='#fff'
+                color="#fff"
                 style={
                     isLargeScale
                         ? {

@@ -1,0 +1,12 @@
+query NewestCategoriesQuery($offset: Int, $limit: Int) {
+    newestCategories(offset: $offset, limit: $limit) {
+        id
+        icon
+        name
+        description
+        is_official
+        questions_count
+        answers_count
+        tips
+    }
+}

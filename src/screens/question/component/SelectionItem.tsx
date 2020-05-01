@@ -1,7 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, DeviceEventEmitter } from 'react-native';
-import { Iconfont } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
 import { observer } from '@src/screens/answer/store';
 
 export default observer(({ value, text, style, question, store }) => {
@@ -10,7 +8,7 @@ export default observer(({ value, text, style, question, store }) => {
 
     const choose = useCallback(() => {
         let isTurnable = false;
-        setChecked(c => {
+        setChecked((c) => {
             isTurnable = !c;
             return !c;
         });
@@ -38,27 +36,41 @@ export default observer(({ value, text, style, question, store }) => {
     }, [question.submittedAnswer]);
 
     const Label = useMemo(() => {
-        let style = { borderWidth: PxFit(1), borderColor: '#74A1FF' };
-        let color = '#5F93FD';
+        let style = { borderWidth: PxFit(0.33), borderColor: '#D8D8D8' };
+        let color = '#666666';
+        let icon;
         if (answered) {
             if (correct) {
-                style = { backgroundColor: Theme.correctColor, borderWidth: 0 };
-                color = '#fff';
+                style = { backgroundColor: '#DEFAD8', borderWidth: 0 };
+                color = '#24c374';
+                icon = {
+                    url: require('@src/assets/images/ic_answer_pass.png'),
+                    style: { width: PxFit(15), height: (PxFit(15) * 30) / 44 },
+                };
             } else if (checked) {
-                style = { backgroundColor: Theme.errorColor, borderWidth: 0 };
-                color = '#fff';
+                style = { backgroundColor: '#FAF4D4', borderWidth: 0 };
+                color = '#FFB608';
+
+                icon = {
+                    url: require('@src/assets/images/ic_answer_error.png'),
+                    style: { width: PxFit(12), height: PxFit(12) },
+                };
             } else {
-                style = { borderWidth: PxFit(1), borderColor: '#9E9E9E' };
+                // style = { borderWidth: PxFit(1), borderColor: '#9E9E9E' };
                 color = '#9E9E9E';
             }
         } else if (checked) {
-            style = { backgroundColor: '#b6c2e1', borderWidth: 0 };
-            color = '#fff';
+            style = { backgroundColor: '#DFEEFF', borderWidth: 0 };
+            color = Theme.grey;
         }
 
         return (
             <View style={[styles.labelItem, style]}>
-                <Text style={[styles.labelValue, { color }]}>{value}</Text>
+                {icon ? (
+                    <Image source={icon.url} style={icon.style} />
+                ) : (
+                    <Text style={[styles.labelValue, { color }]}>{value}</Text>
+                )}
             </View>
         );
     }, [value, correct, answered, checked]);
@@ -83,9 +95,9 @@ const styles = StyleSheet.create({
     },
     labelItem: {
         marginRight: PxFit(15),
-        width: PxFit(34),
-        height: PxFit(34),
-        borderRadius: PxFit(17),
+        width: Font(34),
+        height: Font(34),
+        borderRadius: Font(17),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
         paddingVertical: PxFit(4),
     },
     contentText: {
-        fontSize: PxFit(16),
+        fontSize: Font(16),
         lineHeight: PxFit(26),
         color: '#525252',
     },

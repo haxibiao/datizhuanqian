@@ -1,11 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView, ImageBackground, Text, Dimensions } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, ImageBackground, Dimensions } from 'react-native';
 import { config } from 'store';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { ScrollTabBar, PageContainer } from 'components';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-
-const { height, width } = Dimensions.get('window');
 
 //导入累计收入排行页
 import IncomingRank from './IncomingRank';
@@ -17,8 +14,6 @@ interface Props {
 }
 
 export default function rank(props: Props) {
-    const navigation = props.navigation;
-
     return (
         <PageContainer white title={'排行榜'}>
             <ImageBackground
@@ -31,8 +26,8 @@ export default function rank(props: Props) {
                         renderTabBar={(props: any) => (
                             <ScrollTabBar
                                 {...props}
-                                tabUnderlineWidth={PxFit(width / 3)}
-                                underLineColor={'#EA6D27'}
+                                tabUnderlineWidth={Device.WIDTH / 4}
+                                underLineColor={!config.disableAd ? '#EA6D27' : '#FFF'}
                                 activeTextStyle={{ color: '#EA6D27' }}
                             />
                         )}>
@@ -53,6 +48,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
+        paddingTop: PxFit(10),
         overflow: 'hidden',
     },
 });

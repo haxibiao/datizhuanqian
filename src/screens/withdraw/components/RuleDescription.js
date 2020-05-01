@@ -5,9 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Button } from '../../../components';
-import { Config, Theme, PxFit, SCREEN_WIDTH } from '../../../utils';
-import { Overlay } from 'teaset';
+import { Button } from '@src/components';
 
 class RuleDescription extends Component {
     constructor(props) {
@@ -19,7 +17,7 @@ class RuleDescription extends Component {
         return (
             <View
                 style={{
-                    width: SCREEN_WIDTH - PxFit(70),
+                    width: Device.WIDTH - PxFit(70),
                     paddingHorizontal: PxFit(25),
                     paddingVertical: PxFit(20),
                     borderRadius: PxFit(15),

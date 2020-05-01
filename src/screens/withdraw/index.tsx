@@ -13,8 +13,6 @@ const index = observer((props: { navigation: any }) => {
     const { navigation } = props;
     const { login } = app;
 
-    useDetainment(navigation);
-
     const withdrawClient = makeWithdrawClient(app.me); // 构建apollo client;
     console.log('withdrawClient :', withdrawClient);
     return (

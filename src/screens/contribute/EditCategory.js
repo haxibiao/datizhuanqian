@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import { PageContainer, TouchFeedback, Iconfont, SearchBar } from '@src/components';
-import { Theme, PxFit } from '@src/utils';
 import { Query, GQL } from '@src/apollo';
 import { observer, useQuestionStore } from './store';
 
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
         color: Theme.secondaryColor,
     },
     scrollStyle: {
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT,
     },
     categoryItem: {
         paddingVertical: PxFit(10),

@@ -5,8 +5,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { PageContainer, ScrollTab, NavigatorBar, TouchFeedback, Iconfont, Badge } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
-import { syncGetter } from '@src/common';
+
 import { useQuery, GQL } from '@src/apollo';
 import { observer, app, config } from 'store';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -23,7 +22,7 @@ export default observer(props => {
     });
 
     const unreadCount = useMemo(() => {
-        const unreadData = syncGetter('user', data);
+        const unreadData = Helper.syncGetter('user', data);
         if (unreadData) {
             const system =
                 unreadData.unread_notifications_count -
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.secondaryColor,
         margin: PxFit(4),
     },
-    contentViewStyle: { marginTop: Theme.statusBarHeight },
+    contentViewStyle: { marginTop: Device.statusBarHeight + 10 },
     inactivityTextStyle: {
         color: Theme.defaultTextColor,
         fontSize: PxFit(17),
@@ -112,8 +111,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: Theme.navBarContentHeight,
-        height: Theme.navBarContentHeight,
+        width: Device.statusBarHeight,
+        height: Device.statusBarHeight,
         justifyContent: 'center',
         paddingLeft: PxFit(Theme.itemSpace),
     },
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.watermelon,
     },
     scrollUnderlineStyle: {
-        left: (SCREEN_WIDTH - PxFit(160)) / 2,
+        left: (Device.WIDTH - PxFit(160)) / 2,
         width: PxFit(160),
     },
     badge: {

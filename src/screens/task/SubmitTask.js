@@ -13,10 +13,7 @@ import {
     SubmitLoading,
     TouchFeedback,
     DropdownMenu,
-    Row,
 } from 'components';
-
-import { Theme, PxFit, SCREEN_WIDTH, Api, Config } from 'utils';
 import { imagePicker } from 'common';
 
 import { graphql, compose, withApollo, GQL } from 'apollo';
@@ -264,7 +261,7 @@ class SubmitTaskScreen extends Component {
 }
 
 const shadowOpt = {
-    width: SCREEN_WIDTH,
+    width: Device.WIDTH,
     color: '#E8E8E8',
     border: 10,
     // radius: 10,
@@ -330,16 +327,16 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     add: {
-        width: (SCREEN_WIDTH - PxFit(60)) / 4,
-        height: (SCREEN_WIDTH - PxFit(60)) / 4,
+        width: (Device.WIDTH - PxFit(60)) / 4,
+        height: (Device.WIDTH - PxFit(60)) / 4,
         borderColor: Theme.lightBorder,
         borderWidth: PxFit(1),
         justifyContent: 'center',
         alignItems: 'center',
     },
     image: {
-        width: (SCREEN_WIDTH - PxFit(60)) / 3,
-        height: (SCREEN_WIDTH - PxFit(60)) / 3,
+        width: (Device.WIDTH - PxFit(60)) / 3,
+        height: (Device.WIDTH - PxFit(60)) / 3,
         marginRight: PxFit(5),
         marginBottom: PxFit(5),
     },
@@ -365,7 +362,7 @@ const styles = StyleSheet.create({
         marginBottom: PxFit(20),
         borderRadius: PxFit(19),
         backgroundColor: Theme.primaryColor,
-        maxWidth: SCREEN_WIDTH - PxFit(50),
+        maxWidth: Device.WIDTH - PxFit(50),
     },
 });
 

@@ -3,8 +3,6 @@
  * created by wyk made in 2019-01-14 11:44:03
  */
 import { VideoUploader } from 'native';
-import { Config } from 'utils';
-
 export const { cancelUpload } = VideoUploader;
 
 export type UploadOption = {

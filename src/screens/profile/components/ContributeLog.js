@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
-import { ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
+import { ListFooter, StatusView, CustomRefreshControl } from 'components';
 
 import { Query, GQL } from 'apollo';
 class ContributeLog extends Component {
@@ -24,11 +24,14 @@ class ContributeLog extends Component {
                 <Query query={GQL.ContributesQuery} fetchPolicy="network-only">
                     {({ data, error, loading, refetch, fetchMore }) => {
                         let contributes = Helper.syncGetter('user.contributes', data);
-                        if (error) return <ErrorView onPress={refetch} error={error} />;
-
-                        if (loading) return <LoadingSpinner />;
+                        if (error) return <StatusView.ErrorView onPress={refetch} error={error} />;
+                        if (loading) return <StatusView.LoadingSpinner />;
                         if (!contributes || contributes.length === 0)
-                            return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
+                            return (
+                                <StatusView.EmptyView
+                                    imageSource={require('../../../assets/images/default_message.png')}
+                                />
+                            );
                         return (
                             <FlatList
                                 data={contributes}

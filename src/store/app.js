@@ -1,9 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import user from './user';
 import { keys, storage } from './storage';
-import { Config, SCREEN_HEIGHT, SCREEN_WIDTH } from '../utils';
-import exceptionCapture from '../common/helper/exceptionCapture';
-import { syncGetter } from '../common/helper/adapter';
+
 import { GQL } from '../service/graphql';
 
 class app {
@@ -32,9 +30,11 @@ class app {
         gold_loss: 50,
         match_time_ms: 7000,
     };
-    @observable viewportHeight: number = SCREEN_HEIGHT;
-    @observable viewportWidth: number = SCREEN_WIDTH;
+    @observable viewportHeight: number = Device.HEIGHT;
+    @observable viewportWidth: number = Device.WIDTH;
     @observable client = {};
+    @observable snsClient = {};
+    @observable mutationClient = {};
     @observable createUserAgreement: boolean = true; // 用户协议观看记录,默认已看
 
     @action.bound
@@ -210,6 +210,8 @@ class app {
         this.firstOpenContributeVideo = await storage.getItem(keys.firstOpenContributeVideo);
         this.competitionGuide = await storage.getItem(keys.competitionGuide);
 
+        this.createUserAgreement = (await storage.getItem('createUserAgreement')) || false;
+        console.log('是否阅读用户：', this.createUserAgreement);
         if (resetVersion === Config.Version) {
             this.userCache = await storage.getItem(keys.userCache);
             this.taskCache = await storage.getItem(keys.taskCache);
@@ -236,13 +238,13 @@ class app {
 
     @action.bound
     async systemConfig() {
-        const [err, res] = await exceptionCapture(() => {
+        const [err, res] = await Helper.exceptionCapture(() => {
             return this.client.query({
                 query: GQL.systemConfigQuery,
             });
         });
-
-        const gameConfig = syncGetter('data.systemConfig.modules.game', res);
+        console.log('err', err);
+        const gameConfig = Helper.syncGetter('data.systemConfig.modules.game', res);
         // console.log('====================================');
         // console.log('gameConfig', gameConfig);
         // console.log('====================================');
@@ -253,11 +255,9 @@ class app {
 
     @action.bound
     async recall() {
-        this.createUserAgreement = await Storage.getItem('createUserAgreement') || false;
+        this.createUserAgreement = (await Storage.getItem('createUserAgreement')) || false;
         console.log('是否阅读用户：', this.createUserAgreement);
-
     }
-    
 }
 
 export default new app();

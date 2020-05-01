@@ -1,6 +1,4 @@
 import { observable, action, runInAction } from 'mobx';
-import { SCREEN_HEIGHT } from 'utils';
-
 interface User {
     id: number;
     name: string;

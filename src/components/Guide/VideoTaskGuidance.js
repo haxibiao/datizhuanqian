@@ -4,7 +4,7 @@
  */
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { PxFit, Theme, SCREEN_WIDTH, NAVBAR_HEIGHT, SCREEN_HEIGHT } from 'utils';
+
 import { app } from 'store';
 
 function VideoTaskGuidance({ onDismiss }) {
@@ -15,75 +15,77 @@ function VideoTaskGuidance({ onDismiss }) {
             <TouchableWithoutFeedback
                 key={1}
                 onPress={() => {
-                    Helper.middlewareNavigate('提现');
                     setStep(1);
                 }}>
-                <Image style={styles.userReward} source={require('../../assets/images/new_user_reward.png')} />
+                <Image style={styles.userReward} source={require('@src/assets/images/bg_new_user_reward.png')} />
             </TouchableWithoutFeedback>,
             <TouchableWithoutFeedback
                 key={2}
                 onPress={() => {
-                    Helper.middlewareNavigate('任务');
-                    setStep(2);
-                }}>
-                <View style={styles.flexCenter}>
-                    <Image style={styles.withdrawGuide} source={require('../../assets/images/withdraw_guide.png')} />
-                </View>
-            </TouchableWithoutFeedback>,
-            <TouchableWithoutFeedback
-                key={3}
-                onPress={() => {
-                    app.changeUserStatus(false);
+                    // Helper.middlewareNavigate('任务');
                     onDismiss();
                 }}>
                 <View style={styles.flexCenter}>
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            app.changeUserStatus(false);
-                            // playVideo({ type: 'Task' });
-                            onDismiss();
-                        }}>
-                        <Image
-                            style={styles.stimulateVideo}
-                            source={require('../../assets/images/stimulate_video.png')}
-                        />
-                    </TouchableWithoutFeedback>
+                    <Image
+                        style={styles.answerGuide}
+                        source={require('@src/assets/images/bg_new_user_home_guidance.png')}
+                    />
                 </View>
             </TouchableWithoutFeedback>,
+            // <TouchableWithoutFeedback
+            //     key={3}
+            //     onPress={() => {
+            //         app.changeUserStatus(false);
+            //         onDismiss();
+            //     }}>
+            //     <View style={styles.flexCenter}>
+            //         <TouchableWithoutFeedback
+            //             onPress={() => {
+            //                 app.changeUserStatus(false);
+            //                 // playVideo({ type: 'Task' });
+            //                 onDismiss();
+            //             }}>
+            //             <Image
+            //                 style={styles.stimulateVideo}
+            //                 source={require('../../assets/images/stimulate_video.png')}
+            //             />
+            //         </TouchableWithoutFeedback>
+            //     </View>
+            // </TouchableWithoutFeedback>,
         ];
     }, []);
 
     return guidesView[step];
 }
 
-const withdrawGuideTop = PxFit(30) + PxFit(Theme.itemSpace) * 2 + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight);
-const withdrawGuideRight = (SCREEN_WIDTH / 2 - 120) / 2;
-const withdrawGuideWidth = ((SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2) * (746 / 450);
+const withdrawGuideTop = PxFit(54) + Device.NAVBAR_HEIGHT;
+const withdrawGuideRight = (Device.WIDTH / 2 - 120) / 2;
+const withdrawGuideWidth = Device.WIDTH * 0.88;
 
 const videoTaskGuideWidth = PxFit(88) * (800 / 252);
 const videoTaskGuideHeight = (videoTaskGuideWidth * 423) / 800;
 const videoTaskGuideTop =
-    PxFit(265) + PxFit(NAVBAR_HEIGHT) + PxFit(Theme.statusBarHeight) - (videoTaskGuideHeight * 326) / 423;
+    PxFit(265) + PxFit(Device.NAVBAR_HEIGHT) + PxFit(Device.statusBarHeight) - (videoTaskGuideHeight * 326) / 423;
 
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },
     userReward: {
-        width: (SCREEN_WIDTH * 4) / 5,
-        height: (((SCREEN_WIDTH * 4) / 5) * 640) / 519,
+        width: (Device.WIDTH * 3) / 5,
+        height: (((Device.WIDTH * 3) / 5) * 688) / 478,
         resizeMode: 'contain',
     },
-    withdrawGuide: {
+    answerGuide: {
         position: 'absolute',
         top: withdrawGuideTop,
-        right: withdrawGuideRight,
+        left: 8,
         width: withdrawGuideWidth,
-        height: (withdrawGuideWidth * 659) / 746,
+        height: (withdrawGuideWidth * 762) / 840,
         resizeMode: 'contain',
     },
     stimulateVideo: {

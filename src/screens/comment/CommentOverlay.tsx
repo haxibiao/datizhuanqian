@@ -15,7 +15,7 @@ import {
     ScrollView,
 } from 'react-native';
 import { TouchFeedback, Iconfont, StatusView, Placeholder, ListFooter } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+
 import { GQL, useQuery } from 'apollo';
 import { app } from 'store';
 import CommentItem from './CommentItem';
@@ -99,7 +99,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     };
 
     const showCommentModal = () => {
-        setModalVisible(true);
+        setModalVisible(!modalVisible);
     };
 
     const onCommented = () => {
@@ -221,9 +221,10 @@ const CommentOverlay = React.forwardRef((props, ref) => {
     return (
         <View style={styles.overlayContainer}>
             <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                keyboardShouldPersistTaps={'always'}
-                alwaysBounceVertical={false}>
+                contentContainerStyle={{ flex: 1 }}
+                // keyboardShouldPersistTaps={'always'}
+                // alwaysBounceVertical={false}
+            >
                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <TouchableOpacity style={styles.modal} onPress={slideDown} activeOpacity={1} />
                     <Animated.View
@@ -232,7 +233,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                                 {
                                     translateY: offset.interpolate({
                                         inputRange: [0, 1],
-                                        outputRange: [(SCREEN_HEIGHT * 2) / 3, 0],
+                                        outputRange: [(Device.HEIGHT * 2) / 3, 0],
                                         extrapolate: 'clamp',
                                     }),
                                 },
@@ -240,7 +241,7 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                         }}>
                         <BoxShadow
                             setting={Object.assign({}, shadowOpt, {
-                                height: (SCREEN_HEIGHT * 2) / 3,
+                                height: (Device.HEIGHT * 2) / 3,
                             })}>
                             <View style={styles.commentContainer}>
                                 {_renderCommentHeader(comments)}
@@ -255,26 +256,27 @@ const CommentOverlay = React.forwardRef((props, ref) => {
                         </BoxShadow>
                     </Animated.View>
                 </View>
-                <InputCommentModal
-                    visible={modalVisible}
-                    hideModal={hideCommentModal}
-                    questionId={question.id}
-                    onCommented={onCommented}
-                    reply={reply}
-                    comment_id={comment_id}
-                    parent_comment_id={parent_comment_id}
-                    switchReplyType={switchReplyType}
-                    count_comments={question.count_comments}
-                    isPost={isPost}
-                    isSpider={isSpider}
-                />
             </ScrollView>
+            <InputCommentModal
+                visible={modalVisible}
+                hideModal={hideCommentModal}
+                questionId={question.id}
+                onCommented={onCommented}
+                reply={reply}
+                comment_id={comment_id}
+                parent_comment_id={parent_comment_id}
+                switchReplyType={switchReplyType}
+                count_comments={question.count_comments}
+                isPost={isPost}
+                isSpider={isSpider}
+                showCommentModal={showCommentModal}
+            />
         </View>
     );
 });
 
 const shadowOpt = {
-    width: SCREEN_WIDTH,
+    width: Device.WIDTH,
     color: '#E8E8E8',
     border: PxFit(3),
     radius: PxFit(12),
@@ -301,9 +303,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderTopLeftRadius: PxFit(12),
         borderTopRightRadius: PxFit(12),
-        height: (SCREEN_HEIGHT * 2) / 3,
+        height: (Device.HEIGHT * 2) / 3,
         overflow: 'hidden',
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT,
     },
     header: {
         height: PxFit(44),

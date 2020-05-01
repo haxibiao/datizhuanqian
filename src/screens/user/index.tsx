@@ -5,9 +5,7 @@
 'use strict';
 
 import React, { useEffect, useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
-
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+import { StyleSheet, View, ImageBackground, Image } from 'react-native';
 
 import { PageContainer, ScrollTabBar, TouchFeedback, Iconfont, PullChooser } from 'components';
 
@@ -52,14 +50,14 @@ const index = props => {
     }, []);
 
     return (
-        <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }} loading={loading}>
+        <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Device.statusBarHeight }} loading={loading}>
             <ScrollableTabView
                 renderTabBar={props => (
                     <ScrollTabBar
                         {...props}
-                        tabUnderlineWidth={PxFit(28)}
+                        tabUnderlineWidth={PxFit(30)}
                         underLineColor={Theme.primaryColor}
-                        tabWidth={SCREEN_WIDTH / 4}
+                        tabWidth={Device.WIDTH / 4}
                     />
                 )}>
                 <Questions navigation={navigation} tabLabel="出题" userInfo={Helper.syncGetter('user', data) || user} />
@@ -83,22 +81,25 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        height: Theme.navBarContentHeight,
+        height: Device.statusBarHeight,
+        minHeight: 44,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        // backgroundColor: '#FF0',
     },
     backButton: {
         alignSelf: 'stretch',
-        width: Theme.navBarContentHeight,
+        width: Device.statusBarHeight,
         justifyContent: 'center',
         paddingLeft: PxFit(Theme.itemSpace),
+        // backgroundColor: '#F00',
     },
     moreButton: {
         alignSelf: 'stretch',
-        width: Theme.navBarContentHeight,
+        width: Device.statusBarHeight,
         justifyContent: 'center',
-        paddingRight: PxFit(Theme.itemSpace),
+        marginRight: PxFit(Theme.itemSpace),
     },
 });
 

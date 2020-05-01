@@ -46,7 +46,7 @@ const AnswerFailLog = props => {
                                 },
                             ]}>
                             错误率
-                            {correctRate(
+                            {Helper.correctRate(
                                 Helper.syncGetter('question.wrong_count', item),
                                 Helper.syncGetter('question.count', item),
                             )}

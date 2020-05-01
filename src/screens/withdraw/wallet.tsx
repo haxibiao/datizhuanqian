@@ -1,14 +1,12 @@
 import React, { Component, useCallback, useContext, useState, useRef, useMemo, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { PageContainer, Iconfont, Row, PopOverlay, SafeText } from '@src/components';
-import { syncGetter } from '@src/common';
-import { PxFit, SCREEN_WIDTH } from '@src/utils';
 import { observer, app } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 import { GQL, useMutation, useQuery } from '@src/apollo';
 
 const WithdrawalOptions = [10, 30, 50, 100];
-const BANNER_WIDTH = SCREEN_WIDTH - PxFit(Theme.itemSpace * 2);
+const BANNER_WIDTH = Device.WIDTH - PxFit(Theme.itemSpace * 2);
 
 export default observer(props => {
     let user = app.me;
@@ -27,14 +25,16 @@ export default observer(props => {
         fetchPolicy: 'network-only',
     });
 
-    const me = syncGetter('user', userData) || {};
+    const me = Helper.syncGetter('user', userData) || {};
     user = Object.assign({}, user, { ...me });
-    const myWallet = useMemo(() => syncGetter('user.wallet', userData), [userData]) || user.wallet || walletAdapterData;
+    const myWallet =
+        useMemo(() => Helper.syncGetter('user.wallet', userData), [userData]) || user.wallet || walletAdapterData;
 
     const [withdrawRequest, { error, data: withdrawData }] = useMutation(GQL.CreateWithdrawMutation, {
         variables: {
             amount: amount.current,
         },
+        client: app.mutationClient,
         errorPolicy: 'all',
         refetchQueries: (): any[] => [
             {
@@ -69,7 +69,7 @@ export default observer(props => {
         } else if (withdrawData) {
             navigation.navigate('WithdrawApply', {
                 amount: amount.current,
-                created_at: syncGetter('data.createWithdraw.created_at', withdrawData),
+                created_at: Helper.syncGetter('data.createWithdraw.created_at', withdrawData),
             });
         }
     }, [withdrawData, error]);
@@ -121,14 +121,20 @@ export default observer(props => {
                     </Text>
                     <Text style={styles.ruleText}>3. 提现 3~5 天内到账。若遇高峰期，可能延迟到账，请您耐心等待。</Text>
                     <Text style={styles.ruleText}>
-                        {`4.每天的转换汇率与平台收益及您的平台活跃度相关，因此汇率会受到影响上下浮动；活跃度越高，汇率越高；您可以通过刷视频、点赞评论互动、邀请好友一起来${Config.AppName}等行为来提高活跃度。`}
+                        {`4.每天的转换汇率与平台收益及您的平台活跃度相关，因此汇率会受到影响上下浮动；活跃度越高，汇率越高；您可以通过刷视频、点赞评论互动、邀请好友一起来${
+                            Config.AppName
+                        }等行为来提高活跃度。`}
                     </Text>
                     <Text style={styles.ruleText}>
                         5.
                         提现金额分为1元、3元、5元、10元四档，每次提现将扣除相应余额，剩余余额可以在下次满足最低提现额度时申请提现。
                     </Text>
                     <Text style={styles.ruleText}>
-                        {`6.若您通过非正常手段获取${Config.goldAlias}或余额（包括但不限于刷单、应用多开等操作、一人名下只能绑定一个支付宝，同一人不得使用多个账号提现），${Config.AppName}有权取消您的提现资格，并视情况严重程度，采取封禁等措施。`}
+                        {`6.若您通过非正常手段获取${
+                            Config.goldAlias
+                        }或余额（包括但不限于刷单、应用多开等操作、一人名下只能绑定一个支付宝，同一人不得使用多个账号提现），${
+                            Config.AppName
+                        }有权取消您的提现资格，并视情况严重程度，采取封禁等措施。`}
                     </Text>
                 </View>
             </ScrollView>
@@ -172,7 +178,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         flexGrow: 1,
-        paddingBottom: PxFit(48) + PxFit(Theme.itemSpace * 2) + Theme.HOME_INDICATOR_HEIGHT,
+        paddingBottom: PxFit(48) + PxFit(Theme.itemSpace * 2) + Device.HOME_INDICATOR_HEIGHT,
     },
     moneyText: {
         color: Theme.subTextColor,
@@ -208,7 +214,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: PxFit(Theme.itemSpace),
         marginTop: PxFit(Theme.itemSpace),
-        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
+        width: (Device.WIDTH - PxFit(Theme.itemSpace * 3)) / 2,
     },
     whiteText: {
         color: '#fff',

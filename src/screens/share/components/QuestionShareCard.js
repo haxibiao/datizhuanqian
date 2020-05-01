@@ -6,7 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { Avatar } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH, Api } from 'utils';
 
 import { viewShotUtil } from 'common';
 
@@ -14,7 +13,7 @@ import { BoxShadow } from 'react-native-shadow';
 import QRCode from 'react-native-qrcode-svg';
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - PxFit(80),
+    width: Device.WIDTH - PxFit(80),
     color: '#E8E8E8',
     border: PxFit(10),
     radius: PxFit(10),
@@ -89,8 +88,8 @@ class QuestionShareCard extends Component {
                             <Image
                                 style={{
                                     marginTop: PxFit(Theme.itemSpace),
-                                    width: SCREEN_WIDTH - PxFit(80),
-                                    height: ((SCREEN_WIDTH - PxFit(80)) * 9) / 16,
+                                    width: Device.WIDTH - PxFit(80),
+                                    height: ((Device.WIDTH - PxFit(80)) * 9) / 16,
                                 }}
                                 source={{ uri: question.image.path }}
                             />

@@ -59,7 +59,6 @@ interface Categrory {
 const PostItem = (props: Props) => {
     const { navigation, post, activeIndex, posts, isQuestion, orderByHot } = props;
     const { user, created_at, count_comments, description, video, image, count } = post;
-
     const navigationAction = () => {
         isQuestion
             ? navigation.navigate('UserAnswer', { questions: posts, user, index: activeIndex, orderByHot })
@@ -71,7 +70,7 @@ const PostItem = (props: Props) => {
             <Row style={{ justifyContent: 'space-between' }}>
                 <TouchFeedback onPress={() => navigation.navigate('User', { user })}>
                     <Row>
-                        <Avatar source={{ uri: user.avatar }} size={42} userId={Helper.syncGetter('id', user)} />
+                        <Avatar source={{ uri: user.avatar }} size={PxFit(46)} userId={Helper.syncGetter('id', user)} />
                         <View style={{ marginLeft: PxFit(8) }}>
                             <Text style={styles.userName}>{user.name}</Text>
                             <Row>
@@ -88,7 +87,8 @@ const PostItem = (props: Props) => {
                 )}
             </Row>
             <View style={{ paddingVertical: PxFit(10) }}>
-                <Text style={{ color: Theme.black, lineHeight: 22 }}>
+                <Text
+                    style={{ color: '#333333', paddingVertical: PxFit(10), fontSize: Font(14), lineHeight: PxFit(22) }}>
                     {description}
                     {isQuestion && (
                         <Text
@@ -98,28 +98,30 @@ const PostItem = (props: Props) => {
                                     question_id: null,
                                 })
                             }
-                            style={{ color: Theme.primaryColor }}>
+                            style={{ color: '#7094BD' }}>
                             {` #`}
                             {Helper.syncGetter('category.name', post)}
                         </Text>
                     )}
                 </Text>
                 <ImageItem media={video ? video : image} />
-                <Text style={styles.timeText}>{created_at}</Text>
             </View>
-            <Row>
-                <Like
-                    media={post}
-                    type="icon"
-                    iconSize={PxFit(22)}
-                    containerStyle={styles.likeContainer}
-                    textStyle={styles.likeTextStyle}
-                    isQuestion={isQuestion}
-                />
-                <TouchFeedback style={styles.row}>
-                    <Image source={require('../../../assets/images/comment_icon.png')} style={styles.commentIcon} />
-                    <Text style={styles.commentText}>{count_comments || '评论'}</Text>
-                </TouchFeedback>
+            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10) }}>
+                <Text style={styles.timeText}>{created_at}</Text>
+                <Row>
+                    <Like
+                        media={post}
+                        type="icon"
+                        iconSize={Font(18)}
+                        containerStyle={styles.likeContainer}
+                        textStyle={styles.likeTextStyle}
+                        isQuestion={isQuestion}
+                    />
+                    <TouchFeedback style={styles.row}>
+                        <Image source={require('@src/assets/images/comment_icon.png')} style={styles.commentIcon} />
+                        <Text style={styles.commentText}>{count_comments || '评论'}</Text>
+                    </TouchFeedback>
+                </Row>
             </Row>
         </TouchFeedback>
     );
@@ -130,44 +132,44 @@ const styles = StyleSheet.create({
         borderBottomWidth: PxFit(0.5),
         borderBottomColor: Theme.lightBorder,
         paddingVertical: PxFit(15),
-        paddingHorizontal: PxFit(15),
+        paddingHorizontal: PxFit(17),
     },
     userName: {
-        marginBottom: PxFit(3),
-        color: Theme.black,
+        marginBottom: PxFit(5),
+        color: '#424242',
+        fontSize: Font(14),
     },
     rightTextWrap: {
-        paddingHorizontal: PxFit(15),
+        paddingHorizontal: PxFit(17),
         paddingVertical: PxFit(5),
         backgroundColor: '#F9F9FB',
         borderRadius: PxFit(20),
     },
     timeText: {
         color: '#CCD5E0',
-        fontSize: PxFit(12),
-        marginTop: PxFit(10),
+        fontSize: Font(13),
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     commentIcon: {
-        width: PxFit(18),
-        height: PxFit(18),
+        width: Font(16),
+        height: Font(16),
     },
     commentText: {
         paddingLeft: PxFit(5),
         color: '#CCD5E0',
-        fontSize: PxFit(13),
+        fontSize: Font(13),
     },
     likeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginRight: PxFit(50),
+        marginRight: PxFit(20),
     },
     likeTextStyle: {
         color: '#CCD5E0',
-        fontSize: PxFit(13),
+        fontSize: Font(13),
         marginStart: PxFit(5),
         marginEnd: PxFit(23),
     },

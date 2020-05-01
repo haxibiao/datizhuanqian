@@ -13,7 +13,7 @@ const SCREEN_HEIGHT = height;
 
 let OverlayKey: any = null;
 
-export const show = (content: any) => {
+export const show = (content?: any) => {
     const overlayView = (
         <Overlay.View animated>
             <View style={styles.container}>

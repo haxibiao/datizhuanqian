@@ -3,18 +3,13 @@
  * created by wyk made in 2019-03-21 10:05:21
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-import { TouchFeedback, Avatar, Iconfont, ItemSeparator } from 'components';
-import { Theme, PxFit } from 'utils';
-
-// import { Storage, ItemKeys } from '../../../store/localStorage';
-
-import { Query, ApolloClient, withApollo, GQL } from 'apollo';
+import { Avatar } from 'components';
 
 class UserPanel extends Component {
     render() {
-        let { navigation, user = {} } = this.props;
+        let { user = {} } = this.props;
         return (
             <View style={styles.userPanel}>
                 <View style={styles.panelLeft}>

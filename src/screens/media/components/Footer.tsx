@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
-import { PxFit } from 'utils';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
-const Footer = props => {
+const Footer = () => {
     return useMemo(
         () => (
             <View style={styles.footer}>

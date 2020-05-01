@@ -6,11 +6,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, Linking } from 'react-native';
 import { Button, PageContainer, TouchFeedback } from 'components';
-import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit, Config, ISIOS } from 'utils';
 import { Overlay } from 'teaset';
-import { ad } from 'native';
 
-import { observer, app, config, keys, storage } from 'store';
+import { app, keys, storage } from 'store';
 
 class WithdrawApply extends Component {
     constructor(props) {
@@ -19,8 +17,6 @@ class WithdrawApply extends Component {
     }
 
     componentDidMount() {
-        const { navigation } = this.props;
-
         this.loadCache();
     }
     componentWillUnmount() {
@@ -66,7 +62,7 @@ class WithdrawApply extends Component {
                             <TouchFeedback
                                 onPress={() => {
                                     Linking.openURL(
-                                        ISIOS
+                                        Device.IOS
                                             ? 'itms-apps://itunes.apple.com/app/id1462854524'
                                             : 'market://details?id=' + Config.PackageName,
                                     );
@@ -132,8 +128,8 @@ class WithdrawApply extends Component {
 
 const styles = StyleSheet.create({
     image: {
-        width: SCREEN_WIDTH,
-        height: (SCREEN_WIDTH * PxFit(617)) / PxFit(1080),
+        width: Device.WIDTH,
+        height: (Device.WIDTH * PxFit(617)) / PxFit(1080),
     },
     content: {
         alignItems: 'center',
@@ -168,13 +164,13 @@ const styles = StyleSheet.create({
         height: PxFit(38),
         borderRadius: PxFit(19),
         marginTop: PxFit(40),
-        width: SCREEN_WIDTH - PxFit(60),
+        width: Device.WIDTH - PxFit(60),
         backgroundColor: Theme.themeRed,
     },
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',

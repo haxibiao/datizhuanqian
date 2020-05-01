@@ -6,9 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, ListItem, Avatar } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from 'utils';
-
+import { PageContainer, Row } from 'components';
 class GradeDescription extends Component {
     render() {
         let { navigation } = this.props;
@@ -131,7 +129,7 @@ const styles = StyleSheet.create({
     scrollStyle: {
         flexGrow: 1,
         paddingHorizontal: PxFit(Theme.itemSpace),
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT || PxFit(Theme.itemSpace),
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT || PxFit(Theme.itemSpace),
     },
     userPanel: {
         paddingVertical: PxFit(Theme.itemSpace),
@@ -174,7 +172,7 @@ const styles = StyleSheet.create({
     text: {
         borderWidth: 1,
         borderColor: Theme.borderColor,
-        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2)) / 4,
+        width: (Device.WIDTH - PxFit(Theme.itemSpace * 2)) / 4,
         textAlign: 'center',
         paddingVertical: PxFit(10),
         fontSize: PxFit(13),

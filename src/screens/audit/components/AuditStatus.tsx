@@ -1,13 +1,12 @@
-import React, { useRef, useState, useMemo, useEffect, useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
+import React, { useMemo, useEffect } from 'react';
+import { StyleSheet, Text, Animated } from 'react-native';
 import { Iconfont, Row, TouchFeedback } from '@src/components';
 import { useLinearAnimation } from '@src/common';
 import { observer } from '@src/screens/answer/store';
 
 import { useNavigation } from 'react-navigation-hooks';
 
-export default observer(({ store, question }) => {
+export default observer(() => {
     const [animation, startAnimation] = useLinearAnimation({ initValue: 0, duration: 300 });
     const navigation = useNavigation();
 

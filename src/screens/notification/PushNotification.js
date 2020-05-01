@@ -6,8 +6,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PageContainer } from 'components';
 
-import { Config, Theme, SCREEN_WIDTH } from 'utils';
-
 class PushNotification extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +31,7 @@ class PushNotification extends Component {
                             style={{ width: 42, height: 42, borderRadius: 21 }}
                         />
                     </View>
-                    <View style={{ paddingLeft: 10, width: SCREEN_WIDTH - 70 }}>
+                    <View style={{ paddingLeft: 10, width: Device.WIDTH - 70 }}>
                         <Text style={{ color: '#000', fontSize: 15, paddingTop: 2, fontWeight: '500' }}>
                             {Config.AppName}官方团队
                         </Text>

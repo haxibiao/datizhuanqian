@@ -12,8 +12,7 @@ import {
     Animated,
 } from 'react-native';
 import { PageContainer, NavigatorBar, Avatar, RewardOverlay } from '@src/components';
-import { playVideo, syncGetter, useCirculationAnimation } from '@src/common';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+import { playVideo, useCirculationAnimation } from '@src/common';
 import { observer, app, storage } from 'store';
 import { useNavigation } from 'react-navigation-hooks';
 import { playSound } from './playSound';
@@ -55,11 +54,12 @@ const over = observer(props => {
         const [error, res] = await store.receiveGameReward();
 
         if (error) {
-            Toast.show({ content: syncGetter('message', error) ? syncGetter('message', error) : '奖励领取失败' });
-        } else if (syncGetter('data.gameReward', res)) {
+            Toast.show({
+                content: Helper.syncGetter('message', error) ? Helper.syncGetter('message', error) : '奖励领取失败',
+            });
+        } else if (Helper.syncGetter('data.gameReward', res)) {
             RewardOverlay.show({
-                reward: syncGetter('data.gameReward', res),
-                rewardVideo: true,
+                reward: Helper.syncGetter('data.gameReward', res),
                 title: result === 'victory' ? '胜者奖励领取成功' : '安慰奖领取成功',
             });
             setDisabledRewardAdVideo(true);
@@ -80,11 +80,11 @@ const over = observer(props => {
         (async () => {
             gameOverCount.current++;
             const [error, res] = await store.gameOver();
-            const endGame = syncGetter('data.endGame', res);
-            const scores = syncGetter('data.scores', endGame);
-            const status = syncGetter('status', endGame);
-            const winner = syncGetter('winner', endGame);
-            const reward = syncGetter('reward', endGame);
+            const endGame = Helper.syncGetter('data.endGame', res);
+            const scores = Helper.syncGetter('data.scores', endGame);
+            const status = Helper.syncGetter('status', endGame);
+            const winner = Helper.syncGetter('winner', endGame);
+            const reward = Helper.syncGetter('reward', endGame);
             // 游戏未结束或者接口出错  重新请求
             if (status == 'END') {
                 // 设置获胜者和得分
@@ -122,11 +122,11 @@ const over = observer(props => {
         (async () => {
             gameQueryCount.current++;
             const [error, res] = await store.gameQuery();
-            const game = syncGetter('data.game', res);
-            const scores = syncGetter('data.scores', game);
-            const status = syncGetter('status', game);
-            const winner = syncGetter('winner', game);
-            const reward = syncGetter('reward', game);
+            const game = Helper.syncGetter('data.game', res);
+            const scores = Helper.syncGetter('data.scores', game);
+            const status = Helper.syncGetter('status', game);
+            const winner = Helper.syncGetter('winner', game);
+            const reward = Helper.syncGetter('reward', game);
             // 游戏未结束或者接口出错就间隔查询游戏状态
             if (status == 'END') {
                 // 设置获胜者和得分
@@ -368,7 +368,7 @@ const over = observer(props => {
     );
 });
 
-const competeBgWidth = SCREEN_WIDTH / 3;
+const competeBgWidth = Device.WIDTH / 3;
 const competeBgHeight = (competeBgWidth * 149) / 229;
 const fixCrownHeight = (competeBgHeight * 26) / 149;
 const avatarSize = competeBgHeight - fixCrownHeight - PxFit(12);
@@ -424,16 +424,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     content: {
-        paddingBottom: PxFit(Theme.HOME_INDICATOR_HEIGHT + Theme.itemSpace),
-        paddingTop: PxFit(Theme.navBarContentHeight + Theme.itemSpace * 2),
+        paddingBottom: PxFit(Device.HOME_INDICATOR_HEIGHT + Theme.itemSpace),
+        paddingTop: PxFit(Device.statusBarHeight + Theme.itemSpace * 2),
     },
     gameResult: {
         marginTop: -PxFit(30),
     },
     gameResultBg: {
-        height: ((SCREEN_WIDTH / 2) * 308) / 423,
+        height: ((Device.WIDTH / 2) * 308) / 423,
         resizeMode: 'cover',
-        width: SCREEN_WIDTH / 2,
+        width: Device.WIDTH / 2,
     },
     header: {
         position: 'absolute',
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
     },
     statisticPanel: {
         marginTop: PxFit(40),
-        width: SCREEN_WIDTH / 2,
+        width: Device.WIDTH / 2,
     },
     titleStyle: {
         fontWeight: 'bold',

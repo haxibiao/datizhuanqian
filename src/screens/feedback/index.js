@@ -5,11 +5,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
-
-import { TabBarHeader, PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from 'components';
+import { PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from 'components';
 
 import Feedback from './components/Feedback';
 import FeedbackList from './components/FeedbackList';
@@ -26,10 +24,14 @@ class index extends Component {
     render() {
         const { navigation } = this.props;
         return (
-            <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
+            <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Device.statusBarHeight }}>
                 <ScrollableTabView
                     renderTabBar={props => (
-                        <ScrollTabBar {...props} tabUnderlineWidth={PxFit(50)} underLineColor={Theme.primaryColor} />
+                        <ScrollTabBar
+                            {...props}
+                            tabUnderlineWidth={PxFit(50)}
+                            underLineColor={!config.disableAd ? Theme.primaryColor : '#FFF'}
+                        />
                     )}>
                     {!config.disableAd && <FeedbackList navigation={navigation} tabLabel="问题中心" />}
                     <Feedback navigation={navigation} tabLabel="反馈建议" />
@@ -49,8 +51,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: Theme.navBarContentHeight,
-        height: Theme.navBarContentHeight,
+        width: Device.statusBarHeight,
+        height: Device.statusBarHeight,
+        minHeight: 44,
         justifyContent: 'center',
         paddingLeft: PxFit(Theme.itemSpace),
     },

@@ -4,11 +4,10 @@
  */
 'use strict';
 
-import React, { Component, useState, useCallback, useMemo, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback, Text, BackHandler } from 'react-native';
 import { Overlay } from 'teaset';
-import { storage, keys } from 'store';
-import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT, ISAndroid } from '../../utils';
+import { storage, config } from 'store';
 
 interface Props {
     guidanceKey: string; //指导标识
@@ -55,9 +54,9 @@ const beginnerGuidance = (props: Props) => {
         // OverlayKey = Overlay.show(overlayView);
         const result = await storage.getItem(guidanceType);
         console.log('result', result);
-        if (!result) {
+        if (!result && !config.disableAd) {
             OverlayKey = Overlay.show(overlayView);
-            if (ISAndroid) {
+            if (Device.Android) {
                 backListener = BackHandler.addEventListener('hardwareBackPress', () => {
                     return true;
                 });
@@ -82,7 +81,7 @@ const beginnerGuidance = (props: Props) => {
     }
 
     function removeBackListener() {
-        if (ISAndroid) {
+        if (Device.Android) {
             backListener.remove();
         }
     }
@@ -124,15 +123,15 @@ const beginnerGuidance = (props: Props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGTH,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.6)',
     },
     header: {
         position: 'absolute',
-        top: PxFit(Theme.statusBarHeight + 10),
+        top: PxFit(Device.statusBarHeight + 10),
         paddingHorizontal: PxFit(Theme.itemSpace),
         width: '100%',
         justifyContent: 'center',

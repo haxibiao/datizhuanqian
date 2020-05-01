@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { PxFit, Theme, ISIOS } from 'utils';
 import { ad } from 'native';
 
 import { observer, app, config } from 'store';
@@ -8,22 +7,23 @@ import Player from './Player';
 import SideBar from './SideBar';
 import VideoStore from '../VideoStore';
 import { GQL, useMutation } from 'apollo';
-import { exceptionCapture } from 'common';
 import { Row } from 'components';
 import AdRewardProgress from './AdRewardProgress';
 
 import service from 'service';
+import { adClickTrack } from 'common';
 
 export default observer(props => {
     const { media, index, isPost } = props;
     const { video, title, user, description } = media;
     const [adShow, setAdShow] = useState(true);
-    const isAdMedia = useMemo(() => media.is_ad && adShow && !ISIOS && config.enableDrawFeed, [media]);
+    const isAdMedia = useMemo(() => media.is_ad && adShow && !Device.IOS && config.enableDrawFeed, [media]);
 
     const [onClickReward] = useMutation(GQL.UserRewardMutation, {
         variables: {
             reward: 'DRAW_FEED_ADVIDEO_REWARD',
         },
+        client: app.mutationClient,
         refetchQueries: () => [
             {
                 query: GQL.UserMetaQuery,
@@ -38,7 +38,7 @@ export default observer(props => {
         if (VideoStore.getReward.indexOf(drawFeedAdId) === -1) {
             VideoStore.addGetRewardId(drawFeedAdId);
             // 发放给精力奖励
-            const [error, res] = await exceptionCapture(onClickReward);
+            const [error, res] = await Helper.exceptionCapture(onClickReward);
             if (error) {
                 Toast.show({
                     content: '遇到未知错误，领取失败',
@@ -51,12 +51,10 @@ export default observer(props => {
                 });
             }
 
-            service.dataReport({
-                data: { category: '广告点击', action: 'user_click_drawfeed_ad', name: '用户点击drawFeed广告' },
-                callback: (result: any) => {
-                    console.warn('result', result);
-                },
-            }); // 上报drawFeed点击量
+            // 上报drawFeed点击量
+            adClickTrack({
+                name: '点击drawFeed广告',
+            });
         }
     };
 
@@ -74,7 +72,7 @@ export default observer(props => {
                 {VideoStore.getReward.length < 1 && (
                     <View
                         style={{
-                            bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(75),
+                            bottom: Device.HOME_INDICATOR_HEIGHT + PxFit(75),
                             position: 'absolute',
                             right: PxFit(Theme.itemSpace),
                             flexDirection: 'row',
@@ -156,7 +154,7 @@ const styles = StyleSheet.create({
     },
     name: { color: 'rgba(255,255,255,0.9)', fontSize: PxFit(15), fontWeight: 'bold' },
     videoInfo: {
-        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(30),
+        bottom: Device.HOME_INDICATOR_HEIGHT + PxFit(30),
         flexDirection: 'row',
         left: 0,
         paddingHorizontal: PxFit(Theme.itemSpace),

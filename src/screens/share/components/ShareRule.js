@@ -4,10 +4,8 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Button } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from 'utils';
-
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { Button } from 'components';
 class ShareRule extends Component {
     constructor(props) {
         super(props);
@@ -59,8 +57,8 @@ class ShareRule extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH - PxFit(70),
-        height: ((SCREEN_WIDTH - PxFit(110)) * 1000) / 618,
+        width: Device.WIDTH - PxFit(70),
+        height: ((Device.WIDTH - PxFit(110)) * 1000) / 618,
         paddingHorizontal: PxFit(25),
         paddingVertical: PxFit(20),
         borderRadius: PxFit(15),
@@ -80,7 +78,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     text: {
-        width: SCREEN_WIDTH - PxFit(146),
+        width: Device.WIDTH - PxFit(146),
         marginLeft: 8,
         paddingVertical: PxFit(2),
         lineHeight: PxFit(18),

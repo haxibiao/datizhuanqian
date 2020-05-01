@@ -2,7 +2,6 @@ import { Platform } from 'react-native';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-boost';
 import DeviceInfo from 'react-native-device-info';
-import { Config } from 'utils';
 import { Matomo } from 'native';
 import ApolloApp from './ApolloApp';
 import base64 from 'react-native-base64';
@@ -59,18 +58,18 @@ endToday.setMilliseconds(0);
 const startTimestamp = startToday.getTime() - 24 * 60 * 60 * 1000;
 const endTimestamp = endToday.getTime() - 24 * 60 * 60 * 1000;
 
-console.log('startTimestamp', startTimestamp, endTimestamp);
-
 export function makeClient(user: { id?: any; token?: any }, checkServer: () => void) {
     const { token } = user;
 
-    Matomo.setUserId(user.id || 0);
-    Matomo.setCustomDimension(1, deviceHeaders.os);
-    Matomo.setCustomDimension(2, deviceHeaders.referrer);
-    Matomo.setCustomDimension(3, deviceHeaders.version);
-    Matomo.setCustomDimension(4, deviceHeaders.build);
-    //新老用户类型，目前后端事件在区分...
-    Matomo.setCustomDimension(6, deviceHeaders.brand);
+    if (Device.Android) {
+        Matomo.setUserId(user.id || 0);
+        Matomo.setCustomDimension(1, deviceHeaders.os);
+        Matomo.setCustomDimension(2, deviceHeaders.referrer);
+        Matomo.setCustomDimension(3, deviceHeaders.version);
+        Matomo.setCustomDimension(4, deviceHeaders.build);
+        //新老用户类型，目前后端事件在区分...
+        Matomo.setCustomDimension(6, deviceHeaders.brand);
+    }
     //埋点鉴权用的headers
     let authHeaders = {
         //前面三个只用来验证防火墙是否挂了参数过来
@@ -98,9 +97,6 @@ export function makeClient(user: { id?: any; token?: any }, checkServer: () => v
     //后端我来decode版本信息鉴权，注意v不是缺失=号，我是故意的，参数名就是关键信息
     let authQuery =
         'v' + encoded_version + '&u=' + uuid + '&t=' + time + '&b=' + brand + '&o=' + osversion + '&i=' + ip;
-
-    console.log('authQuery', authQuery);
-    console.log('headers', headers);
 
     return new ApolloClient({
         uri: Config.ServerRoot + '/graphql?' + authQuery,

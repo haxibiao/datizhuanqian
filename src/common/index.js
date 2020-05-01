@@ -1,6 +1,5 @@
 export * from './app';
 export * from './media';
-export * from './helper';
 export * from './share';
 export * from './animation';
 

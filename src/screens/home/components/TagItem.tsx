@@ -1,9 +1,9 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
-import { Theme, PxFit } from 'utils';
-import { Iconfont } from '@src/components';
+import { Iconfont, Row } from '@src/components';
 import { useNavigation } from 'react-navigation-hooks';
 import CategoryItem from './CategoryItem';
+import RecommendCategoryItem from './RecommendCategoryItem';
 
 const TagItem = ({ category, data, title, tag }) => {
     const navigation = useNavigation();
@@ -42,23 +42,46 @@ const TagItem = ({ category, data, title, tag }) => {
                                 })
                             }>
                             <Text style={styles.moreCategoryText}>更多</Text>
-                            <Iconfont name="right" color={Theme.correctColor} size={PxFit(14)} />
+                            <Iconfont name="right" color={Theme.grey} size={Font(12)} />
                         </TouchableOpacity>
                     )}
                 </View>
-                <FlatList
+                {categories.length > 2 ? (
+                    <Row
+                        style={{
+                            justifyContent: categories.length < 3 ? 'flex-start' : 'space-between',
+                            alignItems: 'flex-start',
+                        }}>
+                        {categories.slice(0, 3).map((item, index) => {
+                            return <CategoryItem tag={tag} category={item} key={index} index={index} />;
+                        })}
+                    </Row>
+                ) : (
+                    <View>
+                        {categories.slice(0, 3).map((item, index) => {
+                            return (
+                                <View style={{ marginBottom: PxFit(15) }}>
+                                    <RecommendCategoryItem tag={tag} category={item} />
+                                </View>
+                            );
+                        })}
+                    </View>
+                )}
+
+                {/*    <FlatList
+                    horizontal={true}
                     data={categories.slice(0, 3)}
                     renderItem={({ item }) => <CategoryItem tag={tag} category={item} />}
-                    ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+                    // ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
                     keyExtractor={keyExtractor}
-                    showsVerticalScrollIndicator={false}
-                />
+                    showsHorizontalScrollIndicator={false}
+                /> */}
             </View>
         );
     } else if (category) {
         return (
             <View style={styles.container}>
-                <CategoryItem tag={tag} category={category} />
+                <RecommendCategoryItem tag={tag} category={category} />
             </View>
         );
     } else {
@@ -68,17 +91,19 @@ const TagItem = ({ category, data, title, tag }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: PxFit(12),
+        paddingVertical: PxFit(5),
+        paddingLeft: PxFit(5),
         backgroundColor: '#fff',
         borderRadius: PxFit(10),
+        paddingBottom: PxFit(10),
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: PxFit(12),
-        marginBottom: PxFit(Theme.itemSpace),
-        borderBottomWidth: PxFit(1),
-        borderColor: Theme.borderColor,
+        // marginBottom: PxFit(Theme.itemSpace),
+        // borderBottomWidth: PxFit(1),
+        // borderColor: Theme.borderColor,
     },
     titleWrap: {
         flex: 1,
@@ -88,14 +113,14 @@ const styles = StyleSheet.create({
     },
     title: {
         color: Theme.defaultTextColor,
-        fontSize: PxFit(15),
+        fontSize: Font(16),
+        lineHeight: PxFit(22),
         fontWeight: 'bold',
-        lineHeight: PxFit(20),
     },
     tagImage: {
-        height: PxFit(18),
-        width: PxFit(18),
-        marginRight: PxFit(3),
+        height: PxFit(22),
+        width: PxFit(22),
+        marginRight: PxFit(4),
     },
     columnStyle: {
         justifyContent: 'space-between',
@@ -108,8 +133,8 @@ const styles = StyleSheet.create({
         paddingLeft: PxFit(10),
     },
     moreCategoryText: {
-        color: Theme.correctColor,
-        fontSize: PxFit(14),
+        color: Theme.grey,
+        fontSize: Font(13),
         marginRight: PxFit(2),
     },
     itemSeparator: {

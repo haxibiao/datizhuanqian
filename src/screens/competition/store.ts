@@ -1,5 +1,4 @@
 import { observable, action, runInAction } from 'mobx';
-import { exceptionCapture, syncGetter } from '@src/common';
 import { app } from '@src/store';
 import { GQL } from '@src/apollo';
 
@@ -56,12 +55,12 @@ export default class CompetitionStore {
     @action.bound
     public async matchGame() {
         this.matching = true;
-        const [error, result] = await exceptionCapture(() => {
-            return app.client.mutate({
+        const [error, result] = await Helper.exceptionCapture(() => {
+            return app.mutationClient.mutate({
                 mutation: GQL.MatchGameMutation,
             });
         });
-        const room = syncGetter('data.matchGame', result);
+        const room = Helper.syncGetter('data.matchGame', result);
         console.log('====================================');
         console.log('room', result, room, error);
         console.log('====================================');
@@ -115,12 +114,12 @@ export default class CompetitionStore {
         console.log('matchRobot');
         console.log('====================================');
         this.matching = true;
-        const [error, result] = await exceptionCapture(() => {
-            return app.client.mutate({
+        const [error, result] = await Helper.exceptionCapture(() => {
+            return app.mutationClient.mutate({
                 mutation: GQL.MatchRobotMutation,
             });
         });
-        const room = syncGetter('data.matchRobot', result);
+        const room = Helper.syncGetter('data.matchRobot', result);
         console.log('====================================');
         console.log('room', result, room, error);
         console.log('====================================');
@@ -151,12 +150,12 @@ export default class CompetitionStore {
         if (this.rival.id) {
             return;
         }
-        const [error, result] = await exceptionCapture(() => {
-            return app.client.mutate({
+        const [error, result] = await Helper.exceptionCapture(() => {
+            return app.mutationClient.mutate({
                 mutation: GQL.OfflineGameMutation,
             });
         });
-        const offlineGame = syncGetter('data.offlineGame', result);
+        const offlineGame = Helper.syncGetter('data.offlineGame', result);
         if (offlineGame) {
             this.game = <Game>{};
             this.rival = <User>{};
@@ -168,8 +167,8 @@ export default class CompetitionStore {
 
     // 离开游戏
     private async leaveGameMutate(user_id: number, game_id: number) {
-        const [error, result] = await exceptionCapture(() => {
-            return app.client.mutate({
+        const [error, result] = await Helper.exceptionCapture(() => {
+            return app.mutationClient.mutate({
                 mutation: GQL.LeaveGameMutation,
                 variables: { user_id, game_id },
             });
@@ -203,8 +202,8 @@ export default class CompetitionStore {
             variables.user_id = this.rival.id;
             variables.score = this.score[1];
         }
-        const [error, result] = await exceptionCapture(() => {
-            return app.client.mutate({
+        const [error, result] = await Helper.exceptionCapture(() => {
+            return app.mutationClient.mutate({
                 mutation: GQL.ReceiveGameScore,
                 variables,
             });
@@ -232,8 +231,8 @@ export default class CompetitionStore {
             })
             .listen('Score', (data: any) => {
                 console.log('game_score', data);
-                const score = syncGetter('scoreData.socres.score', data);
-                const notMe = syncGetter('scoreData.socres.user_id', data) !== app.me.id;
+                const score = Helper.syncGetter('scoreData.socres.score', data);
+                const notMe = Helper.syncGetter('scoreData.socres.user_id', data) !== app.me.id;
                 if (notMe && this.score[1] < score) {
                     this.score[1] = score;
                 }
@@ -243,9 +242,9 @@ export default class CompetitionStore {
     // 结束游戏
     @action.bound
     public async gameOver() {
-        return await exceptionCapture(() => {
+        return await Helper.exceptionCapture(() => {
             // Toast.show({ content: 'gameOver:' + this.game.id });
-            return app.client.mutate({
+            return app.mutationClient.mutate({
                 mutation: GQL.EndGameMutation,
                 variables: { game_id: this.game.id },
             });
@@ -255,7 +254,7 @@ export default class CompetitionStore {
     // 查询游戏状态
     @action.bound
     public async gameQuery() {
-        return await exceptionCapture(() => {
+        return await Helper.exceptionCapture(() => {
             // Toast.show({ content: 'gameQuery:' + this.game.id });
             return app.client.query({
                 query: GQL.GameQuery,
@@ -267,8 +266,8 @@ export default class CompetitionStore {
     // 游戏奖励
     @action.bound
     public async receiveGameReward() {
-        return await exceptionCapture(() => {
-            return app.client.mutate({
+        return await Helper.exceptionCapture(() => {
+            return app.mutationClient.mutate({
                 mutation: GQL.GameRewardMutation,
                 variables: { game_id: this.game.id, user_id: this.me.id },
             });

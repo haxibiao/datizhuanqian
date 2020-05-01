@@ -5,8 +5,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Animated, StatusBar } from 'react-native';
-import { PageContainer, TouchFeedback, PopOverlay, Iconfont, PullChooser, EmptyView, Player, Audio } from 'components';
-import { SCREEN_WIDTH, ISIOS } from 'utils';
+import { PageContainer, TouchFeedback, PopOverlay, Iconfont, PullChooser, StatusView, Player, Audio } from 'components';
 
 import QuestionOptions from './components/QuestionOptions';
 import UserInfo from './components/UserInfo';
@@ -223,7 +222,7 @@ class index extends Component {
         };
         // let chooser = this.isOwn ? strategy['master'][String(this.question.status)] : strategy['visitor'];
         // PullChooser.show(chooser);
-        this.isOwn || ISIOS
+        this.isOwn || Device.IOS
             ? PullChooser.show(strategy['master'][String(this.question.status)])
             : ChooseOverlay.show(this.question, navigation, this.question.category, this.state.min_level, data.user);
     };
@@ -238,7 +237,7 @@ class index extends Component {
                 {
                     translateY: this._animated.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [-SCREEN_WIDTH, 0],
+                        outputRange: [-Device.WIDTH, 0],
                         extrapolate: 'clamp',
                     }),
                 },
@@ -351,7 +350,7 @@ class index extends Component {
                             )}
                         </View>
                     ) : (
-                        <EmptyView title="题目不存在或已下架" />
+                        <StatusView.EmptyView title="题目不存在或已下架" />
                     )}
                 </PageContainer>
                 <CommentOverlay ref={ref => (this._commentOverlay = ref)} question={this.question} />

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+
 import { TouchFeedback, Iconfont, CustomTextInput, Row } from 'components';
 
 import { useMutation, GQL } from 'apollo';
@@ -20,6 +20,7 @@ const CommentInput = props => {
         onCommented,
         isPost,
         isSpider,
+        showCommentModal,
     } = props;
 
     const onChangeText = useCallback(value => {
@@ -92,25 +93,25 @@ const CommentInput = props => {
                 __typename: 'Mutation',
                 createComment: comment_id
                     ? {
-                        __typename: 'Comment',
-                        id: -1,
-                        user: app.userCache,
-                        content,
-                        time_ago: '刚刚',
-                        liked: false,
-                        count_likes: 0,
-                        reply: null,
-                    }
+                          __typename: 'Comment',
+                          id: -1,
+                          user: app.userCache,
+                          content,
+                          time_ago: '刚刚',
+                          liked: false,
+                          count_likes: 0,
+                          reply: null,
+                      }
                     : {
-                        __typename: 'Comment',
-                        id: -1,
-                        user: app.userCache,
-                        content,
-                        time_ago: '刚刚',
-                        liked: false,
-                        comments_count: 0,
-                        count_likes: 0,
-                    },
+                          __typename: 'Comment',
+                          id: -1,
+                          user: app.userCache,
+                          content,
+                          time_ago: '刚刚',
+                          liked: false,
+                          comments_count: 0,
+                          count_likes: 0,
+                      },
             },
             onError: error => {
                 console.log('error', error);
@@ -128,6 +129,7 @@ const CommentInput = props => {
         onChangeText('');
         console.log('触发 :');
         createCommentMutation();
+        showCommentModal();
     }, []);
 
     return (
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         paddingLeft: PxFit(5),
-        width: SCREEN_WIDTH - PxFit(100),
+        width: Device.WIDTH - PxFit(100),
     },
     touchItem: {
         alignItems: 'flex-end',

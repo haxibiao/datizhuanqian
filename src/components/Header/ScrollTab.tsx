@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity } from 'react-native';
-import { Theme, PxFit } from '@src/utils';
 import { observer, app } from 'store';
 
 const ScrollTab = observer(props => {
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 0,
         borderTopWidth: 0,
         flexDirection: 'row',
-        height: PxFit(Theme.navBarContentHeight),
+        height: PxFit(Device.statusBarHeight),
     },
     tabStyle: {
         alignItems: 'center',

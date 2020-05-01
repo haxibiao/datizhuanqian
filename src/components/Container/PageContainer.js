@@ -6,10 +6,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import { Theme, PxFit, ISIOS, NAVBAR_HEIGHT } from '../../utils';
 import StatusView from '../StatusView';
 import NavigatorBar from '../Header/NavigatorBar';
-import KeyboardSpacer from '../Utils/KeyboardSpacer';
+import KeyboardSpacer from '../Other/KeyboardSpacer';
 import SubmitLoading from '../Overlay/SubmitLoading';
 
 type Props = {
@@ -48,7 +47,7 @@ class PageContainer extends Component<Props> {
         hiddenNavBar: false,
         autoKeyboardInsets: true,
         submitTips: '提交中...',
-        topInsets: -Theme.HOME_INDICATOR_HEIGHT,
+        topInsets: -Device.HOME_INDICATOR_HEIGHT,
     };
     renderContent() {
         const { error, loading, empty, loadingSpinner, EmptyView, children, refetch } = this.props;
@@ -59,7 +58,7 @@ class PageContainer extends Component<Props> {
     }
 
     renderNavBar() {
-        const { navBar, isTopNavigator, navBarStyle, white, ...navBarProps } = this.props;
+        const { navBar, isTopNavigator, navBarStyle, white, statusBarStyle, ...navBarProps } = this.props;
         let navView = null;
         if (typeof navBar === 'undefined') {
             navView = <NavigatorBar {...navBarProps} style={navBarStyle} isTopNavigator={isTopNavigator} />;
@@ -73,7 +72,7 @@ class PageContainer extends Component<Props> {
                             borderBottomColor: Theme.borderColor,
                             ...navBarStyle,
                         }}
-                        statusBarStyle="dark-content"
+                        statusBarStyle={statusBarStyle}
                         titleStyle={{ color: Theme.defaultTextColor }}
                         backButtonColor={Theme.defaultTextColor}
                         isTopNavigator={isTopNavigator}
@@ -102,13 +101,13 @@ class PageContainer extends Component<Props> {
             submitTips,
             ...props
         } = this.props;
-        const marginTop = !hiddenNavBar ? PxFit(NAVBAR_HEIGHT) : 0;
+        const marginTop = !hiddenNavBar ? Device.NAVBAR_HEIGHT : 0;
 
         return (
             <View style={[styles.container, style]} {...props}>
                 {!hiddenNavBar && this.renderNavBar()}
                 <View style={[styles.contentView, { marginTop }, contentViewStyle]}>{this.renderContent()}</View>
-                {autoKeyboardInsets && <KeyboardSpacer topInsets={topInsets} />}
+
                 <NavigationEvents
                     onWillFocus={onWillFocus}
                     onDidFocus={onDidFocus}

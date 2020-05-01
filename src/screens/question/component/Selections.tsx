@@ -1,8 +1,5 @@
-import React, { useRef, useState, useMemo, useEffect, useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, Animated } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
-import { Iconfont } from '@src/components';
-import { useLinearAnimation } from '@src/common';
+import React, { useRef, useMemo, useEffect, useCallback } from 'react';
+import { View, Animated } from 'react-native';
 import { observer } from '@src/screens/answer/store';
 import SelectionItem from './SelectionItem';
 import AuditSelectionItem from './AuditSelectionItem';
@@ -39,7 +36,7 @@ export default observer(({ store, question, audit }) => {
                 {
                     translateX: animation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [order % 2 === 0 ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                        outputRange: [order % 2 === 0 ? -Device.WIDTH : Device.WIDTH, 0],
                         extrapolate: 'clamp',
                     }),
                 },
@@ -49,7 +46,7 @@ export default observer(({ store, question, audit }) => {
 
     return useMemo(() => {
         return (
-            <View onStartShouldSetResponder={event => stopPropagation.current}>
+            <View onStartShouldSetResponder={() => stopPropagation.current}>
                 {selections.map((option, index) => {
                     return (
                         <Animated.View style={createAnimate(animations[index], index)} key={option + index}>

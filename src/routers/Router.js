@@ -12,13 +12,14 @@ import VerificationPhoneScreen from '../screens/login/VerificationPhone';
 import RegisterSetPasswordScreen from '../screens/login/RegisterSetPassword';
 import PasswordLoginScreen from '../screens/login/PasswordLogin';
 // 答题
-import AnswerScreen from '../screens/answer';
+// import AnswerScreen from '../screens/answer/index_back';
 import ExerciseScreen from '../screens/answer/Exercise'; //新的答题页
 import ExamScreen from '../screens/answer/Exam'; //新的考试页
 import UserAnswerScreen from '../screens/answer/UserAnswer';
 import MoreCategoriesScreen from '../screens/home/MoreCategories';
 import SearchScreen from '../screens/home/Search';
 import ExamResultScreen from '../screens/answer/ExamResult';
+import RandomAnswer from '@src/screens/answer/RandomAnswer';
 //审题
 import AuditScreen from '../screens/audit';
 // 答题对垒
@@ -34,6 +35,7 @@ import VideoPostScreen from '../screens/media/VideoPost';
 import QuestionScreen from '../screens/question';
 import VideoExplanationScreen from '../screens/question/VideoExplanation';
 // 提现
+import WithdrawScreen from '@src/screens/withdraw';
 import WithdrawLogDetailScreen from '../screens/withdraw/WithdrawLogDetails';
 import WithdrawApplyScreen from '../screens/withdraw/WithdrawApply';
 // 任务
@@ -76,6 +78,7 @@ import SocietyScreen from '../screens/profile/Society';
 import RecruitScreen from '../screens/profile/Recruit';
 import MakeMoenyManualScreen from '../screens/profile/MakeMoenyManual';
 import MyPublishScreen from '../screens/profile/MyPublish';
+import MyLikes from '@src/screens/profile/MyLikes';
 // 通知
 import NotificationScreen from '../screens/notification';
 import SystemNotificationScreen from '../screens/notification/SystemNotification';
@@ -171,6 +174,12 @@ export default {
         screen: ExamResultScreen,
         params: { trackName: '考试结果' },
     },
+    RandomAnswer: {
+        screen: RandomAnswer,
+        params: {
+            trackName: '随机答题',
+        },
+    },
     Audit: {
         screen: AuditScreen,
         params: { trackName: '审题' },
@@ -214,6 +223,10 @@ export default {
         params: { trackName: '视频解析' },
     },
     // 提现
+    Withdraw: {
+        screen: WithdrawScreen,
+        params: { trackName: '钱包提现' },
+    },
     withdrawLogDetails: {
         screen: WithdrawLogDetailScreen,
         params: { trackName: '提现记录详情' },
@@ -350,6 +363,12 @@ export default {
     MyPublish: {
         screen: MyPublishScreen,
         params: { trackName: '我的发布' },
+    },
+    MyLikes: {
+        screen: MyLikes,
+        params: {
+            trackName: '我的喜欢',
+        },
     },
     // 通知
     Notification: {

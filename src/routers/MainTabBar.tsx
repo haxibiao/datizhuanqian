@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
-import { Theme, PxFit } from '../utils';
+
 import { app, config } from 'store';
 import { observer } from 'mobx-react';
 
@@ -20,9 +20,9 @@ class TabBarComponent extends React.Component {
             focused,
             route,
         };
-        if (config.disableAd && index == 3) {
-            return null;
-        }
+        // if (config.disableAd && index == 3) {
+        //     return null;
+        // }
 
         return (
             <TouchableWithoutFeedback key={route.key} onPress={() => onTabPress({ route })}>
@@ -31,7 +31,7 @@ class TabBarComponent extends React.Component {
                         {renderIcon(scene)}
                         {route.key === '我的' && app.unreadNotice > 0 && <View style={styles.badge} />}
                     </View>
-                    <Text style={{ fontSize: PxFit(10), color }}>{route.key}</Text>
+                    <Text style={{ fontSize: Font(10), color }}>{route.key}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -41,7 +41,7 @@ class TabBarComponent extends React.Component {
         const { navigation } = this.props;
         const { routes, index: currentIndex } = navigation.state;
 
-        const lightModel = currentIndex === 2;
+        const lightModel = currentIndex === 1;
         const routerItem = routes && routes.map((route, index) => this.renderItem(route, index));
 
         return (
@@ -60,10 +60,10 @@ const styles = {
         bottom: 0,
         flexDirection: 'row',
         alignItems: 'center',
-        height: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+        height: Device.HOME_INDICATOR_HEIGHT + PxFit(56),
         backgroundColor: '#ffffff',
-        borderTopWidth: PxFit(0.5),
-        borderTopColor: Theme.borderColor,
+        // borderTopWidth: PxFit(0.5),
+        // borderTopColor: Theme.borderColor,
     },
     hidden: {
         zIndex: -1,

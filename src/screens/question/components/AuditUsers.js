@@ -5,14 +5,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { TouchFeedback, Avatar } from 'components';
-import { PxFit, Theme, SCREEN_WIDTH } from 'utils';
 
 class AuditUsers extends Component {
     renderUsers = status => {
         let { question, navigation } = this.props;
-        let { accepted_count, declined_count, audits } = question;
+        let { audits } = question;
         let users;
         if (audits && audits instanceof Array) {
             users = this.filterUser(audits, status);
@@ -42,7 +41,7 @@ class AuditUsers extends Component {
     };
 
     filterUser(users, status) {
-        return users.filter((elem, index) => {
+        return users.filter(elem => {
             return elem.status === status;
         });
     }

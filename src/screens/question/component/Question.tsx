@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Player, TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont, Avatar, Audio } from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH } from '@src/utils';
 import { observer } from '@src/screens/answer/store';
 import Selections from './Selections';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -28,7 +27,27 @@ export default observer(({ store, question, audit }) => {
 
     const answerType = useMemo(() => {
         return (
-            <Text style={{ color: isMultiple ? '#FF5E7D' : '#8282FF' }}>{isMultiple ? '(多选题)' : '(单选题)'}</Text>
+            <View
+                style={{
+                    position: 'absolute',
+                    width: Font(52),
+                    height: Font(24),
+                    left: 0,
+                    top: Font(1),
+                    borderRadius: Font(12),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: isMultiple ? '#FBF5D7' : '#DFEEFF',
+                }}>
+                <Text
+                    style={{
+                        color: isMultiple ? '#EAA329' : '#7D9EC4',
+                        fontSize: Font(12),
+                        fontWeight: '600',
+                    }}>
+                    {isMultiple ? '多选题' : '单选题'}
+                </Text>
+            </View>
         );
     }, [isMultiple]);
 
@@ -36,7 +55,7 @@ export default observer(({ store, question, audit }) => {
         const { image, video, audio } = question;
         if (image) {
             const { width, height, path } = image;
-            const style = Helper.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(24));
+            const style = Helper.singleImageResponse(width, height, Device.WIDTH - PxFit(24));
             return (
                 <View style={styles.imageCover}>
                     <TouchFeedback style={{ overflow: 'hidden' }} onPress={() => showPicture(path)}>
@@ -49,7 +68,7 @@ export default observer(({ store, question, audit }) => {
             );
         }
         if (video && video.url) {
-            return <Player style={{ marginTop: PxFit(Theme.itemSpace) }} size={styles.video} video={video} />;
+            return <Player style={{ marginTop: PxFit(20) }} size={styles.video} video={video} />;
         }
 
         if (audio && audio.url) {
@@ -70,7 +89,7 @@ export default observer(({ store, question, audit }) => {
                     activeOpacity={0.8}
                     style={styles.userItem}
                     onPress={() => navigation.navigate('User', { user })}>
-                    <Avatar source={user.avatar} userId={user.id} size={PxFit(22)} />
+                    <Avatar source={user.avatar} userId={user.id} size={PxFit(27)} />
                     <Text style={styles.userName}>{user.name}</Text>
                 </TouchableOpacity>
             </View>
@@ -80,11 +99,14 @@ export default observer(({ store, question, audit }) => {
     return (
         <View style={styles.content}>
             {askQuestionUser}
-            <Text style={styles.description}>
+            <View>
                 {answerType}
-                {question.description}
-                {/* {answerReward} */}
-            </Text>
+                <Text style={styles.description}>
+                    &emsp;&emsp;&emsp;&ensp;
+                    {question.description}
+                    {/* {answerReward} */}
+                </Text>
+            </View>
             {content}
             <View style={{ marginTop: PxFit(20) }}>
                 <Selections question={question} store={store} audit={audit} />
@@ -96,9 +118,9 @@ export default observer(({ store, question, audit }) => {
 const styles = StyleSheet.create({
     content: {},
     description: {
-        color: '#525252',
-        fontSize: PxFit(16),
-        lineHeight: PxFit(28),
+        color: '#666666',
+        fontSize: Font(16),
+        lineHeight: PxFit(26),
     },
     imageCover: {
         marginTop: PxFit(Theme.itemSpace),
@@ -113,15 +135,15 @@ const styles = StyleSheet.create({
     },
     videoCover: {
         marginTop: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH - 60,
-        height: (SCREEN_WIDTH * 9) / 16,
+        width: Device.WIDTH - 60,
+        height: (Device.WIDTH * 9) / 16,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#000',
     },
     video: {
-        width: SCREEN_WIDTH - PxFit(24),
-        height: (SCREEN_WIDTH - PxFit(24)) * 0.65,
+        width: Device.WIDTH - PxFit(40),
+        height: (Device.WIDTH - PxFit(40)) * 0.65,
     },
     audioContainer: {
         marginTop: PxFit(Theme.itemSpace),
@@ -151,5 +173,5 @@ const styles = StyleSheet.create({
         paddingVertical: PxFit(5),
     },
     userItemText: { fontSize: PxFit(14), color: '#212121' },
-    userName: { fontSize: PxFit(14), color: '#212121', paddingHorizontal: PxFit(5) },
+    userName: { fontSize: Font(13), color: '#424242', paddingHorizontal: PxFit(5) },
 });

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { StyleSheet, ImageBackground, View, Text, ScrollView, BackHandler } from 'react-native';
 import { PageContainer, Row } from 'components';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
 import { observer, app } from 'store';
 import RepeatCountDown from './components/RepeatCountDown';
 import QuestionBody from './components/QuestionBody';
@@ -15,8 +14,8 @@ import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
 import { playSound } from './playSound';
 
-const width = SCREEN_WIDTH / 3;
-const height = ((SCREEN_WIDTH / 3) * 123) / 221;
+const width = Device.WIDTH / 3;
+const height = ((Device.WIDTH / 3) * 123) / 221;
 
 const compete = observer(() => {
     const navigation = useNavigation();

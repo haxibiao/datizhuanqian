@@ -1,11 +1,5 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
-import { Theme, PxFit, WPercent } from 'utils';
-import { app } from 'store';
-
-// interface Props {
-//     earnings: number;
-// }
 
 const ProfitRemind = props => {
     const onPress = useCallback(() => {
@@ -27,7 +21,7 @@ const ProfitRemind = props => {
     );
 };
 
-const OVERLAY_WIDTH = WPercent(76);
+const OVERLAY_WIDTH = Percent(76);
 const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 600) / 480;
 
 const styles = StyleSheet.create({

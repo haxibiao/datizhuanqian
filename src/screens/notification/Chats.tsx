@@ -1,9 +1,8 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import { SafeText, Row, Badge, Avatar, StatusView, CustomRefreshControl } from '@src/components';
-import { syncGetter } from '@src/common';
+
 import { useQuery, GQL } from '@src/apollo';
-import { Theme, PxFit } from '@src/utils';
 import { app } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 
@@ -15,16 +14,16 @@ const Chat = ({ chat }) => {
     return (
         <TouchableOpacity style={styles.notifyItem} onPress={() => navigation.navigate('Chat', { chat, user })}>
             <TouchableOpacity style={styles.avatar} onPress={() => navigation.navigate('User', { user })}>
-                <Avatar source={syncGetter('avatar', user)} userId={user.id} size={PxFit(50)} />
+                <Avatar source={Helper.syncGetter('avatar', user)} userId={user.id} size={PxFit(50)} />
             </TouchableOpacity>
             <View style={styles.itemContent}>
                 <Row style={styles.itemContentTop}>
-                    <SafeText style={styles.itemName}>{syncGetter('name', user)}</SafeText>
-                    <SafeText style={styles.timeAgo}>{syncGetter('last_message.created_at', chat)}</SafeText>
+                    <SafeText style={styles.itemName}>{Helper.syncGetter('name', user)}</SafeText>
+                    <SafeText style={styles.timeAgo}>{Helper.syncGetter('last_message.created_at', chat)}</SafeText>
                 </Row>
                 <Row style={styles.itemContentBottom}>
                     <SafeText style={styles.lastMessage} numberOfLines={1}>
-                        {syncGetter('last_message.body.text', chat)}
+                        {Helper.syncGetter('last_message.body.text', chat)}
                     </SafeText>
                     <Badge
                         count={chat.unreads_count}
@@ -49,7 +48,7 @@ const Chats = props => {
 
     const chats = useMemo(() => {
         props.updateUnread();
-        return syncGetter('chats', data) || [];
+        return Helper.syncGetter('chats', data) || [];
     }, [data]);
 
     useEffect(() => {
@@ -98,7 +97,7 @@ const Chats = props => {
 //             offset: chats.current.length,
 //         },
 //         updateQuery: (prev, { fetchMoreResult }) => {
-//             const newChats = syncGetter('chats', fetchMoreResult);
+//             const newChats = Helper.syncGetter('chats', fetchMoreResult);
 //             if (Array.isArray(newChats) && newChats.length > 0) {
 //                 return Object.assign({}, prev, {
 //                     data: [...prev.chats, ...newChats],
@@ -123,7 +122,7 @@ const Chats = props => {
 //             },
 //         });
 //     });
-//     if (Array.isArray(syncGetter('chats', res))) {
+//     if (Array.isArray(Helper.syncGetter('chats', res))) {
 //         setChats(chats => {
 //             offset.current += res.chats.length;
 //             return chats.concat(res.chats);

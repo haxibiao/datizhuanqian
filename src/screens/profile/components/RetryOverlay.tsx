@@ -2,13 +2,9 @@
  * @Author: Gaoxuan
  * @Date:   2019-03-21 16:28:10
  */
-import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-
-import { TouchFeedback, Button, Row } from 'components';
-
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
-
+import React from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { TouchFeedback, Button } from 'components';
 import { Overlay } from 'teaset';
 import { ad } from 'native';
 import { playVideo } from 'common';
@@ -35,7 +31,7 @@ class RetryOverlay {
                                 <Text style={{ fontSize: PxFit(15) }}>看视频即可重新上传</Text>
                             </View>
                             <View>
-                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
+                                <ad.FeedAd adWidth={Device.WIDTH - PxFit(48)} />
                             </View>
 
                             <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: 10 }}>
@@ -77,14 +73,14 @@ class RetryOverlay {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     content: {
-        width: SCREEN_WIDTH - PxFit(48),
+        width: Device.WIDTH - PxFit(48),
         borderRadius: PxFit(6),
         backgroundColor: '#FFF',
         alignItems: 'center',
@@ -112,12 +108,12 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.themeRed,
         borderRadius: PxFit(19),
         height: PxFit(38),
-        width: (SCREEN_WIDTH * 5) / 12,
+        width: (Device.WIDTH * 5) / 12,
     },
     line: {
         backgroundColor: Theme.theme,
         height: PxFit(0.5),
-        width: SCREEN_WIDTH / 4,
+        width: Device.WIDTH / 4,
     },
 });
 

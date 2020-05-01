@@ -1,20 +1,17 @@
 import JAnalytics from 'janalytics-react-native';
-import service from 'service';
+import { Matomo } from 'native';
 
-//tab 点击
 export const pageViewTrack = props => {
+    /* 首页tab route对象中 routeName为中文，无trackName */
     const { error, route } = props;
     const trackName = Helper.syncGetter('params.trackName', route);
     const routeName = route.routeName == '答题' ? '首页题库' : route.routeName;
+    const name = `进入${trackName || routeName}页`;
+    //极光统计自页面行为计数
     JAnalytics.startLogPageView({
-        pageName: `进入${trackName || routeName}页`,
+        pageName: name,
     });
 
-    service.dataReport({
-        data: {
-            category: '用户行为',
-            action: `enter_the_${trackName ? route.routeName : 'Main'}_page`,
-            name: `进入${trackName || routeName}页`,
-        },
-    });
+    //matomo 数据上报
+    Matomo.trackEvent('页面行为', name, name, 1);
 };

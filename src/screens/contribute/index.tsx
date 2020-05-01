@@ -9,10 +9,8 @@ import {
     beginnerGuidance,
     SetQuestionGuidance,
 } from 'components';
-import { Theme, PxFit } from 'utils';
-import { useApolloClient, useMutation, GQL } from 'apollo';
+import { useApolloClient, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
-import { syncGetter, exceptionCapture } from 'common';
 import localStore from './ContributeStore';
 import Rules from './components/Rules';
 import MediaSelect from './components/MediaSelect';
@@ -25,7 +23,7 @@ import { Provider } from 'mobx-react';
 import service from 'service';
 import { Overlay } from 'teaset';
 
-export default observer(props => {
+export default observer(() => {
     const client = useApolloClient();
     const navigation = useNavigation();
     const store = useRef(new localStore()).current;
@@ -58,7 +56,7 @@ export default observer(props => {
         async explanation_id => {
             let { variables } = store;
             const promiseFn = () => {
-                return client.mutate({
+                return app.mutationClient.mutate({
                     mutation: GQL.createQuestionMutation,
                     variables: {
                         data: {
@@ -69,46 +67,39 @@ export default observer(props => {
                 });
             };
 
-            const [error, result] = await exceptionCapture(promiseFn);
+            const [error] = await Helper.exceptionCapture(promiseFn);
             if (error) {
                 onError(error.message || '创建失败');
             } else {
                 onCompleted();
             }
         },
-        [client, onCompleted],
+        [app.mutationClient, onCompleted],
     );
 
     const createExplanation = useCallback(
         async explanation => {
             const promiseFn = () => {
-                return client.mutate({
+                return app.mutationClient.mutate({
                     mutation: GQL.createExplanationMutation,
                     variables: explanation,
                 });
             };
 
-            const [error, result] = await exceptionCapture(promiseFn);
+            const [error, result] = await Helper.exceptionCapture(promiseFn);
             if (error) {
                 onError(error.message || '题目解析提交失败');
             } else {
-                createQuestion(syncGetter('data.createExplanation.id', result) || null);
+                createQuestion(Helper.syncGetter('data.createExplanation.id', result) || null);
             }
         },
-        [client, createQuestion],
+        [app.mutationClient, createQuestion],
     );
 
     const showRules = useCallback(async () => {
         let contributeRuleRead = (await storage.getItem(keys.contributeRuleRead)) || false;
         let overlayRef;
         if (!contributeRuleRead) {
-            let overlayView = (
-                <Overlay.View animated ref={ref => (overlayRef = ref)}>
-                    <View style={styles.overlayInner}>
-                        <Rules hide={() => overlayRef.close()} />
-                    </View>
-                </Overlay.View>
-            );
         }
     }, []);
 
@@ -133,17 +124,6 @@ export default observer(props => {
         });
 
         showRules();
-
-        service.dataReport({
-            data: {
-                category: '用户行为',
-                action: 'user_click_contribute_screen',
-                name: '进入出题页面',
-            },
-            callback: result => {
-                console.warn('result', result);
-            },
-        });
     }, []);
 
     const {
@@ -302,7 +282,7 @@ const styles = StyleSheet.create({
     },
     scrollStyle: {
         flexGrow: 1,
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + 50,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT + 50,
     },
     question: {
         backgroundColor: '#fff',

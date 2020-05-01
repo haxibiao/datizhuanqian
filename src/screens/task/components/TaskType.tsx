@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Linking } from 'react-native';
-import { Theme, SCREEN_WIDTH, PxFit, ISIOS } from 'utils';
-
 import TaskItem from './TaskItem';
 import { playVideo } from 'common';
 import { config, app, observer } from 'store';
@@ -11,8 +9,6 @@ interface Props {
     tasks: Array<object>;
     typeName: String;
     userData: User;
-    setLoading: Function;
-    setUnLoading: Function;
     navigation: any;
 }
 
@@ -42,7 +38,7 @@ interface Level {
 
 const TaskType = observer((props: Props) => {
     const [, setTaskTypeHeight] = useState(70);
-    const { typeName, tasks, userData, setLoading, setUnLoading, navigation } = props;
+    const { typeName, tasks, userData, navigation } = props;
 
     const handler = (task: Task) => {
         //TODO: 后端无业务逻辑的任务需完善task.route
@@ -86,7 +82,7 @@ const TaskType = observer((props: Props) => {
                 Helper.middlewareNavigate('Share');
             case 7:
                 if (app.firstReadSpiderVideoTask) {
-                    Linking.openURL(ISIOS ? 'itms-apps://itunes.apple.com/app/id1142110895' : 'snssdk1128://');
+                    Linking.openURL(Device.IOS ? 'itms-apps://itunes.apple.com/app/id1142110895' : 'snssdk1128://');
                 } else {
                     Helper.middlewareNavigate('SpiderVideoTask');
                     app.setReadSpiderVideoTask(true);
@@ -121,8 +117,6 @@ const TaskType = observer((props: Props) => {
                                     handler(task);
                                 }}
                                 task={task}
-                                setLoading={setLoading}
-                                setUnLoading={setUnLoading}
                             />
                         );
                     }
@@ -137,7 +131,7 @@ const TaskType = observer((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Theme.white,
-        borderRadius: PxFit(10),
+        // borderRadius: PxFit(10),
     },
     badge: {
         backgroundColor: Theme.theme,
@@ -146,13 +140,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     header: {
-        marginHorizontal: PxFit(15),
+        marginHorizontal: PxFit(22),
         paddingVertical: PxFit(10),
     },
     text: {
-        fontSize: PxFit(18),
-        fontWeight: '500',
-        color: Theme.black,
+        fontSize: Font(18),
+        fontWeight: 'bold',
+        color: '#333333',
     },
 });
 

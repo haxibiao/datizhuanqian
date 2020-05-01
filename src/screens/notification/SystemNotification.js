@@ -5,8 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
-import { PageContainer, ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
-import { Theme, PxFit } from 'utils';
+import { PageContainer, ListFooter, StatusView, CustomRefreshControl } from 'components';
 
 import { Query, withApollo, GQL } from 'apollo';
 import { app } from 'store';
@@ -53,9 +52,9 @@ class SystemNotification extends Component {
                     }}
                     fetchPolicy="network-only">
                     {({ data, error, loading, refetch, fetchMore }) => {
-                        if (error) return <ErrorView onPress={refetch} />;
-                        if (loading) return <LoadingSpinner />;
-                        if (!(data && data.notifications.length > 0)) return <EmptyView />;
+                        if (error) return <StatusView.ErrorView onPress={refetch} />;
+                        if (loading) return <StatusView.LoadingSpinner />;
+                        if (!(data && data.notifications.length > 0)) return <StatusView.EmptyView />;
                         return (
                             <FlatList
                                 style={{ backgroundColor: Theme.lightBorder }}

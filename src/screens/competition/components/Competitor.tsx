@@ -1,11 +1,10 @@
-import React, { useMemo, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, ImageBackground, Image, Animated } from 'react-native';
-import { Avatar, Row, Center, Iconfont } from '@src/components';
-import { PxFit, SCREEN_WIDTH } from '@src/utils';
+import React, { useMemo, useEffect } from 'react';
+import { StyleSheet, ImageBackground, Animated } from 'react-native';
+import { Avatar } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { observer, app } from 'store';
+import { observer } from 'store';
 
-const width = SCREEN_WIDTH / 2 + PxFit(60);
+const width = Device.WIDTH / 2 + PxFit(60);
 const height = (width * 150) / 492;
 
 const competitor = observer(props => {
@@ -30,7 +29,7 @@ const competitor = observer(props => {
                 {
                     translateX: animation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [theLeft ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                        outputRange: [theLeft ? -Device.WIDTH : Device.WIDTH, 0],
                         extrapolate: 'clamp',
                     }),
                 },
@@ -66,14 +65,14 @@ const styles = StyleSheet.create({
     },
     leftUser: {
         alignItems: 'flex-end',
-        height: ((SCREEN_WIDTH / 3) * 123) / 221,
+        height: ((Device.WIDTH / 3) * 123) / 221,
         justifyContent: 'center',
-        width: SCREEN_WIDTH / 3,
+        width: Device.WIDTH / 3,
     },
     rightUser: {
-        height: ((SCREEN_WIDTH / 3) * 123) / 221,
+        height: ((Device.WIDTH / 3) * 123) / 221,
         justifyContent: 'center',
-        width: SCREEN_WIDTH / 3,
+        width: Device.WIDTH / 3,
     },
 });
 

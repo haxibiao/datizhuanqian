@@ -1,120 +1,144 @@
-/*
- * @Author: Gaoxuan
- * @Date:   2019-03-21 16:28:10
- */
-import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-
-import { TouchFeedback, Button, Row } from 'components';
-
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+import React, { Fragment, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 
 import { Overlay } from 'teaset';
+
+import { TouchFeedback, Iconfont, Row, Button } from '@src/components';
 import { ad } from 'native';
 import { playVideo } from 'common';
+import { app } from '@src/store';
 
 interface Props {
-    title: string;
-    rewardVideo: boolean;
+    handler: Function;
 }
+let OverlayKey: any = null;
 
-class AuditResultOverlay {
-    static OverlayKey: any;
-    static show(props: Props) {
-        const { title, rewardVideo } = props;
+const AuditResultOverlay = props => {
+    const { handler } = props;
+    const [adShow, setAdShow] = useState(false);
+    return (
+        <View style={styles.container}>
+            <View
+                style={[
+                    styles.content,
+                    adShow ? {} : { borderBottomLeftRadius: PxFit(10), borderBottomRightRadius: PxFit(10) },
+                ]}>
+                <TouchFeedback style={styles.operation} onPress={hide}>
+                    <Iconfont name={'close'} color={'#D8D8D8'} size={Font(16)} />
+                </TouchFeedback>
+                <View style={{ alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center' }}>
+                        <Image source={require('@src/assets/images/bg_overlay_top.png')} style={styles.headerImage} />
+                    </View>
 
-        const overlayView = (
-            <Overlay.View animated>
-                <View style={styles.container}>
-                    <View style={styles.content}>
-                        <View>
-                            <View style={{ alignItems: 'center' }}>
-                                <Image
-                                    source={require('../../../assets/images/money_.png')}
-                                    style={styles.headerImage}
-                                />
-                            </View>
-                            <View style={styles.wrap}>
-                                <Text style={{ fontSize: PxFit(15) }}>感谢您的审题意见</Text>
-                                <View style={{ marginTop: PxFit(15) }}>
-                                    <Text style={styles.rewordText}>正在发放审题辛苦奖励</Text>
-                                    <Row>
-                                        <Text style={styles.rewordText}>退出将错失领取</Text>
-                                        <Row style={styles.reword}>
-                                            <Image
-                                                source={require('../../../assets/images/diamond.png')}
-                                                style={{ width: PxFit(18), height: PxFit(18) }}
-                                            />
-                                            <Text style={styles.rewordText}>{`+6`}</Text>
-                                        </Row>
-                                        <Row style={styles.reword}>
-                                            <Image
-                                                source={require('../../../assets/images/gongxian.png')}
-                                                style={{ width: PxFit(14), height: PxFit(14) }}
-                                            />
-                                            <Text style={styles.rewordText}>{`+1`}</Text>
-                                        </Row>
-                                        <Text style={styles.rewordText}>奖励的机会</Text>
-                                    </Row>
-                                </View>
-                            </View>
-
-                            <View>
-                                <ad.FeedAd adWidth={SCREEN_WIDTH - PxFit(48)} />
-                            </View>
-
-                            <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: 10 }}>
-                                <Button
-                                    style={styles.button}
-                                    textColor={Theme.white}
-                                    title={'看视频领奖励'}
-                                    onPress={() => {
-                                        playVideo({
-                                            type: 'Audit',
-                                        });
-                                        AuditResultOverlay.hide();
-                                    }}
-                                />
-
-                                <TouchFeedback
-                                    style={{ paddingTop: 10 }}
-                                    onPress={() => {
-                                        AuditResultOverlay.hide();
-                                    }}>
-                                    <Text style={{ color: Theme.grey }}>{'放弃奖励'}</Text>
-                                </TouchFeedback>
-                            </View>
+                    <View style={styles.wrap}>
+                        <Text style={{ fontSize: Font(16), textAlign: 'center', fontWeight: 'bold' }}>
+                            感谢您的审题意见
+                        </Text>
+                        <View style={styles.rewardContainer}>
+                            <Text style={{ color: Theme.grey }}>可额外获得</Text>
+                            <Text style={{ color: Theme.theme, paddingLeft: PxFit(3) }}>
+                                6智慧点
+                                <Text style={{ color: Theme.theme }}>{' 1贡献点'}</Text>
+                            </Text>
                         </View>
                     </View>
+                    <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: PxFit(15) }}>
+                        <Button
+                            style={styles.button}
+                            textColor={'#623605'}
+                            title={'看视频领取'}
+                            onPress={() => {
+                                playVideo({
+                                    type: 'Audit',
+                                });
+                                hide();
+                            }}
+                        />
+                    </View>
+                    <Row style={{ justifyContent: 'center' }}>
+                        <Text
+                            style={{
+                                fontSize: Font(12),
+                                color: '#999999',
+                            }}>
+                            小提示:随意审题是会被关小黑屋的哦
+                        </Text>
+                    </Row>
                 </View>
-            </Overlay.View>
-        );
-        this.OverlayKey = Overlay.show(overlayView);
-    }
+            </View>
+            {adShow && (
+                <Image
+                    source={require('@src/assets/images/bg_feed_overlay_line.png')}
+                    style={{
+                        width: Device.WIDTH - PxFit(48),
+                        height: ((Device.WIDTH - PxFit(48)) * 30) / 640,
+                    }}
+                />
+            )}
 
-    static hide() {
-        Overlay.hide(this.OverlayKey);
-    }
-}
+            <View
+                style={{
+                    width: Device.WIDTH - PxFit(48),
+                    backgroundColor: '#FFF',
+                    borderBottomLeftRadius: PxFit(10),
+                    borderBottomRightRadius: PxFit(10),
+                }}>
+                <ad.FeedAd
+                    adWidth={Device.WIDTH - PxFit(50)}
+                    onAdShow={() => {
+                        setAdShow(true);
+                    }}
+                />
+            </View>
+        </View>
+    );
+};
+
+export const show = (props: Props) => {
+    const overlayView = (
+        <Overlay.View animated>
+            <AuditResultOverlay {...props} />
+        </Overlay.View>
+    );
+    OverlayKey = Overlay.show(overlayView);
+};
+export const hide = () => {
+    Overlay.hide(OverlayKey);
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         backgroundColor: 'rgba(255,255,255,0)',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    operation: {
+        position: 'absolute',
+        right: PxFit(0),
+        top: PxFit(0),
+        paddingTop: PxFit(10),
+        paddingHorizontal: PxFit(15),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
     content: {
-        width: SCREEN_WIDTH - PxFit(48),
-        borderRadius: PxFit(6),
+        width: Device.WIDTH - PxFit(48),
+        borderTopLeftRadius: PxFit(10),
+        borderTopRightRadius: PxFit(10),
         backgroundColor: '#FFF',
         alignItems: 'center',
+        paddingBottom: PxFit(15),
     },
     wrap: {
         alignItems: 'center',
-        paddingBottom: 10,
+        marginTop: PxFit(15),
+        paddingBottom: PxFit(15),
+        paddingHorizontal: PxFit(25),
     },
     reword: {
         marginLeft: PxFit(2),
@@ -127,21 +151,28 @@ const styles = StyleSheet.create({
         // fontFamily: '',
     },
     headerImage: {
-        width: 120,
-        height: 120,
-        marginTop: -60,
+        width: (Device.WIDTH * 0.32 * 487) / 375,
+        height: Device.WIDTH * 0.32,
+        marginTop: PxFit(-75),
     },
     button: {
-        backgroundColor: Theme.themeRed,
+        backgroundColor: '#FCE03D',
         borderRadius: PxFit(19),
         height: PxFit(38),
-        width: (SCREEN_WIDTH * 5) / 12,
+        width: Device.WIDTH * 0.6,
     },
+    rewardContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 5,
+    },
+
     line: {
         backgroundColor: Theme.theme,
         height: PxFit(0.5),
-        width: SCREEN_WIDTH / 4,
+        width: Device.WIDTH / 4,
     },
 });
 
-export default AuditResultOverlay;
+export default { show, hide };

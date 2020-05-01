@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Theme, PxFit, ISAndroid } from '@src/utils';
 import { PageContainer, PullChooser, TouchFeedback, Iconfont } from '@src/components';
 import { observer, app } from '@src/store';
 import { GiftedChat, Bubble, Send, Composer, InputToolbar, SystemMessage } from 'react-native-gifted-chat';
@@ -99,8 +98,8 @@ const index = observer(() => {
         <PageContainer
             white
             title={user.name}
-            autoKeyboardInsets={ISAndroid}
-            // topInsets={ISAndroid ? 50 : -Theme.statusBarHeight}
+            autoKeyboardInsets={Device.Android}
+            // topInsets={Device.Android ? 50 : -Device.statusBarHeight}
             rightView={
                 <TouchFeedback style={styles.optionsButton} onPress={showOptions}>
                     <Iconfont name="more-horizontal" color="#000" size={PxFit(18)} />

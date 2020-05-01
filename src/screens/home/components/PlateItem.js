@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, FlatList } from 'react-native';
 import { Iconfont, TouchFeedback } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class PlateItem extends Component {
     constructor(props) {
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
     item: {
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: (SCREEN_WIDTH - PxFit(75)) / 3.5,
+        minWidth: (Device.WIDTH - PxFit(75)) / 3.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
         backgroundColor: '#FAF0E6',

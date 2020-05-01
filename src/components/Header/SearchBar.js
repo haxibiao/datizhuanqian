@@ -9,7 +9,6 @@ import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Iconfont from '../Iconfont';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import CustomTextInput from '../Basics/CustomTextInput';
-import { PxFit, Theme } from '../../utils';
 import { observer } from 'mobx-react';
 
 @observer

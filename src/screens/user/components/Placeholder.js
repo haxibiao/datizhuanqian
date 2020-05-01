@@ -6,8 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Iconfont, Row } from 'components';
-import { Theme, PxFit, NAVBAR_HEIGHT } from 'utils';
+import { Row } from 'components';
 
 class Placeholder extends Component {
     render() {
@@ -256,7 +255,5 @@ class Placeholder extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});
 
 export default Placeholder;

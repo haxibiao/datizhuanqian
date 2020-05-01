@@ -14,7 +14,6 @@ import {
     beginnerGuidance,
     VideoTaskGuidance,
 } from 'components';
-import { Config, SCREEN_WIDTH, SCREEN_HEIGHT, Theme, ISIOS } from 'utils';
 import PlateItem from './components/PlateItem';
 
 import { observer, app, keys, storage } from 'store';
@@ -64,7 +63,7 @@ class index extends Component {
 
         this.registerTimer = setTimeout(async () => {
             // 再次请求权限防止未获取到手机号
-            const phone = ISIOS ? '' : await Util.getPhoneNumber();
+            const phone = Device.IOS ? '' : await Util.getPhoneNumber();
             const userCache = await storage.getItem(keys.userCache);
 
             if (!app.login && !userCache) {
@@ -259,7 +258,7 @@ class index extends Component {
                     backgroundColor: '#fff',
                 }}
                 backButtonColor={Theme.defaultTextColor}
-                rightView={!ISIOS ? <TimeReward navigation={this.props.navigation} /> : null}>
+                rightView={!Device.IOS ? <TimeReward navigation={this.props.navigation} /> : null}>
                 {this._renderCategoryList()}
             </PageContainer>
         );
@@ -277,9 +276,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,0)',
         flex: 1,
-        height: SCREEN_HEIGHT,
+        height: Device.HEIGHT,
         justifyContent: 'center',
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
     },
 });
 

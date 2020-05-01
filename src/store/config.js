@@ -6,7 +6,6 @@ import { Dimensions, Platform } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { observable, action } from 'mobx';
 import { Storage, SystemSettings } from './storage';
-import Config from '../utils/Config';
 import { NavigationActions } from 'react-navigation';
 
 import NetInfo from '@react-native-community/netinfo';

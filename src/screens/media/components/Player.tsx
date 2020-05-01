@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Video from 'react-native-video';
 import { Iconfont } from 'components';
 import { observer } from 'store';
-import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 import VideoStore from '../VideoStore';
 import VideoLoading from './VideoLoading';
 import { useNavigation } from 'react-navigation-hooks';
@@ -18,8 +17,8 @@ export default observer(props => {
     const [paused, setPause] = useState(true);
     const [loading, setLoaded] = useState(true);
     const resizeMode = useMemo(() => {
-        const videoHeight = (media && media.height) || SCREEN_HEIGHT;
-        const videoWidth = (media && media.width) || SCREEN_WIDTH;
+        const videoHeight = (media && media.height) || Device.HEIGHT;
+        const videoWidth = (media && media.width) || Device.WIDTH;
         return videoHeight > videoWidth * 1.3 ? 'cover' : 'contain';
     }, [media]);
 

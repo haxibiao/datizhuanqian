@@ -1,0 +1,12 @@
+query GuestLikeCategoriesQuery($offset: Int, $limit: Int) {
+    guestLikeCategories(offset: $offset, limit: $limit) {
+        id
+        icon
+        name
+        description
+        is_official
+        questions_count
+        answers_count
+        tips
+    }
+}

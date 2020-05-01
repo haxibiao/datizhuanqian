@@ -12,7 +12,7 @@ import Row from '../Container/Row';
 
 import { Overlay } from 'teaset';
 
-import DownLoadApk from '../Utils/DownLoadApk';
+import DownLoadApk from '../Other/DownLoadApk';
 
 class DownloadApkIntro {
     static OverlayKey: any;
@@ -23,7 +23,7 @@ class DownloadApkIntro {
                 <View style={styles.container}>
                     <View style={styles.content}>
                         <Row style={{ marginTop: PxFit(25) }}>
-                            <Image source={require('@src/assets/images/dongdezhuan.png')} style={styles.icon} />
+                            <Image source={require('@src/assets/images/ic_dongdezhuan.png')} style={styles.icon} />
                             <View style={{ marginLeft: PxFit(5) }}>
                                 <Text style={styles.title}>懂得赚</Text>
                                 <Text style={styles.appInfo} numberOfLines={1}>

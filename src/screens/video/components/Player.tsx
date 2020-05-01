@@ -2,7 +2,7 @@ import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Video from 'react-native-video';
 import { Iconfont } from 'components';
-import { useDoubleAction, syncGetter } from 'common';
+import { useDoubleAction } from 'common';
 import { observer } from 'store';
 import { useApolloClient } from '@src/apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -12,7 +12,7 @@ import Operation from './Operation';
 import { useNavigation } from 'react-navigation-hooks';
 import { Overlay } from 'teaset';
 
-export default observer(props => {
+export default observer((props) => {
     const { media, index } = props;
     const navigation = useNavigation();
     const client = useApolloClient();
@@ -34,7 +34,7 @@ export default observer(props => {
         const MoreOperationOverlay = (
             <Overlay.PopView
                 style={styles.overlay}
-                ref={ref => (overlayRef = ref)}
+                ref={(ref) => (overlayRef = ref)}
                 containerStyle={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
                 <ApolloProvider client={client}>
                     <Operation
@@ -51,7 +51,7 @@ export default observer(props => {
     }, [client, media]);
 
     const togglePause = useCallback(() => {
-        setPause(v => !v);
+        setPause((v) => !v);
     }, []);
 
     const giveALike = useCallback(() => {
@@ -122,7 +122,7 @@ export default observer(props => {
                     resizeMode={resizeMode}
                     paused={paused}
                     source={{
-                        uri: syncGetter('video.url', media),
+                        uri: Helper.syncGetter('video.url', media),
                     }}
                     style={styles.fullScreen}
                     rate={1} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
@@ -150,8 +150,8 @@ export default observer(props => {
 
 const styles = StyleSheet.create({
     bottom: {
-        backgroundColor: 'rgba(255,255,255,0.5)',
-        bottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        bottom: Device.HOME_INDICATOR_HEIGHT + PxFit(56),
         height: PxFit(1),
         left: 0,
         position: 'absolute',

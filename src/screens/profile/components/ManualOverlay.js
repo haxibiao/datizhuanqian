@@ -4,12 +4,10 @@
  */
 'use strict';
 
-import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import { Overlay } from 'teaset';
-import { SafeText, TouchFeedback, ItemSeparator, Iconfont } from '../../../components';
-
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Api } from '../../../utils';
+import { TouchFeedback } from '@src/components';
 
 class ManualOverly {
     static show(title, content) {
@@ -43,8 +41,8 @@ class ManualOverly {
 
 const styles = StyleSheet.create({
     actionSheetView: {
-        minHeight: SCREEN_HEIGHT / 3,
-        marginBottom: Theme.HOME_INDICATOR_HEIGHT,
+        minHeight: Device.HEIGHT / 3,
+        marginBottom: Device.HOME_INDICATOR_HEIGHT,
         overflow: 'hidden',
     },
     content: {

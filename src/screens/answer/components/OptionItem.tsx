@@ -5,7 +5,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class OptionItem extends Component {
     onPress = () => {

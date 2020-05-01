@@ -1,13 +1,12 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { PageContainer, Iconfont, CustomTextInput, ListFooter } from 'components';
-import { Theme, PxFit, NAVBAR_HEIGHT } from 'utils';
-import { syncGetter, exceptionCapture } from 'common';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { PageContainer, Iconfont, CustomTextInput, ListFooter, Loading } from 'components';
+
 import { storage, keys } from '@src/store';
 import { useApolloClient, GQL } from 'apollo';
 import { useNavigation } from 'react-navigation-hooks';
 import SearchRecord from './components/SearchRecord';
-import CategoryItem from './components/CategoryItem';
+import RecommendCategoryItem from './components/RecommendCategoryItem';
 
 const Search = () => {
     const navigation = useNavigation();
@@ -33,16 +32,19 @@ const Search = () => {
                     });
                 };
 
-                const [error, result] = await exceptionCapture(categoriesQuery);
-                const categoriesData = syncGetter('data.categories', result);
+                const [error, result] = await Helper.exceptionCapture(categoriesQuery);
+                const categoriesData = Helper.syncGetter('data.categories', result);
 
                 if (isCache) {
                     addRecord(trimmedKeyword);
+                    Loading.hide();
                 }
                 if (error) {
                     //
+                    Loading.hide();
                 } else if (Array.isArray(categoriesData)) {
                     setCategories(categoriesData);
+                    Loading.hide();
                 }
             }
         }, 400);
@@ -92,19 +94,21 @@ const Search = () => {
     }, []);
 
     return (
-        <PageContainer hiddenNavBar>
+        <View style={{ flex: 1 }}>
             <View style={styles.header}>
-                <TouchableOpacity activeOpacity={1} onPress={backButtonPress} style={styles.backButton}>
+                {/*  <TouchableOpacity activeOpacity={1} onPress={backButtonPress} style={styles.backButton}>
                     <Iconfont name="left" color={Theme.primaryTextColor} size={PxFit(21)} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={styles.inputContainer}>
+                    <Image style={styles.searchImage} source={require('@src/assets/images/ic_search_category.png')} />
                     <View style={styles.inputWrap}>
                         <CustomTextInput
                             value={keyword}
                             autoFocus
-                            placeholder="搜索题库"
+                            placeholder="搜索你感兴趣的题库"
                             onChangeText={onChangeText}
-                            style={{ flex: 1 }}
+                            TextColor={'#DDDDDD'}
+                            style={{ flex: 1, marginLeft: PxFit(6), fontSize: Font(12) }}
                         />
                     </View>
                     <TouchableOpacity style={styles.closeButton} activeOpacity={0.8} onPress={() => onChangeText('')}>
@@ -113,8 +117,12 @@ const Search = () => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => searchCategories(keyword, true)} style={styles.searchButton}>
-                    <Text style={styles.searchButtonText}>搜索</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                    style={styles.searchButton}>
+                    <Text style={styles.searchButtonText}>取消</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.container}>
@@ -124,7 +132,7 @@ const Search = () => {
                         contentContainerStyle={styles.contentStyle}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-                        renderItem={({ item }) => <CategoryItem category={item} />}
+                        renderItem={({ item }) => <RecommendCategoryItem category={item} />}
                         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
                         ListHeaderComponent={() => {
                             if (Array.isArray(categories)) {
@@ -164,7 +172,7 @@ const Search = () => {
                     <SearchRecord data={recordData} remove={removeRecord} search={search} />
                 )}
             </View>
-        </PageContainer>
+        </View>
     );
 };
 
@@ -177,23 +185,24 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         backgroundColor: '#fff',
         padding: PxFit(Theme.itemSpace),
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(20),
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT + PxFit(20),
     },
     itemSeparator: {
-        height: PxFit(1),
+        // height: PxFit(1),
         marginLeft: PxFit(70 + Theme.itemSpace),
         marginVertical: PxFit(20),
         backgroundColor: '#f0f0f0',
     },
     header: {
-        height: PxFit(NAVBAR_HEIGHT),
-        paddingTop: PxFit(Theme.statusBarHeight + 6),
+        height: Device.NAVBAR_HEIGHT,
+        paddingTop: PxFit(Device.statusBarHeight + 6),
         paddingBottom: PxFit(6),
         borderBottomWidth: PxFit(0.5),
         borderBottomColor: Theme.navBarSeparatorColor,
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
+        paddingHorizontal: PxFit(15),
     },
     backButton: {
         width: PxFit(45),
@@ -202,7 +211,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     searchButton: {
-        paddingHorizontal: PxFit(10),
+        paddingLeft: PxFit(15),
         alignSelf: 'stretch',
         justifyContent: 'center',
         textAlign: 'center',
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
         paddingRight: PxFit(7),
         backgroundColor: Theme.groundColour,
         borderRadius: PxFit(30),
-        overflow: 'hidden',
+        // overflow: 'hidden',
     },
     inputWrap: {
         flex: 1,
@@ -239,8 +248,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     searchButtonText: {
-        fontSize: PxFit(15),
-        color: Theme.secondaryColor,
+        fontSize: Font(14),
+        color: '#999999',
     },
     searchText: {
         fontSize: PxFit(13),
@@ -265,6 +274,10 @@ const styles = StyleSheet.create({
     },
     listFooter: {
         paddingTop: PxFit(Theme.itemSpace),
+    },
+    searchImage: {
+        height: PxFit(20),
+        width: PxFit(20),
     },
 });
 

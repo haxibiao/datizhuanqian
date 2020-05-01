@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions, Platform, View, Text, Image, TouchableWithoutFe
 import Iconfont from '../Iconfont';
 import WaveView from '../Container/WaveView';
 import GradientView from '../Basics/GradientView';
-import LoadingOverlay from '../Overlay/LoadingOverlay';
+import Loading from '../Overlay/Loading';
 
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import Sound from 'react-native-sound';
@@ -251,7 +251,7 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
 
     const complete = useCallback(async () => {
         if (completeRecording) {
-            LoadingOverlay.show({});
+            Loading.show();
             try {
                 const audioObj = await uploadAudio(audioFilePath);
                 console.log('audioObj :', audioObj);
@@ -263,7 +263,7 @@ export const Recorder = ({ style, onLayout, invisible, completeRecording, minimu
             } catch (error) {
                 Toast.show({ content: error.message || '上传失败，请重新上传' });
             }
-            LoadingOverlay.hide();
+            Loading.hide();
         }
     }, [audioFilePath]);
 

@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
-import { SCREEN_WIDTH, PxFit } from 'utils';
 import { PageContainer } from 'components';
 
 const SpiderVideoTask = () => {
-    const WIDTH = SCREEN_WIDTH - 30;
+    const WIDTH = Device.WIDTH - 30;
 
     return (
-        <PageContainer title='任务介绍' white>
+        <PageContainer title="任务介绍" white>
             <ScrollView style={{ flex: 1, paddingHorizontal: PxFit(15) }}>
                 <Image
                     source={require('@src/assets/images/spider_video_task1.png')}

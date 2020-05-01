@@ -1,18 +1,9 @@
-import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react';
-import { StyleSheet, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
+import React, { useRef, useMemo, useEffect, useCallback } from 'react';
+import { StyleSheet, View, Image, TouchableWithoutFeedback, Text } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
-import {
-    PageContainer,
-    TouchFeedback,
-    Iconfont,
-    ScrollTab,
-    beginnerGuidance,
-    VideoTaskGuidance,
-} from '@src/components';
-import { Theme, PxFit, SCREEN_WIDTH, SCREEN_HEIGHT, ISIOS, Config } from '@src/utils';
+import { PageContainer, beginnerGuidance, VideoTaskGuidance, UserAgreementOverlay } from '@src/components';
 import { observer, app, storage, keys, config } from '@src/store';
-import { Query, useQuery, GQL } from '@src/apollo';
-import { syncGetter } from '@src/common';
+import { useQuery, GQL } from '@src/apollo';
 import { Util } from 'native';
 import { when } from 'mobx';
 import { Overlay } from 'teaset';
@@ -26,21 +17,19 @@ import UserRewardOverlay from './components/UserRewardOverlay';
 import TimeReward from './components/TimeReward';
 import TagList from './TagList';
 import { useDetainment } from 'common';
-
 // 监听新用户登录
 when(
     () => app.me.isNewUser,
     () => {
         // 新手指导
-        !config.disableAd &&
-            beginnerGuidance({
-                guidanceKey: 'VideoTask',
-                GuidanceView: VideoTaskGuidance,
-            });
+        beginnerGuidance({
+            guidanceKey: 'VideoTask',
+            GuidanceView: VideoTaskGuidance,
+        });
     },
 );
 
-const index = observer(props => {
+const index = observer(() => {
     const navigation = useNavigation();
     const client = useApolloClient();
     const registerTimer = useRef();
@@ -55,7 +44,7 @@ const index = observer(props => {
     });
 
     const tags = useMemo(() => {
-        const tagsData = syncGetter('tags', data);
+        const tagsData = Helper.syncGetter('tags', data);
         if (Array.isArray(tagsData) && tagsData.length > 0) {
             // app.updateTagsCache(tagsData);
             return tagsData;
@@ -66,7 +55,7 @@ const index = observer(props => {
     }, [data, error, loading, app.tagsCache]);
 
     useEffect(() => {
-        const tagsData = syncGetter('tags', data);
+        const tagsData = Helper.syncGetter('tags', data);
         //更新缓存
         if (Array.isArray(tagsData) && tagsData.length > 0) {
             app.updateTagsCache(tagsData);
@@ -79,7 +68,7 @@ const index = observer(props => {
         const me = (await storage.getItem(keys.me)) || (await storage.getItem(keys.user));
 
         if (resetVersion !== Config.Version && me) {
-            client
+            app.mutationClient
                 .mutate({
                     mutation: GQL.signToken,
                     variables: {
@@ -92,7 +81,7 @@ const index = observer(props => {
                     app.updateUserCache(result.data.signInWithToken);
                 });
         }
-    }, [client]);
+    }, [app.mutationClient]);
 
     // 新用户奖励提示
     const loadUserReword = useCallback(
@@ -116,13 +105,13 @@ const index = observer(props => {
 
     // 身份信息、网络状态查询
     useEffect(() => {
-        const didFocusSubscription = navigation.addListener('didFocus', payload => {
+        const didFocusSubscription = navigation.addListener('didFocus', () => {
             if (app.login) {
                 client
                     .query({
                         query: GQL.UserWithdrawQuery,
                     })
-                    .then(({ data }) => {})
+                    .then(() => {})
                     .catch(error => {
                         console.log('error :', error);
                         const info = error.toString().indexOf('登录');
@@ -147,14 +136,19 @@ const index = observer(props => {
 
     useEffect(() => {
         resetUser();
-
         registerTimer.current = setTimeout(async () => {
             // 再次请求权限防止未获取到手机号
-            const phone = ISIOS ? '' : await Util.getPhoneNumber();
+            const phone = Device.IOS ? '' : await Util.getPhoneNumber();
             const userCache = await storage.getItem(keys.userCache);
 
             if (!app.login && !userCache && !config.disableAd) {
-                loadUserReword(phone);
+                if (!app.createUserAgreement && Config.AppStore == 'tencent') {
+                    UserAgreementOverlay.show({
+                        callback: () => loadUserReword(phone),
+                    });
+                } else {
+                    loadUserReword(phone);
+                }
             }
         }, 3000);
 
@@ -176,7 +170,7 @@ const index = observer(props => {
         JPushModule.addReceiveNotificationListener(receiveNotificationListener);
 
         // 监听打开通知事件
-        const openNotificationListener = map => {
+        const openNotificationListener = () => {
             navigation.navigate('PushNotification', {
                 content: push_content.current,
                 name: '官方提示',
@@ -194,12 +188,12 @@ const index = observer(props => {
     useDetainment(navigation);
 
     const Content = useMemo(() => {
-        if (tags) {
+        if (tags && tags.length > 0) {
             return (
                 <ScrollableTabView
                     prerenderingSiblingsNumber={0}
                     renderTabBar={() => <ScrollableTabBar {...scrollTabStyle} />}>
-                    {tags.map((tag, index) => {
+                    {tags.map(tag => {
                         return <TagList key={tag.id} tabLabel={tag.name} tag={tag} />;
                     })}
                 </ScrollableTabView>
@@ -211,14 +205,22 @@ const index = observer(props => {
 
     return (
         <PageContainer
-            title={Config.AppName}
             white
             isTopNavigator
-            leftView={!config.disableAd ? <TimeReward navigation={navigation} /> : null}
-            rightView={
+            navBarStyle={{
+                borderBottomWidth: PxFit(0),
+            }}
+            rightView={!config.disableAd ? <TimeReward navigation={navigation} /> : null}
+            leftView={
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
                     <View style={styles.searchButton}>
-                        <Image style={styles.searchImage} source={require('@src/assets/images/search.png')} />
+                        <Image
+                            style={styles.searchImage}
+                            source={require('@src/assets/images/ic_search_category.png')}
+                        />
+                        <Text style={{ marginLeft: PxFit(6), fontSize: Font(12), color: '#DDDDDD' }}>
+                            搜索你感兴趣的题库
+                        </Text>
                     </View>
                 </TouchableWithoutFeedback>
             }>
@@ -229,16 +231,17 @@ const index = observer(props => {
 
 const scrollTabStyle = {
     style: {
-        height: 41,
+        height: 51,
         borderColor: '#F6F6F6',
     },
     tabStyle: {
-        height: 40,
-        paddingLeft: 10,
-        paddingRight: 10,
+        height: 50,
+        paddingLeft: 2,
+        paddingRight: 2,
+        bottom: -5,
     },
     activeTextStyle: {
-        fontSize: PxFit(17),
+        fontSize: Font(20),
         fontWeight: 'bold',
         color: Theme.defaultTextColor,
     },
@@ -246,42 +249,52 @@ const scrollTabStyle = {
         color: Theme.defaultTextColor,
     },
     textStyle: {
-        fontSize: PxFit(15),
+        fontSize: Font(16),
     },
     underlineStyle: {
-        height: PxFit(2),
-        backgroundColor: Theme.watermelon,
+        height: PxFit(8),
+        borderRadius: PxFit(4),
+        // width:PxFit(40),
+        backgroundColor: '#FECE4D',
     },
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Theme.statusBarHeight,
+        marginTop: Device.statusBarHeight,
         backgroundColor: '#fff',
     },
     overlayInner: {
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,0)',
         flex: 1,
-        height: SCREEN_HEIGHT,
+        height: Device.HEIGHT,
         justifyContent: 'center',
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
     },
     placeholderStyle: {
         marginHorizontal: PxFit(Theme.itemSpace),
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT + PxFit(56),
     },
     searchButton: {
-        alignItems: 'flex-end',
         flex: 1,
-        justifyContent: 'center',
-        padding: PxFit(4),
+        marginTop: PxFit(14),
+        // alignItems: 'flex-end',
+        width: Device.WIDTH * 0.7,
+        height: PxFit(31),
+        borderWidth: PxFit(0.33),
+        borderColor: '#D8D8D8',
+        borderRadius: PxFit(20),
+        // justifyContent: 'center',
+        // padding: PxFit(4),
         paddingLeft: PxFit(10),
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     searchImage: {
-        height: PxFit(25),
-        width: PxFit(25),
+        height: PxFit(20),
+        width: PxFit(20),
     },
 });
 

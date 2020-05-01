@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Animated } from 'react-native';
 import { TouchFeedback, Iconfont, SafeText, Avatar, Row, PullChooser } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+
 import { compose, graphql, GQL } from 'apollo';
 
 import { withNavigation } from 'react-navigation';
@@ -180,7 +180,7 @@ class CommentItem extends Component<Props> {
                     </TouchFeedback>
                     <View
                         style={{
-                            width: SCREEN_WIDTH - (PxFit(42) + PxFit(34) + PxFit(Theme.itemSpace) * 2),
+                            width: Device.WIDTH - (PxFit(42) + PxFit(34) + PxFit(Theme.itemSpace) * 2),
                             marginLeft: PxFit(34),
                         }}>
                         <Row>

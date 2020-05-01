@@ -5,9 +5,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Platform, View, Text } from 'react-native';
-import { PxFit, Theme, ISAndroid } from '../../utils';
 
 import NetInfo from '@react-native-community/netinfo';
 

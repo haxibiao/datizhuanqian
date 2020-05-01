@@ -1,9 +1,11 @@
 import JAnalytics from 'janalytics-react-native';
-import service from 'service';
+import { Matomo } from 'native';
 
-//tab 点击
-export const adClickTrack = props => {
-    const { action, name } = props;
+//广告行为
+export const adClickTrack = (props: { name: any; value?: any }) => {
+    const { name, value } = props;
+
+    //极光统计自定义计数    id需要到极光后台创建
     JAnalytics.postEvent({
         type: 'count',
         id: '10003',
@@ -12,11 +14,6 @@ export const adClickTrack = props => {
         },
     });
 
-    service.dataReport({
-        data: {
-            category: '广告行为',
-            action: action,
-            name: name,
-        },
-    });
+    //matomo 数据上报
+    Matomo.trackEvent('广告行为', name, name, value || 1);
 };

@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SCREEN_WIDTH, ISIOS } from 'utils';
 import { KeyboardSpacer } from 'components';
 
 import Modal from 'react-native-modal';
@@ -26,13 +25,14 @@ class InputModal extends Component {
             count_comments,
             isPost,
             isSpider,
+            showCommentModal,
         } = this.props;
         return (
             <Modal
                 isVisible={visible}
                 onBackdropPress={hideModal}
                 backdropOpacity={0}
-                style={{ justifyContent: 'flex-end', width: SCREEN_WIDTH, margin: 0 }}
+                style={{ justifyContent: 'flex-end', width: Device.WIDTH, margin: 0 }}
                 onModalShow={() => {
                     this.textInput.focus();
                 }}
@@ -54,8 +54,9 @@ class InputModal extends Component {
                         count_comments={count_comments}
                         isPost={isPost}
                         isSpider={isSpider}
+                        showCommentModal={showCommentModal}
                     />
-                    {ISIOS && <KeyboardSpacer />}
+                    {Device.IOS && <KeyboardSpacer />}
                 </View>
             </Modal>
         );

@@ -2,9 +2,9 @@ import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { GQL, useMutation } from '@src/apollo';
 import { TouchFeedback } from '@src/components';
-import { PxFit, SCREEN_WIDTH, SCREEN_HEIGHT } from '@src/utils';
-import useReport from '@src/components/Utils/useReport';
+import useReport from '@src/components/Other/useReport';
 import VideoStore from '../VideoStore';
+import { app } from '@src/store';
 
 const MoreOperation = props => {
     const { options, target, type, onPressIn } = props;
@@ -14,6 +14,7 @@ const MoreOperation = props => {
         variables: {
             notlike_id: target.user.id,
         },
+        client: app.mutationClient,
         onCompleted: data => {
             Toast.show({
                 content: '操作成功，将减少此类型内容的推荐',
@@ -98,10 +99,10 @@ const styles = StyleSheet.create({
         marginTop: PxFit(10),
     },
     optionsContainer: {
-        height: SCREEN_HEIGHT,
+        height: Device.HEIGHT,
         justifyContent: 'flex-end',
-        paddingBottom: SCREEN_HEIGHT / 2,
-        width: SCREEN_WIDTH,
+        paddingBottom: Device.HEIGHT / 2,
+        width: Device.WIDTH,
     },
     title: {
         color: '#fff',

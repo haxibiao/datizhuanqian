@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { Iconfont } from '@src/components';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+
 import OptionItem from './OptionItem';
 import SongOption from './SongOption';
 
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bannerImage: {
-        width: SCREEN_WIDTH / 2,
-        height: ((SCREEN_WIDTH / 2) * 75) / 362,
+        width: Device.WIDTH / 2,
+        height: ((Device.WIDTH / 2) * 75) / 362,
     },
 });
 

@@ -7,7 +7,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 
 import { TouchFeedback, PlaceholderImage, OverlayViewer, Iconfont } from 'components';
-import { SCREEN_WIDTH, Theme, PxFit } from 'utils';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 class QuestionBody extends Component {
@@ -47,7 +46,7 @@ class QuestionBody extends Component {
 
     showImage = image => {
         let { width, height } = image;
-        let style = Helper.singleImageResponse(width, height, SCREEN_WIDTH - PxFit(60));
+        let style = Helper.singleImageResponse(width, height, Device.WIDTH - PxFit(60));
         return (
             <TouchFeedback
                 style={{ marginTop: PxFit(Theme.itemSpace), overflow: 'hidden' }}
@@ -126,8 +125,8 @@ const styles = StyleSheet.create({
     },
     videoCover: {
         marginTop: PxFit(Theme.itemSpace),
-        width: SCREEN_WIDTH - 60,
-        height: (SCREEN_WIDTH * 9) / 16,
+        width: Device.WIDTH - 60,
+        height: (Device.WIDTH * 9) / 16,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#000',
@@ -136,8 +135,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         top: 0,
-        width: SCREEN_WIDTH - 60,
-        height: (SCREEN_WIDTH * 9) / 16,
+        width: Device.WIDTH - 60,
+        height: (Device.WIDTH * 9) / 16,
     },
     amplification: {
         position: 'absolute',

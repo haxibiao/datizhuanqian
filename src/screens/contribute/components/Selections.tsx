@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
-import { Theme, PxFit } from '@src/utils';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { observer, useQuestionStore } from '../store';
 import SelectionItem from './SelectionItem';
 
-export default observer(props => {
+export default observer(() => {
     const store = useQuestionStore();
     const { selections, setSelectionText, setAnswers } = store;
     return (

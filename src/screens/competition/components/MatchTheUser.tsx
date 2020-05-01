@@ -1,11 +1,10 @@
 import React, { useMemo, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, ImageBackground, Image, Animated } from 'react-native';
-import { Avatar, Row, Center, Iconfont } from '@src/components';
-import { PxFit, SCREEN_WIDTH } from '@src/utils';
+import { StyleSheet, ImageBackground, Animated } from 'react-native';
+import { Avatar } from '@src/components';
 import { useLinearAnimation } from '@src/common';
-import { observer, app } from 'store';
+import { observer } from 'store';
 
-const width = SCREEN_WIDTH / 2 + PxFit(60);
+const width = Device.WIDTH / 2 + PxFit(60);
 const height = (width * 150) / 492;
 
 const MatchTheUser = observer(props => {
@@ -39,7 +38,7 @@ const MatchTheUser = observer(props => {
                 {
                     translateX: animation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [theLeft ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                        outputRange: [theLeft ? -Device.WIDTH : Device.WIDTH, 0],
                         extrapolate: 'clamp',
                     }),
                 },

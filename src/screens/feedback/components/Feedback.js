@@ -8,6 +8,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { Button, PageContainer, CustomTextInput, ImagePickerViewer } from 'components';
 
 import { withApollo, GQL } from 'apollo';
+import { app } from '@src/store';
 
 class Feedback extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class Feedback extends Component {
         });
 
         let promises = [
-            client.mutate({
+            app.mutationClient.mutate({
                 mutation: GQL.CreateFeedbackMutation,
                 variables: {
                     title: title,

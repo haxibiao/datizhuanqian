@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, ISIOS } from '../../../utils';
 import { KeyboardSpacer, CustomTextInput, TouchFeedback, Iconfont } from '../../../components';
 
 import Modal from 'react-native-modal';
@@ -20,7 +19,15 @@ class InputModal extends Component {
     }
 
     render() {
-        const { visible, hideModal, comment_id, reply, createChildComment, switchReplyType } = this.props;
+        const {
+            visible,
+            hideModal,
+            comment_id,
+            reply,
+            createChildComment,
+            switchReplyType,
+            commentable_id,
+        } = this.props;
         let { content } = this.state;
         let disabled = !content || !content.trim();
 
@@ -29,7 +36,7 @@ class InputModal extends Component {
                 isVisible={visible}
                 onBackdropPress={hideModal}
                 backdropOpacity={0}
-                style={{ justifyContent: 'flex-end', width: SCREEN_WIDTH, margin: 0 }}
+                style={{ justifyContent: 'flex-end', width: Device.WIDTH, margin: 0 }}
                 onShow={() => {
                     this.textInput.focus();
                 }}
@@ -51,12 +58,15 @@ class InputModal extends Component {
                                 createChildComment({
                                     variables: {
                                         content: content && content.trim(),
-                                        // commentable_id: questionId,
+                                        commentable_id: commentable_id,
                                         comment_id: comment_id,
                                         commentable_type: 'comments',
                                     },
                                 }).then(data => {
                                     console.log('data0', data);
+                                    Toast.show({
+                                        content: '回复成功',
+                                    });
                                 });
                                 this.setState({ content: '' });
                                 Keyboard.dismiss();
@@ -69,7 +79,7 @@ class InputModal extends Component {
                             />
                         </TouchFeedback>
                     </View>
-                    {ISIOS && <KeyboardSpacer />}
+                    {Device.IOS && <KeyboardSpacer />}
                 </View>
             </Modal>
         );
@@ -102,4 +112,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default compose(withApollo, graphql(GQL.createChildCommentMutation, { name: 'createChildComment' }))(InputModal);
+export default compose(
+    withApollo,
+    graphql(GQL.createChildCommentMutation, { name: 'createChildComment' }),
+)(InputModal);

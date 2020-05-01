@@ -82,6 +82,35 @@ mutation ResetPasswordMutation($account: String!, $password: String!, $code: Str
     resetPassword(account: $account, password: $password, code: $code) {
         id
         account
+        token
+        avatar
+        name
+        wallet {
+            id
+            real_name
+            pay_account
+            pay_info_change_count
+            today_withdraw_amount
+        }
+        level {
+            id
+            name
+            ticket_max
+            level
+            exp
+        }
+        next_level_exp
+        profile {
+            introduction
+            birthday
+            age
+            total_contributes
+        }
+        gender
+        is_admin
+        verified_at
+        auto_uuid_user
+        auto_phone_user
     }
 }
 
@@ -192,6 +221,7 @@ query UserInfoQuery($id: Int, $limit: Int, $offset: Int, $order: QuestionOrderEn
 
         questions(limit: $limit, offset: $offset, order: $order, filter: $filter) {
             id
+            created_at
             description
             answer
             status
@@ -408,6 +438,28 @@ query FavoritesQuery($offset: Int, $limit: Int) {
                 name
             }
             count
+            user {
+                id
+                name
+                avatar
+                gender
+                follow_users_count
+                followers_count
+                followed_user_status
+                is_admin
+                roles
+                profile {
+                    sub_name
+                    birthday
+                    age
+                    introduction
+                    posts_count
+                }
+                level {
+                    id
+                    level
+                }
+            }
         }
     }
 }

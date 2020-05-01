@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Row, Placeholder } from 'components';
-import { Config, SCREEN_WIDTH, Theme, PxFit } from 'utils';
 
 const TagsPlaceholder = ({ contentStyle = {}, isTab }) => {
     return (
@@ -31,7 +30,7 @@ const TagsPlaceholder = ({ contentStyle = {}, isTab }) => {
     );
 };
 
-const entranceWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 2;
+const entranceWidth = (Device.WIDTH - PxFit(Theme.itemSpace) * 2 - PxFit(10)) / 2;
 
 const styles = StyleSheet.create({
     container: {

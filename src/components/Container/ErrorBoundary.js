@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import TouchFeedback from '../TouchableView/TouchFeedback';
-import { Theme, PxFit, Config, WPercent } from '../../utils';
 import { withNavigation } from 'react-navigation';
 
 class ErrorBoundary extends React.Component {
@@ -50,11 +49,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        minHeight: WPercent(80),
+        minHeight: Percent(80),
     },
     image: {
-        width: WPercent(36),
-        height: WPercent(36),
+        width: Percent(36),
+        height: Percent(36),
         resizeMode: 'cover',
     },
     title: {

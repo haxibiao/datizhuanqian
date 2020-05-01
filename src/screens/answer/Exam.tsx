@@ -10,7 +10,6 @@ import {
     ExamGuidance,
     Row,
 } from '@src/components';
-import { SCREEN_WIDTH, ISIOS } from '@src/utils';
 import { useApolloClient, useQuery, GQL } from '@src/apollo';
 import { app, config } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
@@ -95,7 +94,7 @@ export default observer(() => {
     useEffect(() => {
         fetchQuestions();
         // 等级限制
-        fetch(Config.ApiServceRoot + '/api/app/task/user-config?api_token=' + app.me.token)
+        fetch(Config.ServerRoot + '/api/app/task/user-config?api_token=' + app.me.token)
             .then(response => response.json())
             .then(result => {
                 setMinLevel(Helper.syncGetter('chuti.min_level', result));
@@ -150,7 +149,7 @@ export default observer(() => {
     }, [store, showComment]);
 
     const showOptions = useCallback(() => {
-        if (ISIOS) {
+        if (Device.IOS) {
             PullChooser.show([
                 {
                     title: '举报',
@@ -174,8 +173,8 @@ export default observer(() => {
 
     const getItemLayout = useCallback((data, index) => {
         return {
-            length: SCREEN_WIDTH,
-            offset: SCREEN_WIDTH * index,
+            length: Device.WIDTH,
+            offset: Device.WIDTH * index,
             index,
         };
     }, []);
@@ -235,7 +234,7 @@ export default observer(() => {
                         }}
                         style={{
                             flex: 1,
-                            width: Theme.navBarContentHeight,
+                            width: Device.statusBarHeight,
                             justifyContent: 'center',
                         }}>
                         <Iconfont name="left" size={PxFit(21)} />
@@ -297,6 +296,6 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flex: 1,
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
     },
 });

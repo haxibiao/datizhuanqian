@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Animated, Image } from 'react-native';
 import { useCirculationAnimation } from '@src/common';
-import { PxFit } from '@src/utils';
 
 const BubbleImage = props => {
     const { value } = props;

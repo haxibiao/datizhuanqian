@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
 import { observer, app, config as configStore } from 'store';
-import { exceptionCapture } from 'common';
 import { beginnerGuidance, VideoGuidance } from 'components';
 
 import VideoItem from './components/VideoItem';
@@ -58,7 +57,7 @@ export default observer(props => {
             return;
         }
         VideoStore.isLoadMore = true;
-        const [error, result] = await exceptionCapture(VideosQuery);
+        const [error, result] = await Helper.exceptionCapture(VideosQuery);
         // console.log('result :', result, error);
         const videoSource = Helper.syncGetter('data.posts', result);
         if (error) {
@@ -77,7 +76,7 @@ export default observer(props => {
 
     const reportData = useCallback(
         __.throttle(() => {
-            client
+            app.mutationClient
                 .mutate({
                     mutation: GQL.SaveVisitsMutation,
                     variables: { visits: VideoStore.visits },
@@ -92,7 +91,7 @@ export default observer(props => {
                     fetchData();
                 });
         }, 1200),
-        [client, fetchData],
+        [app.mutationClient, fetchData],
     );
 
     const getVisibleRows = useCallback(info => {
@@ -111,18 +110,10 @@ export default observer(props => {
     useEffect(() => {
         const navWillFocusListener = props.navigation.addListener('willFocus', () => {
             StatusBar.setBarStyle('light-content');
-            !configStore.disableAd &&
-                beginnerGuidance({
-                    guidanceKey: 'Video',
-                    GuidanceView: VideoGuidance,
-                    dismissEnabled: true,
-                });
-
-            service.dataReport({
-                data: { category: '用户行为', action: 'user_click_video_screen', name: '用户点击进入学习视频页' },
-                callback: (result: any) => {
-                    console.warn('result', result);
-                },
+            beginnerGuidance({
+                guidanceKey: 'Video',
+                GuidanceView: VideoGuidance,
+                dismissEnabled: true,
             });
         });
         const navWillBlurListener = navigation.addListener('willBlur', () => {
@@ -217,7 +208,7 @@ const styles = StyleSheet.create({
         width: null,
     },
     rewardProgress: {
-        bottom: PxFit(380 + Theme.HOME_INDICATOR_HEIGHT),
+        bottom: PxFit(380 + Device.HOME_INDICATOR_HEIGHT),
         position: 'absolute',
         right: PxFit(Theme.itemSpace),
     },

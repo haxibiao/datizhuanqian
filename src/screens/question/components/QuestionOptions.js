@@ -4,9 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
-import { Player } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+import { StyleSheet, View } from 'react-native';
 
 import OptionItem from './OptionItem';
 
@@ -41,7 +39,5 @@ class QuestionOption extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});
 
 export default QuestionOption;

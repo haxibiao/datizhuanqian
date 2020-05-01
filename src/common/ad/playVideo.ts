@@ -3,13 +3,13 @@
   包含看视频广告数据上报
 */
 
-import { Platform } from 'react-native';
+import { Platform, ToastAndroid } from 'react-native';
 import { ad } from 'native';
 import { app, config } from 'store';
-import { ISAndroid, Config } from 'utils';
 import RewardOverlay from '@src/components/Overlay/RewardOverlay';
 import { GQL } from 'apollo';
 import service from 'service';
+import { adClickTrack } from 'common';
 
 type Type =
     | 'Task'
@@ -86,7 +86,7 @@ function startRewardVideo(props: Props) {
     ad.RewardVideo.startAd()
         .then(result => {
             console.log('result', result);
-            if (ISAndroid) {
+            if (Device.Android) {
                 if (result) {
                     video = JSON.parse(result);
                     //TODO: video.video_play 有很大几率返回false
@@ -188,6 +188,7 @@ function getReward(props: Props, video: Video) {
                   },
                   {
                       query: GQL.SignInsQuery,
+                      fetchPolicy: 'network-only',
                   },
               ]
             : [
@@ -198,7 +199,7 @@ function getReward(props: Props, video: Video) {
                   },
               ];
 
-    app.client
+    app.mutationClient
         .mutate({
             mutation: GQL.UserRewardMutation,
             variables: {
@@ -210,7 +211,11 @@ function getReward(props: Props, video: Video) {
         .then((res: any) => {
             console.log('res', res);
             const reward = Helper.syncGetter('data.userReward', res);
-            RewardOverlay.show({ reward, rewardVideo: true, title });
+            reward
+                ? RewardOverlay.show({ reward, title })
+                : Toast.show({
+                      content: '获取奖励失败，已领取过奖励',
+                  });
         })
         .catch((err: any) => {
             console.log('reward video error', err);
@@ -232,55 +237,48 @@ function dataReport(type: string | undefined, playType: number) {
             break;
         case 'AnswerPass' || 'AnswerFail':
             action = 'user_click_answer_fullscreen_ad';
-            name = '答题结果看全屏视频';
+            name = '点击看答题全屏视频';
             break;
         case 'Sigin':
             action = playType ? 'user_click_sigin_reward_ad' : 'user_click_sigin_fullscreen_ad';
-            name = playType ? '签到随机看激励视频' : '签到随机看全屏视频';
+            name = playType ? '点击看签到激励视频' : '点击看签到全屏视频';
             break;
         case 'TimeReward':
             action = playType ? 'user_click_time_reward_ad' : 'user_click_time_fullscreen_ad';
-            name = playType ? '时段奖励随机看激励视频' : '时段奖励随机看全屏视频';
+            name = playType ? '点击看时段奖励激励视频' : '点击看时段奖励全屏视频';
             break;
         case 'Dividend':
             action = playType ? 'user_click_dividend_reward_ad' : 'user_click_dividend_fullscreen_ad';
-            name = playType ? '分红随机看激励视频' : '分红随机看全屏视频';
+            name = playType ? '点击看分红激励视频' : '点击看分红全屏视频';
             break;
         case 'Guide':
             action = playType ? 'user_click_guide_reward_ad' : 'user_click_guide_fullscreen_ad';
-            name = playType ? '新人引导随机看激励视频' : '新人引导随机看全屏视频';
+            name = playType ? '点击看新人引导激励视频' : '点击看新人引导全屏视频';
             break;
         case 'Contribute':
             action = 'user_click_contribute_reward_ad';
-            name = '出题加速看激励视频';
+            name = '点击看出题加速激励视频';
             break;
         case 'Audit':
             action = 'user_click_audit_reward_ad';
-            name = '审题看激励视频';
+            name = '点击看审题激励视频';
             break;
         case 'Spider':
             action = 'user_click_spider_reward_ad';
-            name = '采集视频看激励视频';
+            name = '点击看采集视频激励视频';
             break;
         case 'Compete':
             action = 'user_click_compete_reward_ad';
-            name = '答题PK看激励视频';
+            name = '点击看答题PK激励视频';
             break;
 
         default:
             break;
     }
 
-    const mergeData = {
-        category: '广告点击',
-        action,
+    adClickTrack({
+        action: name,
         name,
-    };
-
-    service.dataReport({
-        data: mergeData,
-        callback: (result: any) => {
-            console.warn('result', result);
-        },
-    }); // 数据上报
+        value: 1,
+    });
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { PageContainer, TouchFeedback } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH } from 'utils';
 import ManualOverlay from './components/ManualOverlay';
 
 class MakeMoenyManual extends Component {
@@ -49,7 +48,10 @@ class MakeMoenyManual extends Component {
                             content:
                                 '只有当您绑定支付宝账号之后，才能开始提现。提现金额分为1元、3元、5元、10元四档，每次提现时会扣除乘以汇率的智慧点，剩余智慧点可以在下次满足最低提现额度时申请提现',
                         },
-                        { title: '提现多久到账？', content: '提现24小时内到账(如遇提现高峰，提现到账时间会延长)。' },
+                        {
+                            title: '提现多久到账？',
+                            content: '提现24小时内到账(如遇提现高峰，提现到账时间会延长)。',
+                        },
                         {
                             title: '提现不了、提现失败怎么办？',
                             content:
@@ -71,7 +73,7 @@ class MakeMoenyManual extends Component {
                             title: '什么是贡献点？',
                             content: `贡献值代表用户对${
                                 Config.AppName
-                            }创建良好用户环境所做的贡献，为保证社区用户环境良好，提现时需要考核用户的贡献值。`,
+                            }创建良好用户环境所做的贡献，为保证社区用户环境良好，提现时需要考核用户的贡献值。小提示：黄色小星星图标代表的就是贡献值哦`,
                         },
                         {
                             title: '如何获取贡献点？',
@@ -101,6 +103,11 @@ class MakeMoenyManual extends Component {
                         {
                             title: '忘记密码怎么办？',
                             content: '您可以根据自己绑定的手机号码或者邮箱地址来找回密码或更改密码哦。',
+                        },
+                        {
+                            title: '如何注销账号？',
+                            content:
+                                '若您需要注销账号，请添加官方QQ群：735220029，联系客服发送您需要注销的账号即可。\n温馨提示：注销通过后，关于您账号里所有资料数据都将清空，包括但不限于智慧点、贡献点等，同时也将终止答题赚钱账号相关的服务协议。',
                         },
                     ],
                 },
@@ -138,10 +145,27 @@ class MakeMoenyManual extends Component {
         };
     }
 
+    componentDidMount() {
+        const activeIndex = this.props.navigation.getParam('activeIndex', 0);
+        const { tabs, select, items } = this.state;
+
+        console.log('activeIndex', activeIndex);
+        if (activeIndex) {
+            setTimeout(() => {
+                this.setState({
+                    select: activeIndex,
+                });
+                this.scrollRef.scrollToIndex({ index: activeIndex, animated: true });
+                activeIndex == 2 && ManualOverlay.show(items[2].childItems[1].title, items[2].childItems[1].content);
+            }, 100);
+        }
+    }
+
     render() {
         const { tabs, select, items } = this.state;
+
         return (
-            <PageContainer title="赚钱攻略" white>
+            <PageContainer title="常见问题" white>
                 <View style={styles.header}>
                     {tabs.map((tab, index) => {
                         return (
@@ -217,7 +241,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: PxFit(0.5),
     },
     tab: {
-        width: (SCREEN_WIDTH - PxFit(50)) / 3,
+        width: (Device.WIDTH - PxFit(50)) / 3,
         paddingVertical: 10,
         backgroundColor: '#F0F0F0',
         borderRadius: 20,

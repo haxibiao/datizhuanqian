@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { Iconfont } from 'components';
 
 interface Media {
@@ -21,7 +20,7 @@ const VideoItem = (props: Props) => {
     const isVideo = media && media.url;
 
     const maxHeight = PxFit(240); //媒体最大高度
-    const maxWidth = SCREEN_WIDTH - Theme.itemSpace * 2; //媒体最大宽度
+    const maxWidth = Device.WIDTH - Theme.itemSpace * 2; //媒体最大宽度
     const mediaWidth = (media && media.width) || 1; //媒体宽度
     const mediaHeight = (media && media.height) || 1; //媒体高度
 

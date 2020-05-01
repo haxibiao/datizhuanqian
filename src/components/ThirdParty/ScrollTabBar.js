@@ -4,8 +4,7 @@
  */
 // custuom scroll-tab-view header
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
-import { Theme, PxFit, ISIOS, SCREEN_WIDTH } from '../../utils';
+import { StyleSheet, Text, View, Animated, TouchableOpacity } from 'react-native';
 
 type Props = {
     containerWidth: number, //tabBar外部容器宽度
@@ -77,13 +76,16 @@ export default class ScrollTabBar extends Component<Props> {
             ? tabWidth * 0.6
             : containerWidth / (numberOfTabs * 2);
         let scale = tabUnderlineScaleX ? tabUnderlineScaleX : 2;
-        let deLen = tabWidth ? tabWidth + tabWidth * 0.35 : (containerWidth / numberOfTabs - underlineWidth) / 2;
+        let deLen = tabWidth
+            ? tabWidth + (tabWidth - tabUnderlineWidth) / 2
+            : (containerWidth / numberOfTabs - underlineWidth) / 2;
         let tabUnderlineStyle = {
             position: 'absolute',
             width: underlineWidth,
             height: tabUnderlineHeight,
             borderRadius: tabUnderlineHeight,
             backgroundColor: underLineColor,
+            top: PxFit(40),
             bottom: 0,
             left: deLen,
             ...underlineStyle,
@@ -143,14 +145,18 @@ export default class ScrollTabBar extends Component<Props> {
 
 const styles = StyleSheet.create({
     tabBar: {
-        height: PxFit(Theme.navBarContentHeight),
+        minHeight: 44,
+        height: Device.statusBarHeight,
+        // backgroundColor: '#FF0',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        // paddingBottom: PxFit(15),
         // borderWidth: PxFit(0.5),
         // borderTopWidth: 0,
         // borderLeftWidth: 0,
         // borderRightWidth: 0,
         // borderColor: Theme.borderColor
+        // backgroundColor: '#FFF',
     },
 });

@@ -2,12 +2,14 @@ import React, { Component, useContext, useCallback, useEffect } from 'react';
 import { Platform, View, Text } from 'react-native';
 
 import { makeClient, ApolloProvider } from './index';
+import { makeSnsClient } from './snsClient';
+import { makeMutationClient } from './mutationClient';
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 
 import { observer, app, config } from 'store';
 
 import { ad } from '@app/native';
-import { TipsOverlay, UserAgreementOverlay } from '@src/components';
+import { TipsOverlay } from '@src/components';
 
 import JPushModule from 'jpush-react-native';
 import Echo from 'laravel-echo';
@@ -24,27 +26,11 @@ export default observer(props => {
     const client = makeClient(app.me, checkServer); // 构建apollo client;
     app.client = client;
 
-    const onFailed = useCallback(error => {
-        console.log('onFailed', error);
-        Toast.show({ content: error.message });
-    }, []);
-
-    const onSuccess = useCallback(() => {
-        TipsOverlay.show({
-            title: '粘贴板视频分享成功',
-            content: <View>{config.enableBanner && <ad.FeedAd adWidth={Device.WIDTH - PxFit(40)} />}</View>,
-            onConfirm: () => {
-                Helper.middlewareNavigate('MyPublish');
-                TipsOverlay.hide();
-            },
-        });
-    }, []);
-
     useEffect(() => {
         app.systemConfig();
     }, []);
 
-    useCaptureVideo({ client, onSuccess, onFailed });
+    useCaptureVideo({ client });
 
     const mountWebSocket = (user: { token: string | undefined; id: string }) => {
         if (user.token != undefined) {
@@ -93,15 +79,11 @@ export default observer(props => {
 
     useEffect(() => {
         mountWebSocket(app.me);
+        const snsClient = makeSnsClient(app.me, checkServer); // 构建sns apollo client;
+        app.snsClient = snsClient;
+        const mutationClient = makeMutationClient(app.me, checkServer);
+        app.mutationClient = mutationClient;
     }, [app.me]);
-
-    useEffect(() => {
-        // 判断是否阅读用户协议
-        console.log('是否阅读：', app.createUserAgreement);
-        if (!app.createUserAgreement) {
-            UserAgreementOverlay(true);
-        }
-    }, [app.createUserAgreement]);
 
     const getActiveRouteName = navigationState => {
         if (!navigationState) {

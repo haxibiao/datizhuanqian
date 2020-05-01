@@ -14,7 +14,7 @@ import Row from '../Container/Row';
 import TouchFeedback from '../TouchableView/TouchFeedback';
 import FollowButton from '../TouchableView/FollowButton';
 import UserTitle from './UserTitle';
-import GenderLabel from '../Utils/GenderLabel';
+import GenderLabel from '../Other/GenderLabel';
 import { StackActions } from 'react-navigation';
 
 type User = {

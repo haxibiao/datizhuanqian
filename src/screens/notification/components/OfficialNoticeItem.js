@@ -8,7 +8,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { TouchFeedback } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class OfficialNoticeItem extends Component {
     constructor(props) {
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     content: {
         marginLeft: 10,
         backgroundColor: '#FFF',
-        width: SCREEN_WIDTH - 80,
+        width: Device.WIDTH - 80,
         borderRadius: 5,
     },
     header: {

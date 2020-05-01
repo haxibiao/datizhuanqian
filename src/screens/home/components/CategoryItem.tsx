@@ -4,7 +4,7 @@ import { Row, Iconfont } from '@src/components';
 import { useNavigation } from 'react-navigation-hooks';
 import LinearGradient from 'react-native-linear-gradient';
 
-const CategoryItem = ({ tag, category }) => {
+const CategoryItem = ({ tag, category, index }) => {
     const navigation = useNavigation();
     const isExam = useMemo(() => tag && tag.name == '考试' && category.is_official > 0, []);
 
@@ -14,66 +14,68 @@ const CategoryItem = ({ tag, category }) => {
         } else {
             navigation.navigate('Login');
         }
-    }, []);
+    }, [category]);
 
     return (
         <TouchableWithoutFeedback onPress={navigator}>
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        marginRight: PxFit(15),
+                    },
+                ]}>
                 <View style={styles.coverContainer}>
                     <Image source={{ uri: category.icon }} style={styles.cover} />
                     <LinearGradient
                         style={styles.shadowContainer}
                         start={{ x: 0, y: 1 }}
                         end={{ x: 0, y: 0 }}
-                        colors={['rgba(000,000,000,0.5)', 'rgba(000,000,000,0.2)', 'rgba(000,000,000,0.1)']}>
+                        colors={['rgba(000,000,000,0.1)', 'rgba(000,000,000,0.05)', 'rgba(000,000,000,0)']}>
                         {category.is_official > 0 && (
-                            <ImageBackground
+                            <Image
                                 source={require('@src/assets/images/official_category.png')}
                                 style={styles.officialCategory}>
-                                <Text style={styles.officialText}>精选</Text>
-                            </ImageBackground>
+                                {/* <Text style={styles.officialText}>精选</Text> */}
+                            </Image>
                         )}
                     </LinearGradient>
+                    <Row
+                        style={{
+                            justifyContent: 'flex-end',
+                            paddingRight: PxFit(5),
+                            paddingBottom: PxFit(5),
+                            position: 'absolute',
+                            bottom: 0,
+                            padding: PxFit(4),
+                            width: '100%',
+                        }}>
+                        <Image
+                            source={require('@src/assets/images/ic_hot_white.png')}
+                            style={{ width: PxFit(8), height: (PxFit(8) * 25) / 20 }}
+                        />
+                        <Text style={styles.countText}>{Helper.count(category.answers_count)}</Text>
+                    </Row>
                 </View>
                 <View style={styles.body}>
-                    <View style={styles.info}>
-                        <Text style={styles.largeName} numberOfLines={1}>
-                            {category.name}
-                        </Text>
-                        <View style={styles.description}>
-                            {category.description && (
-                                <Text style={styles.descriptionText} numberOfLines={1}>
-                                    {category.description}
-                                </Text>
-                            )}
-                        </View>
-                    </View>
-                    <View style={styles.metaCount}>
-                        <Row>
-                            <Iconfont name="order-fill" color={Theme.watermelon} size={PxFit(11)} />
-                            <Text style={styles.countText}>{Helper.count(category.questions_count)}道题</Text>
-                        </Row>
-                        <Row>
-                            <Iconfont name="answerLog" color={Theme.watermelon} size={PxFit(11)} />
-                            <Text style={styles.countText}>{Helper.count(category.answers_count)}人答过</Text>
-                        </Row>
-                    </View>
+                    <Text style={styles.largeName}>{category.name}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>
     );
 };
 
-const COVER_WIDTH = PxFit(70);
+const COVER_WIDTH = (Device.WIDTH - PxFit(50)) * 0.315;
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
+        width: COVER_WIDTH,
+        // marginRight: PxFit(10),
     },
     coverContainer: {
         width: COVER_WIDTH,
         borderRadius: PxFit(5),
-        overflow: 'hidden',
+        // overflow: 'hidden',
     },
     shadowContainer: {
         position: 'absolute',
@@ -83,25 +85,27 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
+        borderRadius: PxFit(5),
     },
     officialCategory: {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: COVER_WIDTH * 0.5,
-        height: (COVER_WIDTH * 0.5 * 48) / 108,
+        width: COVER_WIDTH * 0,
+        height: (COVER_WIDTH * 0 * 60) / 110,
         paddingRight: COVER_WIDTH * 0.05,
         justifyContent: 'center',
         alignItems: 'center',
+        borderTopLeftRadius: PxFit(5),
     },
     officialText: {
         fontSize: PxFit(10),
         color: '#fff',
     },
     countText: {
-        marginLeft: PxFit(2),
+        marginLeft: PxFit(5),
         fontSize: PxFit(11),
-        color: Theme.subTextColor,
+        color: '#fff',
     },
     content: {
         marginTop: PxFit(6),
@@ -109,6 +113,7 @@ const styles = StyleSheet.create({
     cover: {
         height: COVER_WIDTH,
         width: COVER_WIDTH,
+        borderRadius: PxFit(5),
     },
     name: {
         color: Theme.defaultTextColor,
@@ -141,19 +146,16 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
     },
-    body: {
-        flex: 1,
-        height: COVER_WIDTH,
-        marginLeft: PxFit(Theme.itemSpace),
-        justifyContent: 'space-between',
-    },
-    info: {
-        marginBottom: PxFit(10),
-    },
+
     largeName: {
-        color: Theme.defaultTextColor,
-        fontSize: PxFit(16),
-        lineHeight: PxFit(22),
+        color: '#424242',
+        fontSize: Font(14),
+        // lineHeight: PxFit(22),
+        // fontWeight: 'bold',
+    },
+    body: {
+        alignItems: 'center',
+        marginTop: PxFit(12),
     },
 });
 

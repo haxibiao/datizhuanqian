@@ -1,0 +1,9 @@
+#import './RecommendCategoriesQuery.gql'
+#import './NewestCategoriesQuery.gql'
+#import './GuestLikeCategoriesQuery.gql'
+
+query me {
+    user {
+        id
+    }
+}

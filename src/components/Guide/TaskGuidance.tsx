@@ -4,31 +4,30 @@
  */
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
 
 function TaskGuidance() {
     return (
         <View style={styles.flexCenter}>
-            <Image style={styles.answerGuide} source={require('@src/assets/images/task_guide.png')} />
+            <Image style={styles.answerGuide} source={require('@src/assets/images/bg_task_guide.png')} />
         </View>
     );
 }
 
-const WIDTH = SCREEN_WIDTH;
-const HEIGHT = (WIDTH * 1059) / 1040;
+const WIDTH = Device.WIDTH * 0.95;
+const HEIGHT = (WIDTH * 886) / 917;
 // const RIGHT = WIDTH / 2 - (WIDTH * 140) / 411;
 
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },
     answerGuide: {
         position: 'absolute',
-        // top: TOP,
+        top: HEIGHT * 0.65,
         // right: RIGHT,
         width: WIDTH,
         height: HEIGHT,

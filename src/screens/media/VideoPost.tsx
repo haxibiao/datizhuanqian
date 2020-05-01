@@ -3,7 +3,6 @@ import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
 
 import { GQL } from 'apollo';
 import { observer, app } from 'store';
-import { exceptionCapture } from 'common';
 import { Iconfont, TouchFeedback } from 'components';
 
 import RewardProgress from './components/RewardProgress';
@@ -19,7 +18,7 @@ export default observer(props => {
     const { navigation } = props;
     const medium = navigation.getParam('medium') || [];
     const activeIndex = navigation.getParam('index') || 0;
-    const isPost = navigation.getParam('isPost') || true;
+    const isPost = navigation.getParam('isPost') || false;
     const activeItem = useRef(0);
     // const [questions, setQuestions] = useState(data);
     console.log('medium', medium);
@@ -57,7 +56,7 @@ export default observer(props => {
 
     const fetchData = useCallback(async () => {
         VideoStore.isLoadMore = true;
-        const [error, result] = await exceptionCapture(VideosQuery);
+        const [error, result] = await Helper.exceptionCapture(VideosQuery);
         console.log('result', result, error);
         const videoSource = Helper.syncGetter('data.posts', result);
 
@@ -120,6 +119,8 @@ export default observer(props => {
     const media = VideoStore.dataSource[VideoStore.viewableItemIndex];
 
     if (!media) return null;
+
+    console.log('isPost :>> ', isPost);
     return (
         <View style={styles.container} onLayout={onLayout}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'} />
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
         width: 50,
     },
     rewardProgress: {
-        bottom: PxFit(300 + Theme.HOME_INDICATOR_HEIGHT),
+        bottom: PxFit(300 + Device.HOME_INDICATOR_HEIGHT),
         position: 'absolute',
         right: PxFit(Theme.itemSpace),
     },

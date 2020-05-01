@@ -1,20 +1,17 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { AppState, Clipboard } from 'react-native';
 import { GQL } from '@src/apollo';
-import { exceptionCapture } from '../helper';
 import { app } from 'store';
-import { TipsOverlay } from 'components';
+import { TipsOverlay, RewardOverlay, ErrorOverlay } from 'components';
 import RewardVideoTipsOverlay from '@src/components/Overlay/RewardVideoTipsOverlay';
 
 interface Props {
     client: any;
-    onSuccess?: (Event?: any) => any;
-    onFailed?: (Event?: any) => any;
 }
 
 //采集视频
 export const useCaptureVideo = (props: Props) => {
-    const { client, onSuccess, onFailed } = props;
+    const { client } = props;
     const clipboardString = useRef('');
 
     const captureVideo = useCallback(
@@ -40,10 +37,17 @@ export const useCaptureVideo = (props: Props) => {
         switch (Helper.syncGetter('data.user.share_spider_status', result)) {
             case 0:
                 spiderVideo(path);
+
                 break;
             case 1:
-                RewardVideoTipsOverlay.show({
-                    callback: () => spiderVideo(path),
+                ErrorOverlay.show({
+                    title: '视频链接采集失败',
+                    content: '今天采集量已达上限，看激励视频才可继续采集',
+                    playVideoVariables: {
+                        callback: () => spiderVideo(path),
+                        noReward: true,
+                    },
+                    buttonName: '看视频采集',
                 });
                 break;
             case -1:
@@ -59,13 +63,22 @@ export const useCaptureVideo = (props: Props) => {
     };
 
     const spiderVideo = async (path: any) => {
-        const [error, result] = await exceptionCapture(() => captureVideo(path));
+        const [error, result] = await Helper.exceptionCapture(() => captureVideo(path));
         // console.log('error:', error, 'result:', result);
-        if (error && onFailed) {
-            onFailed(error);
+        if (error) {
+            Toast.show({ content: error.message });
             Clipboard.setString('');
-        } else if (result && onSuccess) {
-            onSuccess(result);
+        } else if (result) {
+            ErrorOverlay.show({
+                title: '视频链接采集成功',
+                content:
+                    '视频上传成功后，即可获得智慧点奖励，偷偷告诉你个秘密：使用此方式采集抖音视频更容易被其他人刷到哦~',
+                action: () => {
+                    Helper.middlewareNavigate('MyPublish');
+                },
+                buttonName: '我的视频',
+            });
+
             console.log('result', result);
             //清空粘贴板
             Clipboard.setString('');
@@ -87,10 +100,10 @@ export const useCaptureVideo = (props: Props) => {
                     checkUser(path);
                 }
             } else {
-                TipsOverlay.hide();
+                ErrorOverlay.hide();
             }
         },
-        [captureVideo, onFailed, onSuccess],
+        [captureVideo],
     );
 
     useEffect(() => {

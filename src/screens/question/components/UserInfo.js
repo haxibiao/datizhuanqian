@@ -4,11 +4,8 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, Animated } from 'react-native';
-import { TouchFeedback, Avatar, Button } from 'components';
-import { PxFit, Theme, SCREEN_WIDTH, SCREEN_HEIGHT, Config } from 'utils';
-
-import { Overlay } from 'teaset';
+import { StyleSheet, Text } from 'react-native';
+import { TouchFeedback, Avatar } from 'components';
 
 class UserInfo extends Component {
     render() {
@@ -39,8 +36,8 @@ const styles = StyleSheet.create({
     userName: { fontSize: PxFit(13), color: Theme.defaultTextColor, paddingLeft: PxFit(6) },
     overlayInner: {
         flex: 1,
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        width: Device.WIDTH,
+        height: Device.HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
     },

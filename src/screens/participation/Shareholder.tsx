@@ -1,8 +1,6 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, ImageBackground } from 'react-native';
-import { Theme, PxFit, WPercent } from 'utils';
 import { HxfButton } from 'components';
-import { app } from 'store';
 
 interface Props {
     serialNumber: number;
@@ -39,7 +37,7 @@ const Shareholder = (props: Props) => {
     );
 };
 
-const OVERLAY_WIDTH = WPercent(80);
+const OVERLAY_WIDTH = Percent(80);
 const OVERLAY_HEIGHT = (OVERLAY_WIDTH * 788) / 608;
 
 const styles = StyleSheet.create({

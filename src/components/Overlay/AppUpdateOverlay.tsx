@@ -7,7 +7,7 @@ import { app } from 'store';
 
 import Iconfont from '../Iconfont';
 import { Overlay } from 'teaset';
-import DownLoadApk from '../Utils/DownLoadApk';
+import DownLoadApk from '../Other/DownLoadApk';
 
 const { height, width } = Dimensions.get('window');
 const SCREEN_WIDTH = width;

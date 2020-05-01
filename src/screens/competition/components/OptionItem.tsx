@@ -1,7 +1,7 @@
-import React, { Component, useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, View, Text, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
+
 import { playSound } from '../playSound';
 
 interface Props {
@@ -27,7 +27,7 @@ interface Option {
 }
 
 const OptionItem = (props: Props) => {
-    const [animated, setAnimated] = useState(new Animated.Value(0));
+    const [animated] = useState(new Animated.Value(0));
     const [optionIndex, setOptionIndex] = useState(-1);
     const flag = useRef(false);
 
@@ -111,7 +111,7 @@ const OptionItem = (props: Props) => {
             {
                 translateX: animated.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [even ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                    outputRange: [even ? -Device.WIDTH : Device.WIDTH, 0],
                 }),
             },
         ],

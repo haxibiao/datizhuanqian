@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
-import { PxFit } from 'utils';
 
 const Footer = props => {
     return useMemo(

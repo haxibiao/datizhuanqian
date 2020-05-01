@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
-
 import { PageContainer, ScrollTabBar, TouchFeedback, Iconfont } from 'components';
 
 import AllAnswerLog from './components/AllAnswerLog';
@@ -13,14 +11,14 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 const AnswerLog = (props: { navigation: any }) => {
     const { navigation } = props;
     return (
-        <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Theme.statusBarHeight }}>
+        <PageContainer hiddenNavBar contentViewStyle={{ marginTop: Device.statusBarHeight }}>
             <ScrollableTabView
                 renderTabBar={props => (
                     <ScrollTabBar
                         {...props}
                         tabUnderlineWidth={PxFit(28)}
                         underLineColor={Theme.primaryColor}
-                        tabWidth={SCREEN_WIDTH / 4}
+                        tabWidth={Device.WIDTH / 4}
                     />
                 )}
                 initialPage={0}>
@@ -41,10 +39,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: Theme.navBarContentHeight,
-        height: Theme.navBarContentHeight,
+        width: Device.statusBarHeight,
+        height: Device.statusBarHeight,
         justifyContent: 'center',
         paddingLeft: PxFit(Theme.itemSpace),
+        minHeight: 44,
     },
 });
 

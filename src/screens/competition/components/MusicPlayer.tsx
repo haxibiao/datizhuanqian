@@ -1,7 +1,6 @@
 import React, { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Animated, View, Text, ImageBackground, Image } from 'react-native';
 import { useCirculationAnimation } from '@src/common';
-import { SCREEN_WIDTH, PxFit } from '@src/utils';
 import { playSound } from '../playSound';
 import Sound from 'react-native-sound';
 
@@ -167,13 +166,13 @@ const specialStyle = [
     },
 ];
 
-const width = SCREEN_WIDTH / 3 - PxFit(36);
+const width = Device.WIDTH / 3 - PxFit(36);
 
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: PxFit(15),
         borderWidth: PxFit(3),
-        borderRadius: (SCREEN_WIDTH / 3 - PxFit(30)) / 2,
+        borderRadius: (Device.WIDTH / 3 - PxFit(30)) / 2,
         borderColor: '#fff',
     },
     wave: {

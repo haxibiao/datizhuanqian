@@ -5,7 +5,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Animated, ActivityIndicator } from 'react-native';
 import { TouchFeedback, Iconfont, SafeText, Avatar, Row, PullChooser } from 'components';
-import { Theme, PxFit } from 'utils';
 
 import { Query, compose, graphql, GQL } from 'apollo';
 

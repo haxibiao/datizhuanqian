@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Animated, Image, Text } from 'react-native';
-import { exceptionCapture, useBounceAnimation } from 'common';
+import { useBounceAnimation } from 'common';
 import { GQL, useMutation } from 'apollo';
-import { observer } from 'store';
-import { PxFit } from 'utils';
+import { observer, app } from 'store';
 
 const imageSource = {
     liked: require('../../../assets/images/ic_liked.png'),
@@ -22,11 +21,12 @@ export default observer((props: Props) => {
             likable_id: media.id,
             likable_type: isPost ? 'POST' : 'VIDEO',
         },
+        client: app.mutationClient,
     });
 
     const likeHandler = __.debounce(async function() {
         try {
-            const result = await exceptionCapture(likeArticle);
+            const result = await Helper.exceptionCapture(likeArticle);
             console.log('result', result);
         } catch (error) {
             media.liked ? media.count_likes-- : media.count_likes++;

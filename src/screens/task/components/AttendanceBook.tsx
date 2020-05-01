@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, Animated } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, ISIOS } from 'utils';
 import { GQL, useMutation, useQuery, useApolloClient } from 'apollo';
 import { useCirculationAnimation } from '@src/common';
 import { app, config } from 'store';
@@ -8,6 +7,7 @@ import { BoxShadow } from 'react-native-shadow';
 import { Overlay } from 'teaset';
 import { playVideo } from 'common';
 import SignedReturn from './SignedReturn';
+import * as SignedReturnOverlay from './SignedReturnOverlay';
 
 interface SignInReturns {
     id: any;
@@ -25,11 +25,15 @@ const AttendanceBook = (): JSX.Element => {
 
     const overlayRef = useRef();
 
-    const { data } = useQuery(GQL.SignInsQuery);
+    const { data, refetch } = useQuery(GQL.SignInsQuery, {
+        fetchPolicy: 'network-only',
+    });
     const [createSignIn] = useMutation(GQL.CreateSignInMutation, {
+        client: app.mutationClient,
         refetchQueries: (): array => [
             {
                 query: GQL.SignInsQuery,
+                fetchPolicy: 'network-only',
             },
             {
                 query: GQL.UserMetaQuery,
@@ -41,7 +45,6 @@ const AttendanceBook = (): JSX.Element => {
     const signInData = useMemo(() => {
         return Helper.syncGetter('signIns', data) || {};
     }, [data]);
-
     const keep_signin_days = Helper.syncGetter('keep_signin_days', signInData);
     const today_signed = Helper.syncGetter('today_signed', signInData);
     const signIns = Helper.syncGetter('signs', signInData);
@@ -50,7 +53,7 @@ const AttendanceBook = (): JSX.Element => {
         if (today_signed === false) {
             toDaySignIn();
         }
-    }, [signIns]);
+    }, [signIns, keep_signin_days]);
 
     const toDaySignIn = useCallback(
         __.throttle(async () => {
@@ -71,28 +74,25 @@ const AttendanceBook = (): JSX.Element => {
                 Toast.show({ content: '今天已经签到过了哦' });
             }
         }),
-        [signIns, today_signed],
+        [signIns, today_signed, keep_signin_days],
     );
 
-    const onSignInSuccess = useCallback((returns: SignInReturns) => {
-        if (ISIOS) {
-            //避免ios过审有问题
-            return;
-        }
-        Overlay.show(
-            <Overlay.PopView
-                style={{ alignItems: 'center', justifyContent: 'center' }}
-                animated={true}
-                ref={overlayRef}>
-                <SignedReturn
-                    gold={returns.gold_reward}
-                    reward={returns.contribute_reward}
-                    close={() => overlayRef.current.close()}
-                    client={client}
-                />
-            </Overlay.PopView>,
-        );
-    }, []);
+    const onSignInSuccess = useCallback(
+        (returns: SignInReturns) => {
+            if (Device.IOS) {
+                //避免ios过审有问题
+                return;
+            }
+            console.log(' onSignInSuccess keep_signin_days :', keep_signin_days);
+            SignedReturnOverlay.show({
+                gold: returns.gold_reward,
+                reward: returns.contribute_reward,
+                client: client,
+                signInDays: keep_signin_days + 1,
+            });
+        },
+        [keep_signin_days],
+    );
 
     const animation = useCirculationAnimation({ duration: 2000, start: true });
     const translateY = animation.interpolate({
@@ -101,7 +101,9 @@ const AttendanceBook = (): JSX.Element => {
     });
 
     const loadAd = useCallback(() => {
-        playVideo({ type: 'Sigin' });
+        playVideo({
+            type: 'Sigin',
+        });
     }, []);
 
     const doubleReward = useMemo(() => {
@@ -134,10 +136,14 @@ const AttendanceBook = (): JSX.Element => {
             <View style={styles.attendanceBook} onLayout={onLayoutEffect}>
                 <View style={styles.header}>
                     <Text style={styles.signInText}>
-                        已签到<Text style={styles.keepSignInText}>{`${keep_signin_days}/${signIns.length}`}</Text>天
+                        已签到<Text style={styles.keepSignInText}>{` ${keep_signin_days}/${signIns.length} `}</Text>天
                     </Text>
                 </View>
-                <TouchableWithoutFeedback onPress={toDaySignIn}>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        toDaySignIn();
+                        refetch();
+                    }}>
                     <View style={styles.attendance}>
                         {signIns.map((elem, index) => {
                             if (
@@ -158,14 +164,17 @@ const AttendanceBook = (): JSX.Element => {
                                                 style={[styles.mysticGift, { transform: [{ translateY }] }]}
                                             />
                                         )}
-                                        <Image
-                                            style={styles.giftImage}
-                                            source={
-                                                elem.signed
-                                                    ? require('../../../assets/images/open_gift.png')
-                                                    : require('../../../assets/images/gift.png')
-                                            }
-                                        />
+                                        <View style={styles.giftImage}>
+                                            <Image
+                                                style={{ height: signItemWidth * 0.65, width: signItemWidth * 0.65 }}
+                                                source={
+                                                    elem.signed
+                                                        ? require('@src/assets/images/ic_task_attendance_open_reward.png')
+                                                        : require('@src/assets/images/ic_task_attendance_reward.png')
+                                                }
+                                            />
+                                        </View>
+
                                         <Text style={styles.recordDayText}>
                                             {elem.signed ? '已签' : `${index + 1}天`}
                                         </Text>
@@ -179,8 +188,8 @@ const AttendanceBook = (): JSX.Element => {
                                         style={styles.coinImage}
                                         source={
                                             elem.signed
-                                                ? require('../../../assets/images/coin_grey.png')
-                                                : require('../../../assets/images/coin_yellow.png')
+                                                ? require('@src/assets/images/coin_grey.png')
+                                                : require('@src/assets/images/coin_yellow.png')
                                         }>
                                         <Text style={[styles.rewardGoldText, elem.signed && { color: '#a0a0a0' }]}>
                                             {elem.gold_reward || 0}
@@ -198,13 +207,13 @@ const AttendanceBook = (): JSX.Element => {
     );
 };
 
-const signItemWidth = (SCREEN_WIDTH - PxFit(Theme.itemSpace * 2) - PxFit(10)) / 7;
+const signItemWidth = (Device.WIDTH - PxFit(Theme.itemSpace * 2) - PxFit(10)) / 7;
 const coinImageWidth = signItemWidth * 0.9;
 const mysticGiftHeight = (coinImageWidth * 0.9 * 86) / 164;
 const doubleRewardHeight = mysticGiftHeight;
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - PxFit(Theme.itemSpace * 2),
+    width: Device.WIDTH - PxFit(Theme.itemSpace * 2),
     height: PxFit(150),
     color: '#E8E8E8',
     border: PxFit(10),
@@ -262,8 +271,10 @@ const styles = StyleSheet.create({
         fontSize: PxFit(15),
     },
     giftImage: {
-        height: coinImageWidth,
-        width: coinImageWidth,
+        height: signItemWidth * 0.9,
+        width: signItemWidth * 0.9,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
         alignItems: 'center',
@@ -285,7 +296,7 @@ const styles = StyleSheet.create({
         width: coinImageWidth * 0.9,
     },
     recordDayText: {
-        color: Theme.secondaryTextColor,
+        color: '#888888',
         fontSize: PxFit(12),
     },
     rewardGoldText: {
@@ -306,7 +317,7 @@ const styles = StyleSheet.create({
     },
     signInText: {
         color: Theme.defaultTextColor,
-        fontSize: PxFit(16),
+        fontSize: Font(18),
         fontWeight: 'bold',
     },
     signItem: {

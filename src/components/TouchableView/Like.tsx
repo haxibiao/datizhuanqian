@@ -1,9 +1,9 @@
 import React, { Component, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Animated, Image, Text } from 'react-native';
-import { exceptionCapture } from '@src/common/helper';
+
 import { useBounceAnimation } from '@src/common/animation';
 import { GQL, useMutation } from 'apollo';
-import { observer } from 'store';
+import { observer, app } from 'store';
 
 import Iconfont from '../Iconfont';
 import _ from 'lodash';
@@ -32,11 +32,12 @@ export default observer((props: Props) => {
             likable_id: Helper.syncGetter('id', media),
             likable_type: isQuestion ? 'QUESTION' : 'POST',
         },
+        client: app.mutationClient,
     });
 
     const likeHandler = __.throttle(async function() {
         try {
-            const result = await exceptionCapture(likeArticle);
+            const result = await Helper.exceptionCapture(likeArticle);
             console.log('result', result);
         } catch (error) {
             media.liked ? media.count_likes-- : media.count_likes++;
@@ -61,7 +62,7 @@ export default observer((props: Props) => {
         return (
             <Animated.View style={{ transform: [{ scale }] }}>
                 <TouchableOpacity onPress={toggleLike} style={containerStyle}>
-                    <Iconfont size={iconSize} name="like-fill" color={media.liked ? Theme.themeRed : '#CCD5E0'} />
+                    <Iconfont size={iconSize} name="like-fill" color={media.liked ? '#FF5B7C' : '#CCD5E0'} />
                     <Text style={textStyle}>{media.count_likes}</Text>
                 </TouchableOpacity>
             </Animated.View>

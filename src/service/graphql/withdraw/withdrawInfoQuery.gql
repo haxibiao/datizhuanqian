@@ -21,6 +21,8 @@ query withdrawInfoQuery($id: Int!) {
             fontColor
             bgColor
             disable
+            rule
+            needContributes
         }
     }
 }

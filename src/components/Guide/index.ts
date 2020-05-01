@@ -1,0 +1,9 @@
+export { default as AnswerGuidance } from './AnswerGuidance';
+export { default as beginnerGuidance } from './beginnerGuidance';
+export { default as ExamGuidance } from './ExamGuidance';
+export { default as SetQuestionGuidance } from './SetQuestionGuidance';
+export { default as TaskGuidance } from './TaskGuidance';
+export { default as VideoGuidance } from './VideoGuidance';
+export { default as VideoTaskGuidance } from './VideoTaskGuidance';
+export { default as WithdrawGuidance } from './WithdrawGuidance';
+export { default as AnswerWithdrawGuidance } from './AnswerWithdrawGuidance';

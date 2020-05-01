@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 
 import { Overlay } from 'teaset';
 import { ad } from 'native';
 import { playVideo } from '../../common/ad/playVideo';
-
+import { TouchFeedback, Iconfont, Row, Button } from '@src/components';
+import { app, config } from '@src/store';
 interface Reward {
     gold?: number;
     ticket?: number;
@@ -14,24 +15,19 @@ interface Reward {
 interface Props {
     reward: Reward;
     title: string;
-    rewardVideo: boolean;
     type: any;
 }
 
 let OverlayKey: any = null;
 
 const rewardTitle = (rewardList: { value: any; name: any }[]) => {
-    return (
-        <Text style={styles.title}>
-            恭喜获得
-            <Text style={{ color: Theme.themeRed }}>{rewardList[0].value + rewardList[0].name}</Text>
-        </Text>
-    );
+    return <Text style={styles.title}>{`恭喜获得${rewardList[0].value + rewardList[0].name}`}</Text>;
 };
 
-export const show = (props: Props) => {
-    const { reward, title, rewardVideo, type } = props;
+const RewardOverlay = props => {
+    const { reward, title, type } = props;
     const { gold, ticket, contribute } = reward;
+    const [adShow, setAdShow] = useState(false);
 
     const constructRewardList = [
         {
@@ -57,55 +53,112 @@ export const show = (props: Props) => {
         return elem.value > 0;
     });
 
-    const body = rewardList.length > 1 ? '同时奖励' : '领取奖励成功';
-    const overlayView = (
-        <Overlay.View animated>
-            <View style={styles.container}>
-                <View style={styles.content}>
-                    <View style={styles.header}>
-                        <Image source={require('@src/assets/images/money_old.png')} style={styles.headerImage} />
-                        <View style={{ marginLeft: PxFit(15) }}>
-                            {rewardTitle(rewardList)}
-                            <View style={styles.rewardContainer}>
-                                <Text style={{ color: Theme.grey }}>{title ? title : body}</Text>
+    const body = rewardList.length > 1 ? '额外奖励' : title || '偷偷告诉你一个小秘密，看视频点详情更有贡献点奖励哦';
+    return (
+        <View style={styles.container}>
+            <View
+                style={[
+                    styles.content,
+                    adShow ? {} : { borderBottomLeftRadius: PxFit(10), borderBottomRightRadius: PxFit(10) },
+                ]}>
+                <TouchFeedback style={styles.operation} onPress={hide}>
+                    <Iconfont name={'close'} color={'#D8D8D8'} size={Font(16)} />
+                </TouchFeedback>
+                <View style={{ alignItems: 'center' }}>
+                    <Image
+                        source={require('@src/assets/images/bg_reward_overlay_top.png')}
+                        style={styles.headerImage}
+                    />
+                </View>
+                <View style={styles.header}>
+                    <View style={{}}>
+                        {rewardTitle(rewardList)}
+                        <View style={styles.rewardContainer}>
+                            <Text style={{ color: Theme.grey }}>{body}</Text>
 
-                                {rewardList.slice(1).map((data, index) => {
-                                    return (
-                                        <Fragment key={index}>
-                                            <Image source={data.image} style={data.style} />
-                                            <Text>+{data.value}</Text>
-                                        </Fragment>
-                                    );
-                                })}
-                            </View>
+                            {rewardList.slice(1).map((data, index) => {
+                                return (
+                                    <Fragment key={index}>
+                                        {/*  <Image source={data.image} style={data.style} /> */}
+                                        <Text style={{ color: Theme.theme, paddingLeft: PxFit(3) }}>
+                                            {data.value}
+                                            <Text style={{ color: Theme.theme }}>{data.name}</Text>
+                                        </Text>
+                                    </Fragment>
+                                );
+                            })}
                         </View>
                     </View>
-
-                    <View>
-                        <ad.FeedAd adWidth={Device.WIDTH - PxFit(40)} />
-                    </View>
-
-                    <View style={styles.modalFooter}>
-                        <TouchableOpacity style={styles.operation} onPress={hide}>
-                            <Text style={styles.operationText}>忽略</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.operation, { borderLeftColor: Theme.lightBorder, borderLeftWidth: 0.5 }]}
-                            onPress={() => {
-                                hide();
-                                if (rewardVideo) {
-                                    Helper.middlewareNavigate('BillingRecord', { initialPage: 1 });
-                                } else {
-                                    playVideo({ type });
-                                }
-                            }}>
-                            <Text style={[styles.operationText, { color: Theme.theme }]}>
-                                {rewardVideo ? '查看' : '领更多奖励'}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
+                <View style={{ alignItems: 'center', marginTop: PxFit(5), paddingBottom: PxFit(15) }}>
+                    <Button
+                        style={styles.button}
+                        textColor={'#623605'}
+                        title={'查看详情'}
+                        onPress={() => {
+                            hide();
+                            Helper.middlewareNavigate('BillingRecord', {
+                                initialPage: 1,
+                            });
+                        }}
+                    />
+                </View>
+                {!config.disableAd && (
+                    <Row style={{ justifyContent: 'center' }}>
+                        <Text
+                            style={{
+                                fontSize: Font(13),
+                                color: '#999999',
+                            }}>
+                            当前智慧点:
+                        </Text>
+                        <Image
+                            source={require('@src/assets/images/diamond.png')}
+                            style={{ width: PxFit(17), height: PxFit(17), marginHorizontal: PxFit(3) }}
+                        />
+                        <Text
+                            style={{
+                                fontSize: Font(13),
+                                color: '#999999',
+                            }}>
+                            {app.userCache.gold}
+                            <Text style={{ color: Theme.themeRed }}>≈{Helper.money(app.userCache)}元</Text>
+                        </Text>
+                    </Row>
+                )}
             </View>
+            {adShow && (
+                <Image
+                    source={require('@src/assets/images/bg_feed_overlay_line.png')}
+                    style={{
+                        width: Device.WIDTH - PxFit(48),
+                        height: ((Device.WIDTH - PxFit(48)) * 30) / 640,
+                    }}
+                />
+            )}
+
+            <View
+                style={{
+                    width: Device.WIDTH - PxFit(48),
+                    backgroundColor: '#FFF',
+                    borderBottomLeftRadius: PxFit(10),
+                    borderBottomRightRadius: PxFit(10),
+                }}>
+                <ad.FeedAd
+                    adWidth={Device.WIDTH - PxFit(50)}
+                    onAdShow={() => {
+                        setAdShow(true);
+                    }}
+                />
+            </View>
+        </View>
+    );
+};
+
+export const show = (props: Props) => {
+    const overlayView = (
+        <Overlay.View animated>
+            <RewardOverlay {...props} />
         </Overlay.View>
     );
     OverlayKey = Overlay.show(overlayView);
@@ -124,10 +177,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     content: {
-        width: Device.WIDTH - PxFit(40),
-        borderRadius: PxFit(5),
-        backgroundColor: Theme.white,
-        padding: 0,
+        width: Device.WIDTH - PxFit(48),
+
+        backgroundColor: '#FFF',
+        alignItems: 'center',
+        paddingBottom: PxFit(15),
+        borderTopLeftRadius: PxFit(10),
+        borderTopRightRadius: PxFit(10),
         // alignItems: 'center',
     },
     contributeImage: {
@@ -145,8 +201,9 @@ const styles = StyleSheet.create({
         marginBottom: PxFit(15),
     },
     headerImage: {
-        width: 62,
-        height: 62,
+        width: (Device.WIDTH * 0.28 * 318) / 216,
+        height: Device.WIDTH * 0.28,
+        marginTop: PxFit(-75),
     },
 
     iconImage: {
@@ -162,13 +219,14 @@ const styles = StyleSheet.create({
         marginTop: PxFit(15),
     },
     operation: {
-        paddingVertical: PxFit(15),
-        flex: 1,
+        position: 'absolute',
+        right: PxFit(0),
+        top: PxFit(0),
+        paddingTop: PxFit(10),
+        paddingHorizontal: PxFit(15),
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        borderLeftColor: Theme.lightBorder,
-        borderLeftWidth: 0.5,
     },
     operationText: {
         fontSize: PxFit(15),
@@ -178,13 +236,21 @@ const styles = StyleSheet.create({
     rewardContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         paddingTop: 5,
     },
 
+    button: {
+        backgroundColor: '#FCE03D',
+        borderRadius: PxFit(19),
+        height: PxFit(38),
+        width: Device.WIDTH * 0.6,
+    },
     title: {
-        fontSize: PxFit(18),
+        fontSize: Font(18),
         color: Theme.black,
-        fontWeight: '600',
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 

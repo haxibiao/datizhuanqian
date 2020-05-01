@@ -4,13 +4,12 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView, FlatList } from 'react-native';
-import { PageContainer, TouchFeedback, Iconfont, Row, Button, Avatar } from 'components';
-import { Theme, PxFit, Config, SCREEN_WIDTH, SCREEN_HEIGHT } from 'utils';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { PageContainer, Row, Button, Avatar } from 'components';
 
 import { BoxShadow } from 'react-native-shadow';
 
-import { compose, Query, Mutation, graphql, GQL } from 'apollo';
+import { Query, GQL } from 'apollo';
 import { app } from 'store';
 
 class InviteeList extends Component {
@@ -23,7 +22,7 @@ class InviteeList extends Component {
     }
     render() {
         let { navigation } = this.props;
-        let { headerHeight, itemHeight } = this.state;
+        let { itemHeight } = this.state;
         let { shareInfo } = navigation.state.params;
         return (
             <PageContainer title="我的好友" white>
@@ -62,7 +61,7 @@ class InviteeList extends Component {
                                 height: 64 + itemHeight,
                             })}>
                             <Query query={GQL.invitationUsersQuery} variables={{ user_id: app.me.id }}>
-                                {({ data, loading, error, refetch, fetchMore }) => {
+                                {({ data, loading, error }) => {
                                     if (error) return null;
                                     if (loading) return null;
                                     if (!(data && data.invitationUsers.length > 0))
@@ -133,7 +132,7 @@ class InviteeList extends Component {
 }
 
 const shadowOpt = {
-    width: SCREEN_WIDTH - PxFit(30),
+    width: Device.WIDTH - PxFit(30),
     height: PxFit(150),
     color: '#FBB6A2',
     border: PxFit(10),
@@ -231,13 +230,13 @@ const styles = StyleSheet.create({
     positionBottom: {
         position: 'absolute',
         bottom: PxFit(10),
-        left: SCREEN_WIDTH / 8,
+        left: Device.WIDTH / 8,
     },
     InviteeButton: {
         backgroundColor: Theme.theme,
         borderRadius: PxFit(19),
         height: PxFit(38),
-        width: (SCREEN_WIDTH * 3) / 4,
+        width: (Device.WIDTH * 3) / 4,
     },
 });
 

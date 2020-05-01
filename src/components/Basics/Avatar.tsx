@@ -1,6 +1,5 @@
 import React, { Component, useState } from 'react';
 import { View, Image, PixelRatio } from 'react-native';
-import { Theme, PxFit } from '../../utils';
 
 import { app } from 'store';
 import { GQL } from '@src/apollo';
@@ -10,7 +9,7 @@ const Avatar = props => {
 
     const onError = () => {
         setlLoading(false);
-        app.client
+        app.mutationClient
             .mutate({
                 mutation: GQL.FixUserAvatarMutation,
                 variables: {

@@ -4,8 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from '../../utils';
+import { StyleSheet, View, Image, Text, ImageBackground } from 'react-native';
 
 class UserTitle extends Component {
     constructor(props) {
@@ -16,20 +15,18 @@ class UserTitle extends Component {
     render() {
         let { navigation, user } = this.props;
         return (
-            <View>
-                <View
-                    style={{
-                        backgroundColor: Theme.theme,
-                        paddingVertical: PxFit(1),
-                        paddingHorizontal: PxFit(6),
-                        marginHorizontal: PxFit(5),
-                        borderRadius: PxFit(10),
-                    }}>
-                    <Text style={{ fontSize: PxFit(8), color: '#fff', lineHeight: PxFit(10) }}>
-                        Lv.{user.level.level}
-                    </Text>
-                </View>
-            </View>
+            <ImageBackground
+                source={require('@src/assets/images/bg_user_level.png')}
+                style={{
+                    height: PxFit(11),
+                    width: (PxFit(11) * 82) / 35,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginHorizontal: PxFit(5),
+                }}>
+                <Text style={{ fontSize: PxFit(8), color: '#fff' }}>Lv.{user.level.level}</Text>
+            </ImageBackground>
         );
     }
 }

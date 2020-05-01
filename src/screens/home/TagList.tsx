@@ -1,14 +1,16 @@
 import React, { useRef, useMemo, useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { CustomRefreshControl, ListFooter } from '@src/components';
-import { syncGetter } from '@src/common';
-import { SCREEN_WIDTH, Theme, PxFit } from '@src/utils';
 import { useQuery, GQL } from '@src/apollo';
 import { observer, app } from '@src/store';
 import { useNavigation } from 'react-navigation-hooks';
 import TagsPlaceholder from './components/TagsPlaceholder';
 import ListHeader from './components/ListHeader';
 import TagItem from './components/TagItem';
+import CustomTag from './components/CustomTag';
+import GuestLikeCategories from './components/GuestLikeCategories';
+import NewestCategories from './components/NewestCategories';
+import RecommendCategories from './components/RecommendCategories';
 
 const TagList = observer(props => {
     const { tag } = props;
@@ -20,17 +22,19 @@ const TagList = observer(props => {
     const { loading, error, data, refetch, fetchMore } = useQuery(GQL.TagQuery, {
         variables: { limit: 10, id: tag.id },
     });
-
+    console.log('data :>> ', data);
     const tags = useMemo(() => {
-        const tagsData = syncGetter('tag.tags', data);
+        const tagsData = Helper.syncGetter('tag.tags', data);
+
         if (Array.isArray(tagsData)) {
             return tagsData;
         }
+
         return [];
     }, [data]);
 
     const categories = useMemo(() => {
-        const categoriesData = syncGetter('tag.categories', data);
+        const categoriesData = Helper.syncGetter('tag.categories', data);
         if (Array.isArray(categoriesData)) {
             return categoriesData;
         }
@@ -54,7 +58,7 @@ const TagList = observer(props => {
     }, [tags, categories, tag, error, loading, app.tagListData]);
 
     useEffect(() => {
-        if (listData.length > 0) {
+        if (listData && listData.length > 0) {
             app.updateTagListCache(tag.id, listData);
         }
     }, [listData]);
@@ -66,28 +70,25 @@ const TagList = observer(props => {
         flag.current = true;
         fetchMore({
             variables: {
-                tagsOffset: tags.length,
+                // tagsOffset: tags.length,
                 categoriesOffset: categories.length,
             },
             updateQuery: (prev, { fetchMoreResult }) => {
-                const newTags = Array.isArray(syncGetter('tag.tags', fetchMoreResult))
-                    ? syncGetter('tag.tags', fetchMoreResult)
-                    : [];
-                const newCategories = Array.isArray(syncGetter('tag.categories', fetchMoreResult))
-                    ? syncGetter('tag.categories', fetchMoreResult)
+                // const newTags = Array.isArray(Helper.syncGetter('tag.tags', fetchMoreResult))
+                //     ? Helper.syncGetter('tag.tags', fetchMoreResult)
+                //     : [];
+                const newCategories = Array.isArray(Helper.syncGetter('tag.categories', fetchMoreResult))
+                    ? Helper.syncGetter('tag.categories', fetchMoreResult)
                     : [];
                 flag.current = false;
 
-                if (newTags.length > 0 || newCategories.length > 0) {
-                    if (newTags.length < 10) {
-                        hasMoreTags.current = false;
-                    }
-                    if (newTags.length < 10 && newCategories.length < 10) {
+                if (newCategories.length > 0) {
+                    if (newCategories.length < 10) {
                         setFinished(true);
                     }
                     return Object.assign({}, prev, {
                         tag: Object.assign({}, prev.tag, {
-                            tags: [...prev.tag.tags, ...newTags],
+                            // tags: [...prev.tag.tags, ...newTags],
                             categories: [...prev.tag.categories, ...newCategories],
                         }),
                     });
@@ -111,8 +112,13 @@ const TagList = observer(props => {
         } else {
             props = { category: item };
         }
-        return <TagItem tag={tag} title={item.name} {...props} />;
+        return tag.id == 10 ? (
+            <CustomTag tag={tag} title={item.name} {...props} />
+        ) : (
+            <TagItem tag={tag} title={item.name} {...props} />
+        );
     }, []);
+    console.log('listData :', listData);
 
     return (
         <FlatList
@@ -127,7 +133,11 @@ const TagList = observer(props => {
             onEndReachedThreshold={0.2}
             ListEmptyComponent={() => <TagsPlaceholder isTab />}
             ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-            ListHeaderComponent={() => <ListHeader navigation={navigation} />}
+            ListHeaderComponent={() => (
+                <View>
+                    <ListHeader navigation={navigation} />
+                </View>
+            )}
             ListFooterComponent={() => <ListFooter finished={finished} />}
             showsVerticalScrollIndicator={false}
         />
@@ -137,9 +147,9 @@ const TagList = observer(props => {
 const styles = StyleSheet.create({
     contentStyle: {
         flexGrow: 1,
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT + PxFit(56),
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT + PxFit(56),
         paddingHorizontal: PxFit(Theme.itemSpace),
-        backgroundColor: '#F6F6F6',
+        backgroundColor: '#FFF',
     },
     itemSeparator: {
         height: PxFit(Theme.itemSpace),

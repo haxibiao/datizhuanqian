@@ -1,4 +1,6 @@
 #专题分类
+#import './RandomQuestionQuery.gql'
+
 query CategoriesQuery($offset: Int, $limit: Int, $allow_submit: Int) {
     categories(offset: $offset, limit: $limit, allow_submit: $allow_submit) {
         id

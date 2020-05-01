@@ -2,14 +2,13 @@
  * @Author: Gaoxuan
  * @Date:   2019-03-21 16:28:10
  */
-import React, { Fragment } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image, Linking } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, Image, Linking } from 'react-native';
 
 import { Iconfont, TouchFeedback, Row } from '@src/components';
 
 import { Overlay } from 'teaset';
 
-import DownLoadApk from '@src/components/Utils/DownLoadApk';
 import { AppUtil } from 'native';
 
 class DameiIntro {
@@ -21,7 +20,7 @@ class DameiIntro {
                 <View style={styles.container}>
                     <View style={styles.content}>
                         <Row style={{ marginTop: PxFit(25) }}>
-                            <Image source={require('@src/assets/images/damei.png')} style={styles.icon} />
+                            <Image source={require('@src/assets/images/ic_damei.png')} style={styles.icon} />
                             <View style={{ marginLeft: PxFit(10) }}>
                                 <Text style={styles.title}>答妹</Text>
                                 <Text style={styles.appInfo} numberOfLines={1}>

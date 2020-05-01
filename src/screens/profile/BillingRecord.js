@@ -4,9 +4,8 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 import { ScrollTabBar, PageContainer } from 'components';
 
 import WithdrawLog from '../withdraw/components/WithdrawLog';

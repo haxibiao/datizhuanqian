@@ -69,7 +69,13 @@ class FooterBar extends Component {
     toggleFavorite = async () => {
         let { question, toggleFavorite } = this.props;
         this.setState(prevState => ({ favorited: !prevState.favorited }));
-        toggleFavorite({ variables: { data: { favorable_id: question.id } } });
+        toggleFavorite({
+            variables: {
+                data: {
+                    favorable_id: question.id,
+                },
+            },
+        });
     };
 
     reward = () => {
@@ -158,7 +164,7 @@ class FooterBar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT,
         backgroundColor: '#fff',
     },
     footerBar: {
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
     },
     toolItem: {
         flex: 1,
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT > 0 ? 0 : PxFit(3),
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT > 0 ? 0 : PxFit(3),
         justifyContent: 'center',
         alignItems: 'center',
     },

@@ -1,0 +1,12 @@
+query RecommendCategoriesQuery($offset: Int, $limit: Int) {
+    recommendCategories(offset: $offset, limit: $limit) {
+        id
+        icon
+        name
+        description
+        is_official
+        questions_count
+        answers_count
+        tips
+    }
+}

@@ -12,7 +12,6 @@ import {
     ItemSeparator,
     WheelPicker,
 } from 'components';
-import { ISIOS } from 'utils';
 import { compose, withApollo, graphql, GQL } from 'apollo';
 import { app, observer } from 'store';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -37,11 +36,11 @@ class index extends Component {
 
     componentDidMount() {
         if (!this.showListener) {
-            let name = ISIOS ? 'keyboardWillShow' : 'keyboardDidShow';
+            let name = Device.IOS ? 'keyboardWillShow' : 'keyboardDidShow';
             this.showListener = Keyboard.addListener(name, e => this.onKeyboardShow(e));
         }
         if (!this.hideListener) {
-            let name = ISIOS ? 'keyboardWillHide' : 'keyboardDidHide';
+            let name = Device.IOS ? 'keyboardWillHide' : 'keyboardDidHide';
             this.hideListener = Keyboard.addListener(name, () => this.onKeyboardHide());
         }
     }

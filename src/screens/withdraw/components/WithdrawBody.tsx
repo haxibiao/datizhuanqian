@@ -3,14 +3,14 @@ import { StyleSheet, View, Text, Image, ScrollView, AppState } from 'react-nativ
 import { TouchFeedback, Button, SubmitLoading, Row, Iconfont } from 'components';
 import { useQuery, GQL } from 'apollo';
 import { app, observer } from 'store';
-import { SCREEN_WIDTH, WPercent, ISIOS } from 'utils';
 import { getAuthCode } from 'common';
-import { DownloadApkIntro } from 'components';
+import { DownloadApkIntro, ErrorOverlay } from 'components';
 import { AppUtil } from 'native';
 import WithdrawHeader from './WithdrawHeader';
 import WithdrawBottom from './WithdrawBottom';
 import DameiIntro from './DameiIntro';
 import { withdrawTrack } from 'common';
+import { NavigationActions } from 'react-navigation';
 
 import DeviceInfo from 'react-native-device-info';
 const SystemVersion = DeviceInfo.getSystemVersion();
@@ -19,11 +19,11 @@ const Brand = DeviceInfo.getBrand();
 const WithdrawBody = observer(props => {
     const { navigation, withdrawClient } = props;
     const [submit, setSubmit] = useState(false);
-    const [withdrawType, setWithdrawType] = useState('alipay');
+    const [withdrawType, setWithdrawType] = useState('wechat');
 
     const [installDDZ, setInstallDDZ] = useState(false);
     const [installDM, setInstallDM] = useState(false);
-    let forceAlert = true;
+    const [selectWithdraw, setSelectWithdraw] = useState({ amount: 0, rule: null, needContributes: 0 });
 
     const UserMeansQuery = useQuery(GQL.UserMeansQuery, {
         variables: { id: app.me.id },
@@ -71,22 +71,15 @@ const WithdrawBody = observer(props => {
         }
     };
 
-    useEffect(() => {
-        AppState.addEventListener('change', CheckApkExist);
-        deviceCheck();
-        return () => {
-            AppState.removeEventListener('change', CheckApkExist);
-        };
-    }, [CheckApkExist]);
-
     const createWithdraw = useCallback(
-        async (value: any, type?: any) => {
+        async (type?: any) => {
             setSubmit(true);
+            console.log('selectWithdraw :>> ', selectWithdraw);
             try {
                 const result = await withdrawClient.mutate({
                     mutation: GQL.CreateWithdrawMutation,
                     variables: {
-                        amount: value,
+                        amount: selectWithdraw.amount,
                         platform: type || withdrawType,
                         version: Config.Version,
                     },
@@ -100,7 +93,7 @@ const WithdrawBody = observer(props => {
                         },
                     ],
                 });
-                navigation.navigate('WithdrawApply', { amount: value });
+                navigation.navigate('WithdrawApply', { amount: selectWithdraw.amount });
                 setSubmit(false);
             } catch (e) {
                 let str = e.toString().replace(/Error: GraphQL error: /, '');
@@ -108,32 +101,64 @@ const WithdrawBody = observer(props => {
                 setSubmit(false);
             }
         },
-        [withdrawType],
+        [withdrawType, selectWithdraw],
     );
 
-    const selectWithdrawCount = (value: number) => {
-        console.log('selectWithdrawCount value :', value);
-        withdrawTrack({ withdrawType, value: value.toString() });
+    const handleWithdraw = () => {
+        //matomo提现统计
+        withdrawTrack({
+            withdrawType,
+            value: selectWithdraw.amount.toString(),
+        });
 
-        if (user.gold < value * user.exchange_rate) {
+        //检查余额
+        if (user.gold < selectWithdraw.amount * user.exchange_rate) {
             Toast.show({
-                content: `智慧点不足提现${value}元，快去赚钱智慧点吧`,
+                content: `智慧点不足提现${selectWithdraw.amount}元，快去赚钱智慧点吧`,
             });
-        } else {
-            checkWithdrawType(value);
+            return;
         }
+
+        //检查贡献值
+        if (selectWithdraw.needContributes > user.today_contributes) {
+            ErrorOverlay.show({
+                title: `提现${selectWithdraw.amount}元失败`,
+                content: `今日贡献值不足,还差${selectWithdraw.needContributes - user.today_contributes}贡献值即可提现`,
+                buttonName: '做贡献任务',
+                action: () => {
+                    const resetAction = NavigationActions.navigate({
+                        routeName: '任务',
+                        params: {
+                            showGuidance: true,
+                        },
+                    });
+                    navigation.dispatch(resetAction);
+                },
+            });
+            return;
+        }
+
+        //检查提现类型
+        if (withdrawType === 'dongdezhuan' && !installDDZ) {
+            DownloadApkIntro.show(createWithdraw, selectWithdraw.amount);
+            return;
+        }
+        if (withdrawType === 'damei' && !installDM) {
+            DameiIntro.show(installDM);
+            return;
+        }
+
+        //提现
+        createWithdraw();
     };
 
-    const checkWithdrawType = (value: any) => {
-        forceAlert = user ? user.force_alert : forceAlert;
-        if (withdrawType === 'dongdezhuan' && !installDDZ) {
-            DownloadApkIntro.show(createWithdraw, value);
-        } else if (withdrawType === 'damei' && !installDM) {
-            DameiIntro.show(installDM);
-        } else {
-            createWithdraw(value);
-        }
-    };
+    useEffect(() => {
+        AppState.addEventListener('change', CheckApkExist);
+        deviceCheck();
+        return () => {
+            AppState.removeEventListener('change', CheckApkExist);
+        };
+    }, [CheckApkExist]);
 
     const renderBindTips = () => {
         let name = '已绑定';
@@ -146,7 +171,7 @@ const WithdrawBody = observer(props => {
             name = '立即绑定';
             action = () => Helper.middlewareNavigate('SettingWithdrawInfo');
         }
-        if ((withdrawType === 'wechat' && !Helper.syncGetter('user.wallet.platforms.wechat', data)) || ISIOS) {
+        if ((withdrawType === 'wechat' && !Helper.syncGetter('user.wallet.platforms.wechat', data)) || Device.IOS) {
             name = '立即绑定';
             action = () => {
                 setSubmit(true);
@@ -179,7 +204,7 @@ const WithdrawBody = observer(props => {
                 break;
         }
         return (
-            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(10), marginBottom: PxFit(5) }}>
+            <Row style={{ justifyContent: 'space-between', marginTop: PxFit(12), marginBottom: PxFit(5) }}>
                 {playform === '懂得赚' || playform === '答妹' ? (
                     <TouchFeedback
                         style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -187,22 +212,26 @@ const WithdrawBody = observer(props => {
                             console.log('installDM', installDM);
                             playform === '懂得赚' ? DownloadApkIntro.show() : DameiIntro.show(installDM);
                         }}>
-                        <Text style={{ fontSize: PxFit(13) }}>
+                        <Text style={{ fontSize: Font(13) }}>
                             {`绑定`}
-                            <Text style={{ color: Theme.theme }}>{playform}</Text>后可直接提现
+                            <Text style={{ color: Theme.theme }}>{playform}</Text>后可直接提现哦
                         </Text>
                         <Image
-                            source={require('../../../assets/images/question.png')}
+                            source={require('@src/assets/images/question.png')}
                             style={{ width: PxFit(12), height: PxFit(12), marginLeft: PxFit(3) }}
                         />
                     </TouchFeedback>
                 ) : (
-                    <Text style={{ fontSize: PxFit(13) }}>{`绑定${playform}后可直接提现`}</Text>
+                    <Text
+                        style={{
+                            fontSize: Font(13),
+                            color: '#606060',
+                        }}>{`绑定${playform}后可直接提现哦`}</Text>
                 )}
 
                 <TouchFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={action}>
-                    <Text style={{ fontSize: PxFit(13), color: Theme.subTextColor }}>{name}</Text>
-                    <Iconfont name="right" size={PxFit(13)} color={Theme.subTextColor} />
+                    <Text style={{ fontSize: PxFit(13), color: '#999999' }}>{name}</Text>
+                    <Iconfont name="right" size={PxFit(13)} color={'#999999'} />
                 </TouchFeedback>
             </Row>
         );
@@ -217,63 +246,90 @@ const WithdrawBody = observer(props => {
     }
     console.log('withdrawB :', withdraw);
     return (
-        <ScrollView style={{ flex: 1 }}>
-            <View style={styles.container}>
-                <WithdrawHeader navigation={navigation} user={user} />
+        <>
+            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                <View style={styles.container}>
+                    <WithdrawHeader navigation={navigation} user={user} />
 
-                <View style={{ paddingHorizontal: PxFit(Theme.itemSpace) }}>
-                    <Row style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                        {WithdrawType.map((data, index) => {
-                            if (ISIOS && data.type === 'wechat') return null;
-                            return (
-                                <Fragment key={index}>
-                                    <TouchFeedback
-                                        style={[
-                                            styles.withdrawType,
-                                            withdrawType === data.type && { borderColor: Theme.primaryColor },
-                                            index === 0 && {
-                                                marginRight: PxFit(10),
-                                            },
-                                        ]}
-                                        onPress={() => {
-                                            setWithdrawType(data.type);
-                                        }}>
-                                        <Image source={data.icon} style={styles.withdrawTypeText} />
-                                        <Text>{data.name}</Text>
-                                    </TouchFeedback>
-                                </Fragment>
-                            );
-                        })}
-                    </Row>
-                    {renderBindTips()}
+                    <View style={{ paddingHorizontal: PxFit(Theme.itemSpace), marginTop: PxFit(10) }}>
+                        <Row style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                            {WithdrawType.map((data, index) => {
+                                if (Device.IOS && data.type === 'wechat') return null;
+                                return (
+                                    <Fragment key={index}>
+                                        <TouchFeedback
+                                            style={[
+                                                styles.withdrawType,
+                                                withdrawType === data.type && {
+                                                    borderColor: '#FECF3F',
+                                                },
+                                            ]}
+                                            onPress={() => {
+                                                setWithdrawType(data.type);
+                                            }}>
+                                            <Image source={data.icon} style={styles.withdrawTypeText} />
+                                            <Text>{data.name}</Text>
+                                            {withdrawType === data.type && (
+                                                <Image
+                                                    source={require('@src/assets/images/bg_withdraw_type_selected.png')}
+                                                    style={{
+                                                        width: PxFit(20),
+                                                        height: (PxFit(20) * 80) / 94,
+                                                        position: 'absolute',
+                                                        right: 0,
+                                                        bottom: 0,
+                                                    }}
+                                                />
+                                            )}
+                                        </TouchFeedback>
+                                    </Fragment>
+                                );
+                            })}
+                        </Row>
+                        {renderBindTips()}
+                    </View>
+                    <WithdrawBottom
+                        setSelectWithdraw={setSelectWithdraw}
+                        selectWithdraw={selectWithdraw}
+                        navigation={navigation}
+                        withdraw={withdraw}
+                    />
+                    <SubmitLoading isVisible={submit} content={'加载中...'} />
                 </View>
-                <WithdrawBottom selectWithdrawCount={selectWithdrawCount} navigation={navigation} withdraw={withdraw} />
-                <SubmitLoading isVisible={submit} content={'加载中...'} />
+            </ScrollView>
+            <View style={styles.footer}>
+                <Button
+                    title={'立即提现'}
+                    style={styles.button}
+                    onPress={handleWithdraw}
+                    FontSize={Font(15)}
+                    textColor={'#623605'}
+                />
             </View>
-        </ScrollView>
+        </>
     );
 });
 
 const WithdrawType = [
-    {
-        type: 'alipay',
-        name: '支付宝',
-        icon: require('@src/assets/images/zhifubao.png'),
-    },
     {
         type: 'wechat',
         name: '微信',
         icon: require('@src/assets/images/wechat.png'),
     },
     {
+        type: 'alipay',
+        name: '支付宝',
+        icon: require('@src/assets/images/zhifubao.png'),
+    },
+    {
         type: 'damei',
         name: '答妹',
-        icon: require('@src/assets/images/damei.png'),
+        icon: require('@src/assets/images/ic_damei.png'),
     },
     {
         type: 'dongdezhuan',
         name: '懂得赚',
-        icon: require('@src/assets/images/dongdezhuan.png'),
+        icon: require('@src/assets/images/ic_dongdezhuan.png'),
     },
 ];
 
@@ -305,7 +361,7 @@ const styles = StyleSheet.create({
     withdrawType: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: (SCREEN_WIDTH - PxFit(40)) / 2,
+        width: (Device.WIDTH - PxFit(40)) * 0.49,
         height: PxFit(50),
         justifyContent: 'center',
         borderColor: Theme.borderColor,
@@ -317,6 +373,22 @@ const styles = StyleSheet.create({
         width: PxFit(24),
         height: PxFit(24),
         marginRight: PxFit(5),
+    },
+    footer: {
+        alignItems: 'center',
+        paddingVertical: PxFit(15),
+    },
+    tips: {
+        color: '#A3A3A3',
+        fontSize: Font(14),
+        lineHeight: PxFit(18),
+        textAlign: 'center',
+    },
+    button: {
+        height: PxFit(44),
+        borderRadius: PxFit(22),
+        backgroundColor: '#FCE13D',
+        width: Percent(88),
     },
 });
 

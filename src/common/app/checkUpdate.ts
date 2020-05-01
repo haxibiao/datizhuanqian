@@ -7,7 +7,6 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { storage, keys } from 'store';
 import { AppUpdateOverlay } from 'components';
-import { Config } from 'utils';
 
 function manualUpdate(versionData: { version: any }) {
     const localVersion = Config.Version || '1.0.0'; // 本地版本
@@ -47,7 +46,7 @@ export function checkUpdate(type: String) {
     if (Platform.OS === 'ios') {
         return;
     }
-    fetch(Config.ApiServceRoot + '/api/app-version' + '?package=' + Config.PackageName, {
+    fetch(Config.ServerRoot + '/api/app-version' + '?package=' + Config.PackageName, {
         method: 'POST',
         headers: {
             version: DeviceInfo.getVersion(),

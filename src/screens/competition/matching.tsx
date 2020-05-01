@@ -1,9 +1,7 @@
 import React, { useMemo, useRef, useEffect, useCallback, useState } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground, Animated } from 'react-native';
 import { PageContainer, NavigatorBar, Row } from '@src/components';
-import { Theme, SCREEN_WIDTH, SCREEN_HEIGHT, PxFit } from '@src/utils';
-import { Query, useQuery, GQL } from '@src/apollo';
-import { useLinearAnimation, syncGetter } from '@src/common';
+import { useLinearAnimation } from '@src/common';
 import { observer, app } from 'store';
 import localStore from './store';
 import ChallengeButton from './components/ChallengeButton';
@@ -113,19 +111,6 @@ export default observer(props => {
         }
     }, []);
 
-    useEffect(() => {
-        service.dataReport({
-            data: {
-                category: '用户行为',
-                action: 'user_click_compete_screen',
-                name: '用户进入答题PK页',
-            },
-            callback: (result: any) => {
-                console.warn('result', result);
-            },
-        });
-    }, []);
-
     //背景音乐
     useEffect(() => {
         const music = playSound('competition_bg.mp3', true);
@@ -211,18 +196,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: PxFit(42),
         width: PxFit(180),
-        top: SCREEN_HEIGHT * 0.5 + PxFit(120),
+        top: Device.HEIGHT * 0.5 + PxFit(120),
     },
     challengeWrap: {
         marginVertical: PxFit(50),
     },
     competitorLeft: {
         alignItems: 'flex-start',
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
     },
     competitorRight: {
         alignItems: 'flex-end',
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
     },
     container: {
         alignItems: 'center',

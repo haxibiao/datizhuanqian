@@ -33,7 +33,7 @@ export default observer(props => {
                         target={media}
                         downloadUrl={Helper.syncGetter('video.url', media)}
                         downloadUrlTitle={Helper.syncGetter('body', media)}
-                        options={[!config.disableAd ? '采集视频' : '拉黑', '不感兴趣', '举报', '分享微信']}
+                        options={[!config.disableAd ? '采集视频' : '拉黑', '不感兴趣', '举报', '复制链接']}
                     />
                 </ApolloProvider>
             </Overlay.PullView>

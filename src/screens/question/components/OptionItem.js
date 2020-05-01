@@ -3,9 +3,8 @@
  * created by wyk made in 2019-03-28 11:52:05
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, Animated } from 'react-native';
+import { StyleSheet, View, Text, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 class OptionItem extends Component {
     _animated = new Animated.Value(0);
@@ -95,7 +94,7 @@ class OptionItem extends Component {
                 {
                     translateX: this._animated.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [even ? -SCREEN_WIDTH : SCREEN_WIDTH, 0],
+                        outputRange: [even ? -Device.WIDTH : Device.WIDTH, 0],
                         extrapolate: 'clamp',
                     }),
                 },

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
 
 const Category = props => {
     const { category, navigation } = props;
@@ -28,14 +27,14 @@ const Category = props => {
 };
 
 const styles = StyleSheet.create({
-    container: { width: (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 4) / 3 },
+    container: { width: (Device.WIDTH - PxFit(Theme.itemSpace) * 4) / 3 },
     content: {
         marginTop: PxFit(6),
     },
     cover: {
         borderRadius: PxFit(5),
-        height: (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 4) / 3,
-        width: (SCREEN_WIDTH - PxFit(Theme.itemSpace) * 4) / 3,
+        height: (Device.WIDTH - PxFit(Theme.itemSpace) * 4) / 3,
+        width: (Device.WIDTH - PxFit(Theme.itemSpace) * 4) / 3,
     },
     name: {
         color: Theme.defaultTextColor,

@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback, Text, Animated } from 'react-native';
 import { TouchFeedback, Iconfont } from 'components';
-import { Theme, PxFit } from 'utils';
 
 import { compose, graphql, GQL } from 'apollo';
 
@@ -153,7 +152,7 @@ class FooterBar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT,
         backgroundColor: '#fff',
     },
     footerBar: {

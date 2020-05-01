@@ -6,8 +6,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { Theme, PxFit, SCREEN_WIDTH, WPercent } from '../../utils';
-import Button from '../TouchableView/Button';
+
 import SubmitLoading from '../Overlay/SubmitLoading';
 import { config } from 'store';
 
@@ -90,11 +89,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        minHeight: WPercent(80),
+        minHeight: Percent(80),
     },
     image: {
-        width: WPercent(44),
-        height: WPercent(44),
+        width: Percent(44),
+        height: Percent(44),
         resizeMode: 'cover',
     },
     textWrap: { justifyContent: 'center', alignItems: 'center' },

@@ -1,6 +1,4 @@
 import { observable, action, runInAction } from 'mobx';
-import { SCREEN_HEIGHT } from 'utils';
-
 interface User {
     id: number;
     name: string;
@@ -37,7 +35,7 @@ class VideoStore {
     @observable public isLoadMore: boolean = false;
     @observable public videoPaused: boolean = false;
     @observable public viewableItemIndex: number = -1;
-    @observable public viewportHeight: number = SCREEN_HEIGHT;
+    @observable public viewportHeight: number = Device.HEIGHT;
     @observable public rewardProgress: number = 0;
     @observable public getReward = [];
     @observable public showComment: (() => void) | undefined;

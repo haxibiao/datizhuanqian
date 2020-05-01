@@ -4,7 +4,7 @@ import { observer, app } from 'store';
 import * as Progress from 'react-native-progress';
 import VideoStore from '../VideoStore';
 import { GQL, useMutation } from 'apollo';
-import { useBounceAnimation, useLinearAnimation, exceptionCapture } from 'common';
+import { useBounceAnimation, useLinearAnimation } from 'common';
 
 const RewardProgress = observer(props => {
     const progress = (VideoStore.rewardProgress / VideoStore.rewardLimit) * 100;
@@ -17,6 +17,7 @@ const RewardProgress = observer(props => {
         variables: {
             reward: 'VIDEO_PLAY_REWARD',
         },
+        client: app.mutationClient,
         refetchQueries: (): array => [
             {
                 query: GQL.UserMetaQuery,
@@ -29,7 +30,7 @@ const RewardProgress = observer(props => {
         async function fetchReward() {
             VideoStore.rewardProgress = 0;
             startImageAnimation();
-            const [error, res] = await exceptionCapture(playReward);
+            const [error, res] = await Helper.exceptionCapture(playReward);
             if (error) {
                 setReward('领取失败');
             } else {
@@ -80,11 +81,11 @@ const RewardProgress = observer(props => {
                     ]}>
                     {rewardGold}
                 </Animated.Text>
-                <Image source={require('@src/assets/images/video_reward_progress.png')} style={styles.rewardImage} />
+                <Image source={require('@src/assets/images/ic_video_reward_progress.png')} style={styles.rewardImage} />
                 {progress > 0 && !Device.IOS && (
                     <Progress.Circle
                         progress={progress / 100}
-                        size={PxFit(54)}
+                        size={PxFit(50)}
                         borderWidth={0}
                         color="#ff5644"
                         thickness={PxFit(4)}
@@ -101,6 +102,9 @@ const styles = StyleSheet.create({
         height: PxFit(54),
         position: 'relative',
         width: PxFit(54),
+        justifyContent: 'center',
+        alignItems: 'center',
+        // backgroundColor: '#F00',
     },
     rewardImage: {
         ...StyleSheet.absoluteFill,

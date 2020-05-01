@@ -5,7 +5,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, FlatList } from 'react-native';
-import { ListFooter, ErrorView, LoadingSpinner, EmptyView, CustomRefreshControl } from 'components';
+import { ListFooter, StatusView, CustomRefreshControl } from 'components';
 
 import { Query, GQL } from 'apollo';
 import { app } from 'store';
@@ -28,10 +28,14 @@ class IntegralDetail extends Component {
                 <Query query={GQL.GoldsQuery} fetchPolicy="network-only" variables={{ user_id: app.me.id }}>
                     {({ data, error, loading, refetch, fetchMore }) => {
                         let golds = Helper.syncGetter('golds', data);
-                        if (error) return <ErrorView onPress={refetch} error={error} />;
-                        if (loading) return <LoadingSpinner />;
+                        if (error) return <StatusView.ErrorView onPress={refetch} error={error} />;
+                        if (loading) return <StatusView.LoadingSpinner />;
                         if (!golds || golds.length === 0)
-                            return <EmptyView imageSource={require('../../../assets/images/default_message.png')} />;
+                            return (
+                                <StatusView.EmptyView
+                                    imageSource={require('../../../assets/images/default_message.png')}
+                                />
+                            );
                         return (
                             <FlatList
                                 data={golds}

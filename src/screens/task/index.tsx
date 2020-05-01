@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
-import { View, StyleSheet } from 'react-native';
-import { PageContainer, EmptyView, Banner } from 'components';
-import { Theme } from 'utils';
+import { View, StyleSheet, ImageBackground, Text, Image } from 'react-native';
+import { PageContainer, StatusView, Banner, TouchFeedback, Iconfont } from '@src/components';
 
 import TaskBody from './components/TaskBody';
 import { app, observer } from 'store';
@@ -13,26 +12,21 @@ const index = observer(props => {
     const { login } = app;
 
     useDetainment(navigation);
-
+    console.log('Device.WIDTH :', Device.WIDTH);
     return (
-        <PageContainer
-            isTopNavigator
-            titleStyle={{ color: Theme.defaultTextColor }}
-            navBarStyle={styles.navBarStyle}
-            backButtonColor={Theme.defaultTextColor}
-            // backButtonPress={backPress}
-            title="任务">
-            {login ? (
-                <View style={styles.container}>
-                    <Banner />
-                    <TaskBody navigation={navigation} />
-                </View>
-            ) : (
-                <EmptyView
-                    imageSource={require('../../assets/images/default_message.png')}
-                    title="登录之后才能查看任务哦"
-                />
-            )}
+        <PageContainer hiddenNavBar>
+            <Fragment>
+                {login ? (
+                    <View style={styles.container}>
+                        <TaskBody navigation={navigation} />
+                    </View>
+                ) : (
+                    <StatusView.EmptyView
+                        imageSource={require('../../assets/images/default_message.png')}
+                        title="登录之后才能查看任务哦"
+                    />
+                )}
+            </Fragment>
         </PageContainer>
     );
 });
@@ -45,7 +39,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingBottom: 50,
+        paddingBottom: Device.HOME_INDICATOR_HEIGHT + PxFit(56),
     },
 });
 

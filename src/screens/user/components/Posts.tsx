@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 import { PageContainer, CustomRefreshControl, ListFooter, StatusView } from 'components';
-import { Theme, PxFit, SCREEN_WIDTH } from 'utils';
-
 import { useQuery, GQL } from 'apollo';
 
 import UserProfile from './UserProfile';
@@ -35,7 +33,7 @@ const Posts = props => {
                 bounces={false}
                 contentContainerStyle={{
                     flexGrow: 1,
-                    paddingBottom: Theme.HOME_INDICATOR_HEIGHT,
+                    paddingBottom: Device.HOME_INDICATOR_HEIGHT,
                 }}
                 style={styles.container}
                 data={posts}
@@ -78,7 +76,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: SCREEN_WIDTH,
+        width: Device.WIDTH,
         overflow: 'hidden',
         backgroundColor: '#fff',
     },

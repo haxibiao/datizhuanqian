@@ -4,9 +4,7 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
-import { Row, TouchFeedback, Iconfont } from 'components';
-import { Config, Theme, PxFit, SCREEN_WIDTH } from 'utils';
-import { Overlay } from 'teaset';
+import { TouchFeedback, Iconfont } from 'components';
 import { app } from 'store';
 
 class Rules extends Component {
@@ -22,8 +20,8 @@ class Rules extends Component {
         return (
             <View
                 style={{
-                    width: SCREEN_WIDTH - PxFit(70),
-                    height: ((SCREEN_WIDTH - PxFit(110)) * 16) / 9,
+                    width: Device.WIDTH - PxFit(70),
+                    height: ((Device.WIDTH - PxFit(110)) * 16) / 9,
                     paddingHorizontal: PxFit(25),
                     paddingVertical: PxFit(20),
                     borderRadius: PxFit(15),
@@ -98,8 +96,8 @@ class Rules extends Component {
                             <Image
                                 source={require('../../../assets/images/contribute1.png')}
                                 style={{
-                                    width: SCREEN_WIDTH - PxFit(120),
-                                    height: (SCREEN_WIDTH - PxFit(120)) / 1.8,
+                                    width: Device.WIDTH - PxFit(120),
+                                    height: (Device.WIDTH - PxFit(120)) / 1.8,
                                 }}
                             />
                         </View>
@@ -117,8 +115,8 @@ class Rules extends Component {
                             <Image
                                 source={require('../../../assets/images/contribute2.png')}
                                 style={{
-                                    width: SCREEN_WIDTH - PxFit(120),
-                                    height: (SCREEN_WIDTH - PxFit(120)) / 1.8,
+                                    width: Device.WIDTH - PxFit(120),
+                                    height: (Device.WIDTH - PxFit(120)) / 1.8,
                                 }}
                             />
                         </View>

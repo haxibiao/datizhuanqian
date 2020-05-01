@@ -1,15 +1,10 @@
-import React, { useRef, useMemo, useState, useCallback } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
-import { CustomRefreshControl, ListFooter, PageContainer } from '@src/components';
-import { syncGetter } from '@src/common';
-import { SCREEN_WIDTH, Theme, PxFit } from '@src/utils';
-import { useQuery, GQL } from '@src/apollo';
-import { observer, app } from '@src/store';
+import React, { useCallback } from 'react';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { ListFooter, PageContainer } from '@src/components';
 import { useNavigation } from 'react-navigation-hooks';
-import ListHeader from './components/ListHeader';
-import CategoryItem from './components/CategoryItem';
+import RecommendCategoryItem from './components/RecommendCategoryItem';
 
-const MoreCategories = props => {
+const MoreCategories = () => {
     const navigation = useNavigation();
     const { categories, title, tag } = navigation.state.params;
     const keyExtractor = useCallback((item, index) => {
@@ -17,7 +12,7 @@ const MoreCategories = props => {
     }, []);
 
     const renderItem = useCallback(({ item }) => {
-        return <CategoryItem title={item.name} tag={tag} category={item} />;
+        return <RecommendCategoryItem title={item.name} tag={tag} category={item} />;
     }, []);
 
     return (
@@ -47,7 +42,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     itemSeparator: {
-        height: PxFit(1),
+        // height: PxFit(1),
         marginLeft: PxFit(70 + Theme.itemSpace),
         marginVertical: PxFit(20),
         backgroundColor: '#f0f0f0',

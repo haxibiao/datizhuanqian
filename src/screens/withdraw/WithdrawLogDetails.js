@@ -4,10 +4,9 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-import { Avatar, PageContainer, ErrorView, LoadingSpinner, EmptyView } from 'components';
-import { Theme, SCREEN_WIDTH, PxFit } from 'utils';
+import { Avatar, PageContainer, StatusView } from 'components';
 
 import { Query, GQL } from 'apollo';
 import { app } from 'store';
@@ -30,9 +29,9 @@ class WithdrawLogDetails extends Component {
                         id: withdraw_id,
                     }}>
                     {({ data, error, loading, refetch }) => {
-                        if (error) return <ErrorView onPress={refetch} />;
-                        if (loading) return <LoadingSpinner />;
-                        if (!(data && data.withdraw)) return <EmptyView />;
+                        if (error) return <StatusView.ErrorView onPress={refetch} />;
+                        if (loading) return <StatusView.LoadingSpinner />;
+                        if (!(data && data.withdraw)) return <StatusView.EmptyView />;
                         let withdraw = data.withdraw;
                         let withdrawType = '支付宝';
                         switch (withdraw.to_platform) {
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: PxFit(15),
         color: Theme.defaultTextColor,
-        width: (SCREEN_WIDTH * 5) / 9,
+        width: (Device.WIDTH * 5) / 9,
         textAlign: 'right',
     },
     borderRow: {

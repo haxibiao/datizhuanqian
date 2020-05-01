@@ -2,7 +2,6 @@ import { Platform } from 'react-native';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-boost';
 import DeviceInfo from 'react-native-device-info';
-import { Config } from 'utils';
 import { Matomo } from 'native';
 
 import base64 from 'react-native-base64';
@@ -59,8 +58,6 @@ endToday.setMilliseconds(0);
 const startTimestamp = startToday.getTime() - 24 * 60 * 60 * 1000;
 const endTimestamp = endToday.getTime() - 24 * 60 * 60 * 1000;
 
-console.log('startTimestamp', startTimestamp, endTimestamp);
-
 export function makeWithdrawClient(user: { id?: any; token?: any }, checkServer: () => void) {
     const { token } = user;
 
@@ -99,11 +96,8 @@ export function makeWithdrawClient(user: { id?: any; token?: any }, checkServer:
     let authQuery =
         'v' + encoded_version + '&u=' + uuid + '&t=' + time + '&b=' + brand + '&o=' + osversion + '&i=' + ip;
 
-    console.log('authQuery', authQuery);
-    console.log('headers', headers);
-
     return new ApolloClient({
-        uri: Config.ServerRoot + '/graphql?' + authQuery,
+        uri: Config.WithdrawServer + '/graphql?' + authQuery,
         // uri: 'http://staging.datizhuanqian.com/graphql',
         request: async operation => {
             operation.setContext({

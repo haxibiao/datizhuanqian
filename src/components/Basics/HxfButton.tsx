@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
 import GradientView from './GradientView';
-import { Theme, PxFit } from '../../utils';
 
 type Size = 'mini' | 'small' | 'medium' | 'default';
 

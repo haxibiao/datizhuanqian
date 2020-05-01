@@ -3,16 +3,16 @@
  * created by wyk made in 2019-03-22 11:55:07
  */
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { PageContainer, Iconfont, ListItem, ItemSeparator } from 'components';
-import { Theme, PxFit, ISIOS } from 'utils';
 
 import UserPanel from './components/UserPanel';
 
 import { compose, graphql, GQL } from 'apollo';
 import { getAuthCode } from 'common';
 import DeviceInfo from 'react-native-device-info';
+import { config } from '@src/store';
 class AccountSecurity extends Component {
     constructor(props) {
         super(props);
@@ -123,71 +123,82 @@ class AccountSecurity extends Component {
                     )}
 
                     <ItemSeparator />
-                    {!ISIOS && (
-                        <ListItem
-                            onPress={this.handlerBindWechat}
-                            style={styles.listItem}
-                            leftComponent={<Text style={styles.itemText}>微信账号</Text>}
-                            rightComponent={
-                                <View style={styles.rightWrap}>
-                                    <Text style={[styles.linkText, { color: is_bind_wechat ? Theme.grey : '#407FCF' }]}>
-                                        {is_bind_wechat ? '已绑定' : '去绑定'}
-                                    </Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                                </View>
-                            }
-                        />
-                    )}
-                    <ListItem
-                        onPress={() => {
-                            if (user.wallet && user.wallet.pay_info_change_count === -1) {
-                                Toast.show({ content: '支付宝信息更改次数已达上限' });
-                            } else {
-                                Helper.middlewareNavigate('SettingWithdrawInfo');
-                            }
-                        }}
-                        style={styles.listItem}
-                        leftComponent={<Text style={styles.itemText}>支付宝账号</Text>}
-                        rightComponent={
-                            <View style={styles.rightWrap}>
-                                <Text style={[styles.linkText, { color: is_bind_alipay ? Theme.grey : '#407FCF' }]}>
-                                    {is_bind_alipay
-                                        ? `已绑定（${Helper.syncGetter('wallet.real_name', user)}）`
-                                        : '去绑定'}
-                                </Text>
-                                <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                            </View>
-                        }
-                    />
-                    {!(SystemVersion == '10' && Brand == 'huawei') && (
-                        <ListItem
-                            onPress={this.handlerBindDongdezhuan}
-                            style={styles.listItem}
-                            leftComponent={<Text style={styles.itemText}>答妹账号</Text>}
-                            rightComponent={
-                                <View style={styles.rightWrap}>
-                                    <Text style={dameiUser ? styles.rightText : styles.linkText}>
-                                        {dameiUser ? `已绑定(${dameiUser.name})` : '去绑定'}
-                                    </Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                                </View>
-                            }
-                        />
-                    )}
-                    {!(SystemVersion == '10' && Brand == 'huawei') && (
-                        <ListItem
-                            onPress={this.handlerBindDongdezhuan}
-                            style={styles.listItem}
-                            leftComponent={<Text style={styles.itemText}>懂得赚账号</Text>}
-                            rightComponent={
-                                <View style={styles.rightWrap}>
-                                    <Text style={is_bind_dongdezhuan ? styles.rightText : styles.linkText}>
-                                        {is_bind_dongdezhuan ? `已绑定(${dongdezhuanUser.name})` : '去绑定'}
-                                    </Text>
-                                    <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
-                                </View>
-                            }
-                        />
+                    {!config.disableAd && (
+                        <Fragment>
+                            <ListItem
+                                onPress={this.handlerBindWechat}
+                                style={styles.listItem}
+                                leftComponent={<Text style={styles.itemText}>微信账号</Text>}
+                                rightComponent={
+                                    <View style={styles.rightWrap}>
+                                        <Text
+                                            style={[
+                                                styles.linkText,
+                                                { color: is_bind_wechat ? Theme.grey : '#407FCF' },
+                                            ]}>
+                                            {is_bind_wechat ? '已绑定' : '去绑定'}
+                                        </Text>
+                                        <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                    </View>
+                                }
+                            />
+
+                            <ListItem
+                                onPress={() => {
+                                    if (user.wallet && user.wallet.pay_info_change_count === -1) {
+                                        Toast.show({ content: '支付宝信息更改次数已达上限' });
+                                    } else {
+                                        Helper.middlewareNavigate('SettingWithdrawInfo');
+                                    }
+                                }}
+                                style={styles.listItem}
+                                leftComponent={<Text style={styles.itemText}>支付宝账号</Text>}
+                                rightComponent={
+                                    <View style={styles.rightWrap}>
+                                        <Text
+                                            style={[
+                                                styles.linkText,
+                                                { color: is_bind_alipay ? Theme.grey : '#407FCF' },
+                                            ]}>
+                                            {is_bind_alipay
+                                                ? `已绑定（${Helper.syncGetter('wallet.real_name', user)}）`
+                                                : '去绑定'}
+                                        </Text>
+                                        <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                    </View>
+                                }
+                            />
+                            {!(SystemVersion == '10' && Brand == 'huawei') && (
+                                <ListItem
+                                    onPress={this.handlerBindDongdezhuan}
+                                    style={styles.listItem}
+                                    leftComponent={<Text style={styles.itemText}>答妹账号</Text>}
+                                    rightComponent={
+                                        <View style={styles.rightWrap}>
+                                            <Text style={dameiUser ? styles.rightText : styles.linkText}>
+                                                {dameiUser ? `已绑定(${dameiUser.name})` : '去绑定'}
+                                            </Text>
+                                            <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                        </View>
+                                    }
+                                />
+                            )}
+                            {!(SystemVersion == '10' && Brand == 'huawei') && (
+                                <ListItem
+                                    onPress={this.handlerBindDongdezhuan}
+                                    style={styles.listItem}
+                                    leftComponent={<Text style={styles.itemText}>懂得赚账号</Text>}
+                                    rightComponent={
+                                        <View style={styles.rightWrap}>
+                                            <Text style={is_bind_dongdezhuan ? styles.rightText : styles.linkText}>
+                                                {is_bind_dongdezhuan ? `已绑定(${dongdezhuanUser.name})` : '去绑定'}
+                                            </Text>
+                                            <Iconfont name="right" size={PxFit(14)} color={Theme.subTextColor} />
+                                        </View>
+                                    }
+                                />
+                            )}
+                        </Fragment>
                     )}
                 </View>
             </PageContainer>
