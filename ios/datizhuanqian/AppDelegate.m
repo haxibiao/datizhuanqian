@@ -25,7 +25,6 @@
 #include "AdBoss.h"
 #import "BUAdSDK/BUSplashAdView.h" //启动屏广告
 
-
 @interface AppDelegate () <BUSplashAdDelegate>
 @property (nonatomic, assign) CFTimeInterval startTime;
 @end
@@ -52,28 +51,25 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
-//  //穿山甲 init appid
-//  #if DEBUG
-//    [AdBoss init: @"5016582"]; //内测appid
-//  #else
-//    [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
-//  #endif
-  
+   #if DEBUG
+   [AdBoss init: @"5016582"]; //内测appid
+   #else
+    [AdBoss init: @"5016582"]; //TODO:  上架ios 后，更新这个appid
+   #endif
+
   [AdBoss hookWindow:self.window];
   [AdBoss hookApp:self];
-
-  // [RNSplashScreen show];
 
   return YES;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-{  
-  #if DEBUG
-    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  #else
-    return [CodePush bundleURL];
-  #endif
+{
+#if DEBUG
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+  return [CodePush bundleURL];
+#endif
 }
 
 // ios 9.0+ 微信sdk

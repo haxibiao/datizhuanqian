@@ -10,7 +10,10 @@ export const init = () => {
 };
 
 export const loadFeedAd = () => {
-    return NativeModules.AdManager.loadFeedAd({ codeid: Platform.OS === 'ios' ? CodeIdFeedIOS : CodeIdFeed });
+    return NativeModules.AdManager.loadFeedAd({
+        codeid: Platform.OS === 'ios' ? CodeIdFeedIOS : CodeIdFeed,
+        width: Device.WIDTH - PxFit(50),
+    });
 };
 
 export default { init, loadFeedAd };

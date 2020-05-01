@@ -1,10 +1,8 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable no-console */
 import React, { useState } from 'react';
-import { StyleSheet, requireNativeComponent, Dimensions, Platform } from 'react-native';
+import { requireNativeComponent, Dimensions, Platform } from 'react-native';
 const { width } = Dimensions.get('window');
-import { PxFit, Theme, ISIOS, Tools } from 'utils';
-import { SCREEN_WIDTH } from 'utils';
 import { config, app } from 'store';
 
 // import { GQL } from 'apollo';
@@ -46,14 +44,14 @@ const FeedAd = (props: Props) => {
                 ],
             })
             .then((data: any) => {
-                const contribute = Tools.syncGetter('data.userReward.contribute', data);
+                const contribute = Helper.syncGetter('data.userReward.contribute', data);
                 Toast.show({
                     content: `恭喜你获得+${contribute}贡献值`,
                     duration: 2000,
                     layout: 'bottom',
                 });
             })
-            .catch((err: any) => {
+            .catch(() => {
                 Toast.show({
                     content: '遇到未知错误，领取失败',
                 });

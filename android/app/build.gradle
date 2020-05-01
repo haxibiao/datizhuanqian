@@ -116,9 +116,9 @@ project.ext.envConfigFiles = [
     vivo:"android/env/.env.vivo",
 ]
 
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -172,7 +172,7 @@ android {
         applicationId appConfigJson.PackageName
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 32
+        versionCode 33
         versionName appConfigJson.Version
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -190,7 +190,7 @@ android {
         }
     }
     signingConfigs {
-        debug {
+         debug {
             storeFile file(MYAPP_RELEASE_STORE_FILE)
             storePassword MYAPP_RELEASE_STORE_PASSWORD 
             keyAlias MYAPP_RELEASE_KEY_ALIAS 
@@ -204,12 +204,7 @@ android {
         } 
     }
     buildTypes {
-        debug {
-            // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
-
-            buildConfigField "String", "CODEPUSH_KEY", '""'
-        }
-        release {
+       release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
             signingConfig signingConfigs.release
@@ -288,17 +283,7 @@ android {
 
         }
     }
-
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-        pickFirst '**/x86/libjsc.so'
-        pickFirst '**/armeabi-v7a/libjsc.so'
-    }
 }
-
 
 repositories {
     flatDir {
@@ -307,18 +292,17 @@ repositories {
 }
 
 dependencies {
-    
-    // implementation fileTree(dir: 'libs', include: ['*.aar'])
-    compile (name: 'alipaySdk-15.6.4-20190624155522', ext: 'aar')
-
+    // implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation (name: 'alipaySdk-15.6.4-20190624155522', ext: 'aar')
+
     implementation project(':jpush-react-native')  // 添加 jpush 依赖
     implementation project(':jcore-react-native')  // 添加 jcore 依赖
     
     implementation project(':toolkits')
 
     //穿山甲必须
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
 
     implementation 'com.android.support:multidex:1.0.3'
 
@@ -327,18 +311,18 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
 
 
+   
+    // implementation 'com.bytedance.ies.ugc.aweme:open-sdk:0.0.1.4' //抖音sdk
     // implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'  //微信sdk
-    implementation 'com.bytedance.ies.ugc.aweme:open-sdk:0.0.1.4' //抖音sdk
-
     //matomo tracker sdk
     implementation 'org.matomo.sdk:tracker:4.0.1'
 
     if (enableHermes) {
-      def hermesPath = "../../node_modules/hermesvm/android/";
-      debugImplementation files(hermesPath + "hermes-debug.aar")
-      releaseImplementation files(hermesPath + "hermes-release.aar")
+        def hermesPath = "../../node_modules/hermes-engine/android/";
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
-      implementation jscFlavor
+        implementation jscFlavor
     }
 }
 
