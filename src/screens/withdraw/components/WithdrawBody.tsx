@@ -112,6 +112,14 @@ const WithdrawBody = observer(props => {
         });
 
         //检查余额
+        if (!selectWithdraw.amount) {
+            Toast.show({
+                content: `请选择金额！`,
+            });
+            return;
+        }
+
+        //检查余额
         if (user.gold < selectWithdraw.amount * user.exchange_rate) {
             Toast.show({
                 content: `智慧点不足提现${selectWithdraw.amount}元，快去赚钱智慧点吧`,
