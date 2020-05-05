@@ -1,17 +1,43 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, Image, Animated, TouchableOpacity } from 'react-native';
 
-import { Avatar, Iconfont } from 'components';
-import { observer } from 'store';
+import { Avatar, Iconfont, SafeText, MoreOperation } from 'components';
+import { observer, app, config } from 'store';
+import { useApolloClient } from '@src/apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import Like from './Like';
 import VideoStore from '../VideoStore';
+import { useNavigation } from 'react-navigation-hooks';
+import { Overlay } from 'teaset';
 
 export default observer(props => {
     const { user, media, isPost } = props;
-
     const { video, count_comments } = media;
+    const navigation = useNavigation();
+    const client = useApolloClient();
+    const showMoreOperation = useCallback(() => {
+        let overlayRef;
+        const MoreOperationOverlay = (
+            <Overlay.PullView
+                style={{ flexDirection: 'column', justifyContent: 'flex-end' }}
+                containerStyle={{ backgroundColor: 'transparent' }}
+                animated={true}
+                ref={ref => (overlayRef = ref)}>
+                <ApolloProvider client={client}>
+                    <MoreOperation
+                        onPressIn={() => overlayRef.close()}
+                        target={media}
+                        downloadUrl={Helper.syncGetter('video.url', media)}
+                        downloadUrlTitle={Helper.syncGetter('body', media)}
+                        options={['复制链接']}
+                    />
+                </ApolloProvider>
+            </Overlay.PullView>
+        );
 
+        Overlay.show(MoreOperationOverlay);
+    }, [client, media]);
     return (
         <View style={styles.sideBar}>
             <View style={styles.itemWrap}>
@@ -36,9 +62,12 @@ export default observer(props => {
                     <Text style={styles.countText}>{Helper.count(isPost ? count_comments : video.count_comments)}</Text>
                 </TouchableOpacity>
             </View>
-            {/* <View style={styles.itemWrap}>
-                <Image source={require('../../../assets/images/publish_video.png')} style={styles.imageStyle} />
-            </View> */}
+
+            <View style={styles.itemWrap}>
+                <TouchableOpacity onPress={showMoreOperation}>
+                    <Image source={require('@src/assets/images/more_item.png')} style={styles.imageStyle} />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 });
