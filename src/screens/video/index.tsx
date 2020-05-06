@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
-import { StyleSheet, View, FlatList, StatusBar, Image } from 'react-native';
+import { StyleSheet, View, FlatList, StatusBar, Image, Text } from 'react-native';
 import { GQL, useApolloClient } from 'apollo';
 import { observer, app, config as configStore } from 'store';
 import { beginnerGuidance, VideoGuidance } from 'components';
@@ -143,13 +143,18 @@ export default observer(props => {
 
     useEffect(() => {
         if (launched) {
-            fetchData();
             fetchGuidanceVideo();
         }
         return () => {
             VideoStore.reset();
         };
     }, [launched]);
+
+    useEffect(() => {
+        if (launched && VideoStore.dataSource.length == 0) {
+            fetchData();
+        }
+    }, [launched, VideoStore.dataSource]);
 
     useDetainment(navigation);
 
