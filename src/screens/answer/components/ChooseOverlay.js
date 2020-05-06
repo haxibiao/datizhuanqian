@@ -17,10 +17,11 @@ import * as WeChat from 'react-native-wechat';
 type ChooserItem = {
     title: string,
     onPress: Function,
+    isOwn: boolean,
 };
 
 class ChooseOverly {
-    static show(question, navigation, category, min_level, user) {
+    static show(question, navigation, category, min_level, user, isOwn) {
         let overlayView = (
             <Overlay.PullView
                 containerStyle={{ backgroundColor: Theme.white }}
@@ -196,28 +197,48 @@ class ChooseOverly {
                             </View>
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>举报</Text>
                         </TouchFeedback>
+                        {isOwn ? (
+                            <TouchFeedback
+                                onPress={() => {
+                                    this.popViewRef.close();
+                                    isOwn();
+                                }}
+                                style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
+                                <View style={styles.iconStyle}>
+                                    <Iconfont name={'brush'} size={24} color={Theme.grey} />
+                                </View>
+                                <Text style={{ color: Theme.grey, fontSize: 12 }}>撤回</Text>
+                            </TouchFeedback>
+                        ) : (
+                            <TouchFeedback
+                                onPress={() => {
+                                    this.popViewRef.close();
+                                    if (user.level.level < min_level) {
+                                        Toast.show({
+                                            content: `${min_level}级后才可以出题哦`,
+                                        });
+                                    } else {
+                                        navigation.navigate('Contribute', { category });
+                                    }
+                                }}
+                                style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
+                                <View style={styles.iconStyle}>
+                                    <Iconfont name={'brush'} size={24} color={Theme.grey} />
+                                </View>
+                                <Text style={{ color: Theme.grey, fontSize: 12 }}>出题</Text>
+                            </TouchFeedback>
+                        )}
 
                         <TouchFeedback
                             onPress={() => {
                                 this.popViewRef.close();
-                                if (user.level.level < min_level) {
-                                    Toast.show({
-                                        content: `${min_level}级后才可以出题哦`,
-                                    });
-                                } else {
-                                    navigation.navigate('Contribute', { category });
-                                }
-                            }}
-                            style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
-                            <View style={styles.iconStyle}>
-                                <Iconfont name={'brush'} size={24} color={Theme.grey} />
-                            </View>
-                            <Text style={{ color: Theme.grey, fontSize: 12 }}>出题</Text>
-                        </TouchFeedback>
-                        <TouchFeedback
-                            onPress={() => {
-                                this.popViewRef.close();
-                                Clipboard.setString('');
+                                Clipboard.setString(
+                                    '我在答题赚钱发现一道有意思的题目，快来试试吧： http://datizhuanqian.com' +
+                                        '/question/' +
+                                        question.id +
+                                        '?user_id=' +
+                                        user.id,
+                                );
                                 Toast.show({
                                     content: '复制成功，快去分享给好友吧~',
                                 });

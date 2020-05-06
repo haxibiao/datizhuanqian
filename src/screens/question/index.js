@@ -222,9 +222,16 @@ class index extends Component {
         };
         // let chooser = this.isOwn ? strategy['master'][String(this.question.status)] : strategy['visitor'];
         // PullChooser.show(chooser);
-        this.isOwn || Device.IOS
+        Device.IOS
             ? PullChooser.show(strategy['master'][String(this.question.status)])
-            : ChooseOverlay.show(this.question, navigation, this.question.category, this.state.min_level, data.user);
+            : ChooseOverlay.show(
+                  this.question,
+                  navigation,
+                  this.question.category,
+                  this.state.min_level,
+                  data.user,
+                  this.onRemove,
+              );
     };
 
     render() {
