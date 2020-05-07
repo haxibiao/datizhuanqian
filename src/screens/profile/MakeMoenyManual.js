@@ -7,7 +7,7 @@ class MakeMoenyManual extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabs: ['新人必看', '提现问题', '贡献点问题', '账号问题', '其他问题'],
+            tabs: ['新人必看', '贡献点问题', '提现问题', '账号问题', '其他问题'],
             items: [
                 {
                     title: '新人必看',
@@ -41,6 +41,22 @@ class MakeMoenyManual extends Component {
                     ],
                 },
                 {
+                    title: '贡献点问题',
+                    childItems: [
+                        {
+                            title: '什么是贡献点？',
+                            content: `贡献值代表用户对${
+                                Config.AppName
+                            }创建良好用户环境所做的贡献，为保证社区用户环境良好，提现时需要考核用户的贡献值。小提示：黄色小星星图标代表的就是贡献值哦`,
+                        },
+                        {
+                            title: '如何获取贡献点？',
+                            content:
+                                '贡献值可以通过举报违反出题规则的题目、做激励任务、看视频或点击详情、点击广告、发布有价值的神评论(被点赞)、出题通过审核等方式获取。',
+                        },
+                    ],
+                },
+                {
                     title: '提现问题',
                     childItems: [
                         {
@@ -66,22 +82,7 @@ class MakeMoenyManual extends Component {
                         { title: '如何提升提现额度？', content: '提升贡献值即可提升提现额度' },
                     ],
                 },
-                {
-                    title: '贡献点问题',
-                    childItems: [
-                        {
-                            title: '什么是贡献点？',
-                            content: `贡献值代表用户对${
-                                Config.AppName
-                            }创建良好用户环境所做的贡献，为保证社区用户环境良好，提现时需要考核用户的贡献值。小提示：黄色小星星图标代表的就是贡献值哦`,
-                        },
-                        {
-                            title: '如何获取贡献点？',
-                            content:
-                                '贡献值可以通过举报违反出题规则的题目、做激励任务、看视频或点击详情、点击广告、发布有价值的神评论(被点赞)、出题通过审核等方式获取。',
-                        },
-                    ],
-                },
+
                 {
                     title: '账号问题',
                     childItems: [
@@ -155,8 +156,8 @@ class MakeMoenyManual extends Component {
                 this.setState({
                     select: activeIndex,
                 });
-                this.scrollRef.scrollToIndex({ index: activeIndex, animated: true });
-                activeIndex == 2 && ManualOverlay.show(items[2].childItems[1].title, items[2].childItems[1].content);
+                // this.scrollRef.scrollToIndex({ index: activeIndex, animated: true });
+                activeIndex == 1 && ManualOverlay.show(items[1].childItems[1].title, items[1].childItems[1].content);
             }, 100);
         }
     }

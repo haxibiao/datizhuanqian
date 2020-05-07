@@ -47,7 +47,7 @@ const WithdrawHeader = (props: Props) => {
                 })
                 .catch((error: any) => {});
         } else {
-            navigation.navigate('MakeMoenyManual', { activeIndex: 2 });
+            navigation.navigate('MakeMoenyManual', { activeIndex: 1 });
         }
     };
 
