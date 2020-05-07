@@ -93,9 +93,13 @@ const MoreOperation = props => {
         //    const link = await fetchShareLink();
         try {
             await WeChat.shareToSession({
-                type: 'video',
+                type: 'news',
                 title: '我在答题赚钱发现一个很好看的小视频，分享给你',
-                videoUrl: 'http://datizhuanqian.com' + '/share/post/' + target.id + '?user_id=' + app.me.id,
+                description: target.description,
+                thumbImage:
+                    'https://mmbiz.qlogo.cn/mmbiz_png/xq0pH6ugFxD5er0WWLsr5xt5Iwjt9FHrqAibUO5OUbJibIiao55O4iaiaPIaa346KiaagUVOMoGmfhZtaic77BXZLjS8A/0?wx_fmt=png',
+
+                webpageUrl: 'http://datizhuanqian.com' + '/share/post/' + target.id + '?user_id=' + app.me.id,
             });
         } catch (e) {
             Toast.show({ content: '未安装微信或当前微信版本较低' });
@@ -107,7 +111,11 @@ const MoreOperation = props => {
             WeChat.shareToTimeline({
                 type: 'news',
                 // thumbImage:""
-                title: '我在答题赚钱发现一道有意思的题目，快来试试吧',
+                title: '我在答题赚钱发现一个很好看的小视频，分享给你',
+                description: target.description,
+                thumbImage:
+                    'https://mmbiz.qlogo.cn/mmbiz_png/xq0pH6ugFxD5er0WWLsr5xt5Iwjt9FHrqAibUO5OUbJibIiao55O4iaiaPIaa346KiaagUVOMoGmfhZtaic77BXZLjS8A/0?wx_fmt=png',
+
                 webpageUrl: 'http://datizhuanqian.com' + '/share/post/' + target.id + '?user_id=' + app.me.id,
             });
         } catch (e) {

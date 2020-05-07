@@ -179,34 +179,40 @@ class index extends Component {
                     {
                         title: '发布',
                         onPress: this.onPublish,
+                        iconName: 'publish',
                     },
                     {
                         title: '删除',
                         onPress: this.onDelete,
+                        iconName: 'trash',
                     },
                 ],
                 '-2': [
                     {
                         title: '删除',
                         onPress: this.onDelete,
+                        iconName: 'trash',
                     },
                 ],
                 '-1': [
                     {
                         title: '删除',
                         onPress: this.onDelete,
+                        iconName: 'trash',
                     },
                 ],
                 '0': [
                     {
                         title: '撤回',
                         onPress: this.onRemove,
+                        iconName: 'refresh',
                     },
                 ],
                 '1': [
                     {
                         title: '撤回',
                         onPress: this.onRemove,
+                        iconName: 'refresh',
                     },
                 ],
             },
@@ -220,17 +226,17 @@ class index extends Component {
                 },
             ],
         };
-        // let chooser = this.isOwn ? strategy['master'][String(this.question.status)] : strategy['visitor'];
+        let chooser = this.isOwn ? strategy['master'][String(this.question.status)] : strategy['visitor'];
         // PullChooser.show(chooser);
         Device.IOS
-            ? PullChooser.show(strategy['master'][String(this.question.status)])
+            ? PullChooser.show(chooser)
             : ChooseOverlay.show(
                   this.question,
                   navigation,
                   this.question.category,
                   this.state.min_level,
                   data.user,
-                  this.onRemove,
+                  chooser,
               );
     };
 

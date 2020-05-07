@@ -17,11 +17,11 @@ import * as WeChat from 'react-native-wechat';
 type ChooserItem = {
     title: string,
     onPress: Function,
-    isOwn: boolean,
+    chooser: object,
 };
 
 class ChooseOverly {
-    static show(question, navigation, category, min_level, user, isOwn) {
+    static show(question, navigation, category, min_level, user, chooser) {
         let overlayView = (
             <Overlay.PullView
                 containerStyle={{ backgroundColor: Theme.white }}
@@ -52,6 +52,9 @@ class ChooseOverly {
                                         type: 'news',
                                         // thumbImage:""
                                         title: '我在答题赚钱发现一道有意思的题目，快来试试吧',
+                                        description: question.description,
+                                        thumbImage:
+                                            'https://mmbiz.qlogo.cn/mmbiz_png/xq0pH6ugFxD5er0WWLsr5xt5Iwjt9FHrqAibUO5OUbJibIiao55O4iaiaPIaa346KiaagUVOMoGmfhZtaic77BXZLjS8A/0?wx_fmt=png',
                                         webpageUrl:
                                             'http://datizhuanqian.com' +
                                             '/question/' +
@@ -88,6 +91,9 @@ class ChooseOverly {
                                         type: 'news',
                                         // thumbImage:""
                                         title: '我在答题赚钱发现一道有意思的题目，快来试试吧',
+                                        description: question.description,
+                                        thumbImage:
+                                            'https://mmbiz.qlogo.cn/mmbiz_png/xq0pH6ugFxD5er0WWLsr5xt5Iwjt9FHrqAibUO5OUbJibIiao55O4iaiaPIaa346KiaagUVOMoGmfhZtaic77BXZLjS8A/0?wx_fmt=png',
                                         webpageUrl:
                                             'http://datizhuanqian.com' +
                                             '/question/' +
@@ -197,18 +203,25 @@ class ChooseOverly {
                             </View>
                             <Text style={{ color: Theme.grey, fontSize: 12 }}>举报</Text>
                         </TouchFeedback>
-                        {isOwn ? (
-                            <TouchFeedback
-                                onPress={() => {
-                                    this.popViewRef.close();
-                                    isOwn();
-                                }}
-                                style={{ alignItems: 'center', marginLeft: (Device.WIDTH - 230) / 5 }}>
-                                <View style={styles.iconStyle}>
-                                    <Iconfont name={'brush'} size={24} color={Theme.grey} />
-                                </View>
-                                <Text style={{ color: Theme.grey, fontSize: 12 }}>撤回</Text>
-                            </TouchFeedback>
+                        {chooser ? (
+                            chooser.map((item, index) => {
+                                return (
+                                    <TouchFeedback
+                                        onPress={() => {
+                                            this.popViewRef.close();
+                                            item.onPress();
+                                        }}
+                                        style={{
+                                            alignItems: 'center',
+                                            marginLeft: (Device.WIDTH - 230) / 5,
+                                        }}>
+                                        <View style={styles.iconStyle}>
+                                            <Iconfont name={item.iconName} size={24} color={Theme.grey} />
+                                        </View>
+                                        <Text style={{ color: Theme.grey, fontSize: 12 }}>{item.title}</Text>
+                                    </TouchFeedback>
+                                );
+                            })
                         ) : (
                             <TouchFeedback
                                 onPress={() => {
