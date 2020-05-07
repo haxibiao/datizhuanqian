@@ -60,26 +60,30 @@ const WithdrawHeader = (props: Props) => {
                     height: (Device.WIDTH * 687) / 1080,
                     // marginTop: ,
                 }}>
-                <TouchFeedback
-                    style={{
-                        height: Device.NAVBAR_HEIGHT,
-                        paddingTop: PxFit(Device.statusBarHeight) + PxFit(10),
-                        marginLeft: PxFit(15),
-                    }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}>
-                    <Iconfont name={'left'} size={20} color={'#000'} />
-                </TouchFeedback>
-                {/*    <View
-                    style={{
-                        height: Device.NAVBAR_HEIGHT,
-                        paddingTop: PxFit(Device.statusBarHeight) + PxFit(10),
-                    }}>
-                     <Text style={{ fontSize: PxFit(17), textAlign: 'center', color: Theme.navBarTitleColor }}>
-                        提现
-                    </Text>
-                </View> */}
+                <Row style={{ justifyContent: 'space-between' }}>
+                    <TouchFeedback
+                        style={{
+                            height: Device.NAVBAR_HEIGHT,
+                            paddingTop: PxFit(Device.statusBarHeight) + PxFit(10),
+                            marginLeft: PxFit(15),
+                        }}
+                        onPress={() => {
+                            navigation.goBack();
+                        }}>
+                        <Iconfont name={'left'} size={20} color={'#000'} />
+                    </TouchFeedback>
+
+                    <TouchFeedback
+                        onPress={() => navigation.navigate('BillingRecord')}
+                        style={{
+                            height: Device.NAVBAR_HEIGHT,
+                            paddingTop: PxFit(Device.statusBarHeight) + PxFit(10),
+                            marginRight: PxFit(15),
+                        }}>
+                        <Text style={{ fontSize: Font(15), textAlign: 'center', color: '#333333' }}>提现记录</Text>
+                    </TouchFeedback>
+                </Row>
+
                 <View style={{ marginTop: PxFit(5) }}>
                     <Text style={styles.greyText}>当前智慧点(个)</Text>
                     <View style={{ marginTop: PxFit(3) }}>

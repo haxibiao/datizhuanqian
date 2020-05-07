@@ -111,7 +111,7 @@ const WithdrawBody = observer(props => {
             value: selectWithdraw.amount.toString(),
         });
 
-        //检查余额
+        //检查金额
         if (!selectWithdraw.amount) {
             Toast.show({
                 content: `请选择金额！`,
